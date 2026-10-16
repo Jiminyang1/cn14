@@ -1,5 +1,5 @@
 // 一生：顶部的姓名和年龄、本年度计划、时间线、侧栏、底部播放条。
-import { memo } from 'react';
+import { memo, useLayoutEffect, useRef, useState } from 'react';
 import { EDU_LV, FOCUS, S, carer, focusList, placeName, statusLabel, type LogEntry } from '../engine';
 import { SPEEDS, game } from '../game/controller';
 import './day.css';
@@ -14,10 +14,11 @@ function Header() {
   return (
     <header className="lhead">
       <div className="who">
-        <span className="mono small muted">档案号 {fileNo(S)}</span>
-        <RunId />
-        <b>{S.name}</b>
-        <span className="small muted">{sexW(S.sex)} · {S.eth} · 现居{placeName(S.loc)} · {study}{status && !S.school && S.age >= 16 ? ' · ' + status.split(' · ')[0] : ''}</span>
+        <div className="who-1">
+          <b>{S.name}</b>
+          <span className="small muted">{sexW(S.sex)} · {S.eth} · 现居{placeName(S.loc)} · {study}{status && !S.school && S.age >= 16 ? ' · ' + status.split(' · ')[0] : ''}</span>
+        </div>
+        <div className="who-2"><span className="mono small muted">档案号 {fileNo(S)}</span><RunId /></div>
       </div>
       <div className="agebig"><b>{S.age}</b><span>岁</span><small>{S.birthYear + S.age}年 · 1年≈{Math.round(game.yearSec)}秒</small></div>
     </header>
@@ -42,17 +43,48 @@ function FocusPlan() {
   );
 }
 
-// 时间线：最新的在上面；同一岁的几条只在第一条显示年龄。记录一旦写下就不再变，所以按对象缓存
-const Entry = memo(({ e, same }: { e: LogEntry; same: boolean }) => (
-  <div className={`tl ${e.k}${same ? ' same' : ''}`}>
-    <span className="ag">{e.a}</span>
+// 人生纪录：放在一张单独滚动的卡片里，按年分组，最新的在上面，每一年的标题在滚动时吸顶。
+// 记录一旦写下就不再变，所以按对象缓存
+const Entry = memo(({ e }: { e: LogEntry }) => (
+  <div className={`tl ${e.k}`}>
     <p>{e.t}{e.f && <span className="f">{e.f}</span>}</p>
   </div>
 ));
 function Timeline() {
+  const box = useRef<HTMLDivElement>(null);
+  const prevH = useRef(0);
+  const [away, setAway] = useState(false);
   const log = S.log, n = log.length;
-  // 用「第几条记录」做 key（从出生往后数），新记录插在最上面时旧的不用重建
-  return <div className="timeline">{log.map((e, i) => <Entry key={n - i} e={e} same={i > 0 && log[i - 1].a === e.a} />)}</div>;
+  // 按年龄分组；用「第几条记录」做 key（从出生往后数），新记录插在最上面时旧的不用重建
+  const years: { a: number; items: [LogEntry, number][] }[] = [];
+  log.forEach((e, i) => {
+    const last = years[years.length - 1];
+    if (last && last.a === e.a) last.items.push([e, n - i]); else years.push({ a: e.a, items: [[e, n - i]] });
+  });
+  if (S.phase === 'life' && (!years.length || years[0].a !== S.age)) years.unshift({ a: S.age, items: [] }); // 这一年还没有记录
+  // 往下翻着看旧记录时，上面插进新记录不要把正在看的内容顶走
+  useLayoutEffect(() => {
+    const el = box.current; if (!el) return;
+    if (el.scrollTop > 8 && prevH.current) el.scrollTop += el.scrollHeight - prevH.current;
+    prevH.current = el.scrollHeight;
+  }, [n]);
+  return (
+    <section className="sheet tl-card">
+      <h4 className="sheet-title">人生纪录 <span className="muted small">{n} 条 · 最新的在上面</span></h4>
+      <div className="tl-scroll" ref={box} onScroll={e => setAway(e.currentTarget.scrollTop > 40)}>
+        {years.map(y => (
+          <div className="yr" key={y.a}>
+            <div className="yr-h">
+              <b>{y.a}岁</b><small>{S.birthYear + y.a}年</small>
+              {y.a === S.age && S.phase === 'life' && <i className="yr-prog" title="这一年过了多少"><u style={{ width: (S.t * 100).toFixed(1) + '%' }} /></i>}
+            </div>
+            <div className="timeline">{y.items.map(([e, k]) => <Entry key={k} e={e} />)}</div>
+          </div>
+        ))}
+      </div>
+      {away && <button className="tl-latest" type="button" onClick={() => { if (box.current) box.current.scrollTop = 0; setAway(false); }}>↑ 回到最新</button>}
+    </section>
+  );
 }
 
 function Dock() {
@@ -73,7 +105,7 @@ function Dock() {
 }
 
 export function Life() {
-  return <>
+  return <div className="life-app">
     <Header />
     <main className="lbody">
       <section className="col-time"><FocusPlan /><Timeline /></section>
@@ -87,5 +119,5 @@ export function Life() {
     </main>
     <Dock />
     <Modal />
-  </>;
+  </div>;
 }

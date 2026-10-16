@@ -146,13 +146,19 @@ table.cmp th { font-weight: 500; font-family: var(--form); color: var(--muted); 
 .plan-opts button.on::before { background: var(--seal); border-color: var(--seal); box-shadow: inset 0 0 0 2px var(--card); }
 .plan-opts button small { color: var(--muted); }
 
-/* 时间线 */
-.timeline { position: relative; padding-left: 64px; }
-.timeline::before { content: ''; position: absolute; left: 48px; top: 6px; bottom: 0; width: 2px; background: var(--rule); }
-.tl { position: relative; padding: 6px 0 10px 18px; animation: fadein .5s; }
-.tl::before { content: ''; position: absolute; left: -21px; top: 13px; width: 9px; height: 9px; border-radius: 50%; background: var(--card); border: 2px solid var(--rule); }
-.tl .ag { position: absolute; left: -64px; top: 4px; width: 38px; text-align: right; font-family: var(--serif); font-weight: 700; font-size: 18px; }
-.tl.same .ag { visibility: hidden; }
+/* 人生纪录：单独滚动的卡片，按年分组，年份标题吸顶 */
+.tl-card { position: relative; display: flex; flex-direction: column; min-height: 0; padding: 14px 0 0; }
+.tl-card > .sheet-title { margin: 0; padding: 0 18px 10px; border-bottom: 1px solid var(--line); }
+.tl-scroll { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; overflow-anchor: none; padding: 0 18px 16px; }
+.yr-h { position: sticky; top: 0; z-index: 1; display: flex; align-items: baseline; gap: 8px; padding: 10px 0 6px; background: var(--card); border-bottom: 1px dashed var(--line); }
+.yr-h b { font-family: var(--serif); font-size: 18px; }
+.yr-h small { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.yr-prog { margin-left: auto; align-self: center; width: 96px; height: 3px; background: var(--line); }
+.yr-prog u { display: block; height: 100%; background: var(--seal); }
+.timeline { position: relative; padding: 4px 0 6px 22px; }
+.timeline::before { content: ''; position: absolute; left: 7px; top: 10px; bottom: 8px; width: 2px; background: var(--rule); }
+.tl { position: relative; padding: 5px 0 7px; animation: fadein .5s; }
+.tl::before { content: ''; position: absolute; left: -19px; top: 12px; width: 9px; height: 9px; border-radius: 50%; background: var(--card); border: 2px solid var(--rule); }
 .tl p { margin: 0; }
 .tl .f { display: block; font-size: 12px; color: var(--muted); margin-top: 2px; }
 .tl.good::before { border-color: var(--good); background: var(--good); }
@@ -166,7 +172,21 @@ table.cmp th { font-weight: 500; font-family: var(--form); color: var(--muted); 
 .tl.note p { font-family: var(--form); color: var(--muted); }
 .tl.death p { font-family: var(--serif); font-weight: 700; font-size: 17px; color: var(--seal); }
 .tl.death::before { background: var(--seal); border-color: var(--seal); }
+.tl-latest { position: absolute; z-index: 2; top: 52px; left: 50%; transform: translateX(-50%); font: 13px var(--sans); color: var(--paper); background: var(--ink); border: 0; border-radius: 999px; padding: 5px 14px; cursor: pointer; box-shadow: 0 4px 14px rgba(30, 20, 8, .25); }
 @keyframes fadein { from { opacity: 0; transform: translateY(-4px); } }
+
+/* 一生页面：电脑上页头和播放条固定，左右两栏各自滚动，整页不再变长 */
+.life-app { display: flex; flex-direction: column; height: 100vh; height: 100dvh; }
+.life-app .lhead { position: static; flex: none; }
+.life-app .lbody { flex: 1; min-height: 0; width: 100%; padding: 16px 18px; align-items: stretch; grid-template-rows: minmax(0, 1fr); }
+.life-app .col-time { display: flex; flex-direction: column; gap: 16px; min-height: 0; }
+.life-app .col-time .tl-card { flex: 1; }
+.life-app .col-side { min-height: 0; overflow-y: auto; overscroll-behavior: contain; align-content: start; padding-right: 4px; }
+.life-app .dock { position: static; flex: none; }
+.who { flex-direction: column; align-items: flex-start; gap: 2px; }
+.who-1 { display: flex; gap: 12px; align-items: baseline; flex-wrap: wrap; }
+.who-2 { display: flex; gap: 4px 8px; align-items: center; flex-wrap: wrap; }
+.who-2 > * { white-space: nowrap; }
 
 /* 侧栏：体检表、家庭、证件夹 */
 .vt { display: grid; grid-template-columns: 3.2em 1fr 2.2em; gap: 8px; align-items: center; font-size: 13px; margin: 3px 0; }
@@ -269,6 +289,12 @@ table.cmp th { font-weight: 500; font-family: var(--form); color: var(--muted); 
 
 @media (max-width: 900px) {
   .lbody { grid-template-columns: 1fr; padding: 12px 12px 140px; }
+  .life-app { display: block; height: auto; }
+  .life-app .lhead { position: sticky; }
+  .life-app .lbody { padding-bottom: 140px; grid-template-rows: none; }
+  .life-app .col-side { overflow: visible; }
+  .life-app .col-time .tl-card { flex: none; height: 62vh; height: 62dvh; }
+  .life-app .dock { position: fixed; }
   .docs { grid-auto-flow: column; grid-auto-columns: minmax(220px, 70%); overflow-x: auto; padding-bottom: 6px; align-items: start; }
   .home-grid, .notes3 { grid-template-columns: 1fr; }
 }
@@ -284,9 +310,6 @@ table.cmp th { font-weight: 500; font-family: var(--form); color: var(--muted); 
   .who b { font-size: 18px; }
   .agebig b { font-size: 34px; }
   .agebig small { display: none; }
-  .timeline { padding-left: 50px; }
-  .timeline::before { left: 36px; }
-  .tl .ag { left: -50px; width: 30px; font-size: 16px; }
   .dock-row { padding: 8px 10px; gap: 8px; }
   .dbtn.ghost { margin-left: 0; }
   .zy-row { grid-template-columns: 1fr; }
