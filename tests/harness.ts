@@ -5,17 +5,17 @@ import { createHash } from 'node:crypto';
 export const HEADLESS_SEEDS = Array.from({ length: 200 }, (_, i) => (1000 + i * 7919) | 0);
 export const MAIN_SEEDS = Array.from({ length: 20 }, (_, i) => (424242 + i * 104729) | 0);
 
-const stable = v => {
+const stable = (v: any): string => {
   if (Array.isArray(v)) return '[' + v.map(stable).join(',') + ']';
   if (v && typeof v === 'object') return '{' + Object.keys(v).sort().filter(k => v[k] !== undefined && typeof v[k] !== 'function').map(k => JSON.stringify(k) + ':' + stable(v[k])).join(',') + '}';
   return JSON.stringify(v) ?? 'null';
 };
-const hash = o => createHash('sha256').update(stable(o)).digest('hex').slice(0, 16);
-const brief = L => ({ name: L.name, born: L.born, age: L.age, cause: L.death && L.death.cause, edu: L.edu, money: Math.round(L.money) });
+const hash = (o: any) => createHash('sha256').update(stable(o)).digest('hex').slice(0, 16);
+const brief = (L: any) => ({ name: L.name, born: L.born, age: L.age, cause: L.death && L.death.cause, edu: L.edu, money: Math.round(L.money) });
 
 // api: { birth, runHeadlessYear, newLife, tick, resolveDec, autoPick, getS }
-export function runAll(api) {
-  const out = { headless: {}, main: {} };
+export function runAll(api: any) {
+  const out: { headless: Record<string, any>; main: Record<string, any> } = { headless: {}, main: {} };
   for (const seed of HEADLESS_SEEDS) {
     api.birth(seed, { headless: true });
     const L = api.getS();

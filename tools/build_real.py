@@ -1,4 +1,4 @@
-"""把 research/*.json 里核实过的数据整理成游戏用的 js/real.js。
+"""把 research/*.json 里核实过的数据整理成游戏用的 src/engine/real.generated.ts。
 运行：python3 -I tools/build_real.py （在项目根目录）"""
 import json, os, sys
 
@@ -183,18 +183,10 @@ for pid, v in pop['provinces'].items():
     pe = v['births_2024'].get('pop_end_2024_wan')
     if pe: prov.setdefault(pid, {})['pop'] = pe
 
-js = '// 由 tools/build_real.py 根据 research/*.json 生成，请勿手改。\n'
+ts = '// 由 tools/build_real.py 根据 research/*.json 生成，请勿手改。\n// 覆盖到 src/engine/data.ts 的估计值上（见 data.ts 末尾）。\n'
 for k, v in out.items():
-    js += f'const {k} = {json.dumps(v, ensure_ascii=False)};\n'
-js += """
-// 用核实过的数据覆盖 data.js 里的估计值
-for (const id in PROV_REAL) Object.assign(PBY[id], PROV_REAL[id]);
-for (const c in BIG_REAL) BIG[c] = Object.assign(BIG[c] || {}, BIG_REAL[c]);
-BIRTH_TOTAL = PROVS.reduce((t, p) => t + p.b, 0);
-Object.assign(NATION, NATION_REAL);
-for (const id in PBY) PBY[id].ek = GK_EK[id] || 1;
-// 把地级市加进各省的城市名单（省会保持在第一位）
-for (const c in CITY) { const p = PBY[CITY[c].p]; if (p && !p.cities.includes(c)) p.cities.push(c); }
-"""
-open(os.path.join(ROOT, 'js', 'real.js'), 'w', encoding='utf-8').write(js)
-print('wrote js/real.js', {k: (len(v) if isinstance(v, (list, dict)) else v) for k, v in out.items()})
+    ts += f'export const {k}: any = {json.dumps(v, ensure_ascii=False)};\n'
+dst = os.path.join(ROOT, 'src', 'engine', 'real.generated.ts')
+os.makedirs(os.path.dirname(dst), exist_ok=True)
+open(dst, 'w', encoding='utf-8').write(ts)
+print('wrote src/engine/real.generated.ts', {k: (len(v) if isinstance(v, (list, dict)) else v) for k, v in out.items()})
