@@ -152,6 +152,11 @@ export const game = {
   },
 };
 
+// ===== 每一帧都要更新的东西（进度条）=====
+// 界面每 RENDER_MS 才重绘一次，进度条要是跟着重绘就会一格一格地跳；所以它们直接挂在主循环上，每帧改一次样式
+const frameFns = new Set<() => void>();
+export function onFrame(f: () => void) { frameFns.add(f); return () => { frameFns.delete(f); }; }
+
 // ===== 主循环 =====
 let last = 0;
 function loop(ts: number) {
@@ -167,6 +172,7 @@ function loop(ts: number) {
     else if (S.phase !== 'life') { emit(); game.finish(); } // tick 里离世了
     else if (ts - lastEmit > RENDER_MS) emit();
   }
+  for (const f of frameFns) f();
   requestAnimationFrame(loop);
 }
 let started = false;

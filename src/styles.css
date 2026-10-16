@@ -165,8 +165,8 @@ table.cmp th { font-weight: 500; font-family: var(--form); color: var(--muted); 
 .yr-h { position: sticky; top: 0; z-index: 1; display: flex; align-items: baseline; gap: 8px; padding: 10px 0 6px; background: var(--card); border-bottom: 1px dashed var(--line); }
 .yr-h b { font-family: var(--serif); font-size: 18px; }
 .yr-h small { font-family: var(--mono); font-size: 12px; color: var(--muted); }
-.yr-prog { margin-left: auto; align-self: center; width: 96px; height: 3px; background: var(--line); }
-.yr-prog u { display: block; height: 100%; background: var(--seal); }
+.yr-prog { display: block; margin-left: auto; align-self: center; width: 96px; height: 3px; background: var(--line); overflow: hidden; }
+.yr-prog i { display: block; height: 100%; background: var(--seal); transform-origin: left; transform: scaleX(0); will-change: transform; }
 .timeline { position: relative; padding: 4px 0 6px 22px; }
 .timeline::before { content: ''; position: absolute; left: 7px; top: 10px; bottom: 8px; width: 2px; background: var(--rule); }
 .tl { position: relative; padding: 5px 0 7px; }
@@ -252,8 +252,8 @@ table.cmp th { font-weight: 500; font-family: var(--form); color: var(--muted); 
 
 /* 底部播放条 */
 .dock { position: fixed; left: 0; right: 0; bottom: 0; z-index: 10; background: var(--card); border-top: 2px solid var(--ink); box-shadow: 0 -6px 20px rgba(40, 25, 5, .08); }
-.dock-prog { height: 3px; background: var(--line); }
-.dock-prog i { display: block; height: 100%; width: 0; background: var(--seal); }
+.dock-prog { display: block; height: 3px; background: var(--line); overflow: hidden; }
+.dock-prog i { display: block; height: 100%; background: var(--seal); transform-origin: left; transform: scaleX(0); will-change: transform; }
 .dock-row { max-width: 1240px; margin: 0 auto; padding: 10px 18px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
 .dbtn { font: inherit; font-size: 14px; color: var(--ink); background: var(--paper); border: 1px solid var(--rule); border-radius: 3px; padding: 6px 12px; cursor: pointer; min-width: 44px; }
 .dbtn:hover { border-color: var(--ink); }

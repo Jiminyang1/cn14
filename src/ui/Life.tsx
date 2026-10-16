@@ -4,6 +4,7 @@ import { EDU_LV, FOCUS, S, carer, focusList, placeName, statusLabel, type LogEnt
 import { SPEEDS, game } from '../game/controller';
 import './day.css';
 import { Modal } from './Modal';
+import { YearProgress } from './Progress';
 import { RunId } from './RunId';
 import { Companions, Curve, Docs, FamilyCards, Vitals } from './Sidebar';
 import { fileNo, sexW } from './util';
@@ -84,7 +85,7 @@ function Timeline() {
           <div className="yr" key={y.a}>
             <div className="yr-h">
               <b>{y.a}岁</b><small>{S.birthYear + y.a}年</small>
-              {y.a === S.age && S.phase === 'life' && <i className="yr-prog" title="这一年过了多少"><u style={{ width: (S.t * 100).toFixed(1) + '%' }} /></i>}
+              {y.a === S.age && S.phase === 'life' && <YearProgress className="yr-prog" title="这一年过了多少" />}
             </div>
             <div className="timeline">{y.items.map(([e, k]) => <Entry key={k} e={e} anim={k > initial.current} />)}</div>
           </div>
@@ -129,7 +130,7 @@ function SideTabs() {
 function Dock() {
   return (
     <nav className="dock">
-      <div className="dock-prog"><i style={{ width: (S.t * 100).toFixed(1) + '%' }} /></div>
+      <YearProgress className="dock-prog" />
       <div className="dock-row">
         <button className="dbtn" title="暂停/继续" onClick={() => game.togglePause()}>{game.paused ? '▶' : '❚❚'}</button>
         <div className="seg sm">{SPEEDS.map(v => <button key={v} className={game.speed === v ? 'on' : ''} onClick={() => game.setSpeed(v)}>{v}×</button>)}</div>
