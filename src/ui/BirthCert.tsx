@@ -1,6 +1,7 @@
 // 出生登记表：出生地、家境、父母、预期寿命，以及同一秒建档的另外四个人。
 import { BIRTH_TOTAL, LT, PBY, S, famIncome, leOf, placeName, wan } from '../engine';
 import { game } from '../game/controller';
+import { Photo } from './Photo';
 import { Ib } from './TipLayer';
 import { QW, dots, fileNo, sexW } from './util';
 
@@ -20,6 +21,7 @@ export function BirthCert() {
         <h2 className="form-title">出生登记表</h2>
         <div className="nm">{S.name}</div>
         <p>{S.log[S.log.length - 1].t}</p>
+        <Photo id="birth" />
         <div className="ftable">
           <Cell k="性别" v={sexW(S.sex)} /><Cell k="民族" v={S.eth} /><Cell k="户籍" v={S.rural ? '农村' : '城镇'} />
           <Cell k="出生地" v={placeName()} wide />

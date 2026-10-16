@@ -325,3 +325,19 @@ table.cmp th { font-weight: 500; font-family: var(--form); color: var(--muted); 
 /* 局 ID：点一下复制 */
 .runid { font: 11.5px var(--mono); color: var(--muted); background: none; border: 1px dashed var(--line); border-radius: 3px; padding: 0 6px; cursor: pointer; }
 .runid:hover { color: var(--ink); border-color: var(--rule); }
+
+/* ===== 像素照片：白边、略歪，夹在表格上 ===== */
+.pix-photo { position: relative; width: min(100%, 384px); margin: 2px auto 14px; padding: 6px 6px 18px; background: #fbf8f1; border: 1px solid var(--line); box-shadow: 0 3px 10px rgba(60, 40, 10, .18); transform: rotate(-1.2deg); }
+.pix-photo canvas { display: block; width: 100%; aspect-ratio: 96 / 54; image-rendering: pixelated; }
+.pix-date { position: absolute; right: 14px; bottom: 24px; font: 700 11px/1 var(--mono); letter-spacing: .08em; color: #ff9a3c; text-shadow: 0 0 2px rgba(255, 120, 30, .7); pointer-events: none; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .pix-photo { background: #e8dfcc; filter: brightness(.88); } }
+:root[data-theme="dark"] .pix-photo { background: #e8dfcc; filter: brightness(.88); }
+/* 开发用的插画预览页（/?pixel） */
+.pix-gallery .seg { margin: 4px 0 18px; }
+.pix-row { border-top: 1px solid var(--line); padding: 14px 0; }
+.pix-row-body { display: grid; grid-template-columns: minmax(0, 384px) 1fr; gap: 18px; align-items: start; }
+.pix-row-body .pix-photo { margin: 0; transform: none; padding-bottom: 6px; }
+.pix-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+.pix-strip canvas { display: block; width: 100%; image-rendering: pixelated; }
+.pix-strip small { font: 11px var(--mono); color: var(--muted); }
+@media (max-width: 760px) { .pix-row-body { grid-template-columns: 1fr; } }

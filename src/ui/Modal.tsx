@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { S, TIER_N, majorP, majorsOf, type Decision, type Pending } from '../engine';
 import { game } from '../game/controller';
+import { Photo, decScene } from './Photo';
 
 const STAMP_MS = 420;            // 盖章动画
 const AUTO_SHOW_MS = 900;        // 自动抉择：先停一下，再标出选项
@@ -118,5 +119,6 @@ export function Modal() {
   const body = P.type === 'ref' ? <Reflect q={P.q} />
     : P.d.form === 'zhiyuan' && !S.auto ? <Zhiyuan P={P} />
     : <DecisionSheet P={P} />;
-  return <div className="modal"><div className="sheet form-sheet" key={P.type === 'dec' ? P.id + S.age : 'ref' + S.age}>{body}</div></div>;
+  const scene = decScene(P);
+  return <div className="modal"><div className="sheet form-sheet" key={P.type === 'dec' ? P.id + S.age : 'ref' + S.age}>{scene && <Photo {...scene} />}{body}</div></div>;
 }
