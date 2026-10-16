@@ -1,7 +1,7 @@
 // 首页：档案袋封面、建档申请表、出生地分布、过过的人生。
 import { useEffect, useMemo, useState } from 'react';
 import { BIRTH_TOTAL, NATION, PROVS } from '../engine';
-import { YEAR_SEC as GAME_YEAR_SEC, game, hasSave } from '../game/controller';
+import { game, hasSave } from '../game/controller';
 import { loadPast } from '../game/storage';
 
 const T0 = performance.now();
@@ -64,7 +64,7 @@ export function Home() {
           <div className="frow">
             <label>节奏</label>
             <div>
-              <p className="hint" style={{ marginTop: 0 }}>一年约 {GAME_YEAR_SEC} 秒，活到平均寿命大约 {game.pref.len} 分钟。随时可以暂停、加速，或者快进到下一件大事；关掉页面会保存在这个浏览器里。</p>
+              <p className="hint" style={{ marginTop: 0 }}>活到平均寿命大约 1 小时，一年约 42–52 秒（按出生地的平均寿命换算，平均 46 秒）。随时可以暂停、加速，或者快进到下一件大事；关掉页面会保存在这个浏览器里。</p>
             </div>
           </div>
           <div className="apply-actions">

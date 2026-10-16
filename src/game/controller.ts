@@ -2,16 +2,18 @@
 // 引擎直接修改当前人生对象 S，所以 React 组件通过 useGame() 订阅一个版本号，版本号变了就重新读 S。
 // 会影响模拟结果的操作（抉择、改重心、开关自动抉择）一律先记进局日志，再通过 applyInput 生效，这样每一局都能精确重放。
 import { useSyncExternalStore } from 'react';
-import { CAUSE, S, autoPick, newLife, placeName, setS, tick, type Pending } from '../engine';
+import { CAUSE, S, autoPick, leOf, newLife, placeName, setS, tick, type Life, type Pending } from '../engine';
 import { sink } from './devsink';
 import { applyInput } from './replay';
 import { newRun, pushEvent, runId, type Input, type RunLog } from './runlog';
 import { clearSave, keepRun, loadPast, loadSave, savePast, writeSave } from './storage';
 
 export type Screen = 'home' | 'birth' | 'life' | 'end';
-// 节奏：1× 时一年 30 秒（按平均寿命约 40 分钟，不算做抉择的时间）。快不快由倍速和快进决定，不再让玩家开局选
-export const YEAR_SEC = 30;
-export const SPEEDS = [1, 2, 4, 8];
+// 节奏：1× 时活到出生地的平均寿命约 1 小时（不算做抉择的时间），一年的秒数按平均寿命换算，中国在 42–52 秒之间、平均 46 秒。
+// 小时候也不自动加快；想快就用倍速和快进
+export const LIFE_MIN = 60;
+export const yearSecOf = (L: Life) => LIFE_MIN * 60 / leOf(L.born, L.sex, L.rural);
+export const SPEEDS = [1, 2, 4, 8, 16];
 export type FF = false | 'big' | 'dec';
 // 「下一件大事」：遇到这些类型的记录就停（日常、里程碑不算）
 const BIG_KINDS = new Set(['ev', 'good', 'bad', 'loss', 'choice', 'death']);
@@ -48,11 +50,11 @@ const here = () => ({ a: S.age, t: S.t });
 
 export const game = {
   screen: 'home' as Screen,
-  pref: { len: Math.round(80 * YEAR_SEC / 60) }, // 活到平均寿命大约几分钟（出生登记表上显示）
+  pref: { len: LIFE_MIN }, // 活到平均寿命大约几分钟（出生登记表上显示）
   speed: 1,
   paused: false,
   ff: false as FF,     // 快进：到下一件大事 / 到下一个抉择
-  yearSec: YEAR_SEC,   // 一年对应多少秒
+  yearSec: 45,         // 一年对应多少秒（出生时按平均寿命算）
   ended: false,        // 已经进入结局流程
   get run() { return run; },
 
@@ -62,9 +64,9 @@ export const game = {
     const seed = (Date.now() ^ Math.floor(Math.random() * 2 ** 31)) | 0;
     run = newRun(seed, VERSION);
     engine('newLife', () => newLife(seed));
-    this.yearSec = YEAR_SEC;
+    this.yearSec = yearSecOf(S);
     this.speed = 1; S.auto = false;
-    event('start', { yearSec: YEAR_SEC, ua: navigator.userAgent });
+    event('start', { yearSec: this.yearSec, ua: navigator.userAgent });
     this.show('birth');
   },
   startLife() {
@@ -77,7 +79,7 @@ export const game = {
     setS(sv.life);
     run = sv.run || newRun(sv.life.seed, VERSION, { id: runId(sv.life.seed), incomplete: true });
     lastRs = S.rs;
-    this.speed = SPEEDS.includes(sv.ui.speed) ? sv.ui.speed : SPEEDS[SPEEDS.length - 1]; this.yearSec = YEAR_SEC; // 旧存档里的一年长度不再沿用
+    this.speed = SPEEDS.includes(sv.ui.speed) ? sv.ui.speed : SPEEDS[SPEEDS.length - 1]; this.yearSec = yearSecOf(S); // 旧存档里的一年长度不再沿用
     event('resume', { version: VERSION });
     this.startLife();
   },
@@ -156,7 +158,7 @@ function loop(ts: number) {
   const dt = Math.min(0.25, last ? (ts - last) / 1000 : 0);
   last = ts;
   if (game.screen === 'life' && S && S.phase === 'life' && !game.paused && !S.pending) {
-    const sp = game.speed * (S.age < 6 ? 3 : 1) * (game.ff ? 40 : 1);
+    const sp = game.speed * (game.ff ? 40 : 1);
     const age0 = S.age, n0 = S.log.length;
     engine('tick', () => tick(dt * sp / game.yearSec));
     if (game.ff === 'big' && S.log.slice(0, S.log.length - n0).some(e => BIG_KINDS.has(e.k))) { game.ff = false; emit(); }

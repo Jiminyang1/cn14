@@ -19,7 +19,7 @@ function Header() {
         <b>{S.name}</b>
         <span className="small muted">{sexW(S.sex)} · {S.eth} · 现居{placeName(S.loc)} · {study}{status && !S.school && S.age >= 16 ? ' · ' + status.split(' · ')[0] : ''}</span>
       </div>
-      <div className="agebig"><b>{S.age}</b><span>岁</span><small>{S.birthYear + S.age}年</small></div>
+      <div className="agebig"><b>{S.age}</b><span>岁</span><small>{S.birthYear + S.age}年 · 1年≈{Math.round(game.yearSec)}秒</small></div>
     </header>
   );
 }
@@ -29,7 +29,7 @@ function FocusPlan() {
   if (!l.length) return (
     <div className="sheet plan">
       <h4>本年度计划</h4>
-      <p className="small muted" style={{ margin: 0 }}>还是个孩子，正由{carer()}带着长大。六岁以后，可以决定每一年把时间花在哪里。这段时间会自动加快。</p>
+      <p className="small muted" style={{ margin: 0 }}>还是个孩子，正由{carer()}带着长大。六岁以后，可以决定每一年把时间花在哪里。这段时间可以用 8× 快进。</p>
     </div>
   );
   return (
