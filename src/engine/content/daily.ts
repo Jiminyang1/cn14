@@ -41,7 +41,8 @@ const city = () => S.loc.city;
 
 /** 从满足条件的几句里挑一句：[条件, 文字] 或直接文字。12 年内写过的句子不再选；都写过了就这次不写 */
 const REPEAT_GAP = 12;
-const key = (t: string) => { let h = 0x811c9dc5; for (let i = 0; i < t.length; i++) { h ^= t.charCodeAt(i); h = Math.imul(h, 16777619); } return '~' + (h >>> 0).toString(36); };
+// 判断重复时忽略数字（岁数、年份），否则「53岁生日……」和「54岁生日……」会被当成两句话
+const key = (s: string) => { const t = s.replace(/\d+/g, "#"); let h = 0x811c9dc5; for (let i = 0; i < t.length; i++) { h ^= t.charCodeAt(i); h = Math.imul(h, 16777619); } return '~' + (h >>> 0).toString(36); };
 function say(...xs: (string | [unknown, string])[]): string | null {
   const ok = xs.filter(x => typeof x === 'string' || x[0]).map(x => typeof x === 'string' ? x : x[1]);
   if (!ok.length) return null;

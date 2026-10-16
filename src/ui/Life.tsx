@@ -25,28 +25,33 @@ function Header() {
   );
 }
 
+// 今年的重心：一排小按钮，下面一行说明当前选的那一项
 function FocusPlan() {
   const l = focusList();
   if (!l.length) return (
     <div className="sheet plan">
-      <h4>本年度计划</h4>
-      <p className="small muted" style={{ margin: 0 }}>还是个孩子，正由{carer()}带着长大。六岁以后，可以决定每一年把时间花在哪里。这段时间可以用 8× 快进。</p>
+      <p className="plan-d"><b className="plan-h">今年的重心</b>还是个孩子，正由{carer()}带着长大。六岁起可以选每一年把时间花在哪里；这段时间可以用 8× 快进。</p>
     </div>
   );
+  const cur = S.focus && FOCUS[S.focus];
   return (
     <div className="sheet plan">
-      <h4>本年度计划 · 这一年主要把时间花在哪里（随时可改，年底按时间比例结算）</h4>
-      <div className="plan-opts">
-        {l.map(k => <button key={k} className={S.focus === k ? 'on' : ''} title={FOCUS[k].d} onClick={() => game.setFocus(k)}>{FOCUS[k].n}<small>{FOCUS[k].d}</small></button>)}
+      <div className="plan-row">
+        <b className="plan-h" title="这一年主要把时间花在哪里。随时可改，年底按时间比例结算">今年的重心</b>
+        <div className="plan-chips" role="radiogroup" aria-label="今年的重心">
+          {l.map(k => <button key={k} role="radio" aria-checked={S.focus === k} className={S.focus === k ? 'on' : ''} title={FOCUS[k].d} onClick={() => game.setFocus(k)}>{FOCUS[k].n}</button>)}
+        </div>
       </div>
+      <p className="plan-d">{cur ? cur.d + '。' : '选一项。'}随时可改，年底按时间比例结算。</p>
     </div>
   );
 }
 
 // 人生纪录：放在一张单独滚动的卡片里，按年分组，最新的在上面，每一年的标题在滚动时吸顶。
 // 记录一旦写下就不再变，所以按对象缓存
-const Entry = memo(({ e }: { e: LogEntry }) => (
-  <div className={`tl ${e.k}`}>
+// 只有之后新出现的记录才淡入；打开页面、读档时已有的几百条直接显示
+const Entry = memo(({ e, anim }: { e: LogEntry; anim: boolean }) => (
+  <div className={`tl ${e.k}${anim ? ' new' : ''}`}>
     <p>{e.t}{e.f && <span className="f">{e.f}</span>}</p>
   </div>
 ));
@@ -55,6 +60,9 @@ function Timeline() {
   const prevH = useRef(0);
   const [away, setAway] = useState(false);
   const log = S.log, n = log.length;
+  // 打开页面时已经有的记录（按序号），它们不淡入
+  const initial = useRef(0);
+  if (!initial.current) initial.current = n;
   // 按年龄分组；用「第几条记录」做 key（从出生往后数），新记录插在最上面时旧的不用重建
   const years: { a: number; items: [LogEntry, number][] }[] = [];
   log.forEach((e, i) => {
@@ -78,12 +86,43 @@ function Timeline() {
               <b>{y.a}岁</b><small>{S.birthYear + y.a}年</small>
               {y.a === S.age && S.phase === 'life' && <i className="yr-prog" title="这一年过了多少"><u style={{ width: (S.t * 100).toFixed(1) + '%' }} /></i>}
             </div>
-            <div className="timeline">{y.items.map(([e, k]) => <Entry key={k} e={e} />)}</div>
+            <div className="timeline">{y.items.map(([e, k]) => <Entry key={k} e={e} anim={k > initial.current} />)}</div>
           </div>
         ))}
       </div>
       {away && <button className="tl-latest" type="button" onClick={() => { if (box.current) box.current.scrollTop = 0; setAway(false); }}>↑ 回到最新</button>}
     </section>
+  );
+}
+
+// 右栏：分成几个标签页，不再从上到下堆一长串
+const TABS = [['now', '概况'], ['docs', '证件'], ['cmp', '对照']] as const;
+type Tab = typeof TABS[number][0];
+const TAB_KEY = 'cn14.tab';
+function SideTabs() {
+  const [tab, setTab] = useState<Tab>(() => { try { return (localStorage.getItem(TAB_KEY) as Tab) || 'now'; } catch { return 'now'; } });
+  const pick = (k: Tab) => { setTab(k); try { localStorage.setItem(TAB_KEY, k); } catch { /* 存不了也没关系 */ } };
+  // 证件标签上提示有几份新证件（上次看证件以后发的）
+  const docsN = (S.docs || []).length;
+  const seen = useRef(docsN);
+  if (tab === 'docs') seen.current = docsN;
+  const fresh = docsN - seen.current;
+  return (
+    <aside className="col-side">
+      <div className="side-tabs" role="tablist">
+        {TABS.map(([k, n]) => (
+          <button key={k} type="button" role="tab" aria-selected={tab === k} className={tab === k ? 'on' : ''} onClick={() => pick(k)}>
+            {n}{k === 'docs' && fresh > 0 && <i className="tab-badge" aria-label={`${fresh} 份新证件`}>{fresh}</i>}
+          </button>
+        ))}
+      </div>
+      {tab === 'now' && <><Vitals /><FamilyCards /></>}
+      {tab === 'docs' && <Docs />}
+      {tab === 'cmp' && <>
+        <div className="sheet"><h4 className="sheet-title">一生曲线 <span className="muted small">幸福 · 健康</span></h4><Curve /></div>
+        <div className="sheet"><h4 className="sheet-title">同一秒建档的人 <span className="muted small">此刻，同样的年纪</span></h4><Companions /></div>
+      </>}
+    </aside>
   );
 }
 
@@ -109,13 +148,7 @@ export function Life() {
     <Header />
     <main className="lbody">
       <section className="col-time"><FocusPlan /><Timeline /></section>
-      <aside className="col-side">
-        <Vitals />
-        <FamilyCards />
-        <Docs />
-        <div className="sheet"><h4 className="sheet-title">一生曲线 <span className="muted small">幸福 · 健康</span></h4><Curve /></div>
-        <div className="sheet"><h4 className="sheet-title">同一秒建档的人 <span className="muted small">此刻，同样的年纪</span></h4><Companions /></div>
-      </aside>
+      <SideTabs />
     </main>
     <Dock />
     <Modal />
