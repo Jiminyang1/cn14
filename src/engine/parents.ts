@@ -3,7 +3,7 @@
 // 也包括父母的收入、退休、住房和出生时家里的积蓄与欠款。
 
 import { EDU_NAT, QUINT } from './real.generated';
-import { EDU_WAGE, JOBS, RESID_PENSION_JOBS, expCurve } from './career';
+import { EDU_WAGE, JOBS, RESID_PENSION_JOBS, expCurve, retireAgeOf } from './career';
 import { FAM_REPAY } from './household';
 import { PBY } from './data';
 import { S } from './state';
@@ -14,8 +14,8 @@ import { rural } from './content/events';
 export function carer() { return S.flags.lb === 'both' ? S.flags.carer : '妈妈'; }
 // 父母能拿出的钱：按家境对应的城乡收入五等份组人均可支配收入（统计年鉴 6-7 / 6-12，2024）× 积蓄年数（估计）
 // ===== 父母的家：收入、养老金、住房 =====
-// 注意：女性的退休年龄这里按养老保险类型分（居民 55、职工 58），而你本人和配偶按是否蓝领分（career.ts 的 retireAgeOf），两者略有出入
-export const parentRetired = (p, male) => p.age >= (male ? 63 : (RESID_PENSION_JOBS.has(p.jk) ? 55 : 58));
+// 退休年龄和你本人、配偶用同一条规则（career.ts 的 retireAgeOf）
+export const parentRetired = (p, male) => p.age >= retireAgeOf(male ? 'M' : 'F', p.jk);
 // 父母的年收入：在职按工资公式（js/parents.js 的 parentWage），退休后领所在省的养老金人均水平
 export function parentIncome(who) {
   const p = S.fam[who], male = who === 'dad';

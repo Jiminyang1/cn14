@@ -57,7 +57,8 @@ export function hire(job, L?) {
 }
 // 18 岁以后还待在农村、却要去城里打工时，换到城市
 export function hireInCity(job) { hire(job, S.loc.kind === 'rural' ? migrantCity() : null); }
-// 法定退休年龄（2025 年起逐步延迟后的目标值）：男 63；女性蓝领 55、其他 58
+// 法定退休年龄（2025 年起逐步延迟后的目标值）：男 63；女工人（这里按蓝领职业）55，其他女性 58。你本人、配偶、父母共用。
+// 简化：只交城乡居民养老保险的人实际是 60 岁起领取，这里也按上面的年龄算
 export const retireAgeOf = (sex: string, jk: string) => sex === 'M' ? 63 : JOBS[jk] && JOBS[jk].blue ? 55 : 58;
 export const retireAge = () => retireAgeOf(S.sex, S.job);
 // 只交城乡居民养老保险的职业（其余领城镇职工养老金）
