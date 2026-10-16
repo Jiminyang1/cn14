@@ -1,6 +1,7 @@
 // 恋爱与婚姻：认识人、在一起、分手、结婚。
 // 对象和你本人、父母用同一套「学历 → 职业 → 工资」逻辑生成（parents.ts），只是学历、年龄、家乡和你相关。
 
+import { fexp } from './fmath';
 import { EDU_LV, SCHOOL_EDU } from './education';
 import { EDU_WAGE, JOBS, isWorking } from './career';
 import { HPF_JOB } from './housing';
@@ -58,7 +59,7 @@ export function makePartner(how) {
   const p: any = {
     name: nm.full, sur: nm.sur, sex, age, edu, home, rural, alive: true, metAt: S.age, how, city: S.loc.city,
     startAge: edu >= 7 ? 25 : edu >= 6 ? 22 : edu >= 5 ? 21 : edu >= 3 ? 18 : 16,
-    k: Math.exp(gauss(0, 0.35)) * EDU_WAGE[edu], // 个人系数：学历溢价 × 个人差异
+    k: fexp(gauss(0, 0.35)) * EDU_WAGE[edu], // 个人系数：学历溢价 × 个人差异
     q: clamp(Math.round(3 + (edu - 4.5) * 0.45 + gauss(0, 1.1)), 1, 5), // 对方家境（估计）
     trait: pick(TRAITS),
   };

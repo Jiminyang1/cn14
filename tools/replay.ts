@@ -41,7 +41,7 @@ try {
 }
 
 // 和记录的状态逐项对比（JSON 往返一次，去掉 undefined）。
-// 浏览器和 Node 的 Math.exp / log / cos 在最后一位上可能不同，所以只差最后几位的数字单独归为「浮点末位差异」，不算不一致
+// 引擎已经只用逐位确定的数学函数（fmath.ts），正常情况下不会出现浮点末位差异；出现的话说明有人在引擎里用了 Math.exp 之类，或者日志来自换函数之前的版本
 const ulps: string[] = [];
 const close = (x: number, y: number) => Math.abs(x - y) <= 1e-9 * Math.max(1, Math.abs(x), Math.abs(y));
 function diff(a: unknown, b: unknown, p: string, out: string[]) {
@@ -55,7 +55,7 @@ function diff(a: unknown, b: unknown, p: string, out: string[]) {
 if (untilAge == null) {
   const out: string[] = [];
   diff(JSON.parse(JSON.stringify(L)), life, '', out);
-  const note = ulps.length ? `（另有 ${ulps.length} 处只差浮点末位，如 ${ulps.slice(0, 3).join('、')}：浏览器和 Node 的数学函数在最后一位上算得不同，不影响剧情）` : '';
+  const note = ulps.length ? `（另有 ${ulps.length} 处只差浮点末位，如 ${ulps.slice(0, 3).join('、')}：可能是日志来自换成 fmath 之前的版本，或者引擎里又用了 Math.exp 之类）` : '';
   console.log(out.length ? `\n✖ 重放结果和记录不一致（重放 ≠ 记录），前 ${out.length} 处：\n  ` + out.join('\n  ') + '\n' + note : `\n✔ 重放结果和记录一致${note}`);
 }
 

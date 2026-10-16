@@ -1,5 +1,6 @@
 // 职业：收入公式、找工作、毕业去向、退休。
 
+import { fexp } from './fmath';
 import { PBY } from './data';
 import { S } from './state';
 import { addDoc, log } from './journal';
@@ -49,7 +50,7 @@ export function hire(job, L?) {
   if (L) moveTo(L);
   S.job = job; S.jobY = 0;
   goIndep();
-  S.wageK = Math.exp(gauss(0, 0.2)) * (0.85 + S.st.kn / 330) * eduWageK();
+  S.wageK = fexp(gauss(0, 0.2)) * (0.85 + S.st.kn / 330) * eduWageK();
   if (JOBS[job] && (JOBS[job].stable || JOBS[job].priv)) S.flags.empIns = 1;
   hpfStart(job);
   S.jobs.push({ job, age: S.age, city: S.loc.city });

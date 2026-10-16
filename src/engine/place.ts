@@ -1,4 +1,5 @@
 // 地点：地名、当地收入、消费、房价，搬家与外出打工的去向。
+import { fpow } from './fmath';
 import type { Loc } from './types';
 
 import { BIG, CROSS_PROV, LEAN_OF, MIGRANT_DEST, MIGRANT_LEAN, PBY, REGION_OF } from './data';
@@ -28,7 +29,7 @@ export function placeInc(L = S.loc) {
 }
 // 工资基数：城市之间的工资差距小于人均可支配收入的差距，按 0.7 的弹性随城市收入变化（估计）
 export const NAT_URBAN_INC = 56502; // 2025 年全国城镇居民人均可支配收入
-export const wageBase = (L = S.loc) => L.kind === 'rural' ? placeInc(L) : NAT_URBAN_INC * Math.pow(placeInc(L) / NAT_URBAN_INC, 0.7);
+export const wageBase = (L = S.loc) => L.kind === 'rural' ? placeInc(L) : NAT_URBAN_INC * fpow(placeInc(L) / NAT_URBAN_INC, 0.7);
 export function placeCons(L = S.loc) {
   const p = PBY[L.p];
   if (!p.consU) return placeInc(L) * 0.7;
@@ -73,7 +74,7 @@ export function pullCity(pid, capK = 1) {
   for (const c of p.cities) {
     const d = CITY[c];
     if (!d || !d.pop) continue;
-    pairs.push([c, d.pop * Math.pow((d.incU || p.incU || 5e4) / 5e4, 3) * (c === p.cities[0] ? capK : 1)]);
+    pairs.push([c, d.pop * fpow((d.incU || p.incU || 5e4) / 5e4, 3) * (c === p.cities[0] ? capK : 1)]);
   }
   return cityLoc(pid, pairs.length ? wpick(pairs) : p.cities[0]);
 }

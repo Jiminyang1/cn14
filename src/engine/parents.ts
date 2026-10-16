@@ -2,6 +2,7 @@
 // 家境（收入五等份第几档）由父母的实际收入反推，而不是先随机定档。
 // 也包括父母的收入、退休、住房和出生时家里的积蓄与欠款。
 
+import { fexp } from './fmath';
 import { EDU_NAT, QUINT } from './real.generated';
 import { EDU_WAGE, JOBS, RESID_PENSION_JOBS, expCurve, retireAgeOf } from './career';
 import { FAM_REPAY } from './household';
@@ -44,10 +45,10 @@ export const DEBT_CAP = { 车贷和消费贷: 15e4, 看病: 40e4, '办婚事、�
 export function famWealthInit() {
   const W = WEALTH0[S.rural ? 'rural' : 'urban'], q = S.q - 1;
   const hhInc = famIncome() * (S.famSize || 3 + S.fam.sibs.length);
-  const save = hhInc * W.save[q] * Math.exp(gauss(0, 1.0)); // 积蓄分布很偏：少数家庭存得很多
+  const save = hhInc * W.save[q] * fexp(gauss(0, 1.0)); // 积蓄分布很偏：少数家庭存得很多
   let debt = 0;
   if (chance(W.debtP[q])) {
-    debt = hhInc * W.debt[q] * Math.exp(gauss(0, 0.6));
+    debt = hhInc * W.debt[q] * fexp(gauss(0, 0.6));
     S.famDebtWhy = pick(W.why);
     // 租房的家庭没有房贷
     if (S.famDebtWhy === '房贷' && (!S.famHouse || S.famHouse.type !== 'own')) S.famDebtWhy = '车贷和消费贷';
@@ -98,7 +99,7 @@ export function makeParent(sex, age, rural, pid) {
   const p: any = { sex, age, edu, alive: true, startAge: edu >= 7 ? 25 : edu >= 6 ? 22 : edu >= 5 ? 21 : edu >= 3 ? 18 : 16 };
   setParentJob(p, pickParentJob(edu, rural, sex === 'F'));
   // 个人系数：学历溢价（与你本人同一张表）× 个人差异；父母一代的差异放大一些，包含工时、奖金、兼职等（估计）
-  p.k = Math.exp(gauss(0, 0.65)) * EDU_WAGE[edu];
+  p.k = fexp(gauss(0, 0.65)) * EDU_WAGE[edu];
   return p;
 }
 // 父母在哪里挣钱：外出务工在打工城市（省会、沿海大城市为主）；农村家庭里有单位工作的，在本地级市的城区；其余在家里所在地

@@ -1,6 +1,7 @@
 // 学历、高考与填报志愿：成绩 → 全省排名 → 冲/稳/保院校 → 选专业、是否服从调剂 → 平行志愿投档 → 录取 / 调剂 / 退档 / 滑档。
 // 参数集中在 GK；各省分数线来自 real.generated.ts。
 
+import { fexp, flog } from './fmath';
 import type { Uni } from './types';
 import { BIG, PBY, PROVS } from './data';
 import { GK_LINES } from './real.generated';
@@ -105,7 +106,7 @@ export const majorsOf = u => MAJOR_LIST.filter(m => !m.need || u.attr === m.need
 export const COLD = ['农学', '哲学', '地质', '护理', '土木工程'];
 
 export const gkLines = pid => GK.lines[pid] || GK.lines.default;
-export const normCdf = z => { const t = 1 / (1 + 0.2316419 * Math.abs(z)); const d = 0.3989423 * Math.exp(-z * z / 2); const p = d * t * (0.3193815 + t * (-0.3565638 + t * (1.781478 + t * (-1.821256 + t * 1.330274)))); return z > 0 ? 1 - p : p; };
+export const normCdf = z => { const t = 1 / (1 + 0.2316419 * Math.abs(z)); const d = 0.3989423 * fexp(-z * z / 2); const p = d * t * (0.3193815 + t * (-0.3565638 + t * (1.781478 + t * (-1.821256 + t * 1.330274)))); return z > 0 ? 1 - p : p; };
 
 // 考生在全省考生里的位置：u = 排在你前面的比例（越小越好）
 export function gkRank() {
@@ -117,10 +118,10 @@ export function gkRank() {
 export function gkScore(u, pid) {
   const L = gkLines(pid), T = L.total;
   const pts = [[0.00002, T * 0.95], [0.002, T * 0.9], [0.03, (T * 0.9 + L.special) / 2], [GK.share.special, L.special], [GK.share.benke, L.benke], [GK.share.zhuanke, L.zhuanke], [0.995, Math.min(L.zhuanke, T * 0.2)]];
-  const x = Math.log(u);
+  const x = flog(u);
   for (let i = 1; i < pts.length; i++) {
     const [u0, s0] = pts[i - 1], [u1, s1] = pts[i];
-    if (u <= u1) { const t = (x - Math.log(u0)) / (Math.log(u1) - Math.log(u0)); return Math.round(s0 + (s1 - s0) * clamp(t, 0, 1)); }
+    if (u <= u1) { const t = (x - flog(u0)) / (flog(u1) - flog(u0)); return Math.round(s0 + (s1 - s0) * clamp(t, 0, 1)); }
   }
   return Math.round(pts[pts.length - 1][1]);
 }
@@ -147,7 +148,7 @@ export function uniThreshold(u, hp) {
   return Math.min(0.99, t);
 }
 // 录取概率：分数线每年有波动，所以离门槛越近越没把握（对数尺度上的宽度 0.3）
-export const admitP = (rank, thr) => 1 / (1 + Math.exp(-Math.log(thr / rank) / 0.3));
+export const admitP = (rank, thr) => 1 / (1 + fexp(-flog(thr / rank) / 0.3));
 
 // 生成 冲 / 稳 / 保 的候选院校
 export function gkCandidates(rank, hp, score) {

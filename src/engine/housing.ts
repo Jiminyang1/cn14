@@ -1,6 +1,7 @@
 // 住房公积金与房贷：账户缴存、商业贷款 / 公积金贷款 / 组合贷、按月等额本息还款、提前还款、断供。
 // 规则参数集中在 LOAN_RULES；来源见 research/housing_loans.json。
 
+import { fexp, fpow } from './fmath';
 import { PBY } from './data';
 import { S } from './state';
 import { addDoc, log } from './journal';
@@ -70,7 +71,7 @@ export function hpfStart(job) {
 export function annualPay(principal, rate, years) {
   if (principal <= 0 || years <= 0) return 0;
   const r = rate / 12, n = years * 12;
-  return principal * r / (1 - Math.pow(1 + r, -n)) * 12;
+  return principal * r / (1 - fpow(1 + r, -n)) * 12;
 }
 export const totalInterest = (principal, rate, years) => annualPay(principal, rate, years) * years - principal;
 
@@ -167,7 +168,7 @@ export function rentDraw(rent) {
 }
 // 房价每年随机波动（没有方向性假设）
 export function houseYear() {
-  if (S.house) S.house.v *= Math.exp(gauss(0, 0.04));
+  if (S.house) S.house.v *= fexp(gauss(0, 0.04));
 }
 export const loanBal = () => (S.loans || []).reduce((t, l) => t + l.bal, 0);
 export const loanPayY = () => (S.loans || []).reduce((t, l) => t + (l.bal > 0 ? l.pay : 0), 0);

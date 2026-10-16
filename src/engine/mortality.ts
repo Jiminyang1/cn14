@@ -1,5 +1,6 @@
 // 生命表与死亡：分省、城乡、性别的逐岁死亡概率，以及死因。
 
+import { fexp, fpow } from './fmath';
 import { BIRTH_TOTAL, PBY, PROVS } from './data';
 import { CAUSE_REAL, Q0_NAT, QX_NAT } from './real.generated';
 import { S } from './state';
@@ -18,7 +19,7 @@ export function natQx(sex) {
   if (QX_NAT[k]) return QX_NAT[k];
   const q = QX_NAT[sex].slice(0, 101);
   // 100 岁以后按最后十年的增长率外推到 119
-  const g = Math.pow(q[100] / q[90], 1 / 10);
+  const g = fpow(q[100] / q[90], 1 / 10);
   for (let x = 101; x < 120; x++) q.push(Math.min(0.95, q[x - 1] * g));
   q.push(1);
   return (QX_NAT[k] = q);
@@ -29,8 +30,8 @@ export function lifeTable(le, q0, sex) {
   const base = natQx(sex);
   const A = 0.0002, b = 0.092;
   const build = base
-    ? m => { const kk = Math.exp(m), q = [q0]; for (let x = 1; x < 120; x++) q.push(Math.min(1, 1 - Math.pow(1 - base[x], kk))); q.push(1); return q; }
-    : m => { const a = Math.exp(m), q = [q0]; for (let x = 1; x < 120; x++) q.push(Math.min(1, 1 - Math.exp(-(A + a * Math.exp(b * x))))); q.push(1); return q; };
+    ? m => { const kk = fexp(m), q = [q0]; for (let x = 1; x < 120; x++) q.push(Math.min(1, 1 - fpow(1 - base[x], kk))); q.push(1); return q; }
+    : m => { const a = fexp(m), q = [q0]; for (let x = 1; x < 120; x++) q.push(Math.min(1, 1 - fexp(-(A + a * fexp(b * x))))); q.push(1); return q; };
   const e0 = q => { let l = 1, e = 0; for (let x = 0; x <= 120; x++) { const l2 = l * (1 - q[x]); e += l2 + (l - l2) * (x === 0 ? 0.15 : 0.5); l = l2; } return e; };
   let lo = base ? -4 : -22, hi = base ? 4 : -3;
   for (let i = 0; i < 60; i++) { const m = (lo + hi) / 2; if (e0(build(m)) > le) lo = m; else hi = m; }
@@ -72,7 +73,7 @@ export const DIAG = {
 };
 export const MORT_K = { M: 1.63, F: 1.76 };
 export function deathProb() {
-  const hm = S.age < 15 ? 1 : clamp(Math.exp((hlExp(S.age) - S.st.hl) / 30), 0.6, 2.2);
+  const hm = S.age < 15 ? 1 : clamp(fexp((hlExp(S.age) - S.st.hl) / 30), 0.6, 2.2);
   // ×MORT_K：抵消“确诊后治愈”带走的那部分死亡，使模拟的平均寿命对上生命表
   return LT().q[Math.min(119, S.age)] * hm * (S.age >= 35 ? MORT_K[S.sex] : 1) * (S.flags.smoke && S.age > 40 ? 1.3 : 1);
 }
