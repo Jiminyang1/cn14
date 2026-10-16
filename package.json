@@ -10,6 +10,7 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "calib": "tsx tools/calib/run.ts",
+    "replay": "tsx tools/replay.ts",
     "data": "python3 -I tools/build_real.py"
   },
   "dependencies": {

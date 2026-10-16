@@ -106,7 +106,7 @@ export const REFLECT = {
 export function planYear() {
   yearStart();
   if (S.phase !== 'life') return;
-  S.queue = []; S.fT = {};
+  S.queue = []; S.fT = {}; S.fStart = 0;
   const n = S.age < 6 ? 2 : 3, used = new Set();
   for (let i = 0; i < n; i++) {
     const id = chooseEvent(used);
@@ -137,17 +137,19 @@ export function chooseEvent(used) {
 }
 
 // ===== 推进 =====
-export function tick(dtYears) {
+// 推进 dtYears 年（一年 = 1）。遇到需要玩家决定的抉择就停下。
+export const tick = (dtYears: number) => tickTo(Math.min(S.t + dtYears, 1));
+// 推进到这一年的进度 t（0–1）。结果只取决于在哪些时刻做了什么（抉择、改重心），与每一步走多远（帧率、倍速）无关，所以可以精确重放
+export function tickTo(t: number) {
   if (!S || S.phase !== 'life' || S.pending) return;
-  const nt = S.t + dtYears;
+  const nt = Math.min(t, 1);
   while (S.queue.length && S.queue[0].at <= nt) {
     const e = S.queue.shift();
     S.t = e.at;
     fire(e);
     if (S.pending || S.phase !== 'life') return;
   }
-  S.t = Math.min(nt, 1);
-  if (S.focus) S.fT[S.focus] = (S.fT[S.focus] || 0) + dtYears;
+  S.t = Math.max(S.t, nt);
   if (S.t >= 1) endYear();
 }
 export function fire(e) {

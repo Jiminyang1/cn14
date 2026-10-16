@@ -22,3 +22,9 @@ export function wpick(pairs) {
   return pairs[pairs.length - 1][0];
 }
 export function gauss(m = 0, sd = 1) { const u = 1 - rnd(), v = rnd(); return m + sd * Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v); }
+
+// 只读地执行 fn：期间消耗的随机数会被退回。界面上算展示用的数字时用它，避免影响这一生的走向
+export function peek<T>(fn: () => T): T {
+  const rs = S.rs;
+  try { return fn(); } finally { S.rs = rs; }
+}

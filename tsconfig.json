@@ -15,5 +15,5 @@
     "strict": false,
     "noImplicitAny": false
   },
-  "include": ["src", "tests", "tools/calib", "vite.config.ts"]
+  "include": ["src", "tests", "tools", "vite.config.ts"]
 }

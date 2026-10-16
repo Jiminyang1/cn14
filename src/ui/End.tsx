@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { CAUSE, EDU_LV, LT, PBY, S, deathText, mainJob, placeName, wan } from '../engine';
 import { game } from '../game/controller';
 import { Cell } from './BirthCert';
+import { RunId } from './RunId';
 import { Curve, DocCard } from './Sidebar';
 import { dots, fileNo } from './util';
 
@@ -57,7 +58,9 @@ export function End() {
       <div className="end-actions">
         <button className="stamp-btn" onClick={() => leave(() => game.bornNow())}>再出生一次</button>
         <button className="btn" onClick={() => leave(() => game.show('home'))}>回到首页</button>
+        <button className="btn" title="局 ID、种子、每一次选择和完整状态，反馈问题时附上" onClick={() => game.exportRun()}>导出这一局的日志</button>
       </div>
+      <p className="small muted" style={{ marginTop: 10 }}><RunId /></p>
     </div>
   );
 }

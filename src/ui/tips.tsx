@@ -4,7 +4,7 @@ import type { ReactNode } from 'react';
 import {
   EDU_LV, EDU_WAGE, FAM_REPAY, FAM_SAVE, JOBS, LE_TARGET, LOAN_RULES, LT, NAT_URBAN_INC, PARENT_DISP, PARENT_K, PBY,
   RESID_PENSION_JOBS, S, WEALTH0, expK, famIncome, hpCounty, leOf, loanPayY, parentIncome, parentRetired, parentWage,
-  parentWorkLoc, partnerHpf, partnerLoc, placeHp, placeInc, placeName, wageBase, wan, workExpK,
+  parentWorkLoc, partnerHpf, partnerLoc, peek, placeHp, placeInc, placeName, wageBase, wan, workExpK,
 } from '../engine';
 import { QW } from './util';
 
@@ -210,5 +210,5 @@ export const TIPS: Record<string, (arg?: string) => Tip> = {
 /** 按 "名字:参数" 构建一张说明卡片 */
 export function buildTip(key: string): Tip | null {
   const [name, arg] = key.split(':');
-  return TIPS[name] && S ? TIPS[name](arg) : null;
+  return TIPS[name] && S ? peek(() => TIPS[name](arg)) : null;
 }

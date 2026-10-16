@@ -1,14 +1,11 @@
 // 弹窗：抉择（含高考填报志愿）与自述。选定后盖一个章，再结算。
 import { useEffect, useRef, useState } from 'react';
-import { S, TIER_N, autoPick, majorP, majorsOf, type Decision, type Pending } from '../engine';
+import { S, TIER_N, majorP, majorsOf, type Decision, type Pending } from '../engine';
 import { game } from '../game/controller';
 
 const STAMP_MS = 420;            // 盖章动画
 const AUTO_SHOW_MS = 900;        // 自动抉择：先停一下，再标出选项
 const AUTO_PICK_MS = 700;        // 标出以后再结算
-
-// 自动抉择时每个弹窗只抽一次（autoPick 会消耗随机数）
-const autoChoice = new WeakMap<Pending, string>();
 
 /** 盖章并结算：返回 [已选的 k, 选择函数] */
 function useChoose(): [string | null, (k: string) => void] {
@@ -37,8 +34,7 @@ function DecisionSheet({ P }: { P: Extract<Pending, { type: 'dec' }> }) {
   const [hint, setHint] = useState<string | null>(null);
   useEffect(() => {
     if (!S.auto) return;
-    if (!autoChoice.has(P)) autoChoice.set(P, autoPick(d));
-    const k = autoChoice.get(P);
+    const k = game.autoChoice(P); // 同一个弹窗只抽一次，抽过会记进局日志
     let t2: number;
     const t1 = window.setTimeout(() => { setHint(k); t2 = window.setTimeout(() => choose(k), AUTO_PICK_MS); }, AUTO_SHOW_MS);
     return () => { clearTimeout(t1); clearTimeout(t2); };

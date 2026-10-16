@@ -23,7 +23,15 @@ export function autoFocus() {
   const w = { study: S.school ? 3 : 1, play: 2, friends: 1.5, sport: 1, work: 3, love: S.age < 32 ? 2 : 0.5, family: S.fam.married ? 2.5 : 1, hobby: 1, rest: S.age > 50 ? 2.5 : 0.8 };
   return wpick(l.map(k => [k, w[k] || 1]));
 }
+// 改重心：先把旧重心从上次改动到现在这一段时间记上
+export function setFocus(k: string) { closeFocus(); S.focus = k; }
+function closeFocus() {
+  const t0 = S.fStart || 0;
+  if (S.focus && S.t > t0) S.fT[S.focus] = (S.fT[S.focus] || 0) + (S.t - t0);
+  S.fStart = S.t;
+}
 export function applyFocus() {
+  closeFocus();
   if (S.headless || S.auto) S.fT = { [autoFocus() || 'none']: 1 };
   let tot = 0; for (const k in S.fT) tot += S.fT[k];
   if (!tot) return;

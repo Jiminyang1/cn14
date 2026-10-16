@@ -3,6 +3,7 @@ import { memo } from 'react';
 import { EDU_LV, FOCUS, S, carer, focusList, placeName, statusLabel, type LogEntry } from '../engine';
 import { SPEEDS, game } from '../game/controller';
 import { Modal } from './Modal';
+import { RunId } from './RunId';
 import { Companions, Curve, Docs, FamilyCards, Vitals } from './Sidebar';
 import { fileNo, sexW } from './util';
 
@@ -13,6 +14,7 @@ function Header() {
     <header className="lhead">
       <div className="who">
         <span className="mono small muted">档案号 {fileNo(S)}</span>
+        <RunId />
         <b>{S.name}</b>
         <span className="small muted">{sexW(S.sex)} · {S.eth} · 现居{placeName(S.loc)} · {study}{status && !S.school && S.age >= 16 ? ' · ' + status.split(' · ')[0] : ''}</span>
       </div>
@@ -61,6 +63,7 @@ function Dock() {
         <div className="seg sm">{SPEEDS.map(v => <button key={v} className={game.speed === v ? 'on' : ''} onClick={() => game.setSpeed(v)}>{v}×</button>)}</div>
         <button className="dbtn wide" onClick={() => game.fastForward()}>快进到下一个抉择</button>
         <label className="toggle"><input type="checkbox" checked={!!S.auto} onChange={e => game.setAuto(e.target.checked)} /> 自动抉择</label>
+        {import.meta.env.DEV && <button className="dbtn" title="下载这一局的日志" onClick={() => game.exportRun()}>日志</button>}
         <button className="dbtn ghost" onClick={() => game.quit()}>离开</button>
       </div>
     </nav>
