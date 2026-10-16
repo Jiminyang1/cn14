@@ -1,0 +1,820 @@
+{
+ "cities": {
+  "南宁": {
+   "prov": "GX",
+   "type": "capital",
+   "pop_wan": {
+    "value": 901.66,
+    "year": 2025,
+    "source": "2025年南宁市国民经济和社会发展统计公报",
+    "url": "https://finance.sina.com.cn/jjxw/2026-05-22/doc-inhyumqm7667712.shtml"
+   },
+   "births": {
+    "value": null,
+    "year": 2025,
+    "source": "2025年南宁市国民经济和社会发展统计公报",
+    "url": "https://finance.sina.com.cn/jjxw/2026-05-22/doc-inhyumqm7667712.shtml",
+    "rate_permille": 6.59,
+    "note": "公报只给出生率"
+   },
+   "inc_urban": {
+    "value": 48375,
+    "year": 2025,
+    "source": "2025年南宁市国民经济和社会发展统计公报",
+    "url": "https://finance.sina.com.cn/jjxw/2026-05-22/doc-inhyumqm7667712.shtml"
+   },
+   "inc_rural": {
+    "value": 23146,
+    "year": 2025,
+    "source": "2025年南宁市国民经济和社会发展统计公报",
+    "url": "https://finance.sina.com.cn/jjxw/2026-05-22/doc-inhyumqm7667712.shtml"
+   },
+   "house_price": {
+    "value": 8489,
+    "type": "listing",
+    "year": 2025,
+    "source": "安居客 2025年城市房价 (二手房挂牌均价)",
+    "url": "https://www.anjuke.com/fangjia/quanguo2025/"
+   }
+  },
+  "柳州": {
+   "prov": "GX",
+   "type": "prefecture",
+   "pop_wan": {
+    "value": 412.58,
+    "year": 2025,
+    "source": "2025年柳州市国民经济和社会发展统计公报",
+    "url": "http://www.liuzhou.gov.cn/sjzt/sjfb/ndtjgb/202605/t20260515_3751736.shtml"
+   },
+   "births": {
+    "value": 2.52,
+    "year": 2025,
+    "source": "2025年柳州市国民经济和社会发展统计公报",
+    "url": "http://www.liuzhou.gov.cn/sjzt/sjfb/ndtjgb/202605/t20260515_3751736.shtml",
+    "unit": "万人",
+    "rate_permille": 6.32,
+    "note": "公报中紧随户籍人口表述，可能为户籍口径"
+   },
+   "inc_urban": {
+    "value": 47689,
+    "year": 2025,
+    "source": "2025年柳州市国民经济和社会发展统计公报",
+    "url": "http://www.liuzhou.gov.cn/sjzt/sjfb/ndtjgb/202605/t20260515_3751736.shtml"
+   },
+   "inc_rural": {
+    "value": 22427,
+    "year": 2025,
+    "source": "2025年柳州市国民经济和社会发展统计公报",
+    "url": "http://www.liuzhou.gov.cn/sjzt/sjfb/ndtjgb/202605/t20260515_3751736.shtml"
+   },
+   "house_price": null
+  },
+  "玉林": {
+   "prov": "GX",
+   "type": "prefecture",
+   "pop_wan": {
+    "value": 576.5,
+    "year": 2025,
+    "source": "2025年玉林市国民经济和社会发展统计公报",
+    "url": "https://tjgb.hongheiku.com/xjtjgb/xj2020/74278.html"
+   },
+   "births": {
+    "value": 5.13,
+    "year": 2025,
+    "source": "2025年玉林市国民经济和社会发展统计公报",
+    "url": "https://tjgb.hongheiku.com/xjtjgb/xj2020/74278.html",
+    "unit": "万人",
+    "rate_permille": 8.87
+   },
+   "inc_urban": {
+    "value": 46978,
+    "year": 2025,
+    "source": "2025年玉林市国民经济和社会发展统计公报",
+    "url": "https://tjgb.hongheiku.com/xjtjgb/xj2020/74278.html"
+   },
+   "inc_rural": {
+    "value": 25354,
+    "year": 2025,
+    "source": "2025年玉林市国民经济和社会发展统计公报",
+    "url": "https://tjgb.hongheiku.com/xjtjgb/xj2020/74278.html"
+   },
+   "house_price": {
+    "value": 4788,
+    "type": "listing",
+    "year": 2025,
+    "source": "安居客 2025年城市房价 (二手房挂牌均价)",
+    "url": "https://www.anjuke.com/fangjia/quanguo2025/"
+   }
+  },
+  "桂林": {
+   "prov": "GX",
+   "type": "prefecture",
+   "pop_wan": {
+    "value": 490.86,
+    "year": 2025,
+    "source": "2025年桂林市国民经济和社会发展统计公报",
+    "url": "https://tjgb.hongheiku.com/xjtjgb/xj2020/74429.html"
+   },
+   "births": {
+    "value": 2.63,
+    "year": 2025,
+    "source": "2025年桂林市国民经济和社会发展统计公报",
+    "url": "https://tjgb.hongheiku.com/xjtjgb/xj2020/74429.html",
+    "unit": "万人",
+    "rate_permille": 5.34
+   },
+   "inc_urban": {
+    "value": 47202,
+    "year": 2025,
+    "source": "2025年桂林市国民经济和社会发展统计公报",
+    "url": "https://tjgb.hongheiku.com/xjtjgb/xj2020/74429.html"
+   },
+   "inc_rural": {
+    "value": 24158,
+    "year": 2025,
+    "source": "2025年桂林市国民经济和社会发展统计公报",
+    "url": "https://tjgb.hongheiku.com/xjtjgb/xj2020/74429.html"
+   },
+   "house_price": null
+  },
+  "海口": {
+   "prov": "HI",
+   "type": "capital",
+   "pop_wan": {
+    "value": 305.63,
+    "year": 2025,
+    "source": "红黑人口库 引《2025年全省常住人口主要数据》(海南省统计局)",
+    "url": "https://www.hongheiku.com/shijirenkou/2082.html"
+   },
+   "births": {
+    "value": null,
+    "year": 2025,
+    "source": "红黑人口库 引《2025年全省常住人口主要数据》(海南省统计局)",
+    "url": "https://www.hongheiku.com/shijirenkou/2082.html",
+    "rate_permille": 7.82
+   },
+   "inc_urban": {
+    "value": 49741,
+    "year": 2025,
+    "source": "2025年海口市国民经济和社会发展统计公报",
+    "url": "https://tjj.haikou.gov.cn/hkstjj/ndgb/202604/141fbc6d4a2844199e971caa28173fe3.shtml",
+    "note": "公报为图片版，人工读取"
+   },
+   "inc_rural": {
+    "value": 24862,
+    "year": 2025,
+    "source": "2025年海口市国民经济和社会发展统计公报",
+    "url": "https://tjj.haikou.gov.cn/hkstjj/ndgb/202604/141fbc6d4a2844199e971caa28173fe3.shtml"
+   },
+   "house_price": {
+    "value": 12661,
+    "type": "listing",
+    "year": 2025,
+    "source": "安居客 2025年城市房价 (二手房挂牌均价)",
+    "url": "https://www.anjuke.com/fangjia/quanguo2025/"
+   }
+  },
+  "重庆": {
+   "prov": "CQ",
+   "type": "capital",
+   "pop_wan": {
+    "value": 3187.26,
+    "year": 2025,
+    "source": "2025年重庆市国民经济和社会发展统计公报",
+    "url": "https://tjgb.hongheiku.com/sjtjgb/68287.html"
+   },
+   "births": {
+    "value": 14.8,
+    "year": 2025,
+    "source": "2025年重庆市国民经济和社会发展统计公报",
+    "url": "https://tjgb.hongheiku.com/sjtjgb/68287.html",
+    "unit": "万人",
+    "rate_permille": 4.64
+   },
+   "inc_urban": {
+    "value": 51854,
+    "year": 2025,
+    "source": "2025年重庆市国民经济和社会发展统计公报",
+    "url": "https://tjgb.hongheiku.com/sjtjgb/68287.html"
+   },
+   "inc_rural": {
+    "value": 23448,
+    "year": 2025,
+    "source": "2025年重庆市国民经济和社会发展统计公报",
+    "url": "https://tjgb.hongheiku.com/sjtjgb/68287.html"
+   },
+   "house_price": {
+    "value": 8386,
+    "type": "listing",
+    "year": 2025,
+    "source": "安居客 2025年城市房价 (二手房挂牌均价)",
+    "url": "https://www.anjuke.com/fangjia/quanguo2025/"
+   },
+   "note": "直辖市；type 记为 capital（市级最高等级）"
+  },
+  "成都": {
+   "prov": "SC",
+   "type": "capital",
+   "pop_wan": {
+    "value": 2153.5,
+    "year": 2025,
+    "source": "2025年成都市国民经济和社会发展统计公报",
+    "url": "https://tjgb.hongheiku.com/djs/68696.html"
+   },
+   "births": null,
+   "inc_urban": {
+    "value": 59509,
+    "year": 2025,
+    "source": "2025年成都市国民经济和社会发展统计公报",
+    "url": "https://tjgb.hongheiku.com/djs/68696.html"
+   },
+   "inc_rural": {
+    "value": 33779,
+    "year": 2025,
+    "source": "2025年成都市国民经济和社会发展统计公报",
+    "url": "https://tjgb.hongheiku.com/djs/68696.html"
+   },
+   "house_price": {
+    "value": 12995,
+    "type": "listing",
+    "year": 2025,
+    "source": "安居客 2025年城市房价 (二手房挂牌均价)",
+    "url": "https://www.anjuke.com/fangjia/quanguo2025/"
+   },
+   "sub_provincial": true
+  },
+  "南充": {
+   "prov": "SC",
+   "type": "prefecture",
+   "pop_wan": {
+    "value": 541.5,
+    "year": 2025,
+    "source": "2025年南充市国民经济和社会发展统计公报",
+    "url": "https://tjgb.hongheiku.com/djs/69619.html"
+   },
+   "births": null,
+   "inc_urban": {
+    "value": 43860,
+    "year": 2025,
+    "source": "2025年南充市国民经济和社会发展统计公报",
+    "url": "https://tjgb.hongheiku.com/djs/69619.html"
+   },
+   "inc_rural": {
+    "value": 21285,
+    "year": 2025,
+    "source": "2025年南充市国民经济和社会发展统计公报",
+    "url": "https://tjgb.hongheiku.com/djs/69619.html"
+   },
+   "house_price": null
+  },
+  "绵阳": {
+   "prov": "SC",
+   "type": "prefecture",
+   "pop_wan": {
+    "value": 492.2,
+    "year": 2024,
+    "source": "2024年绵阳市国民经济和社会发展统计公报",
+    "url": "https://tjgb.hongheiku.com/djs/58262.html",
+    "note": "2025年公报(tjgb.hongheiku.com/xjtjgb/xj2020/77072.html)未列常住人口，用2024年"
+   },
+   "births": {
+    "value": 2.59,
+    "year": 2024,
+    "source": "2024年绵阳市国民经济和社会发展统计公报",
+    "url": "https://tjgb.hongheiku.com/djs/58262.html",
+    "unit": "万人",
+    "rate_permille": null
+   },
+   "inc_urban": {
+    "value": 49666,
+    "year": 2024,
+    "source": "四川法治报《绵阳：“十四五”时期…城乡融合发展》(2025-12)",
+    "url": "https://www.scfzbs.com/dfdt/202512/83173646.html",
+    "note": "报道未写明年份，应为2024年全年；2025年公报未列收入"
+   },
+   "inc_rural": {
+    "value": 23124,
+    "year": 2024,
+    "source": "四川法治报《绵阳：“十四五”时期…城乡融合发展》(2025-12)",
+    "url": "https://www.scfzbs.com/dfdt/202512/83173646.html"
+   },
+   "house_price": null
+  },
+  "达州": {
+   "prov": "SC",
+   "type": "prefecture",
+   "pop_wan": {
+    "value": 523.0,
+    "year": 2025,
+    "source": "2025年达州市国民经济和社会发展统计公报",
+    "url": "https://maptable.com/tjgb/2025/%E5%9B%9B%E5%B7%9D%E7%9C%81/%E8%BE%BE%E5%B7%9E%E5%B8%82/report/si-chuan-sheng-2025-nian-da-zhou-shi-guo-min-jing-ji-he-she-hui-fa-zhan-tong-ji-gong-bao-2"
+   },
+   "births": {
+    "value": 3.53,
+    "year": 2025,
+    "source": "2025年达州市国民经济和社会发展统计公报",
+    "url": "https://maptable.com/tjgb/2025/%E5%9B%9B%E5%B7%9D%E7%9C%81/%E8%BE%BE%E5%B7%9E%E5%B8%82/report/si-chuan-sheng-2025-nian-da-zhou-shi-guo-min-jing-ji-he-she-hui-fa-zhan-tong-ji-gong-bao-2",
+    "unit": "万人",
+    "rate_permille": 6.6,
+    "note": "原文印作“6.60%”，应为‰；2024年仅2.48万，跳升可疑"
+   },
+   "inc_urban": {
+    "value": 44292,
+    "year": 2025,
+    "source": "聚汇数据(gotohui) 达州宏观数据（二手汇总，公报只给增速4.6%）",
+    "url": "https://www.gotohui.com/area/313"
+   },
+   "inc_rural": null,
+   "house_price": null
+  },
+  "贵阳": {
+   "prov": "GZ",
+   "type": "capital",
+   "pop_wan": {
+    "value": 666.89,
+    "year": 2025,
+    "source": "2025年贵阳市国民经济和社会发展统计公报",
+    "url": "https://tjgb.hongheiku.com/djs/70165.html"
+   },
+   "births": {
+    "value": 4.54,
+    "year": 2025,
+    "source": "2025年贵阳市国民经济和社会发展统计公报",
+    "url": "https://tjgb.hongheiku.com/djs/70165.html",
+    "unit": "万人",
+    "rate_permille": 6.85
+   },
+   "inc_urban": {
+    "value": 52778,
+    "year": 2025,
+    "source": "2025年贵阳市国民经济和社会发展统计公报",
+    "url": "https://tjgb.hongheiku.com/djs/70165.html"
+   },
+   "inc_rural": {
+    "value": 26671,
+    "year": 2025,
+    "source": "2025年贵阳市国民经济和社会发展统计公报",
+    "url": "https://tjgb.hongheiku.com/djs/70165.html"
+   },
+   "house_price": null
+  },
+  "遵义": {
+   "prov": "GZ",
+   "type": "prefecture",
+   "pop_wan": {
+    "value": 646.69,
+    "year": 2025,
+    "source": "2025年遵义市国民经济和社会发展统计公报",
+    "url": "https://tjgb.hongheiku.com/djs/70256.html",
+    "note": "公报为图片版，人工读取"
+   },
+   "births": {
+    "value": 6.46,
+    "year": 2025,
+    "source": "2025年遵义市国民经济和社会发展统计公报",
+    "url": "https://tjgb.hongheiku.com/djs/70256.html",
+    "unit": "万人",
+    "rate_permille": 9.97
+   },
+   "inc_urban": {
+    "value": 48227,
+    "year": 2025,
+    "source": "2025年遵义市国民经济和社会发展统计公报",
+    "url": "https://tjgb.hongheiku.com/djs/70256.html"
+   },
+   "inc_rural": {
+    "value": 21252,
+    "year": 2025,
+    "source": "2025年遵义市国民经济和社会发展统计公报",
+    "url": "https://tjgb.hongheiku.com/djs/70256.html"
+   },
+   "house_price": {
+    "value": 5056,
+    "type": "listing",
+    "year": 2025,
+    "source": "安居客 2025年城市房价 (二手房挂牌均价)",
+    "url": "https://www.anjuke.com/fangjia/quanguo2025/"
+   }
+  },
+  "毕节": {
+   "prov": "GZ",
+   "type": "prefecture",
+   "pop_wan": {
+    "value": 660.83,
+    "year": 2025,
+    "source": "2025年毕节市国民经济和社会发展统计公报",
+    "url": "https://tjgb.hongheiku.com/wp-content/uploads/2026/05/1777602943-P020260430581712109592.pdf"
+   },
+   "births": null,
+   "inc_urban": {
+    "value": 43890,
+    "year": 2025,
+    "source": "2025年毕节市国民经济和社会发展统计公报",
+    "url": "https://tjgb.hongheiku.com/wp-content/uploads/2026/05/1777602943-P020260430581712109592.pdf"
+   },
+   "inc_rural": {
+    "value": 16297,
+    "year": 2025,
+    "source": "2025年毕节市国民经济和社会发展统计公报",
+    "url": "https://tjgb.hongheiku.com/wp-content/uploads/2026/05/1777602943-P020260430581712109592.pdf"
+   },
+   "house_price": null
+  },
+  "昆明": {
+   "prov": "YN",
+   "type": "capital",
+   "pop_wan": {
+    "value": 874.4,
+    "year": 2025,
+    "source": "2025年昆明市国民经济和社会发展统计公报",
+    "url": "https://tjgb.hongheiku.com/xjtjgb/xj2020/72206.html"
+   },
+   "births": {
+    "value": null,
+    "year": 2025,
+    "source": "2025年昆明市国民经济和社会发展统计公报",
+    "url": "https://tjgb.hongheiku.com/xjtjgb/xj2020/72206.html",
+    "rate_permille": 7.78
+   },
+   "inc_urban": {
+    "value": 58938,
+    "year": 2025,
+    "source": "2025年昆明市国民经济和社会发展统计公报",
+    "url": "https://tjgb.hongheiku.com/xjtjgb/xj2020/72206.html"
+   },
+   "inc_rural": {
+    "value": 24935,
+    "year": 2025,
+    "source": "2025年昆明市国民经济和社会发展统计公报",
+    "url": "https://tjgb.hongheiku.com/xjtjgb/xj2020/72206.html"
+   },
+   "house_price": {
+    "value": 9573,
+    "type": "listing",
+    "year": 2025,
+    "source": "安居客 2025年城市房价 (二手房挂牌均价)",
+    "url": "https://www.anjuke.com/fangjia/quanguo2025/"
+   }
+  },
+  "曲靖": {
+   "prov": "YN",
+   "type": "prefecture",
+   "pop_wan": {
+    "value": 558.3,
+    "year": 2025,
+    "source": "2025年曲靖市国民经济和社会发展统计公报",
+    "url": "https://tjgb.hongheiku.com/djs/71295.html"
+   },
+   "births": {
+    "value": 4.51,
+    "year": 2025,
+    "source": "2025年曲靖市国民经济和社会发展统计公报",
+    "url": "https://tjgb.hongheiku.com/djs/71295.html",
+    "unit": "万人",
+    "rate_permille": 8.04
+   },
+   "inc_urban": {
+    "value": 48072,
+    "year": 2025,
+    "source": "2025年曲靖市国民经济和社会发展统计公报",
+    "url": "https://tjgb.hongheiku.com/djs/71295.html"
+   },
+   "inc_rural": {
+    "value": 21281,
+    "year": 2025,
+    "source": "2025年曲靖市国民经济和社会发展统计公报",
+    "url": "https://tjgb.hongheiku.com/djs/71295.html"
+   },
+   "house_price": {
+    "value": 4810,
+    "type": "listing",
+    "year": 2025,
+    "source": "安居客 2025年城市房价 (二手房挂牌均价)",
+    "url": "https://www.anjuke.com/fangjia/quanguo2025/"
+   }
+  },
+  "拉萨": {
+   "prov": "XZ",
+   "type": "capital",
+   "pop_wan": {
+    "value": 88.3,
+    "year": 2025,
+    "source": "2025年拉萨市国民经济和社会发展统计公报",
+    "url": "https://tjgb.hongheiku.com/xjtjgb/xj2020/71274.html"
+   },
+   "births": {
+    "value": null,
+    "year": 2025,
+    "source": "2025年拉萨市国民经济和社会发展统计公报",
+    "url": "https://tjgb.hongheiku.com/xjtjgb/xj2020/71274.html",
+    "rate_permille": 11.33
+   },
+   "inc_urban": {
+    "value": 61802,
+    "year": 2025,
+    "source": "中新网《拉萨2025年城镇居民人均可支配收入达6.18万元》",
+    "url": "https://www.chinanews.com.cn/cj/2026/03-06/10582425.shtml"
+   },
+   "inc_rural": {
+    "value": 29189,
+    "year": 2025,
+    "source": "中新网《拉萨2025年城镇居民人均可支配收入达6.18万元》",
+    "url": "https://www.chinanews.com.cn/cj/2026/03-06/10582425.shtml"
+   },
+   "house_price": {
+    "value": 12754,
+    "type": "listing",
+    "year": 2025,
+    "source": "安居客 2025年城市房价 (二手房挂牌均价)",
+    "url": "https://www.anjuke.com/fangjia/quanguo2025/"
+   }
+  },
+  "西安": {
+   "prov": "SN",
+   "type": "capital",
+   "pop_wan": {
+    "value": 1323.63,
+    "year": 2025,
+    "source": "2025年西安市国民经济和社会发展统计公报",
+    "url": "https://www.sohu.com/a/1022801200_121443915"
+   },
+   "births": null,
+   "inc_urban": {
+    "value": 56324,
+    "year": 2025,
+    "source": "2025年西安市国民经济和社会发展统计公报",
+    "url": "https://www.sohu.com/a/1022801200_121443915"
+   },
+   "inc_rural": {
+    "value": 22425,
+    "year": 2025,
+    "source": "2025年西安市国民经济和社会发展统计公报",
+    "url": "https://www.sohu.com/a/1022801200_121443915"
+   },
+   "house_price": {
+    "value": 11306,
+    "type": "listing",
+    "year": 2025,
+    "source": "安居客 2025年城市房价 (二手房挂牌均价)",
+    "url": "https://www.anjuke.com/fangjia/quanguo2025/"
+   },
+   "sub_provincial": true
+  },
+  "咸阳": {
+   "prov": "SN",
+   "type": "prefecture",
+   "pop_wan": {
+    "value": 403.77,
+    "year": 2025,
+    "source": "2025年咸阳市国民经济和社会发展统计公报",
+    "url": "https://tjgb.hongheiku.com/djs/69662.html"
+   },
+   "births": {
+    "value": null,
+    "year": 2025,
+    "source": "2025年咸阳市国民经济和社会发展统计公报",
+    "url": "https://tjgb.hongheiku.com/djs/69662.html",
+    "rate_permille": 4.58
+   },
+   "inc_urban": {
+    "value": 49332,
+    "year": 2025,
+    "source": "2025年咸阳市国民经济和社会发展统计公报",
+    "url": "https://tjgb.hongheiku.com/djs/69662.html"
+   },
+   "inc_rural": {
+    "value": 18849,
+    "year": 2025,
+    "source": "2025年咸阳市国民经济和社会发展统计公报",
+    "url": "https://tjgb.hongheiku.com/djs/69662.html"
+   },
+   "house_price": null
+  },
+  "榆林": {
+   "prov": "SN",
+   "type": "prefecture",
+   "pop_wan": {
+    "value": 360.13,
+    "year": 2025,
+    "source": "2025年榆林市国民经济和社会发展统计公报",
+    "url": "https://tjgb.hongheiku.com/xjtjgb/xj2020/74748.html"
+   },
+   "births": {
+    "value": null,
+    "year": 2025,
+    "source": "2025年榆林市国民经济和社会发展统计公报",
+    "url": "https://tjgb.hongheiku.com/xjtjgb/xj2020/74748.html",
+    "rate_permille": 6.49
+   },
+   "inc_urban": {
+    "value": 47143,
+    "year": 2025,
+    "source": "2025年榆林市国民经济和社会发展统计公报",
+    "url": "https://tjgb.hongheiku.com/xjtjgb/xj2020/74748.html"
+   },
+   "inc_rural": {
+    "value": 20797,
+    "year": 2025,
+    "source": "2025年榆林市国民经济和社会发展统计公报",
+    "url": "https://tjgb.hongheiku.com/xjtjgb/xj2020/74748.html"
+   },
+   "house_price": {
+    "value": 9734,
+    "type": "listing",
+    "year": 2025,
+    "source": "安居客 2025年城市房价 (二手房挂牌均价)",
+    "url": "https://www.anjuke.com/fangjia/quanguo2025/"
+   }
+  },
+  "兰州": {
+   "prov": "GS",
+   "type": "capital",
+   "pop_wan": {
+    "value": 445.14,
+    "year": 2025,
+    "source": "2025年兰州市国民经济和社会发展统计公报",
+    "url": "https://tjgb.hongheiku.com/xjtjgb/xj2020/76063.html"
+   },
+   "births": {
+    "value": 1.93,
+    "year": 2025,
+    "source": "2025年兰州市国民经济和社会发展统计公报",
+    "url": "https://tjgb.hongheiku.com/xjtjgb/xj2020/76063.html",
+    "unit": "万人",
+    "rate_permille": 4.34
+   },
+   "inc_urban": {
+    "value": 52660,
+    "year": 2025,
+    "source": "2025年兰州市国民经济和社会发展统计公报",
+    "url": "https://tjgb.hongheiku.com/xjtjgb/xj2020/76063.html"
+   },
+   "inc_rural": {
+    "value": 21319,
+    "year": 2025,
+    "source": "2025年兰州市国民经济和社会发展统计公报",
+    "url": "https://tjgb.hongheiku.com/xjtjgb/xj2020/76063.html"
+   },
+   "house_price": {
+    "value": 8855,
+    "type": "listing",
+    "year": 2025,
+    "source": "安居客 2025年城市房价 (二手房挂牌均价)",
+    "url": "https://www.anjuke.com/fangjia/quanguo2025/"
+   }
+  },
+  "天水": {
+   "prov": "GS",
+   "type": "prefecture",
+   "pop_wan": {
+    "value": 286.12,
+    "year": 2025,
+    "source": "2025年天水市国民经济和社会发展统计公报",
+    "url": "https://tjgb.hongheiku.com/xjtjgb/xj2020/76046.html"
+   },
+   "births": {
+    "value": 1.86,
+    "year": 2025,
+    "source": "2025年天水市国民经济和社会发展统计公报",
+    "url": "https://tjgb.hongheiku.com/xjtjgb/xj2020/76046.html",
+    "unit": "万人",
+    "rate_permille": 6.48
+   },
+   "inc_urban": {
+    "value": 39422,
+    "year": 2025,
+    "source": "2025年天水市国民经济和社会发展统计公报",
+    "url": "https://tjgb.hongheiku.com/xjtjgb/xj2020/76046.html"
+   },
+   "inc_rural": {
+    "value": 13175,
+    "year": 2025,
+    "source": "2025年天水市国民经济和社会发展统计公报",
+    "url": "https://tjgb.hongheiku.com/xjtjgb/xj2020/76046.html"
+   },
+   "house_price": null
+  },
+  "西宁": {
+   "prov": "QH",
+   "type": "capital",
+   "pop_wan": {
+    "value": 247.56,
+    "year": 2025,
+    "source": "青海省政府网转青海省统计局《2025年末青海人口分布数据》",
+    "url": "http://www.qinghai.gov.cn/zwgk/system/2026/04/18/030097502.shtml"
+   },
+   "births": null,
+   "inc_urban": {
+    "value": 45605,
+    "year": 2025,
+    "source": "青海省政府网《西宁市2025年GDP同比增长3.3%》",
+    "url": "http://www.qinghai.gov.cn/zwgk/system/2026/02/07/030092428.shtml"
+   },
+   "inc_rural": {
+    "value": 19369,
+    "year": 2025,
+    "source": "青海省政府网《西宁市2025年GDP同比增长3.3%》",
+    "url": "http://www.qinghai.gov.cn/zwgk/system/2026/02/07/030092428.shtml"
+   },
+   "house_price": {
+    "value": 8116,
+    "type": "listing",
+    "year": 2025,
+    "source": "安居客 2025年城市房价 (二手房挂牌均价)",
+    "url": "https://www.anjuke.com/fangjia/quanguo2025/"
+   }
+  },
+  "银川": {
+   "prov": "NX",
+   "type": "capital",
+   "pop_wan": {
+    "value": 294.26,
+    "year": 2025,
+    "source": "2025年银川市国民经济和社会发展统计公报",
+    "url": "https://tjgb.hongheiku.com/djs/69491.html"
+   },
+   "births": null,
+   "inc_urban": {
+    "value": 51469,
+    "year": 2025,
+    "source": "2025年银川市国民经济和社会发展统计公报",
+    "url": "https://tjgb.hongheiku.com/djs/69491.html"
+   },
+   "inc_rural": {
+    "value": 23503,
+    "year": 2025,
+    "source": "2025年银川市国民经济和社会发展统计公报",
+    "url": "https://tjgb.hongheiku.com/djs/69491.html"
+   },
+   "house_price": null
+  },
+  "乌鲁木齐": {
+   "prov": "XJ",
+   "type": "capital",
+   "pop_wan": {
+    "value": 415.39,
+    "year": 2025,
+    "source": "2025年乌鲁木齐市国民经济和社会发展统计公报",
+    "url": "https://tjgb.hongheiku.com/djs/69110.html"
+   },
+   "births": {
+    "value": 2.56,
+    "year": 2025,
+    "source": "2025年乌鲁木齐市国民经济和社会发展统计公报",
+    "url": "https://tjgb.hongheiku.com/djs/69110.html",
+    "unit": "万人",
+    "rate_permille": 6.18
+   },
+   "inc_urban": {
+    "value": 54575,
+    "year": 2025,
+    "source": "2025年乌鲁木齐市国民经济和社会发展统计公报",
+    "url": "https://tjgb.hongheiku.com/djs/69110.html"
+   },
+   "inc_rural": {
+    "value": 33181,
+    "year": 2025,
+    "source": "2025年乌鲁木齐市国民经济和社会发展统计公报",
+    "url": "https://tjgb.hongheiku.com/djs/69110.html"
+   },
+   "house_price": {
+    "value": 8252,
+    "type": "listing",
+    "year": 2025,
+    "source": "安居客 2025年城市房价 (二手房挂牌均价)",
+    "url": "https://www.anjuke.com/fangjia/quanguo2025/"
+   }
+  },
+  "喀什": {
+   "prov": "XJ",
+   "type": "prefecture",
+   "pop_wan": null,
+   "births": null,
+   "inc_urban": {
+    "value": 35304,
+    "year": 2025,
+    "source": "2025年喀什地区国民经济和社会发展统计公报",
+    "url": "https://www.kashi.gov.cn/ksdqxzgs/c112198/202604/4eb6af2f3cda49a8baa7df45973b6f21.shtml",
+    "note": "公报为图片版，人工读取"
+   },
+   "inc_rural": {
+    "value": 15494,
+    "year": 2025,
+    "source": "2025年喀什地区国民经济和社会发展统计公报",
+    "url": "https://www.kashi.gov.cn/ksdqxzgs/c112198/202604/4eb6af2f3cda49a8baa7df45973b6f21.shtml"
+   },
+   "house_price": null,
+   "note": "地区"
+  }
+ },
+ "gaps": [
+  "海口: 无出生人数（仅出生率，二手来源）",
+  "成都/南充/毕节/西安/西宁/银川: 无出生数据",
+  "绵阳: 2025年公报无常住人口与收入，已用2024年；房价缺",
+  "达州: 农村居民收入缺（公报仅增速5.2%）；城镇收入来自聚汇数据；房价缺",
+  "喀什: 常住人口缺（公报未列）；出生缺；房价缺",
+  "房价(安居客总榜只列前/后100名，城市页被反爬拦截): 柳州、桂林、南充、绵阳、达州、贵阳、毕节、咸阳、天水、银川、喀什 缺",
+  "柳州: 出生数据可能为户籍口径",
+  "NBS新建住宅均价: 未收集"
+ ]
+}

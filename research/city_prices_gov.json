@@ -1,0 +1,125 @@
+{
+ "cities": {
+  "包头": {
+   "area_wan_m2": 120.8,
+   "value_yi": 82.6,
+   "price": 6838,
+   "scope": "商品房",
+   "year": 2025,
+   "source": "包头市2025年统计公报(红黑统计公报库转载)",
+   "url": "https://tjgb.hongheiku.com/djs/69271.html"
+  },
+  "临沂": {
+   "area_wan_m2": 751.9711,
+   "value_yi": 509.6004,
+   "price": 6777,
+   "scope": "住宅",
+   "year": 2024,
+   "source": "山东统计年鉴2025 表5-10 各市房地产开发投资和销售情况(2024年)",
+   "url": "http://tjj.shandong.gov.cn/tjnj/nj2025/zk/html/05-10.jpg"
+  },
+  "潍坊": {
+   "area_wan_m2": 706.614,
+   "value_yi": 454.6309,
+   "price": 6434,
+   "scope": "住宅",
+   "year": 2024,
+   "source": "山东统计年鉴2025 表5-10 各市房地产开发投资和销售情况(2024年)",
+   "url": "http://tjj.shandong.gov.cn/tjnj/nj2025/zk/html/05-10.jpg"
+  },
+  "菏泽": {
+   "area_wan_m2": 542.9306,
+   "value_yi": 265.8514,
+   "price": 4897,
+   "scope": "住宅",
+   "year": 2024,
+   "source": "山东统计年鉴2025 表5-10 各市房地产开发投资和销售情况(2024年)",
+   "url": "http://tjj.shandong.gov.cn/tjnj/nj2025/zk/html/05-10.jpg"
+  },
+  "烟台": {
+   "area_wan_m2": 652.7,
+   "value_yi": 493.8,
+   "price": 7565,
+   "scope": "住宅",
+   "year": 2025,
+   "source": "烟台市2025年统计公报(红黑统计公报库转载)",
+   "url": "https://tjgb.hongheiku.com/djs/68292.html"
+  },
+  "上饶": {
+   "area_wan_m2": 343.6,
+   "value_yi": 210.6,
+   "price": 6129,
+   "scope": "住宅",
+   "year": 2025,
+   "source": "上饶市2025年统计公报(上饶日报刊载)",
+   "url": "http://paper.srxww.com/pc/content/202604/28/content_31002.html"
+  },
+  "襄阳": {
+   "area_wan_m2": 465.6,
+   "value_yi": 300.5,
+   "price": 6454,
+   "scope": "商品房",
+   "year": 2024,
+   "source": "襄阳市2024年统计公报(红黑统计公报库转载)",
+   "url": "https://tjgb.hongheiku.com/djs/59284.html"
+  },
+  "黄冈": {
+   "area_wan_m2": 394.27,
+   "value_yi": 188.68,
+   "price": 4786,
+   "scope": "商品房",
+   "year": 2025,
+   "source": "黄冈市2025年统计公报(红黑统计公报库转载)",
+   "url": "https://tjgb.hongheiku.com/djs/69489.html"
+  },
+  "岳阳": {
+   "area_wan_m2": 229.75,
+   "value_yi": 102.05,
+   "price": 4442,
+   "scope": "商品房",
+   "year": 2025,
+   "source": "岳阳市2025年统计公报(岳阳市统计局)",
+   "url": "https://tjj.yueyang.gov.cn/22777/22781/content_2380060.html"
+  },
+  "柳州": {
+   "area_wan_m2": 148.55,
+   "value_yi": 93.37,
+   "price": 6285,
+   "scope": "住宅",
+   "year": 2025,
+   "source": "柳州市2025年统计公报(柳州市人民政府)",
+   "url": "http://www.liuzhou.gov.cn/sjzt/sjfb/ndtjgb/202605/t20260515_3751736.shtml"
+  },
+  "喀什": {
+   "area_wan_m2": 144.97,
+   "value_yi": 70.05,
+   "price": 4832,
+   "scope": "住宅",
+   "year": 2025,
+   "source": "喀什地区2025年统计公报 表6(红黑统计公报库转载,页面图片)",
+   "url": "https://tjgb.hongheiku.com/djs/68443.html"
+  }
+ },
+ "gaps": [
+  "保定: 2025/2024公报仅有商品房销售面积(535.7/532.2万㎡),无销售额 https://tjgb.hongheiku.com/xjtjgb/xj2020/73717.html",
+  "运城: 2025/2024公报无商品房销售数据 https://tjgb.hongheiku.com/xjtjgb/xj2020/79133.html",
+  "大同: 2025公报仅销售面积(商品房135.9/住宅131.2万㎡),无销售额 https://tjgb.hongheiku.com/djs/69248.html",
+  "赤峰: 2025公报仅销售面积181万㎡,无销售额 https://tjgb.hongheiku.com/djs/69183.html",
+  "吉林(市): 2025公报(图片)仅销售面积85.6万㎡;吉林统计年鉴无分市房地产表",
+  "徐州: 2025/2024公报无商品房销售数据",
+  "阜阳: 2025/2024公报仅给增速",
+  "芜湖: 2025/2024公报及市统计局年度分析仅给增速",
+  "南阳: 2025/2024公报仅给增速",
+  "商丘: 2025公报仅增速;2024公报仅面积392.64万㎡",
+  "洛阳: 2025/2024公报仅给增速",
+  "宜昌: 2025公报仅面积346.94万㎡;住建局月报仅城区网签面积,无金额",
+  "茂名: 2025公报仅面积(商品房297.61/住宅238.58万㎡);广东年鉴站点不可达",
+  "桂林: 2025/2024公报仅给增速;广西统计局分市销售额表(tjj.gxzf.gov.cn)网络不可达",
+  "南充: 2025公报仅面积428.2万㎡",
+  "绵阳: 2025公报(图片)仅面积325.17万㎡",
+  "达州: 2025公报仅面积190.9万㎡",
+  "毕节: 2025公报(PDF)仅面积307.59万㎡",
+  "咸阳: 2025公报仅面积66.14万㎡",
+  "天水: 2025公报仅面积129.2万㎡;2024公报住宅面积157.5万㎡,均无销售额"
+ ]
+}

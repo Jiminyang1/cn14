@@ -1,0 +1,958 @@
+{
+ "meta": {
+  "compiled": "2026-10-16",
+  "scope": "National life-course statistics for the '14亿分之1' life sim",
+  "notes": [
+   "万 = 10,000. Rates in % unless stated.",
+   "2020 census marriage/fertility tables (5-x, 6-x) are from the 10% long-form sample; use them for ratios, not absolute counts.",
+   "mca.gov.cn was unreachable (DNS failure) from this environment, so all 民政部 figures come from media reprints of MCA bulletins/quarterly data (marked medium).",
+   "The web-search budget ran out before per-province gaokao and drinking data could be searched; see gaps."
+  ]
+ },
+ "education": {
+  "preschool_gross_enrollment_rate": {
+   "value": 92.9,
+   "year": 2025,
+   "source": "教育部《2025年全国教育事业发展统计公报》",
+   "url": "http://www.moe.gov.cn/jyb_sjzl/sjzl_fztjgb/202607/t20260706_1442870.html",
+   "confidence": "high",
+   "unit": "%",
+   "note": "2024: 92.0% (MOE 2024 bulletin, http://www.moe.gov.cn/jyb_sjzl/sjzl_fztjgb/202506/t20250611_1193760.html). MOE definition: 在园幼儿 (any age) / population aged 3-5. 在园幼儿 fell from 3583.99万 (2024) to 3225.52万 (2025) as cohorts shrink.",
+   "intl": [
+    {
+     "value": 93.07,
+     "year": 2021,
+     "source": "UNESCO UIS via World Bank WDI SE.PRE.ENRR (pre-primary GER)",
+     "url": "https://api.worldbank.org/v2/country/CHN/indicator/SE.PRE.ENRR?format=json",
+     "note": "latest UIS year available is 2021"
+    }
+   ]
+  },
+  "upper_secondary_gross_enrollment_rate": {
+   "value": 92.0,
+   "year": 2025,
+   "source": "教育部 2025 公报",
+   "url": "http://www.moe.gov.cn/jyb_sjzl/sjzl_fztjgb/202607/t20260706_1442870.html",
+   "confidence": "high",
+   "unit": "%",
+   "intl": [
+    {
+     "value": 79.39,
+     "year": 2019,
+     "source": "UNESCO UIS via World Bank SE.SEC.ENRR.UP (latest available)",
+     "url": "https://api.worldbank.org/v2/country/CHN/indicator/SE.SEC.ENRR.UP?format=json"
+    }
+   ]
+  },
+  "junior_high_graduates": {
+   "value": 1723.74,
+   "year": 2025,
+   "source": "教育部 2025 公报 (初中阶段毕业生)",
+   "url": "http://www.moe.gov.cn/jyb_sjzl/sjzl_fztjgb/202607/t20260706_1442870.html",
+   "confidence": "high",
+   "unit": "万人",
+   "note": "2024: 1698.24万 (MOE 2024 bulletin)"
+  },
+  "general_high_school_intake": {
+   "value": 1074.93,
+   "year": 2025,
+   "source": "教育部 2025 公报 (普通高中招生)",
+   "url": "http://www.moe.gov.cn/jyb_sjzl/sjzl_fztjgb/202607/t20260706_1442870.html",
+   "confidence": "high",
+   "unit": "万人",
+   "note": "2024: 1036.20万 (MOE 2024). NBS bulletin: 1074.9万 (2025), 1036.2万 (2024)."
+  },
+  "secondary_vocational_intake": {
+   "moe_definition": {
+    "value": 369.93,
+    "year": 2025,
+    "source": "教育部 2025 公报 (中等职业教育招生; excludes 技工学校 run by 人社部门)",
+    "url": "http://www.moe.gov.cn/jyb_sjzl/sjzl_fztjgb/202607/t20260706_1442870.html",
+    "confidence": "high",
+    "unit": "万人",
+    "note": "2024: 418.33万 (MOE 2024). Footnote [2] of the bulletin: excludes 人力资源和社会保障部门管理的技工学校."
+   },
+   "nbs_definition": {
+    "value": 526.5,
+    "year": 2025,
+    "source": "国家统计局《2025年国民经济和社会发展统计公报》(中等职业教育招生, includes 技工学校)",
+    "url": "https://www.stats.gov.cn/sj/zxfb/202602/t20260228_1962662.html",
+    "confidence": "high",
+    "unit": "万人",
+    "note": "2024: 575.4万 (NBS 2024 bulletin, https://www.stats.gov.cn/sj/zxfb/202502/t20250228_1958817.html)"
+   }
+  },
+  "track_split_after_zhongkao": {
+   "share_general_moe_basis": {
+    "value": 74.4,
+    "year": 2025,
+    "source": "Derived: 1074.93 / (1074.93 + 369.93), MOE 2025 bulletin",
+    "url": "http://www.moe.gov.cn/jyb_sjzl/sjzl_fztjgb/202607/t20260706_1442870.html",
+    "confidence": "high",
+    "unit": "% of 高中阶段 intake",
+    "note": "2024: 71.2% (1036.20 / (1036.20+418.33))"
+   },
+   "share_general_nbs_basis": {
+    "value": 67.1,
+    "year": 2025,
+    "source": "Derived: 1074.9 / (1074.9 + 526.5), NBS 2025 bulletin (vocational includes 技工学校)",
+    "url": "https://www.stats.gov.cn/sj/zxfb/202602/t20260228_1962662.html",
+    "confidence": "high",
+    "unit": "% of 高中阶段 intake",
+    "note": "2024: 64.3%"
+   },
+   "per_100_junior_grads_2025": {
+    "value": {
+     "普通高中": 62.4,
+     "中职(MOE)": 21.5,
+     "技工学校等(NBS minus MOE)": 9.1,
+     "not_entering_upper_secondary_or_older_entrants": 7.0
+    },
+    "year": 2025,
+    "source": "Derived from MOE/NBS 2025 intake divided by MOE 初中毕业生 1723.74万",
+    "url": "http://www.moe.gov.cn/jyb_sjzl/sjzl_fztjgb/202607/t20260706_1442870.html",
+    "confidence": "medium",
+    "note": "Approximate: vocational intake includes some older/non-fresh students, so the 'not continuing' remainder is a lower bound."
+   },
+   "policy_note": "普职比大体相当 (roughly 50:50) was the long-standing policy target (e.g. 国务院 2019 职教20条). The 2021 中办/国办 opinion on modern vocational education replaced it with 协调发展, and the 2022 revised 职业教育法 dropped mandatory 分流 wording in favour of 职普协调发展. Parents' anxiety over forced diversion at 中考 remains a public debate. Actual intake today is ~67:33 (NBS basis) to ~74:26 (MOE basis). [Policy history from background knowledge; not re-verified this session: confidence low]"
+  },
+  "gaokao_registrants": {
+   "2024": {
+    "value": 1342,
+    "year": 2024,
+    "source": "人民日报 citing 教育部教育考试院",
+    "url": "https://paper.people.com.cn/rmrb/html/2024-06/08/nw.D110000renmrb_20240608_4-04.htm",
+    "confidence": "high",
+    "unit": "万人"
+   },
+   "2025": {
+    "value": 1335,
+    "year": 2025,
+    "source": "中新网 citing 教育部网站",
+    "url": "https://www.chinanews.com.cn/gn/2025/05-28/10423206.shtml",
+    "confidence": "high",
+    "unit": "万人",
+    "note": "First decline since 2018. Includes 职教高考/技能高考 registrants, not just 普通高考."
+   },
+   "2026": {
+    "value": 1290,
+    "year": 2026,
+    "source": "新华社 citing 教育部",
+    "url": "https://www.news.cn/20260603/8c64a5880000444d9f3ce86864b064e1/c.html",
+    "confidence": "high",
+    "unit": "万人"
+   }
+  },
+  "higher_ed_intake_2025": {
+   "普通本科招生": {
+    "value": 503.71,
+    "year": 2025,
+    "source": "教育部 2025 公报",
+    "url": "http://www.moe.gov.cn/jyb_sjzl/sjzl_fztjgb/202607/t20260706_1442870.html",
+    "confidence": "high",
+    "unit": "万人",
+    "note": "plus 专科起点本科(专升本) 85.42万. 2024: 489.97万 (+87.40万 专升本)"
+   },
+   "职业本科招生": {
+    "value": 15.41,
+    "year": 2025,
+    "source": "教育部 2025 公报",
+    "url": "http://www.moe.gov.cn/jyb_sjzl/sjzl_fztjgb/202607/t20260706_1442870.html",
+    "confidence": "high",
+    "unit": "万人",
+    "note": "plus 专升本 4.66万. 2024: 10.96万"
+   },
+   "高职专科招生": {
+    "value": 551.7,
+    "year": 2025,
+    "source": "教育部 2025 公报",
+    "url": "http://www.moe.gov.cn/jyb_sjzl/sjzl_fztjgb/202607/t20260706_1442870.html",
+    "confidence": "high",
+    "unit": "万人",
+    "note": "plus 五年制高职转入专科 58.74万. 2024: 567.94万 (+60.22万)"
+   },
+   "nbs_total_本专科招生": {
+    "value": 1070.8,
+    "year": 2025,
+    "source": "NBS 2025 bulletin (普通、职业本专科招生)",
+    "url": "https://www.stats.gov.cn/sj/zxfb/202602/t20260228_1962662.html",
+    "confidence": "high",
+    "unit": "万人"
+   },
+   "成人本专科招生": {
+    "value": 308.25,
+    "year": 2025,
+    "source": "教育部 2025 公报",
+    "url": "http://www.moe.gov.cn/jyb_sjzl/sjzl_fztjgb/202607/t20260706_1442870.html",
+    "confidence": "high",
+    "unit": "万人",
+    "note": "plus 网络本专科 148.30万; adult/online routes award degrees later in life"
+   }
+  },
+  "higher_ed_gross_enrollment_rate": {
+   "value": 61.3,
+   "year": 2025,
+   "source": "教育部 2025 公报 (高等教育毛入学率)",
+   "url": "http://www.moe.gov.cn/jyb_sjzl/sjzl_fztjgb/202607/t20260706_1442870.html",
+   "confidence": "high",
+   "unit": "%",
+   "note": "2024: 60.8%",
+   "intl": [
+    {
+     "value": 76.88,
+     "year": 2024,
+     "source": "UNESCO UIS via World Bank WDI SE.TER.ENRR (tertiary GER)",
+     "url": "https://api.worldbank.org/v2/country/CHN/indicator/SE.TER.ENRR?format=json",
+     "note": "UIS 2023: 74.59; 2022: 71.58. UIS counts all ISCED 5-8 enrolments (likely incl. adult/online) against a 5-year age group; MOE uses 18-22 with its own scope. Definitional, not necessarily a data dispute."
+    }
+   ]
+  },
+  "cohort_attainment_estimate": {
+   "value": {
+    "本科_or_higher_pct": "~36-37",
+    "专科_only_pct": "~31",
+    "no_tertiary_via_fulltime_route_pct": "~32-33"
+   },
+   "year": 2025,
+   "source": "Own estimate: 2025 MOE intakes / single-year cohort. Cohort = census 2020 age-13 population 1667.7万 (CENSUS table 3-1; these people turn 18 in 2025).",
+   "url": "https://www.stats.gov.cn/sj/pcsj/rkpc/7rp/zk/html/A0301.xls",
+   "confidence": "low",
+   "note": "Calc: 本科 direct entrants (503.71+15.41)=519.12万 → 31.1% of cohort; + 专升本 90.08万 → 36.5% eventually 本科. 专科 entrants (551.70+58.74)=610.44万 → 36.6%; minus those upgrading via 专升本 → 31.2% 专科-only. Caveats: entrants include 复读/older students; adult and online education (308万+148万 a year) add credentials later; some go abroad. Using the age 13-14 average instead gives 37.1% / 31.7%. Treat as ±3 points."
+  },
+  "postgrad_intake": {
+   "2024": {
+    "value": 135.68,
+    "year": 2024,
+    "source": "教育部 2024 公报 (博士 17.11万, 硕士 118.57万)",
+    "url": "http://www.moe.gov.cn/jyb_sjzl/sjzl_fztjgb/202506/t20250611_1193760.html",
+    "confidence": "high",
+    "unit": "万人"
+   },
+   "2025": {
+    "value": 143.85,
+    "year": 2025,
+    "source": "教育部 2025 公报 (博士 20.16万, 硕士 123.68万)",
+    "url": "http://www.moe.gov.cn/jyb_sjzl/sjzl_fztjgb/202607/t20260706_1442870.html",
+    "confidence": "high",
+    "unit": "万人"
+   },
+   "2026": {
+    "value": null,
+    "year": 2026,
+    "note": "Not yet published (the 2026 bulletin appears ~July 2027)",
+    "confidence": "low"
+   }
+  },
+  "kaoyan_registrants": {
+   "2024": {
+    "value": 438,
+    "year": 2024,
+    "source": "中新网: 2024年全国硕士研究生考试报名人数为438万 (down 36万 from 474万 in 2023)",
+    "url": "https://www.chinanews.com.cn/gn/2023/11-24/10117086.shtml",
+    "confidence": "high",
+    "unit": "万人"
+   },
+   "2025": {
+    "value": 388,
+    "year": 2025,
+    "source": "中国日报网 citing 教育部",
+    "url": "https://cn.chinadaily.com.cn/a/202411/21/WS673ef0b1a310b59111da4c5c.html",
+    "confidence": "high",
+    "unit": "万人"
+   },
+   "2026": {
+    "value": 343,
+    "year": 2026,
+    "source": "中新网 citing 教育部 (exam held 2025-12-20/21)",
+    "url": "https://www.chinanews.com.cn/gn/2025/11-24/10520788.shtml",
+    "confidence": "high",
+    "unit": "万人"
+   },
+   "implied_admission_ratio_2025": {
+    "value": "143.85万 total postgrad intake (incl. 博士, 推免) vs 388万 registrants; roughly 1 in 3 for 硕士",
+    "year": 2025,
+    "source": "Derived",
+    "url": "http://www.moe.gov.cn/jyb_sjzl/sjzl_fztjgb/202607/t20260706_1442870.html",
+    "confidence": "low"
+   }
+  },
+  "college_graduates": {
+   "2024届": {
+    "value": 1179,
+    "year": 2024,
+    "source": "教育部 forecast (Dec 2023), reported by 每日经济新闻",
+    "url": "https://www.nbd.com.cn/articles/2023-12-05/3148015.html",
+    "confidence": "medium",
+    "unit": "万人",
+    "note": "Seen via search summary; the gov.cn item https://www.gov.cn/lianbo/bumen/202312/content_6918995.htm was not opened"
+   },
+   "2025届": {
+    "value": 1222,
+    "year": 2025,
+    "source": "人民日报 citing 教育部/人社部 (forecast)",
+    "url": "https://paper.people.com.cn/rmrb/html/2024-11/15/nw.D110000renmrb_20241115_3-07.htm",
+    "confidence": "high",
+    "unit": "万人",
+    "note": "Actual per MOE 2025 bulletin: 本专科毕业生 1105.10万 + 毕业研究生 116.65万 = 1221.75万, consistent with the forecast."
+   },
+   "2026届": {
+    "value": 1270,
+    "year": 2026,
+    "source": "光明网 citing 教育部 (forecast, Nov 2025)",
+    "url": "https://m.gmw.cn/2025-11/20/content_1304232603.htm",
+    "confidence": "high",
+    "unit": "万人"
+   }
+  },
+  "guokao_civil_service_exam": {
+   "2025年度 (exam Dec 2024)": {
+    "value": {
+     "posts": "3.97万",
+     "passed_review": "341.6万",
+     "ratio": "约86:1"
+    },
+    "year": 2024,
+    "source": "新华网/中国日报",
+    "url": "https://cn.chinadaily.com.cn/a/202412/01/WS674bdbdba310b59111da6685.html",
+    "confidence": "high"
+   },
+   "2026年度 (exam Nov 2025)": {
+    "value": {
+     "posts": "3.81万",
+     "passed_review": "371.8万",
+     "ratio": "约98:1"
+    },
+    "year": 2025,
+    "source": "新华网",
+    "url": "https://www.news.cn/politics/20251130/7da14327e1c24cafbf0af0a287a2f085/c.html",
+    "confidence": "high",
+    "note": "Ratio trend 2023-2026: ~70, 77, 86, 98 :1 (from the same Xinhua piece's series, via search summary). One media count gives 283.1万 actually sat the exam (≈74:1); not verified."
+   },
+   "2027年度 (registration 14-24 Oct 2026)": {
+    "value": {
+     "posts": "3.57万",
+     "passed_review": "not yet published"
+    },
+    "year": 2026,
+    "source": "新华网 (国家公务员局公告, 2026-10-13)",
+    "url": "https://www.news.cn/20261013/f07cdee3f11a40709818f42b31e6b127/c.html",
+    "confidence": "high"
+   },
+   "age_limit": {
+    "value": "18-38周岁 (43 for 应届硕士/博士)",
+    "year": 2026,
+    "source": "2027年度 announcement as reported by 川观新闻; 2026年度 per 新华网",
+    "url": "https://cbgc.scol.com.cn/news/8056035",
+    "confidence": "high",
+    "note": "Raised from 35 (40 for 应届硕博) starting with the 2026年度 exam (announced Oct 2025). So the current limit is 38, not 35."
+   }
+  },
+  "provincial_gaokao_difficulty": {
+   "value": null,
+   "confidence": "low",
+   "note": "Not collected: the search budget ran out. This is messy in any case. Provinces don't publish comparable 本科录取率; numbers circulating online usually divide 本科 places by registrants, and registrant counts include 职教高考 and 复读. A defensible proxy is each province's 本科 招生计划 / 普通高考 registrants, with large differences between provinces (e.g. 北京/上海/天津 high; 河南/广西/贵州 etc. lower). Treat any figure as illustrative only."
+  }
+ },
+ "family": {
+  "marriage_registrations": {
+   "2023": {
+    "value": 768.2,
+    "year": 2023,
+    "source": "民政部《2023年民政事业发展统计公报》via 第一财经 (结婚率5.4‰)",
+    "url": "https://www.yicai.com/news/102269675.html",
+    "confidence": "medium",
+    "unit": "万对",
+    "note": "Statistical yearbook 2024: 768.21万对 (https://www.thepaper.cn/newsDetail_forward_29274078)"
+   },
+   "2024": {
+    "value": 610.6,
+    "year": 2024,
+    "source": "民政部《2024年民政事业发展统计公报》via 虎嗅 (结婚率4.3‰; -20.5%)",
+    "url": "https://www.huxiu.com/article/4642028.html",
+    "confidence": "medium",
+    "unit": "万对"
+   },
+   "2025": {
+    "value": 676.5,
+    "year": 2025,
+    "source": "民政部《2025年民政事业发展统计公报》(released 2026-09-30) via 光明网/财联社 (结婚率4.8‰, +10.8%)",
+    "url": "https://m.gmw.cn/2026-10/02/content_1304571053.htm",
+    "confidence": "medium",
+    "unit": "万对",
+    "note": "Feb 2026 quarterly figure: 676.3万对 (https://www.yicai.com/news/103049472.html). The rebound followed the 2025-05-10 revised 婚姻登记条例 (registration anywhere in the country). 25-29 age group: 499万 people, 36.88% of those marrying."
+   }
+  },
+  "divorces": {
+   "2023": {
+    "value": {
+     "民政部门登记": 259.3,
+     "total_incl_court": 360.53
+    },
+    "year": 2023,
+    "source": "Registered: MCA quarterly data via 新浪财经; total: 中国统计年鉴2024 via 澎湃",
+    "url": "https://cj.sina.com.cn/articles/view/1909090555/71ca68fb00101tscw",
+    "confidence": "medium",
+    "unit": "万对",
+    "note": "Total 360.53万 source: https://www.thepaper.cn/newsDetail_forward_29274078. Divorce rate 2023: 2.6‰"
+   },
+   "2024": {
+    "value": {
+     "民政部门登记": 262.2,
+     "法院判决调解": 89.1,
+     "total": 351.3,
+     "divorce_rate_permille": 2.5
+    },
+    "year": 2024,
+    "source": "民政部 2024 公报 via 虎嗅",
+    "url": "https://www.huxiu.com/article/4642028.html",
+    "confidence": "medium",
+    "unit": "万对",
+    "note": "Quarterly data gives 262.1万 registered"
+   },
+   "2025": {
+    "value": {
+     "民政部门登记": 274.3
+    },
+    "year": 2025,
+    "source": "民政部 data (Feb 2026) via 第一财经",
+    "url": "https://www.yicai.com/news/103049472.html",
+    "confidence": "medium",
+    "unit": "万对",
+    "note": "Search summaries also attributed to the 2025 bulletin: total 393.7万对 (registered 274.4万 + court 119.4万), rate 2.8‰. I could not open a page confirming these numbers: confidence low."
+   }
+  },
+  "mean_age_first_marriage_2020": {
+   "value": {
+    "total": 28.67,
+    "male": 29.38,
+    "female": 27.95
+   },
+   "year": 2020,
+   "source": "《中国人口普查年鉴-2020》表5-4 全国分初婚年龄、性别、初婚年份的人口, row 平均初婚年龄, column 2020年 (people who first married in 2020)",
+   "url": "https://www.stats.gov.cn/sj/pcsj/rkpc/7rp/zk/html/B0504.xls",
+   "confidence": "high",
+   "note": "Same table: 2010 → 24.89 (M 25.75, F 24.00); 2015 → 26.43; 2019 → 27.68. Across all ever-married people (all years): 24.33. Census index: https://www.stats.gov.cn/sj/pcsj/rkpc/7rp/zk/indexch.htm"
+  },
+  "never_married_share_2020": {
+   "value": {
+    "25-29": {
+     "male": 52.9,
+     "female": 33.2
+    },
+    "30-34": {
+     "male": 20.55,
+     "female": 9.33,
+     "both": 15.08
+    },
+    "35-39": {
+     "male": 9.36,
+     "female": 4.12
+    },
+    "40-44": {
+     "male": 5.74,
+     "female": 2.13,
+     "both": 3.99
+    },
+    "45-49": {
+     "male": 4.44,
+     "female": 1.26
+    }
+   },
+   "year": 2020,
+   "source": "Computed from 《中国人口普查年鉴-2020》表5-3 全国分年龄、性别、受教育程度、婚姻状况的人口 (未婚 / 15岁及以上人口, by age group)",
+   "url": "https://www.stats.gov.cn/sj/pcsj/rkpc/7rp/zk/html/B0503.xls",
+   "confidence": "high",
+   "unit": "% never married",
+   "note": "e.g. 30-34 male: 1,305,522 / 6,354,314 (long-form sample counts). Reported in media as 20.5% / 9.3% for 30-34 (https://www.yicai.com/news/101941420.html, not opened)."
+  },
+  "total_fertility_rate": {
+   "official_census_2020": {
+    "value": 1.3,
+    "year": 2020,
+    "source": "《中国人口普查年鉴-2020》表6-4 各地区育龄妇女年龄别生育率: 全国 总和生育率 1300.9‰",
+    "url": "https://www.stats.gov.cn/sj/pcsj/rkpc/7rp/zk/html/B0604.xls",
+    "confidence": "high",
+    "note": "NBS has not published an official national TFR for 2021-2025. Births: 2024 954万 (6.77‰), 2025 792万 (5.63‰)."
+   },
+   "un_wpp_2024": {
+    "value": {
+     "2020": 1.236,
+     "2021": 1.117,
+     "2022": 1.034,
+     "2023": 0.999,
+     "2024": 1.013
+    },
+    "year": "2020-2024",
+    "source": "UN World Population Prospects 2024 as served by World Bank WDI SP.DYN.TFRT.IN (source: UN Population Division)",
+    "url": "https://api.worldbank.org/v2/country/CHN/indicator/SP.DYN.TFRT.IN?format=json",
+    "confidence": "high",
+    "note": "WPP puts 2020 at 1.24 vs the census's 1.30. A WPP 2026 revision, if released, was not checked."
+   },
+   "academic": [
+    {
+     "value": "TFR above 1.6 in 2006-2017 (peaks ~1.89 in 2012, ~1.88 in 2017), 1.3 in 2020; average ~1.7 over 15 years",
+     "year": 2022,
+     "source": "翟振武、金光照、张逸杨《中国生育水平再探索——基于第七次全国人口普查数据的分析》人口研究 2022(4)",
+     "url": "https://rkyj.ruc.edu.cn/CN/Y2022/V46/I4/3",
+     "confidence": "high",
+     "note": "Census-based reconstruction: higher than the annual sample surveys of the 2010s implied"
+    },
+    {
+     "value": "~0.7 (claims official population and fertility are overstated)",
+     "year": 2025,
+     "source": "梁中堂 as reported by 香港01 (outlier, no published method seen)",
+     "url": "https://global.hk01.com/即时中国/60314920/中国2025年出生人口创新低-学者质疑数据-实际可能比韩国还低",
+     "confidence": "low"
+    },
+    {
+     "value": "below 1.0 in 2025 (close to Singapore's 0.97)",
+     "year": 2025,
+     "source": "陆杰华 (中国人口学会副会长) via 联合早报 as cited by 香港01",
+     "url": "https://global.hk01.com/即时中国/60314920/中国2025年出生人口创新低-学者质疑数据-实际可能比韩国还低",
+     "confidence": "low"
+    }
+   ]
+  },
+  "childlessness": {
+   "value": null,
+   "year": 2020,
+   "source": "Not directly published by age in the census tables reviewed",
+   "url": "https://www.stats.gov.cn/sj/pcsj/rkpc/7rp/zk/html/B0612.xls",
+   "confidence": "low",
+   "note": "Proxies from the 2020 census: women 45-49 average 1.59 live births (表6-12); never-married women 45-49 = 1.26% (表5-3), a floor on childlessness; women 15-64 with 0 live births = 22.9% (表6-5, includes young women, not a completed-fertility measure). Academic estimates of completed childlessness were not searched (budget). Gap."
+  }
+ },
+ "work": {
+  "migrant_workers_2025": {
+   "total": {
+    "value": 30115,
+    "year": 2025,
+    "source": "国家统计局《2025年农民工监测调查报告》(2026-04-30)",
+    "url": "https://www.stats.gov.cn/sj/zxfb/202604/t20260430_1963472.html",
+    "confidence": "high",
+    "unit": "万人",
+    "note": "2024: 29973万"
+   },
+   "waichu_out_of_township": {
+    "value": 18006,
+    "year": 2025,
+    "source": "same",
+    "url": "https://www.stats.gov.cn/sj/zxfb/202604/t20260430_1963472.html",
+    "confidence": "high",
+    "unit": "万人",
+    "note": "59.8% of all 农民工; 跨省 6765万 (37.6% of 外出), 省内 11241万"
+   },
+   "bendi_local": {
+    "value": 12109,
+    "year": 2025,
+    "source": "same",
+    "url": "https://www.stats.gov.cn/sj/zxfb/202604/t20260430_1963472.html",
+    "confidence": "high",
+    "unit": "万人"
+   },
+   "average_age": {
+    "value": 43.3,
+    "year": 2025,
+    "source": "same (本地 46.8, 外出 39.3; 50岁以上 32.0%)",
+    "url": "https://www.stats.gov.cn/sj/zxfb/202604/t20260430_1963472.html",
+    "confidence": "high",
+    "unit": "岁"
+   },
+   "average_monthly_income": {
+    "value": 5075,
+    "year": 2025,
+    "source": "same (+2.3%; 外出 5774元, 本地 4376元)",
+    "url": "https://www.stats.gov.cn/sj/zxfb/202604/t20260430_1963472.html",
+    "confidence": "high",
+    "unit": "元/月"
+   },
+   "other": {
+    "value": {
+     "female_share": 38.2,
+     "大专及以上_share": 17.1,
+     "manufacturing_share": 28.2,
+     "construction_share": 13.8,
+     "married_share": 78.2
+    },
+    "year": 2025,
+    "source": "same",
+    "url": "https://www.stats.gov.cn/sj/zxfb/202604/t20260430_1963472.html",
+    "confidence": "high",
+    "unit": "%"
+   }
+  },
+  "left_behind_children": {
+   "mca_rural_2018": {
+    "value": 697,
+    "year": 2018,
+    "source": "民政部 press conference Nov 2018 (as of end-Aug 2018; -22.7% vs 902万 in 2016) via 人民政协网",
+    "url": "https://www.rmzxw.com.cn/c/2018-11-02/2207132.shtml",
+    "confidence": "high",
+    "unit": "万人",
+    "note": "MCA definition (2016+): under 16, both parents migrant (or one migrant and the other unable to care)."
+   },
+   "mca_rural_2020": {
+    "value": 643.6,
+    "year": 2020,
+    "source": "'截至十三五末' figure, reported on 澎湃 (政务 channel, Sept 2021)",
+    "url": "https://m.thepaper.cn/baijiahao_14753249",
+    "confidence": "medium",
+    "unit": "万人",
+    "note": "No newer MCA national count was found; 2024-2025 figures appear unpublished."
+   },
+   "census_2020_left_behind": {
+    "value": {
+     "total_0_17": 6693,
+     "rural": 4177,
+     "urban": 2516,
+     "share_of_children_pct": 22.5
+    },
+    "year": 2020,
+    "source": "国家统计局/UNICEF/UNFPA《2020年中国儿童人口状况：事实与数据》(2023) via 虎嗅",
+    "url": "https://www.huxiu.com/article/2760131.html",
+    "confidence": "medium",
+    "unit": "万人",
+    "note": "Census definition: 0-17, at least one parent away ≥6 months. Original PDF (not machine-readable here): https://www.stats.gov.cn/zs/tjwh/tjkw/tjzl/202304/P020230419425666818737.pdf"
+   },
+   "census_2020_migrant_children": {
+    "value": 7109,
+    "year": 2020,
+    "source": "same report via 虎嗅",
+    "url": "https://www.huxiu.com/article/2760131.html",
+    "confidence": "medium",
+    "unit": "万人",
+    "note": "Exceeded left-behind children for the first time. MOE: 进城务工人员随迁子女 in compulsory education 1274.17万 (2025, MOE bulletin http://www.moe.gov.cn/jyb_sjzl/sjzl_fztjgb/202607/t20260706_1442870.html)"
+   }
+  },
+  "retirement_age_reform": {
+   "value": {
+    "effective": "2025-01-01 (全国人大常委会决定, adopted 2024-09-13)",
+    "men": "60 → 63, +1 month every 4 months",
+    "women_originally_55 (typically 女干部/管理技术岗)": "55 → 58, +1 month every 4 months",
+    "women_originally_50 (typically 女工人)": "50 → 55, +1 month every 2 months",
+    "phase_in": "15 years, 2025-2039. Full new age applies to: men born Sept 1976 or later (63); women-55 group born Sept 1981 or later (58); women-50 group born Nov 1984 or later (55). [Birth-month endpoints are my own calculation from the pace rule, starting with the Jan 1965 / Jan 1970 / Jan 1975 birth cohorts: medium confidence]",
+    "min_contribution_years": "15 → 20, +6 months per year starting 2030-01-01",
+    "flexibility": "voluntary early retirement up to 3 years (not below the old age); delay up to 3 years with employer agreement; not against the worker's will"
+   },
+   "year": 2025,
+   "source": "全国人民代表大会常务委员会关于实施渐进式延迟法定退休年龄的决定 + 国务院办法 (gov.cn)",
+   "url": "https://www.gov.cn/yaowen/liebiao/202409/content_6974294.htm",
+   "confidence": "high",
+   "note": "The law speaks of 原法定退休年龄50/55周岁的女职工; the cadre/worker split is the legacy basis for those two groups."
+  }
+ },
+ "health": {
+  "child_adolescent_myopia": {
+   "2022": {
+    "value": 51.9,
+    "year": 2022,
+    "source": "国家卫健委 (人民日报 2024-06-17; 6岁儿童 12.7%)",
+    "url": "https://paper.people.com.cn/rmrb/html/2024-06/17/nw.D110000renmrb_20240617_1-02.htm",
+    "confidence": "high",
+    "unit": "%"
+   },
+   "2025": {
+    "value": 49.9,
+    "year": 2025,
+    "source": "国家疾控局 latest data via 中国日报网 (Sept 2026; 2018 baseline 53.6%; fifth straight decline)",
+    "url": "https://cn.chinadaily.com.cn/a/202609/10/WS6aa20bd7e4b09a165c789025.html",
+    "confidence": "high",
+    "unit": "%",
+    "note": "A Dec 2025 report on the 儿童青少年'五健'促进行动计划 was summarised as citing 51.2% for 2025. I did not open a page confirming that, so it is unverified; possibly a different year or reference point. 2030 targets: 小学<32%, 初中<60%, 高中<70%. 2020: 52.7%."
+   }
+  },
+  "adult_hypertension": {
+   "value": 27.5,
+   "year": 2018,
+   "source": "《中国居民营养与慢性病状况报告（2020年）》(18岁及以上; fieldwork = 2018 China Chronic Disease and Risk Factor Surveillance) via search summary",
+   "url": "https://www.sohu.com/a/452940107_808764",
+   "confidence": "medium",
+   "unit": "%",
+   "note": "No 2025 edition of the 营养与慢性病状况报告 was found (5-year cycle).",
+   "intl": [
+    {
+     "value": 27.3,
+     "year": 2019,
+     "source": "WHO GHO NCD_HYP_PREVALENCE_A (age-standardised, 30-79; M 30.2, F 24.1; CI 22.8-32.0)",
+     "url": "https://ghoapi.azureedge.net/api/NCD_HYP_PREVALENCE_A?$filter=SpatialDim%20eq%20'CHN'"
+    },
+    {
+     "value": "~270 million adults with hypertension; China ~29% (30-79) and ~18% controlled per media summaries",
+     "year": 2024,
+     "source": "WHO Global report on hypertension 2025 via 财新 (prevalence and control figures not confirmed on the page)",
+     "url": "https://www.caixinglobal.com/2025-09-24/four-fifths-of-worlds-14-billion-hypertension-patients-lack-control-who-says-102365599.html",
+     "confidence": "low"
+    }
+   ]
+  },
+  "smoking_prevalence": {
+   "value": {
+    "total_15plus": 23.2,
+    "male": 43.9,
+    "female": 1.8
+   },
+   "year": 2024,
+   "source": "《2024中国成人烟草调查》(国家卫健委/中国疾控中心, released May 2025) via 南方都市报; total down 0.9 points vs 2022",
+   "url": "https://m.mp.oeeee.com/a/BAAFRD0000202505291090899.html",
+   "confidence": "medium",
+   "unit": "%",
+   "note": "China CDC PDF https://www.chinacdc.cn/jksj/jksj04/202506/P020250616403576918910.pdf could not be text-extracted here. 2018 GATS-China: 26.6% (M 50.5, F 2.1) from search summaries only (low)."
+  },
+  "drinking_prevalence": {
+   "value": {
+    "past12m_drinkers_both": 60.3,
+    "male": 72.6,
+    "female": 47.7
+   },
+   "year": 2020,
+   "source": "WHO GHO SA_0000001411 (abstainers past 12 months, age-standardised: 39.7 / 27.4 / 52.3) → drinkers = 100 − abstainers",
+   "url": "https://ghoapi.azureedge.net/api/SA_0000001411?$filter=SpatialDim%20eq%20'CHN'",
+   "confidence": "medium",
+   "unit": "%",
+   "note": "WHO modelled estimate. No Chinese official national drinking prevalence was retrieved (search budget). Chinese surveys usually report lower female drinking. Use with care."
+  },
+  "cancer_new_cases_2022": {
+   "value": 482.47,
+   "year": 2022,
+   "source": "国家癌症中心 (赫捷 et al., JNCC 2024-02-02) via 健康时报; deaths 257.42万",
+   "url": "https://paper.people.com.cn/jksb/html/2024-02/06/content_26041509.htm",
+   "confidence": "high",
+   "unit": "万例",
+   "note": "Estimated jointly with IARC, consistent with GLOBOCAN 2022."
+  },
+  "psych_hotline": {
+   "value": "12356",
+   "year": 2025,
+   "source": "新华网: 全国统一心理援助热线, set by 国家卫健委 with 工信部; nationwide from 2025-05-01",
+   "url": "https://www.news.cn/politics/20250508/b45e439c15bb4732858ad5c7640e9ba9/c.html",
+   "confidence": "high"
+  }
+ },
+ "claims_check": [
+  {
+   "claim": "2024年全国出生人口为954万",
+   "verdict": "true",
+   "correct": "Correct for 2024 (954万, birth rate 6.77‰). Should be updated for 'now': 2025 births were 792万 (5.63‰).",
+   "source": "国家统计局 2024 / 2025 统计公报",
+   "url": "https://www.stats.gov.cn/sj/zxfb/202502/t20250228_1958817.html ; https://www.stats.gov.cn/sj/zxfb/202602/t20260228_1962662.html",
+   "confidence": "high"
+  },
+  {
+   "claim": "2024年全国高考报名人数为1342万",
+   "verdict": "true",
+   "correct": "Correct. Newer: 2025 1335万, 2026 1290万.",
+   "source": "人民日报 / 新华社 citing 教育部",
+   "url": "https://paper.people.com.cn/rmrb/html/2024-06/08/nw.D110000renmrb_20240608_4-04.htm",
+   "confidence": "high"
+  },
+  {
+   "claim": "2025届全国高校毕业生预计为1222万人",
+   "verdict": "true",
+   "correct": "Correct (forecast). MOE 2025 bulletin implies 1221.75万 actual (1105.10 本专科 + 116.65 研究生). Newer: 2026届 预计 1270万.",
+   "source": "人民日报 2024-11-15; 光明网 2025-11-20",
+   "url": "https://paper.people.com.cn/rmrb/html/2024-11/15/nw.D110000renmrb_20241115_3-07.htm",
+   "confidence": "high"
+  },
+  {
+   "claim": "2024年全国硕士研究生招生考试报名人数为438万",
+   "verdict": "true",
+   "correct": "Correct. Since then: 2025 388万, 2026 343万 (third straight fall).",
+   "source": "中新网",
+   "url": "https://www.chinanews.com.cn/gn/2023/11-24/10117086.shtml",
+   "confidence": "high"
+  },
+  {
+   "claim": "2024年全国结婚登记610.6万对",
+   "verdict": "true",
+   "correct": "Correct. 2025 rebounded to 676.5万对 (bulletin) / 676.3万 (quarterly).",
+   "source": "民政部 2024 公报 via 虎嗅; 2025 公报 via 光明网",
+   "url": "https://www.huxiu.com/article/4642028.html",
+   "confidence": "medium"
+  },
+  {
+   "claim": "2020年人口普查的平均初婚年龄为28.67岁",
+   "verdict": "true",
+   "correct": "Correct: 28.67 for people first married in 2020 (male 29.38, female 27.95).",
+   "source": "中国人口普查年鉴-2020 表5-4",
+   "url": "https://www.stats.gov.cn/sj/pcsj/rkpc/7rp/zk/html/B0504.xls",
+   "confidence": "high"
+  },
+  {
+   "claim": "2023年全国办理离婚登记259.3万对",
+   "verdict": "true",
+   "correct": "Correct for 民政部门登记离婚. Total divorces incl. court rulings were 360.53万对. Wording '办理离婚登记' is OK, but don't present it as all divorces.",
+   "source": "MCA quarterly data via 新浪财经; 统计年鉴 via 澎湃",
+   "url": "https://cj.sina.com.cn/articles/view/1909090555/71ca68fb00101tscw",
+   "confidence": "medium"
+  },
+  {
+   "claim": "2022年全国儿童青少年总体近视率为51.9%",
+   "verdict": "update",
+   "correct": "True for 2022, but newer data exist: 2025 = 49.9% (国家疾控局, Sept 2026).",
+   "source": "人民日报 2024-06-17; 中国日报网 2026-09-10",
+   "url": "https://cn.chinadaily.com.cn/a/202609/10/WS6aa20bd7e4b09a165c789025.html",
+   "confidence": "high"
+  },
+  {
+   "claim": "中国18岁及以上居民高血压患病率为27.5%（2020年报告）",
+   "verdict": "true",
+   "correct": "Correct, but the data are from the 2018 survey published in the 2020 report. No newer national report was found. WHO 2019 age-standardised (30-79): 27.3%.",
+   "source": "中国居民营养与慢性病状况报告（2020年）",
+   "url": "https://www.sohu.com/a/452940107_808764",
+   "confidence": "medium"
+  },
+  {
+   "claim": "2018年民政部统计，全国农村留守儿童有697万人",
+   "verdict": "true",
+   "correct": "Correct (as of end-Aug 2018, MCA definition). Later MCA figure: 643.6万 at end of 13th FYP (2020). Under the census definition (≥1 parent away, 0-17) rural left-behind children were 4177万 in 2020. Consider showing both.",
+   "source": "民政部 via 人民政协网",
+   "url": "https://www.rmzxw.com.cn/c/2018-11-02/2207132.shtml",
+   "confidence": "high"
+  },
+  {
+   "claim": "近年中考之后，大约七成学生升入普通高中，三成进入中等职业学校",
+   "verdict": "true",
+   "correct": "Roughly right as a share of upper-secondary intake: 74:26 on the MOE basis (2025; 71:29 in 2024), 67:33 if 技工学校 are counted (NBS). As a share of all 初中毕业生, ~62% enter 普高.",
+   "source": "教育部 2025 公报; NBS 2025 公报",
+   "url": "http://www.moe.gov.cn/jyb_sjzl/sjzl_fztjgb/202607/t20260706_1442870.html",
+   "confidence": "high"
+  },
+  {
+   "claim": "近年国家公务员考试的过审报名人数超过300万",
+   "verdict": "true",
+   "correct": "Correct: 2025年度 341.6万, 2026年度 371.8万 (≈98:1 for 3.81万 posts). 2027年度: 3.57万 posts, review figures not yet out.",
+   "source": "新华网",
+   "url": "https://www.news.cn/politics/20251130/7da14327e1c24cafbf0af0a287a2f085/c.html",
+   "confidence": "high"
+  },
+  {
+   "claim": "2021年起，网络游戏企业只能在周五、周六、周日和法定节假日20时至21时向未成年人提供1小时服务",
+   "verdict": "true",
+   "correct": "Correct: 国家新闻出版署 notice of 30 Aug 2021 (国新出发〔2021〕14号). Still the operative rule as far as found.",
+   "source": "界面新闻 quoting the notice",
+   "url": "https://m.jiemian.com/article/6541914.html",
+   "confidence": "high"
+  },
+  {
+   "claim": "2025年起，法定退休年龄逐步延迟：男性从60岁延到63岁，女性从50/55岁延到55/58岁",
+   "verdict": "true",
+   "correct": "Correct. Effective 2025-01-01 over 15 years; men and women-55 +1 month per 4 months, women-50 +1 month per 2 months; minimum contribution 15→20 years from 2030.",
+   "source": "全国人大常委会决定 (gov.cn)",
+   "url": "https://www.gov.cn/yaowen/liebiao/202409/content_6974294.htm",
+   "confidence": "high"
+  },
+  {
+   "claim": "全国心理援助热线：12356",
+   "verdict": "true",
+   "correct": "Correct. Nationwide since 2025-05-01 (some cities earlier, e.g. Beijing 2025-01-01).",
+   "source": "新华网",
+   "url": "https://www.news.cn/politics/20250508/b45e439c15bb4732858ad5c7640e9ba9/c.html",
+   "confidence": "high"
+  },
+  {
+   "claim": "2022年中国新发癌症病例约482万（国家癌症中心）",
+   "verdict": "true",
+   "correct": "Correct: 482.47万 new cases, 257.42万 deaths (JNCC, Feb 2024).",
+   "source": "健康时报 (人民网)",
+   "url": "https://paper.people.com.cn/jksb/html/2024-02/06/content_26041509.htm",
+   "confidence": "high"
+  }
+ ],
+ "discrepancies": [
+  {
+   "topic": "Total fertility rate 2020",
+   "official": "1.30 (census table 6-4)",
+   "international": "1.236 (UN WPP 2024)",
+   "academic": "翟振武 et al.: ~1.3 in 2020 but >1.6 for 2006-2017 (census reconstruction); 梁中堂: ~0.7 now; 陆杰华: <1 in 2025",
+   "note": "No official TFR after 2020. WPP 2024 shows ~1.0 for 2022-2024. The game should probably use ~1.0 for current cohorts and note the uncertainty.",
+   "urls": [
+    "https://www.stats.gov.cn/sj/pcsj/rkpc/7rp/zk/html/B0604.xls",
+    "https://api.worldbank.org/v2/country/CHN/indicator/SP.DYN.TFRT.IN?format=json",
+    "https://rkyj.ruc.edu.cn/CN/Y2022/V46/I4/3"
+   ]
+  },
+  {
+   "topic": "Tertiary gross enrollment ratio",
+   "official": "MOE 60.8% (2024), 61.3% (2025)",
+   "international": "UNESCO UIS 76.88% (2024)",
+   "note": "About a 16-point gap, probably from scope and denominator differences (UIS counts all tertiary enrolments, incl. adult and online). Not evidence of misreporting.",
+   "urls": [
+    "http://www.moe.gov.cn/jyb_sjzl/sjzl_fztjgb/202607/t20260706_1442870.html",
+    "https://api.worldbank.org/v2/country/CHN/indicator/SE.TER.ENRR?format=json"
+   ]
+  },
+  {
+   "topic": "Upper-secondary GER",
+   "official": "MOE 92.0% (2024, 2025)",
+   "international": "UIS 79.4% (2019, latest)",
+   "note": "Different years and definitions; UIS has no recent value.",
+   "urls": [
+    "http://www.moe.gov.cn/jyb_sjzl/sjzl_fztjgb/202607/t20260706_1442870.html",
+    "https://api.worldbank.org/v2/country/CHN/indicator/SE.SEC.ENRR.UP?format=json"
+   ]
+  },
+  {
+   "topic": "Secondary vocational intake (普职比)",
+   "official": "MOE 369.93万 vs NBS 526.5万 (2025)",
+   "note": "MOE excludes 技工学校 (人社部). The academic/vocational split moves from 74:26 to 67:33 depending on which you use.",
+   "urls": [
+    "http://www.moe.gov.cn/jyb_sjzl/sjzl_fztjgb/202607/t20260706_1442870.html",
+    "https://www.stats.gov.cn/sj/zxfb/202602/t20260228_1962662.html"
+   ]
+  },
+  {
+   "topic": "Left-behind children",
+   "official": "MCA 697万 (2018) / 643.6万 (2020)",
+   "international": "NBS-UNICEF-UNFPA census report: 6693万 left-behind (0-17), of which rural 4177万 (2020)",
+   "note": "A tenfold difference driven by definition (MCA: under 16, both parents away; census: 0-17, at least one parent away ≥6 months). Some commentators also question how fast the MCA series fell (902→697→643.6).",
+   "urls": [
+    "https://www.rmzxw.com.cn/c/2018-11-02/2207132.shtml",
+    "https://www.huxiu.com/article/2760131.html"
+   ]
+  },
+  {
+   "topic": "Divorce counts",
+   "official": "民政部门登记 vs total (incl. court)",
+   "note": "2023: 259.3万 registered vs 360.53万 total; 2024: 262.2 vs 351.3. Some 2026 media wrote that 2025 divorces 'fell 77万 / 21.9%' by comparing 2025 registrations (274.3) with the 2024 total (351.3). Registrations actually rose ~4.6%. Seen in search summaries; the specific outlet was not pinned down.",
+   "urls": [
+    "https://www.huxiu.com/article/4642028.html",
+    "https://www.yicai.com/news/103049472.html"
+   ]
+  },
+  {
+   "topic": "Myopia 2025",
+   "official": "49.9% (国家疾控局, Sept 2026) vs 51.2% (reported in Dec 2025 coverage of the 五健 plan)",
+   "note": "The 51.2% figure is unverified; its year and reference point are unclear.",
+   "urls": [
+    "https://cn.chinadaily.com.cn/a/202609/10/WS6aa20bd7e4b09a165c789025.html"
+   ]
+  },
+  {
+   "topic": "Hypertension",
+   "official": "27.5% (18+, 2018 survey)",
+   "international": "WHO 27.3% age-standardised 30-79 (2019); WHO 2025 report ~29% (unverified)",
+   "note": "Broadly consistent; different age bases.",
+   "urls": [
+    "https://ghoapi.azureedge.net/api/NCD_HYP_PREVALENCE_A?$filter=SpatialDim%20eq%20'CHN'"
+   ]
+  },
+  {
+   "topic": "Drinking",
+   "international": "WHO modelled past-12-month drinkers 60.3% (M 72.6, F 47.7), 2020",
+   "official": "not retrieved",
+   "note": "WHO's female drinking estimate looks high relative to typical Chinese survey results; unverified."
+  }
+ ],
+ "gaps": [
+  "Per-province 本科录取率 / gaokao difficulty: not collected (search budget exhausted). Inherently messy; see education.provincial_gaokao_difficulty.",
+  "2025 民政部 bulletin divorce breakdown (total, court) and divorce rate: unverified (mca.gov.cn unreachable).",
+  "Childlessness rate: no age-specific census table found in the yearbook tables reviewed; only proxies given. Academic estimates not searched.",
+  "Official Chinese drinking prevalence (e.g. China CDC chronic disease surveillance): not retrieved; WHO modelled figure used.",
+  "Post-2020 MCA rural left-behind children count: none found; latest is 643.6万 (end-2020, secondary source).",
+  "2026 研究生招生数: not yet published.",
+  "2024 GATS-China report PDF and 2020 children-facts PDF could not be text-extracted (no PDF tools); figures taken from media summaries (medium).",
+  "UN WPP 2026 revision (if released mid-2026) not checked; WPP 2024 values via World Bank used.",
+  "Policy history of 普职比 (2019 '大体相当' → 2021/2022 '协调发展') is stated from background knowledge, not re-verified this session.",
+  "2024届 graduates 1179万: the nbd/gov.cn pages were not opened; confidence medium."
+ ]
+}

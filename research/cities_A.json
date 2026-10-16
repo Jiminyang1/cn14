@@ -1,0 +1,1044 @@
+{
+ "cities": {
+  "北京": {
+   "prov": "BJ",
+   "type": "municipality",
+   "pop_wan": {
+    "value": 2180.0,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/sjtjgb/68263.html"
+   },
+   "births": {
+    "rate_permille": 5.55,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/sjtjgb/68263.html"
+   },
+   "inc_urban": {
+    "value": 96292,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/sjtjgb/68263.html"
+   },
+   "inc_rural": {
+    "value": 42012,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/sjtjgb/68263.html"
+   },
+   "house_price": {
+    "value": 39448,
+    "type": "listing",
+    "year": 2025,
+    "source": "安居客2025年城市房价(二手挂牌均价)",
+    "url": "https://www.anjuke.com/fangjia/quanguo2025/"
+   }
+  },
+  "上海": {
+   "prov": "SH",
+   "type": "municipality",
+   "pop_wan": {
+    "value": 2485.41,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/sjtjgb/68318.html"
+   },
+   "births": {
+    "count_wan": 10.7,
+    "rate_permille": 4.31,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/sjtjgb/68318.html"
+   },
+   "inc_urban": {
+    "value": 96842,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/sjtjgb/68318.html"
+   },
+   "inc_rural": {
+    "value": 48122,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/sjtjgb/68318.html"
+   },
+   "house_price": {
+    "value": 42749,
+    "type": "listing",
+    "year": 2025,
+    "source": "安居客2025年城市房价(二手挂牌均价)",
+    "url": "https://www.anjuke.com/fangjia/quanguo2025/"
+   }
+  },
+  "天津": {
+   "prov": "TJ",
+   "type": "municipality",
+   "pop_wan": {
+    "value": 1363,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/sjtjgb/68209.html"
+   },
+   "births": {
+    "rate_permille": 4.25,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/sjtjgb/68209.html"
+   },
+   "inc_urban": {
+    "value": 60099,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/sjtjgb/68209.html"
+   },
+   "inc_rural": {
+    "value": 34465,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/sjtjgb/68209.html"
+   },
+   "house_price": {
+    "value": 13752,
+    "type": "listing",
+    "year": 2025,
+    "source": "安居客2025年城市房价(二手挂牌均价)",
+    "url": "https://www.anjuke.com/fangjia/quanguo2025/"
+   }
+  },
+  "石家庄": {
+   "prov": "HE",
+   "type": "capital",
+   "pop_wan": {
+    "value": 1124.69,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/xjtjgb/xj2020/72628.html"
+   },
+   "births": null,
+   "inc_urban": {
+    "value": 52559,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/xjtjgb/xj2020/72628.html"
+   },
+   "inc_rural": {
+    "value": 24184,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/xjtjgb/xj2020/72628.html"
+   },
+   "house_price": {
+    "value": 10853,
+    "type": "listing",
+    "year": 2025,
+    "source": "安居客2025年城市房价(二手挂牌均价)",
+    "url": "https://www.anjuke.com/fangjia/quanguo2025/"
+   }
+  },
+  "保定": {
+   "prov": "HE",
+   "type": "prefecture",
+   "pop_wan": {
+    "value": 900.07,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/xjtjgb/xj2020/73717.html",
+    "note": "不含定州；含定州口径1008.61万"
+   },
+   "births": {
+    "count_wan": 4.55,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/xjtjgb/xj2020/73717.html",
+    "note": "不含定州"
+   },
+   "inc_urban": {
+    "value": 44900,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/xjtjgb/xj2020/73717.html"
+   },
+   "inc_rural": {
+    "value": 24283,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/xjtjgb/xj2020/73717.html"
+   },
+   "house_price": null
+  },
+  "邯郸": {
+   "prov": "HE",
+   "type": "prefecture",
+   "pop_wan": {
+    "value": 916.68,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/xjtjgb/xj2020/74122.html"
+   },
+   "births": {
+    "count_wan": 5.65,
+    "rate_permille": 6.16,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/xjtjgb/xj2020/74122.html"
+   },
+   "inc_urban": {
+    "value": 46510,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/xjtjgb/xj2020/74122.html"
+   },
+   "inc_rural": {
+    "value": 24408,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/xjtjgb/xj2020/74122.html"
+   },
+   "house_price": {
+    "value": 8679,
+    "type": "listing",
+    "year": 2025,
+    "source": "安居客2025年城市房价(二手挂牌均价)",
+    "url": "https://www.anjuke.com/fangjia/quanguo2025/"
+   }
+  },
+  "唐山": {
+   "prov": "HE",
+   "type": "prefecture",
+   "pop_wan": {
+    "value": 772.28,
+    "year": 2024,
+    "source": "红黑人口库(第三方汇编)，引2024统计公报",
+    "url": "https://www.hongheiku.com/shijirenkou/2045.html"
+   },
+   "births": {
+    "rate_permille": 4.4,
+    "year": 2024,
+    "source": "红黑人口库(第三方汇编)",
+    "url": "https://www.hongheiku.com/shijirenkou/2045.html"
+   },
+   "inc_urban": {
+    "value": 55121,
+    "year": 2024,
+    "source": "红黑人口库(第三方汇编)",
+    "url": "https://www.hongheiku.com/shijirenkou/2045.html"
+   },
+   "inc_rural": {
+    "value": 27691,
+    "year": 2024,
+    "source": "红黑人口库(第三方汇编)",
+    "url": "https://www.hongheiku.com/shijirenkou/2045.html"
+   },
+   "house_price": {
+    "value": 7538,
+    "type": "listing",
+    "year": 2025,
+    "source": "安居客2025年城市房价(二手挂牌均价)",
+    "url": "https://www.anjuke.com/fangjia/quanguo2025/"
+   }
+  },
+  "太原": {
+   "prov": "SX",
+   "type": "capital",
+   "pop_wan": {
+    "value": 552.61,
+    "year": 2025,
+    "source": "2025年太原市人口主要数据公报(腾讯新闻转载)",
+    "url": "https://news.qq.com/rain/a/20260529A0917I00"
+   },
+   "births": {
+    "count_wan": 3.606,
+    "rate_permille": 6.53,
+    "year": 2025,
+    "source": "2025年太原市人口主要数据公报(腾讯新闻转载)",
+    "url": "https://news.qq.com/rain/a/20260529A0917I00"
+   },
+   "inc_urban": {
+    "value": 49772,
+    "year": 2025,
+    "source": "红黑人口库(第三方汇编)(未见官方原文)",
+    "url": "https://www.hongheiku.com/shanxi/306.html"
+   },
+   "inc_rural": {
+    "value": 27016,
+    "year": 2025,
+    "source": "红黑人口库(第三方汇编)(未见官方原文)",
+    "url": "https://www.hongheiku.com/shanxi/306.html"
+   },
+   "house_price": {
+    "value": 8536,
+    "type": "listing",
+    "year": 2025,
+    "source": "安居客2025年城市房价(二手挂牌均价)",
+    "url": "https://www.anjuke.com/fangjia/quanguo2025/"
+   }
+  },
+  "运城": {
+   "prov": "SX",
+   "type": "prefecture",
+   "pop_wan": {
+    "value": 463.23,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/xjtjgb/xj2020/79133.html"
+   },
+   "births": {
+    "count_wan": 2.44,
+    "rate_permille": 5.24,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/xjtjgb/xj2020/79133.html"
+   },
+   "inc_urban": {
+    "value": 42793,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/xjtjgb/xj2020/79133.html"
+   },
+   "inc_rural": {
+    "value": 18705,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/xjtjgb/xj2020/79133.html"
+   },
+   "house_price": null
+  },
+  "大同": {
+   "prov": "SX",
+   "type": "prefecture",
+   "pop_wan": {
+    "value": 304.4,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/djs/69248.html"
+   },
+   "births": {
+    "count_wan": 1.5,
+    "rate_permille": 4.9,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/djs/69248.html"
+   },
+   "inc_urban": {
+    "value": 44454,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/djs/69248.html"
+   },
+   "inc_rural": {
+    "value": 17291,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/djs/69248.html"
+   },
+   "house_price": null
+  },
+  "呼和浩特": {
+   "prov": "NM",
+   "type": "capital",
+   "pop_wan": {
+    "value": 366.1,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/djs/68932.html"
+   },
+   "births": {
+    "count_wan": 2.0,
+    "rate_permille": 5.4,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/djs/68932.html"
+   },
+   "inc_urban": {
+    "value": 61624,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/djs/68932.html"
+   },
+   "inc_rural": {
+    "value": 28295,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/djs/68932.html"
+   },
+   "house_price": {
+    "value": 8124,
+    "type": "listing",
+    "year": 2025,
+    "source": "安居客2025年城市房价(二手挂牌均价)",
+    "url": "https://www.anjuke.com/fangjia/quanguo2025/"
+   }
+  },
+  "包头": {
+   "prov": "NM",
+   "type": "prefecture",
+   "pop_wan": {
+    "value": 277.4,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/djs/69271.html"
+   },
+   "births": {
+    "count_wan": 1.19,
+    "rate_permille": 4.29,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/djs/69271.html"
+   },
+   "inc_urban": {
+    "value": 63083,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/djs/69271.html"
+   },
+   "inc_rural": {
+    "value": 28609,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/djs/69271.html"
+   },
+   "house_price": null
+  },
+  "赤峰": {
+   "prov": "NM",
+   "type": "prefecture",
+   "pop_wan": {
+    "value": 388.7,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/djs/69183.html"
+   },
+   "births": {
+    "count_wan": 1.69,
+    "rate_permille": 4.32,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/djs/69183.html"
+   },
+   "inc_urban": {
+    "value": 45325,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/djs/69183.html"
+   },
+   "inc_rural": {
+    "value": 20232,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/djs/69183.html"
+   },
+   "house_price": null
+  },
+  "沈阳": {
+   "prov": "LN",
+   "type": "capital",
+   "pop_wan": {
+    "value": 927.6,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/xjtjgb/xj2020/72374.html"
+   },
+   "births": {
+    "count_wan": 3.4,
+    "rate_permille": 4.4,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/xjtjgb/xj2020/72374.html"
+   },
+   "inc_urban": {
+    "value": 58297,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/xjtjgb/xj2020/72374.html"
+   },
+   "inc_rural": {
+    "value": 27196,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/xjtjgb/xj2020/72374.html"
+   },
+   "house_price": {
+    "value": 7708,
+    "type": "listing",
+    "year": 2025,
+    "source": "安居客2025年城市房价(二手挂牌均价)",
+    "url": "https://www.anjuke.com/fangjia/quanguo2025/"
+   }
+  },
+  "大连": {
+   "prov": "LN",
+   "type": "sub-provincial",
+   "pop_wan": {
+    "value": 754.4,
+    "year": 2024,
+    "source": "红黑人口库(第三方汇编)，引2024统计公报",
+    "url": "https://www.hongheiku.com/shijirenkou/1546.html",
+    "note": "2025公报只给户籍人口607.8万"
+   },
+   "births": {
+    "count_wan": 2.5,
+    "rate_permille": 4.09,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/djs/69004.html",
+    "note": "户籍口径"
+   },
+   "inc_urban": {
+    "value": 58441,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/djs/69004.html"
+   },
+   "inc_rural": {
+    "value": 29185,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/djs/69004.html"
+   },
+   "house_price": {
+    "value": 10640,
+    "type": "listing",
+    "year": 2025,
+    "source": "安居客2025年城市房价(二手挂牌均价)",
+    "url": "https://www.anjuke.com/fangjia/quanguo2025/"
+   }
+  },
+  "鞍山": {
+   "prov": "LN",
+   "type": "prefecture",
+   "pop_wan": {
+    "value": 319.2,
+    "year": 2024,
+    "source": "红黑人口库(第三方汇编)，引2024统计公报",
+    "url": "https://www.hongheiku.com/shijirenkou/1552.html",
+    "note": "2025公报只给户籍人口320.1万"
+   },
+   "births": {
+    "count_wan": 1.07,
+    "rate_permille": 3.33,
+    "year": 2025,
+    "source": "鞍山市2025年统计公报PDF",
+    "url": "https://tjgb.hongheiku.com/wp-content/uploads/2026/07/1783136329-1777260752986075086.pdf",
+    "note": "户籍口径"
+   },
+   "inc_urban": {
+    "value": 47102,
+    "year": 2025,
+    "source": "鞍山市2025年统计公报PDF",
+    "url": "https://tjgb.hongheiku.com/wp-content/uploads/2026/07/1783136329-1777260752986075086.pdf"
+   },
+   "inc_rural": {
+    "value": 26092,
+    "year": 2025,
+    "source": "鞍山市2025年统计公报PDF",
+    "url": "https://tjgb.hongheiku.com/wp-content/uploads/2026/07/1783136329-1777260752986075086.pdf"
+   },
+   "house_price": {
+    "value": 3950,
+    "type": "listing",
+    "year": 2025,
+    "source": "安居客2025年城市房价(二手挂牌均价)",
+    "url": "https://www.anjuke.com/fangjia/quanguo2025/"
+   }
+  },
+  "长春": {
+   "prov": "JL",
+   "type": "capital",
+   "pop_wan": {
+    "value": 910.5,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/djs/69916.html",
+    "note": "公报表述为'年末全市总人口'"
+   },
+   "births": {
+    "count_wan": 3.33,
+    "rate_permille": 3.66,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/djs/69916.html"
+   },
+   "inc_urban": {
+    "value": 44250,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/djs/69916.html"
+   },
+   "inc_rural": {
+    "value": 23042,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/djs/69916.html"
+   },
+   "house_price": null
+  },
+  "吉林": {
+   "prov": "JL",
+   "type": "prefecture",
+   "pop_wan": {
+    "value": 349.48,
+    "year": 2024,
+    "source": "红黑人口库(第三方汇编)，引2024年末吉林省各市州常住人口",
+    "url": "https://www.hongheiku.com/shijirenkou/2259.html"
+   },
+   "births": null,
+   "inc_urban": {
+    "value": 39396,
+    "year": 2025,
+    "source": "红黑人口库(第三方汇编)(城乡比1.78与市统计局解读一致)",
+    "url": "https://www.hongheiku.com/shijirenkou/2259.html"
+   },
+   "inc_rural": {
+    "value": 22139,
+    "year": 2025,
+    "source": "红黑人口库(第三方汇编)(城乡比1.78与市统计局解读一致)",
+    "url": "https://www.hongheiku.com/shijirenkou/2259.html"
+   },
+   "house_price": null
+  },
+  "哈尔滨": {
+   "prov": "HL",
+   "type": "capital",
+   "pop_wan": {
+    "value": 988.7,
+    "year": 2025,
+    "source": "哈尔滨市2025年统计公报PDF",
+    "url": "https://tjgb.hongheiku.com/wp-content/uploads/2026/07/1783745353-2025E5B9B4E59388E5B094E6BBA8E5B882E59BBDE6B091E7BB8FE6B58EE5928CE7A4BEE4BC9AE58F91E5B195E7BB9FE8AEA1E585ACE68AA5-20260603093614665.pdf"
+   },
+   "births": null,
+   "inc_urban": {
+    "value": 46915,
+    "year": 2025,
+    "source": "哈尔滨市2025年统计公报PDF",
+    "url": "https://tjgb.hongheiku.com/wp-content/uploads/2026/07/1783745353-2025E5B9B4E59388E5B094E6BBA8E5B882E59BBDE6B091E7BB8FE6B58EE5928CE7A4BEE4BC9AE58F91E5B195E7BB9FE8AEA1E585ACE68AA5-20260603093614665.pdf"
+   },
+   "inc_rural": {
+    "value": 25113,
+    "year": 2025,
+    "source": "哈尔滨市2025年统计公报PDF",
+    "url": "https://tjgb.hongheiku.com/wp-content/uploads/2026/07/1783745353-2025E5B9B4E59388E5B094E6BBA8E5B882E59BBDE6B091E7BB8FE6B58EE5928CE7A4BEE4BC9AE58F91E5B195E7BB9FE8AEA1E585ACE68AA5-20260603093614665.pdf"
+   },
+   "house_price": null
+  },
+  "齐齐哈尔": {
+   "prov": "HL",
+   "type": "prefecture",
+   "pop_wan": {
+    "value": 373.3,
+    "year": 2024,
+    "source": "红黑人口库(第三方汇编)，引2024统计公报",
+    "url": "https://www.hongheiku.com/shijirenkou/2400.html",
+    "note": "2025公报只给户籍人口493.6万"
+   },
+   "births": {
+    "rate_permille": 3.1,
+    "year": 2024,
+    "source": "红黑人口库(第三方汇编)",
+    "url": "https://www.hongheiku.com/shijirenkou/2400.html"
+   },
+   "inc_urban": {
+    "value": 34799,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/xjtjgb/xj2020/74433.html"
+   },
+   "inc_rural": {
+    "value": 20403,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/xjtjgb/xj2020/74433.html"
+   },
+   "house_price": {
+    "value": 4705,
+    "type": "listing",
+    "year": 2025,
+    "source": "安居客2025年城市房价(二手挂牌均价)",
+    "url": "https://www.anjuke.com/fangjia/quanguo2025/"
+   }
+  },
+  "大庆": {
+   "prov": "HL",
+   "type": "prefecture",
+   "pop_wan": {
+    "value": 263.7,
+    "year": 2025,
+    "source": "大庆市2025年统计公报PDF",
+    "url": "https://tjgb.hongheiku.com/wp-content/uploads/2026/08/1786456750-2025E5B9B4E5A4A7E5BA86E5B882E59BBDE6B091E7BB8FE6B58EE5928CE7A4BEE4BC9AE58F91E5B195E7BB9FE8AEA1E585ACE68AA5.pdf"
+   },
+   "births": null,
+   "inc_urban": {
+    "value": 49430,
+    "year": 2025,
+    "source": "大庆市2025年统计公报PDF",
+    "url": "https://tjgb.hongheiku.com/wp-content/uploads/2026/08/1786456750-2025E5B9B4E5A4A7E5BA86E5B882E59BBDE6B091E7BB8FE6B58EE5928CE7A4BEE4BC9AE58F91E5B195E7BB9FE8AEA1E585ACE68AA5.pdf"
+   },
+   "inc_rural": {
+    "value": 21888,
+    "year": 2025,
+    "source": "大庆市2025年统计公报PDF",
+    "url": "https://tjgb.hongheiku.com/wp-content/uploads/2026/08/1786456750-2025E5B9B4E5A4A7E5BA86E5B882E59BBDE6B091E7BB8FE6B58EE5928CE7A4BEE4BC9AE58F91E5B195E7BB9FE8AEA1E585ACE68AA5.pdf"
+   },
+   "house_price": {
+    "value": 4995,
+    "type": "listing",
+    "year": 2025,
+    "source": "安居客2025年城市房价(二手挂牌均价)",
+    "url": "https://www.anjuke.com/fangjia/quanguo2025/"
+   }
+  },
+  "济南": {
+   "prov": "SD",
+   "type": "capital",
+   "pop_wan": {
+    "value": 961.6,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/djs/68386.html"
+   },
+   "births": {
+    "count_wan": 5.8,
+    "rate_permille": 7.0,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/djs/68386.html",
+    "note": "申报出生"
+   },
+   "inc_urban": {
+    "value": 68128,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/djs/68386.html"
+   },
+   "inc_rural": {
+    "value": 28653,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/djs/68386.html"
+   },
+   "house_price": {
+    "value": 13309,
+    "type": "listing",
+    "year": 2025,
+    "source": "安居客2025年城市房价(二手挂牌均价)",
+    "url": "https://www.anjuke.com/fangjia/quanguo2025/"
+   }
+  },
+  "青岛": {
+   "prov": "SD",
+   "type": "sub-provincial",
+   "pop_wan": {
+    "value": 1051.55,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/xjtjgb/xj2020/68442.html"
+   },
+   "births": null,
+   "inc_urban": {
+    "value": 71703,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/xjtjgb/xj2020/68442.html"
+   },
+   "inc_rural": {
+    "value": 33296,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/xjtjgb/xj2020/68442.html"
+   },
+   "house_price": {
+    "value": 11817,
+    "type": "listing",
+    "year": 2025,
+    "source": "安居客2025年城市房价(二手挂牌均价)",
+    "url": "https://www.anjuke.com/fangjia/quanguo2025/"
+   }
+  },
+  "临沂": {
+   "prov": "SD",
+   "type": "prefecture",
+   "pop_wan": {
+    "value": 1075.96,
+    "year": 2025,
+    "source": "山东省政府网(数据由山东省统计局提供)",
+    "url": "http://gb.shandong.gov.cn/col/col98017/index.html"
+   },
+   "births": null,
+   "inc_urban": {
+    "value": 51513,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/djs/68207.html"
+   },
+   "inc_rural": {
+    "value": 23127,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/djs/68207.html"
+   },
+   "house_price": null
+  },
+  "潍坊": {
+   "prov": "SD",
+   "type": "prefecture",
+   "pop_wan": {
+    "value": 927.12,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/xjtjgb/xj2020/72447.html"
+   },
+   "births": {
+    "count_wan": 4.3029,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/xjtjgb/xj2020/72447.html"
+   },
+   "inc_urban": {
+    "value": 55875,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/xjtjgb/xj2020/72447.html"
+   },
+   "inc_rural": {
+    "value": 30643,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/xjtjgb/xj2020/72447.html"
+   },
+   "house_price": null
+  },
+  "菏泽": {
+   "prov": "SD",
+   "type": "prefecture",
+   "pop_wan": {
+    "value": 843.4,
+    "year": 2025,
+    "source": "山东省政府网(数据由山东省统计局提供)",
+    "url": "http://gb.shandong.gov.cn/col/col98076/index.html"
+   },
+   "births": null,
+   "inc_urban": {
+    "value": 37356,
+    "year": 2024,
+    "source": "红黑人口库(第三方汇编)，引2024统计公报",
+    "url": "https://www.hongheiku.com/shandong/418.html"
+   },
+   "inc_rural": {
+    "value": 20844,
+    "year": 2024,
+    "source": "红黑人口库(第三方汇编)，引2024统计公报",
+    "url": "https://www.hongheiku.com/shandong/418.html"
+   },
+   "house_price": null
+  },
+  "烟台": {
+   "prov": "SD",
+   "type": "prefecture",
+   "pop_wan": {
+    "value": 700.05,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/djs/68292.html"
+   },
+   "births": null,
+   "inc_urban": {
+    "value": 65009,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/djs/68292.html"
+   },
+   "inc_rural": {
+    "value": 31965,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/djs/68292.html"
+   },
+   "house_price": null
+  },
+  "南京": {
+   "prov": "JS",
+   "type": "capital",
+   "pop_wan": {
+    "value": 963.85,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/xjtjgb/xj2020/73718.html"
+   },
+   "births": {
+    "rate_permille": 5.39,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/xjtjgb/xj2020/73718.html"
+   },
+   "inc_urban": {
+    "value": 86320,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/xjtjgb/xj2020/73718.html"
+   },
+   "inc_rural": {
+    "value": 40471,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/xjtjgb/xj2020/73718.html"
+   },
+   "house_price": {
+    "value": 18569,
+    "type": "listing",
+    "year": 2025,
+    "source": "安居客2025年城市房价(二手挂牌均价)",
+    "url": "https://www.anjuke.com/fangjia/quanguo2025/"
+   }
+  },
+  "苏州": {
+   "prov": "JS",
+   "type": "prefecture",
+   "pop_wan": {
+    "value": 1304.77,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/djs/69636.html"
+   },
+   "births": null,
+   "inc_urban": {
+    "value": 90125,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/djs/69636.html"
+   },
+   "inc_rural": {
+    "value": 51303,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/djs/69636.html"
+   },
+   "house_price": {
+    "value": 14644,
+    "type": "listing",
+    "year": 2025,
+    "source": "安居客2025年城市房价(二手挂牌均价)",
+    "url": "https://www.anjuke.com/fangjia/quanguo2025/"
+   }
+  },
+  "徐州": {
+   "prov": "JS",
+   "type": "prefecture",
+   "pop_wan": {
+    "value": 896.71,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/xjtjgb/xj2020/74173.html"
+   },
+   "births": {
+    "rate_permille": 4.72,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/xjtjgb/xj2020/74173.html"
+   },
+   "inc_urban": {
+    "value": 48978,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/xjtjgb/xj2020/74173.html"
+   },
+   "inc_rural": {
+    "value": 30639,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/xjtjgb/xj2020/74173.html"
+   },
+   "house_price": null
+  },
+  "无锡": {
+   "prov": "JS",
+   "type": "prefecture",
+   "pop_wan": {
+    "value": 753.74,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/djs/70051.html"
+   },
+   "births": null,
+   "inc_urban": {
+    "value": 83158,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/djs/70051.html"
+   },
+   "inc_rural": {
+    "value": 49181,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/djs/70051.html"
+   },
+   "house_price": {
+    "value": 12160,
+    "type": "listing",
+    "year": 2025,
+    "source": "安居客2025年城市房价(二手挂牌均价)",
+    "url": "https://www.anjuke.com/fangjia/quanguo2025/"
+   }
+  },
+  "南通": {
+   "prov": "JS",
+   "type": "prefecture",
+   "pop_wan": {
+    "value": 775,
+    "year": 2024,
+    "source": "红黑人口库(第三方汇编)，引2024统计公报",
+    "url": "https://www.hongheiku.com/shijirenkou/563.html",
+    "note": "2025公报转载页未含人口"
+   },
+   "births": null,
+   "inc_urban": {
+    "value": 68293,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/djs/70478.html"
+   },
+   "inc_rural": {
+    "value": 36972,
+    "year": 2025,
+    "source": "2025年统计公报(红黑统计公报库转载)",
+    "url": "https://tjgb.hongheiku.com/djs/70478.html"
+   },
+   "house_price": {
+    "value": 9655,
+    "type": "listing",
+    "year": 2025,
+    "source": "安居客2025年城市房价(二手挂牌均价)",
+    "url": "https://www.anjuke.com/fangjia/quanguo2025/"
+   }
+  }
+ },
+ "gaps": [
+  "石家庄: 出生数据",
+  "保定: 房价(安居客全国页仅列前/后约100城,城市页有反爬验证)",
+  "唐山: 常住人口仅2024年；收入仅2024年",
+  "运城: 房价(安居客全国页仅列前/后约100城,城市页有反爬验证)",
+  "大同: 房价(安居客全国页仅列前/后约100城,城市页有反爬验证)",
+  "包头: 房价(安居客全国页仅列前/后约100城,城市页有反爬验证)",
+  "赤峰: 房价(安居客全国页仅列前/后约100城,城市页有反爬验证)",
+  "大连: 常住人口仅2024年",
+  "鞍山: 常住人口仅2024年",
+  "长春: 房价(安居客全国页仅列前/后约100城,城市页有反爬验证)",
+  "吉林: 常住人口仅2024年；出生数据；房价(安居客全国页仅列前/后约100城,城市页有反爬验证)",
+  "哈尔滨: 出生数据；房价(安居客全国页仅列前/后约100城,城市页有反爬验证)",
+  "齐齐哈尔: 常住人口仅2024年",
+  "大庆: 出生数据",
+  "青岛: 出生数据",
+  "临沂: 出生数据；房价(安居客全国页仅列前/后约100城,城市页有反爬验证)",
+  "潍坊: 房价(安居客全国页仅列前/后约100城,城市页有反爬验证)",
+  "菏泽: 出生数据；收入仅2024年；房价(安居客全国页仅列前/后约100城,城市页有反爬验证)",
+  "烟台: 出生数据；房价(安居客全国页仅列前/后约100城,城市页有反爬验证)",
+  "苏州: 出生数据",
+  "徐州: 房价(安居客全国页仅列前/后约100城,城市页有反爬验证)",
+  "无锡: 出生数据",
+  "南通: 常住人口仅2024年；出生数据"
+ ],
+ "notes": [
+  "北京/上海/天津 type记为municipality(直辖市),不在capital/sub-provincial/prefecture三类内",
+  "hongheiku为第三方转载/汇编站;tjgb.hongheiku.com页面为各市统计公报全文转载",
+  "births.count_wan单位万人;潍坊43029人记为4.3029万;太原36060人记为3.606万"
+ ]
+}

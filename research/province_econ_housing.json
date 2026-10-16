@@ -1,0 +1,5151 @@
+{
+ "meta": {
+  "compiled": "2026-10-16",
+  "notes": "Provincial income/consumption/house price = 2024 (China Statistical Yearbook 2025, latest complete official tables; the 2026 yearbook with 2025 data was not yet online). 2025 provincial income totals added where available. All money in RMB.",
+  "updated": "2026-10-16 (second pass: county, bride price, wages, occupations, pensions, mortgage, big-city transactions, city urban income)"
+ },
+ "provinces": {
+  "GD": {
+   "name": "广东",
+   "disp_inc": {
+    "total": 51474,
+    "urban": 61629,
+    "rural": 26729,
+    "year": 2024,
+    "unit": "元/人/年",
+    "source": "国家统计局《中国统计年鉴2025》 表6-18/6-24/6-30 分地区(城镇/农村)居民人均可支配收入 (NBS household survey)",
+    "url": [
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-18.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-24.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-30.jpg"
+    ],
+    "confidence": "high",
+    "total_2025": 53669,
+    "total_2025_source": "各省2025年统计公报, compiled by 36氪",
+    "total_2025_url": "https://www.36kr.com/p/3679779235311494",
+    "total_2025_confidence": "medium"
+   },
+   "consumption": {
+    "total": 35818,
+    "urban": 41055,
+    "rural": 23057,
+    "year": 2024,
+    "unit": "元/人/年",
+    "source": "国家统计局《中国统计年鉴2025》 表6-20/6-26/6-32 分地区(城镇/农村)居民人均消费支出",
+    "url": [
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-20.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-26.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-32.jpg"
+    ],
+    "confidence": "high"
+   },
+   "house_new_avg": {
+    "residential": 17550,
+    "all_commercial": 15884,
+    "year": 2024,
+    "unit": "元/㎡",
+    "source": "国家统计局《中国统计年鉴2025》 表19-11 按用途分新建商品房平均销售价格 (#住宅 column; NBS derives it as 销售额÷销售面积 of developer sales, whole province incl. counties)",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C19-11.jpg",
+    "confidence": "high",
+    "method": "direct NBS figure (=住宅销售额/住宅销售面积)"
+   },
+   "capital_price": {
+    "city": "广州",
+    "new": 31427,
+    "new_year": 2024,
+    "new_source": "国家统计局《中国统计年鉴2025》 表19-16 35个大中城市新建商品住宅平均销售价格 (whole municipal area incl. suburban districts/counties)",
+    "new_url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C19-16.jpg",
+    "new_confidence": "high",
+    "second_hand": 34901,
+    "second_hand_year": 2025,
+    "second_hand_source": "安居客 2025年城市房价排行 (二手房挂牌均价, listing not transaction)",
+    "second_hand_url": "https://www.anjuke.com/fangjia/quanguo2025/",
+    "second_hand_confidence": "medium",
+    "second_hand_fang": {
+     "value": 29939,
+     "period": "2026-09",
+     "type": "挂牌",
+     "source": "房天下 二手房参考均价",
+     "url": "https://fangjia.fang.com/gz/",
+     "confidence": "medium",
+     "note": null
+    },
+    "disp_inc_urban": {
+     "value": 83436,
+     "rural": 40914,
+     "year": 2024,
+     "source": "2024年广州市国民经济和社会发展统计公报",
+     "url": "https://www.gz.gov.cn/zwgk/sjfb/tjgb/content/post_10203564.html",
+     "confidence": "high"
+    }
+   },
+   "county_price": {
+    "low": 4500,
+    "high": 7000,
+    "examples": [
+     {
+      "county": "丰顺县(梅州)",
+      "price": 7181,
+      "url": "https://fangjia.gotohui.com/fjdata-59"
+     },
+     {
+      "county": "平远县(梅州)",
+      "price": 5313,
+      "url": "https://fangjia.gotohui.com/fjdata-59"
+     },
+     {
+      "county": "连州市(清远)",
+      "price": 4509,
+      "url": "https://fangjia.gotohui.com/fjdata-63"
+     }
+    ],
+    "confidence": "medium",
+    "note": "Most counties are in the poorer north, east and west of the province; the Pearl River Delta has no counties. Higher examples: 惠东 9025, 陆河 9667, 南澳 9479 (https://fangjia.gotohui.com/xtop/)",
+    "period": "~2026-09/10",
+    "type": "二手挂牌均价 (proxy for 县城 new-home price; new homes typically 0-30% higher)",
+    "source": "聚汇数据 fangjia.gotohui.com"
+   },
+   "bride_price": {
+    "avg": 50000,
+    "low": 10000,
+    "high": 50000,
+    "year": 2024,
+    "source": "惠农网 2024 listicle 'about 5万'; in 潮汕 the bride price is often returned",
+    "url": "http://news.cnhnb.com/mrdzx/detail/458058/",
+    "quality": "anecdotal",
+    "confidence": "low",
+    "tier": "low"
+   }
+  },
+  "HA": {
+   "name": "河南",
+   "disp_inc": {
+    "total": 31552,
+    "urban": 42027,
+    "rural": 21330,
+    "year": 2024,
+    "unit": "元/人/年",
+    "source": "国家统计局《中国统计年鉴2025》 表6-18/6-24/6-30 分地区(城镇/农村)居民人均可支配收入 (NBS household survey)",
+    "url": [
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-18.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-24.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-30.jpg"
+    ],
+    "confidence": "high",
+    "total_2025": 33215,
+    "total_2025_source": "各省2025年统计公报, compiled by 36氪",
+    "total_2025_url": "https://www.36kr.com/p/3679779235311494",
+    "total_2025_confidence": "medium"
+   },
+   "consumption": {
+    "total": 21956,
+    "urban": 26507,
+    "rural": 17515,
+    "year": 2024,
+    "unit": "元/人/年",
+    "source": "国家统计局《中国统计年鉴2025》 表6-20/6-26/6-32 分地区(城镇/农村)居民人均消费支出",
+    "url": [
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-20.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-26.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-32.jpg"
+    ],
+    "confidence": "high"
+   },
+   "house_new_avg": {
+    "residential": 6280,
+    "all_commercial": 6317,
+    "year": 2024,
+    "unit": "元/㎡",
+    "source": "国家统计局《中国统计年鉴2025》 表19-11 按用途分新建商品房平均销售价格 (#住宅 column; NBS derives it as 销售额÷销售面积 of developer sales, whole province incl. counties)",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C19-11.jpg",
+    "confidence": "high",
+    "method": "direct NBS figure (=住宅销售额/住宅销售面积)"
+   },
+   "capital_price": {
+    "city": "郑州",
+    "new": 7942,
+    "new_year": 2024,
+    "new_source": "国家统计局《中国统计年鉴2025》 表19-16 35个大中城市新建商品住宅平均销售价格 (whole municipal area incl. suburban districts/counties)",
+    "new_url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C19-16.jpg",
+    "new_confidence": "high",
+    "second_hand": 8504,
+    "second_hand_year": 2025,
+    "second_hand_source": "安居客 2025年城市房价排行 (二手房挂牌均价, listing not transaction)",
+    "second_hand_url": "https://www.anjuke.com/fangjia/quanguo2025/",
+    "second_hand_confidence": "medium",
+    "second_hand_fang": {
+     "value": 9587,
+     "period": "2026-09",
+     "type": "挂牌",
+     "source": "房天下 二手房参考均价",
+     "url": "https://fangjia.fang.com/zz/",
+     "confidence": "medium",
+     "note": null
+    },
+    "disp_inc_urban": {
+     "value": null,
+     "note": "not collected; use provincial urban disp_inc x ~1.15-1.35 as a rough capital premium (synthesis, low)",
+     "confidence": "none"
+    }
+   },
+   "county_price": {
+    "low": 3800,
+    "high": 5500,
+    "examples": [
+     {
+      "county": "鹿邑县(周口)",
+      "price": 4622,
+      "url": "https://fangjia.gotohui.com/fjdata-143"
+     },
+     {
+      "county": "西华县(周口)",
+      "price": 3888,
+      "url": "https://fangjia.gotohui.com/fjdata-143"
+     },
+     {
+      "county": "太康县(周口)",
+      "price": 4400,
+      "url": "https://fangjia.gotohui.com/fjdata-143"
+     }
+    ],
+    "confidence": "medium",
+    "note": "Prefecture-city resale prices are 4699-7200 (https://fangjia.gotohui.com/fjdata-14). Examples were re-verified on 2026-10-16.",
+    "period": "~2026-09/10",
+    "type": "二手挂牌均价 (proxy for 县城 new-home price; new homes typically 0-30% higher)",
+    "source": "聚汇数据 fangjia.gotohui.com"
+   },
+   "bride_price": {
+    "avg": 97800,
+    "low": 50000,
+    "high": 139100,
+    "year": 2018,
+    "source": "2018年河南彩礼大数据报告 (n=8067): avg 9.78万; 濮阳 13.91万, 商丘 13.51万, 周口 12.15万",
+    "url": "https://cloud.tencent.com/developer/news/358377",
+    "quality": "platform-survey",
+    "confidence": "medium",
+    "tier": "high"
+   }
+  },
+  "SD": {
+   "name": "山东",
+   "disp_inc": {
+    "total": 42077,
+    "urban": 54062,
+    "rural": 25257,
+    "year": 2024,
+    "unit": "元/人/年",
+    "source": "国家统计局《中国统计年鉴2025》 表6-18/6-24/6-30 分地区(城镇/农村)居民人均可支配收入 (NBS household survey)",
+    "url": [
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-18.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-24.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-30.jpg"
+    ],
+    "confidence": "high",
+    "total_2025": 44180,
+    "total_2025_source": "各省2025年统计公报, compiled by 36氪",
+    "total_2025_url": "https://www.36kr.com/p/3679779235311494",
+    "total_2025_confidence": "medium"
+   },
+   "consumption": {
+    "total": 25645,
+    "urban": 31625,
+    "rural": 17253,
+    "year": 2024,
+    "unit": "元/人/年",
+    "source": "国家统计局《中国统计年鉴2025》 表6-20/6-26/6-32 分地区(城镇/农村)居民人均消费支出",
+    "url": [
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-20.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-26.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-32.jpg"
+    ],
+    "confidence": "high"
+   },
+   "house_new_avg": {
+    "residential": 8269,
+    "all_commercial": 7957,
+    "year": 2024,
+    "unit": "元/㎡",
+    "source": "国家统计局《中国统计年鉴2025》 表19-11 按用途分新建商品房平均销售价格 (#住宅 column; NBS derives it as 销售额÷销售面积 of developer sales, whole province incl. counties)",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C19-11.jpg",
+    "confidence": "high",
+    "method": "direct NBS figure (=住宅销售额/住宅销售面积)"
+   },
+   "capital_price": {
+    "city": "济南",
+    "new": 13409,
+    "new_year": 2024,
+    "new_source": "国家统计局《中国统计年鉴2025》 表19-16 35个大中城市新建商品住宅平均销售价格 (whole municipal area incl. suburban districts/counties)",
+    "new_url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C19-16.jpg",
+    "new_confidence": "high",
+    "second_hand": 13309,
+    "second_hand_year": 2025,
+    "second_hand_source": "安居客 2025年城市房价排行 (二手房挂牌均价, listing not transaction)",
+    "second_hand_url": "https://www.anjuke.com/fangjia/quanguo2025/",
+    "second_hand_confidence": "medium",
+    "second_hand_fang": {
+     "value": 13660,
+     "period": "2026-09",
+     "type": "挂牌",
+     "source": "房天下 二手房参考均价",
+     "url": "https://fangjia.fang.com/jn/",
+     "confidence": "medium",
+     "note": null
+    },
+    "disp_inc_urban": {
+     "value": null,
+     "note": "not collected; use provincial urban disp_inc x ~1.15-1.35 as a rough capital premium (synthesis, low)",
+     "confidence": "none"
+    }
+   },
+   "county_price": {
+    "low": 3800,
+    "high": 6500,
+    "examples": [
+     {
+      "county": "巨野县(菏泽)",
+      "price": 4954,
+      "url": "https://fangjia.gotohui.com/fjdata-262"
+     },
+     {
+      "county": "曹县(菏泽)",
+      "price": 4229,
+      "url": "https://fangjia.gotohui.com/fjdata-262"
+     },
+     {
+      "county": "成武县(菏泽)",
+      "price": 3850,
+      "url": "https://fangjia.gotohui.com/fjdata-262"
+     }
+    ],
+    "confidence": "medium",
+    "note": "Only the cheapest prefecture (菏泽) was sampled. The high end is inferred from eastern Shandong prefecture resale prices of 6200-8000 (https://fangjia.gotohui.com/fjdata-25).",
+    "period": "~2026-09/10",
+    "type": "二手挂牌均价 (proxy for 县城 new-home price; new homes typically 0-30% higher)",
+    "source": "聚汇数据 fangjia.gotohui.com"
+   },
+   "bride_price": {
+    "avg": 150000,
+    "low": 60000,
+    "high": 188000,
+    "year": 2024,
+    "source": "半月谈 2024: 菏泽成武 case 18.8万; 巨野 encourages ≤6万. Shandong has the highest prevalence, with a bride price in 86.6% of marriages (谷雨 2020)",
+    "url": "https://news.sina.com.cn/s/2024-05-10/doc-inauuaxf1708120.shtml",
+    "quality": "anecdotal",
+    "confidence": "low",
+    "tier": "high"
+   }
+  },
+  "ZJ": {
+   "name": "浙江",
+   "disp_inc": {
+    "total": 67013,
+    "urban": 78251,
+    "rural": 42786,
+    "year": 2024,
+    "unit": "元/人/年",
+    "source": "国家统计局《中国统计年鉴2025》 表6-18/6-24/6-30 分地区(城镇/农村)居民人均可支配收入 (NBS household survey)",
+    "url": [
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-18.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-24.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-30.jpg"
+    ],
+    "confidence": "high",
+    "total_2025": 70240,
+    "total_2025_source": "各省2025年统计公报, compiled by 36氪",
+    "total_2025_url": "https://www.36kr.com/p/3679779235311494",
+    "total_2025_confidence": "medium"
+   },
+   "consumption": {
+    "total": 45107,
+    "urban": 50704,
+    "rural": 33043,
+    "year": 2024,
+    "unit": "元/人/年",
+    "source": "国家统计局《中国统计年鉴2025》 表6-20/6-26/6-32 分地区(城镇/农村)居民人均消费支出",
+    "url": [
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-20.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-26.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-32.jpg"
+    ],
+    "confidence": "high"
+   },
+   "house_new_avg": {
+    "residential": 17753,
+    "all_commercial": 16827,
+    "year": 2024,
+    "unit": "元/㎡",
+    "source": "国家统计局《中国统计年鉴2025》 表19-11 按用途分新建商品房平均销售价格 (#住宅 column; NBS derives it as 销售额÷销售面积 of developer sales, whole province incl. counties)",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C19-11.jpg",
+    "confidence": "high",
+    "method": "direct NBS figure (=住宅销售额/住宅销售面积)"
+   },
+   "capital_price": {
+    "city": "杭州",
+    "new": 30703,
+    "new_year": 2024,
+    "new_source": "国家统计局《中国统计年鉴2025》 表19-16 35个大中城市新建商品住宅平均销售价格 (whole municipal area incl. suburban districts/counties)",
+    "new_url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C19-16.jpg",
+    "new_confidence": "high",
+    "second_hand": 29816,
+    "second_hand_year": 2025,
+    "second_hand_source": "安居客 2025年城市房价排行 (二手房挂牌均价, listing not transaction)",
+    "second_hand_url": "https://www.anjuke.com/fangjia/quanguo2025/",
+    "second_hand_confidence": "medium",
+    "second_hand_fang": {
+     "value": 29856,
+     "period": "2026-09",
+     "type": "挂牌",
+     "source": "房天下 二手房参考均价",
+     "url": "https://fangjia.fang.com/hz/",
+     "confidence": "medium",
+     "note": null
+    },
+    "disp_inc_urban": {
+     "value": 83356,
+     "total": 76777,
+     "rural": 50805,
+     "year": 2024,
+     "source": "杭州市2024年数据 via 澎湃新闻 2025-02-13",
+     "url": "https://www.thepaper.cn/newsDetail_forward_30147952",
+     "confidence": "high"
+    }
+   },
+   "county_price": {
+    "low": 9000,
+    "high": 14000,
+    "examples": [
+     {
+      "county": "龙游县(衢州)",
+      "price": 9413,
+      "url": "https://fangjia.gotohui.com/fjdata-46"
+     },
+     {
+      "county": "常山县(衢州)",
+      "price": 10877,
+      "url": "https://fangjia.gotohui.com/fjdata-46"
+     },
+     {
+      "county": "青田县(丽水)",
+      "price": 13793,
+      "url": "https://fangjia.gotohui.com/xtop/"
+     }
+    ],
+    "confidence": "high",
+    "note": "Rich county-level cities are far higher: 义乌 26774, 瑞安 16678, 温岭 15442, 乐清 15171, 永康 14008, 慈溪 12987 (xtop).",
+    "period": "~2026-09/10",
+    "type": "二手挂牌均价 (proxy for 县城 new-home price; new homes typically 0-30% higher)",
+    "source": "聚汇数据 fangjia.gotohui.com"
+   },
+   "bride_price": {
+    "avg": 183000,
+    "low": 180000,
+    "high": 220000,
+    "year": 2020,
+    "source": "腾讯谷雨数据《2020年国人彩礼调查》(n=1846), re-reported by 中国经济时报/chinanews 2022; 李佐军 2023 gives about 22万",
+    "url": "https://www.chinanews.com.cn/sh/2022/03-01/9688556.shtml",
+    "quality": "platform-survey",
+    "confidence": "medium",
+    "tier": "very high"
+   }
+  },
+  "JS": {
+   "name": "江苏",
+   "disp_inc": {
+    "total": 55415,
+    "urban": 66173,
+    "rural": 32414,
+    "year": 2024,
+    "unit": "元/人/年",
+    "source": "国家统计局《中国统计年鉴2025》 表6-18/6-24/6-30 分地区(城镇/农村)居民人均可支配收入 (NBS household survey)",
+    "url": [
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-18.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-24.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-30.jpg"
+    ],
+    "confidence": "high",
+    "total_2025": 57971,
+    "total_2025_source": "各省2025年统计公报, compiled by 36氪",
+    "total_2025_url": "https://www.36kr.com/p/3679779235311494",
+    "total_2025_confidence": "medium"
+   },
+   "consumption": {
+    "total": 37346,
+    "urban": 42197,
+    "rural": 26975,
+    "year": 2024,
+    "unit": "元/人/年",
+    "source": "国家统计局《中国统计年鉴2025》 表6-20/6-26/6-32 分地区(城镇/农村)居民人均消费支出",
+    "url": [
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-20.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-26.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-32.jpg"
+    ],
+    "confidence": "high"
+   },
+   "house_new_avg": {
+    "residential": 11163,
+    "all_commercial": 10373,
+    "year": 2024,
+    "unit": "元/㎡",
+    "source": "国家统计局《中国统计年鉴2025》 表19-11 按用途分新建商品房平均销售价格 (#住宅 column; NBS derives it as 销售额÷销售面积 of developer sales, whole province incl. counties)",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C19-11.jpg",
+    "confidence": "high",
+    "method": "direct NBS figure (=住宅销售额/住宅销售面积)"
+   },
+   "capital_price": {
+    "city": "南京",
+    "new": 17946,
+    "new_year": 2024,
+    "new_source": "国家统计局《中国统计年鉴2025》 表19-16 35个大中城市新建商品住宅平均销售价格 (whole municipal area incl. suburban districts/counties)",
+    "new_url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C19-16.jpg",
+    "new_confidence": "high",
+    "second_hand": 18569,
+    "second_hand_year": 2025,
+    "second_hand_source": "安居客 2025年城市房价排行 (二手房挂牌均价, listing not transaction)",
+    "second_hand_url": "https://www.anjuke.com/fangjia/quanguo2025/",
+    "second_hand_confidence": "medium",
+    "second_hand_fang": {
+     "value": 24221,
+     "period": "2026-09",
+     "type": "挂牌",
+     "source": "房天下 二手房参考均价",
+     "url": "https://fangjia.fang.com/nanjing/",
+     "confidence": "medium",
+     "note": "房天下 shows a positive YoY for this city, which conflicts with NBS and 中指; use the level only"
+    },
+    "disp_inc_urban": {
+     "value": null,
+     "note": "not collected; use provincial urban disp_inc x ~1.15-1.35 as a rough capital premium (synthesis, low)",
+     "confidence": "none"
+    }
+   },
+   "county_price": {
+    "low": 5000,
+    "high": 8000,
+    "examples": [
+     {
+      "county": "建湖县(盐城)",
+      "price": 4914,
+      "url": "https://fangjia.gotohui.com/fjdata-85"
+     },
+     {
+      "county": "射阳县(盐城)",
+      "price": 5837,
+      "url": "https://fangjia.gotohui.com/fjdata-85"
+     },
+     {
+      "county": "沭阳县(宿迁)",
+      "price": 7268,
+      "url": "https://fangjia.gotohui.com/fjdata-90"
+     }
+    ],
+    "confidence": "medium",
+    "note": "These are northern Jiangsu (苏北) counties. Rich southern Jiangsu county-level cities: 昆山 16404, 宜兴 11415, 靖江 11057, 太仓 10914, 常熟 9649, 张家港 9491, 江阴 9462 (xtop).",
+    "period": "~2026-09/10",
+    "type": "二手挂牌均价 (proxy for 县城 new-home price; new homes typically 0-30% higher)",
+    "source": "聚汇数据 fangjia.gotohui.com"
+   },
+   "bride_price": {
+    "avg": 200000,
+    "low": 100000,
+    "high": 300000,
+    "year": 2023,
+    "source": "2023 toutiao listicle 'at least 20万'; 时代数据 2020 江浙沪 10万 + house",
+    "url": "https://www.toutiao.com/zixun/7502259708045068315/",
+    "quality": "media-compilation",
+    "confidence": "low",
+    "tier": "high"
+   }
+  },
+  "SC": {
+   "name": "四川",
+   "disp_inc": {
+    "total": 34325,
+    "urban": 47336,
+    "rural": 21303,
+    "year": 2024,
+    "unit": "元/人/年",
+    "source": "国家统计局《中国统计年鉴2025》 表6-18/6-24/6-30 分地区(城镇/农村)居民人均可支配收入 (NBS household survey)",
+    "url": [
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-18.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-24.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-30.jpg"
+    ],
+    "confidence": "high",
+    "total_2025": 36120,
+    "total_2025_source": "各省2025年统计公报, compiled by 36氪",
+    "total_2025_url": "https://www.36kr.com/p/3679779235311494",
+    "total_2025_confidence": "medium"
+   },
+   "consumption": {
+    "total": 24878,
+    "urban": 30874,
+    "rural": 18878,
+    "year": 2024,
+    "unit": "元/人/年",
+    "source": "国家统计局《中国统计年鉴2025》 表6-20/6-26/6-32 分地区(城镇/农村)居民人均消费支出",
+    "url": [
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-20.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-26.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-32.jpg"
+    ],
+    "confidence": "high"
+   },
+   "house_new_avg": {
+    "residential": 9770,
+    "all_commercial": 8595,
+    "year": 2024,
+    "unit": "元/㎡",
+    "source": "国家统计局《中国统计年鉴2025》 表19-11 按用途分新建商品房平均销售价格 (#住宅 column; NBS derives it as 销售额÷销售面积 of developer sales, whole province incl. counties)",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C19-11.jpg",
+    "confidence": "high",
+    "method": "direct NBS figure (=住宅销售额/住宅销售面积)"
+   },
+   "capital_price": {
+    "city": "成都",
+    "new": 19028,
+    "new_year": 2024,
+    "new_source": "国家统计局《中国统计年鉴2025》 表19-16 35个大中城市新建商品住宅平均销售价格 (whole municipal area incl. suburban districts/counties)",
+    "new_url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C19-16.jpg",
+    "new_confidence": "high",
+    "second_hand": 12995,
+    "second_hand_year": 2025,
+    "second_hand_source": "安居客 2025年城市房价排行 (二手房挂牌均价, listing not transaction)",
+    "second_hand_url": "https://www.anjuke.com/fangjia/quanguo2025/",
+    "second_hand_confidence": "medium",
+    "second_hand_fang": {
+     "value": 14274,
+     "period": "2026-09",
+     "type": "挂牌",
+     "source": "房天下 二手房参考均价",
+     "url": "https://fangjia.fang.com/cd/",
+     "confidence": "medium",
+     "note": null
+    },
+    "disp_inc_urban": {
+     "value": null,
+     "note": "Not found: the 2024 bulletin text was not located and the 2025 Chengdu yearbook PDF was unreadable. The 2021 value was 52633 (cbgc.scol.com.cn/news/2972624). Sichuan urban 2024 is 47336",
+     "confidence": "none"
+    }
+   },
+   "county_price": {
+    "low": 4000,
+    "high": 6000,
+    "examples": [
+     {
+      "county": "仪陇县(南充)",
+      "price": 5125,
+      "url": "https://fangjia.gotohui.com/fjdata-310"
+     },
+     {
+      "county": "南部县(南充)",
+      "price": 4528,
+      "url": "https://fangjia.gotohui.com/fjdata-310"
+     },
+     {
+      "county": "阆中市(南充)",
+      "price": 4038,
+      "url": "https://fangjia.gotohui.com/fjdata-310"
+     }
+    ],
+    "confidence": "medium",
+    "note": "Tourist and plateau counties are higher, e.g. 泸定 9529. 甘孜/阿坝/凉山 prefecture averages are 7000-8100 (https://fangjia.gotohui.com/fjdata-29).",
+    "period": "~2026-09/10",
+    "type": "二手挂牌均价 (proxy for 县城 new-home price; new homes typically 0-30% higher)",
+    "source": "聚汇数据 fangjia.gotohui.com"
+   },
+   "bride_price": {
+    "avg": 50000,
+    "low": 10000,
+    "high": 100000,
+    "year": 2020,
+    "source": "Sources conflict: 时代数据 2020 10万 + house + car vs 惠农网 2024 1-2万. 凉山 caps at 10万",
+    "url": "https://www.qianzhan.com/analyst/detail/329/200120-b3131889.html",
+    "quality": "media-compilation",
+    "confidence": "low",
+    "tier": "low-mid"
+   }
+  },
+  "AH": {
+   "name": "安徽",
+   "disp_inc": {
+    "total": 36782,
+    "urban": 49539,
+    "rural": 22507,
+    "year": 2024,
+    "unit": "元/人/年",
+    "source": "国家统计局《中国统计年鉴2025》 表6-18/6-24/6-30 分地区(城镇/农村)居民人均可支配收入 (NBS household survey)",
+    "url": [
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-18.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-24.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-30.jpg"
+    ],
+    "confidence": "high",
+    "total_2025": 38755,
+    "total_2025_source": "各省2025年统计公报, compiled by 36氪",
+    "total_2025_url": "https://www.36kr.com/p/3679779235311494",
+    "total_2025_confidence": "medium"
+   },
+   "consumption": {
+    "total": 24996,
+    "urban": 29323,
+    "rural": 20154,
+    "year": 2024,
+    "unit": "元/人/年",
+    "source": "国家统计局《中国统计年鉴2025》 表6-20/6-26/6-32 分地区(城镇/农村)居民人均消费支出",
+    "url": [
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-20.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-26.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-32.jpg"
+    ],
+    "confidence": "high"
+   },
+   "house_new_avg": {
+    "residential": 7772,
+    "all_commercial": 7482,
+    "year": 2024,
+    "unit": "元/㎡",
+    "source": "国家统计局《中国统计年鉴2025》 表19-11 按用途分新建商品房平均销售价格 (#住宅 column; NBS derives it as 销售额÷销售面积 of developer sales, whole province incl. counties)",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C19-11.jpg",
+    "confidence": "high",
+    "method": "direct NBS figure (=住宅销售额/住宅销售面积)"
+   },
+   "capital_price": {
+    "city": "合肥",
+    "new": 13011,
+    "new_year": 2024,
+    "new_source": "国家统计局《中国统计年鉴2025》 表19-16 35个大中城市新建商品住宅平均销售价格 (whole municipal area incl. suburban districts/counties)",
+    "new_url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C19-16.jpg",
+    "new_confidence": "high",
+    "second_hand": 11107,
+    "second_hand_year": 2025,
+    "second_hand_source": "安居客 2025年城市房价排行 (二手房挂牌均价, listing not transaction)",
+    "second_hand_url": "https://www.anjuke.com/fangjia/quanguo2025/",
+    "second_hand_confidence": "medium",
+    "second_hand_fang": {
+     "value": 13613,
+     "period": "2026-09",
+     "type": "挂牌",
+     "source": "房天下 二手房参考均价",
+     "url": "https://fangjia.fang.com/hf/",
+     "confidence": "medium",
+     "note": "房天下 shows a positive YoY for this city, which conflicts with NBS and 中指; use the level only"
+    },
+    "disp_inc_urban": {
+     "value": null,
+     "note": "not collected; use provincial urban disp_inc x ~1.15-1.35 as a rough capital premium (synthesis, low)",
+     "confidence": "none"
+    }
+   },
+   "county_price": {
+    "low": 4400,
+    "high": 6500,
+    "examples": [
+     {
+      "county": "界首市(阜阳)",
+      "price": 5378,
+      "url": "https://fangjia.gotohui.com/fjdata-95"
+     },
+     {
+      "county": "临泉县(阜阳)",
+      "price": 5165,
+      "url": "https://fangjia.gotohui.com/fjdata-95"
+     },
+     {
+      "county": "阜南县(阜阳)",
+      "price": 4478,
+      "url": "https://fangjia.gotohui.com/fjdata-95"
+     }
+    ],
+    "confidence": "medium",
+    "note": "Counties near 合肥 are higher, e.g. 肥西 9132.",
+    "period": "~2026-09/10",
+    "type": "二手挂牌均价 (proxy for 县城 new-home price; new homes typically 0-30% higher)",
+    "source": "聚汇数据 fangjia.gotohui.com"
+   },
+   "bride_price": {
+    "avg": 150000,
+    "source": "memory/unverified; in the Huang-Huai-Hai high tier per 龚为纲",
+    "confidence": "low",
+    "tier": "high"
+   }
+  },
+  "HE": {
+   "name": "河北",
+   "disp_inc": {
+    "total": 34665,
+    "urban": 45610,
+    "rural": 22022,
+    "year": 2024,
+    "unit": "元/人/年",
+    "source": "国家统计局《中国统计年鉴2025》 表6-18/6-24/6-30 分地区(城镇/农村)居民人均可支配收入 (NBS household survey)",
+    "url": [
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-18.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-24.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-30.jpg"
+    ],
+    "confidence": "high",
+    "total_2025": 36439,
+    "total_2025_source": "各省2025年统计公报, compiled by 36氪",
+    "total_2025_url": "https://www.36kr.com/p/3679779235311494",
+    "total_2025_confidence": "medium"
+   },
+   "consumption": {
+    "total": 24253,
+    "urban": 29310,
+    "rural": 18412,
+    "year": 2024,
+    "unit": "元/人/年",
+    "source": "国家统计局《中国统计年鉴2025》 表6-20/6-26/6-32 分地区(城镇/农村)居民人均消费支出",
+    "url": [
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-20.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-26.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-32.jpg"
+    ],
+    "confidence": "high"
+   },
+   "house_new_avg": {
+    "residential": 8201,
+    "all_commercial": 8121,
+    "year": 2024,
+    "unit": "元/㎡",
+    "source": "国家统计局《中国统计年鉴2025》 表19-11 按用途分新建商品房平均销售价格 (#住宅 column; NBS derives it as 销售额÷销售面积 of developer sales, whole province incl. counties)",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C19-11.jpg",
+    "confidence": "high",
+    "method": "direct NBS figure (=住宅销售额/住宅销售面积)"
+   },
+   "capital_price": {
+    "city": "石家庄",
+    "new": 11784,
+    "new_year": 2024,
+    "new_source": "国家统计局《中国统计年鉴2025》 表19-16 35个大中城市新建商品住宅平均销售价格 (whole municipal area incl. suburban districts/counties)",
+    "new_url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C19-16.jpg",
+    "new_confidence": "high",
+    "second_hand": 10853,
+    "second_hand_year": 2025,
+    "second_hand_source": "安居客 2025年城市房价排行 (二手房挂牌均价, listing not transaction)",
+    "second_hand_url": "https://www.anjuke.com/fangjia/quanguo2025/",
+    "second_hand_confidence": "medium",
+    "second_hand_fang": {
+     "value": 10251,
+     "period": "2026-09",
+     "type": "挂牌",
+     "source": "房天下 二手房参考均价",
+     "url": "https://fangjia.fang.com/sjz/",
+     "confidence": "medium",
+     "note": null
+    },
+    "disp_inc_urban": {
+     "value": null,
+     "note": "not collected; use provincial urban disp_inc x ~1.15-1.35 as a rough capital premium (synthesis, low)",
+     "confidence": "none"
+    }
+   },
+   "county_price": {
+    "low": 4500,
+    "high": 8000,
+    "examples": [
+     {
+      "county": "宁晋县(邢台)",
+      "price": 6796,
+      "url": "https://fangjia.gotohui.com/fjdata-154"
+     },
+     {
+      "county": "威县(邢台)",
+      "price": 4555,
+      "url": "https://fangjia.gotohui.com/fjdata-154"
+     },
+     {
+      "county": "平乡县(邢台)",
+      "price": 4000,
+      "url": "https://fangjia.gotohui.com/fjdata-154"
+     }
+    ],
+    "confidence": "low",
+    "note": "Counties around Beijing (环京) are higher: 大城 12817, 三河 10446, 大厂 9415, 正定 9338 (xtop). Most 环京 resale prices have been below 10k since H2 2023 (https://www.163.com/dy/article/L9C4CUJ205199DKK.html).",
+    "period": "~2026-09/10",
+    "type": "二手挂牌均价 (proxy for 县城 new-home price; new homes typically 0-30% higher)",
+    "source": "聚汇数据 fangjia.gotohui.com"
+   },
+   "bride_price": {
+    "avg": 150000,
+    "low": 150000,
+    "high": 200000,
+    "year": 2020,
+    "source": "时代数据 2020: 15万 + house + car",
+    "url": "https://www.qianzhan.com/analyst/detail/329/200120-b3131889.html",
+    "quality": "media-compilation",
+    "confidence": "low",
+    "tier": "high"
+   }
+  },
+  "HN": {
+   "name": "湖南",
+   "disp_inc": {
+    "total": 37679,
+    "urban": 51243,
+    "rural": 22204,
+    "year": 2024,
+    "unit": "元/人/年",
+    "source": "国家统计局《中国统计年鉴2025》 表6-18/6-24/6-30 分地区(城镇/农村)居民人均可支配收入 (NBS household survey)",
+    "url": [
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-18.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-24.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-30.jpg"
+    ],
+    "confidence": "high",
+    "total_2025": 39545,
+    "total_2025_source": "各省2025年统计公报, compiled by 36氪",
+    "total_2025_url": "https://www.36kr.com/p/3679779235311494",
+    "total_2025_confidence": "medium"
+   },
+   "consumption": {
+    "total": 26760,
+    "urban": 32625,
+    "rural": 20068,
+    "year": 2024,
+    "unit": "元/人/年",
+    "source": "国家统计局《中国统计年鉴2025》 表6-20/6-26/6-32 分地区(城镇/农村)居民人均消费支出",
+    "url": [
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-20.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-26.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-32.jpg"
+    ],
+    "confidence": "high"
+   },
+   "house_new_avg": {
+    "residential": 6038,
+    "all_commercial": 6164,
+    "year": 2024,
+    "unit": "元/㎡",
+    "source": "国家统计局《中国统计年鉴2025》 表19-11 按用途分新建商品房平均销售价格 (#住宅 column; NBS derives it as 销售额÷销售面积 of developer sales, whole province incl. counties)",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C19-11.jpg",
+    "confidence": "high",
+    "method": "direct NBS figure (=住宅销售额/住宅销售面积)"
+   },
+   "capital_price": {
+    "city": "长沙",
+    "new": 9997,
+    "new_year": 2024,
+    "new_source": "国家统计局《中国统计年鉴2025》 表19-16 35个大中城市新建商品住宅平均销售价格 (whole municipal area incl. suburban districts/counties)",
+    "new_url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C19-16.jpg",
+    "new_confidence": "high",
+    "second_hand": 8817,
+    "second_hand_year": 2025,
+    "second_hand_source": "安居客 2025年城市房价排行 (二手房挂牌均价, listing not transaction)",
+    "second_hand_url": "https://www.anjuke.com/fangjia/quanguo2025/",
+    "second_hand_confidence": "medium",
+    "second_hand_fang": {
+     "value": 8796,
+     "period": "2026-09",
+     "type": "挂牌",
+     "source": "房天下 二手房参考均价",
+     "url": "https://fangjia.fang.com/cs/",
+     "confidence": "medium",
+     "note": null
+    },
+    "disp_inc_urban": {
+     "value": null,
+     "note": "not collected; use provincial urban disp_inc x ~1.15-1.35 as a rough capital premium (synthesis, low)",
+     "confidence": "none"
+    }
+   },
+   "county_price": {
+    "low": 3300,
+    "high": 5000,
+    "examples": [
+     {
+      "county": "隆回县(邵阳)",
+      "price": 4986,
+      "url": "https://fangjia.gotohui.com/fjdata-185"
+     },
+     {
+      "county": "洞口县(邵阳)",
+      "price": 3972,
+      "url": "https://fangjia.gotohui.com/fjdata-185"
+     },
+     {
+      "county": "邵阳县",
+      "price": 3292,
+      "url": "https://fangjia.gotohui.com/fjdata-185"
+     }
+    ],
+    "confidence": "medium",
+    "period": "~2026-09/10",
+    "type": "二手挂牌均价 (proxy for 县城 new-home price; new homes typically 0-30% higher)",
+    "source": "聚汇数据 fangjia.gotohui.com"
+   },
+   "bride_price": {
+    "avg": 100000,
+    "source": "memory/unverified",
+    "confidence": "low",
+    "tier": "mid"
+   }
+  },
+  "GZ": {
+   "name": "贵州",
+   "disp_inc": {
+    "total": 28561,
+    "urban": 44558,
+    "rural": 15856,
+    "year": 2024,
+    "unit": "元/人/年",
+    "source": "国家统计局《中国统计年鉴2025》 表6-18/6-24/6-30 分地区(城镇/农村)居民人均可支配收入 (NBS household survey)",
+    "url": [
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-18.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-24.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-30.jpg"
+    ],
+    "confidence": "high",
+    "total_2025": 30001,
+    "total_2025_source": "各省2025年统计公报, compiled by 36氪",
+    "total_2025_url": "https://www.36kr.com/p/3679779235311494",
+    "total_2025_confidence": "medium"
+   },
+   "consumption": {
+    "total": 20871,
+    "urban": 28512,
+    "rural": 14802,
+    "year": 2024,
+    "unit": "元/人/年",
+    "source": "国家统计局《中国统计年鉴2025》 表6-20/6-26/6-32 分地区(城镇/农村)居民人均消费支出",
+    "url": [
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-20.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-26.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-32.jpg"
+    ],
+    "confidence": "high"
+   },
+   "house_new_avg": {
+    "residential": 5538,
+    "all_commercial": 5623,
+    "year": 2024,
+    "unit": "元/㎡",
+    "source": "国家统计局《中国统计年鉴2025》 表19-11 按用途分新建商品房平均销售价格 (#住宅 column; NBS derives it as 销售额÷销售面积 of developer sales, whole province incl. counties)",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C19-11.jpg",
+    "confidence": "high",
+    "method": "direct NBS figure (=住宅销售额/住宅销售面积)"
+   },
+   "capital_price": {
+    "city": "贵阳",
+    "new": 9130,
+    "new_year": 2024,
+    "new_source": "国家统计局《中国统计年鉴2025》 表19-16 35个大中城市新建商品住宅平均销售价格 (whole municipal area incl. suburban districts/counties)",
+    "new_url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C19-16.jpg",
+    "new_confidence": "high",
+    "second_hand_fang": {
+     "value": 6994,
+     "period": "2026-09",
+     "type": "挂牌",
+     "source": "房天下 二手房参考均价",
+     "url": "https://fangjia.fang.com/gy/",
+     "confidence": "medium",
+     "note": null
+    },
+    "second_hand": 6994,
+    "second_hand_year": 2026,
+    "second_hand_source": "房天下 二手房参考均价 (listing, 2026-09)",
+    "second_hand_url": "https://fangjia.fang.com/gy/",
+    "second_hand_confidence": "medium",
+    "disp_inc_urban": {
+     "value": null,
+     "note": "not collected; use provincial urban disp_inc x ~1.15-1.35 as a rough capital premium (synthesis, low)",
+     "confidence": "none"
+    }
+   },
+   "county_price": {
+    "low": 3200,
+    "high": 5000,
+    "examples": [
+     {
+      "county": "湄潭县(遵义)",
+      "price": 4936,
+      "url": "https://fangjia.gotohui.com/fjdata-126"
+     },
+     {
+      "county": "正安县(遵义)",
+      "price": 3971,
+      "url": "https://fangjia.gotohui.com/fjdata-126"
+     },
+     {
+      "county": "余庆县(遵义)",
+      "price": 3155,
+      "url": "https://fangjia.gotohui.com/fjdata-126"
+     }
+    ],
+    "confidence": "medium",
+    "note": "Outlier: 仁怀市 (Moutai) 9406.",
+    "period": "~2026-09/10",
+    "type": "二手挂牌均价 (proxy for 县城 new-home price; new homes typically 0-30% higher)",
+    "source": "聚汇数据 fangjia.gotohui.com"
+   },
+   "bride_price": {
+    "avg": 40000,
+    "source": "memory/unverified; ranked low by 龚为纲",
+    "confidence": "low",
+    "tier": "low"
+   }
+  },
+  "GX": {
+   "name": "广西",
+   "disp_inc": {
+    "total": 31125,
+    "urban": 43044,
+    "rural": 19954,
+    "year": 2024,
+    "unit": "元/人/年",
+    "source": "国家统计局《中国统计年鉴2025》 表6-18/6-24/6-30 分地区(城镇/农村)居民人均可支配收入 (NBS household survey)",
+    "url": [
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-18.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-24.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-30.jpg"
+    ],
+    "confidence": "high",
+    "total_2025": 32721,
+    "total_2025_source": "各省2025年统计公报, compiled by 36氪",
+    "total_2025_url": "https://www.36kr.com/p/3679779235311494",
+    "total_2025_confidence": "medium"
+   },
+   "consumption": {
+    "total": 21150,
+    "urban": 26084,
+    "rural": 16525,
+    "year": 2024,
+    "unit": "元/人/年",
+    "source": "国家统计局《中国统计年鉴2025》 表6-20/6-26/6-32 分地区(城镇/农村)居民人均消费支出",
+    "url": [
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-20.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-26.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-32.jpg"
+    ],
+    "confidence": "high"
+   },
+   "house_new_avg": {
+    "residential": 5926,
+    "all_commercial": 5469,
+    "year": 2024,
+    "unit": "元/㎡",
+    "source": "国家统计局《中国统计年鉴2025》 表19-11 按用途分新建商品房平均销售价格 (#住宅 column; NBS derives it as 销售额÷销售面积 of developer sales, whole province incl. counties)",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C19-11.jpg",
+    "confidence": "high",
+    "method": "direct NBS figure (=住宅销售额/住宅销售面积)"
+   },
+   "capital_price": {
+    "city": "南宁",
+    "new": 9358,
+    "new_year": 2024,
+    "new_source": "国家统计局《中国统计年鉴2025》 表19-16 35个大中城市新建商品住宅平均销售价格 (whole municipal area incl. suburban districts/counties)",
+    "new_url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C19-16.jpg",
+    "new_confidence": "high",
+    "second_hand": 8489,
+    "second_hand_year": 2025,
+    "second_hand_source": "安居客 2025年城市房价排行 (二手房挂牌均价, listing not transaction)",
+    "second_hand_url": "https://www.anjuke.com/fangjia/quanguo2025/",
+    "second_hand_confidence": "medium",
+    "second_hand_fang": {
+     "value": 8581,
+     "period": "2026-09",
+     "type": "挂牌",
+     "source": "房天下 二手房参考均价",
+     "url": "https://fangjia.fang.com/nn/",
+     "confidence": "medium",
+     "note": null
+    },
+    "disp_inc_urban": {
+     "value": null,
+     "note": "not collected; use provincial urban disp_inc x ~1.15-1.35 as a rough capital premium (synthesis, low)",
+     "confidence": "none"
+    }
+   },
+   "county_price": {
+    "low": 3800,
+    "high": 5000,
+    "examples": [
+     {
+      "county": "容县(玉林)",
+      "price": 4916,
+      "url": "https://fangjia.gotohui.com/fjdata-116"
+     },
+     {
+      "county": "博白县(玉林)",
+      "price": 4366,
+      "url": "https://fangjia.gotohui.com/fjdata-116"
+     },
+     {
+      "county": "陆川县(玉林)",
+      "price": 4074,
+      "url": "https://fangjia.gotohui.com/fjdata-116"
+     }
+    ],
+    "confidence": "medium",
+    "period": "~2026-09/10",
+    "type": "二手挂牌均价 (proxy for 县城 new-home price; new homes typically 0-30% higher)",
+    "source": "聚汇数据 fangjia.gotohui.com"
+   },
+   "bride_price": {
+    "avg": 60000,
+    "low": 20000,
+    "high": 100000,
+    "year": 2024,
+    "source": "惠农网 2024 listicle 6-10万; poorer families 2-6万",
+    "url": "http://news.cnhnb.com/mrdzx/detail/458058/",
+    "quality": "anecdotal",
+    "confidence": "low",
+    "tier": "low"
+   }
+  },
+  "YN": {
+   "name": "云南",
+   "disp_inc": {
+    "total": 29932,
+    "urban": 45312,
+    "rural": 17450,
+    "year": 2024,
+    "unit": "元/人/年",
+    "source": "国家统计局《中国统计年鉴2025》 表6-18/6-24/6-30 分地区(城镇/农村)居民人均可支配收入 (NBS household survey)",
+    "url": [
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-18.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-24.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-30.jpg"
+    ],
+    "confidence": "high",
+    "total_2025": 31311,
+    "total_2025_source": "各省2025年统计公报, compiled by 36氪",
+    "total_2025_url": "https://www.36kr.com/p/3679779235311494",
+    "total_2025_confidence": "medium"
+   },
+   "consumption": {
+    "total": 22280,
+    "urban": 29755,
+    "rural": 16214,
+    "year": 2024,
+    "unit": "元/人/年",
+    "source": "国家统计局《中国统计年鉴2025》 表6-20/6-26/6-32 分地区(城镇/农村)居民人均消费支出",
+    "url": [
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-20.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-26.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-32.jpg"
+    ],
+    "confidence": "high"
+   },
+   "house_new_avg": {
+    "residential": 7008,
+    "all_commercial": 6767,
+    "year": 2024,
+    "unit": "元/㎡",
+    "source": "国家统计局《中国统计年鉴2025》 表19-11 按用途分新建商品房平均销售价格 (#住宅 column; NBS derives it as 销售额÷销售面积 of developer sales, whole province incl. counties)",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C19-11.jpg",
+    "confidence": "high",
+    "method": "direct NBS figure (=住宅销售额/住宅销售面积)"
+   },
+   "capital_price": {
+    "city": "昆明",
+    "new": 10069,
+    "new_year": 2024,
+    "new_source": "国家统计局《中国统计年鉴2025》 表19-16 35个大中城市新建商品住宅平均销售价格 (whole municipal area incl. suburban districts/counties)",
+    "new_url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C19-16.jpg",
+    "new_confidence": "high",
+    "second_hand": 9573,
+    "second_hand_year": 2025,
+    "second_hand_source": "安居客 2025年城市房价排行 (二手房挂牌均价, listing not transaction)",
+    "second_hand_url": "https://www.anjuke.com/fangjia/quanguo2025/",
+    "second_hand_confidence": "medium",
+    "second_hand_fang": {
+     "value": 9111,
+     "period": "2026-09",
+     "type": "挂牌",
+     "source": "房天下 二手房参考均价",
+     "url": "https://fangjia.fang.com/km/",
+     "confidence": "medium",
+     "note": null
+    },
+    "disp_inc_urban": {
+     "value": null,
+     "note": "not collected; use provincial urban disp_inc x ~1.15-1.35 as a rough capital premium (synthesis, low)",
+     "confidence": "none"
+    }
+   },
+   "county_price": {
+    "low": 3800,
+    "high": 5500,
+    "examples": [
+     {
+      "county": "会泽县(曲靖)",
+      "price": 5388,
+      "url": "https://fangjia.gotohui.com/fjdata-285"
+     },
+     {
+      "county": "宣威市(曲靖)",
+      "price": 4438,
+      "url": "https://fangjia.gotohui.com/fjdata-285"
+     },
+     {
+      "county": "陆良县(曲靖)",
+      "price": 3881,
+      "url": "https://fangjia.gotohui.com/fjdata-285"
+     }
+    ],
+    "confidence": "medium",
+    "note": "Tourist areas are much higher: the 大理州 average is 13347 (https://fangjia.gotohui.com/fjdata-28).",
+    "period": "~2026-09/10",
+    "type": "二手挂牌均价 (proxy for 县城 new-home price; new homes typically 0-30% higher)",
+    "source": "聚汇数据 fangjia.gotohui.com"
+   },
+   "bride_price": {
+    "avg": 30000,
+    "source": "memory/unverified; 龚为纲 (WHU) ranks it low but gives no number",
+    "confidence": "low",
+    "tier": "low"
+   }
+  },
+  "HB": {
+   "name": "湖北",
+   "disp_inc": {
+    "total": 36947,
+    "urban": 46987,
+    "rural": 22580,
+    "year": 2024,
+    "unit": "元/人/年",
+    "source": "国家统计局《中国统计年鉴2025》 表6-18/6-24/6-30 分地区(城镇/农村)居民人均可支配收入 (NBS household survey)",
+    "url": [
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-18.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-24.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-30.jpg"
+    ],
+    "confidence": "high",
+    "total_2025": 38881,
+    "total_2025_source": "各省2025年统计公报, compiled by 36氪",
+    "total_2025_url": "https://www.36kr.com/p/3679779235311494",
+    "total_2025_confidence": "medium"
+   },
+   "consumption": {
+    "total": 27888,
+    "urban": 32473,
+    "rural": 21326,
+    "year": 2024,
+    "unit": "元/人/年",
+    "source": "国家统计局《中国统计年鉴2025》 表6-20/6-26/6-32 分地区(城镇/农村)居民人均消费支出",
+    "url": [
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-20.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-26.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-32.jpg"
+    ],
+    "confidence": "high"
+   },
+   "house_new_avg": {
+    "residential": 8247,
+    "all_commercial": 8128,
+    "year": 2024,
+    "unit": "元/㎡",
+    "source": "国家统计局《中国统计年鉴2025》 表19-11 按用途分新建商品房平均销售价格 (#住宅 column; NBS derives it as 销售额÷销售面积 of developer sales, whole province incl. counties)",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C19-11.jpg",
+    "confidence": "high",
+    "method": "direct NBS figure (=住宅销售额/住宅销售面积)"
+   },
+   "capital_price": {
+    "city": "武汉",
+    "new": 13571,
+    "new_year": 2024,
+    "new_source": "国家统计局《中国统计年鉴2025》 表19-16 35个大中城市新建商品住宅平均销售价格 (whole municipal area incl. suburban districts/counties)",
+    "new_url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C19-16.jpg",
+    "new_confidence": "high",
+    "second_hand": 10684,
+    "second_hand_year": 2025,
+    "second_hand_source": "安居客 2025年城市房价排行 (二手房挂牌均价, listing not transaction)",
+    "second_hand_url": "https://www.anjuke.com/fangjia/quanguo2025/",
+    "second_hand_confidence": "medium",
+    "second_hand_fang": {
+     "value": 12598,
+     "period": "2026-09",
+     "type": "挂牌",
+     "source": "房天下 二手房参考均价",
+     "url": "https://fangjia.fang.com/wuhan/",
+     "confidence": "medium",
+     "note": "房天下 shows a positive YoY for this city, which conflicts with NBS and 中指; use the level only"
+    },
+    "disp_inc_urban": {
+     "value": null,
+     "note": "not collected; use provincial urban disp_inc x ~1.15-1.35 as a rough capital premium (synthesis, low)",
+     "confidence": "none"
+    }
+   },
+   "county_price": {
+    "low": 3500,
+    "high": 5500,
+    "examples": [
+     {
+      "county": "麻城市(黄冈)",
+      "price": 5583,
+      "url": "https://fangjia.gotohui.com/fjdata-177"
+     },
+     {
+      "county": "蕲春县(黄冈)",
+      "price": 4279,
+      "url": "https://fangjia.gotohui.com/fjdata-177"
+     },
+     {
+      "county": "罗田县(黄冈)",
+      "price": 4015,
+      "url": "https://fangjia.gotohui.com/fjdata-177"
+     }
+    ],
+    "confidence": "medium",
+    "period": "~2026-09/10",
+    "type": "二手挂牌均价 (proxy for 县城 new-home price; new homes typically 0-30% higher)",
+    "source": "聚汇数据 fangjia.gotohui.com"
+   },
+   "bride_price": {
+    "avg": 80000,
+    "source": "memory/unverified",
+    "confidence": "low",
+    "tier": "mid"
+   }
+  },
+  "JX": {
+   "name": "江西",
+   "disp_inc": {
+    "total": 36007,
+    "urban": 47514,
+    "rural": 22673,
+    "year": 2024,
+    "unit": "元/人/年",
+    "source": "国家统计局《中国统计年鉴2025》 表6-18/6-24/6-30 分地区(城镇/农村)居民人均可支配收入 (NBS household survey)",
+    "url": [
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-18.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-24.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-30.jpg"
+    ],
+    "confidence": "high",
+    "total_2025": 37846,
+    "total_2025_source": "各省2025年统计公报, compiled by 36氪",
+    "total_2025_url": "https://www.36kr.com/p/3679779235311494",
+    "total_2025_confidence": "medium"
+   },
+   "consumption": {
+    "total": 24726,
+    "urban": 29070,
+    "rural": 19692,
+    "year": 2024,
+    "unit": "元/人/年",
+    "source": "国家统计局《中国统计年鉴2025》 表6-20/6-26/6-32 分地区(城镇/农村)居民人均消费支出",
+    "url": [
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-20.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-26.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-32.jpg"
+    ],
+    "confidence": "high"
+   },
+   "house_new_avg": {
+    "residential": 6999,
+    "all_commercial": 6949,
+    "year": 2024,
+    "unit": "元/㎡",
+    "source": "国家统计局《中国统计年鉴2025》 表19-11 按用途分新建商品房平均销售价格 (#住宅 column; NBS derives it as 销售额÷销售面积 of developer sales, whole province incl. counties)",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C19-11.jpg",
+    "confidence": "high",
+    "method": "direct NBS figure (=住宅销售额/住宅销售面积)"
+   },
+   "capital_price": {
+    "city": "南昌",
+    "new": 10073,
+    "new_year": 2024,
+    "new_source": "国家统计局《中国统计年鉴2025》 表19-16 35个大中城市新建商品住宅平均销售价格 (whole municipal area incl. suburban districts/counties)",
+    "new_url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C19-16.jpg",
+    "new_confidence": "high",
+    "second_hand": 8987,
+    "second_hand_year": 2025,
+    "second_hand_source": "安居客 2025年城市房价排行 (二手房挂牌均价, listing not transaction)",
+    "second_hand_url": "https://www.anjuke.com/fangjia/quanguo2025/",
+    "second_hand_confidence": "medium",
+    "second_hand_fang": {
+     "value": 8997,
+     "period": "2026-09",
+     "type": "挂牌",
+     "source": "房天下 二手房参考均价",
+     "url": "https://fangjia.fang.com/nc/",
+     "confidence": "medium",
+     "note": null
+    },
+    "disp_inc_urban": {
+     "value": null,
+     "note": "not collected; use provincial urban disp_inc x ~1.15-1.35 as a rough capital premium (synthesis, low)",
+     "confidence": "none"
+    }
+   },
+   "county_price": {
+    "low": 5000,
+    "high": 7500,
+    "examples": [
+     {
+      "county": "万载县(宜春)",
+      "price": 6267,
+      "url": "https://fangjia.gotohui.com/fjdata-211"
+     },
+     {
+      "county": "丰城市(宜春)",
+      "price": 5524,
+      "url": "https://fangjia.gotohui.com/fjdata-211"
+     },
+     {
+      "county": "宜丰县(宜春)",
+      "price": 5104,
+      "url": "https://fangjia.gotohui.com/fjdata-211"
+     }
+    ],
+    "confidence": "medium",
+    "note": "Some 赣州/上饶 counties list above 10k, e.g. 大余 10915 and 宁都 10706 (xtop).",
+    "period": "~2026-09/10",
+    "type": "二手挂牌均价 (proxy for 县城 new-home price; new homes typically 0-30% higher)",
+    "source": "聚汇数据 fangjia.gotohui.com"
+   },
+   "bride_price": {
+    "avg": 112000,
+    "low": 100000,
+    "high": 250000,
+    "year": 2020,
+    "source": "谷雨数据 2020 (Jiangxi >10万; 11.2万 per re-report). In rural 九江, mostly about 10万 (2022), over 5x rural income",
+    "url": "https://www.digitaling.com/articles/748957.html",
+    "url2": "https://m.gmw.cn/2023-05/19/content_1303377670.htm",
+    "quality": "platform-survey",
+    "confidence": "medium",
+    "tier": "very high",
+    "note": "Xinhua 2025: counties averaging over 15万 fell from 52 to 13 after the governance campaign (https://www.news.cn/politics/20250908/b0519c6867054fb88e5e3ad6327be3c7/c.html)"
+   }
+  },
+  "FJ": {
+   "name": "福建",
+   "disp_inc": {
+    "total": 47857,
+    "urban": 58763,
+    "rural": 28525,
+    "year": 2024,
+    "unit": "元/人/年",
+    "source": "国家统计局《中国统计年鉴2025》 表6-18/6-24/6-30 分地区(城镇/农村)居民人均可支配收入 (NBS household survey)",
+    "url": [
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-18.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-24.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-30.jpg"
+    ],
+    "confidence": "high",
+    "total_2025": 50302,
+    "total_2025_source": "各省2025年统计公报, compiled by 36氪",
+    "total_2025_url": "https://www.36kr.com/p/3679779235311494",
+    "total_2025_confidence": "medium"
+   },
+   "consumption": {
+    "total": 33876,
+    "urban": 39910,
+    "rural": 23179,
+    "year": 2024,
+    "unit": "元/人/年",
+    "source": "国家统计局《中国统计年鉴2025》 表6-20/6-26/6-32 分地区(城镇/农村)居民人均消费支出",
+    "url": [
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-20.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-26.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-32.jpg"
+    ],
+    "confidence": "high"
+   },
+   "house_new_avg": {
+    "residential": 11538,
+    "all_commercial": 10294,
+    "year": 2024,
+    "unit": "元/㎡",
+    "source": "国家统计局《中国统计年鉴2025》 表19-11 按用途分新建商品房平均销售价格 (#住宅 column; NBS derives it as 销售额÷销售面积 of developer sales, whole province incl. counties)",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C19-11.jpg",
+    "confidence": "high",
+    "method": "direct NBS figure (=住宅销售额/住宅销售面积)"
+   },
+   "capital_price": {
+    "city": "福州",
+    "new": 14986,
+    "new_year": 2024,
+    "new_source": "国家统计局《中国统计年鉴2025》 表19-16 35个大中城市新建商品住宅平均销售价格 (whole municipal area incl. suburban districts/counties)",
+    "new_url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C19-16.jpg",
+    "new_confidence": "high",
+    "second_hand": 15537,
+    "second_hand_year": 2025,
+    "second_hand_source": "安居客 2025年城市房价排行 (二手房挂牌均价, listing not transaction)",
+    "second_hand_url": "https://www.anjuke.com/fangjia/quanguo2025/",
+    "second_hand_confidence": "medium",
+    "second_hand_fang": {
+     "value": 18414,
+     "period": "2026-09",
+     "type": "挂牌",
+     "source": "房天下 二手房参考均价",
+     "url": "https://fangjia.fang.com/fz/",
+     "confidence": "medium",
+     "note": null
+    },
+    "disp_inc_urban": {
+     "value": null,
+     "note": "not collected; use provincial urban disp_inc x ~1.15-1.35 as a rough capital premium (synthesis, low)",
+     "confidence": "none"
+    }
+   },
+   "county_price": {
+    "low": 6500,
+    "high": 10000,
+    "examples": [
+     {
+      "county": "邵武市(南平)",
+      "price": 6613,
+      "url": "https://fangjia.gotohui.com/fjdata-76"
+     },
+     {
+      "county": "武平县(龙岩)",
+      "price": 7118,
+      "url": "https://fangjia.gotohui.com/fjdata-74"
+     },
+     {
+      "county": "上杭县(龙岩)",
+      "price": 8544,
+      "url": "https://fangjia.gotohui.com/fjdata-74"
+     }
+    ],
+    "confidence": "medium",
+    "note": "Coastal counties are higher: 闽侯 11368, 福清 11203, 晋江 11160 (xtop).",
+    "period": "~2026-09/10",
+    "type": "二手挂牌均价 (proxy for 县城 new-home price; new homes typically 0-30% higher)",
+    "source": "聚汇数据 fangjia.gotohui.com"
+   },
+   "bride_price": {
+    "avg": 150000,
+    "low": 100000,
+    "high": 300000,
+    "year": 2020,
+    "source": "谷雨 2020 (>10万); 时代数据 2020 (25万 + house). avg is the midpoint of these two, not a reported figure",
+    "url": "https://www.qianzhan.com/analyst/detail/329/200120-b3131889.html",
+    "quality": "media-compilation",
+    "confidence": "low",
+    "tier": "very high"
+   }
+  },
+  "SN": {
+   "name": "陕西",
+   "disp_inc": {
+    "total": 33905,
+    "urban": 46821,
+    "rural": 18199,
+    "year": 2024,
+    "unit": "元/人/年",
+    "source": "国家统计局《中国统计年鉴2025》 表6-18/6-24/6-30 分地区(城镇/农村)居民人均可支配收入 (NBS household survey)",
+    "url": [
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-18.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-24.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-30.jpg"
+    ],
+    "confidence": "high",
+    "total_2025": 35790,
+    "total_2025_source": "各省2025年统计公报, compiled by 36氪",
+    "total_2025_url": "https://www.36kr.com/p/3679779235311494",
+    "total_2025_confidence": "medium"
+   },
+   "consumption": {
+    "total": 23213,
+    "urban": 28543,
+    "rural": 16731,
+    "year": 2024,
+    "unit": "元/人/年",
+    "source": "国家统计局《中国统计年鉴2025》 表6-20/6-26/6-32 分地区(城镇/农村)居民人均消费支出",
+    "url": [
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-20.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-26.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-32.jpg"
+    ],
+    "confidence": "high"
+   },
+   "house_new_avg": {
+    "residential": 10973,
+    "all_commercial": 10675,
+    "year": 2024,
+    "unit": "元/㎡",
+    "source": "国家统计局《中国统计年鉴2025》 表19-11 按用途分新建商品房平均销售价格 (#住宅 column; NBS derives it as 销售额÷销售面积 of developer sales, whole province incl. counties)",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C19-11.jpg",
+    "confidence": "high",
+    "method": "direct NBS figure (=住宅销售额/住宅销售面积)"
+   },
+   "capital_price": {
+    "city": "西安",
+    "new": 15999,
+    "new_year": 2024,
+    "new_source": "国家统计局《中国统计年鉴2025》 表19-16 35个大中城市新建商品住宅平均销售价格 (whole municipal area incl. suburban districts/counties)",
+    "new_url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C19-16.jpg",
+    "new_confidence": "high",
+    "second_hand": 11306,
+    "second_hand_year": 2025,
+    "second_hand_source": "安居客 2025年城市房价排行 (二手房挂牌均价, listing not transaction)",
+    "second_hand_url": "https://www.anjuke.com/fangjia/quanguo2025/",
+    "second_hand_confidence": "medium",
+    "second_hand_fang": {
+     "value": 12765,
+     "period": "2026-09",
+     "type": "挂牌",
+     "source": "房天下 二手房参考均价",
+     "url": "https://fangjia.fang.com/xian/",
+     "confidence": "medium",
+     "note": "房天下 shows a positive YoY for this city, which conflicts with NBS and 中指; use the level only"
+    },
+    "disp_inc_urban": {
+     "value": null,
+     "note": "not collected; use provincial urban disp_inc x ~1.15-1.35 as a rough capital premium (synthesis, low)",
+     "confidence": "none"
+    }
+   },
+   "county_price": {
+    "low": 4000,
+    "high": 5500,
+    "examples": [
+     {
+      "county": "宁强县(汉中)",
+      "price": 5345,
+      "url": "https://fangjia.gotohui.com/fjdata-280"
+     },
+     {
+      "county": "城固县(汉中)",
+      "price": 4005,
+      "url": "https://fangjia.gotohui.com/fjdata-280"
+     },
+     {
+      "county": "勉县(汉中)",
+      "price": 3952,
+      "url": "https://fangjia.gotohui.com/fjdata-280"
+     }
+    ],
+    "confidence": "medium",
+    "note": "Energy counties are higher, e.g. 府谷 10291.",
+    "period": "~2026-09/10",
+    "type": "二手挂牌均价 (proxy for 县城 new-home price; new homes typically 0-30% higher)",
+    "source": "聚汇数据 fangjia.gotohui.com"
+   },
+   "bride_price": {
+    "avg": 100000,
+    "source": "memory/unverified",
+    "confidence": "low",
+    "tier": "mid"
+   }
+  },
+  "XJ": {
+   "name": "新疆",
+   "disp_inc": {
+    "total": 30899,
+    "urban": 42820,
+    "rural": 19427,
+    "year": 2024,
+    "unit": "元/人/年",
+    "source": "国家统计局《中国统计年鉴2025》 表6-18/6-24/6-30 分地区(城镇/农村)居民人均可支配收入 (NBS household survey)",
+    "url": [
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-18.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-24.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-30.jpg"
+    ],
+    "confidence": "high",
+    "total_2025": 32881,
+    "total_2025_source": "各省2025年统计公报, compiled by 36氪",
+    "total_2025_url": "https://www.36kr.com/p/3679779235311494",
+    "total_2025_confidence": "low"
+   },
+   "consumption": {
+    "total": 21364,
+    "urban": 28248,
+    "rural": 14738,
+    "year": 2024,
+    "unit": "元/人/年",
+    "source": "国家统计局《中国统计年鉴2025》 表6-20/6-26/6-32 分地区(城镇/农村)居民人均消费支出",
+    "url": [
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-20.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-26.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-32.jpg"
+    ],
+    "confidence": "high"
+   },
+   "house_new_avg": {
+    "residential": 5591,
+    "all_commercial": 5993,
+    "year": 2024,
+    "unit": "元/㎡",
+    "source": "国家统计局《中国统计年鉴2025》 表19-11 按用途分新建商品房平均销售价格 (#住宅 column; NBS derives it as 销售额÷销售面积 of developer sales, whole province incl. counties)",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C19-11.jpg",
+    "confidence": "high",
+    "method": "direct NBS figure (=住宅销售额/住宅销售面积)"
+   },
+   "capital_price": {
+    "city": "乌鲁木齐",
+    "new": 8828,
+    "new_year": 2024,
+    "new_source": "国家统计局《中国统计年鉴2025》 表19-16 35个大中城市新建商品住宅平均销售价格 (whole municipal area incl. suburban districts/counties)",
+    "new_url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C19-16.jpg",
+    "new_confidence": "high",
+    "second_hand": 8252,
+    "second_hand_year": 2025,
+    "second_hand_source": "安居客 2025年城市房价排行 (二手房挂牌均价, listing not transaction)",
+    "second_hand_url": "https://www.anjuke.com/fangjia/quanguo2025/",
+    "second_hand_confidence": "medium",
+    "second_hand_fang": {
+     "value": 8367,
+     "period": "2026-09",
+     "type": "挂牌",
+     "source": "房天下 二手房参考均价",
+     "url": "https://fangjia.fang.com/xj/",
+     "confidence": "medium",
+     "note": null
+    },
+    "disp_inc_urban": {
+     "value": null,
+     "note": "not collected; use provincial urban disp_inc x ~1.15-1.35 as a rough capital premium (synthesis, low)",
+     "confidence": "none"
+    }
+   },
+   "county_price": {
+    "low": 3800,
+    "high": 6000,
+    "examples": [
+     {
+      "county": "莎车县(喀什)",
+      "price": 6077,
+      "url": "https://fangjia.gotohui.com/fjdata-356"
+     },
+     {
+      "county": "疏附县(喀什)",
+      "price": 4655,
+      "url": "https://fangjia.gotohui.com/fjdata-356"
+     },
+     {
+      "county": "疏勒县(喀什)",
+      "price": 3816,
+      "url": "https://fangjia.gotohui.com/fjdata-356"
+     }
+    ],
+    "confidence": "medium",
+    "period": "~2026-09/10",
+    "type": "二手挂牌均价 (proxy for 县城 new-home price; new homes typically 0-30% higher)",
+    "source": "聚汇数据 fangjia.gotohui.com"
+   },
+   "bride_price": {
+    "avg": 30000,
+    "source": "memory/unverified; ranked low by 龚为纲",
+    "confidence": "low",
+    "tier": "low"
+   }
+  },
+  "SX": {
+   "name": "山西",
+   "disp_inc": {
+    "total": 32441,
+    "urban": 43036,
+    "rural": 18741,
+    "year": 2024,
+    "unit": "元/人/年",
+    "source": "国家统计局《中国统计年鉴2025》 表6-18/6-24/6-30 分地区(城镇/农村)居民人均可支配收入 (NBS household survey)",
+    "url": [
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-18.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-24.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-30.jpg"
+    ],
+    "confidence": "high",
+    "total_2025": 33923,
+    "total_2025_source": "各省2025年统计公报, compiled by 36氪",
+    "total_2025_url": "https://www.36kr.com/p/3679779235311494",
+    "total_2025_confidence": "medium"
+   },
+   "consumption": {
+    "total": 21090,
+    "urban": 26089,
+    "rural": 14626,
+    "year": 2024,
+    "unit": "元/人/年",
+    "source": "国家统计局《中国统计年鉴2025》 表6-20/6-26/6-32 分地区(城镇/农村)居民人均消费支出",
+    "url": [
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-20.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-26.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-32.jpg"
+    ],
+    "confidence": "high"
+   },
+   "house_new_avg": {
+    "residential": 6871,
+    "all_commercial": 6971,
+    "year": 2024,
+    "unit": "元/㎡",
+    "source": "国家统计局《中国统计年鉴2025》 表19-11 按用途分新建商品房平均销售价格 (#住宅 column; NBS derives it as 销售额÷销售面积 of developer sales, whole province incl. counties)",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C19-11.jpg",
+    "confidence": "high",
+    "method": "direct NBS figure (=住宅销售额/住宅销售面积)"
+   },
+   "capital_price": {
+    "city": "太原",
+    "new": 11424,
+    "new_year": 2024,
+    "new_source": "国家统计局《中国统计年鉴2025》 表19-16 35个大中城市新建商品住宅平均销售价格 (whole municipal area incl. suburban districts/counties)",
+    "new_url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C19-16.jpg",
+    "new_confidence": "high",
+    "second_hand": 8536,
+    "second_hand_year": 2025,
+    "second_hand_source": "安居客 2025年城市房价排行 (二手房挂牌均价, listing not transaction)",
+    "second_hand_url": "https://www.anjuke.com/fangjia/quanguo2025/",
+    "second_hand_confidence": "medium",
+    "second_hand_fang": {
+     "value": 8720,
+     "period": "2026-09",
+     "type": "挂牌",
+     "source": "房天下 二手房参考均价",
+     "url": "https://fangjia.fang.com/taiyuan/",
+     "confidence": "medium",
+     "note": null
+    },
+    "disp_inc_urban": {
+     "value": null,
+     "note": "not collected; use provincial urban disp_inc x ~1.15-1.35 as a rough capital premium (synthesis, low)",
+     "confidence": "none"
+    }
+   },
+   "county_price": {
+    "low": 3900,
+    "high": 6000,
+    "examples": [
+     {
+      "county": "平陆县(运城)",
+      "price": 5961,
+      "url": "https://fangjia.gotohui.com/fjdata-272"
+     },
+     {
+      "county": "临猗县(运城)",
+      "price": 4214,
+      "url": "https://fangjia.gotohui.com/fjdata-272"
+     },
+     {
+      "county": "芮城县(运城)",
+      "price": 3932,
+      "url": "https://fangjia.gotohui.com/fjdata-272"
+     }
+    ],
+    "confidence": "medium",
+    "note": "Coal-county outlier: 襄垣 10382.",
+    "period": "~2026-09/10",
+    "type": "二手挂牌均价 (proxy for 县城 new-home price; new homes typically 0-30% higher)",
+    "source": "聚汇数据 fangjia.gotohui.com"
+   },
+   "bride_price": {
+    "avg": 150000,
+    "low": 60000,
+    "high": 188000,
+    "year": 2025,
+    "source": "新华视点 2025: 吉县 case first asked 18.8万; 运城盐湖 cap ≤6万",
+    "url": "https://www.news.cn/politics/20250908/b0519c6867054fb88e5e3ad6327be3c7/c.html",
+    "quality": "anecdotal",
+    "confidence": "low",
+    "tier": "high"
+   }
+  },
+  "GS": {
+   "name": "甘肃",
+   "disp_inc": {
+    "total": 26612,
+    "urban": 41842,
+    "rural": 14105,
+    "year": 2024,
+    "unit": "元/人/年",
+    "source": "国家统计局《中国统计年鉴2025》 表6-18/6-24/6-30 分地区(城镇/农村)居民人均可支配收入 (NBS household survey)",
+    "url": [
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-18.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-24.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-30.jpg"
+    ],
+    "confidence": "high",
+    "total_2025": 28224,
+    "total_2025_source": "各省2025年统计公报, compiled by 36氪",
+    "total_2025_url": "https://www.36kr.com/p/3679779235311494",
+    "total_2025_confidence": "medium"
+   },
+   "consumption": {
+    "total": 19829,
+    "urban": 28013,
+    "rural": 13107,
+    "year": 2024,
+    "unit": "元/人/年",
+    "source": "国家统计局《中国统计年鉴2025》 表6-20/6-26/6-32 分地区(城镇/农村)居民人均消费支出",
+    "url": [
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-20.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-26.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-32.jpg"
+    ],
+    "confidence": "high"
+   },
+   "house_new_avg": {
+    "residential": 5789,
+    "all_commercial": 5942,
+    "year": 2024,
+    "unit": "元/㎡",
+    "source": "国家统计局《中国统计年鉴2025》 表19-11 按用途分新建商品房平均销售价格 (#住宅 column; NBS derives it as 销售额÷销售面积 of developer sales, whole province incl. counties)",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C19-11.jpg",
+    "confidence": "high",
+    "method": "direct NBS figure (=住宅销售额/住宅销售面积)"
+   },
+   "capital_price": {
+    "city": "兰州",
+    "new": 7886,
+    "new_year": 2024,
+    "new_source": "国家统计局《中国统计年鉴2025》 表19-16 35个大中城市新建商品住宅平均销售价格 (whole municipal area incl. suburban districts/counties)",
+    "new_url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C19-16.jpg",
+    "new_confidence": "high",
+    "second_hand": 8855,
+    "second_hand_year": 2025,
+    "second_hand_source": "安居客 2025年城市房价排行 (二手房挂牌均价, listing not transaction)",
+    "second_hand_url": "https://www.anjuke.com/fangjia/quanguo2025/",
+    "second_hand_confidence": "medium",
+    "second_hand_fang": {
+     "value": 8851,
+     "period": "2026-09",
+     "type": "挂牌",
+     "source": "房天下 二手房参考均价",
+     "url": "https://fangjia.fang.com/lz/",
+     "confidence": "medium",
+     "note": null
+    },
+    "disp_inc_urban": {
+     "value": null,
+     "note": "not collected; use provincial urban disp_inc x ~1.15-1.35 as a rough capital premium (synthesis, low)",
+     "confidence": "none"
+    }
+   },
+   "county_price": {
+    "low": 4800,
+    "high": 7000,
+    "examples": [
+     {
+      "county": "陇西县(定西)",
+      "price": 5525,
+      "url": "https://fangjia.gotohui.com/fjdata-331"
+     },
+     {
+      "county": "岷县(定西)",
+      "price": 4902,
+      "url": "https://fangjia.gotohui.com/fjdata-331"
+     },
+     {
+      "county": "秦安县(天水)",
+      "price": 6808,
+      "url": "https://fangjia.gotohui.com/fjdata-325"
+     }
+    ],
+    "confidence": "medium",
+    "period": "~2026-09/10",
+    "type": "二手挂牌均价 (proxy for 县城 new-home price; new homes typically 0-30% higher)",
+    "source": "聚汇数据 fangjia.gotohui.com"
+   },
+   "bride_price": {
+    "avg": 44100,
+    "low": 50000,
+    "high": 350000,
+    "year": 2018,
+    "source": "2018 Gansu research cited by Sixth Tone: avg 44100. 2025 county caps: 华池 12万, 天祝/肃州 6万, 陇西 5万",
+    "url": "https://www.sixthtone.com/news/1017137",
+    "url2": "https://www.thepaper.cn/newsDetail_forward_31167399",
+    "quality": "academic (dated)",
+    "confidence": "low",
+    "tier": "high",
+    "note": "The 华池 cap of 12万 is about 9x 2024 per-capita income, which implies actual amounts above 44k in 2024. A game value of 100000-150000 is suggested; that is a synthesis."
+   }
+  },
+  "LN": {
+   "name": "辽宁",
+   "disp_inc": {
+    "total": 39844,
+    "urban": 47982,
+    "rural": 22744,
+    "year": 2024,
+    "unit": "元/人/年",
+    "source": "国家统计局《中国统计年鉴2025》 表6-18/6-24/6-30 分地区(城镇/农村)居民人均可支配收入 (NBS household survey)",
+    "url": [
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-18.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-24.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-30.jpg"
+    ],
+    "confidence": "high",
+    "total_2025": 41703,
+    "total_2025_source": "各省2025年统计公报, compiled by 36氪",
+    "total_2025_url": "https://www.36kr.com/p/3679779235311494",
+    "total_2025_confidence": "medium"
+   },
+   "consumption": {
+    "total": 25963,
+    "urban": 30350,
+    "rural": 16742,
+    "year": 2024,
+    "unit": "元/人/年",
+    "source": "国家统计局《中国统计年鉴2025》 表6-20/6-26/6-32 分地区(城镇/农村)居民人均消费支出",
+    "url": [
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-20.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-26.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-32.jpg"
+    ],
+    "confidence": "high"
+   },
+   "house_new_avg": {
+    "residential": 7509,
+    "all_commercial": 7469,
+    "year": 2024,
+    "unit": "元/㎡",
+    "source": "国家统计局《中国统计年鉴2025》 表19-11 按用途分新建商品房平均销售价格 (#住宅 column; NBS derives it as 销售额÷销售面积 of developer sales, whole province incl. counties)",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C19-11.jpg",
+    "confidence": "high",
+    "method": "direct NBS figure (=住宅销售额/住宅销售面积)"
+   },
+   "capital_price": {
+    "city": "沈阳",
+    "new": 10849,
+    "new_year": 2024,
+    "new_source": "国家统计局《中国统计年鉴2025》 表19-16 35个大中城市新建商品住宅平均销售价格 (whole municipal area incl. suburban districts/counties)",
+    "new_url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C19-16.jpg",
+    "new_confidence": "high",
+    "second_hand": 7708,
+    "second_hand_year": 2025,
+    "second_hand_source": "安居客 2025年城市房价排行 (二手房挂牌均价, listing not transaction)",
+    "second_hand_url": "https://www.anjuke.com/fangjia/quanguo2025/",
+    "second_hand_confidence": "medium",
+    "second_hand_fang": {
+     "value": 7859,
+     "period": "2026-09",
+     "type": "挂牌",
+     "source": "房天下 二手房参考均价",
+     "url": "https://fangjia.fang.com/sy/",
+     "confidence": "medium",
+     "note": null
+    },
+    "disp_inc_urban": {
+     "value": null,
+     "note": "not collected; use provincial urban disp_inc x ~1.15-1.35 as a rough capital premium (synthesis, low)",
+     "confidence": "none"
+    }
+   },
+   "county_price": {
+    "low": 3000,
+    "high": 5000,
+    "examples": [
+     {
+      "county": "凌源市(朝阳)",
+      "price": 4811,
+      "url": "https://fangjia.gotohui.com/fjdata-226"
+     },
+     {
+      "county": "建平县(朝阳)",
+      "price": 3601,
+      "url": "https://fangjia.gotohui.com/fjdata-226"
+     },
+     {
+      "county": "朝阳县",
+      "price": 3196,
+      "url": "https://fangjia.gotohui.com/fjdata-226"
+     }
+    ],
+    "confidence": "medium",
+    "period": "~2026-09/10",
+    "type": "二手挂牌均价 (proxy for 县城 new-home price; new homes typically 0-30% higher)",
+    "source": "聚汇数据 fangjia.gotohui.com"
+   },
+   "bride_price": {
+    "avg": 150000,
+    "low": 50000,
+    "high": 250000,
+    "year": 2024,
+    "source": "半月谈 2024: 鞍山台安 rose from 5-8万 to about 15万 over 10 years; a 沈阳 case of 15万",
+    "url": "https://news.sina.com.cn/s/2024-05-10/doc-inauuaxf1708120.shtml",
+    "quality": "media-compilation",
+    "confidence": "medium",
+    "tier": "high"
+   }
+  },
+  "CQ": {
+   "name": "重庆",
+   "disp_inc": {
+    "total": 39713,
+    "urban": 49778,
+    "rural": 22221,
+    "year": 2024,
+    "unit": "元/人/年",
+    "source": "国家统计局《中国统计年鉴2025》 表6-18/6-24/6-30 分地区(城镇/农村)居民人均可支配收入 (NBS household survey)",
+    "url": [
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-18.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-24.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-30.jpg"
+    ],
+    "confidence": "high",
+    "total_2025": 41580,
+    "total_2025_source": "各省2025年统计公报, compiled by 36氪",
+    "total_2025_url": "https://www.36kr.com/p/3679779235311494",
+    "total_2025_confidence": "medium"
+   },
+   "consumption": {
+    "total": 27451,
+    "urban": 32360,
+    "rural": 18918,
+    "year": 2024,
+    "unit": "元/人/年",
+    "source": "国家统计局《中国统计年鉴2025》 表6-20/6-26/6-32 分地区(城镇/农村)居民人均消费支出",
+    "url": [
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-20.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-26.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-32.jpg"
+    ],
+    "confidence": "high"
+   },
+   "house_new_avg": {
+    "residential": 8243,
+    "all_commercial": 6898,
+    "year": 2024,
+    "unit": "元/㎡",
+    "source": "国家统计局《中国统计年鉴2025》 表19-11 按用途分新建商品房平均销售价格 (#住宅 column; NBS derives it as 销售额÷销售面积 of developer sales, whole province incl. counties)",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C19-11.jpg",
+    "confidence": "high",
+    "method": "direct NBS figure (=住宅销售额/住宅销售面积)"
+   },
+   "capital_price": {
+    "city": "重庆",
+    "new": 8243,
+    "new_year": 2024,
+    "new_source": "国家统计局《中国统计年鉴2025》 表19-16 35个大中城市新建商品住宅平均销售价格 (whole municipal area incl. suburban districts/counties)",
+    "new_url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C19-16.jpg",
+    "new_confidence": "high",
+    "second_hand": 8386,
+    "second_hand_year": 2025,
+    "second_hand_source": "安居客 2025年城市房价排行 (二手房挂牌均价, listing not transaction)",
+    "second_hand_url": "https://www.anjuke.com/fangjia/quanguo2025/",
+    "second_hand_confidence": "medium",
+    "second_hand_fang": {
+     "value": 9290,
+     "period": "2026-09",
+     "type": "挂牌",
+     "source": "房天下 二手房参考均价",
+     "url": "https://fangjia.fang.com/cq/",
+     "confidence": "medium",
+     "note": null
+    },
+    "disp_inc_urban": {
+     "value": 49778,
+     "year": 2024,
+     "note": "province-level municipality = provincial urban figure",
+     "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-24.jpg",
+     "confidence": "high"
+    }
+   },
+   "county_price": {
+    "low": 4800,
+    "high": 7500,
+    "examples": [
+     {
+      "county": "巫溪县",
+      "price": 5355,
+      "url": "https://fangjia.gotohui.com/fjdata-6"
+     },
+     {
+      "county": "秀山县",
+      "price": 5464,
+      "url": "https://fangjia.gotohui.com/fjdata-6"
+     },
+     {
+      "county": "奉节县",
+      "price": 7289,
+      "url": "https://fangjia.gotohui.com/fjdata-6"
+     }
+    ],
+    "confidence": "medium",
+    "note": "城口 9178 looks anomalous and is excluded.",
+    "period": "~2026-09/10",
+    "type": "二手挂牌均价 (proxy for 县城 new-home price; new homes typically 0-30% higher)",
+    "source": "聚汇数据 fangjia.gotohui.com"
+   },
+   "bride_price": {
+    "avg": 30000,
+    "year": 2023,
+    "source": "toutiao 2023 listicle: lowest nationally, '几万元'",
+    "url": "https://www.toutiao.com/zixun/7502259708045068315/",
+    "quality": "anecdotal",
+    "confidence": "low",
+    "tier": "low"
+   }
+  },
+  "NM": {
+   "name": "内蒙古",
+   "disp_inc": {
+    "total": 40077,
+    "urban": 50888,
+    "rural": 22543,
+    "year": 2024,
+    "unit": "元/人/年",
+    "source": "国家统计局《中国统计年鉴2025》 表6-18/6-24/6-30 分地区(城镇/农村)居民人均可支配收入 (NBS household survey)",
+    "url": [
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-18.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-24.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-30.jpg"
+    ],
+    "confidence": "high",
+    "total_2025": 41921,
+    "total_2025_source": "各省2025年统计公报, compiled by 36氪",
+    "total_2025_url": "https://www.36kr.com/p/3679779235311494",
+    "total_2025_confidence": "medium"
+   },
+   "consumption": {
+    "total": 28113,
+    "urban": 33342,
+    "rural": 19631,
+    "year": 2024,
+    "unit": "元/人/年",
+    "source": "国家统计局《中国统计年鉴2025》 表6-20/6-26/6-32 分地区(城镇/农村)居民人均消费支出",
+    "url": [
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-20.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-26.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-32.jpg"
+    ],
+    "confidence": "high"
+   },
+   "house_new_avg": {
+    "residential": 6547,
+    "all_commercial": 6585,
+    "year": 2024,
+    "unit": "元/㎡",
+    "source": "国家统计局《中国统计年鉴2025》 表19-11 按用途分新建商品房平均销售价格 (#住宅 column; NBS derives it as 销售额÷销售面积 of developer sales, whole province incl. counties)",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C19-11.jpg",
+    "confidence": "high",
+    "method": "direct NBS figure (=住宅销售额/住宅销售面积)"
+   },
+   "capital_price": {
+    "city": "呼和浩特",
+    "new": 10522,
+    "new_year": 2024,
+    "new_source": "国家统计局《中国统计年鉴2025》 表19-16 35个大中城市新建商品住宅平均销售价格 (whole municipal area incl. suburban districts/counties)",
+    "new_url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C19-16.jpg",
+    "new_confidence": "high",
+    "second_hand": 8124,
+    "second_hand_year": 2025,
+    "second_hand_source": "安居客 2025年城市房价排行 (二手房挂牌均价, listing not transaction)",
+    "second_hand_url": "https://www.anjuke.com/fangjia/quanguo2025/",
+    "second_hand_confidence": "medium",
+    "second_hand_fang": {
+     "value": 7623,
+     "period": "2026-09",
+     "type": "挂牌",
+     "source": "房天下 二手房参考均价",
+     "url": "https://fangjia.fang.com/nm/",
+     "confidence": "medium",
+     "note": null
+    },
+    "disp_inc_urban": {
+     "value": null,
+     "note": "not collected; use provincial urban disp_inc x ~1.15-1.35 as a rough capital premium (synthesis, low)",
+     "confidence": "none"
+    }
+   },
+   "county_price": {
+    "low": 3300,
+    "high": 6000,
+    "examples": [
+     {
+      "county": "丰镇市(乌兰察布)",
+      "price": 4575,
+      "url": "https://fangjia.gotohui.com/fjdata-2354"
+     },
+     {
+      "county": "化德县(乌兰察布)",
+      "price": 3326,
+      "url": "https://fangjia.gotohui.com/fjdata-2354"
+     },
+     {
+      "county": "宁城县(赤峰)",
+      "price": 5761,
+      "url": "https://fangjia.gotohui.com/fjdata-354"
+     }
+    ],
+    "confidence": "medium",
+    "note": "Rich mining banners are higher: 准格尔旗 about 9000, 伊金霍洛旗 7000-7900.",
+    "period": "~2026-09/10",
+    "type": "二手挂牌均价 (proxy for 县城 new-home price; new homes typically 0-30% higher)",
+    "source": "聚汇数据 fangjia.gotohui.com"
+   },
+   "bride_price": {
+    "avg": 120000,
+    "low": 100000,
+    "high": 200000,
+    "year": 2020,
+    "source": "谷雨 2020 (>10万); a 2024 case of 20万 + 三金",
+    "url": "https://paper.people.com.cn/zgcsbwap/html/2024-05/13/content_26057215.htm",
+    "quality": "platform-survey",
+    "confidence": "low",
+    "tier": "high"
+   }
+  },
+  "BJ": {
+   "name": "北京",
+   "disp_inc": {
+    "total": 85415,
+    "urban": 92464,
+    "rural": 39856,
+    "year": 2024,
+    "unit": "元/人/年",
+    "source": "国家统计局《中国统计年鉴2025》 表6-18/6-24/6-30 分地区(城镇/农村)居民人均可支配收入 (NBS household survey)",
+    "url": [
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-18.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-24.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-30.jpg"
+    ],
+    "confidence": "high",
+    "total_2025": 89090,
+    "total_2025_source": "各省2025年统计公报, compiled by 36氪",
+    "total_2025_url": "https://www.36kr.com/p/3679779235311494",
+    "total_2025_confidence": "medium"
+   },
+   "consumption": {
+    "total": 49748,
+    "urban": 53214,
+    "rural": 27349,
+    "year": 2024,
+    "unit": "元/人/年",
+    "source": "国家统计局《中国统计年鉴2025》 表6-20/6-26/6-32 分地区(城镇/农村)居民人均消费支出",
+    "url": [
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-20.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-26.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-32.jpg"
+    ],
+    "confidence": "high"
+   },
+   "house_new_avg": {
+    "residential": 38673,
+    "all_commercial": 31976,
+    "year": 2024,
+    "unit": "元/㎡",
+    "source": "国家统计局《中国统计年鉴2025》 表19-11 按用途分新建商品房平均销售价格 (#住宅 column; NBS derives it as 销售额÷销售面积 of developer sales, whole province incl. counties)",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C19-11.jpg",
+    "confidence": "high",
+    "method": "direct NBS figure (=住宅销售额/住宅销售面积)"
+   },
+   "capital_price": {
+    "city": "北京",
+    "new": 38673,
+    "new_year": 2024,
+    "new_source": "国家统计局《中国统计年鉴2025》 表19-16 35个大中城市新建商品住宅平均销售价格 (whole municipal area incl. suburban districts/counties)",
+    "new_url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C19-16.jpg",
+    "new_confidence": "high",
+    "second_hand": 39448,
+    "second_hand_year": 2025,
+    "second_hand_source": "安居客 2025年城市房价排行 (二手房挂牌均价, listing not transaction)",
+    "second_hand_url": "https://www.anjuke.com/fangjia/quanguo2025/",
+    "second_hand_confidence": "medium",
+    "second_hand_fang": {
+     "value": 54156,
+     "period": "2026-09",
+     "type": "挂牌",
+     "source": "房天下 二手房参考均价",
+     "url": "https://fangjia.fang.com/bj/",
+     "confidence": "medium",
+     "note": null
+    },
+    "disp_inc_urban": {
+     "value": 92464,
+     "year": 2024,
+     "note": "province-level municipality = provincial urban figure",
+     "source": "中国统计年鉴2025 表6-24",
+     "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-24.jpg",
+     "confidence": "high"
+    }
+   },
+   "county_price": {
+    "low": 14500,
+    "high": 20000,
+    "examples": [
+     {
+      "county": "延庆区",
+      "price": 14755,
+      "url": "https://fangjia.gotohui.com/fjdata-1"
+     },
+     {
+      "county": "平谷区",
+      "price": 14911,
+      "url": "https://fangjia.gotohui.com/fjdata-1"
+     },
+     {
+      "county": "密云区",
+      "price": 16916,
+      "url": "https://fangjia.gotohui.com/fjdata-1"
+     }
+    ],
+    "confidence": "high",
+    "note": "Beijing has no counties; these are outer districts.",
+    "period": "~2026-09/10",
+    "type": "二手挂牌均价 (proxy for 县城 new-home price; new homes typically 0-30% higher)",
+    "source": "聚汇数据 fangjia.gotohui.com"
+   },
+   "bride_price": {
+    "avg": 50000,
+    "low": 0,
+    "high": 80000,
+    "year": 2024,
+    "source": "时代数据 2020: 0; 惠农网 2024 listicle: 4/6/8万",
+    "url": "https://www.qianzhan.com/analyst/detail/329/200120-b3131889.html",
+    "quality": "media-compilation",
+    "confidence": "low",
+    "tier": "low (the house matters more)"
+   }
+  },
+  "SH": {
+   "name": "上海",
+   "disp_inc": {
+    "total": 88366,
+    "urban": 93095,
+    "rural": 45644,
+    "year": 2024,
+    "unit": "元/人/年",
+    "source": "国家统计局《中国统计年鉴2025》 表6-18/6-24/6-30 分地区(城镇/农村)居民人均可支配收入 (NBS household survey)",
+    "url": [
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-18.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-24.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-30.jpg"
+    ],
+    "confidence": "high",
+    "total_2025": 91987,
+    "total_2025_source": "各省2025年统计公报, compiled by 36氪",
+    "total_2025_url": "https://www.36kr.com/p/3679779235311494",
+    "total_2025_confidence": "medium"
+   },
+   "consumption": {
+    "total": 52722,
+    "urban": 54980,
+    "rural": 32320,
+    "year": 2024,
+    "unit": "元/人/年",
+    "source": "国家统计局《中国统计年鉴2025》 表6-20/6-26/6-32 分地区(城镇/农村)居民人均消费支出",
+    "url": [
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-20.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-26.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-32.jpg"
+    ],
+    "confidence": "high"
+   },
+   "house_new_avg": {
+    "residential": 47223,
+    "all_commercial": 41484,
+    "year": 2024,
+    "unit": "元/㎡",
+    "source": "国家统计局《中国统计年鉴2025》 表19-11 按用途分新建商品房平均销售价格 (#住宅 column; NBS derives it as 销售额÷销售面积 of developer sales, whole province incl. counties)",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C19-11.jpg",
+    "confidence": "high",
+    "method": "direct NBS figure (=住宅销售额/住宅销售面积)"
+   },
+   "capital_price": {
+    "city": "上海",
+    "new": 47223,
+    "new_year": 2024,
+    "new_source": "国家统计局《中国统计年鉴2025》 表19-16 35个大中城市新建商品住宅平均销售价格 (whole municipal area incl. suburban districts/counties)",
+    "new_url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C19-16.jpg",
+    "new_confidence": "high",
+    "second_hand": 42749,
+    "second_hand_year": 2025,
+    "second_hand_source": "安居客 2025年城市房价排行 (二手房挂牌均价, listing not transaction)",
+    "second_hand_url": "https://www.anjuke.com/fangjia/quanguo2025/",
+    "second_hand_confidence": "medium",
+    "second_hand_fang": {
+     "value": 51624,
+     "period": "2026-09",
+     "type": "挂牌",
+     "source": "房天下 二手房参考均价",
+     "url": "https://fangjia.fang.com/sh/",
+     "confidence": "medium",
+     "note": null
+    },
+    "disp_inc_urban": {
+     "value": 93095,
+     "year": 2024,
+     "source": "中国统计年鉴2025 表6-24",
+     "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-24.jpg",
+     "confidence": "high"
+    }
+   },
+   "county_price": {
+    "low": 14000,
+    "high": 24000,
+    "examples": [
+     {
+      "county": "金山区",
+      "price": 14450,
+      "url": "https://fangjia.gotohui.com/fjdata-3"
+     },
+     {
+      "county": "崇明区",
+      "price": 14659,
+      "url": "https://fangjia.gotohui.com/fjdata-3"
+     },
+     {
+      "county": "奉贤区",
+      "price": 23954,
+      "url": "https://fangjia.gotohui.com/fjdata-3"
+     }
+    ],
+    "confidence": "high",
+    "note": "Shanghai has no counties; these are outer districts.",
+    "period": "~2026-09/10",
+    "type": "二手挂牌均价 (proxy for 县城 new-home price; new homes typically 0-30% higher)",
+    "source": "聚汇数据 fangjia.gotohui.com"
+   },
+   "bride_price": {
+    "avg": 150000,
+    "low": 100000,
+    "high": 200000,
+    "year": 2023,
+    "source": "toutiao 2023 listicle; prevalence only 36.8% (谷雨 2020). avg is a midpoint",
+    "url": "https://www.toutiao.com/zixun/7502259708045068315/",
+    "quality": "media-compilation",
+    "confidence": "low",
+    "tier": "mid (low prevalence)"
+   }
+  },
+  "HI": {
+   "name": "海南",
+   "disp_inc": {
+    "total": 34829,
+    "urban": 44307,
+    "rural": 22146,
+    "year": 2024,
+    "unit": "元/人/年",
+    "source": "国家统计局《中国统计年鉴2025》 表6-18/6-24/6-30 分地区(城镇/农村)居民人均可支配收入 (NBS household survey)",
+    "url": [
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-18.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-24.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-30.jpg"
+    ],
+    "confidence": "high",
+    "total_2025": 36306,
+    "total_2025_source": "各省2025年统计公报, compiled by 36氪",
+    "total_2025_url": "https://www.36kr.com/p/3679779235311494",
+    "total_2025_confidence": "medium"
+   },
+   "consumption": {
+    "total": 25908,
+    "urban": 31507,
+    "rural": 18415,
+    "year": 2024,
+    "unit": "元/人/年",
+    "source": "国家统计局《中国统计年鉴2025》 表6-20/6-26/6-32 分地区(城镇/农村)居民人均消费支出",
+    "url": [
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-20.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-26.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-32.jpg"
+    ],
+    "confidence": "high"
+   },
+   "house_new_avg": {
+    "residential": 14766,
+    "all_commercial": 15024,
+    "year": 2024,
+    "unit": "元/㎡",
+    "source": "国家统计局《中国统计年鉴2025》 表19-11 按用途分新建商品房平均销售价格 (#住宅 column; NBS derives it as 销售额÷销售面积 of developer sales, whole province incl. counties)",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C19-11.jpg",
+    "confidence": "high",
+    "method": "direct NBS figure (=住宅销售额/住宅销售面积)"
+   },
+   "capital_price": {
+    "city": "海口",
+    "new": 12662,
+    "new_year": 2024,
+    "new_source": "国家统计局《中国统计年鉴2025》 表19-16 35个大中城市新建商品住宅平均销售价格 (whole municipal area incl. suburban districts/counties)",
+    "new_url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C19-16.jpg",
+    "new_confidence": "high",
+    "second_hand": 12661,
+    "second_hand_year": 2025,
+    "second_hand_source": "安居客 2025年城市房价排行 (二手房挂牌均价, listing not transaction)",
+    "second_hand_url": "https://www.anjuke.com/fangjia/quanguo2025/",
+    "second_hand_confidence": "medium",
+    "disp_inc_urban": {
+     "value": null,
+     "note": "not collected; use provincial urban disp_inc x ~1.15-1.35 as a rough capital premium (synthesis, low)",
+     "confidence": "none"
+    }
+   },
+   "county_price": {
+    "low": 5400,
+    "high": 9000,
+    "examples": [
+     {
+      "county": "琼中县",
+      "price": 5399,
+      "new_price": 9052,
+      "url": "https://fangjia.gotohui.com/fjdata-12"
+     },
+     {
+      "county": "临高县",
+      "price": 6197,
+      "new_price": 8891,
+      "url": "https://fangjia.gotohui.com/fjdata-12"
+     },
+     {
+      "county": "定安县",
+      "price": 8964,
+      "new_price": 8781,
+      "url": "https://fangjia.gotohui.com/fjdata-12"
+     }
+    ],
+    "confidence": "medium",
+    "note": "New-home prices run much higher than resale: about 9k in typical counties, and 陵水 at 32997. For 县城 new homes, use about 8800-9100 here.",
+    "period": "~2026-09/10",
+    "type": "二手挂牌均价 (proxy for 县城 new-home price; new homes typically 0-30% higher)",
+    "source": "聚汇数据 fangjia.gotohui.com"
+   },
+   "bride_price": {
+    "avg": 10000,
+    "year": 2023,
+    "source": "李佐军 2023: lowest, about 1万",
+    "url": "https://www.thepaper.cn/newsDetail_forward_21993018",
+    "quality": "media-compilation",
+    "confidence": "low",
+    "tier": "minimal"
+   }
+  },
+  "HL": {
+   "name": "黑龙江",
+   "disp_inc": {
+    "total": 31269,
+    "urban": 38212,
+    "rural": 20963,
+    "year": 2024,
+    "unit": "元/人/年",
+    "source": "国家统计局《中国统计年鉴2025》 表6-18/6-24/6-30 分地区(城镇/农村)居民人均可支配收入 (NBS household survey)",
+    "url": [
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-18.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-24.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-30.jpg"
+    ],
+    "confidence": "high",
+    "total_2025": 32851,
+    "total_2025_source": "各省2025年统计公报, compiled by 36氪",
+    "total_2025_url": "https://www.36kr.com/p/3679779235311494",
+    "total_2025_confidence": "medium"
+   },
+   "consumption": {
+    "total": 23467,
+    "urban": 27625,
+    "rural": 17295,
+    "year": 2024,
+    "unit": "元/人/年",
+    "source": "国家统计局《中国统计年鉴2025》 表6-20/6-26/6-32 分地区(城镇/农村)居民人均消费支出",
+    "url": [
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-20.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-26.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-32.jpg"
+    ],
+    "confidence": "high"
+   },
+   "house_new_avg": {
+    "residential": 6157,
+    "all_commercial": 6311,
+    "year": 2024,
+    "unit": "元/㎡",
+    "source": "国家统计局《中国统计年鉴2025》 表19-11 按用途分新建商品房平均销售价格 (#住宅 column; NBS derives it as 销售额÷销售面积 of developer sales, whole province incl. counties)",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C19-11.jpg",
+    "confidence": "high",
+    "method": "direct NBS figure (=住宅销售额/住宅销售面积)"
+   },
+   "capital_price": {
+    "city": "哈尔滨",
+    "new": 8458,
+    "new_year": 2024,
+    "new_source": "国家统计局《中国统计年鉴2025》 表19-16 35个大中城市新建商品住宅平均销售价格 (whole municipal area incl. suburban districts/counties)",
+    "new_url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C19-16.jpg",
+    "new_confidence": "high",
+    "second_hand_fang": {
+     "value": 7258,
+     "period": "2026-09",
+     "type": "挂牌",
+     "source": "房天下 二手房参考均价",
+     "url": "https://fangjia.fang.com/hrb/",
+     "confidence": "medium",
+     "note": null
+    },
+    "second_hand": 7258,
+    "second_hand_year": 2026,
+    "second_hand_source": "房天下 二手房参考均价 (listing, 2026-09)",
+    "second_hand_url": "https://fangjia.fang.com/hrb/",
+    "second_hand_confidence": "medium",
+    "disp_inc_urban": {
+     "value": null,
+     "note": "not collected; use provincial urban disp_inc x ~1.15-1.35 as a rough capital premium (synthesis, low)",
+     "confidence": "none"
+    }
+   },
+   "county_price": {
+    "low": 2500,
+    "high": 4600,
+    "examples": [
+     {
+      "county": "青冈县(绥化)",
+      "price": 4617,
+      "url": "https://fangjia.gotohui.com/fjdata-167"
+     },
+     {
+      "county": "海伦市(绥化)",
+      "price": 3632,
+      "url": "https://fangjia.gotohui.com/fjdata-167"
+     },
+     {
+      "county": "绥棱县(绥化)",
+      "price": 2917,
+      "url": "https://fangjia.gotohui.com/fjdata-167"
+     }
+    ],
+    "confidence": "medium",
+    "note": "The 鹤岗 city average is 2120.",
+    "period": "~2026-09/10",
+    "type": "二手挂牌均价 (proxy for 县城 new-home price; new homes typically 0-30% higher)",
+    "source": "聚汇数据 fangjia.gotohui.com"
+   },
+   "bride_price": {
+    "avg": 150000,
+    "low": 100000,
+    "high": 200000,
+    "year": 2020,
+    "source": "谷雨 2020 (>10万); 时代数据 2020 (20万); midpoint",
+    "url": "https://www.chinanews.com.cn/sh/2022/03-01/9688556.shtml",
+    "quality": "platform-survey",
+    "confidence": "low",
+    "tier": "high"
+   }
+  },
+  "JL": {
+   "name": "吉林",
+   "disp_inc": {
+    "total": 31318,
+    "urban": 39157,
+    "rural": 20704,
+    "year": 2024,
+    "unit": "元/人/年",
+    "source": "国家统计局《中国统计年鉴2025》 表6-18/6-24/6-30 分地区(城镇/农村)居民人均可支配收入 (NBS household survey)",
+    "url": [
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-18.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-24.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-30.jpg"
+    ],
+    "confidence": "high",
+    "total_2025": 32881,
+    "total_2025_source": "各省2025年统计公报, compiled by 36氪",
+    "total_2025_url": "https://www.36kr.com/p/3679779235311494",
+    "total_2025_confidence": "low"
+   },
+   "consumption": {
+    "total": 23118,
+    "urban": 28770,
+    "rural": 15467,
+    "year": 2024,
+    "unit": "元/人/年",
+    "source": "国家统计局《中国统计年鉴2025》 表6-20/6-26/6-32 分地区(城镇/农村)居民人均消费支出",
+    "url": [
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-20.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-26.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-32.jpg"
+    ],
+    "confidence": "high"
+   },
+   "house_new_avg": {
+    "residential": 6598,
+    "all_commercial": 6608,
+    "year": 2024,
+    "unit": "元/㎡",
+    "source": "国家统计局《中国统计年鉴2025》 表19-11 按用途分新建商品房平均销售价格 (#住宅 column; NBS derives it as 销售额÷销售面积 of developer sales, whole province incl. counties)",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C19-11.jpg",
+    "confidence": "high",
+    "method": "direct NBS figure (=住宅销售额/住宅销售面积)"
+   },
+   "capital_price": {
+    "city": "长春",
+    "new": 7812,
+    "new_year": 2024,
+    "new_source": "国家统计局《中国统计年鉴2025》 表19-16 35个大中城市新建商品住宅平均销售价格 (whole municipal area incl. suburban districts/counties)",
+    "new_url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C19-16.jpg",
+    "new_confidence": "high",
+    "second_hand_fang": {
+     "value": 6849,
+     "period": "2026-09",
+     "type": "挂牌",
+     "source": "房天下 二手房参考均价",
+     "url": "https://fangjia.fang.com/cc/",
+     "confidence": "medium",
+     "note": null
+    },
+    "second_hand": 6849,
+    "second_hand_year": 2026,
+    "second_hand_source": "房天下 二手房参考均价 (listing, 2026-09)",
+    "second_hand_url": "https://fangjia.fang.com/cc/",
+    "second_hand_confidence": "medium",
+    "disp_inc_urban": {
+     "value": null,
+     "note": "not collected; use provincial urban disp_inc x ~1.15-1.35 as a rough capital premium (synthesis, low)",
+     "confidence": "none"
+    }
+   },
+   "county_price": {
+    "low": 3000,
+    "high": 4500,
+    "examples": [
+     {
+      "county": "前郭县(松原)",
+      "price": 4192,
+      "url": "https://fangjia.gotohui.com/fjdata-201"
+     },
+     {
+      "county": "乾安县(松原)",
+      "price": 3587,
+      "url": "https://fangjia.gotohui.com/fjdata-201"
+     },
+     {
+      "county": "扶余市(松原)",
+      "price": 3363,
+      "url": "https://fangjia.gotohui.com/fjdata-201"
+     }
+    ],
+    "confidence": "medium",
+    "period": "~2026-09/10",
+    "type": "二手挂牌均价 (proxy for 县城 new-home price; new homes typically 0-30% higher)",
+    "source": "聚汇数据 fangjia.gotohui.com"
+   },
+   "bride_price": {
+    "avg": 100000,
+    "source": "memory/unverified",
+    "confidence": "low",
+    "tier": "mid"
+   }
+  },
+  "TJ": {
+   "name": "天津",
+   "disp_inc": {
+    "total": 53581,
+    "urban": 57705,
+    "rural": 32715,
+    "year": 2024,
+    "unit": "元/人/年",
+    "source": "国家统计局《中国统计年鉴2025》 表6-18/6-24/6-30 分地区(城镇/农村)居民人均可支配收入 (NBS household survey)",
+    "url": [
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-18.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-24.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-30.jpg"
+    ],
+    "confidence": "high",
+    "total_2025": 55918,
+    "total_2025_source": "各省2025年统计公报, compiled by 36氪",
+    "total_2025_url": "https://www.36kr.com/p/3679779235311494",
+    "total_2025_confidence": "medium"
+   },
+   "consumption": {
+    "total": 35804,
+    "urban": 38309,
+    "rural": 23129,
+    "year": 2024,
+    "unit": "元/人/年",
+    "source": "国家统计局《中国统计年鉴2025》 表6-20/6-26/6-32 分地区(城镇/农村)居民人均消费支出",
+    "url": [
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-20.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-26.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-32.jpg"
+    ],
+    "confidence": "high"
+   },
+   "house_new_avg": {
+    "residential": 14967,
+    "all_commercial": 14819,
+    "year": 2024,
+    "unit": "元/㎡",
+    "source": "国家统计局《中国统计年鉴2025》 表19-11 按用途分新建商品房平均销售价格 (#住宅 column; NBS derives it as 销售额÷销售面积 of developer sales, whole province incl. counties)",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C19-11.jpg",
+    "confidence": "high",
+    "method": "direct NBS figure (=住宅销售额/住宅销售面积)"
+   },
+   "capital_price": {
+    "city": "天津",
+    "new": 14967,
+    "new_year": 2024,
+    "new_source": "国家统计局《中国统计年鉴2025》 表19-16 35个大中城市新建商品住宅平均销售价格 (whole municipal area incl. suburban districts/counties)",
+    "new_url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C19-16.jpg",
+    "new_confidence": "high",
+    "second_hand": 13752,
+    "second_hand_year": 2025,
+    "second_hand_source": "安居客 2025年城市房价排行 (二手房挂牌均价, listing not transaction)",
+    "second_hand_url": "https://www.anjuke.com/fangjia/quanguo2025/",
+    "second_hand_confidence": "medium",
+    "second_hand_fang": {
+     "value": 17521,
+     "period": "2026-09",
+     "type": "挂牌",
+     "source": "房天下 二手房参考均价",
+     "url": "https://fangjia.fang.com/tj/",
+     "confidence": "medium",
+     "note": "房天下 shows a positive YoY for this city, which conflicts with NBS and 中指; use the level only"
+    },
+    "disp_inc_urban": {
+     "value": 57705,
+     "year": 2024,
+     "note": "province-level municipality = provincial urban figure",
+     "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-24.jpg",
+     "confidence": "high"
+    }
+   },
+   "county_price": {
+    "low": 6500,
+    "high": 10500,
+    "examples": [
+     {
+      "county": "宝坻区",
+      "price": 6513,
+      "url": "https://fangjia.gotohui.com/fjdata-4"
+     },
+     {
+      "county": "宁河区",
+      "price": 7717,
+      "url": "https://fangjia.gotohui.com/fjdata-4"
+     },
+     {
+      "county": "蓟州区",
+      "price": 10372,
+      "url": "https://fangjia.gotohui.com/fjdata-4"
+     }
+    ],
+    "confidence": "high",
+    "note": "Tianjin has no counties; these are outer districts.",
+    "period": "~2026-09/10",
+    "type": "二手挂牌均价 (proxy for 县城 new-home price; new homes typically 0-30% higher)",
+    "source": "聚汇数据 fangjia.gotohui.com"
+   },
+   "bride_price": {
+    "avg": 200000,
+    "year": 2023,
+    "source": "toutiao 2023 listicle",
+    "url": "https://www.toutiao.com/zixun/7502259708045068315/",
+    "quality": "media-compilation",
+    "confidence": "low",
+    "tier": "high"
+   }
+  },
+  "NX": {
+   "name": "宁夏",
+   "disp_inc": {
+    "total": 33355,
+    "urban": 44449,
+    "rural": 19015,
+    "year": 2024,
+    "unit": "元/人/年",
+    "source": "国家统计局《中国统计年鉴2025》 表6-18/6-24/6-30 分地区(城镇/农村)居民人均可支配收入 (NBS household survey)",
+    "url": [
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-18.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-24.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-30.jpg"
+    ],
+    "confidence": "high",
+    "total_2025": 35184,
+    "total_2025_source": "各省2025年统计公报, compiled by 36氪",
+    "total_2025_url": "https://www.36kr.com/p/3679779235311494",
+    "total_2025_confidence": "medium"
+   },
+   "consumption": {
+    "total": 22865,
+    "urban": 28469,
+    "rural": 15622,
+    "year": 2024,
+    "unit": "元/人/年",
+    "source": "国家统计局《中国统计年鉴2025》 表6-20/6-26/6-32 分地区(城镇/农村)居民人均消费支出",
+    "url": [
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-20.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-26.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-32.jpg"
+    ],
+    "confidence": "high"
+   },
+   "house_new_avg": {
+    "residential": 6579,
+    "all_commercial": 6700,
+    "year": 2024,
+    "unit": "元/㎡",
+    "source": "国家统计局《中国统计年鉴2025》 表19-11 按用途分新建商品房平均销售价格 (#住宅 column; NBS derives it as 销售额÷销售面积 of developer sales, whole province incl. counties)",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C19-11.jpg",
+    "confidence": "high",
+    "method": "direct NBS figure (=住宅销售额/住宅销售面积)"
+   },
+   "capital_price": {
+    "city": "银川",
+    "new": 8272,
+    "new_year": 2024,
+    "new_source": "国家统计局《中国统计年鉴2025》 表19-16 35个大中城市新建商品住宅平均销售价格 (whole municipal area incl. suburban districts/counties)",
+    "new_url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C19-16.jpg",
+    "new_confidence": "high",
+    "second_hand_fang": {
+     "value": 6300,
+     "period": "2026-09",
+     "type": "挂牌",
+     "source": "房天下 二手房参考均价",
+     "url": "https://fangjia.fang.com/yinchuan/",
+     "confidence": "medium",
+     "note": null
+    },
+    "second_hand": 6300,
+    "second_hand_year": 2026,
+    "second_hand_source": "房天下 二手房参考均价 (listing, 2026-09)",
+    "second_hand_url": "https://fangjia.fang.com/yinchuan/",
+    "second_hand_confidence": "medium",
+    "disp_inc_urban": {
+     "value": null,
+     "note": "not collected; use provincial urban disp_inc x ~1.15-1.35 as a rough capital premium (synthesis, low)",
+     "confidence": "none"
+    }
+   },
+   "county_price": {
+    "low": 4400,
+    "high": 6200,
+    "examples": [
+     {
+      "county": "西吉县(固原)",
+      "price": 6195,
+      "url": "https://fangjia.gotohui.com/fjdata-244"
+     },
+     {
+      "county": "彭阳县(固原)",
+      "price": 5562,
+      "url": "https://fangjia.gotohui.com/fjdata-244"
+     },
+     {
+      "county": "隆德县(固原)",
+      "price": 4404,
+      "url": "https://fangjia.gotohui.com/fjdata-244"
+     }
+    ],
+    "confidence": "medium",
+    "period": "~2026-09/10",
+    "type": "二手挂牌均价 (proxy for 县城 new-home price; new homes typically 0-30% higher)",
+    "source": "聚汇数据 fangjia.gotohui.com"
+   },
+   "bride_price": {
+    "avg": null,
+    "high": 60000,
+    "year": 2023,
+    "source": "人民日报 2023: 泾源 cap 6万; Xinhua 2025: amounts fell 35% after the campaign. No average was found",
+    "url": "https://paper.people.com.cn/rmrb/html/2023-03/20/nw.D110000renmrb_20230320_5-07.htm",
+    "quality": "media-compilation",
+    "confidence": "low",
+    "tier": "mid"
+   }
+  },
+  "QH": {
+   "name": "青海",
+   "disp_inc": {
+    "total": 30117,
+    "urban": 42191,
+    "rural": 16715,
+    "year": 2024,
+    "unit": "元/人/年",
+    "source": "国家统计局《中国统计年鉴2025》 表6-18/6-24/6-30 分地区(城镇/农村)居民人均可支配收入 (NBS household survey)",
+    "url": [
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-18.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-24.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-30.jpg"
+    ],
+    "confidence": "high",
+    "total_2025": 31661,
+    "total_2025_source": "各省2025年统计公报, compiled by 36氪",
+    "total_2025_url": "https://www.36kr.com/p/3679779235311494",
+    "total_2025_confidence": "medium"
+   },
+   "consumption": {
+    "total": 21204,
+    "urban": 26413,
+    "rural": 15421,
+    "year": 2024,
+    "unit": "元/人/年",
+    "source": "国家统计局《中国统计年鉴2025》 表6-20/6-26/6-32 分地区(城镇/农村)居民人均消费支出",
+    "url": [
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-20.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-26.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-32.jpg"
+    ],
+    "confidence": "high"
+   },
+   "house_new_avg": {
+    "residential": 6647,
+    "all_commercial": 6738,
+    "year": 2024,
+    "unit": "元/㎡",
+    "source": "国家统计局《中国统计年鉴2025》 表19-11 按用途分新建商品房平均销售价格 (#住宅 column; NBS derives it as 销售额÷销售面积 of developer sales, whole province incl. counties)",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C19-11.jpg",
+    "confidence": "high",
+    "method": "direct NBS figure (=住宅销售额/住宅销售面积)"
+   },
+   "capital_price": {
+    "city": "西宁",
+    "new": 8396,
+    "new_year": 2024,
+    "new_source": "国家统计局《中国统计年鉴2025》 表19-16 35个大中城市新建商品住宅平均销售价格 (whole municipal area incl. suburban districts/counties)",
+    "new_url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C19-16.jpg",
+    "new_confidence": "high",
+    "second_hand": 8116,
+    "second_hand_year": 2025,
+    "second_hand_source": "安居客 2025年城市房价排行 (二手房挂牌均价, listing not transaction)",
+    "second_hand_url": "https://www.anjuke.com/fangjia/quanguo2025/",
+    "second_hand_confidence": "medium",
+    "disp_inc_urban": {
+     "value": null,
+     "note": "not collected; use provincial urban disp_inc x ~1.15-1.35 as a rough capital premium (synthesis, low)",
+     "confidence": "none"
+    }
+   },
+   "county_price": {
+    "low": 4500,
+    "high": 6000,
+    "examples": [
+     {
+      "county": "互助县(海东)",
+      "price": 5664,
+      "url": "https://fangjia.gotohui.com/fjdata-2434"
+     },
+     {
+      "county": "民和县(海东)",
+      "price": 5436,
+      "url": "https://fangjia.gotohui.com/fjdata-2434"
+     }
+    ],
+    "confidence": "low",
+    "period": "~2026-09/10",
+    "type": "二手挂牌均价 (proxy for 县城 new-home price; new homes typically 0-30% higher)",
+    "source": "聚汇数据 fangjia.gotohui.com"
+   },
+   "bride_price": {
+    "avg": 60000,
+    "source": "memory/unverified",
+    "confidence": "low",
+    "tier": "mid"
+   }
+  },
+  "XZ": {
+   "name": "西藏",
+   "disp_inc": {
+    "total": 31358,
+    "urban": 55444,
+    "rural": 21578,
+    "year": 2024,
+    "unit": "元/人/年",
+    "source": "国家统计局《中国统计年鉴2025》 表6-18/6-24/6-30 分地区(城镇/农村)居民人均可支配收入 (NBS household survey)",
+    "url": [
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-18.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-24.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-30.jpg"
+    ],
+    "confidence": "high",
+    "total_2025": 33600,
+    "total_2025_source": "各省2025年统计公报, compiled by 36氪",
+    "total_2025_url": "https://www.36kr.com/p/3679779235311494",
+    "total_2025_confidence": "medium"
+   },
+   "consumption": {
+    "total": 18983,
+    "urban": 31292,
+    "rural": 13985,
+    "year": 2024,
+    "unit": "元/人/年",
+    "source": "国家统计局《中国统计年鉴2025》 表6-20/6-26/6-32 分地区(城镇/农村)居民人均消费支出",
+    "url": [
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-20.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-26.jpg",
+     "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-32.jpg"
+    ],
+    "confidence": "high"
+   },
+   "house_new_avg": {
+    "residential": 9085,
+    "all_commercial": 9083,
+    "year": 2024,
+    "unit": "元/㎡",
+    "source": "国家统计局《中国统计年鉴2025》 表19-11 按用途分新建商品房平均销售价格 (#住宅 column; NBS derives it as 销售额÷销售面积 of developer sales, whole province incl. counties)",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C19-11.jpg",
+    "confidence": "high",
+    "method": "direct NBS figure (=住宅销售额/住宅销售面积)"
+   },
+   "capital_price": {
+    "city": "拉萨",
+    "second_hand": 12754,
+    "second_hand_year": 2025,
+    "second_hand_source": "安居客 2025年城市房价排行 (二手房挂牌均价, listing not transaction)",
+    "second_hand_url": "https://www.anjuke.com/fangjia/quanguo2025/",
+    "second_hand_confidence": "medium",
+    "disp_inc_urban": {
+     "value": null,
+     "note": "not collected; use provincial urban disp_inc x ~1.15-1.35 as a rough capital premium (synthesis, low)",
+     "confidence": "none"
+    },
+    "new_note": "Lhasa new-home price not found (fang.com has no Lhasa page; 安居客 blocked). Anjuke 2025 second-hand listing is 12754."
+   },
+   "county_price": {
+    "low": 4000,
+    "high": 8000,
+    "examples": [
+     {
+      "county": "桑珠孜区(日喀则)",
+      "price": 8970,
+      "url": "https://fangjia.gotohui.com/fjdata-4150"
+     },
+     {
+      "county": "工布江达县(林芝)",
+      "price": 3575,
+      "url": "https://fangjia.gotohui.com/fjdata-4152"
+     },
+     {
+      "county": "波密县(林芝)",
+      "price": 3861,
+      "url": "https://fangjia.gotohui.com/fjdata-4152"
+     }
+    ],
+    "confidence": "low",
+    "note": "Very thin market; values are erratic.",
+    "period": "~2026-09/10",
+    "type": "二手挂牌均价 (proxy for 县城 new-home price; new homes typically 0-30% higher)",
+    "source": "聚汇数据 fangjia.gotohui.com"
+   },
+   "bride_price": {
+    "avg": 10000,
+    "low": 0,
+    "high": 10000,
+    "year": 2023,
+    "source": "李佐军 via 中国经济时报/澎湃 2023: 海南 and 西藏 about 1万",
+    "url": "https://www.thepaper.cn/newsDetail_forward_21993018",
+    "quality": "media-compilation",
+    "confidence": "low",
+    "tier": "minimal"
+   }
+  }
+ },
+ "big_cities": {
+  "北京": {
+   "new": {
+    "value": 38673,
+    "year": 2024,
+    "source": "NBS 中国统计年鉴2025 表19-16 (新建商品住宅平均销售价格, whole municipality)",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C19-16.jpg",
+    "confidence": "high"
+   },
+   "second_hand": {
+    "value": 39448,
+    "year": 2025,
+    "type": "挂牌(listing)",
+    "source": "安居客 2025年城市房价排行",
+    "url": "https://www.anjuke.com/fangjia/quanguo2025/",
+    "confidence": "medium"
+   },
+   "nbs70_change_dec2021_dec2025_pct": {
+    "new": -0.7,
+    "second_hand": -11.2,
+    "source": "computed from NBS 70-city releases (see nbs70_cumulative_dec2021_dec2025)",
+    "confidence": "high (arithmetic on official indices)"
+   },
+   "transaction": {
+    "new_txn": null,
+    "second_hand_txn": null,
+    "note": "No transaction average found. Listings: 房天下 second-hand 54156 (2026-09), 禧泰 55716; 房天下 new 59228 (listing). NBS Dec 2025 YoY: second-hand -8.5%, new -2.4%",
+    "listing_urls": [
+     "https://fangjia.fang.com/bj/",
+     "https://www.creprice.cn/rank/index.html"
+    ],
+    "nbs_url": "https://www.nbd.com.cn/articles/2026-01-19/4225691.html"
+   },
+   "disp_inc_urban": {
+    "value": 92464,
+    "year": 2024,
+    "note": "province-level municipality = provincial urban figure",
+    "source": "中国统计年鉴2025 表6-24",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-24.jpg",
+    "confidence": "high"
+   },
+   "second_hand_listing_fang": {
+    "value": 54156,
+    "period": "2026-09",
+    "url": "https://fangjia.fang.com/bj/",
+    "confidence": "medium"
+   }
+  },
+  "上海": {
+   "new": {
+    "value": 47223,
+    "year": 2024,
+    "source": "NBS 中国统计年鉴2025 表19-16 (新建商品住宅平均销售价格, whole municipality)",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C19-16.jpg",
+    "confidence": "high"
+   },
+   "second_hand": {
+    "value": 42749,
+    "year": 2025,
+    "type": "挂牌(listing)",
+    "source": "安居客 2025年城市房价排行",
+    "url": "https://www.anjuke.com/fangjia/quanguo2025/",
+    "confidence": "medium"
+   },
+   "nbs70_change_dec2021_dec2025_pct": {
+    "new": 20.0,
+    "second_hand": -10.1,
+    "source": "computed from NBS 70-city releases (see nbs70_cumulative_dec2021_dec2025)",
+    "confidence": "high (arithmetic on official indices)"
+   },
+   "transaction": {
+    "new_txn": {
+     "value": 81337,
+     "period": "2025",
+     "yoy": "+6.93%",
+     "source": "澎湃新闻 (paragraph attributed to 中指院)",
+     "url": "https://m.thepaper.cn/newsDetail_forward_32389935",
+     "confidence": "medium"
+    },
+    "second_hand_txn": null,
+    "second_hand_listing": [
+     {
+      "value": 51624,
+      "source": "房天下 2026-09",
+      "url": "https://fangjia.fang.com/sh/"
+     },
+     {
+      "value": 60398,
+      "source": "禧泰 creprice 2026-09",
+      "url": "https://www.creprice.cn/rank/index.html"
+     }
+    ],
+    "note": "New-home transaction average is pushed up by luxury mix; NBS 2024 whole-city average is 47223"
+   },
+   "disp_inc_urban": {
+    "value": 93095,
+    "year": 2024,
+    "source": "中国统计年鉴2025 表6-24",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C06-24.jpg",
+    "confidence": "high"
+   },
+   "second_hand_listing_fang": {
+    "value": 51624,
+    "period": "2026-09",
+    "url": "https://fangjia.fang.com/sh/",
+    "confidence": "medium"
+   }
+  },
+  "深圳": {
+   "new": {
+    "value": 47066,
+    "year": 2024,
+    "source": "NBS 中国统计年鉴2025 表19-16 (新建商品住宅平均销售价格, whole municipality)",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C19-16.jpg",
+    "confidence": "high"
+   },
+   "second_hand": {
+    "value": 53357,
+    "year": 2025,
+    "type": "挂牌(listing)",
+    "source": "安居客 2025年城市房价排行",
+    "url": "https://www.anjuke.com/fangjia/quanguo2025/",
+    "confidence": "medium"
+   },
+   "nbs70_change_dec2021_dec2025_pct": {
+    "new": -13.6,
+    "second_hand": -18.8,
+    "source": "computed from NBS 70-city releases (see nbs70_cumulative_dec2021_dec2025)",
+    "confidence": "high (arithmetic on official indices)"
+   },
+   "transaction": {
+    "new_txn": {
+     "value": 53100,
+     "period": "2025",
+     "yoy": "-1.7%",
+     "source": "乐有家研究中心 (一手预售网签均价), via search results; not confirmed on the 36kr page",
+     "url": "https://www.36kr.com/p/3645725253029509",
+     "confidence": "low-medium"
+    },
+    "second_hand_txn": [
+     {
+      "value": 59000,
+      "period": "2025",
+      "yoy": "about -6%",
+      "source": "乐有家 via 36氪 (2021: 80000)",
+      "url": "https://www.36kr.com/p/3645725253029509",
+      "confidence": "high"
+     },
+     {
+      "value": 54000,
+      "period": "2025",
+      "yoy": "-1.9%",
+      "source": "深圳贝壳研究院 via 南都",
+      "url": "https://m.mp.oeeee.com/a/BAAFRD0000202601041504429.html",
+      "confidence": "medium"
+     }
+    ],
+    "drop_from_peak": {
+     "value_pct": -26,
+     "basis": "乐有家 second-hand transaction average 8.0万 (2021) -> 5.9万 (2025)",
+     "url": "https://www.36kr.com/p/3645725253029509",
+     "confidence": "high",
+     "vs_official": "NBS 70-city Shenzhen second-hand Dec2021->Dec2025: -18.8%"
+    }
+   },
+   "disp_inc_urban": {
+    "value": 81123,
+    "year": 2024,
+    "note": "居民人均可支配收入 (Shenzhen reports no urban/rural split; 100% urban)",
+    "source": "深圳市2024年国民经济和社会发展统计公报",
+    "url": "https://www.sz.gov.cn/cn/xxgk/zfxxgj/tjsj/tjgb/content/post_12190855.html",
+    "confidence": "high"
+   },
+   "new_note": "NBS 2024 whole-city 47066; 乐有家 2025 presale contract average 53100"
+  },
+  "广州": {
+   "new": {
+    "value": 31427,
+    "year": 2024,
+    "source": "NBS 中国统计年鉴2025 表19-16 (新建商品住宅平均销售价格, whole municipality)",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C19-16.jpg",
+    "confidence": "high"
+   },
+   "second_hand": {
+    "value": 34901,
+    "year": 2025,
+    "type": "挂牌(listing)",
+    "source": "安居客 2025年城市房价排行",
+    "url": "https://www.anjuke.com/fangjia/quanguo2025/",
+    "confidence": "medium"
+   },
+   "nbs70_change_dec2021_dec2025_pct": {
+    "new": -15.7,
+    "second_hand": -22.5,
+    "source": "computed from NBS 70-city releases (see nbs70_cumulative_dec2021_dec2025)",
+    "confidence": "high (arithmetic on official indices)"
+   },
+   "transaction": {
+    "new_txn": {
+     "value": 34438,
+     "period": "2025",
+     "yoy": "-4%",
+     "source": "南都 (volume data from 广州中原研究发展部)",
+     "url": "https://m.mp.oeeee.com/a/BAAFRD0000202601041504589.html",
+     "confidence": "high"
+    },
+    "second_hand_txn": {
+     "value": 26420,
+     "period": "2025",
+     "yoy": "-6.7%",
+     "note": "lowest since 2021",
+     "source": "南都/广州中原",
+     "url": "https://m.mp.oeeee.com/a/BAAFRD0000202601041504589.html",
+     "confidence": "high"
+    },
+    "second_hand_listing": [
+     {
+      "value": 29939,
+      "source": "房天下 2026-09",
+      "url": "https://fangjia.fang.com/gz/"
+     },
+     {
+      "value": 36519,
+      "source": "禧泰",
+      "url": "https://www.creprice.cn/rank/index.html"
+     }
+    ]
+   },
+   "disp_inc_urban": {
+    "value": 83436,
+    "rural": 40914,
+    "year": 2024,
+    "source": "2024年广州市国民经济和社会发展统计公报",
+    "url": "https://www.gz.gov.cn/zwgk/sjfb/tjgb/content/post_10203564.html",
+    "confidence": "high"
+   },
+   "second_hand_listing_fang": {
+    "value": 29939,
+    "period": "2026-09",
+    "url": "https://fangjia.fang.com/gz/",
+    "confidence": "medium"
+   }
+  },
+  "杭州": {
+   "new": {
+    "value": 30703,
+    "year": 2024,
+    "source": "NBS 中国统计年鉴2025 表19-16 (新建商品住宅平均销售价格, whole municipality)",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C19-16.jpg",
+    "confidence": "high"
+   },
+   "second_hand": {
+    "value": 29816,
+    "year": 2025,
+    "type": "挂牌(listing)",
+    "source": "安居客 2025年城市房价排行",
+    "url": "https://www.anjuke.com/fangjia/quanguo2025/",
+    "confidence": "medium"
+   },
+   "nbs70_change_dec2021_dec2025_pct": {
+    "new": 8.9,
+    "second_hand": -12.1,
+    "source": "computed from NBS 70-city releases (see nbs70_cumulative_dec2021_dec2025)",
+    "confidence": "high (arithmetic on official indices)"
+   },
+   "transaction": {
+    "new_txn": null,
+    "second_hand_txn": null,
+    "note": "丁祖昱 (2026): Hangzhou second-hand transaction average -14.6% YoY while the listing average fell only -0.5%. Listings: 房天下 second-hand 29856, new 30326 (2026-09); 禧泰 34529",
+    "url": "https://www.36kr.com/p/3894879567936768",
+    "confidence": "medium"
+   },
+   "disp_inc_urban": {
+    "value": 83356,
+    "total": 76777,
+    "rural": 50805,
+    "year": 2024,
+    "source": "杭州市2024年数据 via 澎湃新闻 2025-02-13",
+    "url": "https://www.thepaper.cn/newsDetail_forward_30147952",
+    "confidence": "high"
+   },
+   "second_hand_listing_fang": {
+    "value": 29856,
+    "period": "2026-09",
+    "url": "https://fangjia.fang.com/hz/",
+    "confidence": "medium"
+   }
+  },
+  "成都": {
+   "new": {
+    "value": 19028,
+    "year": 2024,
+    "source": "NBS 中国统计年鉴2025 表19-16 (新建商品住宅平均销售价格, whole municipality)",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C19-16.jpg",
+    "confidence": "high"
+   },
+   "second_hand": {
+    "value": 12995,
+    "year": 2025,
+    "type": "挂牌(listing)",
+    "source": "安居客 2025年城市房价排行",
+    "url": "https://www.anjuke.com/fangjia/quanguo2025/",
+    "confidence": "medium"
+   },
+   "nbs70_change_dec2021_dec2025_pct": {
+    "new": 7.8,
+    "second_hand": -1.5,
+    "source": "computed from NBS 70-city releases (see nbs70_cumulative_dec2021_dec2025)",
+    "confidence": "high (arithmetic on official indices)"
+   },
+   "transaction": {
+    "new_txn": null,
+    "second_hand_txn": {
+     "value": 12200,
+     "period": "end-2025",
+     "note": "about 2000 below early 2025; provider not named",
+     "source": "澎湃新闻",
+     "url": "https://m.thepaper.cn/newsDetail_forward_32389935",
+     "confidence": "medium"
+    },
+    "second_hand_listing": {
+     "value": 14274,
+     "source": "房天下 2026-09",
+     "url": "https://fangjia.fang.com/cd/"
+    },
+    "note": "NBS 70-city Chengdu second-hand shows only -1.5% Dec2021->Dec2025, against a 2,000/㎡ (~14%) fall in 2025 alone in the 澎湃 transaction figure. This is the largest official-vs-market gap found"
+   },
+   "disp_inc_urban": {
+    "value": null,
+    "note": "Not found: the 2024 bulletin text was not located and the 2025 Chengdu yearbook PDF was unreadable. The 2021 value was 52633 (cbgc.scol.com.cn/news/2972624). Sichuan urban 2024 is 47336",
+    "confidence": "none"
+   },
+   "second_hand_listing_fang": {
+    "value": 14274,
+    "period": "2026-09",
+    "url": "https://fangjia.fang.com/cd/",
+    "confidence": "medium"
+   }
+  }
+ },
+ "national": {
+  "disp_inc_2025": {
+   "total": 43377,
+   "urban": 56502,
+   "rural": 24456,
+   "median_total": 36231,
+   "median_urban": 51115,
+   "median_rural": 20711,
+   "source": "NBS 2025年居民收入和消费支出情况",
+   "url": "https://www.stats.gov.cn/xxgk/sjfb/zxfb2020/202601/t20260119_1962321.html",
+   "confidence": "high"
+  },
+  "consumption_2025": {
+   "total": 29476,
+   "urban": 35869,
+   "rural": 20259,
+   "source": "NBS",
+   "url": "https://www.stats.gov.cn/xxgk/sjfb/zxfb2020/202601/t20260119_1962321.html",
+   "confidence": "high"
+  },
+  "income_quintiles_2025": {
+   "low": 10150,
+   "lower_mid": 22702,
+   "mid": 35536,
+   "upper_mid": 55586,
+   "high": 103778,
+   "source": "NBS 2025年统计公报",
+   "url": "https://www.stats.gov.cn/sj/zxfbhjd/202602/t20260228_1962662.html",
+   "confidence": "high"
+  },
+  "house_new_residential_avg": {
+   "2024": 10419,
+   "2023": 10864,
+   "2021": 10825,
+   "2025_computed": 10005,
+   "note": "2025 = 住宅销售额73335亿 ÷ 住宅销售面积73299万㎡ (my computation)",
+   "source": "NBS yearbook 2025 表19-11; 2025 sales from NBS via yicai/thepaper",
+   "url": [
+    "https://www.stats.gov.cn/sj/ndsj/2025/html/C19-11.jpg",
+    "https://www.yicai.com/news/103010868.html",
+    "https://www.thepaper.cn/newsDetail_forward_32414370"
+   ],
+   "confidence": "high (2024), medium (2025 computed from press-reported NBS totals)"
+  },
+  "cia_100city": {
+   "new_avg_2021_06": 16063,
+   "second_avg_2021_06": 15888,
+   "new_avg_2025_12": 17084,
+   "second_avg_2025_12": 13016,
+   "new_avg_2026_09": 17285,
+   "second_avg_2026_09": 12452,
+   "second_yoy_2026_09_pct": -6.94,
+   "source": "中指研究院 百城价格指数 (via 新京报 2021, 工商时报 2026-01, 同花顺/财联社 2026-10)",
+   "url": [
+    "https://www.bjnews.com.cn/detail/162513939214395.html",
+    "https://www.ctee.com.tw/news/20260102700700-430804",
+    "https://news.10jqka.com.cn/20261008/c680465793.shtml"
+   ],
+   "confidence": "high"
+  },
+  "occupations": {
+   "农民工": {
+    "monthly": 5075,
+    "year": 2025,
+    "外出": 5774,
+    "本地": 4376,
+    "制造业": 5126,
+    "建筑业": 5880,
+    "批发零售": 4382,
+    "交通运输仓储邮政": 5795,
+    "住宿餐饮": 4208,
+    "居民服务": 4130,
+    "total_workers_wan": 30115,
+    "source": "国家统计局 2025年统计公报 (headline) + 《2025年农民工监测调查报告》 via 人民日报海外版 (breakdown)",
+    "url": "https://www.stats.gov.cn/sj/zxfbhjd/202602/t20260228_1962662.html",
+    "url2": "https://paper.people.com.cn/rmrbhwb/pc/content/202605/04/content_30154739.html",
+    "confidence": "high"
+   },
+   "外卖骑手": {
+    "monthly_platform": "7230-10100 for high-frequency riders depending on city tier; 一线 10100",
+    "source": "美团 disclosure via 新浪财经 2025-05-26",
+    "url": "https://finance.sina.com.cn/tech/2025-05-26/doc-inexwxmc2438356.shtml",
+    "confidence": "medium (self-reported, full-time riders only)",
+    "independent": {
+     "value": "About half of full-time riders earn 6001-9000/month; 17.8% earn over 9000",
+     "source": "南开大学《外卖骑手生活世界研究报告》 (n≈41000)",
+     "url": "https://finance.sina.com.cn/wm/2025-04-11/doc-inesusvu1538998.shtml",
+     "confidence": "medium"
+    },
+    "game_value": "full-time 6000-9000; part-time far lower (most registered riders work under 30 days a year)"
+   },
+   "网约车司机": {
+    "monthly": 7623,
+    "first_tier_long_hours": 11557,
+    "year": 2025,
+    "source": "中国新就业形态研究中心 via 新浪科技 (gross or net unclear)",
+    "url": "https://finance.sina.com.cn/tech/roll/2025-09-10/doc-infpzkva4048960.shtml",
+    "confidence": "low-medium",
+    "independent": {
+     "text": "郑州 about 210/day gross, some drivers net under 4000/month; 海口 200-280/day after commission. Platform commission is about 14-16%",
+     "url": "https://finance.sina.com.cn/jjxw/2025-05-10/doc-inewarnv7445746.shtml",
+     "url2": "https://www.guancha.cn/economy/2025_10_29_795001.shtml",
+     "confidence": "medium"
+    },
+    "game_value": "net of fuel/car: 4000-7000 in lower tiers, 6000-9000 in tier 1"
+   },
+   "公务员": {
+    "official_proxy_annual": 119465,
+    "proxy": "NBS 公共管理、社会保障和社会组织 industry 2025 (non-private units)",
+    "url": "https://www.stats.gov.cn/xxgk/sjfb/zxfb2020/202605/t20260515_1963707.html",
+    "confidence": "high as an industry proxy, low as civil-servant pay",
+    "independent": {
+     "text": "New 一级科员 take-home 5000-8000/month; total annual pay 150-250k in tier-1 cities vs 80-120k in tier 3/4 (law-firm explainer, no data source)",
+     "url": "https://www.huichenglawyer.com/pufaku/226.html",
+     "confidence": "low"
+    }
+   },
+   "中小学教师": {
+    "official_proxy_annual": 133539,
+    "proxy": "NBS 教育 industry 2025 (non-private; includes universities)",
+    "url": "https://www.stats.gov.cn/xxgk/sjfb/zxfb2020/202605/t20260515_1963707.html",
+    "confidence": "medium as a proxy",
+    "note": "Private-unit 教育 average is 63908. Law requires teacher pay to be no lower than local civil servants. No independent K-12 survey was found."
+   },
+   "医生": {
+    "official_proxy_annual": 146266,
+    "proxy": "NBS 卫生和社会工作 2025 (non-private; includes nurses)",
+    "url": "https://www.stats.gov.cn/xxgk/sjfb/zxfb2020/202605/t20260515_1963707.html",
+    "independent": {
+     "text": "Tier-1 city tertiary-hospital 副高+ average clinical income 24.6万 (2024, 医学界, n=2009), about 2x county peers. By title (2020): 初级14.3万 / 中级17.4万 / 副高21.8万 / 正高26.5万. Residents earn 5000-10000/month",
+     "url": "https://finance.sina.cn/stock/ggyj/2025-08-11/detail-infkriev5787906.d.html?vt=4",
+     "confidence": "medium"
+    }
+   },
+   "护士": {
+    "monthly": "5000-8000 at Beijing 三甲 hospitals, 4000-8000 at 二甲 hospitals",
+    "source": "bjnurse.cn (self-media)",
+    "url": "https://www.bjnurse.cn/article/5594978932711539.html",
+    "confidence": "low",
+    "note": "No authoritative national nurse pay survey was found. Rough game range: county 3500-6000, big city 6000-12000 (synthesis)."
+   },
+   "互联网程序员": {
+    "official_proxy_annual": 248752,
+    "proxy": "NBS 信息传输软件IT 2025 non-private (private: 128166)",
+    "url": "https://www.stats.gov.cn/xxgk/sjfb/zxfb2020/202605/t20260515_1963707.html",
+    "independent": {
+     "text": "智联 2025Q4 advertised: 算法工程师 25236/month, 测试/运维 about 11000, 嵌入式 15000-18000; 智联 AI工程师 Shanghai 26876",
+     "url": "https://finance.sina.cn/2026-01-21/detail-inhiaktv6594575.d.html?vt=4",
+     "confidence": "medium (advertised pay)"
+    },
+    "game_value": "big-city mid-level 20k-35k/month x 14-16 months; big-tech senior 50k+"
+   },
+   "工厂普工": {
+    "农民工_制造业_monthly": 5126,
+    "NBS_规上_生产制造人员_annual": 80739,
+    "url": "https://www.stats.gov.cn/xxgk/sjfb/zxfb2020/202605/t20260515_1963707.html",
+    "independent": {
+     "text": "东莞 combined pay 5000-7000/month (hourly 17-20元, long shifts); 苏州 job ads mostly 4.5k-8k",
+     "url": "https://www.sohu.com/a/1083040763_122992315",
+     "url2": "https://www.jobui.com/salary/suzhou-pugong/",
+     "confidence": "low-medium"
+    }
+   },
+   "建筑工": {
+    "农民工_建筑业_monthly": 5880,
+    "year": 2025,
+    "url": "https://paper.people.com.cn/rmrbhwb/pc/content/202605/04/content_30154739.html",
+    "confidence": "high",
+    "daily_wage_2026": {
+     "小工": "200-260",
+     "瓦工": "300-340",
+     "钢筋工": "330-380",
+     "木工": "300-400",
+     "架子工": "350-400",
+     "url": "https://www.toutiao.com/article/7611360201295397439/",
+     "confidence": "low-medium"
+    },
+    "note": "Work is seasonal and wage arrears are common; annual days worked are often 200-250."
+   }
+  },
+  "pension_participants_2025": {
+   "urban_employee_wan": 54680,
+   "urban_rural_resident_wan": 52919,
+   "source": "NBS 2025年统计公报",
+   "url": "https://www.stats.gov.cn/sj/zxfbhjd/202602/t20260228_1962662.html",
+   "confidence": "high"
+  },
+  "wages": {
+   "year": 2025,
+   "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15)",
+   "url": "https://www.stats.gov.cn/xxgk/sjfb/zxfb2020/202605/t20260515_1963707.html",
+   "confidence": "high",
+   "non_private_annual": 129441,
+   "non_private_2024": 124110,
+   "private_annual": 71590,
+   "private_2024": 69476,
+   "non_private_by_region": {
+    "东部": 149902,
+    "中部": 102645,
+    "西部": 114989,
+    "东北": 103803
+   },
+   "private_by_region": {
+    "东部": 80149,
+    "中部": 58627,
+    "西部": 60923,
+    "东北": 54430
+   },
+   "non_private_by_industry": {
+    "农林牧渔": 74424,
+    "采矿": 143361,
+    "制造业": 113594,
+    "电力热力燃气水": 160897,
+    "建筑业": 92036,
+    "批发零售": 135749,
+    "交通运输仓储邮政": 133981,
+    "住宿餐饮": 62461,
+    "信息传输软件IT": 248752,
+    "金融": 211164,
+    "房地产": 89679,
+    "租赁商务服务": 110162,
+    "科研技术服务": 182064,
+    "水利环境公共设施": 70172,
+    "居民服务修理": 70226,
+    "教育": 133539,
+    "卫生和社会工作": 146266,
+    "文体娱乐": 129447,
+    "公共管理社会保障社会组织": 119465
+   },
+   "private_by_industry": {
+    "农林牧渔": 46552,
+    "采矿": 79169,
+    "制造业": 76055,
+    "电力热力燃气水": 66451,
+    "建筑业": 66275,
+    "批发零售": 69622,
+    "交通运输仓储邮政": 73133,
+    "住宿餐饮": 55123,
+    "信息传输软件IT": 128166,
+    "金融": 140451,
+    "房地产": 53338,
+    "租赁商务服务": 68919,
+    "科研技术服务": 83560,
+    "水利环境公共设施": 49527,
+    "居民服务修理": 52059,
+    "教育": 63908,
+    "卫生和社会工作": 75631,
+    "文体娱乐": 64015
+   },
+   "above_scale_enterprise_by_post": {
+    "all": 106080,
+    "中层及以上管理": 210016,
+    "专业技术": 155491,
+    "办事人员": 94936,
+    "社会生产生活服务人员": 79857,
+    "生产制造及有关人员": 80739
+   },
+   "caveat": "Coverage is legal-entity units with 5+ staff only, excluding 个体户 and flexible workers. Figures are pre-tax and include individual social-insurance and housing-fund contributions. The non-private average is far above typical pay; the 2025 national median disposable income is 36231 per person.",
+   "provinces_2025_nonprivate": {
+    "values": {
+     "北京": 232740,
+     "天津": 149507,
+     "广东": 143284,
+     "浙江": 141902,
+     "江苏": 134969,
+     "宁夏": 125972,
+     "重庆": 121162,
+     "海南": 120853,
+     "内蒙古": 117113,
+     "陕西": 116605,
+     "福建": 116510,
+     "四川": 115697,
+     "云南": 113558,
+     "江西": 112857,
+     "安徽": 109374,
+     "黑龙江": 104712,
+     "湖南": 102468,
+     "河北": 102088,
+     "山西": 101538,
+     "河南": 91023
+    },
+    "source": "中智浙江 compilation of provincial statistics bureaus (Sohu 2026-08-28)",
+    "url": "https://www.sohu.com/a/1068825774_121123748",
+    "confidence": "medium (secondary compilation; Beijing has a conflicting 224608 elsewhere)"
+   },
+   "capital_cities": {
+    "2024_nonprivate": {
+     "合肥": 122162,
+     "太原": 113002,
+     "url": "https://www.yicai.com/news/102882321.html",
+     "深圳": 174478,
+     "深圳_url": "https://www.sz.gov.cn/cn/xxgk/zfxxgj/tjsj/tjgb/content/post_12561969.html",
+     "confidence": "medium"
+    },
+    "note": "No full 2024/2025 capital-city wage list was found."
+   }
+  },
+  "pensions": {
+   "resident_basic_pension_min_monthly": {
+    "2024": 123,
+    "2025": 143,
+    "2026": 163,
+    "note": "Raised by 20元 in each of 2024, 2025 and 2026; the 2024 value is derived as 143-20. Provinces add top-ups (e.g. Sichuan 223 from 2026-07; Shanghai is far higher)",
+    "source": "2026政府工作报告 via 央广网/中新网",
+    "url": "https://news.cnr.cn/native/gd/sz/20260305/t20260305_527543935.shtml",
+    "url2": "https://www.chinanews.com/cj/2026/03-09/10583902.shtml",
+    "confidence": "high"
+   },
+   "resident_actual_avg_monthly_2025": {
+    "value": 276,
+    "method": "COMPUTED: fund expenditure 6223亿 ÷ 18820万 recipients ÷ 12 = 275.5 (includes individual-account payouts)",
+    "source": "人社部《2025年度人力资源和社会保障事业发展统计公报》 (reprint, figures verified)",
+    "url": "https://hrvalue.com.cn/news/2045.html",
+    "confidence": "medium-high"
+   },
+   "employee_actual_avg_monthly_2025": {
+    "value": 3900,
+    "method": "COMPUTED: fund expenditure 71203亿 ÷ 15215万 retirees ÷ 12 = 3900 (also covers funeral/survivor benefits and 机关事业 retirees)",
+    "source": "same bulletin",
+    "url": "https://hrvalue.com.cn/news/2045.html",
+    "confidence": "medium"
+   },
+   "gap": {
+    "ratio_2025_computed": 14.1,
+    "literature": "2024: employee 3825 vs resident 246 per month (~15.5x), down from 18.7x in 2015; Tibet 36x, Shanghai 2.3x (搜狐城市 via 澎湃)",
+    "url": "https://m.thepaper.cn/newsDetail_forward_33026602",
+    "confidence": "medium-high"
+   },
+   "participants_2025": {
+    "urban_employee_wan": 54680,
+    "resident_wan": 52919,
+    "url": "https://www.stats.gov.cn/sj/zxfbhjd/202602/t20260228_1962662.html"
+   }
+  },
+  "mortgage": {
+   "min_down_payment": {
+    "value": 0.15,
+    "text": "商业性个人住房贷款不再区分首套、二套住房，最低首付款比例统一为不低于15%. Local PBOC branches may set higher floors per city; tier-1 cities have since relaxed toward 15-20%",
+    "effective": "2024-09-24 PBOC/NFRA notice; no national change found in 2025-2026",
+    "source": "澎湃 2024-09-29",
+    "url": "https://www.thepaper.cn/newsDetail_forward_28913300",
+    "confidence": "high (national floor)"
+   },
+   "typical_down_payment_game": "Use 20-30% as typical; 15% is the legal minimum (synthesis)",
+   "LPR": {
+    "5y": 3.5,
+    "1y": 3.0,
+    "as_of": "2026-09-20; unchanged since the May 2025 cut",
+    "source": "全国银行间同业拆借中心 via 界面/央视网",
+    "url": "https://m.jiemian.com/article/15116593.html",
+    "url2": "https://jingji.cctv.com/2026/09/20/ARTIF8PP8kwZd58Rr2yCO0VT260920.shtml",
+    "confidence": "high"
+   },
+   "new_mortgage_weighted_avg_rate": {
+    "value": 3.1,
+    "as_of": "2026 H1 (June about 3.1%; April about 3.1%)",
+    "source": "PBOC via 国新办 briefing 2026-07-15 / 金融时报",
+    "url": "https://www.bbtnews.com.cn/2026/0715/599450.shtml",
+    "confidence": "high",
+    "note": "Implies first-home commercial loans at about LPR-40bp"
+   },
+   "provident_fund_rate": {
+    "first_home_over5y": 2.6,
+    "first_home_le5y": 2.1,
+    "second_home_over5y": 3.075,
+    "effective": "2025-05-08",
+    "source": "PBOC via 澎湃/中新网",
+    "url": "https://www.thepaper.cn/newsDetail_forward_32304903",
+    "url2": "https://www.chinanews.com.cn/cj/2025/05-08/10412451.shtml",
+    "confidence": "high"
+   },
+   "loan_term": {
+    "value": "max 30 years (commonly 25-30)",
+    "source": "memory/unverified",
+    "confidence": "low"
+   }
+  },
+  "county_price_context": {
+   "source": "聚汇数据 fangjia.gotohui.com 辖区房价排行. The tables carry no date but are likely about 2026-09/10, since the city-level series runs to 2026-09. These are probably resale (二手) listing averages; the page does not label the county table. New homes in county towns usually run 0-30% above this (Hainan 40-80%). No direct county-level new-home figure from 中指 or 贝壳 was found, so these resale figures stand in for new-home prices.",
+   "national": {
+    "typical_county_price_estimate": {
+     "low": 4000,
+     "high": 6000,
+     "median_approx": 5000,
+     "basis": "Synthesis of about 30 sampled prefectures' county tables, not a published statistic",
+     "confidence": "medium"
+    },
+    "counties_over_10k": [
+     {
+      "count": 117,
+      "period": "mid-2022",
+      "url": "https://www.yicai.com/news/101486232.html"
+     },
+     {
+      "count": 69,
+      "period": "2026-10",
+      "url": "https://fangjia.gotohui.com/xtop/"
+     }
+    ],
+    "drawdown_from_peak": {
+     "text": "As of 2026-09, among 1200+ county-level towns, 400+ have resale prices less than 20% below peak and 80+ more than 50% below peak (attributed to 聚汇数据; method not given)",
+     "url": "https://www.163.com/dy/article/L9C4CUJ205199DKK.html",
+     "confidence": "low-medium"
+    },
+    "liquidity": {
+     "text": "贝壳研究院 (May 2026): a typical county resale home takes more than 220 days to sell, versus 112 days in prefecture-city districts",
+     "url": "https://news.qq.com/rain/a/20260905A06DQK00",
+     "confidence": "medium"
+    }
+   }
+  },
+  "bride_price_context": {
+   "not_found_provinces": [
+    "AH",
+    "HB",
+    "HN",
+    "SN",
+    "JL",
+    "QH",
+    "YN",
+    "GZ",
+    "XJ"
+   ],
+   "tier_source": "龚为纲 (Wuhan Univ.): about 120k court judgments plus a 2024 Weibo hometown survey (about 110k responses); figures appear only in charts. High: JX, FJ, ZJ, then SD/HA/AH/HE, SX, GS, HL, NM. Low: GD, GX, YN, GZ, SC, XJ, XZ, HI, CQ",
+   "national": {
+    "caas_rural_panel": {
+     "2019": 46700,
+     "2023": 38600,
+     "source": "中国农科院农经所《中国农业农村微观数据观测报告2026》 (20 provinces, 578 villages, 12,480 fixed households), released 2026-09-19",
+     "url": "https://www.cls.cn/detail/2488239",
+     "quality": "academic",
+     "confidence": "high",
+     "note": "Mean over all sample marriages; much lower than the media figures"
+    },
+    "whu_rural_2021": {
+     "avg": 140000,
+     "source": "武汉大学中国乡村治理研究中心 (14 provinces, 33 counties)",
+     "url": "https://news.sina.com.cn/s/2024-05-10/doc-inauuaxf1708120.shtml",
+     "quality": "academic (case-based)",
+     "confidence": "medium"
+    },
+    "rural_2024": {
+     "avg": 128000,
+     "multiple_of_rural_income": 4.2,
+     "source": "China Daily 2025-04-18, citing an unnamed national survey",
+     "url": "https://epaper.chinadaily.com.cn/a/202504/18/WS680194afa3101d7a97b6b8c6.html",
+     "quality": "media-compilation",
+     "confidence": "medium"
+    },
+    "guyu_2020": {
+     "avg": 69095,
+     "prevalence": "73.8%",
+     "url": "https://news.qq.com/rain/a/20201015A05RUI00",
+     "quality": "platform-survey",
+     "confidence": "medium"
+    },
+    "youth_desired_2024": {
+     "text": "中国青年报 survey (n=1333): <5万 15.8%, 5-10万 32.5%, 10-15万 21.1%, 15-20万 18.5%, 20万+ 12.1%",
+     "url": "https://www.chinanews.com.cn/sh/2024/05-16/10217491.shtml"
+    }
+   },
+   "policy": [
+    {
+     "item": "中央一号文件 2019-2026",
+     "text": "Every year since 2019 has named 天价/高额彩礼 for governance; 2022 launched a special campaign; 2026 continues it with cross-province joint governance",
+     "url": "https://www.news.cn/politics/20260827/cb39e3054b8b4eedb2abbb263ee3fa37/c.html"
+    },
+    {
+     "item": "最高法 法释〔2024〕1号 (effective 2024-02-01)",
+     "text": "Bans 借婚姻索取财物. After registration and cohabitation, return is generally refused, but partial return is possible if cohabitation was short and the amount high. Without registration, return is proportional. 'High' is judged against the payer's local per-capita disposable income",
+     "url": "https://www.court.gov.cn/fabu/xiangqing/423442.html"
+    },
+    {
+     "item": "Local caps (mostly advisory)",
+     "text": "江西 counties about 3x rural income (金溪/庐山 6万, 南昌新建 8万); 甘肃 华池 12万→10万, 天祝/肃州 6万, 陇西 5万; 宁夏泾源 6万; 四川凉山 10万 (条例); 山西运城盐湖 6万; 山东巨野 6万",
+     "url": "https://m.gmw.cn/2023-05/19/content_1303377670.htm",
+     "url2": "https://www.thepaper.cn/newsDetail_forward_31167399"
+    }
+   ],
+   "hotspots": [
+    {
+     "place": "江西 鹰潭",
+     "figure": "a 28.8万 offer outbid by 38.8万 (2021 case)",
+     "url": "https://news.sina.com.cn/s/2024-05-10/doc-inauuaxf1708120.shtml"
+    },
+    {
+     "place": "甘肃 庆阳 华池",
+     "figure": "2025 cap 12万 = 9x 2024 income",
+     "url": "https://www.thepaper.cn/newsDetail_forward_31167399"
+    },
+    {
+     "place": "山东/河南/甘肃 counties",
+     "figure": "'万紫千红一片绿' bundle over 15万",
+     "url": "https://paper.people.com.cn/zgcsbwap/html/2024-05/13/content_26057215.htm"
+    },
+    {
+     "place": "福建 莆田 coast",
+     "figure": "十几万-20万, extreme cases over 100万 (anecdotal; unclear source)",
+     "confidence": "low"
+    }
+   ],
+   "trend": "Amounts peaked around 2020-2023 and have fallen under the governance campaigns: Ningxia -35%; Jiangxi counties over 15万 went from 52 to 13; the CAAS panel mean fell from 4.67万 (2019) to 3.86万 (2023).",
+   "game_tiers_synthesis": "Very high JX/FJ/ZJ 15-30万; high SD/HA/AH/HE/SX/GS/HL/NM/JS/TJ/LN 10-20万; mid HB/HN/SN/NX/QH/JL/SH/SC 5-12万; low GD/GX/YN/GZ/XJ/CQ/BJ 1-6万; minimal XZ/HI about 1万. This is a synthesis, not sourced data, and these are typical asking amounts for marrying-age rural families; the CAAS all-household mean is 3.9万."
+  }
+ },
+ "nbs70_cumulative_dec2021_dec2025": {
+  "source": "Computed from NBS 70-city releases: Dec-2022 定基(2020=100) and Dec YoY indices for 2022-2025",
+  "urls": [
+   "https://www.stats.gov.cn/sj/zxfb/202302/t20230203_1901707.html",
+   "https://www.stats.gov.cn/sj/zxfb/202401/t20240117_1946600.html",
+   "https://www.stats.gov.cn/sj/zxfb/202501/t20250117_1958323.html",
+   "https://www.stats.gov.cn/sj/zxfb/202601/t20260119_1962319.html"
+  ],
+  "cities": {
+   "北京": {
+    "new": {
+     "idx2020_dec21": 106.5,
+     "idx2020_dec25": 105.8,
+     "chg_dec21_dec25_pct": -0.7
+    },
+    "second": {
+     "idx2020_dec21": 111.6,
+     "idx2020_dec25": 99.1,
+     "chg_dec21_dec25_pct": -11.2
+    }
+   },
+   "唐山": {
+    "new": {
+     "idx2020_dec21": 102.2,
+     "idx2020_dec25": 85.5,
+     "chg_dec21_dec25_pct": -16.4
+    },
+    "second": {
+     "idx2020_dec21": 101.7,
+     "idx2020_dec25": 73.3,
+     "chg_dec21_dec25_pct": -27.9
+    }
+   },
+   "天津": {
+    "new": {
+     "idx2020_dec21": 103.0,
+     "idx2020_dec25": 95.9,
+     "chg_dec21_dec25_pct": -6.9
+    },
+    "second": {
+     "idx2020_dec21": 99.8,
+     "idx2020_dec25": 81.3,
+     "chg_dec21_dec25_pct": -18.5
+    }
+   },
+   "秦皇岛": {
+    "new": {
+     "idx2020_dec21": 97.7,
+     "idx2020_dec25": 78.8,
+     "chg_dec21_dec25_pct": -19.3
+    },
+    "second": {
+     "idx2020_dec21": 98.7,
+     "idx2020_dec25": 74.1,
+     "chg_dec21_dec25_pct": -24.9
+    }
+   },
+   "石家庄": {
+    "new": {
+     "idx2020_dec21": 99.9,
+     "idx2020_dec25": 90.9,
+     "chg_dec21_dec25_pct": -9.0
+    },
+    "second": {
+     "idx2020_dec21": 95.4,
+     "idx2020_dec25": 79.1,
+     "chg_dec21_dec25_pct": -17.1
+    }
+   },
+   "包头": {
+    "new": {
+     "idx2020_dec21": 101.6,
+     "idx2020_dec25": 81.7,
+     "chg_dec21_dec25_pct": -19.5
+    },
+    "second": {
+     "idx2020_dec21": 101.4,
+     "idx2020_dec25": 76.1,
+     "chg_dec21_dec25_pct": -24.9
+    }
+   },
+   "太原": {
+    "new": {
+     "idx2020_dec21": 96.3,
+     "idx2020_dec25": 92.4,
+     "chg_dec21_dec25_pct": -4.1
+    },
+    "second": {
+     "idx2020_dec21": 94.6,
+     "idx2020_dec25": 79.9,
+     "chg_dec21_dec25_pct": -15.6
+    }
+   },
+   "丹东": {
+    "new": {
+     "idx2020_dec21": 105.0,
+     "idx2020_dec25": 89.1,
+     "chg_dec21_dec25_pct": -15.2
+    },
+    "second": {
+     "idx2020_dec21": 103.1,
+     "idx2020_dec25": 77.8,
+     "chg_dec21_dec25_pct": -24.5
+    }
+   },
+   "呼和浩特": {
+    "new": {
+     "idx2020_dec21": 101.4,
+     "idx2020_dec25": 88.8,
+     "chg_dec21_dec25_pct": -12.5
+    },
+    "second": {
+     "idx2020_dec21": 97.9,
+     "idx2020_dec25": 73.9,
+     "chg_dec21_dec25_pct": -24.5
+    }
+   },
+   "锦州": {
+    "new": {
+     "idx2020_dec21": 106.0,
+     "idx2020_dec25": 93.8,
+     "chg_dec21_dec25_pct": -11.5
+    },
+    "second": {
+     "idx2020_dec21": 97.2,
+     "idx2020_dec25": 76.5,
+     "chg_dec21_dec25_pct": -21.4
+    }
+   },
+   "沈阳": {
+    "new": {
+     "idx2020_dec21": 104.2,
+     "idx2020_dec25": 93.2,
+     "chg_dec21_dec25_pct": -10.5
+    },
+    "second": {
+     "idx2020_dec21": 105.0,
+     "idx2020_dec25": 82.5,
+     "chg_dec21_dec25_pct": -21.5
+    }
+   },
+   "吉林": {
+    "new": {
+     "idx2020_dec21": 103.2,
+     "idx2020_dec25": 90.9,
+     "chg_dec21_dec25_pct": -12.0
+    },
+    "second": {
+     "idx2020_dec21": 98.0,
+     "idx2020_dec25": 74.7,
+     "chg_dec21_dec25_pct": -23.8
+    }
+   },
+   "大连": {
+    "new": {
+     "idx2020_dec21": 106.7,
+     "idx2020_dec25": 90.6,
+     "chg_dec21_dec25_pct": -15.1
+    },
+    "second": {
+     "idx2020_dec21": 107.2,
+     "idx2020_dec25": 82.6,
+     "chg_dec21_dec25_pct": -22.9
+    }
+   },
+   "牡丹江": {
+    "new": {
+     "idx2020_dec21": 97.3,
+     "idx2020_dec25": 82.7,
+     "chg_dec21_dec25_pct": -15.0
+    },
+    "second": {
+     "idx2020_dec21": 89.9,
+     "idx2020_dec25": 66.4,
+     "chg_dec21_dec25_pct": -26.2
+    }
+   },
+   "长春": {
+    "new": {
+     "idx2020_dec21": 101.6,
+     "idx2020_dec25": 89.0,
+     "chg_dec21_dec25_pct": -12.4
+    },
+    "second": {
+     "idx2020_dec21": 98.1,
+     "idx2020_dec25": 76.8,
+     "chg_dec21_dec25_pct": -21.7
+    }
+   },
+   "无锡": {
+    "new": {
+     "idx2020_dec21": 106.4,
+     "idx2020_dec25": 95.4,
+     "chg_dec21_dec25_pct": -10.3
+    },
+    "second": {
+     "idx2020_dec21": 106.6,
+     "idx2020_dec25": 89.4,
+     "chg_dec21_dec25_pct": -16.1
+    }
+   },
+   "哈尔滨": {
+    "new": {
+     "idx2020_dec21": 97.7,
+     "idx2020_dec25": 81.1,
+     "chg_dec21_dec25_pct": -17.0
+    },
+    "second": {
+     "idx2020_dec21": 95.7,
+     "idx2020_dec25": 72.1,
+     "chg_dec21_dec25_pct": -24.7
+    }
+   },
+   "徐州": {
+    "new": {
+     "idx2020_dec21": 107.9,
+     "idx2020_dec25": 92.4,
+     "chg_dec21_dec25_pct": -14.4
+    },
+    "second": {
+     "idx2020_dec21": 107.3,
+     "idx2020_dec25": 80.1,
+     "chg_dec21_dec25_pct": -25.3
+    }
+   },
+   "上海": {
+    "new": {
+     "idx2020_dec21": 106.1,
+     "idx2020_dec25": 127.3,
+     "chg_dec21_dec25_pct": 20.0
+    },
+    "second": {
+     "idx2020_dec21": 109.8,
+     "idx2020_dec25": 98.8,
+     "chg_dec21_dec25_pct": -10.1
+    }
+   },
+   "扬州": {
+    "new": {
+     "idx2020_dec21": 107.5,
+     "idx2020_dec25": 90.7,
+     "chg_dec21_dec25_pct": -15.6
+    },
+    "second": {
+     "idx2020_dec21": 105.3,
+     "idx2020_dec25": 81.1,
+     "chg_dec21_dec25_pct": -23.0
+    }
+   },
+   "南京": {
+    "new": {
+     "idx2020_dec21": 105.9,
+     "idx2020_dec25": 94.3,
+     "chg_dec21_dec25_pct": -10.9
+    },
+    "second": {
+     "idx2020_dec21": 106.0,
+     "idx2020_dec25": 82.1,
+     "chg_dec21_dec25_pct": -22.6
+    }
+   },
+   "温州": {
+    "new": {
+     "idx2020_dec21": 105.9,
+     "idx2020_dec25": 82.8,
+     "chg_dec21_dec25_pct": -21.8
+    },
+    "second": {
+     "idx2020_dec21": 105.7,
+     "idx2020_dec25": 78.7,
+     "chg_dec21_dec25_pct": -25.6
+    }
+   },
+   "杭州": {
+    "new": {
+     "idx2020_dec21": 106.6,
+     "idx2020_dec25": 116.1,
+     "chg_dec21_dec25_pct": 8.9
+    },
+    "second": {
+     "idx2020_dec21": 108.4,
+     "idx2020_dec25": 95.3,
+     "chg_dec21_dec25_pct": -12.1
+    }
+   },
+   "金华": {
+    "new": {
+     "idx2020_dec21": 106.5,
+     "idx2020_dec25": 86.1,
+     "chg_dec21_dec25_pct": -19.2
+    },
+    "second": {
+     "idx2020_dec21": 106.3,
+     "idx2020_dec25": 78.3,
+     "chg_dec21_dec25_pct": -26.3
+    }
+   },
+   "宁波": {
+    "new": {
+     "idx2020_dec21": 104.9,
+     "idx2020_dec25": 98.2,
+     "chg_dec21_dec25_pct": -6.4
+    },
+    "second": {
+     "idx2020_dec21": 107.5,
+     "idx2020_dec25": 85.6,
+     "chg_dec21_dec25_pct": -20.4
+    }
+   },
+   "蚌埠": {
+    "new": {
+     "idx2020_dec21": 103.6,
+     "idx2020_dec25": 90.3,
+     "chg_dec21_dec25_pct": -12.8
+    },
+    "second": {
+     "idx2020_dec21": 103.9,
+     "idx2020_dec25": 85.7,
+     "chg_dec21_dec25_pct": -17.5
+    }
+   },
+   "合肥": {
+    "new": {
+     "idx2020_dec21": 106.1,
+     "idx2020_dec25": 103.2,
+     "chg_dec21_dec25_pct": -2.7
+    },
+    "second": {
+     "idx2020_dec21": 105.1,
+     "idx2020_dec25": 83.9,
+     "chg_dec21_dec25_pct": -20.2
+    }
+   },
+   "安庆": {
+    "new": {
+     "idx2020_dec21": 98.8,
+     "idx2020_dec25": 83.6,
+     "chg_dec21_dec25_pct": -15.4
+    },
+    "second": {
+     "idx2020_dec21": 95.2,
+     "idx2020_dec25": 72.3,
+     "chg_dec21_dec25_pct": -24.0
+    }
+   },
+   "福州": {
+    "new": {
+     "idx2020_dec21": 105.8,
+     "idx2020_dec25": 90.2,
+     "chg_dec21_dec25_pct": -14.7
+    },
+    "second": {
+     "idx2020_dec21": 104.7,
+     "idx2020_dec25": 81.9,
+     "chg_dec21_dec25_pct": -21.8
+    }
+   },
+   "泉州": {
+    "new": {
+     "idx2020_dec21": 106.5,
+     "idx2020_dec25": 91.3,
+     "chg_dec21_dec25_pct": -14.3
+    },
+    "second": {
+     "idx2020_dec21": 106.4,
+     "idx2020_dec25": 78.9,
+     "chg_dec21_dec25_pct": -25.8
+    }
+   },
+   "厦门": {
+    "new": {
+     "idx2020_dec21": 106.6,
+     "idx2020_dec25": 87.6,
+     "chg_dec21_dec25_pct": -17.8
+    },
+    "second": {
+     "idx2020_dec21": 103.8,
+     "idx2020_dec25": 77.4,
+     "chg_dec21_dec25_pct": -25.4
+    }
+   },
+   "九江": {
+    "new": {
+     "idx2020_dec21": 103.0,
+     "idx2020_dec25": 87.3,
+     "chg_dec21_dec25_pct": -15.3
+    },
+    "second": {
+     "idx2020_dec21": 102.2,
+     "idx2020_dec25": 80.2,
+     "chg_dec21_dec25_pct": -21.5
+    }
+   },
+   "南昌": {
+    "new": {
+     "idx2020_dec21": 100.6,
+     "idx2020_dec25": 90.5,
+     "chg_dec21_dec25_pct": -10.0
+    },
+    "second": {
+     "idx2020_dec21": 99.7,
+     "idx2020_dec25": 77.7,
+     "chg_dec21_dec25_pct": -22.0
+    }
+   },
+   "赣州": {
+    "new": {
+     "idx2020_dec21": 104.6,
+     "idx2020_dec25": 92.1,
+     "chg_dec21_dec25_pct": -11.9
+    },
+    "second": {
+     "idx2020_dec21": 102.2,
+     "idx2020_dec25": 89.2,
+     "chg_dec21_dec25_pct": -12.8
+    }
+   },
+   "济南": {
+    "new": {
+     "idx2020_dec21": 104.7,
+     "idx2020_dec25": 99.1,
+     "chg_dec21_dec25_pct": -5.3
+    },
+    "second": {
+     "idx2020_dec21": 99.8,
+     "idx2020_dec25": 79.9,
+     "chg_dec21_dec25_pct": -20.0
+    }
+   },
+   "烟台": {
+    "new": {
+     "idx2020_dec21": 103.4,
+     "idx2020_dec25": 90.6,
+     "chg_dec21_dec25_pct": -12.4
+    },
+    "second": {
+     "idx2020_dec21": 102.8,
+     "idx2020_dec25": 79.5,
+     "chg_dec21_dec25_pct": -22.6
+    }
+   },
+   "青岛": {
+    "new": {
+     "idx2020_dec21": 106.0,
+     "idx2020_dec25": 98.3,
+     "chg_dec21_dec25_pct": -7.2
+    },
+    "second": {
+     "idx2020_dec21": 100.3,
+     "idx2020_dec25": 79.7,
+     "chg_dec21_dec25_pct": -20.6
+    }
+   },
+   "济宁": {
+    "new": {
+     "idx2020_dec21": 109.7,
+     "idx2020_dec25": 92.2,
+     "chg_dec21_dec25_pct": -15.9
+    },
+    "second": {
+     "idx2020_dec21": 104.8,
+     "idx2020_dec25": 81.1,
+     "chg_dec21_dec25_pct": -22.6
+    }
+   },
+   "郑州": {
+    "new": {
+     "idx2020_dec21": 101.3,
+     "idx2020_dec25": 86.1,
+     "chg_dec21_dec25_pct": -15.0
+    },
+    "second": {
+     "idx2020_dec21": 99.5,
+     "idx2020_dec25": 74.1,
+     "chg_dec21_dec25_pct": -25.5
+    }
+   },
+   "洛阳": {
+    "new": {
+     "idx2020_dec21": 103.9,
+     "idx2020_dec25": 87.5,
+     "chg_dec21_dec25_pct": -15.7
+    },
+    "second": {
+     "idx2020_dec21": 102.8,
+     "idx2020_dec25": 79.8,
+     "chg_dec21_dec25_pct": -22.4
+    }
+   },
+   "武汉": {
+    "new": {
+     "idx2020_dec21": 105.9,
+     "idx2020_dec25": 89.1,
+     "chg_dec21_dec25_pct": -15.9
+    },
+    "second": {
+     "idx2020_dec21": 102.4,
+     "idx2020_dec25": 74.3,
+     "chg_dec21_dec25_pct": -27.5
+    }
+   },
+   "平顶山": {
+    "new": {
+     "idx2020_dec21": 103.5,
+     "idx2020_dec25": 95.5,
+     "chg_dec21_dec25_pct": -7.7
+    },
+    "second": {
+     "idx2020_dec21": 101.8,
+     "idx2020_dec25": 82.5,
+     "chg_dec21_dec25_pct": -18.9
+    }
+   },
+   "长沙": {
+    "new": {
+     "idx2020_dec21": 109.4,
+     "idx2020_dec25": 105.7,
+     "chg_dec21_dec25_pct": -3.4
+    },
+    "second": {
+     "idx2020_dec21": 106.3,
+     "idx2020_dec25": 88.1,
+     "chg_dec21_dec25_pct": -17.1
+    }
+   },
+   "宜昌": {
+    "new": {
+     "idx2020_dec21": 104.0,
+     "idx2020_dec25": 91.7,
+     "chg_dec21_dec25_pct": -11.8
+    },
+    "second": {
+     "idx2020_dec21": 97.5,
+     "idx2020_dec25": 76.0,
+     "chg_dec21_dec25_pct": -22.0
+    }
+   },
+   "广州": {
+    "new": {
+     "idx2020_dec21": 108.7,
+     "idx2020_dec25": 91.6,
+     "chg_dec21_dec25_pct": -15.7
+    },
+    "second": {
+     "idx2020_dec21": 110.5,
+     "idx2020_dec25": 85.6,
+     "chg_dec21_dec25_pct": -22.5
+    }
+   },
+   "襄阳": {
+    "new": {
+     "idx2020_dec21": 103.1,
+     "idx2020_dec25": 87.2,
+     "chg_dec21_dec25_pct": -15.4
+    },
+    "second": {
+     "idx2020_dec21": 98.8,
+     "idx2020_dec25": 73.4,
+     "chg_dec21_dec25_pct": -25.7
+    }
+   },
+   "深圳": {
+    "new": {
+     "idx2020_dec21": 104.7,
+     "idx2020_dec25": 90.4,
+     "chg_dec21_dec25_pct": -13.6
+    },
+    "second": {
+     "idx2020_dec21": 106.5,
+     "idx2020_dec25": 86.5,
+     "chg_dec21_dec25_pct": -18.8
+    }
+   },
+   "岳阳": {
+    "new": {
+     "idx2020_dec21": 97.9,
+     "idx2020_dec25": 78.3,
+     "chg_dec21_dec25_pct": -20.0
+    },
+    "second": {
+     "idx2020_dec21": 97.4,
+     "idx2020_dec25": 79.5,
+     "chg_dec21_dec25_pct": -18.4
+    }
+   },
+   "南宁": {
+    "new": {
+     "idx2020_dec21": 103.8,
+     "idx2020_dec25": 90.7,
+     "chg_dec21_dec25_pct": -12.6
+    },
+    "second": {
+     "idx2020_dec21": 99.9,
+     "idx2020_dec25": 75.1,
+     "chg_dec21_dec25_pct": -24.8
+    }
+   },
+   "常德": {
+    "new": {
+     "idx2020_dec21": 96.3,
+     "idx2020_dec25": 77.9,
+     "chg_dec21_dec25_pct": -19.1
+    },
+    "second": {
+     "idx2020_dec21": 97.3,
+     "idx2020_dec25": 73.8,
+     "chg_dec21_dec25_pct": -24.2
+    }
+   },
+   "海口": {
+    "new": {
+     "idx2020_dec21": 105.7,
+     "idx2020_dec25": 98.3,
+     "chg_dec21_dec25_pct": -7.0
+    },
+    "second": {
+     "idx2020_dec21": 109.3,
+     "idx2020_dec25": 88.9,
+     "chg_dec21_dec25_pct": -18.6
+    }
+   },
+   "韶关": {
+    "new": {
+     "idx2020_dec21": 100.8,
+     "idx2020_dec25": 88.1,
+     "chg_dec21_dec25_pct": -12.6
+    },
+    "second": {
+     "idx2020_dec21": 99.9,
+     "idx2020_dec25": 81.6,
+     "chg_dec21_dec25_pct": -18.3
+    }
+   },
+   "重庆": {
+    "new": {
+     "idx2020_dec21": 110.1,
+     "idx2020_dec25": 103.2,
+     "chg_dec21_dec25_pct": -6.2
+    },
+    "second": {
+     "idx2020_dec21": 104.8,
+     "idx2020_dec25": 85.5,
+     "chg_dec21_dec25_pct": -18.4
+    }
+   },
+   "湛江": {
+    "new": {
+     "idx2020_dec21": 100.8,
+     "idx2020_dec25": 82.4,
+     "chg_dec21_dec25_pct": -18.2
+    },
+    "second": {
+     "idx2020_dec21": 99.7,
+     "idx2020_dec25": 78.1,
+     "chg_dec21_dec25_pct": -21.7
+    }
+   },
+   "成都": {
+    "new": {
+     "idx2020_dec21": 104.5,
+     "idx2020_dec25": 112.6,
+     "chg_dec21_dec25_pct": 7.8
+    },
+    "second": {
+     "idx2020_dec21": 106.6,
+     "idx2020_dec25": 105.0,
+     "chg_dec21_dec25_pct": -1.5
+    }
+   },
+   "惠州": {
+    "new": {
+     "idx2020_dec21": 104.2,
+     "idx2020_dec25": 86.8,
+     "chg_dec21_dec25_pct": -16.7
+    },
+    "second": {
+     "idx2020_dec21": 102.6,
+     "idx2020_dec25": 81.2,
+     "chg_dec21_dec25_pct": -20.9
+    }
+   },
+   "贵阳": {
+    "new": {
+     "idx2020_dec21": 102.2,
+     "idx2020_dec25": 91.8,
+     "chg_dec21_dec25_pct": -10.2
+    },
+    "second": {
+     "idx2020_dec21": 96.3,
+     "idx2020_dec25": 79.5,
+     "chg_dec21_dec25_pct": -17.4
+    }
+   },
+   "桂林": {
+    "new": {
+     "idx2020_dec21": 100.3,
+     "idx2020_dec25": 86.2,
+     "chg_dec21_dec25_pct": -14.1
+    },
+    "second": {
+     "idx2020_dec21": 99.9,
+     "idx2020_dec25": 81.4,
+     "chg_dec21_dec25_pct": -18.5
+    }
+   },
+   "昆明": {
+    "new": {
+     "idx2020_dec21": 102.1,
+     "idx2020_dec25": 85.4,
+     "chg_dec21_dec25_pct": -16.3
+    },
+    "second": {
+     "idx2020_dec21": 101.8,
+     "idx2020_dec25": 86.7,
+     "chg_dec21_dec25_pct": -14.8
+    }
+   },
+   "北海": {
+    "new": {
+     "idx2020_dec21": 96.1,
+     "idx2020_dec25": 77.9,
+     "chg_dec21_dec25_pct": -18.9
+    },
+    "second": {
+     "idx2020_dec21": 96.7,
+     "idx2020_dec25": 75.9,
+     "chg_dec21_dec25_pct": -21.5
+    }
+   },
+   "西安": {
+    "new": {
+     "idx2020_dec21": 109.7,
+     "idx2020_dec25": 109.9,
+     "chg_dec21_dec25_pct": 0.2
+    },
+    "second": {
+     "idx2020_dec21": 107.3,
+     "idx2020_dec25": 87.7,
+     "chg_dec21_dec25_pct": -18.2
+    }
+   },
+   "三亚": {
+    "new": {
+     "idx2020_dec21": 108.2,
+     "idx2020_dec25": 105.9,
+     "chg_dec21_dec25_pct": -2.1
+    },
+    "second": {
+     "idx2020_dec21": 105.4,
+     "idx2020_dec25": 89.6,
+     "chg_dec21_dec25_pct": -15.0
+    }
+   },
+   "兰州": {
+    "new": {
+     "idx2020_dec21": 105.2,
+     "idx2020_dec25": 86.9,
+     "chg_dec21_dec25_pct": -17.4
+    },
+    "second": {
+     "idx2020_dec21": 103.3,
+     "idx2020_dec25": 79.6,
+     "chg_dec21_dec25_pct": -22.9
+    }
+   },
+   "泸州": {
+    "new": {
+     "idx2020_dec21": 97.0,
+     "idx2020_dec25": 78.6,
+     "chg_dec21_dec25_pct": -19.0
+    },
+    "second": {
+     "idx2020_dec21": 99.0,
+     "idx2020_dec25": 80.3,
+     "chg_dec21_dec25_pct": -18.8
+    }
+   },
+   "西宁": {
+    "new": {
+     "idx2020_dec21": 107.6,
+     "idx2020_dec25": 92.2,
+     "chg_dec21_dec25_pct": -14.3
+    },
+    "second": {
+     "idx2020_dec21": 105.9,
+     "idx2020_dec25": 91.0,
+     "chg_dec21_dec25_pct": -14.0
+    }
+   },
+   "南充": {
+    "new": {
+     "idx2020_dec21": 97.0,
+     "idx2020_dec25": 87.6,
+     "chg_dec21_dec25_pct": -9.7
+    },
+    "second": {
+     "idx2020_dec21": 92.0,
+     "idx2020_dec25": 81.6,
+     "chg_dec21_dec25_pct": -11.3
+    }
+   },
+   "银川": {
+    "new": {
+     "idx2020_dec21": 113.1,
+     "idx2020_dec25": 107.2,
+     "chg_dec21_dec25_pct": -5.3
+    },
+    "second": {
+     "idx2020_dec21": 107.3,
+     "idx2020_dec25": 88.8,
+     "chg_dec21_dec25_pct": -17.2
+    }
+   },
+   "遵义": {
+    "new": {
+     "idx2020_dec21": 100.5,
+     "idx2020_dec25": 93.0,
+     "chg_dec21_dec25_pct": -7.4
+    },
+    "second": {
+     "idx2020_dec21": 98.7,
+     "idx2020_dec25": 81.3,
+     "chg_dec21_dec25_pct": -17.6
+    }
+   },
+   "乌鲁木齐": {
+    "new": {
+     "idx2020_dec21": 104.0,
+     "idx2020_dec25": 103.4,
+     "chg_dec21_dec25_pct": -0.6
+    },
+    "second": {
+     "idx2020_dec21": 101.4,
+     "idx2020_dec25": 85.9,
+     "chg_dec21_dec25_pct": -15.4
+    }
+   },
+   "大理": {
+    "new": {
+     "idx2020_dec21": 96.0,
+     "idx2020_dec25": 80.3,
+     "chg_dec21_dec25_pct": -16.4
+    },
+    "second": {
+     "idx2020_dec21": 98.2,
+     "idx2020_dec25": 79.4,
+     "chg_dec21_dec25_pct": -19.2
+    }
+   }
+  }
+ },
+ "discrepancies": [
+  {
+   "topic": "Second-hand prices, national",
+   "official": "NBS 70-city second-hand index, simple mean of 70 cities Dec2021->Dec2025: -20.3% (median -21.5%, range -27.9% to -1.5%)",
+   "independent": "中指 百城二手均价 Jun2021 15888 -> Dec2025 13016 (-18.1%) -> Sep2026 12452 (-21.6%)",
+   "assessment": "At the national aggregate the official and CIA second-hand declines are similar (~-20%). The understatement claim is not supported at this level. Confidence medium: different city sets, and mean index vs average price.",
+   "urls": [
+    "https://www.stats.gov.cn/sj/zxfb/202601/t20260119_1962319.html",
+    "https://www.bjnews.com.cn/detail/162513939214395.html",
+    "https://news.10jqka.com.cn/20261008/c680465793.shtml"
+   ]
+  },
+  {
+   "topic": "New-home prices: index vs average",
+   "official": "NBS 70-city new-home index Dec2021->Dec2025 mean -11.3% (Shanghai +20.0%, Hangzhou +8.9%, Chengdu +7.8%, Beijing -0.7%, Shenzhen -13.6%, Guangzhou -15.7%); NBS developer average residential price 2021 10825 -> 2025 ~10005 (-7.6%)",
+   "independent": "中指 百城新建均价 Jun2021 16063 -> Sep2026 17285 (+7.6%, YoY +2.12%)",
+   "assessment": "New-home series are dominated by mix effects (luxury launches, price-filing limits on 备案价). The independent CIA average rises while the NBS index falls, so neither measures true like-for-like discounts. Analysts cite official new-home declines of about 20% from the 2021 peak and say real declines may be roughly double, citing off-contract discounts and price-floor guidance. That claim is commentary, low confidence.",
+   "urls": [
+    "https://www.ctee.com.tw/news/20260102700700-430804",
+    "https://www.globalpropertyguide.com/asia/china"
+   ]
+  },
+  {
+   "topic": "City-level second-hand: official vs agents",
+   "official": "NBS second-hand Dec2021->Dec2025: Beijing -11.2%, Shanghai -10.1%, Shenzhen -18.8%, Guangzhou -22.5%, Hangzhou -12.1%, Chengdu -1.5%, Wuhan -27.5%, Zhengzhou -25.5%",
+   "independent": "Fortune 2023: by Aug 2023 NBS showed existing homes -6% from the Aug 2021 high, while agents and private data showed -15% to -28% in prime Shanghai, Shenzhen and Hangzhou areas; KE data showed more than half of tier-2/3 cities down more than 15%. Asia Times 2026: commentators claim many cities -40% to -50% from peak (anecdotal). 中指 Jun 2026 YoY second-hand: Nanjing -11.45%, Wuhan -10.89%, Shenzhen -5.27%.",
+   "assessment": "Biggest plausible gap is in tier-1 and core tier-2 second-hand prices (Beijing, Shanghai, Chengdu official -1.5% to -11% over 4 years vs agent reports of -15% to -30%+). Official surveys use agency reports and field sampling, and some transaction data uses tax-filing or reference prices. Confidence medium-low on the size of the gap.",
+   "urls": [
+    "https://fortune.com/2023/08/17/china-home-sales-worse-than-official-data-real-estate-crisis",
+    "https://asiatimes.com/2026/07/chinas-housing-market-free-falls-as-buyers-wait-for-floor-prices/"
+   ]
+  },
+  {
+   "topic": "BIS residential index (built from official data)",
+   "value": "nominal peak 145.9 (2021) -> 114 (Q1 2026) = -21.9%; real 113 -> 85.1 = -24.7%",
+   "source": "Asia Times citing FRED/BIS",
+   "url": "https://asiatimes.com/2026/07/chinas-housing-market-free-falls-as-buyers-wait-for-floor-prices/",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Household income: survey vs national accounts",
+   "official": "NBS household survey 2023 per-capita disposable income 39218",
+   "independent": "NBS flow-of-funds 住户部门可支配总收入 2023 = 786890.6亿 ≈ 55,800/person (my computation, population about 1.41 bn), about 1.42x the survey. Wang Xiaolu (2010) estimated 2008 hidden urban income at 9.3万亿, with top-decile income 3.2x the official figure. NBS disputed the method.",
+   "assessment": "The survey likely understates top incomes and some property and business income; flow-of-funds includes unincorporated business surplus, so the gap is partly definitional. For game realism, the survey is fine for median households, but add a fat upper tail.",
+   "urls": [
+    "https://www.stats.gov.cn/sj/ndsj/2025/html/C03-18.jpg",
+    "https://www.nbd.com.cn/articles/2010-07-22/325880.html",
+    "https://www.aisixiang.com/data/35147.html"
+   ],
+   "confidence": "medium"
+  },
+  {
+   "topic": "Capital new-home prices are whole-municipality averages",
+   "note": "NBS 35-city prices cover suburbs and counties: Zhengzhou 7942, Chongqing 8243, Changchun 7812 are far below core urban prices (Anjuke listing: Zhengzhou 8504, Chongqing 8386). The 70-city index covers 市辖区 only, excluding counties.",
+   "confidence": "high"
+  },
+  {
+   "topic": "Shenzhen second-hand: official vs agency",
+   "official": "NBS 70-city Shenzhen second-hand Dec2021->Dec2025 -18.8%",
+   "independent": "乐有家 transaction average 80000 (2021) -> 59000 (2025) = -26%; 贝壳 2025 54000 (-1.9% YoY) vs 乐有家 -6.3% YoY",
+   "assessment": "Official decline is about 7pp smaller than the agency transaction series. Mix effects may explain part of the gap. Confidence medium",
+   "urls": [
+    "https://www.36kr.com/p/3645725253029509",
+    "https://m.mp.oeeee.com/a/BAAFRD0000202601041504429.html"
+   ]
+  },
+  {
+   "topic": "Chengdu second-hand: largest gap found",
+   "official": "NBS 70-city Chengdu second-hand Dec2021->Dec2025 -1.5%",
+   "independent": "澎湃: Chengdu second-hand transaction average about 12200 at end-2025, about 2000 (~14%) below early 2025; 中指 Jun 2026 YoY for Chengdu is -5% to -8%",
+   "assessment": "Official index looks implausibly flat. Confidence medium",
+   "urls": [
+    "https://m.thepaper.cn/newsDetail_forward_32389935",
+    "https://asiatimes.com/2026/07/chinas-housing-market-free-falls-as-buyers-wait-for-floor-prices/"
+   ]
+  },
+  {
+   "topic": "Hangzhou: transaction vs listing",
+   "independent": "丁祖昱 2026: transaction average -14.6% YoY vs listing -0.5% YoY. Listing prices (房天下/禧泰/安居客) lag real transaction declines",
+   "url": "https://www.36kr.com/p/3894879567936768",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Listing vs transaction level",
+   "text": "Guangzhou 2025 transaction second-hand 26420 vs listing 29939 (房天下) / 36519 (禧泰). Shenzhen transaction 54-59k vs listing 53k (房天下) / 66.6k (禧泰). Listing levels can be 10-40% off and differ widely by platform",
+   "confidence": "high"
+  },
+  {
+   "topic": "Shanghai new homes",
+   "official": "NBS 70-city Shanghai new-home index Dec2021->Dec2025 +20.0%; NBS 2024 whole-city average 47223",
+   "independent": "中指/澎湃 2025 new-home transaction average 81337 (+6.93%)",
+   "assessment": "Both show Shanghai new-home prices rising, driven by a luxury-heavy supply mix. Not a contradiction"
+  },
+  {
+   "topic": "County towns",
+   "text": "No official county price series exists. 聚汇数据 says 80+ of 1200+ county towns are more than 50% below peak resale prices and 400+ are less than 20% below. Counties over 10k fell from 117 (2022) to 69 (2026-10). 贝壳: county resale takes more than 220 days to sell",
+   "urls": [
+    "https://www.163.com/dy/article/L9C4CUJ205199DKK.html",
+    "https://fangjia.gotohui.com/xtop/",
+    "https://news.qq.com/rain/a/20260905A06DQK00"
+   ],
+   "confidence": "low-medium"
+  },
+  {
+   "topic": "Pensions gap",
+   "text": "2025 computed: urban employee about 3900/month vs rural/urban resident about 276/month (14x). The resident minimum is 163 in 2026. Literature: 15.5x in 2024, down from 18.7x in 2015",
+   "urls": [
+    "https://hrvalue.com.cn/news/2045.html",
+    "https://m.thepaper.cn/newsDetail_forward_33026602"
+   ],
+   "confidence": "medium-high"
+  },
+  {
+   "topic": "Wages: average vs typical",
+   "text": "NBS non-private average 129441 (about 10.8k/month) vs private 71590 (about 6k/month) vs 农民工 5075/month. NBS excludes 个体户 and flexible workers, and the 2025 national median disposable income is 36231 per person per year. Use the private and 农民工 figures for typical workers",
+   "confidence": "high"
+  },
+  {
+   "topic": "Gig work: platform vs independent",
+   "text": "美团 high-frequency riders 7230-10100/month vs 南开 survey mode 6001-9000; most registered riders work under 30 days a year. Ride-hailing: research centre 7623/month (gross or net unclear) vs municipal reports of under 4000 net",
+   "confidence": "medium"
+  },
+  {
+   "topic": "Bride price: media vs academic",
+   "text": "CAAS rural household panel mean 3.86万 (2023) vs media/case figures of 10-30万 in hotspot provinces. The panel averages all marriages including zero or low payments; media quotes typical asking amounts in hotspots",
+   "url": "https://www.cls.cn/detail/2488239",
+   "confidence": "medium"
+  }
+ ],
+ "gaps": [
+  "county_price values are 二手挂牌 listing averages from a single aggregator (聚汇数据), used as a proxy for county new-home prices. No authoritative county new-home series exists. Usually only 1-2 (often poorer) prefectures were sampled per province.",
+  "bride_price: AH, HB, HN, SN, JL, QH, YN, GZ and XJ have no sourced number (memory/unverified, low). Many other provinces rely on 2018-2020 platform surveys or listicles.",
+  "Big-city transaction averages: none found for Beijing or Hangzhou, and no new-home transaction average for Chengdu. Shenzhen's new-home figure (53100) was not confirmed on the cited page.",
+  "Lhasa: no new-home price; Xining and Haikou have no 房天下 second-hand figure (Anjuke 2025 figures are used for those).",
+  "City urban disposable income: Chengdu 2024 not found. Provincial capitals other than BJ/SH/TJ/CQ/广州/杭州 were not collected.",
+  "Capital-city wages: no complete list; only 2024 合肥, 太原 and 深圳. Provincial 2025 non-private wages come from a secondary compilation and miss 8 provinces.",
+  "Teachers and nurses: no independent national survey. Civil-servant pay comes only from an NBS industry proxy plus an unsourced explainer.",
+  "Mortgage loan term (30-year max) is memory/unverified.",
+  "2025 provincial urban/rural income and consumption splits: only 2024 yearbook values are available; 2025 totals for XJ and JL are suspect.",
+  "NBS 70-city cumulative is Dec2021-Dec2025 only; 2026 months were not chained (base changed to 2025=100)."
+ ]
+}

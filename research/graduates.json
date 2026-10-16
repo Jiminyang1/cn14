@@ -1,0 +1,179 @@
+{
+  "_meta": {
+    "compiled": "2026-10-16",
+    "notes": "Mycos (麦可思) 'Nth year report' covers the PREVIOUS graduating cohort surveyed ~6 months after graduation: 《2026年中国本科生/高职生就业报告》(released 2026-06-11) = 2025届; 《2025年...》 = 2024届. 'Placement rate' (去向落实率) = employed + further study. Salaries are 毕业半年后 monthly cash income incl. bonus. Mycos does not publicly split 985 vs 211; its tiers are '双一流' vs '地方本科院校' (本科) and '双高' vs '非双高' (高职). No public 民办本科 split found."
+  },
+  "by_tier": {
+    "cohort_size": {
+      "graduates_2026": {"value": "12.70 million (预计)", "year": "2026届", "source": "教育部 via 光明网/港01", "url": "https://global.hk01.com/大国小事/60296221/2026届内地大专院校毕业生预计1270万-再创历史新高", "confidence": "medium"},
+      "graduates_2025": {"value": "12.22 million (预计)", "year": "2025届", "source": "教育部/人社部 via search result (RFA, 人民日报)", "url": "https://paper.people.com.cn/rmrb/html/2024-11/15/nw.D110000renmrb_20241115_3-07.htm", "confidence": "medium"},
+      "graduates_2024_by_type": {"value": {"普通本科": 5119600, "职业本科": 70000, "高职专科": 5404300}, "year": "2024", "source": "教育部《2024年全国教育事业发展统计公报》 via 中国教育在线", "url": "https://www.eol.cn/shuju/tongji/jysy/202506/t20250611_2674041.shtml", "confidence": "high"}
+    },
+    "placement_rate": {
+      "benke_all": {"value": 0.867, "year": "2024届 (毕业半年后)", "source": "麦可思《2025年中国本科生就业报告》", "url": "https://cpms.ssap.com.cn/skwx_cmr/initDatabaseDetail?siteId=23&contentId=8096365&contentType=literature", "confidence": "high"},
+      "shuangyiliu": {"value": 0.919, "year": "2024届", "source": "麦可思《2025年中国本科生就业报告》", "url": "https://cpms.ssap.com.cn/skwx_cmr/initDatabaseDetail?siteId=23&contentId=8096365&contentType=literature", "confidence": "high"},
+      "difang_benke": {"value": 0.856, "year": "2024届 (2023届: 86.4%)", "source": "麦可思《2025年中国本科生就业报告》 via 《财经》", "url": "https://finance.sina.com.cn/roll/2025-12-06/doc-infzvwze6808591.shtml", "confidence": "high"},
+      "gaozhi_2025": {"value": 0.881, "year": "2025届", "source": "麦可思《2026年中国高职生就业报告》 abstract (皮书数据库)", "url": "https://www.pishu.com.cn/skwx_ps/bookdetail?SiteID=14&ID=16871832", "confidence": "high"},
+      "gaozhi_2024": {"value": 0.886, "year": "2024届", "source": "麦可思《2025年中国高职生就业报告》 via 搜狐", "url": "https://www.sohu.com/a/908167283_121123785", "confidence": "high"},
+      "gaozhi_3yr_after": {"value": 0.905, "year": "2022届 three years after (employed share rose 67.6% -> 85.6%)", "source": "麦可思《2026年中国高职生就业报告》 abstract", "url": "https://www.pishu.com.cn/skwx_ps/bookdetail?SiteID=14&ID=16871832", "confidence": "high"},
+      "benke_2025_cohort": {"value": null, "year": "2025届", "source": "not found in any public summary of 2026 report", "url": "", "confidence": "low"},
+      "by_discipline_2024": {"value": {"工学": 0.896, "农学": 0.887, "历史学": 0.872, "教育学": 0.869, "文学": 0.844, "经济学": 0.841, "艺术学": 0.838, "法学": 0.784}, "year": "2024届", "source": "麦可思 2025 report via 《财经》", "url": "https://finance.sina.com.cn/roll/2025-12-06/doc-infzvwze6808591.shtml", "confidence": "high"}
+    },
+    "starting_salary_monthly_rmb": {
+      "benke_all_2025": {"value": 6435, "year": "2025届", "source": "麦可思《2026年中国本科生就业报告》 (sample ~195k)", "url": "https://www.yicai.com/news/103278110.html", "confidence": "high"},
+      "gaozhi_all_2025": {"value": 4882, "year": "2025届", "source": "麦可思《2026年中国大学生就业报告》 via 网易/搜狐", "url": "https://www.163.com/dy/article/KV55UMLI05218435.html", "confidence": "high"},
+      "benke_all_2024": {"value": 6199, "year": "2024届", "source": "麦可思《2025年中国本科生就业报告》", "url": "https://finance.sina.com.cn/tech/roll/2025-07-18/doc-inffwyni9063660.shtml", "confidence": "high"},
+      "gaozhi_all_2024": {"value": 4775, "year": "2024届 (2020届: 4253)", "source": "麦可思《2025年中国高职生就业报告》 via 广州城市职业学院", "url": "https://huacheng.gz-cmc.com/pages/2026/03/18/b62dbadd235c41d48aa9b62abb6d5fb7.html", "confidence": "high"},
+      "difang_benke_2024": {"value": 5882, "year": "2024届", "source": "麦可思 (cited as local-undergrad average in 高职 report)", "url": "https://huacheng.gz-cmc.com/pages/2026/03/18/b62dbadd235c41d48aa9b62abb6d5fb7.html", "confidence": "high"},
+      "shuangyiliu_2024_implied": {"value": "~7000-7500 (estimate)", "year": "2024届", "source": "derived: if 地方本科=5882 and all-本科=6199, and 双一流 ≈ 15-20% of 本科 grads, 双一流 average ≈ 7,000-7,500. Not a published figure.", "url": "https://huacheng.gz-cmc.com/pages/2026/03/18/b62dbadd235c41d48aa9b62abb6d5fb7.html", "confidence": "low"},
+      "benke_2023": {"value": 6050, "year": "2023届", "source": "麦可思2024蓝皮书 via 第一财经", "url": "https://www.yicai.com/news/102148610.html", "confidence": "high"},
+      "gaozhi_2023": {"value": 4683, "year": "2023届", "source": "麦可思2024蓝皮书 via 第一财经", "url": "https://www.yicai.com/news/102148610.html", "confidence": "high"},
+      "salary_band_2023": {"value": {"benke": {"<6000": 0.578, "6000-8000": 0.239, ">8000": 0.183, ">10000": 0.07}, "gaozhi": {"<6000": 0.817, "6000-8000": 0.121, ">8000": 0.062}}, "year": "2023届", "source": "麦可思 via 第一财经", "url": "https://www.yicai.com/news/102148610.html", "confidence": "high"},
+      "by_city_2025": {"value": {"一线城市": 8051, "新一线城市": 6622}, "year": "2025届本科", "source": "麦可思 via 第一财经", "url": "https://www.yicai.com/news/103328302.html", "confidence": "high"},
+      "gaozhi_top_occupations_2024": {"value": {"列车司机": 5992, "铁路闸门/信号/道岔操作员": 5974, "工业工程技术员": 5973, "化工厂系统操作员": 5967}, "year": "2024届高职", "source": "麦可思 via 广州城市职业学院", "url": "https://huacheng.gz-cmc.com/pages/2026/03/18/b62dbadd235c41d48aa9b62abb6d5fb7.html", "confidence": "high"},
+      "gaozhi_entrepreneurs_2025": {"value": 5069, "year": "2025届高职 自主创业者", "source": "麦可思 2026 高职 abstract", "url": "https://www.pishu.com.cn/skwx_ps/bookdetail?SiteID=14&ID=16871832", "confidence": "high"}
+    },
+    "further_study": {
+      "benke_domestic_grad_2025": {"value": 0.182, "year": "2025届 (2024届: 18.4%)", "source": "麦可思2026蓝皮书 via 网易", "url": "https://www.163.com/dy/article/KV55UMLI05218435.html", "confidence": "high"},
+      "shuangyiliu_domestic_grad_2025": {"value": 0.409, "year": "2025届 (2021届: 35.4%)", "source": "麦可思2026蓝皮书 via 网易", "url": "https://www.163.com/dy/article/KV55UMLI05218435.html", "confidence": "high"},
+      "difang_benke_domestic_grad_2025": {"value": 0.136, "year": "2025届 (2024届: 14.2%)", "source": "麦可思2026蓝皮书 via 网易", "url": "https://www.163.com/dy/article/KV55UMLI05218435.html", "confidence": "high"},
+      "benke_total_further_study_2024": {"value": 0.215, "year": "2024届 (domestic + abroad)", "source": "麦可思《2025年中国本科生就业报告》 abstract", "url": "https://cpms.ssap.com.cn/skwx_cmr/initDatabaseDetail?siteId=23&contentId=8096365&contentType=literature", "confidence": "high"},
+      "benke_abroad_implied_2024": {"value": "~3%", "year": "2024届", "source": "derived: 21.5% total minus 18.4% domestic", "url": "https://cpms.ssap.com.cn/skwx_cmr/initDatabaseDetail?siteId=23&contentId=8096365&contentType=literature", "confidence": "medium"},
+      "gaozhi_zhuanshengben_2025": {"value": 0.194, "year": "2025届 (2024届: 20.7%); 双高 21.2%, 非双高 18.5%", "source": "麦可思2026蓝皮书 via 网易", "url": "https://www.163.com/dy/article/KV55UMLI05218435.html", "confidence": "high"},
+      "benke_preparing_exam_unemployed_2025": {"value": 0.034, "year": "2025届 (2023届: 5.6%)", "source": "麦可思2026蓝皮书 via 网易", "url": "https://www.163.com/dy/article/KV55UMLI05218435.html", "confidence": "high"},
+      "examples": {
+        "985_tsinghua_abroad": {"value": "本科出国(境)深造 17.3% (2024届 18.4%); domestic share not published in news", "year": "2025届", "source": "清华大学 2025届去向 via 澎湃", "url": "https://m.thepaper.cn/newsDetail_forward_32683067", "confidence": "high"},
+        "985_tongji": {"value": 0.7505, "year": "2025届本科深造率", "source": "中国教育在线 compilation", "url": "https://www.eol.cn/news/yaowen/202602/t20260205_2718602.shtml", "confidence": "high"},
+        "985_xjtu": {"value": 0.674, "year": "2025届本科深造率 (校本部)", "source": "中国教育在线 compilation", "url": "https://www.eol.cn/news/yaowen/202602/t20260205_2718602.shtml", "confidence": "high"},
+        "985_nwpu": {"value": ">0.72", "year": "2025届本科深造率", "source": "中国教育在线 compilation", "url": "https://www.eol.cn/news/yaowen/202602/t20260205_2718602.shtml", "confidence": "high"},
+        "985_lanzhou": {"value": 0.534, "year": "2025届 (2401 of 4496 本科 to 读研); 2026届 推免 1520 of 4656 = 32.6%", "source": "网易 article citing 兰州大学", "url": "https://c.m.163.com/news/a/L29KRCIQ0556NG4P.html", "confidence": "medium"},
+        "211_bupt": {"value": {"total": 0.6376, "domestic": 0.5071, "abroad": 0.1305, "placement": 0.9035}, "year": "2025届本科", "source": "北京邮电大学 via 中国教育在线", "url": "https://www.eol.cn/news/yaowen/202602/t20260205_2718602.shtml", "confidence": "high"},
+        "211_xidian": {"value": {"further_study": 0.541, "placement": 0.9818}, "year": "2025届本科", "source": "西安电子科技大学 via 中国教育在线", "url": "https://www.eol.cn/news/yaowen/202602/t20260205_2718602.shtml", "confidence": "high"},
+        "difang_henan_normal": {"value": {"further_study": 0.3006, "placement": 0.82}, "year": "2024届本科 (河南师范大学, 省属师范)", "source": "河南师范大学 2024届就业质量报告", "url": "https://www.htu.edu.cn/xwxxgk/2025/0423/c8494a343258/page.htm", "confidence": "high"},
+        "note": "BUPT and Xidian are elite 211s; an average 211 is likely 30-45% (unverified)."
+      }
+    },
+    "tizhinei": {
+      "benke_gov_public_admin_industry_2025": {"value": 0.069, "year": "2025届本科 (industry = 政府及公共管理; education industry 14.2%, finance 6.6%)", "source": "麦可思2026蓝皮书 via 第一财经", "url": "https://www.yicai.com/news/103225677.html", "confidence": "high"},
+      "benke_private_sector_2022": {"value": {"benke_private": 0.51, "gaozhi_private": 0.69}, "year": "2022届", "source": "麦可思2023蓝皮书 via RFA", "url": "https://www.rfa.org/mandarin/yataibaodao/jingmao/sc-09072023140931.html", "confidence": "medium"},
+      "gaozhi_private_2024": {"value": 0.73, "year": "2024届高职 民营企业/个体", "source": "麦可思《2025年中国高职生就业报告》 via 搜狐", "url": "https://www.sohu.com/a/908167283_121123785", "confidence": "high"},
+      "example_bjtu_211": {"value": {"国企": 0.563, "民企": 0.2696, "外企": 0.076}, "year": "2024届本科 signed employers, 北京交通大学", "source": "搜狐 compilation of 北京交通大学 report", "url": "https://www.sohu.com/a/949163353_121124317", "confidence": "medium"},
+      "example_xidian_211": {"value": "军工及部队1050人, 央企684人, 科研单位307人, 选调生/公务员255人 (headcounts, all degrees)", "year": "2025届", "source": "中国教育在线", "url": "https://www.eol.cn/news/yaowen/202602/t20260205_2718602.shtml", "confidence": "high"},
+      "example_henan_normal": {"value": {"中初教育单位": 0.3671, "其他企业(含民企)": 0.2002, "高等教育单位": 0.1103}, "year": "2024届 all graduates", "source": "河南师范大学", "url": "https://www.htu.edu.cn/xwxxgk/2025/0423/c8494a343258/page.htm", "confidence": "high"},
+      "game_suggestion_unverified": {"value": "rough 体制内 share of employed grads: 985 ~45-60% (heavy SOE/央企), 211 ~40-55%, 地方本科 ~25-35% (teaching/事业单位 large), 高职 ~15-20%", "year": "", "source": "memory/unverified", "url": "", "confidence": "low"}
+    }
+  },
+  "salary_later": {
+    "national_3yr_after": {"value": null, "year": "", "source": "national figure not found in public coverage of 2024-2026 reports", "url": "", "confidence": "low"},
+    "east_region_3yr_after_2020cohort": {"value": {"benke": 10168, "gaozhi": 7592, "growth_benke": 0.69, "growth_gaozhi": 0.64}, "year": "2020届 three years after (东部地区); 长三角 本科10387 高职7722", "source": "麦可思2024蓝皮书 via 第一财经", "url": "https://www.yicai.com/news/102148610.html", "confidence": "high"},
+    "national_3yr_estimate": {"value": {"benke": "~8800-9300", "gaozhi": "~6700-7000"}, "year": "2021/2022届", "source": "derived: east-region 3-yr figures scaled by national/east starting-salary ratio (6050/6642, 4683/5070). Estimate only.", "url": "https://www.yicai.com/news/102148610.html", "confidence": "low"},
+    "benke_5yr_over_10k_2016cohort": {"value": 0.477, "year": "2016届 five years after (2015届: 44.6%)", "source": "麦可思2022 via 界面", "url": "https://m.jiemian.com/article/7746949.html", "confidence": "high"},
+    "benke_5yr_by_industry_2016cohort": {"value": {"IT/软件": 13921, "电子电气设备制造": 12844, "金融": 11663}, "year": "2016届 five years after", "source": "麦可思2022 via 界面", "url": "https://m.jiemian.com/article/7746949.html", "confidence": "medium"},
+    "benke_5yr_by_occupation_2016cohort": {"value": {"互联网开发及应用": 15253, "计算机与数据处理": 14625, "管理": 13670, "律师": 12116}, "year": "2016届 five years after", "source": "麦可思2022 via 界面", "url": "https://m.jiemian.com/article/7746949.html", "confidence": "medium"},
+    "starting_salary_5yr_growth_real": {"value": {"benke": 0.077, "gaozhi": 0.058}, "year": "2025届 vs 2021届 (inflation-adjusted)", "source": "麦可思2026 via 搜狐", "url": "https://www.sohu.com/a/1035297877_121478296", "confidence": "high"}
+  },
+  "majors": {
+    "top_paid_benke_2025": {"value": {"微电子科学与工程": 7814, "电子科学与技术": 7752, "自动化": 7573, "光电信息科学与工程": 7525, "采矿工程": 7448, "机械工程": 7401, "测控技术与仪器": 7348, "材料科学与工程": 7304, "通信工程": 7249, "信息安全": "top-10, value not given"}, "year": "2025届 毕业半年后", "source": "麦可思《2026年中国本科生就业报告》 via 第一财经/倍可亲", "url": "https://www.backchina.com/news/2026/06/17/1034021.html", "confidence": "medium"},
+    "computer_ranks_2025": {"value": {"软件工程": "rank 13", "计算机科学与技术": "rank 32", "网络工程": "rank 47"}, "year": "2025届", "source": "IT之家 citing 麦可思", "url": "https://www.ithome.com/0/984/633.htm", "confidence": "high"},
+    "top_paid_benke_2024": {"value": {"信息安全": 7599, "微电子科学与工程": 7282, "电子科学与技术": 7215, "自动化": 7108, "软件工程": 7092, "材料成型及控制工程": 7077, "光电信息科学与工程": 7076, "电子信息科学与技术": 7058, "机械设计制造及其自动化": 7051, "机械电子工程": 7018}, "year": "2024届", "source": "麦可思《2025年中国本科生就业报告》 via 新浪", "url": "https://finance.sina.com.cn/tech/roll/2025-07-18/doc-inffwyni9063660.shtml", "confidence": "high"},
+    "computer_class_2024": {"value": {"salary": 6846, "placement_rate": 0.824}, "year": "2024届 计算机类 (placement rank 11th from bottom of 61 classes)", "source": "麦可思 via 《财经》", "url": "https://finance.sina.com.cn/roll/2025-12-06/doc-infzvwze6808591.shtml", "confidence": "high"},
+    "placement_by_major_class_2024": {"value": {"highest": {"能源动力类": 0.964, "电气类": 0.958, "仪器类": 0.949, "安全科学与工程类": 0.947, "机械类": 0.939, "矿业类": 0.936, "公共卫生与预防医学类": 0.932, "自动化类": 0.932}, "lowest": {"法学类": 0.75, "中西医结合类": 0.789, "口腔医学类": 0.798, "美术学类": 0.80, "统计学类": 0.801, "中国语言文学类": 0.805, "心理学类": 0.808, "音乐与舞蹈学类": 0.81, "中医学类": 0.816, "金融学类": 0.817}, "other": {"计算机类": 0.824, "经济学类": 0.833, "公共管理类": 0.835}}, "year": "2024届", "source": "麦可思《2025年中国本科生就业报告》 via 《财经》", "url": "https://finance.sina.com.cn/roll/2025-12-06/doc-infzvwze6808591.shtml", "confidence": "high"},
+    "note_medicine": {"value": "临床/口腔/中医 placement rates look low because many go on to 规培/读研 (counted separately); medicine job-major relevance 89% at 6 months, 91% at 5 years", "year": "2025届", "source": "麦可思2026 via 搜狐", "url": "https://www.sohu.com/a/1035297877_121478296", "confidence": "medium"},
+    "green_card_benke_2026": {"value": ["电气工程及其自动化", "微电子科学与工程", "自动化(首次)", "能源与动力工程", "车辆工程", "新能源科学与工程"], "year": "2026 report", "source": "麦可思 via 第一财经", "url": "https://www.yicai.com/news/103225677.html", "confidence": "high"},
+    "green_card_benke_2025": {"value": ["电气工程及其自动化", "微电子科学与工程", "机械电子工程", "新能源科学与工程", "车辆工程", "机器人工程"], "year": "2025 report", "source": "麦可思 via 《财经》", "url": "https://finance.sina.com.cn/roll/2025-12-06/doc-infzvwze6808591.shtml", "confidence": "high"},
+    "red_card_benke_2025": {"value": ["公共事业管理", "音乐表演", "绘画", "法学", "美术学"], "year": "2025 report (法学, 绘画 red 5 years running)", "source": "麦可思 via 人民日报客户端", "url": "https://www.peopleapp.com/rmharticle/30049515009", "confidence": "high"},
+    "yellow_card_benke_2025": {"value": ["投资学", "应用心理学", "广播电视学", "学前教育"], "year": "2025 report", "source": "麦可思 via 《财经》", "url": "https://finance.sina.com.cn/roll/2025-12-06/doc-infzvwze6808591.shtml", "confidence": "high"},
+    "red_card_benke_2026": {"value": null, "year": "2026", "source": "not found in coverage", "url": "", "confidence": "low"},
+    "gaozhi_green_2026_new": {"value": ["铁道机车运用与维护", "石油化工技术", "发电厂及电力系统", "应用化工技术", "工业过程自动化技术", "电力系统自动化技术"], "year": "2026 高职 report (newly added greens)", "source": "search-result summary of 麦可思 2026 高职 coverage", "url": "https://www.yicai.com/news/103318865.html", "confidence": "medium"},
+    "historical_salary_benchmarks": {"value": {"计算机类_2021届": 6886, "信息安全_2021届": 7439}, "year": "2021届", "source": "麦可思2022 via CBNData", "url": "https://www.cbndata.com/information/247271", "confidence": "high"},
+    "requested_majors_estimates_unverified": {"value": {"计算机/软件": "6800-7100", "电子信息": "7000-7500", "临床医学": "5500-6000 (low early; high after 规培)", "金融": "6000-6500", "法学": "5500-5900", "会计": "5300-5700", "机械": "7000-7400", "土木": "5800-6300", "汉语言": "5200-5600", "英语": "5300-5700", "师范": "5000-5500", "护理": "5000-5400", "农学": "5000-5500", "哲学": "5200-5600"}, "year": "2025届 approx", "source": "memory/unverified (only 计算机类 6846, 机械工程 7401, 电子类 top-10 are verified above)", "url": "", "confidence": "low"}
+  },
+  "kaoyan": {
+    "registrants": {
+      "2023": {"value": 4740000, "year": "2023 exam", "source": "search result summary (thepaper/chinadaily) citing 教育部", "url": "https://cn.chinadaily.com.cn/a/202411/21/WS673ef0b1a310b59111da4c5c.html", "confidence": "medium"},
+      "2024": {"value": 4380000, "year": "2024 exam (held Dec 2023)", "source": "教育部 via search-result summary", "url": "https://cn.chinadaily.com.cn/a/202411/21/WS673ef0b1a310b59111da4c5c.html", "confidence": "medium"},
+      "2025": {"value": 3880000, "year": "2025 exam (held Dec 2024)", "source": "教育部 via 中新网", "url": "https://www.chinanews.com.cn/tp/2024/12-21/10340165.shtml", "confidence": "high"},
+      "2026": {"value": 3430000, "year": "2026 exam (held Dec 2025)", "source": "教育部 via 新华网 2025-11-24", "url": "https://www.news.cn/20251124/e54d3157f15744f5beb5b76644035f5d/c.html", "confidence": "high"}
+    },
+    "master_admissions": {
+      "2023": {"value": 1148400, "year": "2023", "source": "教育部公报 via search summary", "url": "https://m.thepaper.cn/newsDetail_forward_31957205", "confidence": "high"},
+      "2024": {"value": 1185700, "year": "2024 (博士 171100; total 研究生 1356800)", "source": "教育部《2024年全国教育事业发展统计公报》", "url": "https://www.eol.cn/shuju/tongji/jysy/202506/t20250611_2674041.shtml", "confidence": "high"},
+      "2025": {"value": 1236800, "year": "2025 (博士 201600; total 1438500)", "source": "教育部《2025年全国教育事业发展统计公报》 via IT之家", "url": "https://www.ithome.com/0/979/949.htm", "confidence": "high"},
+      "2026": {"value": null, "year": "2026", "source": "2026 公报 not yet published; >50 双一流 universities expanded master's intake per 澎湃", "url": "https://m.thepaper.cn/newsDetail_forward_31957205", "confidence": "low"}
+    },
+    "implied_success_rate": {
+      "2024": {"value": 0.271, "year": "2024", "source": "derived: 1.1857M / 4.38M", "url": "https://www.eol.cn/shuju/tongji/jysy/202506/t20250611_2674041.shtml", "confidence": "medium"},
+      "2025": {"value": 0.319, "year": "2025", "source": "derived: 1.2368M / 3.88M", "url": "https://www.ithome.com/0/979/949.htm", "confidence": "medium"},
+      "caveat": "Upper bound: admissions include 推免 (no exam) and some non-registrant routes; exam-route success is lower, perhaps ~22-27%. Registrants also include no-shows."
+    },
+    "tuimian": {
+      "policy_cap": {"value": "推免 ≤ 50% of a university's total intake (expert claim)", "year": "2025", "source": "澎湃 citing 陈志文", "url": "https://m.thepaper.cn/newsDetail_forward_31957205", "confidence": "medium"},
+      "lanzhou_2026": {"value": "1520 推免 of 4656 本科 grads = 32.6%", "year": "2026届", "source": "网易", "url": "https://c.m.163.com/news/a/L29KRCIQ0556NG4P.html", "confidence": "medium"},
+      "receiving_2026": {"value": {"清华 accepted 推免": 3703, "中科大 推免": 3816, "北航": 3187}, "year": "2026级", "source": "search-result summary (peopleapp/thepaper)", "url": "https://www.peopleapp.com/rmharticle/30050747799", "confidence": "medium"},
+      "game_suggestion_unverified": {"value": "本科推免率: top 985 ~25-35%, mid 985 ~20-30%, 211 ~10-20%, 地方本科 0-3% (many have no 推免 quota)", "source": "memory/unverified", "url": "", "confidence": "low"}
+    }
+  },
+  "civil_service": {
+    "guokao": {
+      "2023": {"value": {"posts": 37100, "passed_review": "近2,600,000", "ratio": "70:1"}, "year": "2023年度", "source": "新华网 for passed_review and ratio; posts = memory/unverified", "url": "https://www.news.cn/politics/20251130/7da14327e1c24cafbf0af0a287a2f085/c.html", "confidence": "low"},
+      "2024": {"value": {"posts": 39600, "passed_review": ">3,000,000", "ratio": "77:1"}, "year": "2024年度", "source": "新华网 for passed_review and ratio; posts = memory/unverified", "url": "https://www.news.cn/politics/20251130/7da14327e1c24cafbf0af0a287a2f085/c.html", "confidence": "low"},
+      "2025": {"value": {"posts": 39700, "passed_review": 3416000, "ratio": "86:1"}, "year": "2025年度", "source": "新华网 (posts derived: 2026 3.81万 was 0.16万 fewer)", "url": "https://www.news.cn/politics/20251130/7da14327e1c24cafbf0af0a287a2f085/c.html", "confidence": "high"},
+      "2026": {"value": {"posts": 38100, "passed_review": 3718000, "ratio": "98:1", "fresh_grad_posts": "~26,000 (>68%)"}, "year": "2026年度 (exam 2025-11-30)", "source": "新华网", "url": "https://www.news.cn/politics/20251130/7da14327e1c24cafbf0af0a287a2f085/c.html", "confidence": "high"},
+      "2027": {"value": {"posts": 35700, "fresh_grad_plan": "24,600 (~69%) at 市地级及以下", "county_level_and_below": "26,900 (~75%)", "registration": "2026-10-14 to 10-24", "exam": "2026-11-29"}, "year": "2027年度 (announced 2026-10-13)", "source": "国家公务员局 via 界面", "url": "https://m.jiemian.com/article/15183110.html", "confidence": "high"},
+      "age_limit": {"value": "≤38 (应届硕博 ≤43), raised by 3 years from 2026年度", "year": "2026-2027", "source": "新华网", "url": "https://www.news.cn/politics/20251130/7da14327e1c24cafbf0af0a287a2f085/c.html", "confidence": "high"}
+    },
+    "shengkao": {
+      "eight_province_total_2026": {"value": 43627, "year": "2026 (山西5360, 广西5630, 贵州4833, 福建4723, 重庆4150, 湖南10198, 安徽7195, 海南1538)", "source": "搜狐", "url": "https://m.sohu.com/a/978073921_121117455/", "confidence": "high"},
+      "jiangsu_2026": {"value": {"applicants": 438571, "ratio": "54:1"}, "year": "2026", "source": "扬子晚报 search summary", "url": "https://www.yzwb.net/news/jy/202511/t20251114_289447.html", "confidence": "medium"},
+      "national_total_estimate": {"value": "~150,000-200,000 posts/year across all provinces; ratios typically 30-60:1", "year": "", "source": "memory/unverified", "url": "", "confidence": "low"}
+    },
+    "shiyebian": {
+      "examples": {"value": {"四川 2025上半年统考": "13,100余人", "广东 2025集中招聘": "15,381人", "石家庄 2025": 5621}, "year": "2025", "source": "search-result summary of provincial notices", "url": "https://cbgc.scol.com.cn/news/6041923", "confidence": "medium"},
+      "national_estimate": {"value": "no national total published; likely several hundred thousand per year incl. teachers/medical", "source": "memory/unverified", "url": "", "confidence": "low"}
+    },
+    "fresh_grad_share": {"value": "国考: ~68-69% of posts reserved for 应届毕业生 (2026, 2027)", "year": "2026-2027", "source": "新华网 / 界面", "url": "https://m.jiemian.com/article/15183110.html", "confidence": "high"}
+  },
+  "big_tech": {
+    "avg_age_2021": {"value": {"字节跳动": 27, "腾讯": 29, "小米": 29, "网易": 29, "百度": 30, "阿里巴巴": 31, "华为": 31, "滴滴": 33}, "year": "2021 (脉脉数据研究院)", "source": "IT之家", "url": "https://www.ithome.com/0/579/205.htm", "confidence": "high"},
+    "avg_age_19_firms_2020": {"value": 29.6, "year": "2020 (脉脉《互联网人才流动报告2020》, 19 top firms)", "source": "search-result summary", "url": "https://www.huxiu.com/article/472533.html", "confidence": "medium"},
+    "35_threshold_perception": {"value": "85% of office workers see 35 as a key hiring threshold", "year": "", "source": "智联招聘 survey via Yicai Global (search summary)", "url": "https://yicaiglobal.com/news/chinese-jobs-are-skewed-towards-under-35-year-olds-most-office-workers-say", "confidence": "medium"},
+    "campus_ai_share_2026": {"value": {"AI share of new campus postings": 0.3756, "2025": 0.2641, "AI campus postings yoy": 0.473, "985/211 users on 脉脉 with 硕博": 0.6192}, "year": "2026 Jan-May", "source": "脉脉高聘《2026年名校生求职招聘洞察》 via 扬子晚报", "url": "https://www.yzwb.net/news/ch/202607/t20260702_368313.html", "confidence": "high"},
+    "tencent_campus_selectivity": {"value": "hundreds of thousands of résumés, ~3,000 offers (<3%)", "year": "~2020", "source": "后浪研究所 via 36氪", "url": "https://www.36kr.com/p/1026004701300737", "confidence": "medium"},
+    "ai_career_by_tier": {"value": {"双一流 to AI careers": 0.023, "地方本科": 0.011, "all 本科": 0.012, "AI career salary": 8180, "engineering avg": 7033}, "year": "2025届本科", "source": "麦可思 via 辽沈晚报/新浪", "url": "https://finance.sina.cn/2026-08-14/detail-ininfrtu4270058.d.html", "confidence": "high"},
+    "chip_salary_example": {"value": "985 集成电路硕士 ~40万/yr; 本科 (测试/技术支持) 十余万/yr", "year": "2026", "source": "IT之家", "url": "https://m.ithome.com/html/972906.htm", "confidence": "medium"},
+    "share_of_hires_from_985_211": {"value": "estimate: tech roles at top firms ~70-90% from 985/211 or 硕士 of such schools", "year": "", "source": "memory/unverified", "url": "", "confidence": "low"}
+  },
+  "flexible": {
+    "benke_flexible_2025": {"value": 0.069, "year": "2025届 (兼职1.8%, 自由职业3.0%, 自主创业2.1%; 2021届 4.2%)", "source": "麦可思2026 via 网易", "url": "https://www.163.com/dy/article/KV55UMLI05218435.html", "confidence": "high"},
+    "gaozhi_flexible_2025": {"value": 0.109, "year": "2025届 (兼职2.0%, 自由职业4.4%, 自主创业4.5%; 2021届 7.7%)", "source": "麦可思2026 via 网易 / 皮书数据库", "url": "https://www.pishu.com.cn/skwx_ps/bookdetail?SiteID=14&ID=16871832", "confidence": "high"},
+    "gaozhi_flexible_2024": {"value": 0.096, "year": "2024届 (>1/3 via digital platforms); 受雇工作 58.5%", "source": "麦可思2025高职 via 搜狐", "url": "https://www.sohu.com/a/908167283_121123785", "confidence": "high"},
+    "benke_not_placed_2024": {"value": 0.133, "year": "2024届 (1 - 86.7%; includes 准备考研/考公, 求职中, 暂不就业)", "source": "derived from 麦可思", "url": "https://cpms.ssap.com.cn/skwx_cmr/initDatabaseDetail?siteId=23&contentId=8096365&contentType=literature", "confidence": "medium"},
+    "difang_not_placed_2024": {"value": 0.144, "year": "2024届 (1 - 85.6%)", "source": "derived", "url": "https://finance.sina.com.cn/roll/2025-12-06/doc-infzvwze6808591.shtml", "confidence": "medium"},
+    "shuangyiliu_not_placed_2024": {"value": 0.081, "year": "2024届 (1 - 91.9%)", "source": "derived", "url": "https://cpms.ssap.com.cn/skwx_cmr/initDatabaseDetail?siteId=23&contentId=8096365&contentType=literature", "confidence": "medium"},
+    "gaozhi_not_placed_2025": {"value": 0.119, "year": "2025届 (1 - 88.1%)", "source": "derived", "url": "https://www.pishu.com.cn/skwx_ps/bookdetail?SiteID=14&ID=16871832", "confidence": "medium"},
+    "benke_job_seeking_2021": {"value": 0.057, "year": "2021届 still job-seeking", "source": "麦可思 via CBNData", "url": "https://www.cbndata.com/information/247271", "confidence": "high"},
+    "youth_unemployment_16_24": {"value": {"2026-06": 0.149, "2026-04": 0.163, "2026-03": 0.169, "2025-08 (seasonal peak)": 0.189}, "year": "NBS, excl. students; 25-29: 7.1% (2026-06)", "source": "国家统计局 via 澎湃", "url": "https://www.thepaper.cn/newsDetail_forward_33621182", "confidence": "high"},
+    "regional_shift": {"value": "2025届本科 63% work in 地级及以下 cities (2021届 58%); 高职 69%", "year": "2025届", "source": "麦可思 via 网易", "url": "https://www.163.com/dy/article/KV55UMLI05218435.html", "confidence": "high"}
+  },
+  "discrepancies": [
+    "Ranking of 2025届 top majors: IT之家 (2026-08-01) lists 自动化 3rd, 信息安全 4th, 光电 5th; 第一财经/倍可亲 list gives 自动化 7573 (3rd), 光电 7525 (4th) and puts 信息安全 10th. Treat ranks 3-10 as medium confidence.",
+    "A search summary claimed 2023届 高职 salary = 5070; that is the 东部地区 figure. National 2023届 高职 = 4683 (第一财经).",
+    "renrendoc.com '麦可思2025年中国大学生就业报告（完全详细版）' (https://www.renrendoc.com/paper/515290145.html) gives 本科 6860, 计算机科学与技术 8920, 灵活就业 1.2%, etc. These contradict all Mycos coverage (6199, flexible 6.9%) and look fabricated; NOT used.",
+    "Mycos placement rate (毕业半年后 survey) differs from universities' own 去向落实率 (usually cut off at Aug 31 or Dec 31 and often 90-98%); do not mix them.",
+    "Tsinghua: popular claims of ~80% 深造 conflict with official 17.3% 本科 abroad; total 本科深造 (domestic+abroad) is not given in news coverage. The 'over 86%' Tsinghua figure is 重点单位就业率, not a study rate.",
+    "Kaoyan implied success rates (27% in 2024, 32% in 2025) overstate exam success because 硕士招生 includes 推免 admits."
+  ],
+  "gaps": [
+    "No public split of 985 vs 211, or 二本 vs 民办本科; Mycos only gives 双一流 vs 地方本科 (本科) and 双高 vs 非双高 (高职).",
+    "双一流 starting salary is not published in news coverage; only 地方本科 5882 (2024届) is available. The 双一流 ≈7000-7500 figure is a derived estimate.",
+    "2025届 本科 placement rate (overall, 双一流, 地方本科) from the 2026 report not found; latest is 2024届.",
+    "National 毕业三年后 salary for 本科/高职 not found in 2024-2026 coverage; only 东部/长三角 (2020届) and 2016届 5-yr data.",
+    "Per-major 毕业半年后 salaries for 临床医学, 金融, 法学, 会计, 土木, 汉语言, 英语, 师范, 护理, 农学, 哲学 not found; values in majors.requested_majors_estimates_unverified are from memory.",
+    "2026 本科 red/yellow card lists, and 高职 red/yellow lists, not found.",
+    "体制内 share by tier (government + SOE + 事业单位) not found nationally; only single-school examples.",
+    "National 省考 total and national 事业编 recruitment totals not published; only province examples.",
+    "No credible data on the share of big-tech hires from 985/211, and no post-2021 average-age data for big tech.",
+    "2026 硕士 admissions not yet published (2026 公报 due ~mid-2027).",
+    "Tsinghua 本科 domestic 深造 share not obtained (career.tsinghua.edu.cn PDF not opened, per instructions)."
+  ]
+}

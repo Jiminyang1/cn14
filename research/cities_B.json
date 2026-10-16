@@ -1,0 +1,1046 @@
+{
+ "cities": {
+  "杭州": {
+   "prov": "ZJ",
+   "type": "capital",
+   "pop_wan": {
+    "value": 1270.0,
+    "year": 2025,
+    "source": "杭州市2025年统计公报 (杭州网)",
+    "url": "https://hznews.hangzhou.com.cn/chengshi/content/2026-04/30/content_9214808.htm"
+   },
+   "births": {
+    "births_wan": null,
+    "rate_permille": 6.95,
+    "basis": "resident",
+    "year": 2025,
+    "source": "杭州市2025年统计公报 (杭州网)",
+    "url": "https://hznews.hangzhou.com.cn/chengshi/content/2026-04/30/content_9214808.htm"
+   },
+   "inc_urban": {
+    "value": 86640,
+    "year": 2025,
+    "source": "杭州市2025年统计公报 (杭州网)",
+    "url": "https://hznews.hangzhou.com.cn/chengshi/content/2026-04/30/content_9214808.htm"
+   },
+   "inc_rural": {
+    "value": 53565,
+    "year": 2025,
+    "source": "杭州市2025年统计公报 (杭州网)",
+    "url": "https://hznews.hangzhou.com.cn/chengshi/content/2026-04/30/content_9214808.htm"
+   },
+   "house_price": {
+    "value": 29816,
+    "type": "listing",
+    "year": 2025,
+    "source": "安居客 2025年全国房价排名 (二手房挂牌均价)",
+    "url": "https://www.anjuke.com/fangjia/quanguo2025/"
+   }
+  },
+  "宁波": {
+   "prov": "ZJ",
+   "type": "sub_provincial",
+   "pop_wan": {
+    "value": 983.3,
+    "year": 2025,
+    "source": "2025年宁波市统计公报 (宁波日报)",
+    "url": "http://epaper.cnnb.com.cn/nbrb/pc/content/202604/23/content_273204.html"
+   },
+   "births": {
+    "births_wan": 4.82,
+    "rate_permille": 4.91,
+    "basis": "resident",
+    "year": 2025,
+    "source": "2025年宁波市统计公报 (宁波日报)",
+    "url": "http://epaper.cnnb.com.cn/nbrb/pc/content/202604/23/content_273204.html"
+   },
+   "inc_urban": {
+    "value": 86088,
+    "year": 2025,
+    "source": "2025年宁波市统计公报 (宁波日报)",
+    "url": "http://epaper.cnnb.com.cn/nbrb/pc/content/202604/23/content_273204.html"
+   },
+   "inc_rural": {
+    "value": 53683,
+    "year": 2025,
+    "source": "2025年宁波市统计公报 (宁波日报)",
+    "url": "http://epaper.cnnb.com.cn/nbrb/pc/content/202604/23/content_273204.html"
+   },
+   "house_price": {
+    "value": 15904,
+    "type": "listing",
+    "year": 2025,
+    "source": "安居客 2025年全国房价排名 (二手房挂牌均价)",
+    "url": "https://www.anjuke.com/fangjia/quanguo2025/"
+   }
+  },
+  "温州": {
+   "prov": "ZJ",
+   "type": "prefecture",
+   "pop_wan": {
+    "value": 990.2,
+    "year": 2025,
+    "source": "澎湃新闻 2026-06-17 citing 温州2025公报",
+    "url": "https://m.thepaper.cn/newsDetail_forward_33401433"
+   },
+   "births": {
+    "births_wan": 4.6,
+    "rate_permille": 4.7,
+    "basis": "resident",
+    "year": 2025,
+    "source": "澎湃 (births count) / 温州市统计局2025公报 (rate) (value read from search-index excerpt of this official page; direct fetch blocked from this network)",
+    "url": "https://wztjj.wenzhou.gov.cn/col/col1243860/art/2026/art_6a0ac3c3dd574721bca674e0b747484c.html"
+   },
+   "inc_urban": {
+    "value": 84347,
+    "year": 2025,
+    "source": "温州市统计局 2025公报 (value read from search-index excerpt of this official page; direct fetch blocked from this network)",
+    "url": "https://wztjj.wenzhou.gov.cn/col/col1243860/art/2026/art_6a0ac3c3dd574721bca674e0b747484c.html"
+   },
+   "inc_rural": {
+    "value": 46446,
+    "year": 2025,
+    "source": "温州市统计局 2025公报 (value read from search-index excerpt of this official page; direct fetch blocked from this network)",
+    "url": "https://wztjj.wenzhou.gov.cn/col/col1243860/art/2026/art_6a0ac3c3dd574721bca674e0b747484c.html"
+   },
+   "house_price": {
+    "value": 13033,
+    "type": "listing",
+    "year": 2025,
+    "source": "安居客 2025年全国房价排名 (二手房挂牌均价)",
+    "url": "https://www.anjuke.com/fangjia/quanguo2025/"
+   }
+  },
+  "金华": {
+   "prov": "ZJ",
+   "type": "prefecture",
+   "pop_wan": {
+    "value": 726.9,
+    "year": 2025,
+    "source": "2025年金华市统计公报 (tjgb.hongheiku.com mirror of official bulletin)",
+    "url": "https://tjgb.hongheiku.com/djs/69707.html"
+   },
+   "births": {
+    "births_wan": null,
+    "rate_permille": 6.62,
+    "basis": "resident",
+    "year": 2025,
+    "source": "2025年金华市统计公报 (tjgb.hongheiku.com mirror of official bulletin)",
+    "url": "https://tjgb.hongheiku.com/djs/69707.html"
+   },
+   "inc_urban": {
+    "value": 80052,
+    "year": 2025,
+    "source": "2025年金华市统计公报 (tjgb.hongheiku.com mirror of official bulletin)",
+    "url": "https://tjgb.hongheiku.com/djs/69707.html"
+   },
+   "inc_rural": {
+    "value": 42957,
+    "year": 2025,
+    "source": "2025年金华市统计公报 (tjgb.hongheiku.com mirror of official bulletin)",
+    "url": "https://tjgb.hongheiku.com/djs/69707.html"
+   },
+   "house_price": {
+    "value": 12614,
+    "type": "listing",
+    "year": 2025,
+    "source": "安居客 2025年全国房价排名 (二手房挂牌均价)",
+    "url": "https://www.anjuke.com/fangjia/quanguo2025/"
+   }
+  },
+  "合肥": {
+   "prov": "AH",
+   "type": "capital",
+   "pop_wan": {
+    "value": 1000.5,
+    "year": 2025,
+    "source": "新浪财经 2026-06-19 quoting 合肥市统计局 1%抽样推算",
+    "url": "https://finance.sina.com.cn/wm/2026-06-19/doc-inicwxnz4992503.shtml"
+   },
+   "births": null,
+   "inc_urban": {
+    "value": 65568,
+    "year": 2025,
+    "source": "合肥市2025年统计公报 PDF (tjgb.hongheiku.com mirror of official bulletin)",
+    "url": "https://tjgb.hongheiku.com/wp-content/uploads/2026/04/1775052106-wKgEIWnLK5OAEX2EAApVrfAOX4M661.pdf"
+   },
+   "inc_rural": {
+    "value": 35253,
+    "year": 2025,
+    "source": "合肥市2025年统计公报 PDF (tjgb.hongheiku.com mirror of official bulletin)",
+    "url": "https://tjgb.hongheiku.com/wp-content/uploads/2026/04/1775052106-wKgEIWnLK5OAEX2EAApVrfAOX4M661.pdf"
+   },
+   "house_price": {
+    "value": 11107,
+    "type": "listing",
+    "year": 2025,
+    "source": "安居客 2025年全国房价排名 (二手房挂牌均价)",
+    "url": "https://www.anjuke.com/fangjia/quanguo2025/"
+   }
+  },
+  "阜阳": {
+   "prov": "AH",
+   "type": "prefecture",
+   "pop_wan": {
+    "value": 800.1,
+    "year": 2025,
+    "source": "阜阳市2025年统计公报 (tjgb.hongheiku.com mirror of official bulletin)",
+    "url": "https://tjgb.hongheiku.com/xjtjgb/xj2020/74384.html"
+   },
+   "births": null,
+   "inc_urban": {
+    "value": 44777,
+    "year": 2025,
+    "source": "阜阳市2025年统计公报 (tjgb.hongheiku.com mirror of official bulletin)",
+    "url": "https://tjgb.hongheiku.com/xjtjgb/xj2020/74384.html"
+   },
+   "inc_rural": {
+    "value": 20644,
+    "year": 2025,
+    "source": "阜阳市2025年统计公报 (tjgb.hongheiku.com mirror of official bulletin)",
+    "url": "https://tjgb.hongheiku.com/xjtjgb/xj2020/74384.html"
+   },
+   "house_price": null
+  },
+  "芜湖": {
+   "prov": "AH",
+   "type": "prefecture",
+   "pop_wan": {
+    "value": 379.7,
+    "year": 2024,
+    "source": "芜湖市2024年统计公报 (2025 bulletin omits population)",
+    "url": "https://tjj.wuhu.gov.cn/tjxx/tjgb/8768514.html"
+   },
+   "births": null,
+   "inc_urban": {
+    "value": 59743,
+    "year": 2025,
+    "source": "芜湖市2025年统计公报",
+    "url": "https://tjj.wuhu.gov.cn/tjxx/tjgb/8939438.html"
+   },
+   "inc_rural": {
+    "value": 35815,
+    "year": 2025,
+    "source": "芜湖市2025年统计公报",
+    "url": "https://tjj.wuhu.gov.cn/tjxx/tjgb/8939438.html"
+   },
+   "house_price": null
+  },
+  "福州": {
+   "prov": "FJ",
+   "type": "capital",
+   "pop_wan": {
+    "value": 852.1,
+    "year": 2025,
+    "source": "2025年福州市统计公报",
+    "url": "https://www.fuzhou.gov.cn/zwgk/tjxx/ndbg/202604/t20260414_5308173.htm"
+   },
+   "births": null,
+   "inc_urban": {
+    "value": 63435,
+    "year": 2025,
+    "source": "2025年福州市统计公报",
+    "url": "https://www.fuzhou.gov.cn/zwgk/tjxx/ndbg/202604/t20260414_5308173.htm"
+   },
+   "inc_rural": {
+    "value": 32327,
+    "year": 2025,
+    "source": "2025年福州市统计公报",
+    "url": "https://www.fuzhou.gov.cn/zwgk/tjxx/ndbg/202604/t20260414_5308173.htm"
+   },
+   "house_price": {
+    "value": 15537,
+    "type": "listing",
+    "year": 2025,
+    "source": "安居客 2025年全国房价排名 (二手房挂牌均价)",
+    "url": "https://www.anjuke.com/fangjia/quanguo2025/"
+   }
+  },
+  "厦门": {
+   "prov": "FJ",
+   "type": "sub_provincial",
+   "pop_wan": {
+    "value": 536.5,
+    "year": 2025,
+    "source": "2025年厦门市统计公报 (value read from search-index excerpt of this official page; direct fetch blocked from this network)",
+    "url": "https://tjj.xm.gov.cn/tjzl/ndgb/202603/t20260325_2991064.htm"
+   },
+   "births": null,
+   "inc_urban": {
+    "value": 79719,
+    "year": 2025,
+    "source": "2025年厦门市统计公报 (value read from search-index excerpt of this official page; direct fetch blocked from this network)",
+    "url": "https://tjj.xm.gov.cn/tjzl/ndgb/202603/t20260325_2991064.htm"
+   },
+   "inc_rural": {
+    "value": 38512,
+    "year": 2025,
+    "source": "2025年厦门市统计公报 (value read from search-index excerpt of this official page; direct fetch blocked from this network)",
+    "url": "https://tjj.xm.gov.cn/tjzl/ndgb/202603/t20260325_2991064.htm"
+   },
+   "house_price": {
+    "value": 28855,
+    "type": "listing",
+    "year": 2025,
+    "source": "安居客 2025年全国房价排名 (二手房挂牌均价)",
+    "url": "https://www.anjuke.com/fangjia/quanguo2025/"
+   }
+  },
+  "泉州": {
+   "prov": "FJ",
+   "type": "prefecture",
+   "pop_wan": {
+    "value": 891.4,
+    "year": 2024,
+    "source": "泉州市统计局 2024年末常住人口主要数据 (2025 bulletin gives only 户籍)",
+    "url": "https://tjj.quanzhou.gov.cn/tjzl/sjjd/202502/t20250224_3142656.htm"
+   },
+   "births": null,
+   "inc_urban": {
+    "value": 66511,
+    "year": 2025,
+    "source": "2025年泉州市统计公报",
+    "url": "https://tjj.quanzhou.gov.cn/zwgk/zfxxgk/fdzdgknr/tjxx/tjgb/202603/t20260331_3279583.htm"
+   },
+   "inc_rural": {
+    "value": 33321,
+    "year": 2025,
+    "source": "2025年泉州市统计公报",
+    "url": "https://tjj.quanzhou.gov.cn/zwgk/zfxxgk/fdzdgknr/tjxx/tjgb/202603/t20260331_3279583.htm"
+   },
+   "house_price": {
+    "value": 12045,
+    "type": "listing",
+    "year": 2025,
+    "source": "安居客 2025年全国房价排名 (二手房挂牌均价)",
+    "url": "https://www.anjuke.com/fangjia/quanguo2025/"
+   }
+  },
+  "南昌": {
+   "prov": "JX",
+   "type": "capital",
+   "pop_wan": {
+    "value": 667.04,
+    "year": 2024,
+    "source": "江西新闻网 转南昌市统计局 2024年常住人口",
+    "url": "https://tt.jxnews.com.cn/news/2654401"
+   },
+   "births": {
+    "births_wan": 3.98,
+    "rate_permille": 6.01,
+    "basis": "resident",
+    "year": 2024,
+    "source": "江西新闻网 转南昌市统计局",
+    "url": "https://tt.jxnews.com.cn/news/2654401"
+   },
+   "inc_urban": {
+    "value": 59609,
+    "year": 2025,
+    "source": "南昌市2025年统计公报 图10 (tjgb.hongheiku.com mirror of official bulletin, page images)",
+    "url": "https://tjgb.hongheiku.com/djs/69081.html"
+   },
+   "inc_rural": {
+    "value": 28886,
+    "year": 2025,
+    "source": "南昌市2025年统计公报 图10 (tjgb.hongheiku.com mirror of official bulletin, page images)",
+    "url": "https://tjgb.hongheiku.com/djs/69081.html"
+   },
+   "house_price": {
+    "value": 8987,
+    "type": "listing",
+    "year": 2025,
+    "source": "安居客 2025年全国房价排名 (二手房挂牌均价)",
+    "url": "https://www.anjuke.com/fangjia/quanguo2025/"
+   }
+  },
+  "赣州": {
+   "prov": "JX",
+   "type": "prefecture",
+   "pop_wan": {
+    "value": 895.62,
+    "year": 2025,
+    "source": "赣州市2025年统计公报",
+    "url": "https://www.ganzhou.gov.cn/gzszf/c100022/202604/38a12f964da545109b1b16697faee249.shtml"
+   },
+   "births": {
+    "births_wan": 5.55,
+    "rate_permille": 6.2,
+    "basis": "resident",
+    "year": 2025,
+    "source": "赣州市2025年统计公报",
+    "url": "https://www.ganzhou.gov.cn/gzszf/c100022/202604/38a12f964da545109b1b16697faee249.shtml"
+   },
+   "inc_urban": {
+    "value": 48188,
+    "year": 2025,
+    "source": "赣州市2025年统计公报",
+    "url": "https://www.ganzhou.gov.cn/gzszf/c100022/202604/38a12f964da545109b1b16697faee249.shtml"
+   },
+   "inc_rural": {
+    "value": 19839,
+    "year": 2025,
+    "source": "赣州市2025年统计公报",
+    "url": "https://www.ganzhou.gov.cn/gzszf/c100022/202604/38a12f964da545109b1b16697faee249.shtml"
+   },
+   "house_price": {
+    "value": 7601,
+    "type": "listing",
+    "year": 2025,
+    "source": "安居客 2025年全国房价排名 (二手房挂牌均价)",
+    "url": "https://www.anjuke.com/fangjia/quanguo2025/"
+   }
+  },
+  "上饶": {
+   "prov": "JX",
+   "type": "prefecture",
+   "pop_wan": {
+    "value": 627.1,
+    "year": 2025,
+    "source": "2025年上饶市统计公报 (上饶日报)",
+    "url": "http://paper.srxww.com/pc/content/202604/28/content_31002.html"
+   },
+   "births": {
+    "births_wan": 3.4,
+    "rate_permille": 5.39,
+    "basis": "resident",
+    "year": 2025,
+    "source": "2025年上饶市统计公报 (上饶日报)",
+    "url": "http://paper.srxww.com/pc/content/202604/28/content_31002.html"
+   },
+   "inc_urban": {
+    "value": 51277,
+    "year": 2025,
+    "source": "2025年上饶市统计公报 (上饶日报)",
+    "url": "http://paper.srxww.com/pc/content/202604/28/content_31002.html"
+   },
+   "inc_rural": {
+    "value": 22810,
+    "year": 2025,
+    "source": "2025年上饶市统计公报 (上饶日报)",
+    "url": "http://paper.srxww.com/pc/content/202604/28/content_31002.html"
+   },
+   "house_price": null
+  },
+  "郑州": {
+   "prov": "HA",
+   "type": "capital",
+   "pop_wan": {
+    "value": 1313.8,
+    "year": 2025,
+    "source": "2025年郑州市统计公报",
+    "url": "https://tjj.zhengzhou.gov.cn/tjgb/10017864.jhtml"
+   },
+   "births": {
+    "births_wan": 9.55,
+    "rate_permille": 7.28,
+    "basis": "resident",
+    "year": 2025,
+    "source": "2025年郑州市统计公报",
+    "url": "https://tjj.zhengzhou.gov.cn/tjgb/10017864.jhtml"
+   },
+   "inc_urban": {
+    "value": 52413,
+    "year": 2025,
+    "source": "2025年郑州市统计公报",
+    "url": "https://tjj.zhengzhou.gov.cn/tjgb/10017864.jhtml"
+   },
+   "inc_rural": {
+    "value": 33625,
+    "year": 2025,
+    "source": "2025年郑州市统计公报",
+    "url": "https://tjj.zhengzhou.gov.cn/tjgb/10017864.jhtml"
+   },
+   "house_price": {
+    "value": 8504,
+    "type": "listing",
+    "year": 2025,
+    "source": "安居客 2025年全国房价排名 (二手房挂牌均价)",
+    "url": "https://www.anjuke.com/fangjia/quanguo2025/"
+   }
+  },
+  "南阳": {
+   "prov": "HA",
+   "type": "prefecture",
+   "pop_wan": {
+    "value": 939.5,
+    "year": 2025,
+    "source": "2025年南阳市统计公报 (value read from search-index excerpt of this official page; direct fetch blocked from this network)",
+    "url": "https://tj.nanyang.gov.cn/2026/04-20/1398809.html"
+   },
+   "births": null,
+   "inc_urban": {
+    "value": 43685,
+    "year": 2025,
+    "source": "2025年南阳市统计公报 (value read from search-index excerpt of this official page; direct fetch blocked from this network)",
+    "url": "https://tj.nanyang.gov.cn/2026/04-20/1398809.html"
+   },
+   "inc_rural": {
+    "value": 23177,
+    "year": 2025,
+    "source": "2025年南阳市统计公报 (value read from search-index excerpt of this official page; direct fetch blocked from this network)",
+    "url": "https://tj.nanyang.gov.cn/2026/04-20/1398809.html"
+   },
+   "house_price": null
+  },
+  "周口": {
+   "prov": "HA",
+   "type": "prefecture",
+   "pop_wan": {
+    "value": 859.9,
+    "year": 2025,
+    "source": "2025年周口市统计公报 (docx attachment)",
+    "url": "https://tjj.zhoukou.gov.cn/sitesources/tjj/upload/f791306e1f76b14baa95f0420a549681/1790243249349.docx"
+   },
+   "births": {
+    "births_wan": 6.04,
+    "rate_permille": 7.01,
+    "basis": "resident",
+    "year": 2025,
+    "source": "2025年周口市统计公报 (docx attachment)",
+    "url": "https://tjj.zhoukou.gov.cn/sitesources/tjj/upload/f791306e1f76b14baa95f0420a549681/1790243249349.docx"
+   },
+   "inc_urban": {
+    "value": 36473,
+    "year": 2025,
+    "source": "2025年周口市统计公报 (docx attachment)",
+    "url": "https://tjj.zhoukou.gov.cn/sitesources/tjj/upload/f791306e1f76b14baa95f0420a549681/1790243249349.docx"
+   },
+   "inc_rural": {
+    "value": 18657,
+    "year": 2025,
+    "source": "2025年周口市统计公报 (docx attachment)",
+    "url": "https://tjj.zhoukou.gov.cn/sitesources/tjj/upload/f791306e1f76b14baa95f0420a549681/1790243249349.docx"
+   },
+   "house_price": {
+    "value": 5047,
+    "type": "listing",
+    "year": 2025,
+    "source": "安居客 2025年全国房价排名 (二手房挂牌均价)",
+    "url": "https://www.anjuke.com/fangjia/quanguo2025/"
+   }
+  },
+  "商丘": {
+   "prov": "HA",
+   "type": "prefecture",
+   "pop_wan": {
+    "value": 756.4,
+    "year": 2025,
+    "source": "2025年商丘市统计公报 (value read from search-index excerpt of this official page; direct fetch blocked from this network)",
+    "url": "https://shangqiu.gov.cn/sj/sqstjgb/content_306088"
+   },
+   "births": null,
+   "inc_urban": {
+    "value": 40933,
+    "year": 2025,
+    "source": "2025年商丘市统计公报 (value read from search-index excerpt of this official page; direct fetch blocked from this network)",
+    "url": "https://shangqiu.gov.cn/sj/sqstjgb/content_306088"
+   },
+   "inc_rural": {
+    "value": 19331,
+    "year": 2025,
+    "source": "2025年商丘市统计公报 (value read from search-index excerpt of this official page; direct fetch blocked from this network)",
+    "url": "https://shangqiu.gov.cn/sj/sqstjgb/content_306088"
+   },
+   "house_price": null
+  },
+  "洛阳": {
+   "prov": "HA",
+   "type": "prefecture",
+   "pop_wan": {
+    "value": 708.3,
+    "year": 2025,
+    "source": "2025年洛阳市统计公报",
+    "url": "https://m.ly.gov.cn/2026/05-11/1060335.html"
+   },
+   "births": {
+    "births_wan": 4.6,
+    "rate_permille": 6.52,
+    "basis": "resident",
+    "year": 2025,
+    "source": "2025年洛阳市统计公报",
+    "url": "https://m.ly.gov.cn/2026/05-11/1060335.html"
+   },
+   "inc_urban": {
+    "value": 49887,
+    "year": 2025,
+    "source": "2025年洛阳市统计公报",
+    "url": "https://m.ly.gov.cn/2026/05-11/1060335.html"
+   },
+   "inc_rural": {
+    "value": 22340,
+    "year": 2025,
+    "source": "2025年洛阳市统计公报",
+    "url": "https://m.ly.gov.cn/2026/05-11/1060335.html"
+   },
+   "house_price": null
+  },
+  "武汉": {
+   "prov": "HB",
+   "type": "capital",
+   "pop_wan": {
+    "value": 1386.19,
+    "year": 2025,
+    "source": "2025年武汉市统计公报",
+    "url": "https://tjj.wuhan.gov.cn/tjfw/tjgb/202604/t20260408_2750693.shtml"
+   },
+   "births": null,
+   "inc_urban": {
+    "value": 67248,
+    "year": 2025,
+    "source": "2025年武汉市统计公报",
+    "url": "https://tjj.wuhan.gov.cn/tjfw/tjgb/202604/t20260408_2750693.shtml"
+   },
+   "inc_rural": {
+    "value": 35575,
+    "year": 2025,
+    "source": "2025年武汉市统计公报",
+    "url": "https://tjj.wuhan.gov.cn/tjfw/tjgb/202604/t20260408_2750693.shtml"
+   },
+   "house_price": {
+    "value": 10684,
+    "type": "listing",
+    "year": 2025,
+    "source": "安居客 2025年全国房价排名 (二手房挂牌均价)",
+    "url": "https://www.anjuke.com/fangjia/quanguo2025/"
+   }
+  },
+  "襄阳": {
+   "prov": "HB",
+   "type": "prefecture",
+   "pop_wan": {
+    "value": 525.12,
+    "year": 2025,
+    "source": "2025年襄阳市统计公报 (湖北省统计局 docx)",
+    "url": "http://tjj.hubei.gov.cn/tjsj/tjgb/ndtjgb/sztjgb/202606/P020260629418775557072.docx"
+   },
+   "births": null,
+   "inc_urban": {
+    "value": 50412,
+    "year": 2025,
+    "source": "2025年襄阳市统计公报 (湖北省统计局 docx)",
+    "url": "http://tjj.hubei.gov.cn/tjsj/tjgb/ndtjgb/sztjgb/202606/P020260629418775557072.docx"
+   },
+   "inc_rural": {
+    "value": 27078,
+    "year": 2025,
+    "source": "2025年襄阳市统计公报 (湖北省统计局 docx)",
+    "url": "http://tjj.hubei.gov.cn/tjsj/tjgb/ndtjgb/sztjgb/202606/P020260629418775557072.docx"
+   },
+   "house_price": null
+  },
+  "宜昌": {
+   "prov": "HB",
+   "type": "prefecture",
+   "pop_wan": {
+    "value": 390.06,
+    "year": 2025,
+    "source": "2025年宜昌市统计公报 (湖北省统计局 docx)",
+    "url": "http://tjj.hubei.gov.cn/tjsj/tjgb/ndtjgb/sztjgb/202605/P020260508379657012826.docx"
+   },
+   "births": null,
+   "inc_urban": {
+    "value": 50874,
+    "year": 2025,
+    "source": "2025年宜昌市统计公报 (湖北省统计局 docx)",
+    "url": "http://tjj.hubei.gov.cn/tjsj/tjgb/ndtjgb/sztjgb/202605/P020260508379657012826.docx"
+   },
+   "inc_rural": {
+    "value": 27524,
+    "year": 2025,
+    "source": "2025年宜昌市统计公报 (湖北省统计局 docx)",
+    "url": "http://tjj.hubei.gov.cn/tjsj/tjgb/ndtjgb/sztjgb/202605/P020260508379657012826.docx"
+   },
+   "house_price": null
+  },
+  "黄冈": {
+   "prov": "HB",
+   "type": "prefecture",
+   "pop_wan": {
+    "value": 575.0,
+    "year": 2025,
+    "source": "2025年黄冈市统计公报 (湖北省统计局 doc)",
+    "url": "http://tjj.hubei.gov.cn/tjsj/tjgb/ndtjgb/sztjgb/202605/P020260509356980074230.doc"
+   },
+   "births": null,
+   "inc_urban": {
+    "value": 42220,
+    "year": 2025,
+    "source": "2025年黄冈市统计公报 (湖北省统计局 doc)",
+    "url": "http://tjj.hubei.gov.cn/tjsj/tjgb/ndtjgb/sztjgb/202605/P020260509356980074230.doc"
+   },
+   "inc_rural": {
+    "value": 21709,
+    "year": 2025,
+    "source": "2025年黄冈市统计公报 (湖北省统计局 doc)",
+    "url": "http://tjj.hubei.gov.cn/tjsj/tjgb/ndtjgb/sztjgb/202605/P020260509356980074230.doc"
+   },
+   "house_price": null
+  },
+  "长沙": {
+   "prov": "HN",
+   "type": "capital",
+   "pop_wan": {
+    "value": 1072.14,
+    "year": 2025,
+    "source": "长沙市2025年统计公报 (湖南省统计局)",
+    "url": "https://tjj.hunan.gov.cn/hntj/tjfx/tjgb/szgb/zss_1/202605/t20260512_33975356.html"
+   },
+   "births": {
+    "births_wan": null,
+    "rate_permille": 6.47,
+    "basis": "registered (户籍)",
+    "year": 2025,
+    "source": "长沙市2025年统计公报 (湖南省统计局)",
+    "url": "https://tjj.hunan.gov.cn/hntj/tjfx/tjgb/szgb/zss_1/202605/t20260512_33975356.html"
+   },
+   "inc_urban": {
+    "value": 72117,
+    "year": 2025,
+    "source": "长沙市2025年统计公报 (湖南省统计局)",
+    "url": "https://tjj.hunan.gov.cn/hntj/tjfx/tjgb/szgb/zss_1/202605/t20260512_33975356.html"
+   },
+   "inc_rural": {
+    "value": 48069,
+    "year": 2025,
+    "source": "长沙市2025年统计公报 (湖南省统计局)",
+    "url": "https://tjj.hunan.gov.cn/hntj/tjfx/tjgb/szgb/zss_1/202605/t20260512_33975356.html"
+   },
+   "house_price": {
+    "value": 8817,
+    "type": "listing",
+    "year": 2025,
+    "source": "安居客 2025年全国房价排名 (二手房挂牌均价)",
+    "url": "https://www.anjuke.com/fangjia/quanguo2025/"
+   }
+  },
+  "衡阳": {
+   "prov": "HN",
+   "type": "prefecture",
+   "pop_wan": {
+    "value": 636.36,
+    "year": 2025,
+    "source": "衡阳市2025年统计公报 (湖南省统计局)",
+    "url": "https://tjj.hunan.gov.cn/hntj/tjfx/tjgb/szgb/hys_1/202605/t20260512_33975342.html"
+   },
+   "births": null,
+   "inc_urban": {
+    "value": 49844,
+    "year": 2025,
+    "source": "衡阳市2025年统计公报 (湖南省统计局)",
+    "url": "https://tjj.hunan.gov.cn/hntj/tjfx/tjgb/szgb/hys_1/202605/t20260512_33975342.html"
+   },
+   "inc_rural": {
+    "value": 30171,
+    "year": 2025,
+    "source": "衡阳市2025年统计公报 (湖南省统计局)",
+    "url": "https://tjj.hunan.gov.cn/hntj/tjfx/tjgb/szgb/hys_1/202605/t20260512_33975342.html"
+   },
+   "house_price": {
+    "value": 4766,
+    "type": "listing",
+    "year": 2025,
+    "source": "安居客 2025年全国房价排名 (二手房挂牌均价)",
+    "url": "https://www.anjuke.com/fangjia/quanguo2025/"
+   }
+  },
+  "邵阳": {
+   "prov": "HN",
+   "type": "prefecture",
+   "pop_wan": {
+    "value": 621.7,
+    "year": 2025,
+    "source": "邵阳市2025年统计公报 (湖南省统计局)",
+    "url": "https://tjj.hunan.gov.cn/hntj/tjfx/tjgb/szgb/sys_1/202605/t20260518_33979386.html"
+   },
+   "births": {
+    "births_wan": 5.1,
+    "rate_permille": 6.33,
+    "basis": "registered (户籍)",
+    "year": 2025,
+    "source": "邵阳市2025年统计公报 (湖南省统计局)",
+    "url": "https://tjj.hunan.gov.cn/hntj/tjfx/tjgb/szgb/sys_1/202605/t20260518_33979386.html"
+   },
+   "inc_urban": {
+    "value": 40312,
+    "year": 2025,
+    "source": "邵阳市2025年统计公报 (湖南省统计局)",
+    "url": "https://tjj.hunan.gov.cn/hntj/tjfx/tjgb/szgb/sys_1/202605/t20260518_33979386.html"
+   },
+   "inc_rural": {
+    "value": 20505,
+    "year": 2025,
+    "source": "邵阳市2025年统计公报 (湖南省统计局)",
+    "url": "https://tjj.hunan.gov.cn/hntj/tjfx/tjgb/szgb/sys_1/202605/t20260518_33979386.html"
+   },
+   "house_price": {
+    "value": 4491,
+    "type": "listing",
+    "year": 2025,
+    "source": "安居客 2025年全国房价排名 (二手房挂牌均价)",
+    "url": "https://www.anjuke.com/fangjia/quanguo2025/"
+   }
+  },
+  "岳阳": {
+   "prov": "HN",
+   "type": "prefecture",
+   "pop_wan": {
+    "value": 493.27,
+    "year": 2025,
+    "source": "岳阳市2025年统计公报",
+    "url": "https://tjj.yueyang.gov.cn/22777/22781/content_2380060.html"
+   },
+   "births": null,
+   "inc_urban": {
+    "value": 47548,
+    "year": 2025,
+    "source": "岳阳市2025年统计公报",
+    "url": "https://tjj.yueyang.gov.cn/22777/22781/content_2380060.html"
+   },
+   "inc_rural": {
+    "value": 25895,
+    "year": 2025,
+    "source": "岳阳市2025年统计公报",
+    "url": "https://tjj.yueyang.gov.cn/22777/22781/content_2380060.html"
+   },
+   "house_price": null
+  },
+  "广州": {
+   "prov": "GD",
+   "type": "capital",
+   "pop_wan": {
+    "value": 1910.1,
+    "year": 2025,
+    "source": "2025年广州市统计公报",
+    "url": "https://www.gz.gov.cn/zwgk/sjfb/tjgb/content/post_10804075.html"
+   },
+   "births": {
+    "births_wan": 10.8,
+    "rate_permille": 9.97,
+    "basis": "registered (户籍)",
+    "year": 2025,
+    "source": "2025年广州市统计公报",
+    "url": "https://www.gz.gov.cn/zwgk/sjfb/tjgb/content/post_10804075.html"
+   },
+   "inc_urban": {
+    "value": 86069,
+    "year": 2025,
+    "source": "2025年广州市统计公报",
+    "url": "https://www.gz.gov.cn/zwgk/sjfb/tjgb/content/post_10804075.html"
+   },
+   "inc_rural": {
+    "value": 43145,
+    "year": 2025,
+    "source": "2025年广州市统计公报",
+    "url": "https://www.gz.gov.cn/zwgk/sjfb/tjgb/content/post_10804075.html"
+   },
+   "house_price": {
+    "value": 34901,
+    "type": "listing",
+    "year": 2025,
+    "source": "安居客 2025年全国房价排名 (二手房挂牌均价)",
+    "url": "https://www.anjuke.com/fangjia/quanguo2025/"
+   }
+  },
+  "深圳": {
+   "prov": "GD",
+   "type": "sub_provincial",
+   "pop_wan": {
+    "value": 1824.85,
+    "year": 2025,
+    "source": "深圳市2025年统计公报 (overall 居民人均可支配收入; no urban/rural split)",
+    "url": "https://www.sz.gov.cn/cn/xxgk/zfxxgj/tjsj/tjgb/content/post_12805133.html"
+   },
+   "births": null,
+   "inc_urban": {
+    "value": 84945,
+    "year": 2025,
+    "source": "深圳市2025年统计公报 (overall 居民人均可支配收入; no urban/rural split)",
+    "url": "https://www.sz.gov.cn/cn/xxgk/zfxxgj/tjsj/tjgb/content/post_12805133.html"
+   },
+   "inc_rural": null,
+   "house_price": {
+    "value": 53357,
+    "type": "listing",
+    "year": 2025,
+    "source": "安居客 2025年全国房价排名 (二手房挂牌均价)",
+    "url": "https://www.anjuke.com/fangjia/quanguo2025/"
+   }
+  },
+  "东莞": {
+   "prov": "GD",
+   "type": "prefecture",
+   "pop_wan": {
+    "value": 1080.04,
+    "year": 2025,
+    "source": "2025年东莞市统计公报",
+    "url": "http://tjj.dg.gov.cn/tjzl/tjgb/content/post_4537415.html"
+   },
+   "births": {
+    "births_wan": 3.25,
+    "rate_permille": 10.32,
+    "basis": "registered (户籍; rate implies 户籍 denominator)",
+    "year": 2025,
+    "source": "2025年东莞市统计公报",
+    "url": "http://tjj.dg.gov.cn/tjzl/tjgb/content/post_4537415.html"
+   },
+   "inc_urban": {
+    "value": 72137,
+    "year": 2025,
+    "source": "2025年东莞市统计公报",
+    "url": "http://tjj.dg.gov.cn/tjzl/tjgb/content/post_4537415.html"
+   },
+   "inc_rural": {
+    "value": 52133,
+    "year": 2025,
+    "source": "2025年东莞市统计公报",
+    "url": "http://tjj.dg.gov.cn/tjzl/tjgb/content/post_4537415.html"
+   },
+   "house_price": {
+    "value": 14499,
+    "type": "listing",
+    "year": 2025,
+    "source": "安居客 2025年全国房价排名 (二手房挂牌均价)",
+    "url": "https://www.anjuke.com/fangjia/quanguo2025/"
+   }
+  },
+  "佛山": {
+   "prov": "GD",
+   "type": "prefecture",
+   "pop_wan": {
+    "value": 979.19,
+    "year": 2025,
+    "source": "澎湃新闻 2026-06-17 citing 佛山2025公报",
+    "url": "https://m.thepaper.cn/newsDetail_forward_33401433"
+   },
+   "births": {
+    "births_wan": null,
+    "rate_permille": 10.02,
+    "basis": "registered (户籍)",
+    "year": 2025,
+    "source": "澎湃新闻 citing 佛山公报",
+    "url": "https://m.thepaper.cn/newsDetail_forward_33401433"
+   },
+   "inc_urban": {
+    "value": 72290,
+    "year": 2025,
+    "source": "2025年佛山市统计公报 (value read from search-index excerpt of this official page; direct fetch blocked from this network)",
+    "url": "http://foshan.gov.cn/gzjg/stjj/ztzl_1110965/tjgb_1110961/index.html"
+   },
+   "inc_rural": {
+    "value": 45658,
+    "year": 2025,
+    "source": "2025年佛山市统计公报 (value read from search-index excerpt of this official page; direct fetch blocked from this network)",
+    "url": "http://foshan.gov.cn/gzjg/stjj/ztzl_1110965/tjgb_1110961/index.html"
+   },
+   "house_price": {
+    "value": 11662,
+    "type": "listing",
+    "year": 2025,
+    "source": "安居客 2025年全国房价排名 (二手房挂牌均价)",
+    "url": "https://www.anjuke.com/fangjia/quanguo2025/"
+   }
+  },
+  "湛江": {
+   "prov": "GD",
+   "type": "prefecture",
+   "pop_wan": {
+    "value": 712.29,
+    "year": 2025,
+    "source": "2025年湛江市统计公报",
+    "url": "https://www.zhanjiang.gov.cn/zwgk/sjfb/tjgb/content/post_2172272.html"
+   },
+   "births": {
+    "births_wan": 7.48,
+    "rate_permille": 10.5,
+    "basis": "resident",
+    "year": 2025,
+    "source": "2025年湛江市统计公报",
+    "url": "https://www.zhanjiang.gov.cn/zwgk/sjfb/tjgb/content/post_2172272.html"
+   },
+   "inc_urban": {
+    "value": 39943,
+    "year": 2025,
+    "source": "2025年湛江市统计公报",
+    "url": "https://www.zhanjiang.gov.cn/zwgk/sjfb/tjgb/content/post_2172272.html"
+   },
+   "inc_rural": {
+    "value": 25145,
+    "year": 2025,
+    "source": "2025年湛江市统计公报",
+    "url": "https://www.zhanjiang.gov.cn/zwgk/sjfb/tjgb/content/post_2172272.html"
+   },
+   "house_price": {
+    "value": 7892,
+    "type": "listing",
+    "year": 2025,
+    "source": "安居客 2025年全国房价排名 (二手房挂牌均价)",
+    "url": "https://www.anjuke.com/fangjia/quanguo2025/"
+   }
+  },
+  "茂名": {
+   "prov": "GD",
+   "type": "prefecture",
+   "pop_wan": {
+    "value": 626.46,
+    "year": 2025,
+    "source": "2025年茂名市统计公报",
+    "url": "http://www.maoming.gov.cn/zwgk/sjfb/tjgb/content/post_1612930.html"
+   },
+   "births": {
+    "births_wan": 5.46,
+    "rate_permille": 8.71,
+    "basis": "resident",
+    "year": 2025,
+    "source": "2025年茂名市统计公报",
+    "url": "http://www.maoming.gov.cn/zwgk/sjfb/tjgb/content/post_1612930.html"
+   },
+   "inc_urban": {
+    "value": 38070,
+    "year": 2025,
+    "source": "2025年茂名市统计公报",
+    "url": "http://www.maoming.gov.cn/zwgk/sjfb/tjgb/content/post_1612930.html"
+   },
+   "inc_rural": {
+    "value": 26547,
+    "year": 2025,
+    "source": "2025年茂名市统计公报",
+    "url": "http://www.maoming.gov.cn/zwgk/sjfb/tjgb/content/post_1612930.html"
+   },
+   "house_price": null
+  }
+ },
+ "gaps": [
+  "合肥: births (not in bulletin)",
+  "阜阳: house_price (not in the top-99/bottom-100 lists on 安居客 quanguo2025 page; city page behind anti-bot)",
+  "阜阳: births (not in bulletin)",
+  "芜湖: house_price (not in the top-99/bottom-100 lists on 安居客 quanguo2025 page; city page behind anti-bot)",
+  "芜湖: births (not in bulletin)",
+  "芜湖: 2025 常住人口 not published in bulletin; 2024 value used",
+  "福州: births (not in bulletin)",
+  "厦门: births (not in bulletin)",
+  "泉州: births (not in bulletin)",
+  "泉州: 2025 常住人口 not published in bulletin; 2024 value used",
+  "南昌: 2025 常住人口 not published in bulletin; 2024 value used",
+  "上饶: house_price (not in the top-99/bottom-100 lists on 安居客 quanguo2025 page; city page behind anti-bot)",
+  "南阳: house_price (not in the top-99/bottom-100 lists on 安居客 quanguo2025 page; city page behind anti-bot)",
+  "南阳: births (not in bulletin)",
+  "商丘: house_price (not in the top-99/bottom-100 lists on 安居客 quanguo2025 page; city page behind anti-bot)",
+  "商丘: births (not in bulletin)",
+  "洛阳: house_price (not in the top-99/bottom-100 lists on 安居客 quanguo2025 page; city page behind anti-bot)",
+  "武汉: births (not in bulletin)",
+  "襄阳: house_price (not in the top-99/bottom-100 lists on 安居客 quanguo2025 page; city page behind anti-bot)",
+  "襄阳: births (not in bulletin)",
+  "宜昌: house_price (not in the top-99/bottom-100 lists on 安居客 quanguo2025 page; city page behind anti-bot)",
+  "宜昌: births (not in bulletin)",
+  "黄冈: house_price (not in the top-99/bottom-100 lists on 安居客 quanguo2025 page; city page behind anti-bot)",
+  "黄冈: births (not in bulletin)",
+  "衡阳: births (not in bulletin)",
+  "岳阳: house_price (not in the top-99/bottom-100 lists on 安居客 quanguo2025 page; city page behind anti-bot)",
+  "岳阳: births (not in bulletin)",
+  "深圳: births (not in bulletin)",
+  "茂名: house_price (not in the top-99/bottom-100 lists on 安居客 quanguo2025 page; city page behind anti-bot)",
+  "深圳: inc_rural null (no urban/rural split); inc_urban holds overall 居民人均可支配收入",
+  "温州/厦门/南阳/商丘/佛山: some values taken from search-index excerpts of the official page (direct fetch blocked); flagged in source field",
+  "type 'sub_provincial' = 副省级/计划单列 (宁波, 厦门, 深圳); 武汉/广州 also 副省级 but typed 'capital'"
+ ]
+}

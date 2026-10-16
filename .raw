@@ -1,0 +1,216 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>江苏省统计局 江苏统计年鉴</title>
+<meta name='Maketime' content='2026-06-11 09:20:34'>
+<meta name="SiteName" content="江苏省统计局">
+<meta name="SiteDomain" content="tj.jiangsu.gov.cn">
+<meta name="SiteIDCode" content="">
+<meta name="ColumnName" content="江苏统计年鉴">
+<meta name="ColumnDescription" content="">
+<meta name="ColumnKeywords" content="">
+<meta name="ColumnType" content="">
+<meta name="channel" content="江苏统计年鉴">
+<meta name="chnlcatalog" content="">
+<meta name="server" content="http://tj.jiangsu.gov.cn/col/col4009/index.html,,">
+<!-- START head CSS -->
+<!-- 让360双核浏览器用webkit内核渲染页面 !!! 注意，这行最好放在前面，防止浏览器开始解析的时候采用其它内置的渲染方案  -->
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><script language="javascript" src="/module/jslib/jquery/jquery.js"></script>
+<script language="javascript" src="/module/jslib/urite/urite.min.js"></script>
+<meta name='WebId' content='21'>
+
+<meta name="renderer" content="webkit">
+
+<!-- 让IE浏览器用最高级内核渲染页面 还有用 Chrome 框架的页面用webkit 内核 -->
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<!-- Favicons -->
+<!--调试阶段禁止缓存,例如微信，QQ浏览器缓存-->
+<meta http-equiv="Cache-Control"
+	content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<!-- START Public CSS -->
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta http-equiv="Cache-Control"
+	content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<!-- <link rel="shortcut icon" href="/images/188/favicon.ico"> -->
+<link rel="stylesheet" type="text/css" href="/images/188/global_v1.0.0.css">
+<script type="text/javascript" src="/images/188/jquery-1.8.3.min.js"></script>
+<script type="text/javascript">
+//检索
+function searchCK(){
+		var reg= /\<|\>|%|\&|\+|\-|\||\;|\$|\@|\'|\"|\(|\)|\,/g;
+
+		 if(reg.test(document.getElementById("content").value)){
+			alert('您输入的信息包含非法字符!');
+			return false;
+	}
+	    if (document.getElementById("content").value =="" || document.getElementById("content").value=='请输入关键字')
+	      {
+	        alert("请输入检索内容!");
+	        return false;
+	      }else{
+			  var url1 = "http://www.jssb.gov.cns/was5/web/search?channelid=208172&";
+			  //alert(url);
+			  var url = url1 +"searchword="+document.getElementById("content").value;
+			  window.open(url);
+		  }
+	}
+</script>
+
+
+<!-- END Public CSS -->
+<!-- START Plugin CSS -->
+<link rel="stylesheet" type="text/css" href="/images/188/inforCenter.css" />
+<!-- END Plugin CSS -->
+</head>
+<body><div id='barrierfree_container'>
+	<div class="width_control js_width_control">
+		<div class="all_bg">
+			<div class="img_bg"></div>
+			<div class="color_bg"></div>
+		</div>
+		<div class="all_content">
+			<!-- START header -->
+			  <script src="/script/0/29949e308a904c39b8fdcafd8785f315.js"></script>
+
+			<!-- END header -->
+			<!-- START body -->
+			<div class="main_body">
+				<div class="main_content">
+					<div class="leftcox">
+						<!-- START 左侧 -->
+						<div class="sideby js_sideby">
+							<div class="section">
+								<span>
+                                     
+江苏统计年鉴
+
+                                </span>
+								<i></i>
+							</div>
+                            <div class="colum">
+								<ul>
+									
+                                    
+<li><a href="/col/col4009/index.html" title="江苏统计年鉴" target="_self">江苏统计年鉴<img src="/picture/0/2b0eb4d86b4b482aa7e60fd2747cb891.png"></a>
+</li>
+
+<li><a href="/col/col4008/index.html" title="中国统计年鉴" target="_self">中国统计年鉴<img src="/picture/0/2b0eb4d86b4b482aa7e60fd2747cb891.png"></a>
+</li>
+
+<li><a href="/col/col4011/index.html" title="江苏市县统计年鉴" target="_self">江苏市县统计年鉴<img src="/picture/0/2b0eb4d86b4b482aa7e60fd2747cb891.png"></a>
+</li>
+
+<li><a href="/col/col4007/index.html" title="其他统计专业书籍" target="_self">其他统计专业书籍<img src="/picture/0/2b0eb4d86b4b482aa7e60fd2747cb891.png"></a>
+</li>
+
+<li><a href="/col/col83212/index.html" title="经济普查" target="_self">经济普查<img src="/picture/0/2b0eb4d86b4b482aa7e60fd2747cb891.png"></a>
+</li>
+
+									
+								</ul>
+							</div>
+							
+						</div>
+						<!-- END 左侧 -->
+					</div>
+					<div class="rightcox">
+						<div class="location clearfix">
+							<span style="float:left;">您当前的位置：</span>
+							<table cellspacing="0" cellpadding="0" border="0" style="float:left;">
+    <tr>
+        <td><a href="/index.html" class="CurrChnlCls">首页</a>
+        </td>
+        <td>
+            <table width="100%" cellspacing="0" cellpadding="0" border="0">
+<tr>
+<td> > 
+            
+            
+            <a href="/col/col86610/index.html" class="CurrChnlCls">
+                
+                废弃栏目
+                
+                
+            </a>
+            
+            </td><td> > 
+            
+            
+            <a href="/col/col4001/index.html" class="CurrChnlCls">
+                
+                统计咨询
+                
+                
+            </a>
+            
+            </td><td> > 
+            
+            
+            <a href="/col/col4005/index.html" class="CurrChnlCls">
+                
+                统计书架
+                
+                
+            </a>
+            
+            </td><td> > 
+            
+            
+            <a href="/col/col4009/index.html" class="CurrChnlCls">
+                
+                江苏统计年鉴
+                
+                
+            </a>
+            
+            </td>
+</tr></table>
+        </td>
+    </tr>
+</table>
+						</div>
+						<img src="/images/188/line.jpg" class="line" />
+						<div class="listcox">
+							<dl>
+                                <div id="12877"><script type="text/xml"><datastore>
+<nextgroup><![CDATA[<a href="/module/web/jpage/dataproxy.jsp?page=1&appid=1&appid=1&webid=21&path=/&columnid=4009&unitid=12877&webname=%25E6%25B1%259F%25E8%258B%258F%25E7%259C%2581%25E7%25BB%259F%25E8%25AE%25A1%25E5%25B1%2580&permissiontype=0"></a>]]></nextgroup>
+<recordset>
+</script></div><link rel="stylesheet" type="text/css" href="/module/web/jpage/theme/default/css/jpage.css"/><script language="javascript" src="/module/jslib/datepicker/WdatePicker.js"></script><script language="javascript" src="/module/jslib/jquery/cookie/jquery.cookie.js"></script><script language="javascript" src="/module/web/jpage/jquery.jpage.js"></script><script>var param_12877 = {col:1,appid:'1',webid:21,path:'/',columnid:4009,sourceContentType:1,unitid:'12877',webname:'江苏省统计局',permissiontype:0}; function jpage_12877(){$('#jpageform_12877 :input').each(function(){param_12877[$(this).attr('name')]=$(this).val();});$('#12877').jpage({themeName:'default',showMode:'full',totalRecord:1000,openCookies:false,dataBefore:'<style>    .rightcox .listcox dd a .dot{background: url(/picture/0/32100abe4d59438fb6b7941eb28cb9ae.png) no-repeat 0px;}</style>',dataAfter:'',groupSize:3,proxyUrl:'/module/web/jpage/dataproxy.jsp',perPage:10,barPosition:'bottom',ajaxParam:param_12877});};$(function(){$('#12877').jpage({themeName:'default',showMode:'full',totalRecord:0,openCookies:false,dataBefore:'<style>    .rightcox .listcox dd a .dot{background: url(/picture/0/32100abe4d59438fb6b7941eb28cb9ae.png) no-repeat 0px;}</style>',dataStore:$('#12877').children('script').html(),dataAfter:'',groupSize:3,proxyUrl:'/module/web/jpage/dataproxy.jsp',perPage:10,barPosition:'bottom',ajaxParam:param_12877});});</script>
+							</dl>
+						</div>
+						
+						<!-- 分页 -->
+						
+					</div>
+				</div>
+			</div>
+			<!-- END body -->
+			<!-- START footer -->
+			 <script src="/script/0/a86fd50fa77442eea03fd402ac9d1f8d.js"></script>
+
+			<!-- END footer -->
+		</div>
+
+	</div>
+	<!-- START Public JS -->
+
+	<script type="text/javascript" src="/images/188/TRS.frame-v1.0.10-min.js"></script>
+	<script type="text/javascript" src="/images/188/global_v1.0.0.js"></script>
+	<!--[if IE 6]>
+	<script type="text/javascript" src="/images/188/DD_belatedPNG_0.0.8a-min.js"></script>
+<![endif]-->
+
+	<!-- END Public JS -->
+	<!-- START Plugin JS -->
+	<!-- END Plugin JS -->
+</div>
+<!-- visitcount Begin --><iframe src='../../module/visitcount/visit.jsp?type=2&i_webid=21&i_columnid=4009' name="vishidden" id="vishidden" frameborder="0" style="width:0; height:0; display:none"></iframe><!-- visitcount End -->
+<script language="javascript" src='/script/web_front.js'></script>
+</body>
+</html>

@@ -1,0 +1,4968 @@
+{
+ "meta": {
+  "compiled": "2026-10-16",
+  "notes": [
+   "Province-level 2024 births = 出生率 × mean of 2023/2024 year-end 常住人口 from the 中国统计年鉴 table 2-7; sums to 9,540,137 vs national 9.54M.",
+   "Provincial population sums to 140,628万 vs national 140,828万 (national includes ~200万 active military).",
+   "Census birth-order counts are long-form (~10%) sample counts; use as shares."
+  ]
+ },
+ "provinces": {
+  "BJ": {
+   "name": "北京",
+   "births_2024": {
+    "value": 133000,
+    "year": 2024,
+    "birth_rate_permille": 6.09,
+    "death_rate_permille": 6.08,
+    "pop_end_2024_wan": 2183,
+    "pop_end_2023_wan": 2186,
+    "source": "中国统计年鉴2025 表2-7 分地区人口的城乡构成和出生率、死亡率、自然增长率(2024年)（据2024年人口变动抽样调查推算）; 2023年末人口取自中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "url_2023_pop": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "method": "rate×pop (出生率 × (2023年末+2024年末)/2)",
+    "confidence": "high",
+    "note": "31省按此法合计 9,540,137，与全国公布的954万完全吻合"
+   },
+   "urban_pct_2024": {
+    "value": 88.22,
+    "year": 2024,
+    "source": "中国统计年鉴2025 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "urban_pct_2023": {
+    "value": 87.83,
+    "year": 2023,
+    "source": "中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "le_2020": {
+    "total": 82.49,
+    "male": 80.43,
+    "female": 84.62,
+    "year": 2020,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2 各地区预期寿命（资料来源：2020年人口普查）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "le_2021": {
+    "total": 82.7,
+    "year": 2021,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2（2021年为国家卫生健康委与国家统计局联合测算发布）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "birth_order_2020_census": {
+    "sample_births": 16828,
+    "first": 0.6248,
+    "second": 0.3558,
+    "third": 0.0171,
+    "fourth": 0.0017,
+    "fifth_plus": 0.0005,
+    "srb_2020_census": 110.06,
+    "period": "2019-11-01至2020-10-31",
+    "source": "中国人口普查年鉴-2020 长表 表6-1 各地区分性别、孩次的出生人口",
+    "url": "https://www.stats.gov.cn/sj/pcsj/rkpc/7rp/zk/html/B0601.jpg",
+    "confidence": "high"
+   },
+   "live_births_2022_hospital": {
+    "value": 134672,
+    "year": 2022,
+    "source": "2023中国卫生健康统计年鉴 表8-3-2（全国住院分娩月报活产数，含户籍与非户籍）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "minorities": {
+    "minority_share_total": 0.0479,
+    "year": 2020,
+    "groups": [
+     {
+      "name": "满族",
+      "count": 469995,
+      "share": 0.0215
+     },
+     {
+      "name": "回族",
+      "count": 274112,
+      "share": 0.0125
+     },
+     {
+      "name": "蒙古族",
+      "count": 123340,
+      "share": 0.0056
+     }
+    ],
+    "source": "中国人口普查年鉴-2020 表1-4 各地区分性别、民族的人口（各民族列合计已与全国合计逐一核对一致）；少数民族合计取自中国统计年鉴2021 表2-21",
+    "url": "https://www.stats.gov.cn/sj/pcsj/rkpc/7rp/zk/html/A0104.jpg",
+    "url_total": "https://www.stats.gov.cn/sj/ndsj/2021/html/C02-21.jpg",
+    "confidence": "high"
+   },
+   "region": "east",
+   "births": {
+    "value": 133000,
+    "year": 2024,
+    "birth_rate_permille": 6.09,
+    "death_rate_permille": 6.08,
+    "pop_end_2024_wan": 2183,
+    "pop_end_2023_wan": 2186,
+    "source": "中国统计年鉴2025 表2-7 分地区人口的城乡构成和出生率、死亡率、自然增长率(2024年)（据2024年人口变动抽样调查推算）; 2023年末人口取自中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "url_2023_pop": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "method": "rate×pop (出生率 × (2023年末+2024年末)/2)",
+    "confidence": "high",
+    "note": "31省按此法合计 9,540,137，与全国公布的954万完全吻合"
+   },
+   "urban_pct": {
+    "value": 88.22,
+    "year": 2024,
+    "source": "中国统计年鉴2025 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "le_latest": {
+    "total": 82.7,
+    "year": 2021,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2（2021年为国家卫生健康委与国家统计局联合测算发布）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "imr": {
+    "value": null,
+    "status": "provincial IMR not collected; use national urban/rural split (2024: urban 2.6‰, rural 4.6‰)",
+    "national_fallback": {
+     "total": 4.0,
+     "urban": 2.6,
+     "rural": 4.6,
+     "neonatal": 2.5,
+     "under5": 5.6,
+     "under5_urban": 3.4,
+     "under5_rural": 6.6,
+     "source": "国家卫健委2024年统计公报; 中国统计年鉴2025 表22-15 监测地区儿童和孕产妇死亡率",
+     "url": "https://www.nhc.gov.cn/guihuaxxs/c100133/202512/f1c3a3c617484a27a1a26a468afbaeee/files/2024年我国卫生健康事业发展统计公报-20251201161542231.pdf",
+     "url2": "https://www.stats.gov.cn/sj/ndsj/2025/html/C22-15.jpg",
+     "confidence": "high"
+    },
+    "confidence": "low"
+   },
+   "births_2025": {
+    "value": null,
+    "status": "2025 provincial bulletin figures not merged (research sub-tasks did not report back before deadline)"
+   }
+  },
+  "TJ": {
+   "name": "天津",
+   "births_2024": {
+    "value": 68100,
+    "year": 2024,
+    "birth_rate_permille": 4.99,
+    "death_rate_permille": 6.96,
+    "pop_end_2024_wan": 1364,
+    "pop_end_2023_wan": 1364,
+    "source": "中国统计年鉴2025 表2-7 分地区人口的城乡构成和出生率、死亡率、自然增长率(2024年)（据2024年人口变动抽样调查推算）; 2023年末人口取自中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "url_2023_pop": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "method": "rate×pop (出生率 × (2023年末+2024年末)/2)",
+    "confidence": "high",
+    "note": "31省按此法合计 9,540,137，与全国公布的954万完全吻合"
+   },
+   "urban_pct_2024": {
+    "value": 86.01,
+    "year": 2024,
+    "source": "中国统计年鉴2025 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "urban_pct_2023": {
+    "value": 85.49,
+    "year": 2023,
+    "source": "中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "le_2020": {
+    "total": 81.3,
+    "male": 79.32,
+    "female": 83.4,
+    "year": 2020,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2 各地区预期寿命（资料来源：2020年人口普查）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "le_2021": {
+    "total": 81.5,
+    "year": 2021,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2（2021年为国家卫生健康委与国家统计局联合测算发布）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "birth_order_2020_census": {
+    "sample_births": 8226,
+    "first": 0.5911,
+    "second": 0.3773,
+    "third": 0.0284,
+    "fourth": 0.0029,
+    "fifth_plus": 0.0002,
+    "srb_2020_census": 108.36,
+    "period": "2019-11-01至2020-10-31",
+    "source": "中国人口普查年鉴-2020 长表 表6-1 各地区分性别、孩次的出生人口",
+    "url": "https://www.stats.gov.cn/sj/pcsj/rkpc/7rp/zk/html/B0601.jpg",
+    "confidence": "high"
+   },
+   "live_births_2022_hospital": {
+    "value": 64955,
+    "year": 2022,
+    "source": "2023中国卫生健康统计年鉴 表8-3-2（全国住院分娩月报活产数，含户籍与非户籍）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "minorities": {
+    "minority_share_total": 0.032,
+    "year": 2020,
+    "groups": [
+     {
+      "name": "回族",
+      "count": 166920,
+      "share": 0.012
+     },
+     {
+      "name": "满族",
+      "count": 128430,
+      "share": 0.0093
+     },
+     {
+      "name": "蒙古族",
+      "count": 41736,
+      "share": 0.003
+     }
+    ],
+    "source": "中国人口普查年鉴-2020 表1-4 各地区分性别、民族的人口（各民族列合计已与全国合计逐一核对一致）；少数民族合计取自中国统计年鉴2021 表2-21",
+    "url": "https://www.stats.gov.cn/sj/pcsj/rkpc/7rp/zk/html/A0104.jpg",
+    "url_total": "https://www.stats.gov.cn/sj/ndsj/2021/html/C02-21.jpg",
+    "confidence": "high"
+   },
+   "region": "east",
+   "births": {
+    "value": 68100,
+    "year": 2024,
+    "birth_rate_permille": 4.99,
+    "death_rate_permille": 6.96,
+    "pop_end_2024_wan": 1364,
+    "pop_end_2023_wan": 1364,
+    "source": "中国统计年鉴2025 表2-7 分地区人口的城乡构成和出生率、死亡率、自然增长率(2024年)（据2024年人口变动抽样调查推算）; 2023年末人口取自中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "url_2023_pop": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "method": "rate×pop (出生率 × (2023年末+2024年末)/2)",
+    "confidence": "high",
+    "note": "31省按此法合计 9,540,137，与全国公布的954万完全吻合"
+   },
+   "urban_pct": {
+    "value": 86.01,
+    "year": 2024,
+    "source": "中国统计年鉴2025 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "le_latest": {
+    "total": 81.5,
+    "year": 2021,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2（2021年为国家卫生健康委与国家统计局联合测算发布）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "imr": {
+    "value": null,
+    "status": "provincial IMR not collected; use national urban/rural split (2024: urban 2.6‰, rural 4.6‰)",
+    "national_fallback": {
+     "total": 4.0,
+     "urban": 2.6,
+     "rural": 4.6,
+     "neonatal": 2.5,
+     "under5": 5.6,
+     "under5_urban": 3.4,
+     "under5_rural": 6.6,
+     "source": "国家卫健委2024年统计公报; 中国统计年鉴2025 表22-15 监测地区儿童和孕产妇死亡率",
+     "url": "https://www.nhc.gov.cn/guihuaxxs/c100133/202512/f1c3a3c617484a27a1a26a468afbaeee/files/2024年我国卫生健康事业发展统计公报-20251201161542231.pdf",
+     "url2": "https://www.stats.gov.cn/sj/ndsj/2025/html/C22-15.jpg",
+     "confidence": "high"
+    },
+    "confidence": "low"
+   },
+   "births_2025": {
+    "value": null,
+    "status": "2025 provincial bulletin figures not merged (research sub-tasks did not report back before deadline)"
+   }
+  },
+  "HE": {
+   "name": "河北",
+   "births_2024": {
+    "value": 435700,
+    "year": 2024,
+    "birth_rate_permille": 5.9,
+    "death_rate_permille": 8.22,
+    "pop_end_2024_wan": 7378,
+    "pop_end_2023_wan": 7393,
+    "source": "中国统计年鉴2025 表2-7 分地区人口的城乡构成和出生率、死亡率、自然增长率(2024年)（据2024年人口变动抽样调查推算）; 2023年末人口取自中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "url_2023_pop": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "method": "rate×pop (出生率 × (2023年末+2024年末)/2)",
+    "confidence": "high",
+    "note": "31省按此法合计 9,540,137，与全国公布的954万完全吻合"
+   },
+   "urban_pct_2024": {
+    "value": 63.42,
+    "year": 2024,
+    "source": "中国统计年鉴2025 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "urban_pct_2023": {
+    "value": 62.77,
+    "year": 2023,
+    "source": "中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "le_2020": {
+    "total": 77.75,
+    "male": 75.2,
+    "female": 80.52,
+    "year": 2020,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2 各地区预期寿命（资料来源：2020年人口普查）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "le_2021": {
+    "total": 78.0,
+    "year": 2021,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2（2021年为国家卫生健康委与国家统计局联合测算发布）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "birth_order_2020_census": {
+    "sample_births": 59712,
+    "first": 0.407,
+    "second": 0.474,
+    "third": 0.1036,
+    "fourth": 0.0131,
+    "fifth_plus": 0.0023,
+    "srb_2020_census": 108.6,
+    "period": "2019-11-01至2020-10-31",
+    "source": "中国人口普查年鉴-2020 长表 表6-1 各地区分性别、孩次的出生人口",
+    "url": "https://www.stats.gov.cn/sj/pcsj/rkpc/7rp/zk/html/B0601.jpg",
+    "confidence": "high"
+   },
+   "live_births_2022_hospital": {
+    "value": 436227,
+    "year": 2022,
+    "source": "2023中国卫生健康统计年鉴 表8-3-2（全国住院分娩月报活产数，含户籍与非户籍）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "minorities": {
+    "minority_share_total": 0.0432,
+    "year": 2020,
+    "groups": [
+     {
+      "name": "满族",
+      "count": 2269227,
+      "share": 0.0304
+     },
+     {
+      "name": "回族",
+      "count": 567106,
+      "share": 0.0076
+     },
+     {
+      "name": "蒙古族",
+      "count": 226047,
+      "share": 0.003
+     }
+    ],
+    "source": "中国人口普查年鉴-2020 表1-4 各地区分性别、民族的人口（各民族列合计已与全国合计逐一核对一致）；少数民族合计取自中国统计年鉴2021 表2-21",
+    "url": "https://www.stats.gov.cn/sj/pcsj/rkpc/7rp/zk/html/A0104.jpg",
+    "url_total": "https://www.stats.gov.cn/sj/ndsj/2021/html/C02-21.jpg",
+    "confidence": "high"
+   },
+   "region": "east",
+   "births": {
+    "value": 435700,
+    "year": 2024,
+    "birth_rate_permille": 5.9,
+    "death_rate_permille": 8.22,
+    "pop_end_2024_wan": 7378,
+    "pop_end_2023_wan": 7393,
+    "source": "中国统计年鉴2025 表2-7 分地区人口的城乡构成和出生率、死亡率、自然增长率(2024年)（据2024年人口变动抽样调查推算）; 2023年末人口取自中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "url_2023_pop": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "method": "rate×pop (出生率 × (2023年末+2024年末)/2)",
+    "confidence": "high",
+    "note": "31省按此法合计 9,540,137，与全国公布的954万完全吻合"
+   },
+   "urban_pct": {
+    "value": 63.42,
+    "year": 2024,
+    "source": "中国统计年鉴2025 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "le_latest": {
+    "total": 78.0,
+    "year": 2021,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2（2021年为国家卫生健康委与国家统计局联合测算发布）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "imr": {
+    "value": null,
+    "status": "provincial IMR not collected; use national urban/rural split (2024: urban 2.6‰, rural 4.6‰)",
+    "national_fallback": {
+     "total": 4.0,
+     "urban": 2.6,
+     "rural": 4.6,
+     "neonatal": 2.5,
+     "under5": 5.6,
+     "under5_urban": 3.4,
+     "under5_rural": 6.6,
+     "source": "国家卫健委2024年统计公报; 中国统计年鉴2025 表22-15 监测地区儿童和孕产妇死亡率",
+     "url": "https://www.nhc.gov.cn/guihuaxxs/c100133/202512/f1c3a3c617484a27a1a26a468afbaeee/files/2024年我国卫生健康事业发展统计公报-20251201161542231.pdf",
+     "url2": "https://www.stats.gov.cn/sj/ndsj/2025/html/C22-15.jpg",
+     "confidence": "high"
+    },
+    "confidence": "low"
+   },
+   "births_2025": {
+    "value": null,
+    "status": "2025 provincial bulletin figures not merged (research sub-tasks did not report back before deadline)"
+   }
+  },
+  "SX": {
+   "name": "山西",
+   "births_2024": {
+    "value": 239800,
+    "year": 2024,
+    "birth_rate_permille": 6.94,
+    "death_rate_permille": 8.33,
+    "pop_end_2024_wan": 3446,
+    "pop_end_2023_wan": 3466,
+    "source": "中国统计年鉴2025 表2-7 分地区人口的城乡构成和出生率、死亡率、自然增长率(2024年)（据2024年人口变动抽样调查推算）; 2023年末人口取自中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "url_2023_pop": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "method": "rate×pop (出生率 × (2023年末+2024年末)/2)",
+    "confidence": "high",
+    "note": "31省按此法合计 9,540,137，与全国公布的954万完全吻合"
+   },
+   "urban_pct_2024": {
+    "value": 66.32,
+    "year": 2024,
+    "source": "中国统计年鉴2025 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "urban_pct_2023": {
+    "value": 64.97,
+    "year": 2023,
+    "source": "中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "le_2020": {
+    "total": 77.91,
+    "male": 75.64,
+    "female": 80.47,
+    "year": 2020,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2 各地区预期寿命（资料来源：2020年人口普查）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "le_2021": {
+    "total": 78.2,
+    "year": 2021,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2（2021年为国家卫生健康委与国家统计局联合测算发布）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "birth_order_2020_census": {
+    "sample_births": 29775,
+    "first": 0.4993,
+    "second": 0.4537,
+    "third": 0.0409,
+    "fourth": 0.0054,
+    "fifth_plus": 0.0006,
+    "srb_2020_census": 102.94,
+    "period": "2019-11-01至2020-10-31",
+    "source": "中国人口普查年鉴-2020 长表 表6-1 各地区分性别、孩次的出生人口",
+    "url": "https://www.stats.gov.cn/sj/pcsj/rkpc/7rp/zk/html/B0601.jpg",
+    "confidence": "high"
+   },
+   "live_births_2022_hospital": {
+    "value": 240159,
+    "year": 2022,
+    "source": "2023中国卫生健康统计年鉴 表8-3-2（全国住院分娩月报活产数，含户籍与非户籍）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "minorities": {
+    "minority_share_total": 0.0035,
+    "year": 2020,
+    "groups": [
+     {
+      "name": "回族",
+      "count": 60803,
+      "share": 0.0017
+     },
+     {
+      "name": "满族",
+      "count": 17269,
+      "share": 0.0005
+     },
+     {
+      "name": "蒙古族",
+      "count": 9434,
+      "share": 0.0003
+     }
+    ],
+    "source": "中国人口普查年鉴-2020 表1-4 各地区分性别、民族的人口（各民族列合计已与全国合计逐一核对一致）；少数民族合计取自中国统计年鉴2021 表2-21",
+    "url": "https://www.stats.gov.cn/sj/pcsj/rkpc/7rp/zk/html/A0104.jpg",
+    "url_total": "https://www.stats.gov.cn/sj/ndsj/2021/html/C02-21.jpg",
+    "confidence": "high"
+   },
+   "region": "central",
+   "births": {
+    "value": 239800,
+    "year": 2024,
+    "birth_rate_permille": 6.94,
+    "death_rate_permille": 8.33,
+    "pop_end_2024_wan": 3446,
+    "pop_end_2023_wan": 3466,
+    "source": "中国统计年鉴2025 表2-7 分地区人口的城乡构成和出生率、死亡率、自然增长率(2024年)（据2024年人口变动抽样调查推算）; 2023年末人口取自中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "url_2023_pop": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "method": "rate×pop (出生率 × (2023年末+2024年末)/2)",
+    "confidence": "high",
+    "note": "31省按此法合计 9,540,137，与全国公布的954万完全吻合"
+   },
+   "urban_pct": {
+    "value": 66.32,
+    "year": 2024,
+    "source": "中国统计年鉴2025 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "le_latest": {
+    "total": 78.2,
+    "year": 2021,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2（2021年为国家卫生健康委与国家统计局联合测算发布）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "imr": {
+    "value": null,
+    "status": "provincial IMR not collected; use national urban/rural split (2024: urban 2.6‰, rural 4.6‰)",
+    "national_fallback": {
+     "total": 4.0,
+     "urban": 2.6,
+     "rural": 4.6,
+     "neonatal": 2.5,
+     "under5": 5.6,
+     "under5_urban": 3.4,
+     "under5_rural": 6.6,
+     "source": "国家卫健委2024年统计公报; 中国统计年鉴2025 表22-15 监测地区儿童和孕产妇死亡率",
+     "url": "https://www.nhc.gov.cn/guihuaxxs/c100133/202512/f1c3a3c617484a27a1a26a468afbaeee/files/2024年我国卫生健康事业发展统计公报-20251201161542231.pdf",
+     "url2": "https://www.stats.gov.cn/sj/ndsj/2025/html/C22-15.jpg",
+     "confidence": "high"
+    },
+    "confidence": "low"
+   },
+   "births_2025": {
+    "value": null,
+    "status": "2025 provincial bulletin figures not merged (research sub-tasks did not report back before deadline)"
+   }
+  },
+  "NM": {
+   "name": "内蒙古",
+   "births_2024": {
+    "value": 132000,
+    "year": 2024,
+    "birth_rate_permille": 5.52,
+    "death_rate_permille": 8.36,
+    "pop_end_2024_wan": 2388,
+    "pop_end_2023_wan": 2396,
+    "source": "中国统计年鉴2025 表2-7 分地区人口的城乡构成和出生率、死亡率、自然增长率(2024年)（据2024年人口变动抽样调查推算）; 2023年末人口取自中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "url_2023_pop": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "method": "rate×pop (出生率 × (2023年末+2024年末)/2)",
+    "confidence": "high",
+    "note": "31省按此法合计 9,540,137，与全国公布的954万完全吻合"
+   },
+   "urban_pct_2024": {
+    "value": 70.73,
+    "year": 2024,
+    "source": "中国统计年鉴2025 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "urban_pct_2023": {
+    "value": 69.58,
+    "year": 2023,
+    "source": "中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "le_2020": {
+    "total": 77.56,
+    "male": 74.98,
+    "female": 80.45,
+    "year": 2020,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2 各地区预期寿命（资料来源：2020年人口普查）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "le_2021": {
+    "total": 77.8,
+    "year": 2021,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2（2021年为国家卫生健康委与国家统计局联合测算发布）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "birth_order_2020_census": {
+    "sample_births": 18428,
+    "first": 0.5282,
+    "second": 0.4318,
+    "third": 0.0354,
+    "fourth": 0.0039,
+    "fifth_plus": 0.0007,
+    "srb_2020_census": 105.6,
+    "period": "2019-11-01至2020-10-31",
+    "source": "中国人口普查年鉴-2020 长表 表6-1 各地区分性别、孩次的出生人口",
+    "url": "https://www.stats.gov.cn/sj/pcsj/rkpc/7rp/zk/html/B0601.jpg",
+    "confidence": "high"
+   },
+   "live_births_2022_hospital": {
+    "value": 125678,
+    "year": 2022,
+    "source": "2023中国卫生健康统计年鉴 表8-3-2（全国住院分娩月报活产数，含户籍与非户籍）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "minorities": {
+    "minority_share_total": 0.2126,
+    "year": 2020,
+    "groups": [
+     {
+      "name": "蒙古族",
+      "count": 4247815,
+      "share": 0.1766
+     },
+     {
+      "name": "满族",
+      "count": 469734,
+      "share": 0.0195
+     },
+     {
+      "name": "回族",
+      "count": 214918,
+      "share": 0.0089
+     },
+     {
+      "name": "达斡尔族",
+      "count": 73523,
+      "share": 0.0031
+     }
+    ],
+    "source": "中国人口普查年鉴-2020 表1-4 各地区分性别、民族的人口（各民族列合计已与全国合计逐一核对一致）；少数民族合计取自中国统计年鉴2021 表2-21",
+    "url": "https://www.stats.gov.cn/sj/pcsj/rkpc/7rp/zk/html/A0104.jpg",
+    "url_total": "https://www.stats.gov.cn/sj/ndsj/2021/html/C02-21.jpg",
+    "confidence": "high"
+   },
+   "region": "west",
+   "births": {
+    "value": 132000,
+    "year": 2024,
+    "birth_rate_permille": 5.52,
+    "death_rate_permille": 8.36,
+    "pop_end_2024_wan": 2388,
+    "pop_end_2023_wan": 2396,
+    "source": "中国统计年鉴2025 表2-7 分地区人口的城乡构成和出生率、死亡率、自然增长率(2024年)（据2024年人口变动抽样调查推算）; 2023年末人口取自中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "url_2023_pop": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "method": "rate×pop (出生率 × (2023年末+2024年末)/2)",
+    "confidence": "high",
+    "note": "31省按此法合计 9,540,137，与全国公布的954万完全吻合"
+   },
+   "urban_pct": {
+    "value": 70.73,
+    "year": 2024,
+    "source": "中国统计年鉴2025 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "le_latest": {
+    "total": 77.8,
+    "year": 2021,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2（2021年为国家卫生健康委与国家统计局联合测算发布）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "imr": {
+    "value": null,
+    "status": "provincial IMR not collected; use national urban/rural split (2024: urban 2.6‰, rural 4.6‰)",
+    "national_fallback": {
+     "total": 4.0,
+     "urban": 2.6,
+     "rural": 4.6,
+     "neonatal": 2.5,
+     "under5": 5.6,
+     "under5_urban": 3.4,
+     "under5_rural": 6.6,
+     "source": "国家卫健委2024年统计公报; 中国统计年鉴2025 表22-15 监测地区儿童和孕产妇死亡率",
+     "url": "https://www.nhc.gov.cn/guihuaxxs/c100133/202512/f1c3a3c617484a27a1a26a468afbaeee/files/2024年我国卫生健康事业发展统计公报-20251201161542231.pdf",
+     "url2": "https://www.stats.gov.cn/sj/ndsj/2025/html/C22-15.jpg",
+     "confidence": "high"
+    },
+    "confidence": "low"
+   },
+   "births_2025": {
+    "value": null,
+    "status": "2025 provincial bulletin figures not merged (research sub-tasks did not report back before deadline)"
+   }
+  },
+  "LN": {
+   "name": "辽宁",
+   "births_2024": {
+    "value": 180100,
+    "year": 2024,
+    "birth_rate_permille": 4.32,
+    "death_rate_permille": 9.62,
+    "pop_end_2024_wan": 4155,
+    "pop_end_2023_wan": 4182,
+    "source": "中国统计年鉴2025 表2-7 分地区人口的城乡构成和出生率、死亡率、自然增长率(2024年)（据2024年人口变动抽样调查推算）; 2023年末人口取自中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "url_2023_pop": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "method": "rate×pop (出生率 × (2023年末+2024年末)/2)",
+    "confidence": "high",
+    "note": "31省按此法合计 9,540,137，与全国公布的954万完全吻合"
+   },
+   "urban_pct_2024": {
+    "value": 74.18,
+    "year": 2024,
+    "source": "中国统计年鉴2025 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "urban_pct_2023": {
+    "value": 73.51,
+    "year": 2023,
+    "source": "中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "le_2020": {
+    "total": 78.68,
+    "male": 75.96,
+    "female": 81.54,
+    "year": 2020,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2 各地区预期寿命（资料来源：2020年人口普查）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "le_2021": {
+    "total": 78.9,
+    "year": 2021,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2（2021年为国家卫生健康委与国家统计局联合测算发布）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "birth_order_2020_census": {
+    "sample_births": 22523,
+    "first": 0.6565,
+    "second": 0.3213,
+    "third": 0.0195,
+    "fourth": 0.0024,
+    "fifth_plus": 0.0004,
+    "srb_2020_census": 107.15,
+    "period": "2019-11-01至2020-10-31",
+    "source": "中国人口普查年鉴-2020 长表 表6-1 各地区分性别、孩次的出生人口",
+    "url": "https://www.stats.gov.cn/sj/pcsj/rkpc/7rp/zk/html/B0601.jpg",
+    "confidence": "high"
+   },
+   "live_births_2022_hospital": {
+    "value": 169685,
+    "year": 2022,
+    "source": "2023中国卫生健康统计年鉴 表8-3-2（全国住院分娩月报活产数，含户籍与非户籍）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "minorities": {
+    "minority_share_total": 0.1508,
+    "year": 2020,
+    "groups": [
+     {
+      "name": "满族",
+      "count": 5085984,
+      "share": 0.1194
+     },
+     {
+      "name": "蒙古族",
+      "count": 677760,
+      "share": 0.0159
+     },
+     {
+      "name": "朝鲜族",
+      "count": 229158,
+      "share": 0.0054
+     },
+     {
+      "name": "回族",
+      "count": 216379,
+      "share": 0.0051
+     },
+     {
+      "name": "锡伯族",
+      "count": 127561,
+      "share": 0.003
+     }
+    ],
+    "source": "中国人口普查年鉴-2020 表1-4 各地区分性别、民族的人口（各民族列合计已与全国合计逐一核对一致）；少数民族合计取自中国统计年鉴2021 表2-21",
+    "url": "https://www.stats.gov.cn/sj/pcsj/rkpc/7rp/zk/html/A0104.jpg",
+    "url_total": "https://www.stats.gov.cn/sj/ndsj/2021/html/C02-21.jpg",
+    "confidence": "high"
+   },
+   "region": "northeast",
+   "births": {
+    "value": 180100,
+    "year": 2024,
+    "birth_rate_permille": 4.32,
+    "death_rate_permille": 9.62,
+    "pop_end_2024_wan": 4155,
+    "pop_end_2023_wan": 4182,
+    "source": "中国统计年鉴2025 表2-7 分地区人口的城乡构成和出生率、死亡率、自然增长率(2024年)（据2024年人口变动抽样调查推算）; 2023年末人口取自中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "url_2023_pop": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "method": "rate×pop (出生率 × (2023年末+2024年末)/2)",
+    "confidence": "high",
+    "note": "31省按此法合计 9,540,137，与全国公布的954万完全吻合"
+   },
+   "urban_pct": {
+    "value": 74.18,
+    "year": 2024,
+    "source": "中国统计年鉴2025 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "le_latest": {
+    "total": 78.9,
+    "year": 2021,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2（2021年为国家卫生健康委与国家统计局联合测算发布）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "imr": {
+    "value": null,
+    "status": "provincial IMR not collected; use national urban/rural split (2024: urban 2.6‰, rural 4.6‰)",
+    "national_fallback": {
+     "total": 4.0,
+     "urban": 2.6,
+     "rural": 4.6,
+     "neonatal": 2.5,
+     "under5": 5.6,
+     "under5_urban": 3.4,
+     "under5_rural": 6.6,
+     "source": "国家卫健委2024年统计公报; 中国统计年鉴2025 表22-15 监测地区儿童和孕产妇死亡率",
+     "url": "https://www.nhc.gov.cn/guihuaxxs/c100133/202512/f1c3a3c617484a27a1a26a468afbaeee/files/2024年我国卫生健康事业发展统计公报-20251201161542231.pdf",
+     "url2": "https://www.stats.gov.cn/sj/ndsj/2025/html/C22-15.jpg",
+     "confidence": "high"
+    },
+    "confidence": "low"
+   },
+   "births_2025": {
+    "value": null,
+    "status": "2025 provincial bulletin figures not merged (research sub-tasks did not report back before deadline)"
+   }
+  },
+  "JL": {
+   "name": "吉林",
+   "births_2024": {
+    "value": 97100,
+    "year": 2024,
+    "birth_rate_permille": 4.17,
+    "death_rate_permille": 9.02,
+    "pop_end_2024_wan": 2317,
+    "pop_end_2023_wan": 2339,
+    "source": "中国统计年鉴2025 表2-7 分地区人口的城乡构成和出生率、死亡率、自然增长率(2024年)（据2024年人口变动抽样调查推算）; 2023年末人口取自中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "url_2023_pop": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "method": "rate×pop (出生率 × (2023年末+2024年末)/2)",
+    "confidence": "high",
+    "note": "31省按此法合计 9,540,137，与全国公布的954万完全吻合"
+   },
+   "urban_pct_2024": {
+    "value": 65.78,
+    "year": 2024,
+    "source": "中国统计年鉴2025 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "urban_pct_2023": {
+    "value": 64.73,
+    "year": 2023,
+    "source": "中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "le_2020": {
+    "total": 78.41,
+    "male": 75.62,
+    "female": 81.4,
+    "year": 2020,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2 各地区预期寿命（资料来源：2020年人口普查）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "le_2021": {
+    "total": 78.6,
+    "year": 2021,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2（2021年为国家卫生健康委与国家统计局联合测算发布）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "birth_order_2020_census": {
+    "sample_births": 11821,
+    "first": 0.6511,
+    "second": 0.3245,
+    "third": 0.0217,
+    "fourth": 0.0021,
+    "fifth_plus": 0.0005,
+    "srb_2020_census": 104.06,
+    "period": "2019-11-01至2020-10-31",
+    "source": "中国人口普查年鉴-2020 长表 表6-1 各地区分性别、孩次的出生人口",
+    "url": "https://www.stats.gov.cn/sj/pcsj/rkpc/7rp/zk/html/B0601.jpg",
+    "confidence": "high"
+   },
+   "live_births_2022_hospital": {
+    "value": 87915,
+    "year": 2022,
+    "source": "2023中国卫生健康统计年鉴 表8-3-2（全国住院分娩月报活产数，含户籍与非户籍）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "minorities": {
+    "minority_share_total": 0.0867,
+    "year": 2020,
+    "groups": [
+     {
+      "name": "朝鲜族",
+      "count": 940165,
+      "share": 0.0391
+     },
+     {
+      "name": "满族",
+      "count": 831418,
+      "share": 0.0345
+     },
+     {
+      "name": "蒙古族",
+      "count": 169449,
+      "share": 0.007
+     },
+     {
+      "name": "回族",
+      "count": 104595,
+      "share": 0.0043
+     }
+    ],
+    "source": "中国人口普查年鉴-2020 表1-4 各地区分性别、民族的人口（各民族列合计已与全国合计逐一核对一致）；少数民族合计取自中国统计年鉴2021 表2-21",
+    "url": "https://www.stats.gov.cn/sj/pcsj/rkpc/7rp/zk/html/A0104.jpg",
+    "url_total": "https://www.stats.gov.cn/sj/ndsj/2021/html/C02-21.jpg",
+    "confidence": "high"
+   },
+   "region": "northeast",
+   "births": {
+    "value": 97100,
+    "year": 2024,
+    "birth_rate_permille": 4.17,
+    "death_rate_permille": 9.02,
+    "pop_end_2024_wan": 2317,
+    "pop_end_2023_wan": 2339,
+    "source": "中国统计年鉴2025 表2-7 分地区人口的城乡构成和出生率、死亡率、自然增长率(2024年)（据2024年人口变动抽样调查推算）; 2023年末人口取自中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "url_2023_pop": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "method": "rate×pop (出生率 × (2023年末+2024年末)/2)",
+    "confidence": "high",
+    "note": "31省按此法合计 9,540,137，与全国公布的954万完全吻合"
+   },
+   "urban_pct": {
+    "value": 65.78,
+    "year": 2024,
+    "source": "中国统计年鉴2025 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "le_latest": {
+    "total": 78.6,
+    "year": 2021,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2（2021年为国家卫生健康委与国家统计局联合测算发布）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "imr": {
+    "value": null,
+    "status": "provincial IMR not collected; use national urban/rural split (2024: urban 2.6‰, rural 4.6‰)",
+    "national_fallback": {
+     "total": 4.0,
+     "urban": 2.6,
+     "rural": 4.6,
+     "neonatal": 2.5,
+     "under5": 5.6,
+     "under5_urban": 3.4,
+     "under5_rural": 6.6,
+     "source": "国家卫健委2024年统计公报; 中国统计年鉴2025 表22-15 监测地区儿童和孕产妇死亡率",
+     "url": "https://www.nhc.gov.cn/guihuaxxs/c100133/202512/f1c3a3c617484a27a1a26a468afbaeee/files/2024年我国卫生健康事业发展统计公报-20251201161542231.pdf",
+     "url2": "https://www.stats.gov.cn/sj/ndsj/2025/html/C22-15.jpg",
+     "confidence": "high"
+    },
+    "confidence": "low"
+   },
+   "births_2025": {
+    "value": null,
+    "status": "2025 provincial bulletin figures not merged (research sub-tasks did not report back before deadline)"
+   }
+  },
+  "HL": {
+   "name": "黑龙江",
+   "births_2024": {
+    "value": 102000,
+    "year": 2024,
+    "birth_rate_permille": 3.35,
+    "death_rate_permille": 9.69,
+    "pop_end_2024_wan": 3029,
+    "pop_end_2023_wan": 3062,
+    "source": "中国统计年鉴2025 表2-7 分地区人口的城乡构成和出生率、死亡率、自然增长率(2024年)（据2024年人口变动抽样调查推算）; 2023年末人口取自中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "url_2023_pop": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "method": "rate×pop (出生率 × (2023年末+2024年末)/2)",
+    "confidence": "high",
+    "note": "31省按此法合计 9,540,137，与全国公布的954万完全吻合"
+   },
+   "urban_pct_2024": {
+    "value": 68.05,
+    "year": 2024,
+    "source": "中国统计年鉴2025 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "urban_pct_2023": {
+    "value": 67.11,
+    "year": 2023,
+    "source": "中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "le_2020": {
+    "total": 78.25,
+    "male": 75.33,
+    "female": 81.42,
+    "year": 2020,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2 各地区预期寿命（资料来源：2020年人口普查）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "le_2021": {
+    "total": 78.5,
+    "year": 2021,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2（2021年为国家卫生健康委与国家统计局联合测算发布）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "birth_order_2020_census": {
+    "sample_births": 13274,
+    "first": 0.6821,
+    "second": 0.2997,
+    "third": 0.0165,
+    "fourth": 0.0014,
+    "fifth_plus": 0.0003,
+    "srb_2020_census": 105.51,
+    "period": "2019-11-01至2020-10-31",
+    "source": "中国人口普查年鉴-2020 长表 表6-1 各地区分性别、孩次的出生人口",
+    "url": "https://www.stats.gov.cn/sj/pcsj/rkpc/7rp/zk/html/B0601.jpg",
+    "confidence": "high"
+   },
+   "live_births_2022_hospital": {
+    "value": 91084,
+    "year": 2022,
+    "source": "2023中国卫生健康统计年鉴 表8-3-2（全国住院分娩月报活产数，含户籍与非户籍）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "minorities": {
+    "minority_share_total": 0.0352,
+    "year": 2020,
+    "groups": [
+     {
+      "name": "满族",
+      "count": 583807,
+      "share": 0.0183
+     },
+     {
+      "name": "朝鲜族",
+      "count": 270123,
+      "share": 0.0085
+     },
+     {
+      "name": "蒙古族",
+      "count": 112210,
+      "share": 0.0035
+     },
+     {
+      "name": "回族",
+      "count": 75464,
+      "share": 0.0024
+     }
+    ],
+    "source": "中国人口普查年鉴-2020 表1-4 各地区分性别、民族的人口（各民族列合计已与全国合计逐一核对一致）；少数民族合计取自中国统计年鉴2021 表2-21",
+    "url": "https://www.stats.gov.cn/sj/pcsj/rkpc/7rp/zk/html/A0104.jpg",
+    "url_total": "https://www.stats.gov.cn/sj/ndsj/2021/html/C02-21.jpg",
+    "confidence": "high"
+   },
+   "region": "northeast",
+   "births": {
+    "value": 102000,
+    "year": 2024,
+    "birth_rate_permille": 3.35,
+    "death_rate_permille": 9.69,
+    "pop_end_2024_wan": 3029,
+    "pop_end_2023_wan": 3062,
+    "source": "中国统计年鉴2025 表2-7 分地区人口的城乡构成和出生率、死亡率、自然增长率(2024年)（据2024年人口变动抽样调查推算）; 2023年末人口取自中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "url_2023_pop": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "method": "rate×pop (出生率 × (2023年末+2024年末)/2)",
+    "confidence": "high",
+    "note": "31省按此法合计 9,540,137，与全国公布的954万完全吻合"
+   },
+   "urban_pct": {
+    "value": 68.05,
+    "year": 2024,
+    "source": "中国统计年鉴2025 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "le_latest": {
+    "total": 78.5,
+    "year": 2021,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2（2021年为国家卫生健康委与国家统计局联合测算发布）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "imr": {
+    "value": null,
+    "status": "provincial IMR not collected; use national urban/rural split (2024: urban 2.6‰, rural 4.6‰)",
+    "national_fallback": {
+     "total": 4.0,
+     "urban": 2.6,
+     "rural": 4.6,
+     "neonatal": 2.5,
+     "under5": 5.6,
+     "under5_urban": 3.4,
+     "under5_rural": 6.6,
+     "source": "国家卫健委2024年统计公报; 中国统计年鉴2025 表22-15 监测地区儿童和孕产妇死亡率",
+     "url": "https://www.nhc.gov.cn/guihuaxxs/c100133/202512/f1c3a3c617484a27a1a26a468afbaeee/files/2024年我国卫生健康事业发展统计公报-20251201161542231.pdf",
+     "url2": "https://www.stats.gov.cn/sj/ndsj/2025/html/C22-15.jpg",
+     "confidence": "high"
+    },
+    "confidence": "low"
+   },
+   "births_2025": {
+    "value": null,
+    "status": "2025 provincial bulletin figures not merged (research sub-tasks did not report back before deadline)"
+   }
+  },
+  "SH": {
+   "name": "上海",
+   "births_2024": {
+    "value": 118000,
+    "year": 2024,
+    "birth_rate_permille": 4.75,
+    "death_rate_permille": 6.28,
+    "pop_end_2024_wan": 2480,
+    "pop_end_2023_wan": 2487,
+    "source": "中国统计年鉴2025 表2-7 分地区人口的城乡构成和出生率、死亡率、自然增长率(2024年)（据2024年人口变动抽样调查推算）; 2023年末人口取自中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "url_2023_pop": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "method": "rate×pop (出生率 × (2023年末+2024年末)/2)",
+    "confidence": "high",
+    "note": "31省按此法合计 9,540,137，与全国公布的954万完全吻合"
+   },
+   "urban_pct_2024": {
+    "value": 89.85,
+    "year": 2024,
+    "source": "中国统计年鉴2025 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "urban_pct_2023": {
+    "value": 89.46,
+    "year": 2023,
+    "source": "中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "le_2020": {
+    "total": 82.55,
+    "male": 80.39,
+    "female": 84.87,
+    "year": 2020,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2 各地区预期寿命（资料来源：2020年人口普查）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "le_2021": {
+    "total": 82.8,
+    "year": 2021,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2（2021年为国家卫生健康委与国家统计局联合测算发布）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "birth_order_2020_census": {
+    "sample_births": 15333,
+    "first": 0.6573,
+    "second": 0.3162,
+    "third": 0.0237,
+    "fourth": 0.0025,
+    "fifth_plus": 0.0003,
+    "srb_2020_census": 109.12,
+    "period": "2019-11-01至2020-10-31",
+    "source": "中国人口普查年鉴-2020 长表 表6-1 各地区分性别、孩次的出生人口",
+    "url": "https://www.stats.gov.cn/sj/pcsj/rkpc/7rp/zk/html/B0601.jpg",
+    "confidence": "high"
+   },
+   "live_births_2022_hospital": {
+    "value": 116771,
+    "year": 2022,
+    "source": "2023中国卫生健康统计年鉴 表8-3-2（全国住院分娩月报活产数，含户籍与非户籍）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "minorities": {
+    "minority_share_total": 0.0161,
+    "year": 2020,
+    "groups": [
+     {
+      "name": "回族",
+      "count": 84925,
+      "share": 0.0034
+     },
+     {
+      "name": "满族",
+      "count": 43197,
+      "share": 0.0017
+     },
+     {
+      "name": "土家族",
+      "count": 41807,
+      "share": 0.0017
+     }
+    ],
+    "source": "中国人口普查年鉴-2020 表1-4 各地区分性别、民族的人口（各民族列合计已与全国合计逐一核对一致）；少数民族合计取自中国统计年鉴2021 表2-21",
+    "url": "https://www.stats.gov.cn/sj/pcsj/rkpc/7rp/zk/html/A0104.jpg",
+    "url_total": "https://www.stats.gov.cn/sj/ndsj/2021/html/C02-21.jpg",
+    "confidence": "high"
+   },
+   "region": "east",
+   "births": {
+    "value": 118000,
+    "year": 2024,
+    "birth_rate_permille": 4.75,
+    "death_rate_permille": 6.28,
+    "pop_end_2024_wan": 2480,
+    "pop_end_2023_wan": 2487,
+    "source": "中国统计年鉴2025 表2-7 分地区人口的城乡构成和出生率、死亡率、自然增长率(2024年)（据2024年人口变动抽样调查推算）; 2023年末人口取自中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "url_2023_pop": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "method": "rate×pop (出生率 × (2023年末+2024年末)/2)",
+    "confidence": "high",
+    "note": "31省按此法合计 9,540,137，与全国公布的954万完全吻合"
+   },
+   "urban_pct": {
+    "value": 89.85,
+    "year": 2024,
+    "source": "中国统计年鉴2025 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "le_latest": {
+    "total": 82.8,
+    "year": 2021,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2（2021年为国家卫生健康委与国家统计局联合测算发布）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "imr": {
+    "value": null,
+    "status": "provincial IMR not collected; use national urban/rural split (2024: urban 2.6‰, rural 4.6‰)",
+    "national_fallback": {
+     "total": 4.0,
+     "urban": 2.6,
+     "rural": 4.6,
+     "neonatal": 2.5,
+     "under5": 5.6,
+     "under5_urban": 3.4,
+     "under5_rural": 6.6,
+     "source": "国家卫健委2024年统计公报; 中国统计年鉴2025 表22-15 监测地区儿童和孕产妇死亡率",
+     "url": "https://www.nhc.gov.cn/guihuaxxs/c100133/202512/f1c3a3c617484a27a1a26a468afbaeee/files/2024年我国卫生健康事业发展统计公报-20251201161542231.pdf",
+     "url2": "https://www.stats.gov.cn/sj/ndsj/2025/html/C22-15.jpg",
+     "confidence": "high"
+    },
+    "confidence": "low"
+   },
+   "births_2025": {
+    "value": null,
+    "status": "2025 provincial bulletin figures not merged (research sub-tasks did not report back before deadline)"
+   }
+  },
+  "JS": {
+   "name": "江苏",
+   "births_2024": {
+    "value": 424600,
+    "year": 2024,
+    "birth_rate_permille": 4.98,
+    "death_rate_permille": 7.48,
+    "pop_end_2024_wan": 8526,
+    "pop_end_2023_wan": 8526,
+    "source": "中国统计年鉴2025 表2-7 分地区人口的城乡构成和出生率、死亡率、自然增长率(2024年)（据2024年人口变动抽样调查推算）; 2023年末人口取自中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "url_2023_pop": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "method": "rate×pop (出生率 × (2023年末+2024年末)/2)",
+    "confidence": "high",
+    "note": "31省按此法合计 9,540,137，与全国公布的954万完全吻合"
+   },
+   "urban_pct_2024": {
+    "value": 75.53,
+    "year": 2024,
+    "source": "中国统计年鉴2025 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "urban_pct_2023": {
+    "value": 75.04,
+    "year": 2023,
+    "source": "中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "le_2020": {
+    "total": 79.32,
+    "male": 77.02,
+    "female": 81.83,
+    "year": 2020,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2 各地区预期寿命（资料来源：2020年人口普查）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "le_2021": {
+    "total": 79.7,
+    "year": 2021,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2（2021年为国家卫生健康委与国家统计局联合测算发布）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "birth_order_2020_census": {
+    "sample_births": 57749,
+    "first": 0.5285,
+    "second": 0.4174,
+    "third": 0.0477,
+    "fourth": 0.0054,
+    "fifth_plus": 0.001,
+    "srb_2020_census": 110.73,
+    "period": "2019-11-01至2020-10-31",
+    "source": "中国人口普查年鉴-2020 长表 表6-1 各地区分性别、孩次的出生人口",
+    "url": "https://www.stats.gov.cn/sj/pcsj/rkpc/7rp/zk/html/B0601.jpg",
+    "confidence": "high"
+   },
+   "live_births_2022_hospital": {
+    "value": 446948,
+    "year": 2022,
+    "source": "2023中国卫生健康统计年鉴 表8-3-2（全国住院分娩月报活产数，含户籍与非户籍）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "minorities": {
+    "minority_share_total": 0.0073,
+    "year": 2020,
+    "groups": [
+     {
+      "name": "回族",
+      "count": 140119,
+      "share": 0.0017
+     },
+     {
+      "name": "苗族",
+      "count": 87900,
+      "share": 0.001
+     },
+     {
+      "name": "土家族",
+      "count": 63406,
+      "share": 0.0007
+     }
+    ],
+    "source": "中国人口普查年鉴-2020 表1-4 各地区分性别、民族的人口（各民族列合计已与全国合计逐一核对一致）；少数民族合计取自中国统计年鉴2021 表2-21",
+    "url": "https://www.stats.gov.cn/sj/pcsj/rkpc/7rp/zk/html/A0104.jpg",
+    "url_total": "https://www.stats.gov.cn/sj/ndsj/2021/html/C02-21.jpg",
+    "confidence": "high"
+   },
+   "region": "east",
+   "births": {
+    "value": 424600,
+    "year": 2024,
+    "birth_rate_permille": 4.98,
+    "death_rate_permille": 7.48,
+    "pop_end_2024_wan": 8526,
+    "pop_end_2023_wan": 8526,
+    "source": "中国统计年鉴2025 表2-7 分地区人口的城乡构成和出生率、死亡率、自然增长率(2024年)（据2024年人口变动抽样调查推算）; 2023年末人口取自中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "url_2023_pop": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "method": "rate×pop (出生率 × (2023年末+2024年末)/2)",
+    "confidence": "high",
+    "note": "31省按此法合计 9,540,137，与全国公布的954万完全吻合"
+   },
+   "urban_pct": {
+    "value": 75.53,
+    "year": 2024,
+    "source": "中国统计年鉴2025 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "le_latest": {
+    "total": 79.7,
+    "year": 2021,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2（2021年为国家卫生健康委与国家统计局联合测算发布）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "imr": {
+    "value": null,
+    "status": "provincial IMR not collected; use national urban/rural split (2024: urban 2.6‰, rural 4.6‰)",
+    "national_fallback": {
+     "total": 4.0,
+     "urban": 2.6,
+     "rural": 4.6,
+     "neonatal": 2.5,
+     "under5": 5.6,
+     "under5_urban": 3.4,
+     "under5_rural": 6.6,
+     "source": "国家卫健委2024年统计公报; 中国统计年鉴2025 表22-15 监测地区儿童和孕产妇死亡率",
+     "url": "https://www.nhc.gov.cn/guihuaxxs/c100133/202512/f1c3a3c617484a27a1a26a468afbaeee/files/2024年我国卫生健康事业发展统计公报-20251201161542231.pdf",
+     "url2": "https://www.stats.gov.cn/sj/ndsj/2025/html/C22-15.jpg",
+     "confidence": "high"
+    },
+    "confidence": "low"
+   },
+   "births_2025": {
+    "value": null,
+    "status": "2025 provincial bulletin figures not merged (research sub-tasks did not report back before deadline)"
+   }
+  },
+  "ZJ": {
+   "name": "浙江",
+   "births_2024": {
+    "value": 410200,
+    "year": 2024,
+    "birth_rate_permille": 6.17,
+    "death_rate_permille": 6.53,
+    "pop_end_2024_wan": 6670,
+    "pop_end_2023_wan": 6627,
+    "source": "中国统计年鉴2025 表2-7 分地区人口的城乡构成和出生率、死亡率、自然增长率(2024年)（据2024年人口变动抽样调查推算）; 2023年末人口取自中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "url_2023_pop": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "method": "rate×pop (出生率 × (2023年末+2024年末)/2)",
+    "confidence": "high",
+    "note": "31省按此法合计 9,540,137，与全国公布的954万完全吻合"
+   },
+   "urban_pct_2024": {
+    "value": 75.46,
+    "year": 2024,
+    "source": "中国统计年鉴2025 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "urban_pct_2023": {
+    "value": 74.23,
+    "year": 2023,
+    "source": "中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "le_2020": {
+    "total": 80.19,
+    "male": 78.09,
+    "female": 82.58,
+    "year": 2020,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2 各地区预期寿命（资料来源：2020年人口普查）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "le_2021": {
+    "total": 80.4,
+    "year": 2021,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2（2021年为国家卫生健康委与国家统计局联合测算发布）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "birth_order_2020_census": {
+    "sample_births": 49119,
+    "first": 0.5058,
+    "second": 0.4382,
+    "third": 0.0491,
+    "fourth": 0.0056,
+    "fifth_plus": 0.0013,
+    "srb_2020_census": 110.82,
+    "period": "2019-11-01至2020-10-31",
+    "source": "中国人口普查年鉴-2020 长表 表6-1 各地区分性别、孩次的出生人口",
+    "url": "https://www.stats.gov.cn/sj/pcsj/rkpc/7rp/zk/html/B0601.jpg",
+    "confidence": "high"
+   },
+   "live_births_2022_hospital": {
+    "value": 403577,
+    "year": 2022,
+    "source": "2023中国卫生健康统计年鉴 表8-3-2（全国住院分娩月报活产数，含户籍与非户籍）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "minorities": {
+    "minority_share_total": 0.0343,
+    "year": 2020,
+    "groups": [
+     {
+      "name": "苗族",
+      "count": 569407,
+      "share": 0.0088
+     },
+     {
+      "name": "土家族",
+      "count": 318881,
+      "share": 0.0049
+     },
+     {
+      "name": "布依族",
+      "count": 313023,
+      "share": 0.0048
+     },
+     {
+      "name": "畲族",
+      "count": 182507,
+      "share": 0.0028
+     },
+     {
+      "name": "彝族",
+      "count": 155681,
+      "share": 0.0024
+     },
+     {
+      "name": "侗族",
+      "count": 146773,
+      "share": 0.0023
+     }
+    ],
+    "source": "中国人口普查年鉴-2020 表1-4 各地区分性别、民族的人口（各民族列合计已与全国合计逐一核对一致）；少数民族合计取自中国统计年鉴2021 表2-21",
+    "url": "https://www.stats.gov.cn/sj/pcsj/rkpc/7rp/zk/html/A0104.jpg",
+    "url_total": "https://www.stats.gov.cn/sj/ndsj/2021/html/C02-21.jpg",
+    "confidence": "high"
+   },
+   "region": "east",
+   "births": {
+    "value": 410200,
+    "year": 2024,
+    "birth_rate_permille": 6.17,
+    "death_rate_permille": 6.53,
+    "pop_end_2024_wan": 6670,
+    "pop_end_2023_wan": 6627,
+    "source": "中国统计年鉴2025 表2-7 分地区人口的城乡构成和出生率、死亡率、自然增长率(2024年)（据2024年人口变动抽样调查推算）; 2023年末人口取自中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "url_2023_pop": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "method": "rate×pop (出生率 × (2023年末+2024年末)/2)",
+    "confidence": "high",
+    "note": "31省按此法合计 9,540,137，与全国公布的954万完全吻合"
+   },
+   "urban_pct": {
+    "value": 75.46,
+    "year": 2024,
+    "source": "中国统计年鉴2025 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "le_latest": {
+    "total": 80.4,
+    "year": 2021,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2（2021年为国家卫生健康委与国家统计局联合测算发布）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "imr": {
+    "value": null,
+    "status": "provincial IMR not collected; use national urban/rural split (2024: urban 2.6‰, rural 4.6‰)",
+    "national_fallback": {
+     "total": 4.0,
+     "urban": 2.6,
+     "rural": 4.6,
+     "neonatal": 2.5,
+     "under5": 5.6,
+     "under5_urban": 3.4,
+     "under5_rural": 6.6,
+     "source": "国家卫健委2024年统计公报; 中国统计年鉴2025 表22-15 监测地区儿童和孕产妇死亡率",
+     "url": "https://www.nhc.gov.cn/guihuaxxs/c100133/202512/f1c3a3c617484a27a1a26a468afbaeee/files/2024年我国卫生健康事业发展统计公报-20251201161542231.pdf",
+     "url2": "https://www.stats.gov.cn/sj/ndsj/2025/html/C22-15.jpg",
+     "confidence": "high"
+    },
+    "confidence": "low"
+   },
+   "births_2025": {
+    "value": null,
+    "status": "2025 provincial bulletin figures not merged (research sub-tasks did not report back before deadline)"
+   }
+  },
+  "AH": {
+   "name": "安徽",
+   "births_2024": {
+    "value": 377700,
+    "year": 2024,
+    "birth_rate_permille": 6.17,
+    "death_rate_permille": 8.41,
+    "pop_end_2024_wan": 6123,
+    "pop_end_2023_wan": 6121,
+    "source": "中国统计年鉴2025 表2-7 分地区人口的城乡构成和出生率、死亡率、自然增长率(2024年)（据2024年人口变动抽样调查推算）; 2023年末人口取自中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "url_2023_pop": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "method": "rate×pop (出生率 × (2023年末+2024年末)/2)",
+    "confidence": "high",
+    "note": "31省按此法合计 9,540,137，与全国公布的954万完全吻合"
+   },
+   "urban_pct_2024": {
+    "value": 62.57,
+    "year": 2024,
+    "source": "中国统计年鉴2025 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "urban_pct_2023": {
+    "value": 61.51,
+    "year": 2023,
+    "source": "中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "le_2020": {
+    "total": 77.96,
+    "male": 75.52,
+    "female": 80.72,
+    "year": 2020,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2 各地区预期寿命（资料来源：2020年人口普查）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "le_2021": {
+    "total": 78.2,
+    "year": 2021,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2（2021年为国家卫生健康委与国家统计局联合测算发布）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "birth_order_2020_census": {
+    "sample_births": 53913,
+    "first": 0.4316,
+    "second": 0.4728,
+    "third": 0.0829,
+    "fourth": 0.0108,
+    "fifth_plus": 0.002,
+    "srb_2020_census": 114.54,
+    "period": "2019-11-01至2020-10-31",
+    "source": "中国人口普查年鉴-2020 长表 表6-1 各地区分性别、孩次的出生人口",
+    "url": "https://www.stats.gov.cn/sj/pcsj/rkpc/7rp/zk/html/B0601.jpg",
+    "confidence": "high"
+   },
+   "live_births_2022_hospital": {
+    "value": 374508,
+    "year": 2022,
+    "source": "2023中国卫生健康统计年鉴 表8-3-2（全国住院分娩月报活产数，含户籍与非户籍）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "minorities": {
+    "minority_share_total": 0.0071,
+    "year": 2020,
+    "groups": [
+     {
+      "name": "回族",
+      "count": 297740,
+      "share": 0.0049
+     },
+     {
+      "name": "苗族",
+      "count": 24975,
+      "share": 0.0004
+     },
+     {
+      "name": "彝族",
+      "count": 15844,
+      "share": 0.0003
+     }
+    ],
+    "source": "中国人口普查年鉴-2020 表1-4 各地区分性别、民族的人口（各民族列合计已与全国合计逐一核对一致）；少数民族合计取自中国统计年鉴2021 表2-21",
+    "url": "https://www.stats.gov.cn/sj/pcsj/rkpc/7rp/zk/html/A0104.jpg",
+    "url_total": "https://www.stats.gov.cn/sj/ndsj/2021/html/C02-21.jpg",
+    "confidence": "high"
+   },
+   "region": "central",
+   "births": {
+    "value": 377700,
+    "year": 2024,
+    "birth_rate_permille": 6.17,
+    "death_rate_permille": 8.41,
+    "pop_end_2024_wan": 6123,
+    "pop_end_2023_wan": 6121,
+    "source": "中国统计年鉴2025 表2-7 分地区人口的城乡构成和出生率、死亡率、自然增长率(2024年)（据2024年人口变动抽样调查推算）; 2023年末人口取自中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "url_2023_pop": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "method": "rate×pop (出生率 × (2023年末+2024年末)/2)",
+    "confidence": "high",
+    "note": "31省按此法合计 9,540,137，与全国公布的954万完全吻合"
+   },
+   "urban_pct": {
+    "value": 62.57,
+    "year": 2024,
+    "source": "中国统计年鉴2025 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "le_latest": {
+    "total": 78.2,
+    "year": 2021,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2（2021年为国家卫生健康委与国家统计局联合测算发布）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "imr": {
+    "value": null,
+    "status": "provincial IMR not collected; use national urban/rural split (2024: urban 2.6‰, rural 4.6‰)",
+    "national_fallback": {
+     "total": 4.0,
+     "urban": 2.6,
+     "rural": 4.6,
+     "neonatal": 2.5,
+     "under5": 5.6,
+     "under5_urban": 3.4,
+     "under5_rural": 6.6,
+     "source": "国家卫健委2024年统计公报; 中国统计年鉴2025 表22-15 监测地区儿童和孕产妇死亡率",
+     "url": "https://www.nhc.gov.cn/guihuaxxs/c100133/202512/f1c3a3c617484a27a1a26a468afbaeee/files/2024年我国卫生健康事业发展统计公报-20251201161542231.pdf",
+     "url2": "https://www.stats.gov.cn/sj/ndsj/2025/html/C22-15.jpg",
+     "confidence": "high"
+    },
+    "confidence": "low"
+   },
+   "births_2025": {
+    "value": null,
+    "status": "2025 provincial bulletin figures not merged (research sub-tasks did not report back before deadline)"
+   }
+  },
+  "FJ": {
+   "name": "福建",
+   "births_2024": {
+    "value": 291100,
+    "year": 2024,
+    "birth_rate_permille": 6.95,
+    "death_rate_permille": 6.71,
+    "pop_end_2024_wan": 4193,
+    "pop_end_2023_wan": 4183,
+    "source": "中国统计年鉴2025 表2-7 分地区人口的城乡构成和出生率、死亡率、自然增长率(2024年)（据2024年人口变动抽样调查推算）; 2023年末人口取自中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "url_2023_pop": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "method": "rate×pop (出生率 × (2023年末+2024年末)/2)",
+    "confidence": "high",
+    "note": "31省按此法合计 9,540,137，与全国公布的954万完全吻合"
+   },
+   "urban_pct_2024": {
+    "value": 71.8,
+    "year": 2024,
+    "source": "中国统计年鉴2025 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "urban_pct_2023": {
+    "value": 71.04,
+    "year": 2023,
+    "source": "中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "le_2020": {
+    "total": 78.49,
+    "male": 75.81,
+    "female": 81.55,
+    "year": 2020,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2 各地区预期寿命（资料来源：2020年人口普查）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "le_2021": {
+    "total": 78.8,
+    "year": 2021,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2（2021年为国家卫生健康委与国家统计局联合测算发布）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "birth_order_2020_census": {
+    "sample_births": 37967,
+    "first": 0.4113,
+    "second": 0.4731,
+    "third": 0.1024,
+    "fourth": 0.011,
+    "fifth_plus": 0.0022,
+    "srb_2020_census": 120.1,
+    "period": "2019-11-01至2020-10-31",
+    "source": "中国人口普查年鉴-2020 长表 表6-1 各地区分性别、孩次的出生人口",
+    "url": "https://www.stats.gov.cn/sj/pcsj/rkpc/7rp/zk/html/B0601.jpg",
+    "confidence": "high"
+   },
+   "live_births_2022_hospital": {
+    "value": 275594,
+    "year": 2022,
+    "source": "2023中国卫生健康统计年鉴 表8-3-2（全国住院分娩月报活产数，含户籍与非户籍）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "minorities": {
+    "minority_share_total": 0.027,
+    "year": 2020,
+    "groups": [
+     {
+      "name": "畲族",
+      "count": 374663,
+      "share": 0.009
+     },
+     {
+      "name": "苗族",
+      "count": 168928,
+      "share": 0.0041
+     },
+     {
+      "name": "土家族",
+      "count": 142673,
+      "share": 0.0034
+     },
+     {
+      "name": "回族",
+      "count": 128591,
+      "share": 0.0031
+     }
+    ],
+    "source": "中国人口普查年鉴-2020 表1-4 各地区分性别、民族的人口（各民族列合计已与全国合计逐一核对一致）；少数民族合计取自中国统计年鉴2021 表2-21",
+    "url": "https://www.stats.gov.cn/sj/pcsj/rkpc/7rp/zk/html/A0104.jpg",
+    "url_total": "https://www.stats.gov.cn/sj/ndsj/2021/html/C02-21.jpg",
+    "confidence": "high"
+   },
+   "region": "east",
+   "births": {
+    "value": 291100,
+    "year": 2024,
+    "birth_rate_permille": 6.95,
+    "death_rate_permille": 6.71,
+    "pop_end_2024_wan": 4193,
+    "pop_end_2023_wan": 4183,
+    "source": "中国统计年鉴2025 表2-7 分地区人口的城乡构成和出生率、死亡率、自然增长率(2024年)（据2024年人口变动抽样调查推算）; 2023年末人口取自中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "url_2023_pop": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "method": "rate×pop (出生率 × (2023年末+2024年末)/2)",
+    "confidence": "high",
+    "note": "31省按此法合计 9,540,137，与全国公布的954万完全吻合"
+   },
+   "urban_pct": {
+    "value": 71.8,
+    "year": 2024,
+    "source": "中国统计年鉴2025 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "le_latest": {
+    "total": 78.8,
+    "year": 2021,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2（2021年为国家卫生健康委与国家统计局联合测算发布）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "imr": {
+    "value": null,
+    "status": "provincial IMR not collected; use national urban/rural split (2024: urban 2.6‰, rural 4.6‰)",
+    "national_fallback": {
+     "total": 4.0,
+     "urban": 2.6,
+     "rural": 4.6,
+     "neonatal": 2.5,
+     "under5": 5.6,
+     "under5_urban": 3.4,
+     "under5_rural": 6.6,
+     "source": "国家卫健委2024年统计公报; 中国统计年鉴2025 表22-15 监测地区儿童和孕产妇死亡率",
+     "url": "https://www.nhc.gov.cn/guihuaxxs/c100133/202512/f1c3a3c617484a27a1a26a468afbaeee/files/2024年我国卫生健康事业发展统计公报-20251201161542231.pdf",
+     "url2": "https://www.stats.gov.cn/sj/ndsj/2025/html/C22-15.jpg",
+     "confidence": "high"
+    },
+    "confidence": "low"
+   },
+   "births_2025": {
+    "value": null,
+    "status": "2025 provincial bulletin figures not merged (research sub-tasks did not report back before deadline)"
+   }
+  },
+  "JX": {
+   "name": "江西",
+   "births_2024": {
+    "value": 299800,
+    "year": 2024,
+    "birth_rate_permille": 6.65,
+    "death_rate_permille": 7.23,
+    "pop_end_2024_wan": 4502,
+    "pop_end_2023_wan": 4515,
+    "source": "中国统计年鉴2025 表2-7 分地区人口的城乡构成和出生率、死亡率、自然增长率(2024年)（据2024年人口变动抽样调查推算）; 2023年末人口取自中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "url_2023_pop": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "method": "rate×pop (出生率 × (2023年末+2024年末)/2)",
+    "confidence": "high",
+    "note": "31省按此法合计 9,540,137，与全国公布的954万完全吻合"
+   },
+   "urban_pct_2024": {
+    "value": 63.77,
+    "year": 2024,
+    "source": "中国统计年鉴2025 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "urban_pct_2023": {
+    "value": 63.13,
+    "year": 2023,
+    "source": "中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "le_2020": {
+    "total": 77.64,
+    "male": 78.08,
+    "female": 80.52,
+    "year": 2020,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2 各地区预期寿命（资料来源：2020年人口普查）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "medium",
+    "note": "年鉴印刷男性78.08高于合计77.64，疑为排印错误（女80.52）；合计与女性可用，男性值存疑"
+   },
+   "le_2021": {
+    "total": 77.8,
+    "year": 2021,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2（2021年为国家卫生健康委与国家统计局联合测算发布）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "birth_order_2020_census": {
+    "sample_births": 41633,
+    "first": 0.397,
+    "second": 0.4346,
+    "third": 0.1388,
+    "fourth": 0.0232,
+    "fifth_plus": 0.0064,
+    "srb_2020_census": 122.73,
+    "period": "2019-11-01至2020-10-31",
+    "source": "中国人口普查年鉴-2020 长表 表6-1 各地区分性别、孩次的出生人口",
+    "url": "https://www.stats.gov.cn/sj/pcsj/rkpc/7rp/zk/html/B0601.jpg",
+    "confidence": "high"
+   },
+   "live_births_2022_hospital": {
+    "value": 305335,
+    "year": 2022,
+    "source": "2023中国卫生健康统计年鉴 表8-3-2（全国住院分娩月报活产数，含户籍与非户籍）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "minorities": {
+    "minority_share_total": 0.0049,
+    "year": 2020,
+    "groups": [
+     {
+      "name": "畲族",
+      "count": 74072,
+      "share": 0.0016
+     },
+     {
+      "name": "苗族",
+      "count": 25489,
+      "share": 0.0006
+     },
+     {
+      "name": "土家族",
+      "count": 16527,
+      "share": 0.0004
+     }
+    ],
+    "source": "中国人口普查年鉴-2020 表1-4 各地区分性别、民族的人口（各民族列合计已与全国合计逐一核对一致）；少数民族合计取自中国统计年鉴2021 表2-21",
+    "url": "https://www.stats.gov.cn/sj/pcsj/rkpc/7rp/zk/html/A0104.jpg",
+    "url_total": "https://www.stats.gov.cn/sj/ndsj/2021/html/C02-21.jpg",
+    "confidence": "high"
+   },
+   "region": "central",
+   "births": {
+    "value": 299800,
+    "year": 2024,
+    "birth_rate_permille": 6.65,
+    "death_rate_permille": 7.23,
+    "pop_end_2024_wan": 4502,
+    "pop_end_2023_wan": 4515,
+    "source": "中国统计年鉴2025 表2-7 分地区人口的城乡构成和出生率、死亡率、自然增长率(2024年)（据2024年人口变动抽样调查推算）; 2023年末人口取自中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "url_2023_pop": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "method": "rate×pop (出生率 × (2023年末+2024年末)/2)",
+    "confidence": "high",
+    "note": "31省按此法合计 9,540,137，与全国公布的954万完全吻合"
+   },
+   "urban_pct": {
+    "value": 63.77,
+    "year": 2024,
+    "source": "中国统计年鉴2025 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "le_latest": {
+    "total": 77.8,
+    "year": 2021,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2（2021年为国家卫生健康委与国家统计局联合测算发布）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "imr": {
+    "value": null,
+    "status": "provincial IMR not collected; use national urban/rural split (2024: urban 2.6‰, rural 4.6‰)",
+    "national_fallback": {
+     "total": 4.0,
+     "urban": 2.6,
+     "rural": 4.6,
+     "neonatal": 2.5,
+     "under5": 5.6,
+     "under5_urban": 3.4,
+     "under5_rural": 6.6,
+     "source": "国家卫健委2024年统计公报; 中国统计年鉴2025 表22-15 监测地区儿童和孕产妇死亡率",
+     "url": "https://www.nhc.gov.cn/guihuaxxs/c100133/202512/f1c3a3c617484a27a1a26a468afbaeee/files/2024年我国卫生健康事业发展统计公报-20251201161542231.pdf",
+     "url2": "https://www.stats.gov.cn/sj/ndsj/2025/html/C22-15.jpg",
+     "confidence": "high"
+    },
+    "confidence": "low"
+   },
+   "births_2025": {
+    "value": null,
+    "status": "2025 provincial bulletin figures not merged (research sub-tasks did not report back before deadline)"
+   }
+  },
+  "SD": {
+   "name": "山东",
+   "births_2024": {
+    "value": 648500,
+    "year": 2024,
+    "birth_rate_permille": 6.42,
+    "death_rate_permille": 8.09,
+    "pop_end_2024_wan": 10080,
+    "pop_end_2023_wan": 10123,
+    "source": "中国统计年鉴2025 表2-7 分地区人口的城乡构成和出生率、死亡率、自然增长率(2024年)（据2024年人口变动抽样调查推算）; 2023年末人口取自中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "url_2023_pop": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "method": "rate×pop (出生率 × (2023年末+2024年末)/2)",
+    "confidence": "high",
+    "note": "31省按此法合计 9,540,137，与全国公布的954万完全吻合"
+   },
+   "urban_pct_2024": {
+    "value": 66.48,
+    "year": 2024,
+    "source": "中国统计年鉴2025 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "urban_pct_2023": {
+    "value": 65.53,
+    "year": 2023,
+    "source": "中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "le_2020": {
+    "total": 79.18,
+    "male": 76.46,
+    "female": 82.11,
+    "year": 2020,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2 各地区预期寿命（资料来源：2020年人口普查）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "le_2021": {
+    "total": 79.5,
+    "year": 2021,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2（2021年为国家卫生健康委与国家统计局联合测算发布）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "birth_order_2020_census": {
+    "sample_births": 86415,
+    "first": 0.3779,
+    "second": 0.4853,
+    "third": 0.1216,
+    "fourth": 0.0127,
+    "fifth_plus": 0.0026,
+    "srb_2020_census": 112.52,
+    "period": "2019-11-01至2020-10-31",
+    "source": "中国人口普查年鉴-2020 长表 表6-1 各地区分性别、孩次的出生人口",
+    "url": "https://www.stats.gov.cn/sj/pcsj/rkpc/7rp/zk/html/B0601.jpg",
+    "confidence": "high"
+   },
+   "live_births_2022_hospital": {
+    "value": 682374,
+    "year": 2022,
+    "source": "2023中国卫生健康统计年鉴 表8-3-2（全国住院分娩月报活产数，含户籍与非户籍）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "minorities": {
+    "minority_share_total": 0.0089,
+    "year": 2020,
+    "groups": [
+     {
+      "name": "回族",
+      "count": 552215,
+      "share": 0.0054
+     },
+     {
+      "name": "满族",
+      "count": 79806,
+      "share": 0.0008
+     },
+     {
+      "name": "朝鲜族",
+      "count": 62737,
+      "share": 0.0006
+     }
+    ],
+    "source": "中国人口普查年鉴-2020 表1-4 各地区分性别、民族的人口（各民族列合计已与全国合计逐一核对一致）；少数民族合计取自中国统计年鉴2021 表2-21",
+    "url": "https://www.stats.gov.cn/sj/pcsj/rkpc/7rp/zk/html/A0104.jpg",
+    "url_total": "https://www.stats.gov.cn/sj/ndsj/2021/html/C02-21.jpg",
+    "confidence": "high"
+   },
+   "region": "east",
+   "births": {
+    "value": 648500,
+    "year": 2024,
+    "birth_rate_permille": 6.42,
+    "death_rate_permille": 8.09,
+    "pop_end_2024_wan": 10080,
+    "pop_end_2023_wan": 10123,
+    "source": "中国统计年鉴2025 表2-7 分地区人口的城乡构成和出生率、死亡率、自然增长率(2024年)（据2024年人口变动抽样调查推算）; 2023年末人口取自中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "url_2023_pop": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "method": "rate×pop (出生率 × (2023年末+2024年末)/2)",
+    "confidence": "high",
+    "note": "31省按此法合计 9,540,137，与全国公布的954万完全吻合"
+   },
+   "urban_pct": {
+    "value": 66.48,
+    "year": 2024,
+    "source": "中国统计年鉴2025 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "le_latest": {
+    "total": 79.5,
+    "year": 2021,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2（2021年为国家卫生健康委与国家统计局联合测算发布）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "imr": {
+    "value": null,
+    "status": "provincial IMR not collected; use national urban/rural split (2024: urban 2.6‰, rural 4.6‰)",
+    "national_fallback": {
+     "total": 4.0,
+     "urban": 2.6,
+     "rural": 4.6,
+     "neonatal": 2.5,
+     "under5": 5.6,
+     "under5_urban": 3.4,
+     "under5_rural": 6.6,
+     "source": "国家卫健委2024年统计公报; 中国统计年鉴2025 表22-15 监测地区儿童和孕产妇死亡率",
+     "url": "https://www.nhc.gov.cn/guihuaxxs/c100133/202512/f1c3a3c617484a27a1a26a468afbaeee/files/2024年我国卫生健康事业发展统计公报-20251201161542231.pdf",
+     "url2": "https://www.stats.gov.cn/sj/ndsj/2025/html/C22-15.jpg",
+     "confidence": "high"
+    },
+    "confidence": "low"
+   },
+   "births_2025": {
+    "value": null,
+    "status": "2025 provincial bulletin figures not merged (research sub-tasks did not report back before deadline)"
+   }
+  },
+  "HA": {
+   "name": "河南",
+   "births_2024": {
+    "value": 762400,
+    "year": 2024,
+    "birth_rate_permille": 7.78,
+    "death_rate_permille": 7.89,
+    "pop_end_2024_wan": 9785,
+    "pop_end_2023_wan": 9815,
+    "source": "中国统计年鉴2025 表2-7 分地区人口的城乡构成和出生率、死亡率、自然增长率(2024年)（据2024年人口变动抽样调查推算）; 2023年末人口取自中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "url_2023_pop": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "method": "rate×pop (出生率 × (2023年末+2024年末)/2)",
+    "confidence": "high",
+    "note": "31省按此法合计 9,540,137，与全国公布的954万完全吻合"
+   },
+   "urban_pct_2024": {
+    "value": 59.22,
+    "year": 2024,
+    "source": "中国统计年鉴2025 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "urban_pct_2023": {
+    "value": 58.08,
+    "year": 2023,
+    "source": "中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "le_2020": {
+    "total": 77.6,
+    "male": 74.59,
+    "female": 80.84,
+    "year": 2020,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2 各地区预期寿命（资料来源：2020年人口普查）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "le_2021": {
+    "total": 77.8,
+    "year": 2021,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2（2021年为国家卫生健康委与国家统计局联合测算发布）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "birth_order_2020_census": {
+    "sample_births": 88569,
+    "first": 0.4069,
+    "second": 0.4417,
+    "third": 0.1305,
+    "fourth": 0.0173,
+    "fifth_plus": 0.0036,
+    "srb_2020_census": 111.04,
+    "period": "2019-11-01至2020-10-31",
+    "source": "中国人口普查年鉴-2020 长表 表6-1 各地区分性别、孩次的出生人口",
+    "url": "https://www.stats.gov.cn/sj/pcsj/rkpc/7rp/zk/html/B0601.jpg",
+    "confidence": "high"
+   },
+   "live_births_2022_hospital": {
+    "value": 786891,
+    "year": 2022,
+    "source": "2023中国卫生健康统计年鉴 表8-3-2（全国住院分娩月报活产数，含户籍与非户籍）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "minorities": {
+    "minority_share_total": 0.0116,
+    "year": 2020,
+    "groups": [
+     {
+      "name": "回族",
+      "count": 948553,
+      "share": 0.0095
+     },
+     {
+      "name": "蒙古族",
+      "count": 68220,
+      "share": 0.0007
+     },
+     {
+      "name": "满族",
+      "count": 58745,
+      "share": 0.0006
+     }
+    ],
+    "source": "中国人口普查年鉴-2020 表1-4 各地区分性别、民族的人口（各民族列合计已与全国合计逐一核对一致）；少数民族合计取自中国统计年鉴2021 表2-21",
+    "url": "https://www.stats.gov.cn/sj/pcsj/rkpc/7rp/zk/html/A0104.jpg",
+    "url_total": "https://www.stats.gov.cn/sj/ndsj/2021/html/C02-21.jpg",
+    "confidence": "high"
+   },
+   "region": "central",
+   "births": {
+    "value": 762400,
+    "year": 2024,
+    "birth_rate_permille": 7.78,
+    "death_rate_permille": 7.89,
+    "pop_end_2024_wan": 9785,
+    "pop_end_2023_wan": 9815,
+    "source": "中国统计年鉴2025 表2-7 分地区人口的城乡构成和出生率、死亡率、自然增长率(2024年)（据2024年人口变动抽样调查推算）; 2023年末人口取自中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "url_2023_pop": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "method": "rate×pop (出生率 × (2023年末+2024年末)/2)",
+    "confidence": "high",
+    "note": "31省按此法合计 9,540,137，与全国公布的954万完全吻合"
+   },
+   "urban_pct": {
+    "value": 59.22,
+    "year": 2024,
+    "source": "中国统计年鉴2025 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "le_latest": {
+    "total": 77.8,
+    "year": 2021,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2（2021年为国家卫生健康委与国家统计局联合测算发布）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "imr": {
+    "value": null,
+    "status": "provincial IMR not collected; use national urban/rural split (2024: urban 2.6‰, rural 4.6‰)",
+    "national_fallback": {
+     "total": 4.0,
+     "urban": 2.6,
+     "rural": 4.6,
+     "neonatal": 2.5,
+     "under5": 5.6,
+     "under5_urban": 3.4,
+     "under5_rural": 6.6,
+     "source": "国家卫健委2024年统计公报; 中国统计年鉴2025 表22-15 监测地区儿童和孕产妇死亡率",
+     "url": "https://www.nhc.gov.cn/guihuaxxs/c100133/202512/f1c3a3c617484a27a1a26a468afbaeee/files/2024年我国卫生健康事业发展统计公报-20251201161542231.pdf",
+     "url2": "https://www.stats.gov.cn/sj/ndsj/2025/html/C22-15.jpg",
+     "confidence": "high"
+    },
+    "confidence": "low"
+   },
+   "births_2025": {
+    "value": null,
+    "status": "2025 provincial bulletin figures not merged (research sub-tasks did not report back before deadline)"
+   }
+  },
+  "HB": {
+   "name": "湖北",
+   "births_2024": {
+    "value": 314000,
+    "year": 2024,
+    "birth_rate_permille": 5.38,
+    "death_rate_permille": 8.52,
+    "pop_end_2024_wan": 5834,
+    "pop_end_2023_wan": 5838,
+    "source": "中国统计年鉴2025 表2-7 分地区人口的城乡构成和出生率、死亡率、自然增长率(2024年)（据2024年人口变动抽样调查推算）; 2023年末人口取自中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "url_2023_pop": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "method": "rate×pop (出生率 × (2023年末+2024年末)/2)",
+    "confidence": "high",
+    "note": "31省按此法合计 9,540,137，与全国公布的954万完全吻合"
+   },
+   "urban_pct_2024": {
+    "value": 66.35,
+    "year": 2024,
+    "source": "中国统计年鉴2025 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "urban_pct_2023": {
+    "value": 65.47,
+    "year": 2023,
+    "source": "中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "le_2020": {
+    "total": 78.0,
+    "male": 75.73,
+    "female": 80.53,
+    "year": 2020,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2 各地区预期寿命（资料来源：2020年人口普查）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "le_2021": {
+    "total": 78.2,
+    "year": 2021,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2（2021年为国家卫生健康委与国家统计局联合测算发布）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "birth_order_2020_census": {
+    "sample_births": 48772,
+    "first": 0.4908,
+    "second": 0.4518,
+    "third": 0.0511,
+    "fourth": 0.0053,
+    "fifth_plus": 0.001,
+    "srb_2020_census": 115.28,
+    "period": "2019-11-01至2020-10-31",
+    "source": "中国人口普查年鉴-2020 长表 表6-1 各地区分性别、孩次的出生人口",
+    "url": "https://www.stats.gov.cn/sj/pcsj/rkpc/7rp/zk/html/B0601.jpg",
+    "confidence": "high"
+   },
+   "live_births_2022_hospital": {
+    "value": 320341,
+    "year": 2022,
+    "source": "2023中国卫生健康统计年鉴 表8-3-2（全国住院分娩月报活产数，含户籍与非户籍）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "minorities": {
+    "minority_share_total": 0.048,
+    "year": 2020,
+    "groups": [
+     {
+      "name": "土家族",
+      "count": 2285834,
+      "share": 0.0396
+     },
+     {
+      "name": "苗族",
+      "count": 214062,
+      "share": 0.0037
+     },
+     {
+      "name": "回族",
+      "count": 76423,
+      "share": 0.0013
+     }
+    ],
+    "source": "中国人口普查年鉴-2020 表1-4 各地区分性别、民族的人口（各民族列合计已与全国合计逐一核对一致）；少数民族合计取自中国统计年鉴2021 表2-21",
+    "url": "https://www.stats.gov.cn/sj/pcsj/rkpc/7rp/zk/html/A0104.jpg",
+    "url_total": "https://www.stats.gov.cn/sj/ndsj/2021/html/C02-21.jpg",
+    "confidence": "high"
+   },
+   "region": "central",
+   "births": {
+    "value": 314000,
+    "year": 2024,
+    "birth_rate_permille": 5.38,
+    "death_rate_permille": 8.52,
+    "pop_end_2024_wan": 5834,
+    "pop_end_2023_wan": 5838,
+    "source": "中国统计年鉴2025 表2-7 分地区人口的城乡构成和出生率、死亡率、自然增长率(2024年)（据2024年人口变动抽样调查推算）; 2023年末人口取自中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "url_2023_pop": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "method": "rate×pop (出生率 × (2023年末+2024年末)/2)",
+    "confidence": "high",
+    "note": "31省按此法合计 9,540,137，与全国公布的954万完全吻合"
+   },
+   "urban_pct": {
+    "value": 66.35,
+    "year": 2024,
+    "source": "中国统计年鉴2025 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "le_latest": {
+    "total": 78.2,
+    "year": 2021,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2（2021年为国家卫生健康委与国家统计局联合测算发布）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "imr": {
+    "value": null,
+    "status": "provincial IMR not collected; use national urban/rural split (2024: urban 2.6‰, rural 4.6‰)",
+    "national_fallback": {
+     "total": 4.0,
+     "urban": 2.6,
+     "rural": 4.6,
+     "neonatal": 2.5,
+     "under5": 5.6,
+     "under5_urban": 3.4,
+     "under5_rural": 6.6,
+     "source": "国家卫健委2024年统计公报; 中国统计年鉴2025 表22-15 监测地区儿童和孕产妇死亡率",
+     "url": "https://www.nhc.gov.cn/guihuaxxs/c100133/202512/f1c3a3c617484a27a1a26a468afbaeee/files/2024年我国卫生健康事业发展统计公报-20251201161542231.pdf",
+     "url2": "https://www.stats.gov.cn/sj/ndsj/2025/html/C22-15.jpg",
+     "confidence": "high"
+    },
+    "confidence": "low"
+   },
+   "births_2025": {
+    "value": null,
+    "status": "2025 provincial bulletin figures not merged (research sub-tasks did not report back before deadline)"
+   }
+  },
+  "HN": {
+   "name": "湖南",
+   "births_2024": {
+    "value": 386000,
+    "year": 2024,
+    "birth_rate_permille": 5.89,
+    "death_rate_permille": 8.93,
+    "pop_end_2024_wan": 6539,
+    "pop_end_2023_wan": 6568,
+    "source": "中国统计年鉴2025 表2-7 分地区人口的城乡构成和出生率、死亡率、自然增长率(2024年)（据2024年人口变动抽样调查推算）; 2023年末人口取自中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "url_2023_pop": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "method": "rate×pop (出生率 × (2023年末+2024年末)/2)",
+    "confidence": "high",
+    "note": "31省按此法合计 9,540,137，与全国公布的954万完全吻合"
+   },
+   "urban_pct_2024": {
+    "value": 62.07,
+    "year": 2024,
+    "source": "中国统计年鉴2025 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "urban_pct_2023": {
+    "value": 61.16,
+    "year": 2023,
+    "source": "中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "le_2020": {
+    "total": 77.88,
+    "male": 75.36,
+    "female": 80.75,
+    "year": 2020,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2 各地区预期寿命（资料来源：2020年人口普查）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "le_2021": {
+    "total": 78.2,
+    "year": 2021,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2（2021年为国家卫生健康委与国家统计局联合测算发布）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "birth_order_2020_census": {
+    "sample_births": 57103,
+    "first": 0.431,
+    "second": 0.4613,
+    "third": 0.0911,
+    "fourth": 0.0138,
+    "fifth_plus": 0.0029,
+    "srb_2020_census": 116.91,
+    "period": "2019-11-01至2020-10-31",
+    "source": "中国人口普查年鉴-2020 长表 表6-1 各地区分性别、孩次的出生人口",
+    "url": "https://www.stats.gov.cn/sj/pcsj/rkpc/7rp/zk/html/B0601.jpg",
+    "confidence": "high"
+   },
+   "live_births_2022_hospital": {
+    "value": 397954,
+    "year": 2022,
+    "source": "2023中国卫生健康统计年鉴 表8-3-2（全国住院分娩月报活产数，含户籍与非户籍）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "minorities": {
+    "minority_share_total": 0.1006,
+    "year": 2020,
+    "groups": [
+     {
+      "name": "土家族",
+      "count": 2713005,
+      "share": 0.0408
+     },
+     {
+      "name": "苗族",
+      "count": 2027034,
+      "share": 0.0305
+     },
+     {
+      "name": "侗族",
+      "count": 865518,
+      "share": 0.013
+     },
+     {
+      "name": "瑶族",
+      "count": 749872,
+      "share": 0.0113
+     }
+    ],
+    "source": "中国人口普查年鉴-2020 表1-4 各地区分性别、民族的人口（各民族列合计已与全国合计逐一核对一致）；少数民族合计取自中国统计年鉴2021 表2-21",
+    "url": "https://www.stats.gov.cn/sj/pcsj/rkpc/7rp/zk/html/A0104.jpg",
+    "url_total": "https://www.stats.gov.cn/sj/ndsj/2021/html/C02-21.jpg",
+    "confidence": "high"
+   },
+   "region": "central",
+   "births": {
+    "value": 386000,
+    "year": 2024,
+    "birth_rate_permille": 5.89,
+    "death_rate_permille": 8.93,
+    "pop_end_2024_wan": 6539,
+    "pop_end_2023_wan": 6568,
+    "source": "中国统计年鉴2025 表2-7 分地区人口的城乡构成和出生率、死亡率、自然增长率(2024年)（据2024年人口变动抽样调查推算）; 2023年末人口取自中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "url_2023_pop": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "method": "rate×pop (出生率 × (2023年末+2024年末)/2)",
+    "confidence": "high",
+    "note": "31省按此法合计 9,540,137，与全国公布的954万完全吻合"
+   },
+   "urban_pct": {
+    "value": 62.07,
+    "year": 2024,
+    "source": "中国统计年鉴2025 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "le_latest": {
+    "total": 78.2,
+    "year": 2021,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2（2021年为国家卫生健康委与国家统计局联合测算发布）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "imr": {
+    "value": null,
+    "status": "provincial IMR not collected; use national urban/rural split (2024: urban 2.6‰, rural 4.6‰)",
+    "national_fallback": {
+     "total": 4.0,
+     "urban": 2.6,
+     "rural": 4.6,
+     "neonatal": 2.5,
+     "under5": 5.6,
+     "under5_urban": 3.4,
+     "under5_rural": 6.6,
+     "source": "国家卫健委2024年统计公报; 中国统计年鉴2025 表22-15 监测地区儿童和孕产妇死亡率",
+     "url": "https://www.nhc.gov.cn/guihuaxxs/c100133/202512/f1c3a3c617484a27a1a26a468afbaeee/files/2024年我国卫生健康事业发展统计公报-20251201161542231.pdf",
+     "url2": "https://www.stats.gov.cn/sj/ndsj/2025/html/C22-15.jpg",
+     "confidence": "high"
+    },
+    "confidence": "low"
+   },
+   "births_2025": {
+    "value": null,
+    "status": "2025 provincial bulletin figures not merged (research sub-tasks did not report back before deadline)"
+   }
+  },
+  "GD": {
+   "name": "广东",
+   "births_2024": {
+    "value": 1132900,
+    "year": 2024,
+    "birth_rate_permille": 8.89,
+    "death_rate_permille": 5.2,
+    "pop_end_2024_wan": 12780,
+    "pop_end_2023_wan": 12706,
+    "source": "中国统计年鉴2025 表2-7 分地区人口的城乡构成和出生率、死亡率、自然增长率(2024年)（据2024年人口变动抽样调查推算）; 2023年末人口取自中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "url_2023_pop": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "method": "rate×pop (出生率 × (2023年末+2024年末)/2)",
+    "confidence": "high",
+    "note": "31省按此法合计 9,540,137，与全国公布的954万完全吻合"
+   },
+   "urban_pct_2024": {
+    "value": 75.91,
+    "year": 2024,
+    "source": "中国统计年鉴2025 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "urban_pct_2023": {
+    "value": 75.42,
+    "year": 2023,
+    "source": "中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "le_2020": {
+    "total": 79.31,
+    "male": 76.75,
+    "female": 82.22,
+    "year": 2020,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2 各地区预期寿命（资料来源：2020年人口普查）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "le_2021": {
+    "total": 79.6,
+    "year": 2021,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2（2021年为国家卫生健康委与国家统计局联合测算发布）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "birth_order_2020_census": {
+    "sample_births": 138419,
+    "first": 0.4309,
+    "second": 0.4115,
+    "third": 0.1204,
+    "fourth": 0.0286,
+    "fifth_plus": 0.0086,
+    "srb_2020_census": 117.52,
+    "period": "2019-11-01至2020-10-31",
+    "source": "中国人口普查年鉴-2020 长表 表6-1 各地区分性别、孩次的出生人口",
+    "url": "https://www.stats.gov.cn/sj/pcsj/rkpc/7rp/zk/html/B0601.jpg",
+    "confidence": "high"
+   },
+   "live_births_2022_hospital": {
+    "value": 1173335,
+    "year": 2022,
+    "source": "2023中国卫生健康统计年鉴 表8-3-2（全国住院分娩月报活产数，含户籍与非户籍）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "minorities": {
+    "minority_share_total": 0.0377,
+    "year": 2020,
+    "groups": [
+     {
+      "name": "壮族",
+      "count": 2017275,
+      "share": 0.016
+     },
+     {
+      "name": "苗族",
+      "count": 612699,
+      "share": 0.0049
+     },
+     {
+      "name": "瑶族",
+      "count": 514447,
+      "share": 0.0041
+     },
+     {
+      "name": "土家族",
+      "count": 430936,
+      "share": 0.0034
+     }
+    ],
+    "source": "中国人口普查年鉴-2020 表1-4 各地区分性别、民族的人口（各民族列合计已与全国合计逐一核对一致）；少数民族合计取自中国统计年鉴2021 表2-21",
+    "url": "https://www.stats.gov.cn/sj/pcsj/rkpc/7rp/zk/html/A0104.jpg",
+    "url_total": "https://www.stats.gov.cn/sj/ndsj/2021/html/C02-21.jpg",
+    "confidence": "high"
+   },
+   "region": "east",
+   "births": {
+    "value": 1132900,
+    "year": 2024,
+    "birth_rate_permille": 8.89,
+    "death_rate_permille": 5.2,
+    "pop_end_2024_wan": 12780,
+    "pop_end_2023_wan": 12706,
+    "source": "中国统计年鉴2025 表2-7 分地区人口的城乡构成和出生率、死亡率、自然增长率(2024年)（据2024年人口变动抽样调查推算）; 2023年末人口取自中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "url_2023_pop": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "method": "rate×pop (出生率 × (2023年末+2024年末)/2)",
+    "confidence": "high",
+    "note": "31省按此法合计 9,540,137，与全国公布的954万完全吻合"
+   },
+   "urban_pct": {
+    "value": 75.91,
+    "year": 2024,
+    "source": "中国统计年鉴2025 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "le_latest": {
+    "total": 79.6,
+    "year": 2021,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2（2021年为国家卫生健康委与国家统计局联合测算发布）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "imr": {
+    "value": null,
+    "status": "provincial IMR not collected; use national urban/rural split (2024: urban 2.6‰, rural 4.6‰)",
+    "national_fallback": {
+     "total": 4.0,
+     "urban": 2.6,
+     "rural": 4.6,
+     "neonatal": 2.5,
+     "under5": 5.6,
+     "under5_urban": 3.4,
+     "under5_rural": 6.6,
+     "source": "国家卫健委2024年统计公报; 中国统计年鉴2025 表22-15 监测地区儿童和孕产妇死亡率",
+     "url": "https://www.nhc.gov.cn/guihuaxxs/c100133/202512/f1c3a3c617484a27a1a26a468afbaeee/files/2024年我国卫生健康事业发展统计公报-20251201161542231.pdf",
+     "url2": "https://www.stats.gov.cn/sj/ndsj/2025/html/C22-15.jpg",
+     "confidence": "high"
+    },
+    "confidence": "low"
+   },
+   "births_2025": {
+    "value": null,
+    "status": "2025 provincial bulletin figures not merged (research sub-tasks did not report back before deadline)"
+   }
+  },
+  "GX": {
+   "name": "广西",
+   "births_2024": {
+    "value": 420200,
+    "year": 2024,
+    "birth_rate_permille": 8.37,
+    "death_rate_permille": 7.49,
+    "pop_end_2024_wan": 5013,
+    "pop_end_2023_wan": 5027,
+    "source": "中国统计年鉴2025 表2-7 分地区人口的城乡构成和出生率、死亡率、自然增长率(2024年)（据2024年人口变动抽样调查推算）; 2023年末人口取自中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "url_2023_pop": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "method": "rate×pop (出生率 × (2023年末+2024年末)/2)",
+    "confidence": "high",
+    "note": "31省按此法合计 9,540,137，与全国公布的954万完全吻合"
+   },
+   "urban_pct_2024": {
+    "value": 57.39,
+    "year": 2024,
+    "source": "中国统计年鉴2025 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "urban_pct_2023": {
+    "value": 56.78,
+    "year": 2023,
+    "source": "中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "le_2020": {
+    "total": 78.06,
+    "male": 74.64,
+    "female": 81.98,
+    "year": 2020,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2 各地区预期寿命（资料来源：2020年人口普查）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "le_2021": {
+    "total": 78.3,
+    "year": 2021,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2（2021年为国家卫生健康委与国家统计局联合测算发布）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "birth_order_2020_census": {
+    "sample_births": 51491,
+    "first": 0.3766,
+    "second": 0.4221,
+    "third": 0.1474,
+    "fourth": 0.0384,
+    "fifth_plus": 0.0155,
+    "srb_2020_census": 115.97,
+    "period": "2019-11-01至2020-10-31",
+    "source": "中国人口普查年鉴-2020 长表 表6-1 各地区分性别、孩次的出生人口",
+    "url": "https://www.stats.gov.cn/sj/pcsj/rkpc/7rp/zk/html/B0601.jpg",
+    "confidence": "high"
+   },
+   "live_births_2022_hospital": {
+    "value": 442677,
+    "year": 2022,
+    "source": "2023中国卫生健康统计年鉴 表8-3-2（全国住院分娩月报活产数，含户籍与非户籍）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "minorities": {
+    "minority_share_total": 0.3752,
+    "year": 2020,
+    "groups": [
+     {
+      "name": "壮族",
+      "count": 15721956,
+      "share": 0.3136
+     },
+     {
+      "name": "瑶族",
+      "count": 1683038,
+      "share": 0.0336
+     },
+     {
+      "name": "苗族",
+      "count": 578122,
+      "share": 0.0115
+     },
+     {
+      "name": "侗族",
+      "count": 362580,
+      "share": 0.0072
+     },
+     {
+      "name": "仫佬族",
+      "count": 180185,
+      "share": 0.0036
+     }
+    ],
+    "source": "中国人口普查年鉴-2020 表1-4 各地区分性别、民族的人口（各民族列合计已与全国合计逐一核对一致）；少数民族合计取自中国统计年鉴2021 表2-21",
+    "url": "https://www.stats.gov.cn/sj/pcsj/rkpc/7rp/zk/html/A0104.jpg",
+    "url_total": "https://www.stats.gov.cn/sj/ndsj/2021/html/C02-21.jpg",
+    "confidence": "high"
+   },
+   "region": "west",
+   "births": {
+    "value": 420200,
+    "year": 2024,
+    "birth_rate_permille": 8.37,
+    "death_rate_permille": 7.49,
+    "pop_end_2024_wan": 5013,
+    "pop_end_2023_wan": 5027,
+    "source": "中国统计年鉴2025 表2-7 分地区人口的城乡构成和出生率、死亡率、自然增长率(2024年)（据2024年人口变动抽样调查推算）; 2023年末人口取自中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "url_2023_pop": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "method": "rate×pop (出生率 × (2023年末+2024年末)/2)",
+    "confidence": "high",
+    "note": "31省按此法合计 9,540,137，与全国公布的954万完全吻合"
+   },
+   "urban_pct": {
+    "value": 57.39,
+    "year": 2024,
+    "source": "中国统计年鉴2025 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "le_latest": {
+    "total": 78.3,
+    "year": 2021,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2（2021年为国家卫生健康委与国家统计局联合测算发布）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "imr": {
+    "value": null,
+    "status": "provincial IMR not collected; use national urban/rural split (2024: urban 2.6‰, rural 4.6‰)",
+    "national_fallback": {
+     "total": 4.0,
+     "urban": 2.6,
+     "rural": 4.6,
+     "neonatal": 2.5,
+     "under5": 5.6,
+     "under5_urban": 3.4,
+     "under5_rural": 6.6,
+     "source": "国家卫健委2024年统计公报; 中国统计年鉴2025 表22-15 监测地区儿童和孕产妇死亡率",
+     "url": "https://www.nhc.gov.cn/guihuaxxs/c100133/202512/f1c3a3c617484a27a1a26a468afbaeee/files/2024年我国卫生健康事业发展统计公报-20251201161542231.pdf",
+     "url2": "https://www.stats.gov.cn/sj/ndsj/2025/html/C22-15.jpg",
+     "confidence": "high"
+    },
+    "confidence": "low"
+   },
+   "births_2025": {
+    "value": null,
+    "status": "2025 provincial bulletin figures not merged (research sub-tasks did not report back before deadline)"
+   }
+  },
+  "HI": {
+   "name": "海南",
+   "births_2024": {
+    "value": 98000,
+    "year": 2024,
+    "birth_rate_permille": 9.37,
+    "death_rate_permille": 6.31,
+    "pop_end_2024_wan": 1048,
+    "pop_end_2023_wan": 1043,
+    "source": "中国统计年鉴2025 表2-7 分地区人口的城乡构成和出生率、死亡率、自然增长率(2024年)（据2024年人口变动抽样调查推算）; 2023年末人口取自中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "url_2023_pop": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "method": "rate×pop (出生率 × (2023年末+2024年末)/2)",
+    "confidence": "high",
+    "note": "31省按此法合计 9,540,137，与全国公布的954万完全吻合"
+   },
+   "urban_pct_2024": {
+    "value": 63.08,
+    "year": 2024,
+    "source": "中国统计年鉴2025 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "urban_pct_2023": {
+    "value": 62.46,
+    "year": 2023,
+    "source": "中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "le_2020": {
+    "total": 79.05,
+    "male": 75.83,
+    "female": 82.84,
+    "year": 2020,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2 各地区预期寿命（资料来源：2020年人口普查）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "le_2021": {
+    "total": 79.5,
+    "year": 2021,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2（2021年为国家卫生健康委与国家统计局联合测算发布）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "birth_order_2020_census": {
+    "sample_births": 10359,
+    "first": 0.4284,
+    "second": 0.4174,
+    "third": 0.1256,
+    "fourth": 0.0218,
+    "fifth_plus": 0.0068,
+    "srb_2020_census": 120.55,
+    "period": "2019-11-01至2020-10-31",
+    "source": "中国人口普查年鉴-2020 长表 表6-1 各地区分性别、孩次的出生人口",
+    "url": "https://www.stats.gov.cn/sj/pcsj/rkpc/7rp/zk/html/B0601.jpg",
+    "confidence": "high"
+   },
+   "live_births_2022_hospital": {
+    "value": 90108,
+    "year": 2022,
+    "source": "2023中国卫生健康统计年鉴 表8-3-2（全国住院分娩月报活产数，含户籍与非户籍）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "minorities": {
+    "minority_share_total": 0.157,
+    "year": 2020,
+    "groups": [
+     {
+      "name": "黎族",
+      "count": 1355074,
+      "share": 0.1344
+     },
+     {
+      "name": "苗族",
+      "count": 87733,
+      "share": 0.0087
+     },
+     {
+      "name": "壮族",
+      "count": 61000,
+      "share": 0.0061
+     }
+    ],
+    "source": "中国人口普查年鉴-2020 表1-4 各地区分性别、民族的人口（各民族列合计已与全国合计逐一核对一致）；少数民族合计取自中国统计年鉴2021 表2-21",
+    "url": "https://www.stats.gov.cn/sj/pcsj/rkpc/7rp/zk/html/A0104.jpg",
+    "url_total": "https://www.stats.gov.cn/sj/ndsj/2021/html/C02-21.jpg",
+    "confidence": "high"
+   },
+   "region": "east",
+   "births": {
+    "value": 98000,
+    "year": 2024,
+    "birth_rate_permille": 9.37,
+    "death_rate_permille": 6.31,
+    "pop_end_2024_wan": 1048,
+    "pop_end_2023_wan": 1043,
+    "source": "中国统计年鉴2025 表2-7 分地区人口的城乡构成和出生率、死亡率、自然增长率(2024年)（据2024年人口变动抽样调查推算）; 2023年末人口取自中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "url_2023_pop": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "method": "rate×pop (出生率 × (2023年末+2024年末)/2)",
+    "confidence": "high",
+    "note": "31省按此法合计 9,540,137，与全国公布的954万完全吻合"
+   },
+   "urban_pct": {
+    "value": 63.08,
+    "year": 2024,
+    "source": "中国统计年鉴2025 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "le_latest": {
+    "total": 79.5,
+    "year": 2021,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2（2021年为国家卫生健康委与国家统计局联合测算发布）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "imr": {
+    "value": null,
+    "status": "provincial IMR not collected; use national urban/rural split (2024: urban 2.6‰, rural 4.6‰)",
+    "national_fallback": {
+     "total": 4.0,
+     "urban": 2.6,
+     "rural": 4.6,
+     "neonatal": 2.5,
+     "under5": 5.6,
+     "under5_urban": 3.4,
+     "under5_rural": 6.6,
+     "source": "国家卫健委2024年统计公报; 中国统计年鉴2025 表22-15 监测地区儿童和孕产妇死亡率",
+     "url": "https://www.nhc.gov.cn/guihuaxxs/c100133/202512/f1c3a3c617484a27a1a26a468afbaeee/files/2024年我国卫生健康事业发展统计公报-20251201161542231.pdf",
+     "url2": "https://www.stats.gov.cn/sj/ndsj/2025/html/C22-15.jpg",
+     "confidence": "high"
+    },
+    "confidence": "low"
+   },
+   "births_2025": {
+    "value": null,
+    "status": "2025 provincial bulletin figures not merged (research sub-tasks did not report back before deadline)"
+   }
+  },
+  "CQ": {
+   "name": "重庆",
+   "births_2024": {
+    "value": 191100,
+    "year": 2024,
+    "birth_rate_permille": 5.99,
+    "death_rate_permille": 8.87,
+    "pop_end_2024_wan": 3190,
+    "pop_end_2023_wan": 3191,
+    "source": "中国统计年鉴2025 表2-7 分地区人口的城乡构成和出生率、死亡率、自然增长率(2024年)（据2024年人口变动抽样调查推算）; 2023年末人口取自中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "url_2023_pop": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "method": "rate×pop (出生率 × (2023年末+2024年末)/2)",
+    "confidence": "high",
+    "note": "31省按此法合计 9,540,137，与全国公布的954万完全吻合"
+   },
+   "urban_pct_2024": {
+    "value": 72.14,
+    "year": 2024,
+    "source": "中国统计年鉴2025 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "urban_pct_2023": {
+    "value": 71.67,
+    "year": 2023,
+    "source": "中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "le_2020": {
+    "total": 78.56,
+    "male": 75.86,
+    "female": 81.64,
+    "year": 2020,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2 各地区预期寿命（资料来源：2020年人口普查）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "le_2021": {
+    "total": 78.8,
+    "year": 2021,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2（2021年为国家卫生健康委与国家统计局联合测算发布）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "birth_order_2020_census": {
+    "sample_births": 25727,
+    "first": 0.5282,
+    "second": 0.418,
+    "third": 0.0455,
+    "fourth": 0.0067,
+    "fifth_plus": 0.0016,
+    "srb_2020_census": 107.51,
+    "period": "2019-11-01至2020-10-31",
+    "source": "中国人口普查年鉴-2020 长表 表6-1 各地区分性别、孩次的出生人口",
+    "url": "https://www.stats.gov.cn/sj/pcsj/rkpc/7rp/zk/html/B0601.jpg",
+    "confidence": "high"
+   },
+   "live_births_2022_hospital": {
+    "value": 195431,
+    "year": 2022,
+    "source": "2023中国卫生健康统计年鉴 表8-3-2（全国住院分娩月报活产数，含户籍与非户籍）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "minorities": {
+    "minority_share_total": 0.0677,
+    "year": 2020,
+    "groups": [
+     {
+      "name": "土家族",
+      "count": 1546988,
+      "share": 0.0483
+     },
+     {
+      "name": "苗族",
+      "count": 512933,
+      "share": 0.016
+     },
+     {
+      "name": "彝族",
+      "count": 15901,
+      "share": 0.0005
+     }
+    ],
+    "source": "中国人口普查年鉴-2020 表1-4 各地区分性别、民族的人口（各民族列合计已与全国合计逐一核对一致）；少数民族合计取自中国统计年鉴2021 表2-21",
+    "url": "https://www.stats.gov.cn/sj/pcsj/rkpc/7rp/zk/html/A0104.jpg",
+    "url_total": "https://www.stats.gov.cn/sj/ndsj/2021/html/C02-21.jpg",
+    "confidence": "high"
+   },
+   "region": "west",
+   "births": {
+    "value": 191100,
+    "year": 2024,
+    "birth_rate_permille": 5.99,
+    "death_rate_permille": 8.87,
+    "pop_end_2024_wan": 3190,
+    "pop_end_2023_wan": 3191,
+    "source": "中国统计年鉴2025 表2-7 分地区人口的城乡构成和出生率、死亡率、自然增长率(2024年)（据2024年人口变动抽样调查推算）; 2023年末人口取自中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "url_2023_pop": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "method": "rate×pop (出生率 × (2023年末+2024年末)/2)",
+    "confidence": "high",
+    "note": "31省按此法合计 9,540,137，与全国公布的954万完全吻合"
+   },
+   "urban_pct": {
+    "value": 72.14,
+    "year": 2024,
+    "source": "中国统计年鉴2025 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "le_latest": {
+    "total": 78.8,
+    "year": 2021,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2（2021年为国家卫生健康委与国家统计局联合测算发布）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "imr": {
+    "value": null,
+    "status": "provincial IMR not collected; use national urban/rural split (2024: urban 2.6‰, rural 4.6‰)",
+    "national_fallback": {
+     "total": 4.0,
+     "urban": 2.6,
+     "rural": 4.6,
+     "neonatal": 2.5,
+     "under5": 5.6,
+     "under5_urban": 3.4,
+     "under5_rural": 6.6,
+     "source": "国家卫健委2024年统计公报; 中国统计年鉴2025 表22-15 监测地区儿童和孕产妇死亡率",
+     "url": "https://www.nhc.gov.cn/guihuaxxs/c100133/202512/f1c3a3c617484a27a1a26a468afbaeee/files/2024年我国卫生健康事业发展统计公报-20251201161542231.pdf",
+     "url2": "https://www.stats.gov.cn/sj/ndsj/2025/html/C22-15.jpg",
+     "confidence": "high"
+    },
+    "confidence": "low"
+   },
+   "births_2025": {
+    "value": null,
+    "status": "2025 provincial bulletin figures not merged (research sub-tasks did not report back before deadline)"
+   }
+  },
+  "SC": {
+   "name": "四川",
+   "births_2024": {
+    "value": 536300,
+    "year": 2024,
+    "birth_rate_permille": 6.41,
+    "death_rate_permille": 9.43,
+    "pop_end_2024_wan": 8364,
+    "pop_end_2023_wan": 8368,
+    "source": "中国统计年鉴2025 表2-7 分地区人口的城乡构成和出生率、死亡率、自然增长率(2024年)（据2024年人口变动抽样调查推算）; 2023年末人口取自中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "url_2023_pop": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "method": "rate×pop (出生率 × (2023年末+2024年末)/2)",
+    "confidence": "high",
+    "note": "31省按此法合计 9,540,137，与全国公布的954万完全吻合"
+   },
+   "urban_pct_2024": {
+    "value": 60.1,
+    "year": 2024,
+    "source": "中国统计年鉴2025 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "urban_pct_2023": {
+    "value": 59.49,
+    "year": 2023,
+    "source": "中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "le_2020": {
+    "total": 77.79,
+    "male": 75.01,
+    "female": 80.93,
+    "year": 2020,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2 各地区预期寿命（资料来源：2020年人口普查）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "le_2021": {
+    "total": 78.0,
+    "year": 2021,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2（2021年为国家卫生健康委与国家统计局联合测算发布）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "birth_order_2020_census": {
+    "sample_births": 71023,
+    "first": 0.5129,
+    "second": 0.4085,
+    "third": 0.0563,
+    "fourth": 0.0146,
+    "fifth_plus": 0.0076,
+    "srb_2020_census": 111.45,
+    "period": "2019-11-01至2020-10-31",
+    "source": "中国人口普查年鉴-2020 长表 表6-1 各地区分性别、孩次的出生人口",
+    "url": "https://www.stats.gov.cn/sj/pcsj/rkpc/7rp/zk/html/B0601.jpg",
+    "confidence": "high"
+   },
+   "live_births_2022_hospital": {
+    "value": 539282,
+    "year": 2022,
+    "source": "2023中国卫生健康统计年鉴 表8-3-2（全国住院分娩月报活产数，含户籍与非户籍）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "minorities": {
+    "minority_share_total": 0.068,
+    "year": 2020,
+    "groups": [
+     {
+      "name": "彝族",
+      "count": 3191470,
+      "share": 0.0381
+     },
+     {
+      "name": "藏族",
+      "count": 1604629,
+      "share": 0.0192
+     },
+     {
+      "name": "羌族",
+      "count": 294664,
+      "share": 0.0035
+     },
+     {
+      "name": "苗族",
+      "count": 182569,
+      "share": 0.0022
+     }
+    ],
+    "source": "中国人口普查年鉴-2020 表1-4 各地区分性别、民族的人口（各民族列合计已与全国合计逐一核对一致）；少数民族合计取自中国统计年鉴2021 表2-21",
+    "url": "https://www.stats.gov.cn/sj/pcsj/rkpc/7rp/zk/html/A0104.jpg",
+    "url_total": "https://www.stats.gov.cn/sj/ndsj/2021/html/C02-21.jpg",
+    "confidence": "high"
+   },
+   "region": "west",
+   "births": {
+    "value": 536300,
+    "year": 2024,
+    "birth_rate_permille": 6.41,
+    "death_rate_permille": 9.43,
+    "pop_end_2024_wan": 8364,
+    "pop_end_2023_wan": 8368,
+    "source": "中国统计年鉴2025 表2-7 分地区人口的城乡构成和出生率、死亡率、自然增长率(2024年)（据2024年人口变动抽样调查推算）; 2023年末人口取自中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "url_2023_pop": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "method": "rate×pop (出生率 × (2023年末+2024年末)/2)",
+    "confidence": "high",
+    "note": "31省按此法合计 9,540,137，与全国公布的954万完全吻合"
+   },
+   "urban_pct": {
+    "value": 60.1,
+    "year": 2024,
+    "source": "中国统计年鉴2025 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "le_latest": {
+    "total": 78.0,
+    "year": 2021,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2（2021年为国家卫生健康委与国家统计局联合测算发布）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "imr": {
+    "value": null,
+    "status": "provincial IMR not collected; use national urban/rural split (2024: urban 2.6‰, rural 4.6‰)",
+    "national_fallback": {
+     "total": 4.0,
+     "urban": 2.6,
+     "rural": 4.6,
+     "neonatal": 2.5,
+     "under5": 5.6,
+     "under5_urban": 3.4,
+     "under5_rural": 6.6,
+     "source": "国家卫健委2024年统计公报; 中国统计年鉴2025 表22-15 监测地区儿童和孕产妇死亡率",
+     "url": "https://www.nhc.gov.cn/guihuaxxs/c100133/202512/f1c3a3c617484a27a1a26a468afbaeee/files/2024年我国卫生健康事业发展统计公报-20251201161542231.pdf",
+     "url2": "https://www.stats.gov.cn/sj/ndsj/2025/html/C22-15.jpg",
+     "confidence": "high"
+    },
+    "confidence": "low"
+   },
+   "births_2025": {
+    "value": null,
+    "status": "2025 provincial bulletin figures not merged (research sub-tasks did not report back before deadline)"
+   }
+  },
+  "GZ": {
+   "name": "贵州",
+   "births_2024": {
+    "value": 414800,
+    "year": 2024,
+    "birth_rate_permille": 10.74,
+    "death_rate_permille": 7.74,
+    "pop_end_2024_wan": 3860,
+    "pop_end_2023_wan": 3865,
+    "source": "中国统计年鉴2025 表2-7 分地区人口的城乡构成和出生率、死亡率、自然增长率(2024年)（据2024年人口变动抽样调查推算）; 2023年末人口取自中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "url_2023_pop": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "method": "rate×pop (出生率 × (2023年末+2024年末)/2)",
+    "confidence": "high",
+    "note": "31省按此法合计 9,540,137，与全国公布的954万完全吻合"
+   },
+   "urban_pct_2024": {
+    "value": 56.65,
+    "year": 2024,
+    "source": "中国统计年鉴2025 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "urban_pct_2023": {
+    "value": 55.94,
+    "year": 2023,
+    "source": "中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "le_2020": {
+    "total": 75.2,
+    "male": 72.09,
+    "female": 78.71,
+    "year": 2020,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2 各地区预期寿命（资料来源：2020年人口普查）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "le_2021": {
+    "total": 75.5,
+    "year": 2021,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2（2021年为国家卫生健康委与国家统计局联合测算发布）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "birth_order_2020_census": {
+    "sample_births": 48984,
+    "first": 0.3881,
+    "second": 0.4254,
+    "third": 0.1376,
+    "fourth": 0.0351,
+    "fifth_plus": 0.0137,
+    "srb_2020_census": 113.59,
+    "period": "2019-11-01至2020-10-31",
+    "source": "中国人口普查年鉴-2020 长表 表6-1 各地区分性别、孩次的出生人口",
+    "url": "https://www.stats.gov.cn/sj/pcsj/rkpc/7rp/zk/html/B0601.jpg",
+    "confidence": "high"
+   },
+   "live_births_2022_hospital": {
+    "value": 429923,
+    "year": 2022,
+    "source": "2023中国卫生健康统计年鉴 表8-3-2（全国住院分娩月报活产数，含户籍与非户籍）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "minorities": {
+    "minority_share_total": 0.3644,
+    "year": 2020,
+    "groups": [
+     {
+      "name": "苗族",
+      "count": 4506912,
+      "share": 0.1169
+     },
+     {
+      "name": "布依族",
+      "count": 2710606,
+      "share": 0.0703
+     },
+     {
+      "name": "土家族",
+      "count": 1696664,
+      "share": 0.044
+     },
+     {
+      "name": "侗族",
+      "count": 1650871,
+      "share": 0.0428
+     },
+     {
+      "name": "彝族",
+      "count": 959302,
+      "share": 0.0249
+     },
+     {
+      "name": "仡佬族",
+      "count": 550322,
+      "share": 0.0143
+     },
+     {
+      "name": "水族",
+      "count": 371367,
+      "share": 0.0096
+     },
+     {
+      "name": "白族",
+      "count": 214802,
+      "share": 0.0056
+     }
+    ],
+    "source": "中国人口普查年鉴-2020 表1-4 各地区分性别、民族的人口（各民族列合计已与全国合计逐一核对一致）；少数民族合计取自中国统计年鉴2021 表2-21",
+    "url": "https://www.stats.gov.cn/sj/pcsj/rkpc/7rp/zk/html/A0104.jpg",
+    "url_total": "https://www.stats.gov.cn/sj/ndsj/2021/html/C02-21.jpg",
+    "confidence": "high"
+   },
+   "region": "west",
+   "births": {
+    "value": 414800,
+    "year": 2024,
+    "birth_rate_permille": 10.74,
+    "death_rate_permille": 7.74,
+    "pop_end_2024_wan": 3860,
+    "pop_end_2023_wan": 3865,
+    "source": "中国统计年鉴2025 表2-7 分地区人口的城乡构成和出生率、死亡率、自然增长率(2024年)（据2024年人口变动抽样调查推算）; 2023年末人口取自中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "url_2023_pop": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "method": "rate×pop (出生率 × (2023年末+2024年末)/2)",
+    "confidence": "high",
+    "note": "31省按此法合计 9,540,137，与全国公布的954万完全吻合"
+   },
+   "urban_pct": {
+    "value": 56.65,
+    "year": 2024,
+    "source": "中国统计年鉴2025 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "le_latest": {
+    "total": 75.5,
+    "year": 2021,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2（2021年为国家卫生健康委与国家统计局联合测算发布）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "imr": {
+    "value": null,
+    "status": "provincial IMR not collected; use national urban/rural split (2024: urban 2.6‰, rural 4.6‰)",
+    "national_fallback": {
+     "total": 4.0,
+     "urban": 2.6,
+     "rural": 4.6,
+     "neonatal": 2.5,
+     "under5": 5.6,
+     "under5_urban": 3.4,
+     "under5_rural": 6.6,
+     "source": "国家卫健委2024年统计公报; 中国统计年鉴2025 表22-15 监测地区儿童和孕产妇死亡率",
+     "url": "https://www.nhc.gov.cn/guihuaxxs/c100133/202512/f1c3a3c617484a27a1a26a468afbaeee/files/2024年我国卫生健康事业发展统计公报-20251201161542231.pdf",
+     "url2": "https://www.stats.gov.cn/sj/ndsj/2025/html/C22-15.jpg",
+     "confidence": "high"
+    },
+    "confidence": "low"
+   },
+   "births_2025": {
+    "value": null,
+    "status": "2025 provincial bulletin figures not merged (research sub-tasks did not report back before deadline)"
+   }
+  },
+  "YN": {
+   "name": "云南",
+   "births_2024": {
+    "value": 402000,
+    "year": 2024,
+    "birth_rate_permille": 8.62,
+    "death_rate_permille": 8.45,
+    "pop_end_2024_wan": 4655,
+    "pop_end_2023_wan": 4673,
+    "source": "中国统计年鉴2025 表2-7 分地区人口的城乡构成和出生率、死亡率、自然增长率(2024年)（据2024年人口变动抽样调查推算）; 2023年末人口取自中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "url_2023_pop": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "method": "rate×pop (出生率 × (2023年末+2024年末)/2)",
+    "confidence": "high",
+    "note": "31省按此法合计 9,540,137，与全国公布的954万完全吻合"
+   },
+   "urban_pct_2024": {
+    "value": 54.11,
+    "year": 2024,
+    "source": "中国统计年鉴2025 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "urban_pct_2023": {
+    "value": 52.92,
+    "year": 2023,
+    "source": "中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "le_2020": {
+    "total": 74.02,
+    "male": 70.98,
+    "female": 77.55,
+    "year": 2020,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2 各地区预期寿命（资料来源：2020年人口普查）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "le_2021": {
+    "total": 74.4,
+    "year": 2021,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2（2021年为国家卫生健康委与国家统计局联合测算发布）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "birth_order_2020_census": {
+    "sample_births": 52858,
+    "first": 0.4379,
+    "second": 0.4324,
+    "third": 0.1003,
+    "fourth": 0.0219,
+    "fifth_plus": 0.0075,
+    "srb_2020_census": 107.25,
+    "period": "2019-11-01至2020-10-31",
+    "source": "中国人口普查年鉴-2020 长表 表6-1 各地区分性别、孩次的出生人口",
+    "url": "https://www.stats.gov.cn/sj/pcsj/rkpc/7rp/zk/html/B0601.jpg",
+    "confidence": "high"
+   },
+   "live_births_2022_hospital": {
+    "value": 393387,
+    "year": 2022,
+    "source": "2023中国卫生健康统计年鉴 表8-3-2（全国住院分娩月报活产数，含户籍与非户籍）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "minorities": {
+    "minority_share_total": 0.3312,
+    "year": 2020,
+    "groups": [
+     {
+      "name": "彝族",
+      "count": 5071002,
+      "share": 0.1074
+     },
+     {
+      "name": "哈尼族",
+      "count": 1632981,
+      "share": 0.0346
+     },
+     {
+      "name": "白族",
+      "count": 1603728,
+      "share": 0.034
+     },
+     {
+      "name": "傣族",
+      "count": 1259419,
+      "share": 0.0267
+     },
+     {
+      "name": "苗族",
+      "count": 1253291,
+      "share": 0.0265
+     },
+     {
+      "name": "壮族",
+      "count": 1209837,
+      "share": 0.0256
+     },
+     {
+      "name": "回族",
+      "count": 737548,
+      "share": 0.0156
+     },
+     {
+      "name": "傈僳族",
+      "count": 705203,
+      "share": 0.0149
+     }
+    ],
+    "source": "中国人口普查年鉴-2020 表1-4 各地区分性别、民族的人口（各民族列合计已与全国合计逐一核对一致）；少数民族合计取自中国统计年鉴2021 表2-21",
+    "url": "https://www.stats.gov.cn/sj/pcsj/rkpc/7rp/zk/html/A0104.jpg",
+    "url_total": "https://www.stats.gov.cn/sj/ndsj/2021/html/C02-21.jpg",
+    "confidence": "high"
+   },
+   "region": "west",
+   "births": {
+    "value": 402000,
+    "year": 2024,
+    "birth_rate_permille": 8.62,
+    "death_rate_permille": 8.45,
+    "pop_end_2024_wan": 4655,
+    "pop_end_2023_wan": 4673,
+    "source": "中国统计年鉴2025 表2-7 分地区人口的城乡构成和出生率、死亡率、自然增长率(2024年)（据2024年人口变动抽样调查推算）; 2023年末人口取自中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "url_2023_pop": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "method": "rate×pop (出生率 × (2023年末+2024年末)/2)",
+    "confidence": "high",
+    "note": "31省按此法合计 9,540,137，与全国公布的954万完全吻合"
+   },
+   "urban_pct": {
+    "value": 54.11,
+    "year": 2024,
+    "source": "中国统计年鉴2025 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "le_latest": {
+    "total": 74.4,
+    "year": 2021,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2（2021年为国家卫生健康委与国家统计局联合测算发布）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "imr": {
+    "value": null,
+    "status": "provincial IMR not collected; use national urban/rural split (2024: urban 2.6‰, rural 4.6‰)",
+    "national_fallback": {
+     "total": 4.0,
+     "urban": 2.6,
+     "rural": 4.6,
+     "neonatal": 2.5,
+     "under5": 5.6,
+     "under5_urban": 3.4,
+     "under5_rural": 6.6,
+     "source": "国家卫健委2024年统计公报; 中国统计年鉴2025 表22-15 监测地区儿童和孕产妇死亡率",
+     "url": "https://www.nhc.gov.cn/guihuaxxs/c100133/202512/f1c3a3c617484a27a1a26a468afbaeee/files/2024年我国卫生健康事业发展统计公报-20251201161542231.pdf",
+     "url2": "https://www.stats.gov.cn/sj/ndsj/2025/html/C22-15.jpg",
+     "confidence": "high"
+    },
+    "confidence": "low"
+   },
+   "births_2025": {
+    "value": null,
+    "status": "2025 provincial bulletin figures not merged (research sub-tasks did not report back before deadline)"
+   }
+  },
+  "XZ": {
+   "name": "西藏",
+   "births_2024": {
+    "value": 51000,
+    "year": 2024,
+    "birth_rate_permille": 13.87,
+    "death_rate_permille": 5.44,
+    "pop_end_2024_wan": 370,
+    "pop_end_2023_wan": 365,
+    "source": "中国统计年鉴2025 表2-7 分地区人口的城乡构成和出生率、死亡率、自然增长率(2024年)（据2024年人口变动抽样调查推算）; 2023年末人口取自中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "url_2023_pop": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "method": "rate×pop (出生率 × (2023年末+2024年末)/2)",
+    "confidence": "high",
+    "note": "31省按此法合计 9,540,137，与全国公布的954万完全吻合"
+   },
+   "urban_pct_2024": {
+    "value": 39.68,
+    "year": 2024,
+    "source": "中国统计年鉴2025 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "urban_pct_2023": {
+    "value": 38.88,
+    "year": 2023,
+    "source": "中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "le_2020": {
+    "total": 72.19,
+    "male": 70.27,
+    "female": 74.75,
+    "year": 2020,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2 各地区预期寿命（资料来源：2020年人口普查）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "le_2021": {
+    "total": 72.5,
+    "year": 2021,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2（2021年为国家卫生健康委与国家统计局联合测算发布）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "birth_order_2020_census": {
+    "sample_births": 5113,
+    "first": 0.3393,
+    "second": 0.3227,
+    "third": 0.1748,
+    "fourth": 0.0841,
+    "fifth_plus": 0.079,
+    "srb_2020_census": 101.14,
+    "period": "2019-11-01至2020-10-31",
+    "source": "中国人口普查年鉴-2020 长表 表6-1 各地区分性别、孩次的出生人口",
+    "url": "https://www.stats.gov.cn/sj/pcsj/rkpc/7rp/zk/html/B0601.jpg",
+    "confidence": "high"
+   },
+   "live_births_2022_hospital": {
+    "value": 49692,
+    "year": 2022,
+    "source": "2023中国卫生健康统计年鉴 表8-3-2（全国住院分娩月报活产数，含户籍与非户籍）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "minorities": {
+    "minority_share_total": 0.8785,
+    "year": 2020,
+    "groups": [
+     {
+      "name": "藏族",
+      "count": 3137901,
+      "share": 0.8601
+     },
+     {
+      "name": "回族",
+      "count": 25487,
+      "share": 0.007
+     },
+     {
+      "name": "东乡族",
+      "count": 3904,
+      "share": 0.0011
+     }
+    ],
+    "source": "中国人口普查年鉴-2020 表1-4 各地区分性别、民族的人口（各民族列合计已与全国合计逐一核对一致）；少数民族合计取自中国统计年鉴2021 表2-21",
+    "url": "https://www.stats.gov.cn/sj/pcsj/rkpc/7rp/zk/html/A0104.jpg",
+    "url_total": "https://www.stats.gov.cn/sj/ndsj/2021/html/C02-21.jpg",
+    "confidence": "high"
+   },
+   "region": "west",
+   "births": {
+    "value": 51000,
+    "year": 2024,
+    "birth_rate_permille": 13.87,
+    "death_rate_permille": 5.44,
+    "pop_end_2024_wan": 370,
+    "pop_end_2023_wan": 365,
+    "source": "中国统计年鉴2025 表2-7 分地区人口的城乡构成和出生率、死亡率、自然增长率(2024年)（据2024年人口变动抽样调查推算）; 2023年末人口取自中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "url_2023_pop": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "method": "rate×pop (出生率 × (2023年末+2024年末)/2)",
+    "confidence": "high",
+    "note": "31省按此法合计 9,540,137，与全国公布的954万完全吻合"
+   },
+   "urban_pct": {
+    "value": 39.68,
+    "year": 2024,
+    "source": "中国统计年鉴2025 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "le_latest": {
+    "total": 72.5,
+    "year": 2021,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2（2021年为国家卫生健康委与国家统计局联合测算发布）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "imr": {
+    "value": null,
+    "status": "provincial IMR not collected; use national urban/rural split (2024: urban 2.6‰, rural 4.6‰)",
+    "national_fallback": {
+     "total": 4.0,
+     "urban": 2.6,
+     "rural": 4.6,
+     "neonatal": 2.5,
+     "under5": 5.6,
+     "under5_urban": 3.4,
+     "under5_rural": 6.6,
+     "source": "国家卫健委2024年统计公报; 中国统计年鉴2025 表22-15 监测地区儿童和孕产妇死亡率",
+     "url": "https://www.nhc.gov.cn/guihuaxxs/c100133/202512/f1c3a3c617484a27a1a26a468afbaeee/files/2024年我国卫生健康事业发展统计公报-20251201161542231.pdf",
+     "url2": "https://www.stats.gov.cn/sj/ndsj/2025/html/C22-15.jpg",
+     "confidence": "high"
+    },
+    "confidence": "low"
+   },
+   "births_2025": {
+    "value": null,
+    "status": "2025 provincial bulletin figures not merged (research sub-tasks did not report back before deadline)"
+   }
+  },
+  "SN": {
+   "name": "陕西",
+   "births_2024": {
+    "value": 290900,
+    "year": 2024,
+    "birth_rate_permille": 7.36,
+    "death_rate_permille": 8.05,
+    "pop_end_2024_wan": 3953,
+    "pop_end_2023_wan": 3952,
+    "source": "中国统计年鉴2025 表2-7 分地区人口的城乡构成和出生率、死亡率、自然增长率(2024年)（据2024年人口变动抽样调查推算）; 2023年末人口取自中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "url_2023_pop": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "method": "rate×pop (出生率 × (2023年末+2024年末)/2)",
+    "confidence": "high",
+    "note": "31省按此法合计 9,540,137，与全国公布的954万完全吻合"
+   },
+   "urban_pct_2024": {
+    "value": 66.14,
+    "year": 2024,
+    "source": "中国统计年鉴2025 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "urban_pct_2023": {
+    "value": 65.16,
+    "year": 2023,
+    "source": "中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "le_2020": {
+    "total": 77.8,
+    "male": 75.59,
+    "female": 80.24,
+    "year": 2020,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2 各地区预期寿命（资料来源：2020年人口普查）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "le_2021": {
+    "total": 78.1,
+    "year": 2021,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2（2021年为国家卫生健康委与国家统计局联合测算发布）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "birth_order_2020_census": {
+    "sample_births": 31254,
+    "first": 0.4884,
+    "second": 0.4588,
+    "third": 0.0471,
+    "fourth": 0.0049,
+    "fifth_plus": 0.0009,
+    "srb_2020_census": 108.51,
+    "period": "2019-11-01至2020-10-31",
+    "source": "中国人口普查年鉴-2020 长表 表6-1 各地区分性别、孩次的出生人口",
+    "url": "https://www.stats.gov.cn/sj/pcsj/rkpc/7rp/zk/html/B0601.jpg",
+    "confidence": "high"
+   },
+   "live_births_2022_hospital": {
+    "value": 288085,
+    "year": 2022,
+    "source": "2023中国卫生健康统计年鉴 表8-3-2（全国住院分娩月报活产数，含户籍与非户籍）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "minorities": {
+    "minority_share_total": 0.0056,
+    "year": 2020,
+    "groups": [
+     {
+      "name": "回族",
+      "count": 140202,
+      "share": 0.0035
+     },
+     {
+      "name": "满族",
+      "count": 16486,
+      "share": 0.0004
+     },
+     {
+      "name": "蒙古族",
+      "count": 10453,
+      "share": 0.0003
+     }
+    ],
+    "source": "中国人口普查年鉴-2020 表1-4 各地区分性别、民族的人口（各民族列合计已与全国合计逐一核对一致）；少数民族合计取自中国统计年鉴2021 表2-21",
+    "url": "https://www.stats.gov.cn/sj/pcsj/rkpc/7rp/zk/html/A0104.jpg",
+    "url_total": "https://www.stats.gov.cn/sj/ndsj/2021/html/C02-21.jpg",
+    "confidence": "high"
+   },
+   "region": "west",
+   "births": {
+    "value": 290900,
+    "year": 2024,
+    "birth_rate_permille": 7.36,
+    "death_rate_permille": 8.05,
+    "pop_end_2024_wan": 3953,
+    "pop_end_2023_wan": 3952,
+    "source": "中国统计年鉴2025 表2-7 分地区人口的城乡构成和出生率、死亡率、自然增长率(2024年)（据2024年人口变动抽样调查推算）; 2023年末人口取自中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "url_2023_pop": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "method": "rate×pop (出生率 × (2023年末+2024年末)/2)",
+    "confidence": "high",
+    "note": "31省按此法合计 9,540,137，与全国公布的954万完全吻合"
+   },
+   "urban_pct": {
+    "value": 66.14,
+    "year": 2024,
+    "source": "中国统计年鉴2025 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "le_latest": {
+    "total": 78.1,
+    "year": 2021,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2（2021年为国家卫生健康委与国家统计局联合测算发布）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "imr": {
+    "value": null,
+    "status": "provincial IMR not collected; use national urban/rural split (2024: urban 2.6‰, rural 4.6‰)",
+    "national_fallback": {
+     "total": 4.0,
+     "urban": 2.6,
+     "rural": 4.6,
+     "neonatal": 2.5,
+     "under5": 5.6,
+     "under5_urban": 3.4,
+     "under5_rural": 6.6,
+     "source": "国家卫健委2024年统计公报; 中国统计年鉴2025 表22-15 监测地区儿童和孕产妇死亡率",
+     "url": "https://www.nhc.gov.cn/guihuaxxs/c100133/202512/f1c3a3c617484a27a1a26a468afbaeee/files/2024年我国卫生健康事业发展统计公报-20251201161542231.pdf",
+     "url2": "https://www.stats.gov.cn/sj/ndsj/2025/html/C22-15.jpg",
+     "confidence": "high"
+    },
+    "confidence": "low"
+   },
+   "births_2025": {
+    "value": null,
+    "status": "2025 provincial bulletin figures not merged (research sub-tasks did not report back before deadline)"
+   }
+  },
+  "GS": {
+   "name": "甘肃",
+   "births_2024": {
+    "value": 196900,
+    "year": 2024,
+    "birth_rate_permille": 8.0,
+    "death_rate_permille": 8.9,
+    "pop_end_2024_wan": 2458,
+    "pop_end_2023_wan": 2465,
+    "source": "中国统计年鉴2025 表2-7 分地区人口的城乡构成和出生率、死亡率、自然增长率(2024年)（据2024年人口变动抽样调查推算）; 2023年末人口取自中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "url_2023_pop": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "method": "rate×pop (出生率 × (2023年末+2024年末)/2)",
+    "confidence": "high",
+    "note": "31省按此法合计 9,540,137，与全国公布的954万完全吻合"
+   },
+   "urban_pct_2024": {
+    "value": 56.83,
+    "year": 2024,
+    "source": "中国统计年鉴2025 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "urban_pct_2023": {
+    "value": 55.49,
+    "year": 2023,
+    "source": "中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "le_2020": {
+    "total": 75.64,
+    "male": 73.64,
+    "female": 77.85,
+    "year": 2020,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2 各地区预期寿命（资料来源：2020年人口普查）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "le_2021": {
+    "total": 75.8,
+    "year": 2021,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2（2021年为国家卫生健康委与国家统计局联合测算发布）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "birth_order_2020_census": {
+    "sample_births": 25783,
+    "first": 0.4433,
+    "second": 0.4402,
+    "third": 0.089,
+    "fourth": 0.0199,
+    "fifth_plus": 0.0075,
+    "srb_2020_census": 108.41,
+    "period": "2019-11-01至2020-10-31",
+    "source": "中国人口普查年鉴-2020 长表 表6-1 各地区分性别、孩次的出生人口",
+    "url": "https://www.stats.gov.cn/sj/pcsj/rkpc/7rp/zk/html/B0601.jpg",
+    "confidence": "high"
+   },
+   "live_births_2022_hospital": {
+    "value": 206341,
+    "year": 2022,
+    "source": "2023中国卫生健康统计年鉴 表8-3-2（全国住院分娩月报活产数，含户籍与非户籍）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "minorities": {
+    "minority_share_total": 0.1062,
+    "year": 2020,
+    "groups": [
+     {
+      "name": "回族",
+      "count": 1342385,
+      "share": 0.0537
+     },
+     {
+      "name": "东乡族",
+      "count": 652119,
+      "share": 0.0261
+     },
+     {
+      "name": "藏族",
+      "count": 519927,
+      "share": 0.0208
+     }
+    ],
+    "source": "中国人口普查年鉴-2020 表1-4 各地区分性别、民族的人口（各民族列合计已与全国合计逐一核对一致）；少数民族合计取自中国统计年鉴2021 表2-21",
+    "url": "https://www.stats.gov.cn/sj/pcsj/rkpc/7rp/zk/html/A0104.jpg",
+    "url_total": "https://www.stats.gov.cn/sj/ndsj/2021/html/C02-21.jpg",
+    "confidence": "high"
+   },
+   "region": "west",
+   "births": {
+    "value": 196900,
+    "year": 2024,
+    "birth_rate_permille": 8.0,
+    "death_rate_permille": 8.9,
+    "pop_end_2024_wan": 2458,
+    "pop_end_2023_wan": 2465,
+    "source": "中国统计年鉴2025 表2-7 分地区人口的城乡构成和出生率、死亡率、自然增长率(2024年)（据2024年人口变动抽样调查推算）; 2023年末人口取自中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "url_2023_pop": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "method": "rate×pop (出生率 × (2023年末+2024年末)/2)",
+    "confidence": "high",
+    "note": "31省按此法合计 9,540,137，与全国公布的954万完全吻合"
+   },
+   "urban_pct": {
+    "value": 56.83,
+    "year": 2024,
+    "source": "中国统计年鉴2025 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "le_latest": {
+    "total": 75.8,
+    "year": 2021,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2（2021年为国家卫生健康委与国家统计局联合测算发布）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "imr": {
+    "value": null,
+    "status": "provincial IMR not collected; use national urban/rural split (2024: urban 2.6‰, rural 4.6‰)",
+    "national_fallback": {
+     "total": 4.0,
+     "urban": 2.6,
+     "rural": 4.6,
+     "neonatal": 2.5,
+     "under5": 5.6,
+     "under5_urban": 3.4,
+     "under5_rural": 6.6,
+     "source": "国家卫健委2024年统计公报; 中国统计年鉴2025 表22-15 监测地区儿童和孕产妇死亡率",
+     "url": "https://www.nhc.gov.cn/guihuaxxs/c100133/202512/f1c3a3c617484a27a1a26a468afbaeee/files/2024年我国卫生健康事业发展统计公报-20251201161542231.pdf",
+     "url2": "https://www.stats.gov.cn/sj/ndsj/2025/html/C22-15.jpg",
+     "confidence": "high"
+    },
+    "confidence": "low"
+   },
+   "births_2025": {
+    "value": null,
+    "status": "2025 provincial bulletin figures not merged (research sub-tasks did not report back before deadline)"
+   }
+  },
+  "QH": {
+   "name": "青海",
+   "births_2024": {
+    "value": 60000,
+    "year": 2024,
+    "birth_rate_permille": 10.11,
+    "death_rate_permille": 7.41,
+    "pop_end_2024_wan": 593,
+    "pop_end_2023_wan": 594,
+    "source": "中国统计年鉴2025 表2-7 分地区人口的城乡构成和出生率、死亡率、自然增长率(2024年)（据2024年人口变动抽样调查推算）; 2023年末人口取自中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "url_2023_pop": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "method": "rate×pop (出生率 × (2023年末+2024年末)/2)",
+    "confidence": "high",
+    "note": "31省按此法合计 9,540,137，与全国公布的954万完全吻合"
+   },
+   "urban_pct_2024": {
+    "value": 63.86,
+    "year": 2024,
+    "source": "中国统计年鉴2025 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "urban_pct_2023": {
+    "value": 62.8,
+    "year": 2023,
+    "source": "中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "le_2020": {
+    "total": 73.96,
+    "male": 71.72,
+    "female": 76.43,
+    "year": 2020,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2 各地区预期寿命（资料来源：2020年人口普查）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "le_2021": {
+    "total": 74.3,
+    "year": 2021,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2（2021年为国家卫生健康委与国家统计局联合测算发布）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "birth_order_2020_census": {
+    "sample_births": 6422,
+    "first": 0.4611,
+    "second": 0.3718,
+    "third": 0.1071,
+    "fourth": 0.0369,
+    "fifth_plus": 0.023,
+    "srb_2020_census": 110.63,
+    "period": "2019-11-01至2020-10-31",
+    "source": "中国人口普查年鉴-2020 长表 表6-1 各地区分性别、孩次的出生人口",
+    "url": "https://www.stats.gov.cn/sj/pcsj/rkpc/7rp/zk/html/B0601.jpg",
+    "confidence": "high"
+   },
+   "live_births_2022_hospital": {
+    "value": 59498,
+    "year": 2022,
+    "source": "2023中国卫生健康统计年鉴 表8-3-2（全国住院分娩月报活产数，含户籍与非户籍）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "minorities": {
+    "minority_share_total": 0.4947,
+    "year": 2020,
+    "groups": [
+     {
+      "name": "藏族",
+      "count": 1509608,
+      "share": 0.2548
+     },
+     {
+      "name": "回族",
+      "count": 946273,
+      "share": 0.1597
+     },
+     {
+      "name": "土族",
+      "count": 200362,
+      "share": 0.0338
+     },
+     {
+      "name": "撒拉族",
+      "count": 128779,
+      "share": 0.0217
+     },
+     {
+      "name": "蒙古族",
+      "count": 102447,
+      "share": 0.0173
+     },
+     {
+      "name": "东乡族",
+      "count": 14459,
+      "share": 0.0024
+     },
+     {
+      "name": "土家族",
+      "count": 11891,
+      "share": 0.002
+     }
+    ],
+    "source": "中国人口普查年鉴-2020 表1-4 各地区分性别、民族的人口（各民族列合计已与全国合计逐一核对一致）；少数民族合计取自中国统计年鉴2021 表2-21",
+    "url": "https://www.stats.gov.cn/sj/pcsj/rkpc/7rp/zk/html/A0104.jpg",
+    "url_total": "https://www.stats.gov.cn/sj/ndsj/2021/html/C02-21.jpg",
+    "confidence": "high"
+   },
+   "region": "west",
+   "births": {
+    "value": 60000,
+    "year": 2024,
+    "birth_rate_permille": 10.11,
+    "death_rate_permille": 7.41,
+    "pop_end_2024_wan": 593,
+    "pop_end_2023_wan": 594,
+    "source": "中国统计年鉴2025 表2-7 分地区人口的城乡构成和出生率、死亡率、自然增长率(2024年)（据2024年人口变动抽样调查推算）; 2023年末人口取自中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "url_2023_pop": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "method": "rate×pop (出生率 × (2023年末+2024年末)/2)",
+    "confidence": "high",
+    "note": "31省按此法合计 9,540,137，与全国公布的954万完全吻合"
+   },
+   "urban_pct": {
+    "value": 63.86,
+    "year": 2024,
+    "source": "中国统计年鉴2025 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "le_latest": {
+    "total": 74.3,
+    "year": 2021,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2（2021年为国家卫生健康委与国家统计局联合测算发布）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "imr": {
+    "value": null,
+    "status": "provincial IMR not collected; use national urban/rural split (2024: urban 2.6‰, rural 4.6‰)",
+    "national_fallback": {
+     "total": 4.0,
+     "urban": 2.6,
+     "rural": 4.6,
+     "neonatal": 2.5,
+     "under5": 5.6,
+     "under5_urban": 3.4,
+     "under5_rural": 6.6,
+     "source": "国家卫健委2024年统计公报; 中国统计年鉴2025 表22-15 监测地区儿童和孕产妇死亡率",
+     "url": "https://www.nhc.gov.cn/guihuaxxs/c100133/202512/f1c3a3c617484a27a1a26a468afbaeee/files/2024年我国卫生健康事业发展统计公报-20251201161542231.pdf",
+     "url2": "https://www.stats.gov.cn/sj/ndsj/2025/html/C22-15.jpg",
+     "confidence": "high"
+    },
+    "confidence": "low"
+   },
+   "births_2025": {
+    "value": null,
+    "status": "2025 provincial bulletin figures not merged (research sub-tasks did not report back before deadline)"
+   }
+  },
+  "NX": {
+   "name": "宁夏",
+   "births_2024": {
+    "value": 80000,
+    "year": 2024,
+    "birth_rate_permille": 10.97,
+    "death_rate_permille": 6.45,
+    "pop_end_2024_wan": 729,
+    "pop_end_2023_wan": 729,
+    "source": "中国统计年鉴2025 表2-7 分地区人口的城乡构成和出生率、死亡率、自然增长率(2024年)（据2024年人口变动抽样调查推算）; 2023年末人口取自中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "url_2023_pop": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "method": "rate×pop (出生率 × (2023年末+2024年末)/2)",
+    "confidence": "high",
+    "note": "31省按此法合计 9,540,137，与全国公布的954万完全吻合"
+   },
+   "urban_pct_2024": {
+    "value": 68.22,
+    "year": 2024,
+    "source": "中国统计年鉴2025 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "urban_pct_2023": {
+    "value": 67.31,
+    "year": 2023,
+    "source": "中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "le_2020": {
+    "total": 76.58,
+    "male": 74.89,
+    "female": 78.4,
+    "year": 2020,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2 各地区预期寿命（资料来源：2020年人口普查）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "le_2021": {
+    "total": 76.9,
+    "year": 2021,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2（2021年为国家卫生健康委与国家统计局联合测算发布）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "birth_order_2020_census": {
+    "sample_births": 8708,
+    "first": 0.4302,
+    "second": 0.3986,
+    "third": 0.1215,
+    "fourth": 0.0362,
+    "fifth_plus": 0.0136,
+    "srb_2020_census": 105.67,
+    "period": "2019-11-01至2020-10-31",
+    "source": "中国人口普查年鉴-2020 长表 表6-1 各地区分性别、孩次的出生人口",
+    "url": "https://www.stats.gov.cn/sj/pcsj/rkpc/7rp/zk/html/B0601.jpg",
+    "confidence": "high"
+   },
+   "live_births_2022_hospital": {
+    "value": 69061,
+    "year": 2022,
+    "source": "2023中国卫生健康统计年鉴 表8-3-2（全国住院分娩月报活产数，含户籍与非户籍）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "minorities": {
+    "minority_share_total": 0.3595,
+    "year": 2020,
+    "groups": [
+     {
+      "name": "回族",
+      "count": 2523581,
+      "share": 0.3504
+     },
+     {
+      "name": "满族",
+      "count": 28016,
+      "share": 0.0039
+     },
+     {
+      "name": "苗族",
+      "count": 11090,
+      "share": 0.0015
+     }
+    ],
+    "source": "中国人口普查年鉴-2020 表1-4 各地区分性别、民族的人口（各民族列合计已与全国合计逐一核对一致）；少数民族合计取自中国统计年鉴2021 表2-21",
+    "url": "https://www.stats.gov.cn/sj/pcsj/rkpc/7rp/zk/html/A0104.jpg",
+    "url_total": "https://www.stats.gov.cn/sj/ndsj/2021/html/C02-21.jpg",
+    "confidence": "high"
+   },
+   "region": "west",
+   "births": {
+    "value": 80000,
+    "year": 2024,
+    "birth_rate_permille": 10.97,
+    "death_rate_permille": 6.45,
+    "pop_end_2024_wan": 729,
+    "pop_end_2023_wan": 729,
+    "source": "中国统计年鉴2025 表2-7 分地区人口的城乡构成和出生率、死亡率、自然增长率(2024年)（据2024年人口变动抽样调查推算）; 2023年末人口取自中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "url_2023_pop": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "method": "rate×pop (出生率 × (2023年末+2024年末)/2)",
+    "confidence": "high",
+    "note": "31省按此法合计 9,540,137，与全国公布的954万完全吻合"
+   },
+   "urban_pct": {
+    "value": 68.22,
+    "year": 2024,
+    "source": "中国统计年鉴2025 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "le_latest": {
+    "total": 76.9,
+    "year": 2021,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2（2021年为国家卫生健康委与国家统计局联合测算发布）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "imr": {
+    "value": null,
+    "status": "provincial IMR not collected; use national urban/rural split (2024: urban 2.6‰, rural 4.6‰)",
+    "national_fallback": {
+     "total": 4.0,
+     "urban": 2.6,
+     "rural": 4.6,
+     "neonatal": 2.5,
+     "under5": 5.6,
+     "under5_urban": 3.4,
+     "under5_rural": 6.6,
+     "source": "国家卫健委2024年统计公报; 中国统计年鉴2025 表22-15 监测地区儿童和孕产妇死亡率",
+     "url": "https://www.nhc.gov.cn/guihuaxxs/c100133/202512/f1c3a3c617484a27a1a26a468afbaeee/files/2024年我国卫生健康事业发展统计公报-20251201161542231.pdf",
+     "url2": "https://www.stats.gov.cn/sj/ndsj/2025/html/C22-15.jpg",
+     "confidence": "high"
+    },
+    "confidence": "low"
+   },
+   "births_2025": {
+    "value": null,
+    "status": "2025 provincial bulletin figures not merged (research sub-tasks did not report back before deadline)"
+   }
+  },
+  "XJ": {
+   "name": "新疆",
+   "births_2024": {
+    "value": 245900,
+    "year": 2024,
+    "birth_rate_permille": 9.42,
+    "death_rate_permille": 6.05,
+    "pop_end_2024_wan": 2623,
+    "pop_end_2023_wan": 2598,
+    "source": "中国统计年鉴2025 表2-7 分地区人口的城乡构成和出生率、死亡率、自然增长率(2024年)（据2024年人口变动抽样调查推算）; 2023年末人口取自中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "url_2023_pop": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "method": "rate×pop (出生率 × (2023年末+2024年末)/2)",
+    "confidence": "high",
+    "note": "31省按此法合计 9,540,137，与全国公布的954万完全吻合"
+   },
+   "urban_pct_2024": {
+    "value": 60.36,
+    "year": 2024,
+    "source": "中国统计年鉴2025 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "urban_pct_2023": {
+    "value": 59.24,
+    "year": 2023,
+    "source": "中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "le_2020": {
+    "total": 75.65,
+    "male": 73.66,
+    "female": 77.89,
+    "year": 2020,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2 各地区预期寿命（资料来源：2020年人口普查）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "le_2021": {
+    "total": 76.0,
+    "year": 2021,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2（2021年为国家卫生健康委与国家统计局联合测算发布）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "birth_order_2020_census": {
+    "sample_births": 19020,
+    "first": 0.5437,
+    "second": 0.3811,
+    "third": 0.064,
+    "fourth": 0.0094,
+    "fifth_plus": 0.0018,
+    "srb_2020_census": 105.89,
+    "period": "2019-11-01至2020-10-31",
+    "source": "中国人口普查年鉴-2020 长表 表6-1 各地区分性别、孩次的出生人口",
+    "url": "https://www.stats.gov.cn/sj/pcsj/rkpc/7rp/zk/html/B0601.jpg",
+    "confidence": "high"
+   },
+   "live_births_2022_hospital": {
+    "value": 190024,
+    "year": 2022,
+    "source": "2023中国卫生健康统计年鉴 表8-3-2（全国住院分娩月报活产数，含户籍与非户籍）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "minorities": {
+    "minority_share_total": 0.5776,
+    "year": 2020,
+    "groups": [
+     {
+      "name": "维吾尔族",
+      "count": 11624257,
+      "share": 0.4496
+     },
+     {
+      "name": "哈萨克族",
+      "count": 1539636,
+      "share": 0.0596
+     },
+     {
+      "name": "回族",
+      "count": 1102928,
+      "share": 0.0427
+     },
+     {
+      "name": "柯尔克孜族",
+      "count": 199264,
+      "share": 0.0077
+     },
+     {
+      "name": "蒙古族",
+      "count": 169143,
+      "share": 0.0065
+     },
+     {
+      "name": "东乡族",
+      "count": 72036,
+      "share": 0.0028
+     }
+    ],
+    "source": "中国人口普查年鉴-2020 表1-4 各地区分性别、民族的人口（各民族列合计已与全国合计逐一核对一致）；少数民族合计取自中国统计年鉴2021 表2-21",
+    "url": "https://www.stats.gov.cn/sj/pcsj/rkpc/7rp/zk/html/A0104.jpg",
+    "url_total": "https://www.stats.gov.cn/sj/ndsj/2021/html/C02-21.jpg",
+    "confidence": "high"
+   },
+   "region": "west",
+   "births": {
+    "value": 245900,
+    "year": 2024,
+    "birth_rate_permille": 9.42,
+    "death_rate_permille": 6.05,
+    "pop_end_2024_wan": 2623,
+    "pop_end_2023_wan": 2598,
+    "source": "中国统计年鉴2025 表2-7 分地区人口的城乡构成和出生率、死亡率、自然增长率(2024年)（据2024年人口变动抽样调查推算）; 2023年末人口取自中国统计年鉴2024 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "url_2023_pop": "https://www.stats.gov.cn/sj/ndsj/2024/html/C02-07.jpg",
+    "method": "rate×pop (出生率 × (2023年末+2024年末)/2)",
+    "confidence": "high",
+    "note": "31省按此法合计 9,540,137，与全国公布的954万完全吻合"
+   },
+   "urban_pct": {
+    "value": 60.36,
+    "year": 2024,
+    "source": "中国统计年鉴2025 表2-7",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+    "confidence": "high"
+   },
+   "le_latest": {
+    "total": 76.0,
+    "year": 2021,
+    "source": "2023中国卫生健康统计年鉴 表9-2-2（2021年为国家卫生健康委与国家统计局联合测算发布）",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "confidence": "high"
+   },
+   "imr": {
+    "value": null,
+    "status": "provincial IMR not collected; use national urban/rural split (2024: urban 2.6‰, rural 4.6‰)",
+    "national_fallback": {
+     "total": 4.0,
+     "urban": 2.6,
+     "rural": 4.6,
+     "neonatal": 2.5,
+     "under5": 5.6,
+     "under5_urban": 3.4,
+     "under5_rural": 6.6,
+     "source": "国家卫健委2024年统计公报; 中国统计年鉴2025 表22-15 监测地区儿童和孕产妇死亡率",
+     "url": "https://www.nhc.gov.cn/guihuaxxs/c100133/202512/f1c3a3c617484a27a1a26a468afbaeee/files/2024年我国卫生健康事业发展统计公报-20251201161542231.pdf",
+     "url2": "https://www.stats.gov.cn/sj/ndsj/2025/html/C22-15.jpg",
+     "confidence": "high"
+    },
+    "confidence": "low"
+   },
+   "births_2025": {
+    "value": null,
+    "status": "2025 provincial bulletin figures not merged (research sub-tasks did not report back before deadline)"
+   }
+  }
+ },
+ "national": {
+  "births_2025": {
+   "value": 7920000,
+   "rate_permille": 5.63,
+   "year": 2025,
+   "source": "国家统计局《2025年国民经济和社会发展统计公报》(2026-02-28)",
+   "url": "https://www.stats.gov.cn/sj/zxfb/202602/t20260228_1962662.html",
+   "confidence": "high",
+   "intl": [
+    {
+     "value": 8709352,
+     "source": "UN WPP 2024 medium-variant projection for 2025 (made in 2024, before 2025 data), via Our World in Data",
+     "url": "https://ourworldindata.org/grapher/number-of-births-per-year.csv?country=~CHN",
+     "note": "projection, not an estimate; official is 9.1% lower"
+    }
+   ]
+  },
+  "births_2024": {
+   "value": 9540000,
+   "rate_permille": 6.77,
+   "year": 2024,
+   "source": "国家卫健委《2024年我国卫生健康事业发展统计公报》人口概况（数据取自国家统计局）；中国统计年鉴2025 表2-7 出生率6.77‰",
+   "url": "https://www.nhc.gov.cn/guihuaxxs/c100133/202512/f1c3a3c617484a27a1a26a468afbaeee/files/2024年我国卫生健康事业发展统计公报-20251201161542231.pdf",
+   "url2": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+   "confidence": "high",
+   "intl": [
+    {
+     "value": 8822056,
+     "source": "UN WPP 2024 medium-variant projection for 2024 via Our World in Data",
+     "url": "https://ourworldindata.org/grapher/number-of-births-per-year.csv?country=~CHN",
+     "note": "WPP 2024 was finalised mid-2024 and did not anticipate the Dragon-year rebound; official is 8.1% higher"
+    },
+    {
+     "value": 8899881,
+     "year": 2023,
+     "source": "UN WPP 2024 estimate for 2023 (official NBS 2023 births = 902万)",
+     "url": "https://ourworldindata.org/grapher/number-of-births-per-year.csv?country=~CHN",
+     "note": "WPP 2023 estimate is 1.3% below official"
+    }
+   ]
+  },
+  "deaths_2025": {
+   "value": 11310000,
+   "rate_permille": 8.04,
+   "year": 2025,
+   "source": "国家统计局《2025年国民经济和社会发展统计公报》",
+   "url": "https://www.stats.gov.cn/sj/zxfb/202602/t20260228_1962662.html",
+   "confidence": "high",
+   "intl": [
+    {
+     "value": 11716328,
+     "source": "UN WPP 2024 medium-variant projection for 2025 via OWID",
+     "url": "https://ourworldindata.org/grapher/number-of-deaths-per-year.csv?country=~CHN",
+     "note": "UN 3.6% higher than official"
+    }
+   ]
+  },
+  "deaths_2024": {
+   "value": 10930000,
+   "rate_permille": 7.76,
+   "year": 2024,
+   "source": "国家卫健委《2024年我国卫生健康事业发展统计公报》(数据取自国家统计局)；中国统计年鉴2025 表2-7 死亡率7.76‰",
+   "url": "https://www.nhc.gov.cn/guihuaxxs/c100133/202512/f1c3a3c617484a27a1a26a468afbaeee/files/2024年我国卫生健康事业发展统计公报-20251201161542231.pdf",
+   "confidence": "high",
+   "intl": [
+    {
+     "value": 11678348,
+     "source": "UN WPP 2024 medium-variant projection for 2024 via OWID",
+     "url": "https://ourworldindata.org/grapher/number-of-deaths-per-year.csv?country=~CHN",
+     "note": "UN 6.8% higher than official"
+    },
+    {
+     "value": 11684178,
+     "year": 2023,
+     "source": "UN WPP 2024 estimate for 2023 via OWID",
+     "url": "https://ourworldindata.org/grapher/number-of-deaths-per-year.csv?country=~CHN",
+     "note": "NBS 2023 death rate 7.87‰ × ~1.41 bn ≈ 11.1 M, so UN ≈ 5% higher"
+    }
+   ]
+  },
+  "population_end_2025": {
+   "value": 1404890000,
+   "urban_pct": 67.89,
+   "source": "国家统计局2025年统计公报",
+   "url": "https://www.stats.gov.cn/sj/zxfb/202602/t20260228_1962662.html",
+   "confidence": "high"
+  },
+  "population_end_2024": {
+   "value": 1408280000,
+   "urban_pct": 67.0,
+   "source": "中国统计年鉴2025 表2-7",
+   "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-07.jpg",
+   "confidence": "high",
+   "intl": [
+    {
+     "urban_pct": 65.89,
+     "source": "World Bank SP.URB.TOTL.IN.ZS (UN World Urbanization Prospects basis)",
+     "url": "https://api.worldbank.org/v2/country/CHN/indicator/SP.URB.TOTL.IN.ZS?format=json&date=2020:2025",
+     "note": "definitional difference: UN WUP series ~1.1 pp below NBS"
+    }
+   ]
+  },
+  "sex_ratio_at_birth": {
+   "latest": {
+    "value": 111.5,
+    "year": 2025,
+    "source": "国家卫健委《2025年我国卫生健康事业发展统计公报》(转引自科技日报 2026-08-28)",
+    "url": "https://www.stdaily.com/web/gdxw/2026-08/28/content_571589.html",
+    "confidence": "high"
+   },
+   "series": [
+    {
+     "year": 2024,
+     "value": 111.7,
+     "source": "国家卫健委2024年统计公报（根据住院分娩活产数据计算）",
+     "url": "https://www.nhc.gov.cn/guihuaxxs/c100133/202512/f1c3a3c617484a27a1a26a468afbaeee/files/2024年我国卫生健康事业发展统计公报-20251201161542231.pdf"
+    },
+    {
+     "year": 2022,
+     "value": 111.1,
+     "source": "国家卫健委2022年统计公报（转引自中国日报网）",
+     "url": "https://cn.chinadaily.com.cn/a/202310/12/WS652885b7a310d5acd8769ad4.html"
+    },
+    {
+     "year": 2020,
+     "value": 112.28,
+     "source": "第七次人口普查长表 表6-1 (2019.11-2020.10 出生)",
+     "url": "https://www.stats.gov.cn/sj/pcsj/rkpc/7rp/zk/html/B0601.jpg"
+    }
+   ],
+   "by_order_2020_census": {
+    "first": 113.17,
+    "second": 106.78,
+    "third": 132.93,
+    "fourth": 130.07,
+    "fifth_plus": 127.14,
+    "url": "https://www.stats.gov.cn/sj/pcsj/rkpc/7rp/zk/html/B0601.jpg"
+   },
+   "intl": [
+    {
+     "value": 110.3,
+     "year": 2024,
+     "source": "World Bank SP.POP.BRTH.MF (UN WPP 2024)",
+     "url": "https://api.worldbank.org/v2/country/CHN/indicator/SP.POP.BRTH.MF?format=json&date=2020:2025",
+     "note": "UN modelled 1.103 vs official 111.7 (hospital-delivery based)"
+    }
+   ]
+  },
+  "mean_age_mother": {
+   "all_births": {
+    "value": 28.98,
+    "year": 2020,
+    "method": "computed from single-year age-specific fertility rates in census table 6-3 (rate-weighted mean, age+0.5)",
+    "source": "中国人口普查年鉴-2020 表6-3",
+    "url": "https://www.stats.gov.cn/sj/pcsj/rkpc/7rp/zk/html/B0603.jpg",
+    "confidence": "high"
+   },
+   "first_birth": {
+    "value": 27.22,
+    "year": 2020,
+    "method": "same, first-order ASFRs",
+    "source": "中国人口普查年鉴-2020 表6-3",
+    "url": "https://www.stats.gov.cn/sj/pcsj/rkpc/7rp/zk/html/B0603.jpg",
+    "confidence": "high",
+    "corroboration": {
+     "value": 27.2,
+     "source": "第三届中国人口与发展论坛 调查 (格隆汇转引央视)",
+     "url": "https://m.gelonghui.com/live/896990"
+    }
+   },
+   "tfr_2020_census": {
+    "value": 1.296,
+    "method": "sum of census ASFRs",
+    "url": "https://www.stats.gov.cn/sj/pcsj/rkpc/7rp/zk/html/B0603.jpg"
+   },
+   "intl": [
+    {
+     "value": 28.87,
+     "year": 2020,
+     "source": "UN WPP 2024 mean age at childbearing via OWID",
+     "url": "https://ourworldindata.org/grapher/period-average-age-of-mothers.csv?country=~CHN"
+    },
+    {
+     "value": 29.02,
+     "year": 2023,
+     "source": "UN WPP 2024 via OWID",
+     "url": "https://ourworldindata.org/grapher/period-average-age-of-mothers.csv?country=~CHN"
+    },
+    {
+     "tfr": 1.013,
+     "year": 2024,
+     "source": "World Bank SP.DYN.TFRT.IN (UN WPP 2024)",
+     "url": "https://api.worldbank.org/v2/country/CHN/indicator/SP.DYN.TFRT.IN?format=json&date=2020:2025"
+    }
+   ]
+  },
+  "birth_order": {
+   "census_2020": {
+    "first": 0.4578,
+    "second": 0.4308,
+    "third": 0.0902,
+    "fourth": 0.0161,
+    "fifth_plus": 0.0051,
+    "sample_births": 1212321,
+    "source": "中国人口普查年鉴-2020 长表 表6-1",
+    "url": "https://www.stats.gov.cn/sj/pcsj/rkpc/7rp/zk/html/B0601.jpg",
+    "confidence": "high"
+   },
+   "nhc_2022": {
+    "first": 0.461,
+    "second": 0.389,
+    "third_plus": 0.15,
+    "note": "first = 1 - second - third+; latest year NHC published this split",
+    "source": "国家卫健委《2022年我国卫生健康事业发展统计公报》(转引自中国日报网/央视网)",
+    "url": "https://cn.chinadaily.com.cn/a/202310/12/WS652885b7a310d5acd8769ad4.html",
+    "confidence": "high"
+   }
+  },
+  "life_expectancy": {
+   "2025": {
+    "value": 79.25,
+    "source": "国家卫健委《2025年我国卫生健康事业发展统计公报》(转引科技日报)",
+    "url": "https://www.stdaily.com/web/gdxw/2026-08/28/content_571589.html",
+    "confidence": "high"
+   },
+   "2024": {
+    "value": 79.0,
+    "source": "国家卫健委2024年统计公报",
+    "url": "https://www.nhc.gov.cn/guihuaxxs/c100133/202512/f1c3a3c617484a27a1a26a468afbaeee/files/2024年我国卫生健康事业发展统计公报-20251201161542231.pdf",
+    "confidence": "high"
+   },
+   "2020_census": {
+    "total": 77.93,
+    "male": 75.37,
+    "female": 80.88,
+    "source": "中国统计年鉴2025 表2-3 平均预期寿命",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C02-03.jpg",
+    "confidence": "high"
+   },
+   "intl": [
+    {
+     "year": 2024,
+     "total": 78.017,
+     "male": 75.249,
+     "female": 80.966,
+     "source": "World Bank SP.DYN.LE00.IN/.MA/.FE (UN WPP 2024)",
+     "url": "https://api.worldbank.org/v2/country/CHN/indicator/SP.DYN.LE00.IN?format=json&date=2020:2025"
+    },
+    {
+     "year": 2020,
+     "total": 78.019,
+     "source": "World Bank / UN WPP 2024",
+     "url": "https://api.worldbank.org/v2/country/CHN/indicator/SP.DYN.LE00.IN?format=json&date=2020:2025"
+    },
+    {
+     "year": 2023,
+     "total": 77.9,
+     "male": 75.0,
+     "female": 81.1,
+     "source": "WHO Global Health Observatory WHOSIS_000001",
+     "url": "https://ghoapi.azureedge.net/api/WHOSIS_000001?$filter=SpatialDim%20eq%20%27CHN%27"
+    }
+   ]
+  },
+  "infant_mortality": {
+   "2025": {
+    "value": 3.8,
+    "source": "国家卫健委《2025年我国卫生健康事业发展统计公报》(转引科技日报、北青网)",
+    "url": "https://www.stdaily.com/web/gdxw/2026-08/28/content_571589.html",
+    "url2": "https://news.qq.com/rain/a/20260829A061X100",
+    "confidence": "medium",
+    "conflict": {
+     "value": 3.5,
+     "source": "国家卫健委2026-06-01儿童健康新闻发布会(同花顺快讯转引)",
+     "url": "https://news.10jqka.com.cn/20260601/c677117408.shtml"
+    }
+   },
+   "2024": {
+    "total": 4.0,
+    "urban": 2.6,
+    "rural": 4.6,
+    "neonatal": 2.5,
+    "under5": 5.6,
+    "under5_urban": 3.4,
+    "under5_rural": 6.6,
+    "source": "国家卫健委2024年统计公报; 中国统计年鉴2025 表22-15 监测地区儿童和孕产妇死亡率",
+    "url": "https://www.nhc.gov.cn/guihuaxxs/c100133/202512/f1c3a3c617484a27a1a26a468afbaeee/files/2024年我国卫生健康事业发展统计公报-20251201161542231.pdf",
+    "url2": "https://www.stats.gov.cn/sj/ndsj/2025/html/C22-15.jpg",
+    "confidence": "high"
+   },
+   "2023": {
+    "total": 4.5,
+    "urban": 2.9,
+    "rural": 5.2,
+    "source": "中国统计年鉴2025 表22-15",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2025/html/C22-15.jpg"
+   },
+   "east_central_west": "NOT FOUND (妇幼卫生监测 regional split not located in accessible sources)",
+   "intl": [
+    {
+     "year": 2024,
+     "value": 4.1,
+     "source": "World Bank SP.DYN.IMRT.IN (UN IGME)",
+     "url": "https://api.worldbank.org/v2/country/CHN/indicator/SP.DYN.IMRT.IN?format=json&date=2020:2025"
+    },
+    {
+     "year": 2023,
+     "value": 4.4,
+     "source": "UN IGME via World Bank",
+     "url": "https://api.worldbank.org/v2/country/CHN/indicator/SP.DYN.IMRT.IN?format=json&date=2020:2025"
+    }
+   ]
+  },
+  "data_quality": {
+   "census_2020_post_enumeration_omission": {
+    "value": 0.0005,
+    "source": "国新办发布会 2021-05-11 (中新网)",
+    "url": "https://www.chinanews.com.cn/gn/2021/05-11/9474646.shtml",
+    "note": "NBS also said census child counts exceeded previously published annual births, i.e. earlier sample-survey births were underestimated"
+   },
+   "academic_underreporting": {
+    "value": "1990年普查0-5岁漏报率约7.7%；作者据此推算2005年后TFR约1.6（当时官方抽样约1.2-1.4）",
+    "source": "《人口研究》2015年第39卷第2期 p.32",
+    "url": "https://rkyj.ruc.edu.cn/CN/Y2015/V39/I2/32",
+    "note": "relates to 1990/2010 censuses; no comparable published estimate for 2020 census located"
+   },
+   "hospital_live_births_vs_nbs": {
+    "2020": [
+     12034516,
+     12020000
+    ],
+    "2021": [
+     10515287,
+     10620000
+    ],
+    "2022": [
+     9587512,
+     9560000
+    ],
+    "note": "[NHC 住院分娩月报活产数, NBS births]; agree within ~1%. NBS 2020-2022 births are from memory of NBS bulletins except 2022 (956万, confirmed in 中国日报网 article); the 活产数 are from the 2023 卫生健康统计年鉴 table 8-3-1",
+    "url": "https://www.nhc.gov.cn/mohwsbwstjxxzx/tjtjnj/202501/8193a8edda0f49df80eb5a8ef5e2547c/files/1740022743894_10341.pdf",
+    "url_2022": "https://cn.chinadaily.com.cn/a/202310/12/WS652885b7a310d5acd8769ad4.html",
+    "confidence": "medium"
+   }
+  }
+ },
+ "discrepancies": [
+  "Births 2024: official 9.54M vs UN WPP 2024 projection 8.82M (+8.1% official). WPP was finalised before the 2024 Dragon-year rebound; for 2023 the WPP estimate of 8.90M is within 1.3% of the official 9.02M.",
+  "Births 2025: official 7.92M vs WPP 2024 projection 8.71M (official 9.1% lower). This is a projection miss, not proof of misreporting.",
+  "Deaths: official 10.93M (2024) and 11.31M (2025) vs WPP 11.68M and 11.72M (UN 3.6-6.8% higher). The 2023 WPP estimate is about 5% above NBS. This is a persistent, systematic gap.",
+  "Life expectancy 2024: NHC 79.0 vs UN WPP 2024 78.02 (about 1 year higher). For 2023, WHO GHO gives 77.9. In 2020 the census figure (77.93) and WPP (78.02) agree.",
+  "IMR 2025: the NHC statistical bulletin says 3.8‰, but an NHC press conference on 2026-06-01 said 3.5‰. This is an internal inconsistency in official figures, possibly from different coverage. For 2024, official 4.0‰ vs UN IGME 4.1‰ (close).",
+  "Sex ratio at birth 2024: official 111.7 (hospital-delivery data) vs WPP-modelled 110.3. 2020 census sample: 112.28.",
+  "Urbanisation 2024: NBS 67.00% vs UN WUP-based World Bank 65.89%. This is definitional.",
+  "Census quality: NBS post-enumeration survey found 0.05% omission. Academic work (人口研究 2015) estimated 7.7% under-count of ages 0-5 in the 1990 census and an implied TFR of about 1.6 vs lower official survey values. No equivalent published estimate for the 2020 census was found.",
+  "Internal check: NHC hospital live births (2022: 9,587,512) vs NBS births (956万) agree within about 0.3%.",
+  "江西 2020 male life expectancy is printed as 78.08 in the NHC yearbook, above the total of 77.64. This is almost certainly a typo, so the male value is flagged."
+ ],
+ "gaps": [
+  "2025 provincial births, birth rates and urbanisation from provincial 2025 bulletins: delegated, but not returned before handback. Only 2024 values (NBS yearbook) are included.",
+  "Provincial life expectancy newer than 2021 (2023-2025 provincial 卫健委 figures): not collected. le_latest = 2021 NHC/NBS joint estimate (total only).",
+  "Provincial infant mortality: not collected. National urban/rural fallback provided. East/central/west IMR split not found.",
+  "Birth order after 2022 (NHC stopped publishing the split in bulletins found). Official mean age of mothers at birth is not published; computed from 2020 census ASFRs.",
+  "NBS 2020/2021 birth counts in data_quality.hospital_live_births_vs_nbs are from memory (12.02M, 10.62M). Only 2022 (956万) was verified.",
+  "Web-search budget was exhausted. Contested academic claims (e.g., overcount critiques) could not be sourced further.",
+  "Minor ethnic groups with <0.2% provincial share (e.g., 鄂温克, 京, 门巴) were not transcribed. Top groups cover 52-99% of each province's minority population."
+ ]
+}

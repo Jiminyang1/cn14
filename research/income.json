@@ -1,0 +1,2076 @@
+{
+ "_meta": {
+  "compiled": "2026-10-16",
+  "scope": "national only",
+  "currency": "CNY",
+  "note": "工资均为税前。value为数组表示区间。"
+ },
+ "wage_by_industry": {
+  "_note": "税前年平均工资(含个税、个人社保公积金)，城镇法人单位(5人及以上)，不含个体户和自由职业者。非私营=表2，私营=表5。公共管理只在非私营口径中有。",
+  "industries": {
+   "total": {
+    "name_cn": "合计",
+    "non_private_2025": {
+     "value": 129441,
+     "year": 2025,
+     "unit": "元/年",
+     "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表2",
+     "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+     "confidence": "high",
+     "nominal_growth_pct": 4.3
+    },
+    "non_private_2024": {
+     "value": 124110,
+     "year": 2024,
+     "unit": "元/年",
+     "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表2(上年值)",
+     "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+     "confidence": "high"
+    },
+    "private_2025": {
+     "value": 71590,
+     "year": 2025,
+     "unit": "元/年",
+     "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表5",
+     "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+     "confidence": "high",
+     "nominal_growth_pct": 3.0
+    },
+    "private_2024": {
+     "value": 69476,
+     "year": 2024,
+     "unit": "元/年",
+     "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表5(上年值)",
+     "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+     "confidence": "high"
+    },
+    "private_to_nonprivate_ratio_2025": 0.553
+   },
+   "agriculture": {
+    "name_cn": "农、林、牧、渔业",
+    "non_private_2025": {
+     "value": 74424,
+     "year": 2025,
+     "unit": "元/年",
+     "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表2",
+     "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+     "confidence": "high",
+     "nominal_growth_pct": 10.3
+    },
+    "non_private_2024": {
+     "value": 67475,
+     "year": 2024,
+     "unit": "元/年",
+     "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表2(上年值)",
+     "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+     "confidence": "high"
+    },
+    "private_2025": {
+     "value": 46552,
+     "year": 2025,
+     "unit": "元/年",
+     "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表5",
+     "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+     "confidence": "high",
+     "nominal_growth_pct": 0.3
+    },
+    "private_2024": {
+     "value": 46433,
+     "year": 2024,
+     "unit": "元/年",
+     "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表5(上年值)",
+     "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+     "confidence": "high"
+    },
+    "private_to_nonprivate_ratio_2025": 0.625
+   },
+   "mining": {
+    "name_cn": "采矿业",
+    "non_private_2025": {
+     "value": 143361,
+     "year": 2025,
+     "unit": "元/年",
+     "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表2",
+     "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+     "confidence": "high",
+     "nominal_growth_pct": 1.9
+    },
+    "non_private_2024": {
+     "value": 140706,
+     "year": 2024,
+     "unit": "元/年",
+     "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表2(上年值)",
+     "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+     "confidence": "high"
+    },
+    "private_2025": {
+     "value": 79169,
+     "year": 2025,
+     "unit": "元/年",
+     "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表5",
+     "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+     "confidence": "high",
+     "nominal_growth_pct": 4.2
+    },
+    "private_2024": {
+     "value": 76010,
+     "year": 2024,
+     "unit": "元/年",
+     "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表5(上年值)",
+     "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+     "confidence": "high"
+    },
+    "private_to_nonprivate_ratio_2025": 0.552
+   },
+   "manufacturing": {
+    "name_cn": "制造业",
+    "non_private_2025": {
+     "value": 113594,
+     "year": 2025,
+     "unit": "元/年",
+     "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表2",
+     "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+     "confidence": "high",
+     "nominal_growth_pct": 5.2
+    },
+    "non_private_2024": {
+     "value": 107987,
+     "year": 2024,
+     "unit": "元/年",
+     "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表2(上年值)",
+     "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+     "confidence": "high"
+    },
+    "private_2025": {
+     "value": 76055,
+     "year": 2025,
+     "unit": "元/年",
+     "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表5",
+     "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+     "confidence": "high",
+     "nominal_growth_pct": 6.4
+    },
+    "private_2024": {
+     "value": 71467,
+     "year": 2024,
+     "unit": "元/年",
+     "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表5(上年值)",
+     "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+     "confidence": "high"
+    },
+    "private_to_nonprivate_ratio_2025": 0.67
+   },
+   "utilities": {
+    "name_cn": "电力、热力、燃气及水生产和供应业",
+    "non_private_2025": {
+     "value": 160897,
+     "year": 2025,
+     "unit": "元/年",
+     "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表2",
+     "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+     "confidence": "high",
+     "nominal_growth_pct": 7.1
+    },
+    "non_private_2024": {
+     "value": 150285,
+     "year": 2024,
+     "unit": "元/年",
+     "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表2(上年值)",
+     "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+     "confidence": "high"
+    },
+    "private_2025": {
+     "value": 66451,
+     "year": 2025,
+     "unit": "元/年",
+     "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表5",
+     "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+     "confidence": "high",
+     "nominal_growth_pct": 4.5
+    },
+    "private_2024": {
+     "value": 63574,
+     "year": 2024,
+     "unit": "元/年",
+     "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表5(上年值)",
+     "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+     "confidence": "high"
+    },
+    "private_to_nonprivate_ratio_2025": 0.413
+   },
+   "construction": {
+    "name_cn": "建筑业",
+    "non_private_2025": {
+     "value": 92036,
+     "year": 2025,
+     "unit": "元/年",
+     "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表2",
+     "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+     "confidence": "high",
+     "nominal_growth_pct": 2.8
+    },
+    "non_private_2024": {
+     "value": 89519,
+     "year": 2024,
+     "unit": "元/年",
+     "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表2(上年值)",
+     "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+     "confidence": "high"
+    },
+    "private_2025": {
+     "value": 66275,
+     "year": 2025,
+     "unit": "元/年",
+     "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表5",
+     "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+     "confidence": "high",
+     "nominal_growth_pct": 1.2
+    },
+    "private_2024": {
+     "value": 65494,
+     "year": 2024,
+     "unit": "元/年",
+     "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表5(上年值)",
+     "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+     "confidence": "high"
+    },
+    "private_to_nonprivate_ratio_2025": 0.72
+   },
+   "wholesale_retail": {
+    "name_cn": "批发和零售业",
+    "non_private_2025": {
+     "value": 135749,
+     "year": 2025,
+     "unit": "元/年",
+     "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表2",
+     "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+     "confidence": "high",
+     "nominal_growth_pct": 4.7
+    },
+    "non_private_2024": {
+     "value": 129658,
+     "year": 2024,
+     "unit": "元/年",
+     "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表2(上年值)",
+     "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+     "confidence": "high"
+    },
+    "private_2025": {
+     "value": 69622,
+     "year": 2025,
+     "unit": "元/年",
+     "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表5",
+     "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+     "confidence": "high",
+     "nominal_growth_pct": 3.8
+    },
+    "private_2024": {
+     "value": 67059,
+     "year": 2024,
+     "unit": "元/年",
+     "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表5(上年值)",
+     "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+     "confidence": "high"
+    },
+    "private_to_nonprivate_ratio_2025": 0.513
+   },
+   "transport_logistics": {
+    "name_cn": "交通运输、仓储和邮政业",
+    "non_private_2025": {
+     "value": 133981,
+     "year": 2025,
+     "unit": "元/年",
+     "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表2",
+     "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+     "confidence": "high",
+     "nominal_growth_pct": 4.8
+    },
+    "non_private_2024": {
+     "value": 127889,
+     "year": 2024,
+     "unit": "元/年",
+     "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表2(上年值)",
+     "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+     "confidence": "high"
+    },
+    "private_2025": {
+     "value": 73133,
+     "year": 2025,
+     "unit": "元/年",
+     "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表5",
+     "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+     "confidence": "high",
+     "nominal_growth_pct": 7.6
+    },
+    "private_2024": {
+     "value": 67973,
+     "year": 2024,
+     "unit": "元/年",
+     "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表5(上年值)",
+     "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+     "confidence": "high"
+    },
+    "private_to_nonprivate_ratio_2025": 0.546
+   },
+   "hospitality_catering": {
+    "name_cn": "住宿和餐饮业",
+    "non_private_2025": {
+     "value": 62461,
+     "year": 2025,
+     "unit": "元/年",
+     "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表2",
+     "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+     "confidence": "high",
+     "nominal_growth_pct": 3.7
+    },
+    "non_private_2024": {
+     "value": 60240,
+     "year": 2024,
+     "unit": "元/年",
+     "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表2(上年值)",
+     "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+     "confidence": "high"
+    },
+    "private_2025": {
+     "value": 55123,
+     "year": 2025,
+     "unit": "元/年",
+     "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表5",
+     "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+     "confidence": "high",
+     "nominal_growth_pct": 2.0
+    },
+    "private_2024": {
+     "value": 54042,
+     "year": 2024,
+     "unit": "元/年",
+     "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表5(上年值)",
+     "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+     "confidence": "high"
+    },
+    "private_to_nonprivate_ratio_2025": 0.883
+   },
+   "it_software": {
+    "name_cn": "信息传输、软件和信息技术服务业",
+    "non_private_2025": {
+     "value": 248752,
+     "year": 2025,
+     "unit": "元/年",
+     "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表2",
+     "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+     "confidence": "high",
+     "nominal_growth_pct": 4.1
+    },
+    "non_private_2024": {
+     "value": 238966,
+     "year": 2024,
+     "unit": "元/年",
+     "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表2(上年值)",
+     "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+     "confidence": "high"
+    },
+    "private_2025": {
+     "value": 128166,
+     "year": 2025,
+     "unit": "元/年",
+     "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表5",
+     "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+     "confidence": "high",
+     "nominal_growth_pct": 4.0
+    },
+    "private_2024": {
+     "value": 123193,
+     "year": 2024,
+     "unit": "元/年",
+     "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表5(上年值)",
+     "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+     "confidence": "high"
+    },
+    "private_to_nonprivate_ratio_2025": 0.515
+   },
+   "finance": {
+    "name_cn": "金融业",
+    "non_private_2025": {
+     "value": 211164,
+     "year": 2025,
+     "unit": "元/年",
+     "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表2",
+     "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+     "confidence": "high",
+     "nominal_growth_pct": 4.6
+    },
+    "non_private_2024": {
+     "value": 201883,
+     "year": 2024,
+     "unit": "元/年",
+     "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表2(上年值)",
+     "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+     "confidence": "high"
+    },
+    "private_2025": {
+     "value": 140451,
+     "year": 2025,
+     "unit": "元/年",
+     "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表5",
+     "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+     "confidence": "high",
+     "nominal_growth_pct": 3.8
+    },
+    "private_2024": {
+     "value": 135339,
+     "year": 2024,
+     "unit": "元/年",
+     "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表5(上年值)",
+     "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+     "confidence": "high"
+    },
+    "private_to_nonprivate_ratio_2025": 0.665
+   },
+   "real_estate": {
+    "name_cn": "房地产业",
+    "non_private_2025": {
+     "value": 89679,
+     "year": 2025,
+     "unit": "元/年",
+     "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表2",
+     "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+     "confidence": "high",
+     "nominal_growth_pct": -2.4
+    },
+    "non_private_2024": {
+     "value": 91912,
+     "year": 2024,
+     "unit": "元/年",
+     "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表2(上年值)",
+     "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+     "confidence": "high"
+    },
+    "private_2025": {
+     "value": 53338,
+     "year": 2025,
+     "unit": "元/年",
+     "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表5",
+     "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+     "confidence": "high",
+     "nominal_growth_pct": -4.7
+    },
+    "private_2024": {
+     "value": 55979,
+     "year": 2024,
+     "unit": "元/年",
+     "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表5(上年值)",
+     "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+     "confidence": "high"
+    },
+    "private_to_nonprivate_ratio_2025": 0.595
+   },
+   "leasing_business_services": {
+    "name_cn": "租赁和商务服务业",
+    "non_private_2025": {
+     "value": 110162,
+     "year": 2025,
+     "unit": "元/年",
+     "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表2",
+     "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+     "confidence": "high",
+     "nominal_growth_pct": -0.2
+    },
+    "non_private_2024": {
+     "value": 110353,
+     "year": 2024,
+     "unit": "元/年",
+     "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表2(上年值)",
+     "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+     "confidence": "high"
+    },
+    "private_2025": {
+     "value": 68919,
+     "year": 2025,
+     "unit": "元/年",
+     "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表5",
+     "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+     "confidence": "high",
+     "nominal_growth_pct": -0.4
+    },
+    "private_2024": {
+     "value": 69214,
+     "year": 2024,
+     "unit": "元/年",
+     "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表5(上年值)",
+     "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+     "confidence": "high"
+    },
+    "private_to_nonprivate_ratio_2025": 0.626
+   },
+   "research_tech_services": {
+    "name_cn": "科学研究和技术服务业",
+    "non_private_2025": {
+     "value": 182064,
+     "year": 2025,
+     "unit": "元/年",
+     "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表2",
+     "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+     "confidence": "high",
+     "nominal_growth_pct": 3.8
+    },
+    "non_private_2024": {
+     "value": 175425,
+     "year": 2024,
+     "unit": "元/年",
+     "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表2(上年值)",
+     "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+     "confidence": "high"
+    },
+    "private_2025": {
+     "value": 83560,
+     "year": 2025,
+     "unit": "元/年",
+     "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表5",
+     "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+     "confidence": "high",
+     "nominal_growth_pct": 1.4
+    },
+    "private_2024": {
+     "value": 82387,
+     "year": 2024,
+     "unit": "元/年",
+     "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表5(上年值)",
+     "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+     "confidence": "high"
+    },
+    "private_to_nonprivate_ratio_2025": 0.459
+   },
+   "water_environment_public_facilities": {
+    "name_cn": "水利、环境和公共设施管理业",
+    "non_private_2025": {
+     "value": 70172,
+     "year": 2025,
+     "unit": "元/年",
+     "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表2",
+     "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+     "confidence": "high",
+     "nominal_growth_pct": 2.7
+    },
+    "non_private_2024": {
+     "value": 68315,
+     "year": 2024,
+     "unit": "元/年",
+     "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表2(上年值)",
+     "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+     "confidence": "high"
+    },
+    "private_2025": {
+     "value": 49527,
+     "year": 2025,
+     "unit": "元/年",
+     "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表5",
+     "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+     "confidence": "high",
+     "nominal_growth_pct": 1.1
+    },
+    "private_2024": {
+     "value": 49007,
+     "year": 2024,
+     "unit": "元/年",
+     "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表5(上年值)",
+     "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+     "confidence": "high"
+    },
+    "private_to_nonprivate_ratio_2025": 0.706
+   },
+   "resident_services_repair": {
+    "name_cn": "居民服务、修理和其他服务业",
+    "non_private_2025": {
+     "value": 70226,
+     "year": 2025,
+     "unit": "元/年",
+     "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表2",
+     "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+     "confidence": "high",
+     "nominal_growth_pct": 3.0
+    },
+    "non_private_2024": {
+     "value": 68159,
+     "year": 2024,
+     "unit": "元/年",
+     "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表2(上年值)",
+     "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+     "confidence": "high"
+    },
+    "private_2025": {
+     "value": 52059,
+     "year": 2025,
+     "unit": "元/年",
+     "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表5",
+     "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+     "confidence": "high",
+     "nominal_growth_pct": -0.2
+    },
+    "private_2024": {
+     "value": 52139,
+     "year": 2024,
+     "unit": "元/年",
+     "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表5(上年值)",
+     "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+     "confidence": "high"
+    },
+    "private_to_nonprivate_ratio_2025": 0.741
+   },
+   "education": {
+    "name_cn": "教育",
+    "non_private_2025": {
+     "value": 133539,
+     "year": 2025,
+     "unit": "元/年",
+     "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表2",
+     "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+     "confidence": "high",
+     "nominal_growth_pct": 5.8
+    },
+    "non_private_2024": {
+     "value": 126185,
+     "year": 2024,
+     "unit": "元/年",
+     "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表2(上年值)",
+     "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+     "confidence": "high"
+    },
+    "private_2025": {
+     "value": 63908,
+     "year": 2025,
+     "unit": "元/年",
+     "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表5",
+     "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+     "confidence": "high",
+     "nominal_growth_pct": 5.3
+    },
+    "private_2024": {
+     "value": 60719,
+     "year": 2024,
+     "unit": "元/年",
+     "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表5(上年值)",
+     "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+     "confidence": "high"
+    },
+    "private_to_nonprivate_ratio_2025": 0.479
+   },
+   "health_social_work": {
+    "name_cn": "卫生和社会工作",
+    "non_private_2025": {
+     "value": 146266,
+     "year": 2025,
+     "unit": "元/年",
+     "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表2",
+     "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+     "confidence": "high",
+     "nominal_growth_pct": 2.2
+    },
+    "non_private_2024": {
+     "value": 143173,
+     "year": 2024,
+     "unit": "元/年",
+     "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表2(上年值)",
+     "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+     "confidence": "high"
+    },
+    "private_2025": {
+     "value": 75631,
+     "year": 2025,
+     "unit": "元/年",
+     "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表5",
+     "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+     "confidence": "high",
+     "nominal_growth_pct": 0.5
+    },
+    "private_2024": {
+     "value": 75287,
+     "year": 2024,
+     "unit": "元/年",
+     "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表5(上年值)",
+     "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+     "confidence": "high"
+    },
+    "private_to_nonprivate_ratio_2025": 0.517
+   },
+   "culture_sports_entertainment": {
+    "name_cn": "文化、体育和娱乐业",
+    "non_private_2025": {
+     "value": 129447,
+     "year": 2025,
+     "unit": "元/年",
+     "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表2",
+     "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+     "confidence": "high",
+     "nominal_growth_pct": 2.7
+    },
+    "non_private_2024": {
+     "value": 126040,
+     "year": 2024,
+     "unit": "元/年",
+     "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表2(上年值)",
+     "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+     "confidence": "high"
+    },
+    "private_2025": {
+     "value": 64015,
+     "year": 2025,
+     "unit": "元/年",
+     "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表5",
+     "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+     "confidence": "high",
+     "nominal_growth_pct": 3.8
+    },
+    "private_2024": {
+     "value": 61669,
+     "year": 2024,
+     "unit": "元/年",
+     "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表5(上年值)",
+     "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+     "confidence": "high"
+    },
+    "private_to_nonprivate_ratio_2025": 0.495
+   },
+   "public_administration": {
+    "name_cn": "公共管理、社会保障和社会组织",
+    "non_private_2025": {
+     "value": 119465,
+     "year": 2025,
+     "unit": "元/年",
+     "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表2",
+     "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+     "confidence": "high",
+     "nominal_growth_pct": 4.0
+    },
+    "non_private_2024": {
+     "value": 114840,
+     "year": 2024,
+     "unit": "元/年",
+     "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表2(上年值)",
+     "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+     "confidence": "high"
+    },
+    "private_2025": null,
+    "private_note": "私营单位口径不含该行业"
+   }
+  },
+  "above_scale_enterprises_2025": {
+   "value": 106080,
+   "year": 2025,
+   "unit": "元/年",
+   "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15)",
+   "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+   "confidence": "high",
+   "nominal_growth_pct": 3.5,
+   "real_growth_pct": 3.4
+  },
+  "above_scale_enterprises_2024": {
+   "value": 102452,
+   "year": 2024,
+   "unit": "元/年",
+   "source": "国家统计局 2024年平均工资解读(2025-05-16)",
+   "url": "https://www.stats.gov.cn/sj/sjjd/202505/t20250516_1959829.html",
+   "confidence": "high",
+   "nominal_growth_pct": 4.4
+  },
+  "by_region_non_private_2025": {
+   "east": {
+    "value": 149902,
+    "year": 2025,
+    "unit": "元/年",
+    "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表1",
+    "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+    "confidence": "high"
+   },
+   "central": {
+    "value": 102645,
+    "year": 2025,
+    "unit": "元/年",
+    "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表1",
+    "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+    "confidence": "high"
+   },
+   "west": {
+    "value": 114989,
+    "year": 2025,
+    "unit": "元/年",
+    "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表1",
+    "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+    "confidence": "high"
+   },
+   "northeast": {
+    "value": 103803,
+    "year": 2025,
+    "unit": "元/年",
+    "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表1",
+    "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+    "confidence": "high"
+   }
+  },
+  "by_region_private_2025": {
+   "east": {
+    "value": 80149,
+    "year": 2025,
+    "unit": "元/年",
+    "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表4",
+    "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+    "confidence": "high"
+   },
+   "central": {
+    "value": 58627,
+    "year": 2025,
+    "unit": "元/年",
+    "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表4",
+    "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+    "confidence": "high"
+   },
+   "west": {
+    "value": 60923,
+    "year": 2025,
+    "unit": "元/年",
+    "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表4",
+    "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+    "confidence": "high"
+   },
+   "northeast": {
+    "value": 54430,
+    "year": 2025,
+    "unit": "元/年",
+    "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表4",
+    "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+    "confidence": "high"
+   }
+  }
+ },
+ "wage_by_position": {
+  "_note": "规模以上企业分岗位年平均工资(税前)。ratio_to_avg 由本文件计算 = 岗位工资/106080。2023值来自2024-05-20解读。",
+  "positions": {
+   "all_above_scale": {
+    "name_cn": "规模以上企业就业人员平均",
+    "y2025": {
+     "value": 106080,
+     "year": 2025,
+     "unit": "元/年",
+     "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表6",
+     "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+     "confidence": "high",
+     "nominal_growth_pct": 3.5
+    },
+    "ratio_to_avg_2025": 1.0
+   },
+   "mid_senior_management": {
+    "name_cn": "中层及以上管理人员",
+    "y2025": {
+     "value": 210016,
+     "year": 2025,
+     "unit": "元/年",
+     "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表6",
+     "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+     "confidence": "high",
+     "nominal_growth_pct": 3.4
+    },
+    "ratio_to_avg_2025": 1.98,
+    "y2023": {
+     "value": 198285,
+     "year": 2023,
+     "unit": "元/年",
+     "source": "国家统计局 2023年平均工资解读(2024-05-20)",
+     "url": "https://www.stats.gov.cn/xxgk/jd/sjjd2020/202405/t20240520_1950461.html",
+     "confidence": "high"
+    }
+   },
+   "professional_technical": {
+    "name_cn": "专业技术人员",
+    "y2025": {
+     "value": 155491,
+     "year": 2025,
+     "unit": "元/年",
+     "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表6",
+     "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+     "confidence": "high",
+     "nominal_growth_pct": 5.0
+    },
+    "ratio_to_avg_2025": 1.466,
+    "y2023": {
+     "value": 140935,
+     "year": 2023,
+     "unit": "元/年",
+     "source": "国家统计局 2023年平均工资解读(2024-05-20)",
+     "url": "https://www.stats.gov.cn/xxgk/jd/sjjd2020/202405/t20240520_1950461.html",
+     "confidence": "high"
+    }
+   },
+   "clerical": {
+    "name_cn": "办事人员和有关人员",
+    "y2025": {
+     "value": 94936,
+     "year": 2025,
+     "unit": "元/年",
+     "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表6",
+     "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+     "confidence": "high",
+     "nominal_growth_pct": 1.9
+    },
+    "ratio_to_avg_2025": 0.895,
+    "y2023": {
+     "value": 89502,
+     "year": 2023,
+     "unit": "元/年",
+     "source": "国家统计局 2023年平均工资解读(2024-05-20)",
+     "url": "https://www.stats.gov.cn/xxgk/jd/sjjd2020/202405/t20240520_1950461.html",
+     "confidence": "high"
+    }
+   },
+   "service_workers": {
+    "name_cn": "社会生产服务和生活服务人员",
+    "y2025": {
+     "value": 79857,
+     "year": 2025,
+     "unit": "元/年",
+     "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表6",
+     "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+     "confidence": "high",
+     "nominal_growth_pct": 2.9
+    },
+    "ratio_to_avg_2025": 0.753,
+    "y2023": {
+     "value": 75216,
+     "year": 2023,
+     "unit": "元/年",
+     "source": "国家统计局 2023年平均工资解读(2024-05-20)",
+     "url": "https://www.stats.gov.cn/xxgk/jd/sjjd2020/202405/t20240520_1950461.html",
+     "confidence": "high"
+    }
+   },
+   "production_manufacturing": {
+    "name_cn": "生产制造及有关人员",
+    "y2025": {
+     "value": 80739,
+     "year": 2025,
+     "unit": "元/年",
+     "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表6",
+     "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+     "confidence": "high",
+     "nominal_growth_pct": 2.8
+    },
+    "ratio_to_avg_2025": 0.761,
+    "y2023": {
+     "value": 75463,
+     "year": 2023,
+     "unit": "元/年",
+     "source": "国家统计局 2023年平均工资解读(2024-05-20)",
+     "url": "https://www.stats.gov.cn/xxgk/jd/sjjd2020/202405/t20240520_1950461.html",
+     "confidence": "high"
+    }
+   }
+  },
+  "regional_2025": {
+   "_cols": [
+    "avg",
+    "mid_senior_management",
+    "professional_technical",
+    "clerical",
+    "service_workers",
+    "production_manufacturing"
+   ],
+   "east": [
+    117017,
+    244072,
+    178144,
+    106554,
+    87308,
+    82365
+   ],
+   "central": [
+    83745,
+    146120,
+    109327,
+    73102,
+    65613,
+    72893
+   ],
+   "west": [
+    95942,
+    173471,
+    127950,
+    82694,
+    70438,
+    85044
+   ],
+   "northeast": [
+    91712,
+    169385,
+    114053,
+    81503,
+    74287,
+    80204
+   ],
+   "unit": "元/年",
+   "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 表6",
+   "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+   "confidence": "high",
+   "year": 2025
+  }
+ },
+ "occupations": {
+  "rider": {
+   "label": "外卖骑手",
+   "meituan_high_freq_q1_2025": {
+    "value": [
+     7230,
+     10100
+    ],
+    "year": 2025,
+    "unit": "元/月(区间,全国高频骑手)",
+    "source": "美团2025Q1财报披露，界面新闻转述(2025-05-26)",
+    "url": "https://www.jiemian.com/article/12827241.html",
+    "confidence": "medium",
+    "note": "平台自报，仅高频骑手；一线城市乐跑骑手可达12593元/月。高频骑手据美团研究院约占接单骑手的11%(2023年)，不代表全体。"
+   },
+   "blue_collar_report_2024": {
+    "value": 7496,
+    "year": 2024,
+    "unit": "元/月(平均)",
+    "source": "《2024中国蓝领就业调研报告》，新华网转述(2025-04-02)；时薪33.6元",
+    "url": "https://www.xinhuanet.com/tech/20250402/8afe4b8028894132816d686d9e9baaba/c.html",
+    "confidence": "medium",
+    "note": "发布机构与样本在报道中未写明。"
+   },
+   "official_proxy": {
+    "value": 5795,
+    "year": 2025,
+    "unit": "元/月",
+    "source": "国家统计局《2025年农民工监测调查报告》(2026-04-30) 交通运输仓储和邮政业农民工",
+    "url": "https://www.stats.gov.cn/sj/zxfbhjd/202604/t20260430_1963472.html",
+    "confidence": "medium",
+    "note": "官方无骑手专项统计，此为最接近的官方代理。"
+   },
+   "game_suggestion": {
+    "value": [
+     5500,
+     9000
+    ],
+    "unit": "元/月(毛收入，未扣电动车/话费等)",
+    "confidence": "medium",
+    "source": "综合上述",
+    "url": "https://www.jiemian.com/article/12827241.html",
+    "year": 2025
+   }
+  },
+  "ride_hailing_driver": {
+   "label": "网约车司机",
+   "cnef_survey_2025": {
+    "value": 7623,
+    "year": 2025,
+    "unit": "元/月(平均)",
+    "source": "中国新就业形态研究中心《城市出行的就业韧性：网约车司机就业图景与职业表现(2025)》，样本5400+人/13省市，凤凰网/IT之家转述(2025-09-18)",
+    "url": "https://tech.ifeng.com/c/8mkwQZ8VzGP",
+    "confidence": "medium",
+    "note": "是否已扣油电/车辆成本未写明；一线城市日均在线>=8小时者11557.1元/月。"
+   },
+   "wuxi_hourly_after_commission": {
+    "value": 29.01,
+    "year": 2025,
+    "unit": "元/小时(扣平台抽成后，2025H2，无锡市区)",
+    "source": "经济观察报，虎嗅转载(2026-04-13)",
+    "url": "https://www.huxiu.com/article/4850130.html",
+    "confidence": "medium",
+    "note": "接近当地非全日制最低小时工资25元；深圳日均营收548.9元(2025H2)，广州每公里收入从3.46元(2022H2)降至2.66元(2025)；司机普遍日在线约10小时。"
+   },
+   "game_suggestion": {
+    "value": [
+     5000,
+     9000
+    ],
+    "unit": "元/月(扣成本后净收入粗估，长工时)",
+    "confidence": "low",
+    "source": "基于上述调查与城市数据推算",
+    "url": "https://www.huxiu.com/article/4850130.html",
+    "year": 2025
+   }
+  },
+  "civil_servant": {
+   "label": "公务员",
+   "official_proxy": {
+    "value": 119465,
+    "year": 2025,
+    "unit": "元/年",
+    "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 公共管理、社会保障和社会组织(非私营)",
+    "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+    "confidence": "high",
+    "note": "该行业含社会组织、事业编等，不等于公务员；含个税社保公积金个人部分，不含公积金单位部分。"
+   },
+   "typical_range": {
+    "value": [
+     80000,
+     250000
+    ],
+    "year": 2025,
+    "unit": "元/年(综合收入，三四线下限至一线上限)",
+    "source": "memory/unverified (公考网站估算口径，未找到官方数据)",
+    "url": null,
+    "confidence": "low",
+    "note": "基层科员到手约5000-8000元/月为常见说法，地区差异极大。"
+   }
+  },
+  "teacher_k12": {
+   "label": "中小学教师",
+   "official_proxy": {
+    "value": 133539,
+    "year": 2025,
+    "unit": "元/年",
+    "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 教育(非私营)",
+    "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+    "confidence": "high",
+    "note": "含高校及教育行政；私营教育单位仅63908元/年。"
+   },
+   "policy": {
+    "value": "义务教育教师平均工资不低于当地公务员平均工资(《教师法》《义务教育法》，2020年底为硬性目标)",
+    "year": 2020,
+    "unit": null,
+    "source": "澎湃新闻(2020-09-12)",
+    "url": "https://www.thepaper.cn/newsDetail_forward_9147642",
+    "confidence": "high",
+    "note": "执行中多以基本工资比照，落实不一。"
+   },
+   "game_suggestion": {
+    "value": [
+     70000,
+     180000
+    ],
+    "unit": "元/年",
+    "confidence": "low",
+    "source": "基于教育行业均值与公务员挂钩政策推断",
+    "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+    "year": 2025
+   }
+  },
+  "doctor": {
+   "label": "医生",
+   "official_proxy": {
+    "value": 146266,
+    "year": 2025,
+    "unit": "元/年",
+    "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 卫生和社会工作(非私营)",
+    "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+    "confidence": "high",
+    "note": "含护士、行政、后勤及社会工作，医生高于该均值。私营口径75631元/年。"
+   },
+   "hospital_hr_survey_2022": {
+    "value": 94000,
+    "year": 2022,
+    "unit": "元/年(医生平均临床收入，税前)",
+    "source": "《2022年中国医院人力资源现状调研报告》，医械创新资讯转述(2023-08-15)；约70%医生税前临床收入<10万",
+    "url": "https://innomd.com/article/64db43058fe40d0001d9da08",
+    "confidence": "low",
+    "note": "二手引用，口径(是否含绩效)不明，明显低于统计局行业均值；丁香人才2021报告上海医院年薪35.1万元。"
+   },
+   "dxy_historic": {
+    "value": 96000,
+    "year": 2017,
+    "unit": "元/年(医生平均)",
+    "source": "丁香园《2017医生薪酬报告》，丁香园2019年文章引用",
+    "url": "http://commercial.dxy.cn/article/604574",
+    "confidence": "low",
+    "note": "仅为历史值，2018年后丁香园未找到公开全国均值。"
+   },
+   "game_suggestion": {
+    "value": {
+     "resident_junior": [
+      80000,
+      150000
+     ],
+     "attending": [
+      150000,
+      300000
+     ],
+     "chief_tier1": [
+      300000,
+      700000
+     ]
+    },
+    "unit": "元/年",
+    "confidence": "low",
+    "source": "memory/unverified，参考上述来源",
+    "url": null,
+    "year": 2025
+   }
+  },
+  "nurse": {
+   "label": "护士",
+   "official_proxy": {
+    "value": 146266,
+    "year": 2025,
+    "unit": "元/年",
+    "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 卫生和社会工作(非私营)，护士通常低于该均值",
+    "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+    "confidence": "medium"
+   },
+   "independent": {
+    "value": null,
+    "year": null,
+    "unit": null,
+    "source": "未找到可靠的全国护士薪酬调查",
+    "url": null,
+    "confidence": "low"
+   },
+   "game_suggestion": {
+    "value": [
+     60000,
+     120000
+    ],
+    "unit": "元/年",
+    "confidence": "low",
+    "source": "memory/unverified",
+    "url": null,
+    "year": 2025
+   }
+  },
+  "programmer": {
+   "label": "程序员(大城市)",
+   "official_proxy_nonprivate": {
+    "value": 248752,
+    "year": 2025,
+    "unit": "元/年",
+    "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 信息传输软件和信息技术服务业(非私营)",
+    "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+    "confidence": "high",
+    "note": "全国全岗位均值，含非技术岗；私营口径128166元/年。"
+   },
+   "beijing_prof_tech_median_q4_2025": {
+    "value": 13264,
+    "year": 2025,
+    "unit": "元/月(北京专业技术人员整体中位值，不含年终奖股权)",
+    "source": "北京市人社局《2025年北京市人力资源市场薪酬数据报告(四季度)》，新京报转述(2026-01-09)",
+    "url": "https://www.bjnews.com.cn/detail/1767950398129835.html",
+    "confidence": "medium",
+    "note": "AI大模型架构师/NLP工程师等中位值>40000元/月。"
+   },
+   "51job_2025_first_tier": {
+    "value": {
+     "cloud_architect": 491253,
+     "ic_design_engineer": 400591,
+     "auto_algorithm_engineer": 384258
+    },
+    "year": 2025,
+    "unit": "元/年(一线城市平均)",
+    "source": "前程无忧《人力资源白皮书》，新京报转述(2026-02-27)",
+    "url": "https://www.bjnews.com.cn/detail/1772164812129130.html",
+    "confidence": "medium",
+    "note": "高端技术岗，非普通开发。"
+   },
+   "game_suggestion": {
+    "value": {
+     "junior": [
+      150000,
+      250000
+     ],
+     "mid": [
+      250000,
+      450000
+     ],
+     "senior": [
+      450000,
+      800000
+     ]
+    },
+    "unit": "元/年(一线城市税前总包)",
+    "confidence": "low",
+    "source": "memory/unverified，与上述来源量级一致",
+    "url": null,
+    "year": 2025
+   }
+  },
+  "factory_worker": {
+   "label": "工厂普工",
+   "migrant_manufacturing": {
+    "value": 5126,
+    "year": 2025,
+    "unit": "元/月",
+    "source": "国家统计局《2025年农民工监测调查报告》(2026-04-30) 制造业",
+    "url": "https://www.stats.gov.cn/sj/zxfbhjd/202604/t20260430_1963472.html",
+    "confidence": "high"
+   },
+   "production_position": {
+    "value": 80739,
+    "year": 2025,
+    "unit": "元/年",
+    "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 规模以上企业生产制造及有关人员",
+    "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+    "confidence": "high"
+   },
+   "private_manufacturing": {
+    "value": 76055,
+    "year": 2025,
+    "unit": "元/年",
+    "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 私营制造业",
+    "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+    "confidence": "high"
+   }
+  },
+  "construction_worker": {
+   "label": "建筑工",
+   "migrant_construction": {
+    "value": 5880,
+    "year": 2025,
+    "unit": "元/月",
+    "source": "国家统计局《2025年农民工监测调查报告》(2026-04-30) 建筑业(六大行业中最高，连续四年)",
+    "url": "https://www.stats.gov.cn/sj/zxfbhjd/202604/t20260430_1963472.html",
+    "confidence": "high",
+    "note": "建筑工常有欠薪与非全年开工，月收入×12会高估年收入。"
+   },
+   "private_construction": {
+    "value": 66275,
+    "year": 2025,
+    "unit": "元/年",
+    "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 私营建筑业",
+    "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+    "confidence": "high"
+   },
+   "hourly_2024": {
+    "value": 24.0,
+    "year": 2024,
+    "unit": "元/小时",
+    "source": "《2024中国蓝领就业调研报告》，新华网转述",
+    "url": "https://www.xinhuanet.com/tech/20250402/8afe4b8028894132816d686d9e9baaba/c.html",
+    "confidence": "medium"
+   }
+  },
+  "migrant_worker": {
+   "label": "农民工",
+   "by_industry": {
+    "all": {
+     "y2025": {
+      "value": 5075,
+      "year": 2025,
+      "unit": "元/月",
+      "source": "国家统计局《2025年农民工监测调查报告》(2026-04-30)",
+      "url": "https://www.stats.gov.cn/sj/zxfbhjd/202604/t20260430_1963472.html",
+      "confidence": "high",
+      "nominal_growth_pct": 2.3
+     },
+     "y2024": {
+      "value": 4961,
+      "year": 2024,
+      "unit": "元/月",
+      "source": "国家统计局《2025年农民工监测调查报告》(2026-04-30)",
+      "url": "https://www.stats.gov.cn/sj/zxfbhjd/202604/t20260430_1963472.html",
+      "confidence": "high"
+     }
+    },
+    "manufacturing": {
+     "y2025": {
+      "value": 5126,
+      "year": 2025,
+      "unit": "元/月",
+      "source": "国家统计局《2025年农民工监测调查报告》(2026-04-30)",
+      "url": "https://www.stats.gov.cn/sj/zxfbhjd/202604/t20260430_1963472.html",
+      "confidence": "high",
+      "nominal_growth_pct": 3.0
+     },
+     "y2024": {
+      "value": 4978,
+      "year": 2024,
+      "unit": "元/月",
+      "source": "国家统计局《2025年农民工监测调查报告》(2026-04-30)",
+      "url": "https://www.stats.gov.cn/sj/zxfbhjd/202604/t20260430_1963472.html",
+      "confidence": "high"
+     }
+    },
+    "construction": {
+     "y2025": {
+      "value": 5880,
+      "year": 2025,
+      "unit": "元/月",
+      "source": "国家统计局《2025年农民工监测调查报告》(2026-04-30)",
+      "url": "https://www.stats.gov.cn/sj/zxfbhjd/202604/t20260430_1963472.html",
+      "confidence": "high",
+      "nominal_growth_pct": 2.4
+     },
+     "y2024": {
+      "value": 5743,
+      "year": 2024,
+      "unit": "元/月",
+      "source": "国家统计局《2025年农民工监测调查报告》(2026-04-30)",
+      "url": "https://www.stats.gov.cn/sj/zxfbhjd/202604/t20260430_1963472.html",
+      "confidence": "high"
+     }
+    },
+    "wholesale_retail": {
+     "y2025": {
+      "value": 4382,
+      "year": 2025,
+      "unit": "元/月",
+      "source": "国家统计局《2025年农民工监测调查报告》(2026-04-30)",
+      "url": "https://www.stats.gov.cn/sj/zxfbhjd/202604/t20260430_1963472.html",
+      "confidence": "high",
+      "nominal_growth_pct": 0.5
+     },
+     "y2024": {
+      "value": 4362,
+      "year": 2024,
+      "unit": "元/月",
+      "source": "国家统计局《2025年农民工监测调查报告》(2026-04-30)",
+      "url": "https://www.stats.gov.cn/sj/zxfbhjd/202604/t20260430_1963472.html",
+      "confidence": "high"
+     }
+    },
+    "transport_logistics": {
+     "y2025": {
+      "value": 5795,
+      "year": 2025,
+      "unit": "元/月",
+      "source": "国家统计局《2025年农民工监测调查报告》(2026-04-30)",
+      "url": "https://www.stats.gov.cn/sj/zxfbhjd/202604/t20260430_1963472.html",
+      "confidence": "high",
+      "nominal_growth_pct": 2.8
+     },
+     "y2024": {
+      "value": 5635,
+      "year": 2024,
+      "unit": "元/月",
+      "source": "国家统计局《2025年农民工监测调查报告》(2026-04-30)",
+      "url": "https://www.stats.gov.cn/sj/zxfbhjd/202604/t20260430_1963472.html",
+      "confidence": "high"
+     }
+    },
+    "hospitality_catering": {
+     "y2025": {
+      "value": 4208,
+      "year": 2025,
+      "unit": "元/月",
+      "source": "国家统计局《2025年农民工监测调查报告》(2026-04-30)",
+      "url": "https://www.stats.gov.cn/sj/zxfbhjd/202604/t20260430_1963472.html",
+      "confidence": "high",
+      "nominal_growth_pct": 1.6
+     },
+     "y2024": {
+      "value": 4141,
+      "year": 2024,
+      "unit": "元/月",
+      "source": "国家统计局《2025年农民工监测调查报告》(2026-04-30)",
+      "url": "https://www.stats.gov.cn/sj/zxfbhjd/202604/t20260430_1963472.html",
+      "confidence": "high"
+     }
+    },
+    "resident_services_repair": {
+     "y2025": {
+      "value": 4130,
+      "year": 2025,
+      "unit": "元/月",
+      "source": "国家统计局《2025年农民工监测调查报告》(2026-04-30)",
+      "url": "https://www.stats.gov.cn/sj/zxfbhjd/202604/t20260430_1963472.html",
+      "confidence": "high",
+      "nominal_growth_pct": 2.7
+     },
+     "y2024": {
+      "value": 4023,
+      "year": 2024,
+      "unit": "元/月",
+      "source": "国家统计局《2025年农民工监测调查报告》(2026-04-30)",
+      "url": "https://www.stats.gov.cn/sj/zxfbhjd/202604/t20260430_1963472.html",
+      "confidence": "high"
+     }
+    }
+   },
+   "outbound_2025": {
+    "value": 5774,
+    "year": 2025,
+    "unit": "元/月",
+    "source": "国家统计局《2025年农民工监测调查报告》(2026-04-30) 外出农民工",
+    "url": "https://www.stats.gov.cn/sj/zxfbhjd/202604/t20260430_1963472.html",
+    "confidence": "high",
+    "nominal_growth_pct": 2.5
+   },
+   "local_2025": {
+    "value": 4376,
+    "year": 2025,
+    "unit": "元/月",
+    "source": "国家统计局《2025年农民工监测调查报告》(2026-04-30) 本地农民工",
+    "url": "https://www.stats.gov.cn/sj/zxfbhjd/202604/t20260430_1963472.html",
+    "confidence": "high",
+    "nominal_growth_pct": 2.0
+   },
+   "total_count_2025": {
+    "value": 30115,
+    "year": 2025,
+    "unit": "万人",
+    "source": "国家统计局《2025年农民工监测调查报告》(2026-04-30)",
+    "url": "https://www.stats.gov.cn/sj/zxfbhjd/202604/t20260430_1963472.html",
+    "confidence": "high"
+   },
+   "avg_age_2025": {
+    "value": 43.3,
+    "year": 2025,
+    "unit": "岁",
+    "source": "国家统计局《2025年农民工监测调查报告》(2026-04-30)",
+    "url": "https://www.stats.gov.cn/sj/zxfbhjd/202604/t20260430_1963472.html",
+    "confidence": "high",
+    "over_50_share_pct": 32.0
+   },
+   "education_2025": {
+    "value": {
+     "junior_high_or_below": 65.4,
+     "senior_high": 17.5,
+     "college_or_above": 17.1
+    },
+    "year": 2025,
+    "unit": "%",
+    "source": "国家统计局《2025年农民工监测调查报告》(2026-04-30)",
+    "url": "https://www.stats.gov.cn/sj/zxfbhjd/202604/t20260430_1963472.html",
+    "confidence": "high"
+   }
+  },
+  "self_employed": {
+   "label": "个体户",
+   "urban_business_net_income_per_capita": {
+    "value": 6592,
+    "year": 2025,
+    "unit": "元/人/年(城镇居民人均经营净收入，摊到全部城镇人口)",
+    "source": "国家统计局《2025年居民收入和消费支出情况》表2",
+    "url": "https://www.stats.gov.cn/sj/zxfb/202601/t20260119_1962321.html",
+    "confidence": "medium",
+    "note": "并非个体户户主收入，仅表示经营收入在城镇居民收入中的规模。"
+   },
+   "count_context": {
+    "value": {
+     "new_registrations_2025": 16194000,
+     "operating_3plus_years": 84198000,
+     "share_3plus_years_pct": 65.8
+    },
+    "year": 2025,
+    "unit": "户",
+    "source": "市场监管总局，新华网(2026-03-26)",
+    "url": "https://www.news.cn/fortune/20260326/57173d72d3874851b8947968322bf63a/c.html",
+    "confidence": "high",
+    "note": "由此推算个体户总量约1.28亿户(本文件计算)。未找到官方的个体户经营者平均收入。"
+   },
+   "game_suggestion": {
+    "value": {
+     "p25": 30000,
+     "median": 60000,
+     "p90": 200000
+    },
+    "unit": "元/年(净利润，分布极度右偏，含亏损可能)",
+    "confidence": "low",
+    "source": "memory/unverified",
+    "url": null,
+    "year": 2025
+   }
+  },
+  "farmer": {
+   "label": "农民",
+   "rural_business_net_income_per_capita": {
+    "value": 8204,
+    "year": 2025,
+    "unit": "元/人/年",
+    "source": "国家统计局《2025年居民收入和消费支出情况》表2 农村居民经营净收入",
+    "url": "https://www.stats.gov.cn/sj/zxfb/202601/t20260119_1962321.html",
+    "confidence": "high",
+    "nominal_growth_pct": 4.6
+   },
+   "rural_disposable_income_per_capita": {
+    "value": 24456,
+    "year": 2025,
+    "unit": "元/人/年",
+    "source": "同上",
+    "url": "https://www.stats.gov.cn/sj/zxfb/202601/t20260119_1962321.html",
+    "confidence": "high",
+    "nominal_growth_pct": 5.8,
+    "components": {
+     "wage": 10402,
+     "business": 8204,
+     "property": 618,
+     "transfer": 5232
+    }
+   },
+   "rural_median": {
+    "value": 20711,
+    "year": 2025,
+    "unit": "元/人/年",
+    "source": "同上",
+    "url": "https://www.stats.gov.cn/sj/zxfb/202601/t20260119_1962321.html",
+    "confidence": "high"
+   },
+   "agri_private_wage": {
+    "value": 46552,
+    "year": 2025,
+    "unit": "元/年",
+    "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15) 私营农林牧渔业雇员",
+    "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+    "confidence": "high"
+   }
+  }
+ },
+ "education_premium": {
+  "_note": "相对仅完成义务教育(初中)者的收入溢价；CGSS 2010-2017，Chen & Pastore。由此导出：本科/大专≈1.17，大专/高中=1.25，高中/初中=1.20。",
+  "senior_high_vs_junior_high": {
+   "value": 0.2,
+   "year": "2010-2017",
+   "unit": "收入溢价(比例)",
+   "source": "Chen & Pastore, Dynamics of returns to vocational education in China: 2010-2017 (GLO DP 858; HSSC 2024)",
+   "url": "https://ideas.repec.org/p/zbw/glodps/858r.html",
+   "confidence": "medium"
+  },
+  "vocational_college_dazhuan_vs_junior_high": {
+   "value": 0.5,
+   "year": "2010-2017",
+   "unit": "收入溢价(比例)",
+   "source": "同上",
+   "url": "https://ideas.repec.org/p/zbw/glodps/858r.html",
+   "confidence": "medium"
+  },
+  "bachelor_vs_junior_high": {
+   "value": 0.75,
+   "year": "2010-2017",
+   "unit": "收入溢价(比例)",
+   "source": "同上",
+   "url": "https://ideas.repec.org/p/zbw/glodps/858r.html",
+   "confidence": "medium"
+  },
+  "multipliers_junior_high_eq_1": {
+   "primary_or_less": null,
+   "junior_high": 1.0,
+   "senior_high": 1.2,
+   "dazhuan": 1.5,
+   "bachelor": 1.75,
+   "master_plus": {
+    "value": 2.1,
+    "confidence": "low",
+    "source": "memory/unverified",
+    "url": null
+   }
+  },
+  "derived_ratios": {
+   "bachelor_over_dazhuan": 1.167,
+   "dazhuan_over_senior_high": 1.25,
+   "senior_high_over_junior_high": 1.2
+  },
+  "trend_note": "研究称各学历回报在2010-2017均上升；高等教育内部学术型高于职业型但差距收窄。另有流动人口研究称大学相对高中的年均溢价下降(未核实原文)。",
+  "migrant_education_context": {
+   "value": {
+    "junior_high_or_below": 65.4,
+    "senior_high": 17.5,
+    "college_or_above": 17.1
+   },
+   "year": 2025,
+   "unit": "% of migrant workers",
+   "source": "国家统计局《2025年农民工监测调查报告》(2026-04-30)",
+   "url": "https://www.stats.gov.cn/sj/zxfbhjd/202604/t20260430_1963472.html",
+   "confidence": "high"
+  }
+ },
+ "age_profile": {
+  "peak_age_cross_section": {
+   "value": 35,
+   "year": "2012(序列1986-2012)",
+   "unit": "岁",
+   "source": "Fang & Qiu, 'Golden Ages': A Tale of the Labor Markets in China and the United States (NBER w29523; VoxChina 2021-12-15)",
+   "url": "https://voxchina.org/show-3-264.html",
+   "confidence": "medium",
+   "note": "中国城镇男性横截面收入峰值年龄从>55岁降至约35岁；美国稳定在45-50岁。横截面峰值早主要是队列效应(年轻队列生产率高)，个人生命周期曲线仍随经验上升。"
+  },
+  "experience_human_capital_growth_40y": {
+   "value": 1.5,
+   "year": "1986-2012",
+   "unit": "40年经验人力资本增长(+150%)",
+   "source": "同上",
+   "url": "https://voxchina.org/show-3-264.html",
+   "confidence": "medium",
+   "note": "美国约+270%。"
+  },
+  "ratio_to_peak": {
+   "value": {
+    "25": 0.75,
+    "35": 1.0,
+    "45": 0.95,
+    "55": 0.82
+   },
+   "year": null,
+   "unit": "横截面收入/峰值",
+   "source": "memory/unverified (未找到CFPS/CHIP分年龄比值表，建议游戏设定值)",
+   "url": null,
+   "confidence": "low"
+  },
+  "game_note": "建议：个人路径用生命周期曲线(25岁起至40-45岁年增长放缓、50后持平或下降)，蓝领/体力岗峰值更早(30-40)，管理/专业岗峰值更晚(45-50)；35岁后求职年龄歧视可作为事件。"
+ },
+ "distribution": {
+  "per_capita_disposable_income_2025": {
+   "value": 43377,
+   "year": 2025,
+   "unit": "元/人/年",
+   "source": "国家统计局《2025年国民经济和社会发展统计公报》",
+   "url": "https://www.stats.gov.cn/sj/zxfbhjd/202602/t20260228_1962662.html",
+   "confidence": "high",
+   "nominal_growth_pct": 5.0,
+   "real_growth_pct": 5.0
+  },
+  "median_2025": {
+   "value": 36231,
+   "year": 2025,
+   "unit": "元/人/年",
+   "source": "同上(中位数为均值的83.5%)",
+   "url": "https://www.stats.gov.cn/sj/zxfbhjd/202602/t20260228_1962662.html",
+   "confidence": "high"
+  },
+  "urban_2025": {
+   "value": 56502,
+   "year": 2025,
+   "unit": "元/人/年",
+   "source": "同上",
+   "url": "https://www.stats.gov.cn/sj/zxfbhjd/202602/t20260228_1962662.html",
+   "confidence": "high",
+   "median": 51115
+  },
+  "rural_2025": {
+   "value": 24456,
+   "year": 2025,
+   "unit": "元/人/年",
+   "source": "同上",
+   "url": "https://www.stats.gov.cn/sj/zxfbhjd/202602/t20260228_1962662.html",
+   "confidence": "high",
+   "median": 20711
+  },
+  "urban_rural_ratio_2025": {
+   "value": 2.31,
+   "year": 2025,
+   "unit": "倍",
+   "source": "同上",
+   "url": "https://www.stats.gov.cn/sj/zxfbhjd/202602/t20260228_1962662.html",
+   "confidence": "high"
+  },
+  "quintiles_2025": {
+   "value": {
+    "low": 10150,
+    "lower_middle": 22702,
+    "middle": 35536,
+    "upper_middle": 55586,
+    "high": 103778
+   },
+   "year": 2025,
+   "unit": "元/人/年(全国居民五等份人均可支配收入)",
+   "source": "国家统计局《2025年国民经济和社会发展统计公报》",
+   "url": "https://www.stats.gov.cn/sj/zxfbhjd/202602/t20260228_1962662.html",
+   "confidence": "high",
+   "derived": {
+    "high_over_low": 10.22,
+    "top_quintile_share_approx": 0.456
+   }
+  },
+  "quintiles_2024": {
+   "value": {
+    "low": 9542,
+    "lower_middle": 21608,
+    "middle": 33925,
+    "upper_middle": 53359,
+    "high": 98809
+   },
+   "year": 2024,
+   "unit": "元/人/年",
+   "source": "国家统计局《2024年国民经济和社会发展统计公报》",
+   "url": "https://www.stats.gov.cn/sj/zxfb/202502/t20250228_1958817.html",
+   "confidence": "high"
+  },
+  "gini_official": {
+   "2008_peak": {
+    "value": 0.491,
+    "year": 2008,
+    "unit": "Gini",
+    "source": "国家统计局2013-01-18发布(中国数字时代转载)",
+    "url": "https://chinadigitaltimes.net/chinese/?p=275161",
+    "confidence": "high"
+   },
+   "2012": {
+    "value": 0.474,
+    "year": 2012,
+    "unit": "Gini",
+    "source": "同上",
+    "url": "https://chinadigitaltimes.net/chinese/?p=275161",
+    "confidence": "high"
+   },
+   "2024": {
+    "value": 0.465,
+    "year": 2024,
+    "unit": "Gini",
+    "source": "Statista(称约46.5点，未写明原始来源；与NBS序列一致)",
+    "url": "https://de.statista.com/statistik/daten/studie/1482652/umfrage/einkommensungleichheit-in-china-nach-dem-gini-index",
+    "confidence": "medium",
+    "note": "NBS近年值约0.465-0.47(2016年0.465)；2025年值未找到。统计公报不载基尼系数，见《中国住户调查年鉴》。"
+   }
+  },
+  "gini_independent": {
+   "chfs_2010": {
+    "value": 0.61,
+    "year": 2010,
+    "unit": "Gini(家庭收入)",
+    "source": "西南财经大学中国家庭金融调查(CHFS)《中国家庭收入不平等报告》(2012-12)",
+    "url": "https://chinadigitaltimes.net/chinese/?p=275161",
+    "confidence": "medium",
+    "note": "城镇内部0.56，农村内部0.60(另一报道称城镇0.58/农村0.61)。"
+   },
+   "yue_li_gao_2013_range": {
+    "value": [
+     0.47,
+     0.52
+    ],
+    "year": "c.2010",
+    "unit": "Gini",
+    "source": "Yue, Li & Gao (2013) China Economic Journal 6(2-3)：比较NBS/CHIP/CHFS/CFPS，认为CHFS严重高估",
+    "url": "https://ideas.repec.org/a/taf/rcejxx/v6y2013i2-3p113-122.html",
+    "confidence": "medium"
+   },
+   "world_bank_2022": {
+    "value": 0.36,
+    "year": 2022,
+    "unit": "Gini(世行PIP，混合消费/收入口径)",
+    "source": "World Bank SI.POV.GINI",
+    "url": "https://api.worldbank.org/v2/country/CHN/indicator/SI.POV.GINI?format=json&per_page=20",
+    "confidence": "high",
+    "note": "2021: 0.358, 2020: 0.371, 2012: 0.421。世行口径低于NBS。"
+   }
+  }
+ },
+ "unemployment": {
+  "urban_surveyed_2025_avg": {
+   "value": 5.2,
+   "year": 2025,
+   "unit": "%",
+   "source": "国家统计局2025年统计公报(年末5.1%)",
+   "url": "https://www.stats.gov.cn/sj/zxfbhjd/202602/t20260228_1962662.html",
+   "confidence": "high"
+  },
+  "urban_surveyed_2024_avg": {
+   "value": 5.1,
+   "year": 2024,
+   "unit": "%",
+   "source": "国家统计局2024年统计公报",
+   "url": "https://www.stats.gov.cn/sj/zxfb/202502/t20250228_1958817.html",
+   "confidence": "high"
+  },
+  "urban_surveyed_2026_08": {
+   "value": 5.3,
+   "year": "2026-08",
+   "unit": "%",
+   "source": "国家统计局《8月份国民经济运行》(2026-09-15)；1-8月平均5.2%",
+   "url": "https://www.stats.gov.cn/sj/zxfbhjd/202609/t20260915_1965307.html",
+   "confidence": "high",
+   "note": "31个大城市亦为5.3%。"
+  },
+  "youth_16_24_2026_08": {
+   "value": 18.9,
+   "year": "2026-08",
+   "unit": "% (不含在校生)",
+   "source": "国家统计局2026-09-17发布，中国基金报转述",
+   "url": "https://www.chnfund.com/article/b7c8d86b-a693-99be-9cbb-3a23c1007516",
+   "confidence": "high",
+   "note": "较7月(约17.9%)上升1个百分点，为2025年8月(同为18.9%)以来新高；8月为毕业季季节高点。"
+  },
+  "age_25_29_2026_08": {
+   "value": 7.5,
+   "year": "2026-08",
+   "unit": "% (不含在校生)",
+   "source": "同上",
+   "url": "https://www.chnfund.com/article/b7c8d86b-a693-99be-9cbb-3a23c1007516",
+   "confidence": "high"
+  },
+  "age_30_59_2026_08": {
+   "value": 3.9,
+   "year": "2026-08",
+   "unit": "% (不含在校生)",
+   "source": "同上",
+   "url": "https://www.chnfund.com/article/b7c8d86b-a693-99be-9cbb-3a23c1007516",
+   "confidence": "high"
+  },
+  "youth_16_24_2026_06": {
+   "value": 14.9,
+   "year": "2026-06",
+   "unit": "%",
+   "source": "澎湃新闻(2026-07-20)；25-29岁7.1%，30-59岁4.0%",
+   "url": "https://www.thepaper.cn/newsDetail_forward_33621182",
+   "confidence": "high"
+  },
+  "new_method_first_release_2023_12": {
+   "value": {
+    "16_24": 14.9,
+    "25_29": 6.1,
+    "30_59": 3.9
+   },
+   "year": "2023-12",
+   "unit": "% (不含在校生)",
+   "source": "中国政府网英文版(2024-01-17)",
+   "url": "https://english.www.gov.cn/archive/statistics/202401/17/content_WS65a73b51c6d0868f4e8e32da.html",
+   "confidence": "high"
+  },
+  "method_change": {
+   "value": "2023年8月起暂停发布分年龄组失业率；2024-01-17恢复，自2023年12月数据起剔除在校学生，并新增25-29岁组。理由：2023年城镇16-24岁人口中在校生约6200万、非在校生约3400万，求职在校生会混淆毕业青年就业状况。",
+   "year": 2024,
+   "unit": null,
+   "source": "国家统计局《关于完善分年龄组调查失业率有关情况的说明》",
+   "url": "https://www.stats.gov.cn/xxgk/sjfb/zxfb2020/202401/t20240117_1946644.html",
+   "confidence": "high"
+  },
+  "old_method_peak_2023_06": {
+   "value": 21.3,
+   "year": "2023-06",
+   "unit": "% (旧口径，含在校求职学生)",
+   "source": "自由亚洲电台(2023-07-19)",
+   "url": "https://www.rfa.org/mandarin/Xinwen/1-07192023123023.html",
+   "confidence": "high"
+  },
+  "controversy_zhang_dandan": {
+   "value": 46.5,
+   "year": "2023-03",
+   "unit": "% (若计入约1600万'躺平/啃老'非在校未就业青年的上限估算)",
+   "source": "北京大学张丹丹，财新(2023-07)，RFA转述；同期官方19.7%",
+   "url": "https://www.rfa.org/mandarin/Xinwen/1-07192023123023.html",
+   "confidence": "medium",
+   "note": "估算值，非标准ILO失业口径；争议点在于暂停发布时机与口径变更导致新旧序列不可比。"
+  }
+ },
+ "wage_growth": {
+  "non_private_nominal": {
+   "2023": {
+    "value": 5.8,
+    "year": 2023,
+    "unit": "%",
+    "source": "国家统计局2023年平均工资解读",
+    "url": "https://www.stats.gov.cn/xxgk/jd/sjjd2020/202405/t20240520_1950461.html",
+    "confidence": "high",
+    "real": 5.5
+   },
+   "2024": {
+    "value": 2.8,
+    "year": 2024,
+    "unit": "%",
+    "source": "国家统计局2024年平均工资解读",
+    "url": "https://www.stats.gov.cn/sj/sjjd/202505/t20250516_1959829.html",
+    "confidence": "high",
+    "comparable": 2.6
+   },
+   "2025": {
+    "value": 4.3,
+    "year": 2025,
+    "unit": "%",
+    "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15)",
+    "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+    "confidence": "high",
+    "real": 4.2
+   }
+  },
+  "private_nominal": {
+   "2023": {
+    "value": 4.8,
+    "year": 2023,
+    "unit": "%",
+    "source": "国家统计局2023年平均工资解读",
+    "url": "https://www.stats.gov.cn/xxgk/jd/sjjd2020/202405/t20240520_1950461.html",
+    "confidence": "high",
+    "real": 4.5
+   },
+   "2024": {
+    "value": 1.7,
+    "year": 2024,
+    "unit": "%",
+    "source": "国家统计局2024年平均工资解读",
+    "url": "https://www.stats.gov.cn/sj/sjjd/202505/t20250516_1959829.html",
+    "confidence": "high",
+    "comparable": 4.0,
+    "note": "名义增速被五经普新纳入小微企业拉低，可比口径4.0%"
+   },
+   "2025": {
+    "value": 3.0,
+    "year": 2025,
+    "unit": "%",
+    "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15)",
+    "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+    "confidence": "high",
+    "real": 2.9
+   }
+  },
+  "above_scale_nominal": {
+   "2024": {
+    "value": 4.4,
+    "year": 2024,
+    "unit": "%",
+    "source": "国家统计局2024年平均工资解读",
+    "url": "https://www.stats.gov.cn/sj/sjjd/202505/t20250516_1959829.html",
+    "confidence": "high"
+   },
+   "2025": {
+    "value": 3.5,
+    "year": 2025,
+    "unit": "%",
+    "source": "国家统计局《2025年城镇单位就业人员年平均工资情况》(2026-05-15)",
+    "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+    "confidence": "high"
+   }
+  },
+  "migrant_monthly_income_2025": {
+   "value": 2.3,
+   "year": 2025,
+   "unit": "%",
+   "source": "国家统计局《2025年农民工监测调查报告》(2026-04-30)",
+   "url": "https://www.stats.gov.cn/sj/zxfbhjd/202604/t20260430_1963472.html",
+   "confidence": "high"
+  },
+  "disposable_income_per_capita_2025": {
+   "value": 5.0,
+   "year": 2025,
+   "unit": "%",
+   "source": "2025年统计公报",
+   "url": "https://www.stats.gov.cn/sj/zxfbhjd/202602/t20260228_1962662.html",
+   "confidence": "high"
+  },
+  "cpi_2025": {
+   "value": 0.0,
+   "year": 2025,
+   "unit": "%",
+   "source": "2025年统计公报",
+   "url": "https://www.stats.gov.cn/sj/zxfbhjd/202602/t20260228_1962662.html",
+   "confidence": "high"
+  },
+  "derived_3yr_cagr_2023_2025": {
+   "non_private": 4.3,
+   "private": 3.2,
+   "unit": "%/年",
+   "source": "本文件按上述官方增速计算",
+   "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+   "confidence": "high",
+   "year": "2023-2025"
+  },
+  "game_raise_assumption": {
+   "value": {
+    "economy_wide_nominal": 3.5,
+    "public_sector": 4.0,
+    "private_low_skill": 2.5,
+    "range": [
+     2.0,
+     5.0
+    ]
+   },
+   "unit": "%/年",
+   "confidence": "medium",
+   "source": "基于2023-2025官方名义增速推断(此为平均值增速，含结构变化；个人加薪另需叠加经验曲线)",
+   "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html",
+   "year": 2025
+  }
+ },
+ "discrepancies": [
+  "基尼系数：官方(NBS)近年约0.465-0.47；CHFS 2010年估0.61；Yue/Li/Gao(2013)综合多调查认为0.47-0.52；世界银行PIP 2022年仅0.36(口径不同，含消费口径)。游戏可用0.47作为官方值并注明独立估计更高。",
+  "青年失业率：2023年6月旧口径21.3%后暂停发布；新口径剔除在校生，2023年12月为14.9%，新旧不可比。张丹丹估算若计入'躺平'青年，2023年3月上限可达46.5%(官方19.7%)。2025年8月与2026年8月新口径16-24岁均为18.9%。",
+  "平均工资 vs 中位数：统计局公布的是平均值且仅覆盖城镇法人单位，不含个体户与灵活就业；全国居民可支配收入中位数仅为均值的83.5%，非私营单位平均工资(12.9万)远高于多数人实际收入。私营单位(7.2万)更接近普通打工者。",
+  "骑手收入：美团自报'高频骑手'7230-10100元/月，仅覆盖约11%的接单骑手；第三方蓝领报告7496元/月；均为毛收入。",
+  "医生收入：统计局卫生和社会工作行业非私营均值14.6万/年，而二手引用的医院人力资源调研称医生平均临床收入9.4万(2022)，口径与样本差异大。",
+  "私营单位2024年名义增长1.7%与可比口径4.0%差异大，源于第五次经济普查纳入大量小微企业。",
+  "World Bank Gini 远低于 NBS：前者含部分消费口径与不同调查处理，不宜混用。"
+ ],
+ "gaps": [
+  "年龄-收入在25/35/45/55相对峰值的比值：未找到CFPS/CHIP公开表格，ratio_to_peak为low置信度的设定值。",
+  "2025年官方基尼系数未找到；2024年0.465仅来自Statista转述。",
+  "护士全国薪酬无可靠独立调查；医生仅有旧的丁香园数据(2017)与二手引用。",
+  "公务员无官方薪酬统计，范围为low置信度。",
+  "个体户经营者人均收入无官方数据，仅有城镇人均经营净收入与户数。",
+  "程序员普通开发岗(非AI/架构)的一线城市权威中位数未找到；建议值为low置信度。",
+  "教育溢价来源为CGSS 2010-2017，较旧；未找到研究生学历及CFPS近年分档估计。",
+  "2026年9月分年龄组失业率尚未发布(预计10月中下旬)。"
+ ]
+}

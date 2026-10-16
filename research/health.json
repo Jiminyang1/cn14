@@ -1,0 +1,1261 @@
+{
+ "_meta": {
+  "compiled": "2026-10-16",
+  "scope": "National (mainland China) figures only, for the illness and medical-care model of 14亿分之1.",
+  "note": "Each figure is {value, year, source, url, confidence}. Abstracts marked 'Europe PMC' were read through the Europe PMC REST API (europepmc.org mirrors PubMed). Medical-insurance figures are from the 2025 national medical security statistical bulletin (published 2026-07). Hospital costs are from the 2025 national health statistical bulletin (published 2026-08). Values marked 'memory/unverified' were not confirmed on a page."
+ },
+ "cancer": {
+  "new_cases_2022": {
+   "value": 4824700,
+   "unit": "cases",
+   "year": 2022,
+   "source": "国家癌症中心《2022年中国恶性肿瘤疾病负担情况》(JNCC 2024), media reprint",
+   "url": "https://finance.sina.cn/stock/med/2024-02-14/detail-inahywnk4247937.d.html",
+   "confidence": "high"
+  },
+  "deaths_2022": {
+   "value": 2574200,
+   "unit": "deaths",
+   "year": 2022,
+   "source": "Han B et al., Cancer incidence and mortality in China 2022 (JNCC 2024), as summarised in search of the abstract; the sina reprint has a copy error for deaths (URL seen in search results only, not opened)",
+   "url": "https://prod.sdgresources.relx.com/cancer-incidence-and-mortality-china-2022",
+   "confidence": "low"
+  },
+  "asr_incidence_world_per100k": {
+   "value": 201.61,
+   "male": 209.61,
+   "female": 197.03,
+   "year": 2022,
+   "source": "国家癌症中心 2024 report (Segi world standard)",
+   "url": "https://finance.sina.cn/stock/med/2024-02-14/detail-inahywnk4247937.d.html",
+   "confidence": "high"
+  },
+  "asr_mortality_world_per100k": {
+   "value": 96.47,
+   "male": 127.49,
+   "female": 67.81,
+   "year": 2022,
+   "source": "国家癌症中心 2024 report",
+   "url": "https://finance.sina.cn/stock/med/2024-02-14/detail-inahywnk4247937.d.html",
+   "confidence": "high"
+  },
+  "incidence_by_age_pattern": {
+   "value": "Low at ages 0-34; rises sharply from 35-39; peaks at 80-84. Women have higher incidence than men at 25-54 (breast, thyroid); men are higher from 60. Mortality rises from 40-44 and peaks at 85+.",
+   "year": 2022,
+   "source": "国家癌症中心 2024 report",
+   "url": "https://finance.sina.cn/stock/med/2024-02-14/detail-inahywnk4247937.d.html",
+   "confidence": "high",
+   "note": "Per-100k values by 5-year age band are only in the JNCC tables and figures, which could not be extracted. See gaps."
+  },
+  "early_onset_15_49": {
+   "value": {
+    "cases": 743688,
+    "asr_per100k": 98.37,
+    "female_asr": 129.99,
+    "male_asr": 68.56,
+    "deaths": 159167,
+    "asmr_per100k": 21.4,
+    "top_sites_asr": {
+     "thyroid": 32.54,
+     "breast_female": 27.99,
+     "cervix_female": 11.56,
+     "lung": 8.21,
+     "liver": 6.13
+    }
+   },
+   "year": 2022,
+   "source": "Yun Z et al., J Glob Health 2026;16:04005 (from GLOBOCAN 2022)",
+   "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12793929/",
+   "confidence": "high"
+  },
+  "top5_incidence": {
+   "value": [
+    "lung (1.06M)",
+    "colorectal (517k)",
+    "thyroid",
+    "liver",
+    "stomach"
+   ],
+   "year": 2022,
+   "source": "国家癌症中心 2024 report",
+   "url": "https://finance.sina.cn/stock/med/2024-02-14/detail-inahywnk4247937.d.html",
+   "confidence": "high"
+  },
+  "top5_mortality": {
+   "value": [
+    "lung",
+    "liver",
+    "stomach",
+    "colorectal",
+    "esophagus"
+   ],
+   "year": 2022,
+   "source": "国家癌症中心 2024 report",
+   "url": "https://finance.sina.cn/stock/med/2024-02-14/detail-inahywnk4247937.d.html",
+   "confidence": "high"
+  },
+  "survival_5yr_relative_all": {
+   "value": 43.7,
+   "unit": "%",
+   "male": 36.4,
+   "female": 51.6,
+   "year": "2019-2021",
+   "source": "Zeng H, Zheng R, Sun K et al. Cancer survival statistics in China 2019-2021. J Natl Cancer Cent 2024;4(3):203-213 (国家癌症中心)",
+   "url": "https://pmc.ncbi.nlm.nih.gov/articles/11401485",
+   "confidence": "high"
+  },
+  "survival_5yr_by_site": {
+   "value": {
+    "lung": 28.7,
+    "liver": 14.4,
+    "stomach": 35.2,
+    "esophagus": 27.9,
+    "colorectum": 55.7,
+    "breast_female": 80.9,
+    "thyroid": 92.9,
+    "pancreas": 8.5,
+    "cervix": 66.9,
+    "prostate": 71.1
+   },
+   "by_sex": {
+    "lung": {
+     "m": 22.2,
+     "f": 39.3
+    },
+    "esophagus": {
+     "m": 25.2,
+     "f": 38.3
+    },
+    "liver": {
+     "m": 14.1,
+     "f": 16.4
+    },
+    "stomach": {
+     "m": 35.1,
+     "f": 36.1
+    },
+    "colorectum": {
+     "m": 54.9,
+     "f": 56.8
+    },
+    "pancreas": {
+     "m": 7.2,
+     "f": 10.4
+    }
+   },
+   "unit": "% age-standardised 5-yr relative survival",
+   "year": "2019-2021",
+   "source": "Zeng H et al., JNCC 2024",
+   "url": "https://pmc.ncbi.nlm.nih.gov/articles/11401485",
+   "confidence": "high"
+  },
+  "survival_trend": {
+   "value": {
+    "2003-05": 30.9,
+    "2012-15": 40.5,
+    "2019-21": 43.7,
+    "target_2030": 46.6
+   },
+   "unit": "%",
+   "year": "2003-2030",
+   "source": "Zeng H et al. Lancet Glob Health 2018 (2003-15); Xinhua/NCC 2024 (43.7); 健康中国癌症防治行动实施方案(2023-2030) target",
+   "url": "https://chinaservicesinfo.com/s/202411/22/WS67405adb498eec7e1f728392/chinas-cancer-survival-rate-improves-amid-regional-disparities-in-care.html",
+   "confidence": "high"
+  },
+  "survival_urban_vs_rural": {
+   "value": {
+    "urban": 46.7,
+    "rural": 33.6,
+    "gap_pp": 13.1
+   },
+   "unit": "% age-standardised 5-yr relative survival, all cancers",
+   "year": "2012-2015",
+   "source": "Zeng H et al. Changing cancer survival in China during 2003-15: 17 registries. Lancet Glob Health 2018 (Europe PMC abstract, PMID 29653628). Urban is higher for every site except esophagus and cervix. The gap is narrowing.",
+   "url": "https://europepmc.org/article/MED/29653628",
+   "confidence": "high"
+  },
+  "survival_urban_vs_rural_2003_05": {
+   "value": {
+    "urban": 39.5,
+    "rural": 21.8
+   },
+   "unit": "%",
+   "year": "2003-2005",
+   "source": "Zeng H et al. Int J Cancer 2015, cited in search results; not opened",
+   "url": "https://research-repository.griffith.edu.au/items/77c61067-e085-4f3b-8c83-e190fd755a94",
+   "confidence": "low"
+  },
+  "hospital_tier_gap_qualitative": {
+   "value": "No national survival figures by 三甲 vs county hospital exist. NHC officials say county hospitals have added oncology and radiotherapy departments but still struggle to meet diagnostic and treatment standards. Primary-care doctors often lack early-diagnosis training.",
+   "year": 2024,
+   "source": "China Daily/Xinhua, 2024-11-22",
+   "url": "https://chinaservicesinfo.com/s/202411/22/WS67405adb498eec7e1f728392/chinas-cancer-survival-rate-improves-amid-regional-disparities-in-care.html",
+   "confidence": "medium"
+  },
+  "game_suggestion_survival_multipliers": {
+   "value": {
+    "big_city_sanjia": 1.1,
+    "local_county_hospital": 0.8,
+    "conservative_care": "lung 0.15-0.3x, liver ~0.3x of treated survival; thyroid/breast still >50% over 5 yrs only with treatment"
+   },
+   "year": 2026,
+   "source": "derived design assumption from the urban/rural gap (46.7 vs 33.6 = ratio 0.72); not a measured statistic",
+   "url": "https://europepmc.org/article/MED/29653628",
+   "confidence": "low"
+  }
+ },
+ "cardio": {
+  "cvd_prevalent_cases": {
+   "value": {
+    "total_cvd": 330000000,
+    "hypertension": 245000000,
+    "stroke": 13000000,
+    "coronary_heart_disease": 11390000,
+    "heart_failure": 8900000,
+    "atrial_fibrillation": 4870000,
+    "pulmonary_heart_disease": 5000000
+   },
+   "year": 2023,
+   "source": "《中国心血管健康与疾病报告2023》 via 中国循环杂志 2024-07-31",
+   "url": "https://www.sohu.com/a/797583151_252168",
+   "confidence": "high"
+  },
+  "cvd_share_of_deaths": {
+   "value": {
+    "rural": 48.98,
+    "urban": 47.35
+   },
+   "unit": "%",
+   "year": 2021,
+   "source": "中国心血管健康与疾病报告2023",
+   "url": "https://www.sohu.com/a/797583151_252168",
+   "confidence": "high"
+  },
+  "cvd_mortality_per100k": {
+   "value": {
+    "cvd_rural": 364.16,
+    "cvd_urban": 305.39,
+    "chd_rural": 148.19,
+    "chd_urban": 135.08,
+    "cerebrovascular_rural": 175.58,
+    "cerebrovascular_urban": 140.02
+   },
+   "year": 2021,
+   "source": "中国心血管健康与疾病报告2023",
+   "url": "https://www.sohu.com/a/797583151_252168",
+   "confidence": "high"
+  },
+  "ami_incidence_per100k_adults": {
+   "value": {
+    "crude": 79.7,
+    "age_standardised": 55.8
+   },
+   "year": "2021-07 to 2022-06",
+   "source": "中国心血管健康与疾病报告2023",
+   "url": "https://www.sohu.com/a/797583151_252168",
+   "confidence": "high"
+  },
+  "ami_in_hospital_mortality": {
+   "value": {
+    "overall": 4.0,
+    "tertiary_3ji": 3.9,
+    "secondary_2ji": 4.1
+   },
+   "unit": "%",
+   "year": "2019-2020",
+   "source": "Zheng L et al. Case fatality rate of AMI in 253 chest pain centers, China CDC Weekly 2022-02-11 (n=36,689), reprinted by 健康界",
+   "url": "https://www.cn-healthcare.com/article/20220223/content-566502.html",
+   "confidence": "high",
+   "note": "Chest-pain-center hospitals only, so it understates national case fatality. Many AMI deaths happen before reaching hospital."
+  },
+  "ami_post_admission_mortality": {
+   "value": {
+    "30d": 5.9,
+    "60d": 6.9,
+    "90d": 7.6,
+    "30d_tertiary": 2.5,
+    "30d_secondary": 3.7,
+    "90d_tertiary": 3.6,
+    "90d_secondary": 5.5,
+    "stemi_30d": 6.6,
+    "nstemi_30d": 4.7,
+    "out_of_hospital_total_secondary": 7.8,
+    "out_of_hospital_total_tertiary": 5.2
+   },
+   "unit": "%",
+   "year": "2019-2020",
+   "source": "China CDC Weekly 2022 (253 chest pain centers)",
+   "url": "https://www.cn-healthcare.com/article/20220223/content-566502.html",
+   "confidence": "medium",
+   "note": "The tier figures do not reconcile with the overall figure (likely different denominators). Use tier ratios only: secondary is about 1.5x tertiary."
+  },
+  "ami_1yr_mortality_after_discharge": {
+   "value": 2.8,
+   "unit": "%",
+   "recurrent_ami_1yr": 2.5,
+   "year": "2012-2015",
+   "source": "Song J et al. (China PEACE-Prospective AMI, 53 hospitals, n=3,387 discharged alive). Heart 2021;107(4):313",
+   "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7873426",
+   "confidence": "high",
+   "note": "Covers survivors to discharge only. 1-year all-cause mortality from admission is about in-hospital (4-7%) plus about 3% after discharge, so roughly 7-10%."
+  },
+  "stroke_1yr_outcomes_cnsr1": {
+   "value": {
+    "mortality": 13.4,
+    "recurrence": 17.7,
+    "poor_outcome_mrs3_6": 33.1,
+    "no_prior_stroke": {
+     "mortality": 11.4,
+     "recurrence": 14.7,
+     "mrs3_6": 28.5
+    },
+    "prior_stroke": {
+     "mortality": 17.3,
+     "recurrence": 23.6,
+     "mrs3_6": 42.1
+    }
+   },
+   "unit": "%",
+   "year": "2007-2008",
+   "source": "Qin H et al. Curr Neurovasc Res 2020;17(4):487 (China National Stroke Registry I, ischemic stroke n=12,415)",
+   "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8493791/",
+   "confidence": "high"
+  },
+  "stroke_1yr_outcomes_cnsr3": {
+   "value": {
+    "mortality": 3.3,
+    "recurrence": 9.7,
+    "poor_outcome_mrs3_6": 13.0
+   },
+   "unit": "%",
+   "year": "2015-2018",
+   "source": "Zhang Y et al. Brain Behav 2022;12(9):e2725 (CNSR-III, ischemic stroke/TIA, n=14,674, 201 tertiary-heavy hospitals)",
+   "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9480956/",
+   "confidence": "high",
+   "note": "Includes TIA and milder cases in better hospitals, so treat as a best case (big-city 三甲)."
+  },
+  "stroke_in_hospital_mortality_by_type": {
+   "value": {
+    "ischaemic": {
+     "death": 0.7,
+     "death_or_DAMA": 6.0
+    },
+    "ICH": {
+     "death": 4.9,
+     "death_or_DAMA": 20.5
+    },
+    "SAH": {
+     "death": 4.3,
+     "death_or_DAMA": 20.6
+    },
+    "secondary_hospitals_death": {
+     "ischaemic": 0.4,
+     "ICH": 3.2,
+     "SAH": 3.3
+    }
+   },
+   "unit": "%",
+   "year": 2019,
+   "source": "Wang YJ et al. China Stroke Statistics: an update on the 2019 report. Stroke Vasc Neurol 2022;7(5):415 (HQMS)",
+   "url": "https://pmc.ncbi.nlm.nih.gov/articles/9614174",
+   "confidence": "high",
+   "note": "DAMA = discharged against medical advice. In China many dying patients are taken home, so 'death or DAMA' is the realistic case-fatality proxy."
+  },
+  "stroke_survivor_disability_share": {
+   "value": "about 13% (CNSR-III, 2015-18) to 33% (CNSR-I, 2007-08) at mRS 3-6 after 1 year. A commonly cited claim is that 50-70% of survivors have some disability (any mRS >=1).",
+   "year": "2007-2018",
+   "source": "CNSR papers above; the 50-70% claim was seen only in a search summary (memory/unverified)",
+   "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8493791/",
+   "confidence": "medium"
+  },
+  "stroke_population_rates_2019_gbd": {
+   "value": {
+    "new_cases": 3940000,
+    "prevalent": 28760000,
+    "deaths": 2190000,
+    "dalys": 45900000
+   },
+   "year": 2019,
+   "source": "China Stroke Statistics 2022 update (GBD 2019)",
+   "url": "https://pmc.ncbi.nlm.nih.gov/articles/9614174",
+   "confidence": "high"
+  },
+  "game_suggestion": {
+   "value": {
+    "ami_death_within_1yr": {
+     "sanjia": 0.06,
+     "local": 0.1,
+     "conservative": 0.2
+    },
+    "stroke_death_within_1yr": {
+     "sanjia": 0.05,
+     "local": 0.12,
+     "conservative": 0.2
+    },
+    "stroke_recurrence_1yr": {
+     "sanjia": 0.1,
+     "local": 0.15,
+     "conservative": 0.2
+    },
+    "stroke_dependency_1yr": {
+     "sanjia": 0.15,
+     "local": 0.3,
+     "conservative": 0.4
+    }
+   },
+   "year": 2026,
+   "source": "derived design values interpolating the CNSR-I/CNSR-III and chest-pain-center figures above; not measured",
+   "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9480956/",
+   "confidence": "low"
+  }
+ },
+ "chronic": {
+  "hypertension_prevalence_by_age": {
+   "value": {
+    "18-29": 8.9,
+    "30-39": 13.4,
+    "40-49": 25.7,
+    "50-59": 43.0,
+    "60-69": 54.4,
+    "70-79": 65.2,
+    "80+": 66.7,
+    "overall_18plus": 27.5
+   },
+   "unit": "% weighted",
+   "awareness": 41.0,
+   "treatment": 34.9,
+   "control": 11.0,
+   "year": 2018,
+   "source": "China Chronic Disease and Risk Factor Surveillance (CCDRFS) 2018, n=179,873 (PMC10964013)",
+   "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10964013/",
+   "confidence": "high"
+  },
+  "diabetes_prevalence_by_age": {
+   "value": {
+    "18-29": 5.0,
+    "30-39": 6.5,
+    "40-49": 11.1,
+    "50-59": 19.3,
+    "60-69": 23.9,
+    "70+": 27.3,
+    "overall": 12.4,
+    "urban": 13.1,
+    "rural": 11.6,
+    "prediabetes": 38.1
+   },
+   "unit": "%",
+   "awareness": 36.7,
+   "treatment": 32.9,
+   "control_among_treated": 50.1,
+   "year": 2018,
+   "source": "Wang L et al. Prevalence and Treatment of Diabetes in China, 2013-2018. JAMA 2021;326(24):2498",
+   "url": "https://pmc.ncbi.nlm.nih.gov/articles/8715349",
+   "confidence": "high"
+  },
+  "copd_prevalence": {
+   "value": {
+    "overall_20plus": 8.6,
+    "age_20_39": 2.1,
+    "age_40plus": 13.7,
+    "men": 11.9,
+    "women": 5.4,
+    "people": 99900000,
+    "ever_had_spirometry": 12.0
+   },
+   "unit": "%",
+   "year": "2012-2015",
+   "source": "Wang C et al. China Pulmonary Health study, Lancet 2018;391:1706 (Europe PMC abstract, PMID 29650248)",
+   "url": "https://europepmc.org/article/MED/29650248",
+   "confidence": "high"
+  },
+  "copd_prevalence_40plus_2019": {
+   "value": 13.6,
+   "unit": "%",
+   "year": 2019,
+   "source": "中国居民营养与慢性病状况报告(2020年), via 前瞻产业研究院 (2015: 9.9%)",
+   "url": "https://www.qianzhan.com/analyst/detail/220/210726-850029e0.html",
+   "confidence": "medium"
+  },
+  "copd_by_older_age_bands": {
+   "value": "about 21% at 60-69, about 35% at 70+ (CPH study tables)",
+   "year": "2012-2015",
+   "source": "memory/unverified",
+   "url": "",
+   "confidence": "low"
+  },
+  "dementia_60plus": {
+   "value": {
+    "dementia": 6.0,
+    "alzheimers": 3.9,
+    "vascular": 1.6,
+    "other": 0.5,
+    "mci": 15.5,
+    "people_dementia": 15070000,
+    "people_ad": 9830000,
+    "people_mci": 38770000
+   },
+   "unit": "% age- and sex-adjusted",
+   "risk_factors_OR": {
+    "rural": 1.16,
+    "female": 1.43,
+    "cerebrovascular_disease": 5.44,
+    "diabetes": 2.14,
+    "hypertension": 1.86,
+    "living_alone_or_widowed": "2.59-2.66"
+   },
+   "year": "2015-2018",
+   "source": "Jia L et al. Lancet Public Health 2020;5:e661 (n=46,011; Europe PMC abstract PMID 33271079)",
+   "url": "https://europepmc.org/article/MED/33271079",
+   "confidence": "high"
+  },
+  "dementia_65plus_cmhs": {
+   "value": 5.6,
+   "unit": "%",
+   "year": "2013-2015",
+   "source": "Huang Y et al. China Mental Health Survey, Lancet Psychiatry 2019",
+   "url": "https://europepmc.org/article/MED/30792114",
+   "confidence": "high"
+  },
+  "elderly_adl_disability_60plus": {
+   "value": {
+    "fully_independent": 88.4,
+    "partly_dependent": 7.1,
+    "fully_dependent": 4.5,
+    "urban_dependent_any": 9.6,
+    "rural_dependent_any": 13.9,
+    "any_difficulty_60_69": 6.9,
+    "any_difficulty_70_79": 12.6,
+    "any_difficulty_80plus": 29.2,
+    "80plus_male": 24.5,
+    "80plus_female": 32.7,
+    "need_care_selfreport": 13.2,
+    "of_those_needing_care_receive_it": 83.0
+   },
+   "unit": "% of people aged 60+ (6-item ADL; 'fully dependent' = cannot do at least one item)",
+   "year": 2021,
+   "source": "第五次中国城乡老年人生活状况抽样调查基本数据公报 (民政部/全国老龄办等, 2024-10)",
+   "url": "https://www.cncaprc.gov.cn/u/cms/www/202410/171437578sfk.pdf",
+   "confidence": "high"
+  },
+  "elderly_disabled_count": {
+   "value": {
+    "2021_count": 35000000,
+    "share_60plus": 11.6,
+    "2035_proj": 46000000,
+    "2050_proj": 58000000,
+    "2015_shineng_banshineng": 40630000,
+    "2015_share": 18.3
+   },
+   "year": "2015/2021",
+   "source": "Standard-drafting note citing the 5th survey (11.6% = 7.1 + 4.5 in the bulletin above); 2015 figures are from the 4th survey via search summary",
+   "url": "https://www.ttbz.org.cn/upload/file/20250218/6387546974629554496170037.pdf",
+   "confidence": "medium"
+  },
+  "elderly_chronic_disease_selfreport": {
+   "value": {
+    "any_chronic": 80.0,
+    "hypertension": 41.6,
+    "lumbar_spine_disease": 23.1,
+    "arthritis": 22.1,
+    "self_rated_health_poor": 16.4,
+    "poor_urban": 13.1,
+    "poor_rural": 20.3
+   },
+   "unit": "% of 60+",
+   "year": 2021,
+   "source": "第五次中国城乡老年人生活状况抽样调查基本数据公报",
+   "url": "https://www.cncaprc.gov.cn/u/cms/www/202410/171437578sfk.pdf",
+   "confidence": "high"
+  },
+  "life_expectancy": {
+   "value": 79.25,
+   "year": 2025,
+   "source": "2025年我国卫生健康事业发展统计公报",
+   "url": "https://wjw.shanxi.gov.cn/zfxxgk/fdzdgknr/ghjh/202608/P020260831335869219767.pdf",
+   "confidence": "high"
+  }
+ },
+ "costs": {
+  "hospital_inpatient_cost_per_stay": {
+   "value": {
+    "all_hospitals": 9768.9,
+    "public_hospitals": 10071.0,
+    "tertiary_3ji": 11539.7,
+    "secondary_2ji": 5674.0,
+    "community_health_center": 3075.5,
+    "township_health_center": 1990.2
+   },
+   "unit": "CNY per discharge",
+   "change_vs_2024": {
+    "all": -1.0,
+    "tertiary": -3.0,
+    "secondary": -4.3
+   },
+   "year": 2025,
+   "source": "2025年我国卫生健康事业发展统计公报 表15/表16 (国家卫健委, published 2026-08; Shanxi 卫健委 reprint)",
+   "url": "https://wjw.shanxi.gov.cn/zfxxgk/fdzdgknr/ghjh/202608/P020260831335869219767.pdf",
+   "confidence": "high"
+  },
+  "hospital_inpatient_cost_per_stay_2024": {
+   "value": {
+    "all_hospitals": 9870.0,
+    "public": 10281.3,
+    "tertiary": 11897.4,
+    "secondary": 5929.0
+   },
+   "unit": "CNY",
+   "year": 2024,
+   "source": "2025 公报 表15 (2024 column); Xinhua summary of the 2024 公报",
+   "url": "https://www.news.cn/politics/20251202/c879035250804e9995ccb8d284656f67/c.html",
+   "confidence": "high"
+  },
+  "hospital_daily_cost": {
+   "value": {
+    "all": 1138.3,
+    "tertiary": 1517.6,
+    "secondary": 647.0
+   },
+   "unit": "CNY/day",
+   "year": 2025,
+   "source": "2025 卫生公报 表15",
+   "url": "https://wjw.shanxi.gov.cn/zfxxgk/fdzdgknr/ghjh/202608/P020260831335869219767.pdf",
+   "confidence": "high"
+  },
+  "avg_length_of_stay_days": {
+   "value": {
+    "all": 8.6,
+    "tertiary": 7.7,
+    "secondary": 9.9,
+    "township": 6.5
+   },
+   "year": 2025,
+   "source": "2025 卫生公报 表7/表8",
+   "url": "https://wjw.shanxi.gov.cn/zfxxgk/fdzdgknr/ghjh/202608/P020260831335869219767.pdf",
+   "confidence": "high"
+  },
+  "inpatient_drug_share": {
+   "value": 19.1,
+   "unit": "% of per-stay cost (1868.7 CNY)",
+   "year": 2025,
+   "source": "2025 卫生公报",
+   "url": "https://wjw.shanxi.gov.cn/zfxxgk/fdzdgknr/ghjh/202608/P020260831335869219767.pdf",
+   "confidence": "high"
+  },
+  "outpatient_cost_per_visit": {
+   "value": {
+    "all": 357.7,
+    "tertiary": 382.1,
+    "secondary": 234.7,
+    "township": 79.4
+   },
+   "unit": "CNY",
+   "year": 2025,
+   "source": "2025 卫生公报",
+   "url": "https://wjw.shanxi.gov.cn/zfxxgk/fdzdgknr/ghjh/202608/P020260831335869219767.pdf",
+   "confidence": "high"
+  },
+  "admissions_share_tertiary": {
+   "value": {
+    "tertiary_admissions_10k": 16446.0,
+    "secondary": 6748.7,
+    "all_institutions": 29910.7,
+    "tertiary_share_of_all": 55.0,
+    "county_hospitals_admissions_10k": 9603.1
+   },
+   "unit": "万人次; %",
+   "year": 2025,
+   "source": "2025 卫生公报 表5 (share computed)",
+   "url": "https://wjw.shanxi.gov.cn/zfxxgk/fdzdgknr/ghjh/202608/P020260831335869219767.pdf",
+   "confidence": "high"
+  },
+  "oop_share_of_total_health_expenditure": {
+   "value": 27.1,
+   "unit": "%",
+   "detail": {
+    "total_100m_cny": 93367.2,
+    "government": 25.2,
+    "social": 47.7,
+    "personal": 27.1,
+    "per_capita_cny": 6637.9,
+    "pct_gdp": 6.7,
+    "2024_personal": 27.5
+   },
+   "year": 2025,
+   "source": "2025 卫生公报 表4 (preliminary)",
+   "url": "https://wjw.shanxi.gov.cn/zfxxgk/fdzdgknr/ghjh/202608/P020260831335869219767.pdf",
+   "confidence": "high"
+  },
+  "insured_inpatient_cost_per_stay": {
+   "value": {
+    "employee_UEBMI": {
+     "all": 11522,
+     "tertiary": 13335,
+     "secondary": 8146,
+     "primary": 6440
+    },
+    "resident_URRBMI": {
+     "all": 7339,
+     "tertiary": 11278,
+     "secondary": 5547,
+     "primary": 2645
+    }
+   },
+   "unit": "CNY",
+   "year": 2025,
+   "source": "2025年全国医疗保障事业发展统计公报 (国家医保局, 2026-07) via 健康界",
+   "url": "https://www.cn-healthcare.com/articlewm/20260716/content-1674921.html",
+   "confidence": "high"
+  },
+  "elderly_oop_per_hospitalisation": {
+   "value": {
+    "share_60plus_hospitalised_in_2020": 22.8,
+    "avg_oop_cny": 9620.0,
+    "urban": 10923.6,
+    "rural": 8377.6,
+    "self_paid_drugs_avg": 2133.5
+   },
+   "year": 2020,
+   "source": "第五次中国城乡老年人生活状况抽样调查基本数据公报",
+   "url": "https://www.cncaprc.gov.cn/u/cms/www/202410/171437578sfk.pdf",
+   "confidence": "high",
+   "note": "Compare with rural elderly median annual income of 5,640 CNY (urban 28,800) in the same bulletin."
+  },
+  "cancer_cost_lung_per_patient_yr1": {
+   "value": {
+    "total_medical_cny": 82000,
+    "oop_cny": 45100,
+    "reimbursed_share_pct": 43.7,
+    "uebmi_reimb_share": 49.0,
+    "resident_reimb_share": 36.8,
+    "household_income_cny": 71500,
+    "catastrophic_health_expenditure_rate": 78.1
+   },
+   "year": "2015-2016 (survey 2018-19)",
+   "source": "BMC Cancer 2021 (PMC8665572), CanSPUC multicenter, n=470 households; USD converted at 6.2284 per the paper",
+   "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8665572/",
+   "confidence": "high",
+   "note": "Covers about 2 months before to 10 months after diagnosis, at tertiary hospitals."
+  },
+  "cancer_cost_stomach": {
+   "value": {
+    "direct_per_patient_usd": 9899,
+    "approx_cny": 60700,
+    "oop_first_year_usd": 5368,
+    "oop_pct_prev_year_household_income": 63.8,
+    "families_unmanageable_burden": 79.2
+   },
+   "year": "2012-2014 (2014 prices)",
+   "source": "Frontiers Public Health 2020 (PMC7426494), 37 tertiary hospitals, 13 provinces, n=2,401",
+   "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7426494/",
+   "confidence": "high"
+  },
+  "cancer_cost_liver": {
+   "value": {
+    "total_per_patient_cny": 53220,
+    "medical_cny": 48612,
+    "oop_first_year_cny": 24953,
+    "unmanageable_burden_pct": 77.2
+   },
+   "year": "2012-2014 (2014 prices)",
+   "source": "Chin J Cancer Res 2020 (PMC7491539), n=2,223",
+   "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7491539/",
+   "confidence": "high"
+  },
+  "cancer_cost_colorectal": {
+   "value": {
+    "avg_medical_per_patient_cny": 66291,
+    "2005": 47259,
+    "2014": 86709
+   },
+   "year": "2005-2014",
+   "source": "Cancer 2021 (Europe PMC abstract, PMID 33784413), 13 tertiary hospitals",
+   "url": "https://europepmc.org/article/MED/33784413",
+   "confidence": "high"
+  },
+  "cancer_cost_game_suggestion": {
+   "value": {
+    "sanjia_first_year_total_cny": "80,000-150,000 (more with targeted drugs or immunotherapy; many are now on the 国家医保目录 after price talks)",
+    "local_first_year_total_cny": "40,000-70,000",
+    "conservative_care_cny": "5,000-20,000/yr"
+   },
+   "year": 2026,
+   "source": "derived from the 2012-2016 studies above, inflated; not a measured statistic",
+   "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8665572/",
+   "confidence": "low"
+  },
+  "stroke_cost_per_admission": {
+   "value": {
+    "tertiary_all_stroke": 16767,
+    "secondary_or_private_all": 8096,
+    "tertiary_oop": 5343,
+    "ischaemic_tertiary": 14493,
+    "ich_tertiary": 36652,
+    "sah_tertiary": 78998
+   },
+   "unit": "CNY mean",
+   "year": 2019,
+   "source": "China Stroke Statistics 2022 update (HQMS), Table 12",
+   "url": "https://pmc.ncbi.nlm.nih.gov/articles/9614174",
+   "confidence": "high"
+  },
+  "national_cancer_medical_spend": {
+   "value": "more than 220 billion CNY per year",
+   "year": "about 2020",
+   "source": "NCC report media summary",
+   "url": "https://finance.sina.cn/stock/med/2024-02-14/detail-inahywnk4247937.d.html",
+   "confidence": "medium"
+  }
+ },
+ "insurance": {
+  "enrollment": {
+   "value": {
+    "total": 1330693900,
+    "employee_UEBMI": 388561200,
+    "employee_active": 280623200,
+    "employee_retired": 107938000,
+    "resident_URRBMI": 942132700,
+    "coverage_rate_pct": 95,
+    "flexible_workers_in_UEBMI": 69820000,
+    "long_term_care_insurance": 308547600
+   },
+   "year": 2025,
+   "source": "2025年全国医疗保障事业发展统计公报 (2026-07-16)",
+   "url": "https://www.cn-healthcare.com/articlewm/20260716/content-1674921.html",
+   "confidence": "high"
+  },
+  "inpatient_reimbursement_ratio": {
+   "value": {
+    "employee_UEBMI": {
+     "all": 84.1,
+     "tertiary": 83.1,
+     "secondary": 87.0,
+     "primary": 89.7
+    },
+    "resident_URRBMI": {
+     "all": 66.0,
+     "tertiary": 61.7,
+     "secondary": 71.8,
+     "primary": 79.4
+    }
+   },
+   "unit": "% 住院费用目录内基金支付比例",
+   "year": 2025,
+   "source": "2025年全国医疗保障事业发展统计公报",
+   "url": "https://www.cn-healthcare.com/articlewm/20260716/content-1674921.html",
+   "confidence": "high",
+   "note": "The bulletin now uses '目录内' (in-catalogue), which replaced '政策范围内'. Effective reimbursement of total cost is lower because out-of-catalogue drugs and consumables are excluded. For lung cancer the reimbursed share of total cost was about 49% (employee) and 37% (resident) (see costs.cancer_cost_lung_per_patient_yr1). Note that residents get 61.7% at tertiary vs 79.4% at primary level, which builds the 三甲-vs-local trade-off into policy."
+  },
+  "resident_premium_individual": {
+   "value": {
+    "individual_min_cny_per_year": 400,
+    "fiscal_subsidy_min_cny": 700,
+    "total_min_cny": 1100,
+    "2019_fiscal_subsidy": 520
+   },
+   "year": "2025-2026",
+   "source": "国家医保局/财政部/税务总局 2025 notice (sets the 2026 standard) via 第一财经; 2019 from 医保发〔2019〕30号 via 杭州网",
+   "url": "https://www.yicai.com/news/102860390.html",
+   "confidence": "high",
+   "examples_local_2026": {
+    "Beijing_working_age": 795,
+    "Beijing_elderly": 460,
+    "Guangzhou_adult": 549,
+    "Chengdu_low_tier": 400
+   }
+  },
+  "critical_illness_insurance_dabing": {
+   "value": {
+    "reimbursement_ratio_in_policy_min": 60,
+    "threshold": "about 50% of prior-year per-capita resident disposable income (local rule; e.g. Xuancheng 15,000 CNY)",
+    "poor_tilt": "threshold halved, ratio +5pp, no annual cap for 低保/特困/返贫致贫 people",
+    "funding": "half of the 2019 30-CNY increase in fiscal subsidy went to 大病保险"
+   },
+   "year": "2019 (still in force)",
+   "source": "医保发〔2019〕30号 as reported by 杭州网 2019-05-15; Shaanxi/Inner Mongolia rules implementing 国办发〔2021〕42号",
+   "url": "https://hznews.hangzhou.com.cn/chengshi/content/2019-05/15/content_7193675_0.htm",
+   "confidence": "medium",
+   "note": "大病保险 covers residents. It pays on catalogue costs above the threshold, on top of basic insurance."
+  },
+  "out_of_area_care_yidi": {
+   "value": {
+    "registered_long_term_residents": "same deductible, ratio and cap as at home",
+    "registered_referral_or_emergency": "ratio cut by at most 10 percentage points",
+    "unregistered_non_emergency_non_referred": "ratio cut by at most 20 percentage points",
+    "emergency_without_filing": "treated as already registered",
+    "temporary_filing_valid": "at least 6 months",
+    "principle": "就医地目录、参保地政策、就医地管理"
+   },
+   "year": "2022 (in force from 2023-01-01)",
+   "source": "国家医保局 财政部《关于进一步做好基本医疗保险跨省异地就医直接结算工作的通知》医保发〔2022〕22号",
+   "url": "https://www.gov.cn/zhengce/zhengceku/2022-07/26/content_5702881.htm",
+   "confidence": "high"
+  },
+  "out_of_area_care_volume": {
+   "value": {
+    "cross_province_direct_settlement_visits": 308000000,
+    "all_out_of_area_visits": 473000000,
+    "out_of_area_cost_100m_cny": 8162.1,
+    "resident_out_of_area_cost_100m": 4778.16,
+    "employee_out_of_area_cost_100m": 3383.94
+   },
+   "year": 2025,
+   "source": "2025 医保公报",
+   "url": "https://www.cn-healthcare.com/articlewm/20260716/content-1674921.html",
+   "confidence": "high"
+  },
+  "medical_aid_yiliao_jiuzhu": {
+   "value": {
+    "spend_100m_cny": 794.24,
+    "people_subsidised_to_enrol": 76664700,
+    "aid_visits": 199156000,
+    "avg_inpatient_aid_per_visit_cny": 1273,
+    "avg_outpatient_aid_cny": 86
+   },
+   "year": 2025,
+   "source": "2025 医保公报",
+   "url": "https://www.cn-healthcare.com/articlewm/20260716/content-1674921.html",
+   "confidence": "high"
+  },
+  "medical_aid_rules": {
+   "value": {
+    "targets": "低保对象, 特困人员, 低保边缘家庭, 易返贫致贫人口; 因病致贫重病患者 case by case",
+    "ratio_dibao_tekun": "at least 70% of eligible costs",
+    "threshold_dibao_tekun": "none in principle (else at most 5% of local per-capita disposable income)",
+    "threshold_dibao_edge": "about 10% of income",
+    "threshold_illness_impoverished": "about 25% of income",
+    "order": "先保险后救助: basic insurance, then 大病保险, then aid"
+   },
+   "year": "2021 (国办发〔2021〕42号)",
+   "source": "国务院办公厅《关于健全重特大疾病医疗保险和救助制度的意见》 via 中新网 2021-11-19",
+   "url": "https://www.chinanews.com.cn/gn/2021/11-19/9612286.shtml",
+   "confidence": "high"
+  },
+  "elderly_insurance_mix_60plus": {
+   "value": {
+    "any_coverage": 98.5,
+    "employee": 22.5,
+    "resident": 75.2,
+    "commercial": 2.8
+   },
+   "unit": "%",
+   "year": 2021,
+   "source": "第五次中国城乡老年人生活状况抽样调查基本数据公报",
+   "url": "https://www.cncaprc.gov.cn/u/cms/www/202410/171437578sfk.pdf",
+   "confidence": "high"
+  },
+  "long_term_care_insurance": {
+   "value": {
+    "enrolled": 308547600,
+    "beneficiaries": 1929100,
+    "fund_spend_100m": 186.44
+   },
+   "year": 2025,
+   "source": "2025 医保公报",
+   "url": "https://www.cn-healthcare.com/articlewm/20260716/content-1674921.html",
+   "confidence": "high"
+  }
+ },
+ "illness_poverty": {
+  "share_poor_households_due_to_illness_2016": {
+   "value": 42,
+   "unit": "% of 建档立卡 poor households (因病致贫+因病返贫)",
+   "year": 2016,
+   "source": "国新办健康扶贫发布会 2016-06-21 (国家卫计委副主任王培安, citing 国务院扶贫办 data) via 浙江在线",
+   "url": "https://china.zjol.com.cn/gnxw/201606/t20160621_1645224.shtml",
+   "confidence": "high"
+  },
+  "share_end_2015": {
+   "value": {
+    "households_pct": 44.1,
+    "ill_poor_people": "about 20 million = 35.9% of registered poor people",
+    "registered_poor_households": 19010000
+   },
+   "year": 2015,
+   "source": "academic article citing 国务院扶贫办 (seen in search results only)",
+   "url": "https://zgncjj.ajcass.com/UploadFile/Issue/201606270007/2021/4//20210425030716WU_FILE_0.pdf",
+   "confidence": "low"
+  },
+  "share_2017_2018": {
+   "value": {
+    "due_to_illness_pct": 42.4,
+    "incl_disability_pct": 61.1,
+    "lifted_out_by_oct_2017_households": 4930000
+   },
+   "year": "2017-2018",
+   "source": "CPPCC member remarks citing 扶贫办 data, 人民政协网 2018-03 (seen in search results only)",
+   "url": "https://www.rmzxw.com.cn/c/2018-03-07/1983030.shtml",
+   "confidence": "low"
+  },
+  "post_2021_status": {
+   "value": "Absolute poverty was declared eliminated in 2020. Since 2021, 'sudden severe hardship households' (incl. illness) are a monitoring category under 防止返贫监测. No official national share caused by illness was found after 2018.",
+   "year": "2021-2026",
+   "source": "宣城市 policy Q&A; 国务院 2025 bulletin (no illness share reported)",
+   "url": "https://www.gov.cn/yaowen/shipin/202507/content_7034181.htm",
+   "confidence": "medium"
+  },
+  "catastrophic_spending_cancer_households": {
+   "value": {
+    "lung_cancer_CHE_rate": 78.1,
+    "stomach_unmanageable": 79.2,
+    "liver_unmanageable": 77.2
+   },
+   "unit": "%",
+   "year": "2012-2019",
+   "source": "see costs section (PMC8665572, PMC7426494, PMC7491539)",
+   "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8665572/",
+   "confidence": "high"
+  }
+ },
+ "mental": {
+  "any_disorder_excl_dementia": {
+   "value": {
+    "12_month": 9.3,
+    "lifetime": 16.6
+   },
+   "unit": "%",
+   "year": "2013-2015",
+   "source": "Huang Y et al. Prevalence of mental disorders in China: a cross-sectional epidemiological study. Lancet Psychiatry 2019;6:211 (CMHS n=32,552)",
+   "url": "https://europepmc.org/article/MED/30792114",
+   "confidence": "high"
+  },
+  "anxiety_disorders": {
+   "value": {
+    "12_month": 5.0,
+    "lifetime": 7.6
+   },
+   "unit": "%",
+   "year": "2013-2015",
+   "source": "Huang Y et al. Lancet Psychiatry 2019",
+   "url": "https://europepmc.org/article/MED/30792114",
+   "confidence": "high"
+  },
+  "depressive_disorders": {
+   "value": {
+    "any_depressive_lifetime": 6.8,
+    "any_depressive_12_month": 3.6,
+    "mdd_lifetime": 3.4,
+    "mdd_12_month": 2.1
+   },
+   "unit": "%",
+   "year": "2013-2015",
+   "source": "Lu J, Huang Y et al. Lancet Psychiatry 2021 (CMHS), reported by 健康界 2021-10-08",
+   "url": "https://www.cn-healthcare.com/articlewm/20211008/content-1271358.html",
+   "confidence": "high"
+  },
+  "depression_treatment": {
+   "value": {
+    "any_treatment_12m": 9.5,
+    "specialty_mental_health": 3.6,
+    "general_medical": 1.5,
+    "complementary_alternative": 2.7,
+    "adequate_treatment": 0.5,
+    "role_impairment_among_cases": 75.9
+   },
+   "unit": "% of people with 12-month depressive disorder",
+   "year": "2013-2015",
+   "source": "Lu J et al. Prevalence of depressive disorders and treatment in China. Lancet Psychiatry 2021;8:981 (Europe PMC abstract, PMID 34559991)",
+   "url": "https://europepmc.org/article/MED/34559991",
+   "confidence": "high"
+  },
+  "depression_risk_groups_OR": {
+   "value": {
+    "female_vs_male_12m": 1.41,
+    "unemployed_vs_employed_12m": 2.8,
+    "separated_widowed_divorced_12m": 1.85
+   },
+   "year": "2013-2015",
+   "source": "Lu J et al. 2021",
+   "url": "https://europepmc.org/article/MED/34559991",
+   "confidence": "high"
+  },
+  "elderly_awareness": {
+   "value": {
+    "depression_awareness_60plus": 49.0,
+    "urban": 60.9,
+    "rural": 34.9,
+    "alzheimers_awareness": 60.3
+   },
+   "unit": "%",
+   "year": 2021,
+   "source": "第五次中国城乡老年人生活状况抽样调查基本数据公报",
+   "url": "https://www.cncaprc.gov.cn/u/cms/www/202410/171437578sfk.pdf",
+   "confidence": "high"
+  }
+ },
+ "intl_comparison": [
+  {
+   "metric": "all cancers 5-yr relative survival",
+   "china": {
+    "value": 43.7,
+    "year": "2019-21",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/11401485"
+   },
+   "usa": {
+    "value": 70.5,
+    "year": "2016-22",
+    "source": "SEER 21",
+    "url": "https://seer.cancer.gov/statfacts/html/all.html"
+   },
+   "japan": {
+    "value": 64.8,
+    "year": "2018 diagnoses",
+    "source": "国立がん研究センター がん情報サービス (全国がん登録)",
+    "url": "https://ganjoho.jp/reg_stat/statistics/stat/summary.html"
+   },
+   "confidence": "high"
+  },
+  {
+   "metric": "lung",
+   "china": {
+    "value": 28.7,
+    "year": "2019-21"
+   },
+   "usa": {
+    "value": 29.5,
+    "year": "2016-22",
+    "url": "https://seer.cancer.gov/statfacts/html/lungb.html"
+   },
+   "japan": {
+    "value": 37.7,
+    "year": "2016 dx, net, age 15-99",
+    "url": "https://www.sakigake.jp/news/article/20260114CO0091/"
+   },
+   "confidence": "high"
+  },
+  {
+   "metric": "liver",
+   "china": {
+    "value": 14.4,
+    "year": "2019-21"
+   },
+   "usa": {
+    "value": 21.9,
+    "year": "2016-22",
+    "url": "https://seer.cancer.gov/statfacts/html/livibd.html"
+   },
+   "japan": {
+    "value": 33.4,
+    "year": "2016 dx, net",
+    "url": "https://www.sakigake.jp/news/article/20260114CO0091/"
+   },
+   "confidence": "high"
+  },
+  {
+   "metric": "stomach",
+   "china": {
+    "value": 35.2,
+    "year": "2019-21"
+   },
+   "usa": {
+    "value": 39.8,
+    "year": "2016-22",
+    "url": "https://seer.cancer.gov/statfacts/html/stomach.html"
+   },
+   "japan": {
+    "value": 64.0,
+    "year": "2016 dx, net",
+    "url": "https://www.sakigake.jp/news/article/20260114CO0091/"
+   },
+   "confidence": "high"
+  },
+  {
+   "metric": "esophagus",
+   "china": {
+    "value": 27.9,
+    "year": "2019-21"
+   },
+   "usa": {
+    "value": 22.2,
+    "year": "2016-22",
+    "url": "https://seer.cancer.gov/statfacts/html/esoph.html"
+   },
+   "japan": {
+    "value": 36.0,
+    "year": "2010-14 (CONCORD-3, net)",
+    "url": "https://europepmc.org/article/MED/29395269"
+   },
+   "confidence": "medium"
+  },
+  {
+   "metric": "colorectal",
+   "china": {
+    "value": 55.7,
+    "year": "2019-21"
+   },
+   "usa": {
+    "value": 65.4,
+    "year": "2016-22",
+    "url": "https://seer.cancer.gov/statfacts/html/colorect.html"
+   },
+   "japan": {
+    "value": 67.8,
+    "year": "2016 dx, net",
+    "url": "https://www.sakigake.jp/news/article/20260114CO0091/"
+   },
+   "confidence": "high"
+  },
+  {
+   "metric": "breast (female)",
+   "china": {
+    "value": 80.9,
+    "year": "2019-21"
+   },
+   "usa": {
+    "value": 91.9,
+    "year": "2016-22",
+    "url": "https://seer.cancer.gov/statfacts/html/breast.html"
+   },
+   "japan": {
+    "value": 88.0,
+    "year": "2016 dx, net",
+    "url": "https://www.sakigake.jp/news/article/20260114CO0091/"
+   },
+   "confidence": "high"
+  },
+  {
+   "metric": "pancreas",
+   "china": {
+    "value": 8.5,
+    "year": "2019-21"
+   },
+   "japan": {
+    "value": 11.8,
+    "year": "2016 dx, net",
+    "url": "https://www.sakigake.jp/news/article/20260114CO0091/"
+   },
+   "confidence": "high"
+  },
+  {
+   "metric": "Japan ICSS age-adjusted, 2012-15 dx (alternative series)",
+   "japan": {
+    "value": {
+     "stomach": 65.7,
+     "colorectal": 69.1,
+     "liver": 36.8,
+     "lung": 40.1,
+     "breast": 87.9
+    },
+    "url": "https://www.ncc.go.jp/jp/information/pr_release/2025/1119/index.html"
+   },
+   "confidence": "high"
+  },
+  {
+   "metric": "methodology caveat",
+   "value": "China uses age-standardised relative survival (registries). SEER uses unadjusted relative survival. Japan's 2016+ series uses net survival. Differences of about 2-3 points are noise. The large gaps (stomach, liver, breast, colorectal) are real and mostly reflect later-stage diagnosis in China.",
+   "confidence": "high"
+  }
+ ],
+ "gaps": [
+  "Cancer incidence per 100k by 5-year age band (NCC/JNCC 2024 tables) could not be extracted: the JNCC article and CCDC Weekly PDF tables were not machine-readable here. Only the shape is known (rises from 35-39, peaks at 80-84). GLOBOCAN 2022 China age-specific rates (gco.iarc.who.int) would fill this.",
+  "No national cancer survival data by hospital tier (三甲 vs county). The only proxies are urban vs rural (46.7% vs 33.6%, 2012-15) and AMI 30/90-day mortality by tier (二级 about 1.5x 三级). Any 三甲/local multiplier in the game is a design assumption.",
+  "No single national AMI 1-year mortality from admission. Built from in-hospital 4.0% (chest-pain centers, 2019-20) plus 2.8% post-discharge (PEACE 2012-15). Older PEACE-Retrospective in-hospital STEMI mortality (about 9-17% for 2001-2011) was seen in search snippets only.",
+  "Stroke 1-year outcomes come from hospital registries (CNSR-I 2007-08; CNSR-III 2015-18), which are not population-based. 'Share of survivors with disability' (50-70%) is unverified.",
+  "COPD prevalence by older age bands (60-69, 70+) is not verified; only 20-39 vs 40+ is confirmed.",
+  "The first-year cancer treatment cost evidence is from 2012-2016 tertiary-hospital surveys. No recent national figure after the big 2018-2025 drug price talks (国谈) and 集采; real OOP is probably lower now for many cancers.",
+  "大病保险 threshold and ratios vary by province; the 60% and 50%-of-income figures are national guidance reported second-hand (医保发〔2019〕30号 full text not opened).",
+  "No official post-2018 national share of poverty caused by illness. 防止返贫监测 data on illness are not published nationally.",
+  "Mental health data (CMHS) are from 2013-15; no newer national psychiatric epidemiology survey was found.",
+  "Liver disease (cirrhosis) case-fatality and survival were not collected. This was not explicitly requested, but the game lists liver disease as a diagnosis.",
+  "Deaths 2022 (2.57M) were confirmed only from search-result abstracts, not a page fetch."
+ ]
+}

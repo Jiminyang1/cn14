@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>14亿分之1</title>
+<meta name="description" content="随机出生在中国的某个角落，过完只有一次的一生。基于真实统计的人生模拟。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- 首页：档案袋封面 -->
+<section id="home" class="screen">
+  <div class="wrap">
+    <div class="folder">
+      <div class="folder-tab">人生档案 · <span class="mono" id="fileNo">No. ——</span></div>
+      <div class="folder-body">
+        <p class="eyebrow">人生模拟 · 依据国家统计局、联合国等公开数据</p>
+        <h1 class="brand">14亿分之<span>1</span></h1>
+        <p class="lead"><span id="leadNum"></span>。你将成为其中之一。生在哪个省、城市还是农村、谁家的孩子，都由不得你选。就像当初的你一样。</p>
+        <div class="counters">
+          <div><b id="cBirth">0</b><span>打开这一页以后出生的婴儿</span></div>
+          <div><b id="cDeath">0</b><span>同一段时间里离世的人</span></div>
+        </div>
+      </div>
+      <div class="seal seal-lg">待建档</div>
+    </div>
+
+    <div class="home-grid">
+      <section class="sheet apply">
+        <h2 class="form-title">建档申请表</h2>
+        <div class="frow">
+          <label>一生的长度</label>
+          <div><div class="seg" id="segLen"></div><p class="hint">活到当地平均寿命大约需要这么久。可以暂停、加速；关掉页面会保存在这个浏览器里。</p></div>
+        </div>
+        <div class="apply-actions">
+          <button class="stamp-btn" id="btnBorn">出 生</button>
+          <button class="btn" id="btnResume" hidden>继续上次的人生</button>
+        </div>
+      </section>
+
+      <section class="sheet">
+        <h3 class="sheet-title">此刻出生的婴儿会落在哪里</h3>
+        <p class="hint">按各省出生人数（2024 年，《中国统计年鉴2025》）</p>
+        <div id="dist" class="dist"></div>
+      </section>
+    </div>
+
+    <div class="notes3">
+      <div><h4>证件夹</h4><p>出生、升学、毕业、工作、结婚、买房、退休……人生每过一道关口，档案里就多一张证件。</p></div>
+      <div><h4>同一秒建档的人</h4><p>那一秒，中国还有其他婴儿出生。四个人的一生会按同样的统计走完，并排放在你旁边。</p></div>
+      <div><h4>数据从哪来</h4><p>出生、收入、房价、养老金来自统计年鉴；寿命和死因用联合国、WHO 数据；教育、婚育、医疗来自教育部、民政部、卫健委等。官方与国际数字不一致时，采用国际口径。</p></div>
+    </div>
+
+    <div id="past" class="sheet past" hidden></div>
+    <p class="footnote">疾病、死亡、自杀等沉重的事，也会按统计发生，但不会描写场面。如果你正在经历很难熬的时候，可以拨打全国心理援助热线 <b>12356</b>。</p>
+  </div>
+</section>
+
+<!-- 出生登记 -->
+<section id="birth" class="screen" hidden>
+  <div class="wrap narrow"><div id="cert"></div></div>
+</section>
+
+<!-- 一生 -->
+<section id="life" class="screen" hidden>
+  <header class="lhead">
+    <div class="who">
+      <span class="mono small muted" id="lfNo"></span>
+      <b id="lname"></b>
+      <span class="small muted" id="lplace"></span>
+    </div>
+    <div class="agebig"><b id="age">0</b><span>岁</span><small id="yr"></small></div>
+  </header>
+  <main class="lbody">
+    <section class="col-time">
+      <div class="sheet plan" id="focus"></div>
+      <div class="timeline" id="log"></div>
+    </section>
+    <aside class="col-side">
+      <div class="sheet" id="vitals"></div>
+      <div class="fam-cards" id="family"></div>
+      <div class="docs-wrap"><h4 class="side-title">证件夹 <span class="muted small" id="docCount"></span></h4><div class="docs" id="docs"></div></div>
+      <div class="sheet"><h4 class="sheet-title">一生曲线 <span class="muted small">幸福 · 健康</span></h4><div id="curve"></div></div>
+      <div class="sheet"><h4 class="sheet-title">同一秒建档的人 <span class="muted small">此刻，同样的年纪</span></h4><div id="comps"></div></div>
+    </aside>
+  </main>
+  <nav class="dock">
+    <div class="dock-prog"><i id="prog"></i></div>
+    <div class="dock-row">
+      <button class="dbtn" id="btnPause" title="暂停/继续">❚❚</button>
+      <div class="seg sm" id="segSpeed"></div>
+      <button class="dbtn wide" id="btnFF">快进到下一个抉择</button>
+      <label class="toggle"><input type="checkbox" id="chkAuto"> 自动抉择</label>
+      <button class="dbtn ghost" id="btnQuit">离开</button>
+    </div>
+  </nav>
+</section>
+
+<!-- 档案封存 -->
+<section id="end" class="screen" hidden>
+  <div class="wrap narrow" id="endBody"></div>
+</section>
+
+<div id="modal" class="modal" hidden><div class="sheet form-sheet" id="sheet"></div></div>
+
+<script src="js/data.js"></script>
+<script src="js/real.js"></script>
+<script src="js/engine.js"></script>
+<script src="js/loans.js"></script>
+<script src="js/parents.js"></script>
+<script src="js/gaokao.js"></script>
+<script src="js/content.js"></script>
+<script src="js/explain.js"></script>
+<script src="js/ui.js"></script>
+</body>
+</html>

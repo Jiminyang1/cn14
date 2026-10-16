@@ -1,0 +1,560 @@
+{
+  "_meta": {
+    "compiled": "2026-10-16",
+    "scope": "China housing-loan rules for game '14亿分之1'; rules in force as of 2026-10-16",
+    "notes": "Every value carries source+url. confidence: high = official text/official stats read directly; medium = reputable media report of official notice read directly; low = search-snippet only or derived; memory/unverified flagged explicitly. Amounts in CNY; 万 = 10,000."
+  },
+  "hpf": {
+    "legal_basis": {
+      "regulation": "住房公积金管理条例 as amended by 国务院令第844号 (signed 2026-08-10, approved at State Council executive meeting 2026-07-31)",
+      "effective": "2026-09-20",
+      "key_changes": [
+        "Withdrawal scenarios expanded from 6 to 9: rent; buy/build/rebuild/major repair of own home; repay home-loan principal+interest; renovation of own home (NEW); property-management fees of own home (NEW); retirement; total loss of work capacity + end of employment; emigration; other housing consumption approved by State Council (NEW)",
+        "Renting: the old condition that rent must exceed a set share of household wage income was removed – paying rent is sufficient",
+        "Withdrawal decision within 3 days of acceptance; loan decision within 10 days (was 15)",
+        "Flexible workers (个体工商户, 非全日制, 其他灵活就业) may contribute voluntarily; prefecture-level cities set rules",
+        "Contribution: employer and employee each >= 5% of employee's prior-year average monthly wage, not above national maximum; local committee drafts, provincial govt approves",
+        "Fraudulent withdrawal: repay + 3-year ban on withdrawals/loans; fraudulent loan: repay + 5-year ban; credit records shared on national credit platform",
+        "Funds may buy national bonds and policy-bank financial bonds; nationwide mutual recognition of contribution records / cross-region loans"
+      ],
+      "source": "国务院关于修改《住房公积金管理条例》的决定（国务院令第844号）, reprinted on 生态环境部 site",
+      "url": "https://www.mee.gov.cn/zcwj/gwywj/202608/t20260820_1164286.shtml",
+      "confidence": "high"
+    },
+    "coverage": {
+      "contributors_2024": {
+        "value": 176287500,
+        "display": "17628.75万人 实缴人数 (+1.00% y/y); 实缴单位 529.00万个 (+6.92%); 新开户 1862.47万人",
+        "year": 2024,
+        "source": "全国住房公积金2024年年度报告 (住房城乡建设部、财政部、中国人民银行), full PDF text",
+        "url": "https://caoss.org.cn/upload/file/25060609353156.pdf",
+        "confidence": "high"
+      },
+      "contributors_2023": {
+        "value": 174546800,
+        "display": "17454.68万人 实缴职工",
+        "year": 2023,
+        "source": "全国住房公积金2023年年度报告 as cited in search results (net increase 174.07万 in 2024 confirmed in 2024 report)",
+        "url": "https://paper.people.com.cn/rmrbwap/html/2024-06/03/nw.D110000renmrb_20240603_4-04.htm",
+        "confidence": "medium"
+      },
+      "contributors_2025": {
+        "value": null,
+        "note": "全国住房公积金2025年年度报告 not found online as of 2026-10-16 (city/provincial 2025 reports published Mar–May 2026, e.g. 深圳 729.37万 contributors, 北京 932.45万). See gaps.",
+        "url": "https://zjj.sz.gov.cn/xxgk/tjsj/content/post_12712901.html",
+        "confidence": "low"
+      },
+      "urban_employment_2024": {
+        "value": 473450000,
+        "display": "年末城镇就业人员 47345万人 (全国就业人员 73439万人; 农民工 29973万人)",
+        "source": "国家统计局 2024年国民经济和社会发展统计公报",
+        "url": "https://www.stats.gov.cn/sj/zxfb/202502/t20250228_1958817.html",
+        "confidence": "high"
+      },
+      "coverage_share_of_urban_employment_2024": {
+        "value": 0.372,
+        "formula": "17628.75 / 47345",
+        "note": "Derived. Share of all employed (73439万) = 24.0%.",
+        "confidence": "medium (derived)"
+      },
+      "by_employer_type_2024": {
+        "contributors": {"企业单位": {"people_wan": 11308.75, "share": 0.6415}, "非企业单位(机关、事业单位、社团等)": {"people_wan": 6101.18, "share": 0.3461}, "灵活就业人员": {"people_wan": 218.82, "share": 0.0124}},
+        "new_accounts": {"企业单位": {"people_wan": 1371.52, "share": 0.7364}, "非企业单位": {"people_wan": 399.34, "share": 0.2144}, "灵活就业人员": {"people_wan": 91.61, "share": 0.0492}},
+        "note": "2024 report only splits 企业/非企业/灵活就业; it no longer splits 国有 vs 私营. 2023 report (cited in search results): 城镇私营企业等 = 53.47% of contributors and 75.55% of new accounts.",
+        "source": "全国住房公积金2024年年度报告 表2",
+        "url": "https://caoss.org.cn/upload/file/25060609353156.pdf",
+        "confidence": "high"
+      },
+      "flexible_workers": {
+        "value": "试点城市 expanded 13 -> 36 in 2024; >100万 flexible workers had contributed by end-2024, of whom 24万 used funds to rent/buy. Voluntary flexible-worker contribution became national law from 2026-09-20 (条例 Art.49).",
+        "source": "全国住房公积金2024年年度报告; 国务院令第844号",
+        "url": "https://caoss.org.cn/upload/file/25060609353156.pdf",
+        "confidence": "high"
+      },
+      "migrant_workers": {
+        "value": null,
+        "note": "No current official figure found. NBS 农民工监测调查 stopped publishing 五险一金 coverage after ~2014 (then roughly 5-6% for HPF).",
+        "source": "memory/unverified",
+        "confidence": "low"
+      },
+      "other_2024_system_stats": {
+        "deposits_year_yi": 36317.83,
+        "deposit_balance_end2024_yi": 109252.79,
+        "withdrawals_yi": 27654.84,
+        "withdrawers_wan": 8127.04,
+        "loan_balance_end2024_yi": 80698.66,
+        "outstanding_loans_wan_bi": 2483.57,
+        "npl_ratio": 0.0005,
+        "hpf_share_of_all_mortgage_balance": 0.1764,
+        "source": "全国住房公积金2024年年度报告",
+        "url": "https://caoss.org.cn/upload/file/25060609353156.pdf",
+        "confidence": "high"
+      }
+    },
+    "contribution": {
+      "rate_range": {
+        "value": "employer 5%–12%, employee 5%–12% (usually same rate both sides). 2026 条例 sets floor 5% of prior-year avg monthly wage and 'not above national maximum' (12% per 2005 三部门指导意见).",
+        "source": "国务院令第844号 Art.18; Beijing 2025 notice (5%–12%)",
+        "url": "https://www.mee.gov.cn/zcwj/gwywj/202608/t20260820_1164286.shtml",
+        "confidence": "high"
+      },
+      "hardship_reduction": {
+        "value": "Beijing: firms in difficulty may apply to cut to 1%–4% or defer (缓缴) for the policy year",
+        "source": "北京日报 on 北京2025住房公积金年度缴存基数 notice",
+        "url": "https://news.bjd.com.cn/2025/09/18/11313704.shtml",
+        "effective": "2025-07-01 to 2026-06-30",
+        "confidence": "medium"
+      },
+      "shanghai_rate_set": {
+        "value": "上海 basic HPF: whole-number rates 5%, 6% or 7% only (employer=employee); 补充公积金 separate 1%–5%",
+        "source": "Kaizen CPA summary of Shanghai 2026 base rules (third-party; supplementary 1–5% from memory)",
+        "url": "https://www.kaizencpa.com/download/china/2026 Shanghai New Social Security & HPF Base Rules(CHS).pdf",
+        "confidence": "low"
+      },
+      "typical_in_practice": {
+        "value": "机关事业单位 and large SOEs commonly 12%; most private firms 5% (some 7%–10%); many small private firms do not contribute at all",
+        "note": "No national distribution of actual rates is published. Treat as game assumption.",
+        "source": "memory/unverified",
+        "confidence": "low"
+      },
+      "base_cap": {
+        "rule": "monthly base cap = 3 x local prior-year average monthly wage (城镇单位/全口径); floor = local minimum wage",
+        "examples": {
+          "北京_2025年度": {"cap": 35811, "floor": 2540, "floor_effective": "2025-09-01", "max_monthly_each_side_at_12pct": 4297, "period": "2025-07-01 to 2026-06-30", "url": "https://news.bjd.com.cn/2025/09/18/11313704.shtml", "confidence": "medium"},
+          "北京_2026年度": {"cap": null, "note": "not yet published when 雄安 notice issued (Jul 2026)", "confidence": "low"},
+          "上海_2026年度": {"cap_interim": 37302, "cap_reported_final": 37731, "floor": 2740, "note": "Until 2026 cap announced, 2025 cap 37302 applies; third-party reports 37731 (=3x12577)", "url": "https://www.thepaper.cn/newsDetail_forward_33567909", "confidence": "medium"},
+          "雄安_2026年度": {"cap": 31267, "floor": 2380, "url": "https://news.qq.com/rain/a/20260702A06S9B00", "confidence": "low"},
+          "南京_2026年度": {"cap": 42400, "floor": 2660, "url": "https://www.yzwb.net/news/jiangsu/nanjing/202607/t20260717_373062.html", "confidence": "low"}
+        },
+        "base_policy_year": "July 1 – June 30 each year"
+      }
+    },
+    "deposit_rate": {
+      "value": 0.015,
+      "rule": "Account balances earn the PBOC 1-year time-deposit benchmark rate (1.50%) since 2016-02-21 (银发〔2016〕43号), regardless of current/fixed portions. Interest is settled annually on June 30 and capitalised.",
+      "still_applied": "Beijing and Guangzhou 2024–2025 and 2025–2026 interest settlements at 1.5%; July 2026 reports still state 1.5%",
+      "cross_check": "2024 national 支付缴存人利息 1597.29亿 / avg balance ≈105,000亿 ≈ 1.52%",
+      "source": "search results citing 北京公积金中心 doc and 2026-07 reports; 全国2024年报 for cross-check",
+      "url": "https://m.gmw.cn/2026-07/02/content_1304516503.htm",
+      "url_crosscheck": "https://caoss.org.cn/upload/file/25060609353156.pdf",
+      "effective": "2016-02-21 – present",
+      "confidence": "medium-high"
+    },
+    "withdrawal": {
+      "national_2024": {
+        "rent_withdrawers_wan": 2257.44,
+        "rent_withdrawal_yi": 2720.57,
+        "purchase_and_repay_withdrawers_wan": 4931.59,
+        "purchase_and_repay_withdrawal_yi": 17927.76,
+        "retirement_etc_yi": 6870.01,
+        "source": "全国住房公积金2024年年度报告",
+        "url": "https://caoss.org.cn/upload/file/25060609353156.pdf",
+        "confidence": "high"
+      },
+      "rent": {
+        "北京": {
+          "value": "No invoice: 2000元/人/月 (raised from 1500); with invoice for commercial rental: actual rent up to own monthly contribution; public/affordable rental: actual rent; 多子女 families: actual rent (not capped by contribution); monthly frequency",
+          "effective": "2023 (draft Mar 2023, implemented mid-2023)",
+          "source": "界面新闻 on 北京公积金中心 rental-withdrawal optimisation",
+          "url": "https://m.jiemian.com/article/9243048.html",
+          "confidence": "medium"
+        },
+        "上海": {
+          "value": "Market rental: 4000元/户/月 (raised from 3000), monthly (was quarterly); 保障性租赁住房: actual rent",
+          "effective": "2024-11-01, valid 5 years",
+          "source": "新京报 via search result on 上海公积金管委会《关于优化本市住房公积金租赁提取业务相关事项的通知》",
+          "url": "https://www.toutiao.com/topic/7486486867699402793/",
+          "confidence": "low (search snippet only)"
+        },
+        "西安(陕西省直)": {
+          "value": "24000元/年 standard; 多子女 and new citizens/youth ≤35: 28800元/年",
+          "effective": "2026-09-07",
+          "url": "https://m.gmw.cn/2026-09/07/content_1304560738.htm",
+          "confidence": "medium"
+        },
+        "南宁": {
+          "value": "1200元/人/月 (from 1000); +200 for 二孩, +400 for 三孩",
+          "effective": "2026-08-01",
+          "url": "https://news.qq.com/rain/a/20260731A05XUK00",
+          "confidence": "medium"
+        }
+      },
+      "down_payment_use": {
+        "value": "National policy (2024) encourages using HPF to pay the down payment. 上海 from 2025-08-26: buyer+spouse may withdraw balance for down payment on new presale homes, paid directly into developer's escrow account, does not reduce loan cap. 西安 2026-09: withdrawal for down payment on second-hand homes via escrow.",
+        "source": "全国2024年报 (支持缴存人提取住房公积金支付购房首付款); 财联社 on 沪公积金管委会〔2025〕4号",
+        "url": "https://www.cls.cn/detail/2124574",
+        "confidence": "medium"
+      },
+      "repayment_withdrawal": {
+        "value": "还贷提取: allowed by 条例 (repay principal+interest); typically monthly/annual entrusted offset (委托提取/按月冲还贷). Both own-city HPF loans and commercial mortgages qualify. Beijing Aug 2026: renovation withdrawal ≤50% of invoice and ≤25万, once per 10 years; Hangzhou Apr 2026: property fee withdrawal ≤1万/户/年.",
+        "source": "国务院令第844号; 光明网 on 北京2026-08 policy; 杭州网 on 杭州 2026-04 policy",
+        "url": "https://m.gmw.cn/2026-08/08/content_1304544959.htm",
+        "confidence": "medium"
+      }
+    },
+    "eligibility": {
+      "continuous_contribution": {
+        "value": "Typically ≥6 consecutive months of normal (足额) contribution at application (北京: 连续缴存半年以上且账户正常缴存). Some cities require 12 months. 广州 2026 draft: 缴存满半年.",
+        "source": "北京本地宝 Q&A on 北京公积金中心 rules; 金羊网 headline on 广州 draft",
+        "url": "https://m.bj.bendibao.com/zffw/340680.html",
+        "confidence": "medium"
+      },
+      "other": {
+        "value": "No outstanding HPF loan for borrower+spouse (some cities 2026 temporarily lift 'loan count' limits: 成都 2026-03-25 to 2026-12-31, 杭州 2026, 北京 2026-08 allows new loan after full repayment); local purchase eligibility; monthly repayment ≤ 50% household income (广州) or 40% repayment ratio in formula (武汉)",
+        "url": "https://www.news.cn/local/20260324/6b336c1049ad405b9c1c6acb5f77283f/c.html",
+        "confidence": "medium"
+      },
+      "processing_time": {"value": "Loan decision within 10 days of acceptance (from 2026-09-20)", "url": "https://www.mee.gov.cn/zcwj/gwywj/202608/t20260820_1164286.shtml", "confidence": "high"}
+    },
+    "loan_rates": {
+      "current": {
+        "first_home_le_5y": 0.021,
+        "first_home_gt_5y": 0.026,
+        "second_home_le_5y": 0.02525,
+        "second_home_gt_5y": 0.03075,
+        "effective": "2025-05-08",
+        "note": "PBOC cut by 0.25pp (notice 2025-05-07). Verified 2.6% for first home >5y. Second-home rates are 'not lower than' 1.1x first-home rate.",
+        "source": "中国新闻网 (citing PBOC notice and Beijing center)",
+        "url": "https://www.chinanews.com.cn/cj/2025/05-08/10412451.shtml",
+        "confidence": "high"
+      },
+      "existing_loans": {
+        "value": "Loans >1 year issued before 2025-05-08 keep old rate for 2025 and switch to new rate on 2026-01-01 (annual Jan-1 repricing). Loans ≤1 year keep contract rate.",
+        "source": "中国新闻网",
+        "url": "https://www.chinanews.com.cn/cj/2025/05-08/10412451.shtml",
+        "confidence": "high"
+      },
+      "history": [
+        {"effective": "2015-08-26", "first_le_5y": 0.0275, "first_gt_5y": 0.0325, "source": "memory/unverified", "confidence": "low"},
+        {"effective": "2022-10-01", "first_le_5y": 0.026, "first_gt_5y": 0.031, "source": "memory/unverified", "confidence": "low"},
+        {"effective": "2024-05-18", "first_le_5y": 0.0235, "first_gt_5y": 0.0285, "second_le_5y": 0.02775, "second_gt_5y": 0.03325, "source": "search result (中证网 2024-05-17)", "url": "https://www.cs.com.cn/xwzx/hg/202405/t20240517_6410544.html", "confidence": "medium"},
+        {"effective": "2025-05-08", "first_le_5y": 0.021, "first_gt_5y": 0.026, "second_le_5y": 0.02525, "second_gt_5y": 0.03075, "url": "https://www.chinanews.com.cn/cj/2025/05-08/10412451.shtml", "confidence": "high"}
+      ],
+      "local_subsidy_example": {"value": "成都: until 2026-12-31, HPF center subsidises 20% of monthly interest, ≤2.5万 per loan", "url": "https://cbgc.scol.com.cn/news/7885335", "confidence": "low (search snippet)"}
+    },
+    "city_caps": {
+      "北京": {
+        "single": 1200000,
+        "couple": 2400000,
+        "second_home_single": 1000000,
+        "second_home_couple": 2000000,
+        "multi_child_bonus": "+40万 (北京户籍二孩及以上)",
+        "other_bonus": "+20万 城六区户籍 buying first home outside 城六区; +40万 green building; stacking max +60万 (one contributor) / +100万 (two) → max 340万",
+        "balance_multiple": "Not balance-based: 20万 per year of contribution (one contributor); 40万 per year for couple (longer spouse's years); part-years count as full years; also limited by repayment capacity",
+        "effective": "2026-08-08 (applications accepted on/after; issued 2026-08-07)",
+        "source": "光明网 on 北京八部门 notice",
+        "url": "https://m.gmw.cn/2026-08/08/content_1304544959.htm",
+        "confidence": "medium-high"
+      },
+      "上海": {
+        "single": 1200000,
+        "couple": 2400000,
+        "second_home_single": 1000000,
+        "second_home_couple": 2000000,
+        "multi_child_bonus": "+20% (first and second home)",
+        "other_bonus": "+15% two-star+ new green building; stacking +35% → first home family 324万, second home 270万",
+        "balance_multiple": "not stated in sources (Shanghai uses account balance multiple, historically 30x – memory/unverified)",
+        "effective": "2026-02-26 (沪公积金管委会〔2026〕1号)",
+        "previous": "2025-08-26: first-home family 160万 (green 184万; multi-child 192万→216万); second-home family 130万",
+        "source": "澎湃新闻 2026-02-25",
+        "url": "https://www.thepaper.cn/newsDetail_forward_32652994",
+        "confidence": "medium-high"
+      },
+      "深圳": {
+        "single": 700000,
+        "couple": 1300000,
+        "multi_child_bonus": "+70% for 2+ children (or +50% 初婚初育; choose one)",
+        "other_bonus": "+60% first home in Shenzhen; +40% 保障性住房; uplifts add up (media: max 189万 single / 351万 family)",
+        "balance_multiple": "账户余额 x 16 (media report)",
+        "effective": "2026-04-30 (深建字〔2026〕86号, issued 2026-04-29)",
+        "previous": "2025-03: single 60万, family 110万, multi-child +50%",
+        "source": "深圳市人民政府 site (official notice)",
+        "url": "https://www.sz.gov.cn/cn/xxgk/zfxxgj/tzgg/content/post_12759894.html",
+        "confidence": "high (caps, uplifts); low (16x multiple)"
+      },
+      "广州": {
+        "single": 1000000,
+        "couple": 2000000,
+        "multi_child_bonus": "育儿 (child under 18): 1 child +10%, 2 children +40%, 3+ children +50%",
+        "other_bonus": "1-star green/prefab +10%, 2-star+ green +20%, '好房子' +30% (take highest of building-type uplifts); stack with child uplift up to +80% → 180万 single / 360万 two+",
+        "balance_multiple": "账户余额 x 8 + 月缴存额 x 至退休月数 (formula published 2025-02; not confirmed changed in 2026); monthly repayment ≤50% of income",
+        "effective": "2026-04-30",
+        "source": "广州市人民政府 site, 《广州住房公积金管理中心关于调整住房公积金贷款政策的通知》; formula from gz.gov.cn 2025-02-18",
+        "url": "https://www.gz.gov.cn/zwfw/zxfw/zffw/content/post_10797888.html",
+        "url_formula": "https://www.gz.gov.cn/zt/shb/content/mpost_10129232.html",
+        "confidence": "high"
+      },
+      "杭州": {
+        "single": 900000,
+        "couple": 1800000,
+        "multi_child_bonus": "+50% (also high-level talent +50%)",
+        "other_bonus": "new citizens/youth +20%; green low-carbon +20%; trade-in +20%; stackable up to +70% → family max 306万",
+        "balance_multiple": "月均账户余额 x 20 (raised from 15), capped by individual max",
+        "effective": "2026-04-01",
+        "note": "桐庐/淳安/建德: single 65万, family 130万",
+        "source": "杭州网 2026-03-31",
+        "url": "https://hznews.hangzhou.com.cn/jingji/content/2026-03/31/content_9199333.htm",
+        "confidence": "medium-high"
+      },
+      "成都": {
+        "single": 800000,
+        "couple": 1200000,
+        "multi_child_bonus": null,
+        "other_bonus": "+20% for ready-built (现房) or demolition-resettlement purchases → 96万/144万; +20% one-star+ green new homes (from 2025-08-25, not stackable)",
+        "balance_multiple": "not found",
+        "effective": "2026-03-25",
+        "note": "Loan-count limit lifted 2026-03-25 to 2026-12-31; temporary 15% min down payment and 20% interest subsidy until 2026-12-31 (snippet)",
+        "source": "新华网 2026-03-24",
+        "url": "https://www.news.cn/local/20260324/6b336c1049ad405b9c1c6acb5f77283f/c.html",
+        "confidence": "medium-high"
+      },
+      "郑州": {
+        "single": null,
+        "couple": 1200000,
+        "multi_child_bonus": "+20% → 144万 (郑州市中心); 河南省直 from 2026-10-10: ordinary family 130万, multi-child 156万, talent 180万",
+        "balance_multiple": "not found",
+        "effective": "郑州市中心 cap: date unconfirmed (cites 郑公积金〔2023〕53号); 省直: 2026-10-10",
+        "note": "Cap is per family; single vs dual contributors not distinguished. 2026-08-26: existing-home min down payment 30%→20%.",
+        "source": "东方财富 (省直, 2026-10-10); search snippet for city center",
+        "url": "https://finance.eastmoney.com/a/202610103891969364.html",
+        "confidence": "medium (省直); low (city center)"
+      },
+      "武汉": {
+        "single": 1200000,
+        "couple": 1500000,
+        "multi_child_bonus": "multi-child purchase support (套数核减) extended to 2026-12-31; no cap uplift found",
+        "balance_multiple": "Repayment-capacity formula with 还贷比例 40% (raised from 35%)",
+        "effective": "2025-09-30",
+        "note": "Same cap for first and second home. 2026-04-02: existing-home LTV first ≤80%, second ≤70%; hukou limit removed for non-local contributors.",
+        "source": "楚天都市报",
+        "url": "https://www.ctdsb.net/c1737_202509/2552367.html",
+        "confidence": "medium"
+      },
+      "长沙": {"single": null, "couple": null, "note": "not found", "confidence": "none"},
+      "西安": {
+        "single": 900000,
+        "couple": 1200000,
+        "multi_child_bonus": "+20% (2+ children) → 108万 / 144万",
+        "balance_multiple": "not stated",
+        "effective": "2026-09-07 (陕西省住房资金管理中心 notice implementing 西安 measures; 西安 city center reported 120万 couple 2026-08-26)",
+        "source": "光明网 2026-09-07",
+        "url": "https://m.gmw.cn/2026-09/07/content_1304560738.htm",
+        "confidence": "medium"
+      },
+      "合肥": {
+        "single": 550000,
+        "couple": 650000,
+        "multi_child_bonus": null,
+        "effective": "2022-06 (5-year validity); later changes not found",
+        "source": "中证网 2022-06-13 (search snippet)",
+        "url": "https://cs.com.cn/fdc/202206/t20220613_6276590.html",
+        "confidence": "low (possibly outdated)"
+      },
+      "济南": {
+        "single": 900000,
+        "couple": 1300000,
+        "multi_child_bonus": "+40% for multi-child / talent buying high-quality or ready homes, stackable, max 240万",
+        "effective": "~2026-04 (reported 2026-04-22)",
+        "previous": "2024: 50万 / 80万, 二孩+25%",
+        "source": "腾讯新闻 AI-assisted local digest (low reliability)",
+        "url": "https://news.qq.com/rain/a/20260422A019XO00",
+        "confidence": "low"
+      },
+      "贵阳": {
+        "single": 500000,
+        "couple": 700000,
+        "multi_child_bonus": "multi-child first home 60万 single / 80万 couple",
+        "effective": "2024-04 phased policy (to 2024-12-31); reportedly extended to end-2026 with higher caps (headline '最高贷150万' unverified)",
+        "source": "search snippet on 贵阳公积金中心 2024 notice",
+        "url": "https://m.thepaper.cn/newsDetail_forward_27147504",
+        "confidence": "low"
+      },
+      "兰州": {
+        "single": null,
+        "couple": null,
+        "balance_multiple": "缴存余额系数 24x (from 18x, 2023-04-10)",
+        "note": "current caps not found; 2026-04-07 rent withdrawal raised to 2万/人/年",
+        "url": "https://cs.com.cn/fdc/202304/t20230403_6334130.html",
+        "confidence": "low"
+      },
+      "南宁": {
+        "single": 900000,
+        "couple": 900000,
+        "second_home": 800000,
+        "multi_child_bonus": "first home: +10万 (2 children), +20万 (3 children); +10万 for new commercial housing; stackable → max 120万",
+        "note": "Caps are per loan/household, single vs dual not distinguished in source. May be suspended if fund utilisation >85%.",
+        "effective": "2026-08-01 (南宁住房公积金管委会, issued 2026-07-29)",
+        "source": "腾讯新闻",
+        "url": "https://news.qq.com/rain/a/20260731A05XUK00",
+        "confidence": "medium"
+      },
+      "石家庄": {"single": null, "couple": null, "note": "not found", "confidence": "none"},
+      "重庆": {
+        "single": 800000,
+        "couple": null,
+        "multi_child_bonus": "multi-child individual 100万; family total ≤160万",
+        "source": "search snippet",
+        "url": "https://cbgc.scol.com.cn/news/7758934",
+        "confidence": "low"
+      },
+      "昆明": {"single": 1050000, "couple": 1500000, "effective": "2026-04-07", "source": "search snippet", "url": "https://m.gmw.cn/2026-08/24/content_1304553316.htm", "confidence": "low"},
+      "typical_prefecture": {
+        "single": 500000,
+        "couple": 800000,
+        "multi_child_bonus": "+10万–20万 or +20%",
+        "evidence": "Guangdong prefecture cities, 2026: 惠州 50万/90万 (multi-child +20%, max 108万); 江门 40万/80万; 肇庆 50万/80万 (+15万 multi-child); 清远 50万/70万; 阳江 50万/75万",
+        "balance_multiple": "commonly 10x–20x account balance (memory/unverified)",
+        "source": "楚天都市报 citing 央视新闻 2026-03-26",
+        "url": "https://www.ctdsb.net/c1737_202603/2697325.html",
+        "confidence": "medium"
+      }
+    },
+    "down_payment": {
+      "national_rule": {
+        "first_home": 0.2,
+        "second_home": 0.2,
+        "note": "2015-03-30: first home min 20%; 2015-09-01: second home (first loan repaid) 30%→20%; 北上广深 may set their own (historically 30% for second). Cities may go lower: 广州 20% first/second, 15% 保障房; 成都 temporary 15% until 2026-12-31; 郑州 existing homes 20% (from 2026-08-26); 武汉 existing homes max LTV 80%/70%.",
+        "source": "中证网 2015-09-01 (search result); gz.gov.cn 2025-02-18",
+        "url": "https://www.gz.gov.cn/zt/shb/content/mpost_10129232.html",
+        "url_national": "https://cs.com.cn/xwzx/jr/201509/t20150901_4789846.html",
+        "confidence": "medium"
+      }
+    },
+    "term": {
+      "max_years": 30,
+      "age_rule": "Maturity ≤ statutory retirement age + 5 years, generally ≤68 (men) / ≤63 (women) after the 2025 retirement-age reform (北京 from 2025-01-01: cap raised 65→68; 重庆、哈尔滨 2025-01-01; 西安 2025-01-22, 昆明 2025-03-24, 青岛 2025-03)",
+      "example": "北京: applicant 40, spouse 45 → max term 28 years (68-40, longer of the two)",
+      "source": "中国新闻网 2025-04-27",
+      "url": "https://www.chinanews.com/sh/2025/04-27/10406631.shtml",
+      "confidence": "high",
+      "note": "The 2026 commercial-loan rule (40-year max) does not change HPF 30-year cap as far as found."
+    },
+    "loan_stats_2024": {
+      "loans_issued_wan_bi": 230.56,
+      "amount_yi": 13043.07,
+      "avg_loan_wan": 56.6,
+      "first_home_share_by_count": 0.8686,
+      "borrower_age_le_40_share": 0.8213,
+      "dual_contributor_share_by_count": 0.4825,
+      "new_home_share": 0.5311,
+      "existing_home_share": 0.4269,
+      "source": "全国住房公积金2024年年度报告 表5 (avg derived)",
+      "url": "https://caoss.org.cn/upload/file/25060609353156.pdf",
+      "confidence": "high"
+    }
+  },
+  "commercial": {
+    "down_payment": {
+      "residential_min": 0.15,
+      "rule": "Since 2024-09-29 (notice dated 2024-09-27) commercial mortgages no longer distinguish first/second home; nationwide floor 15%. Provincial PBOC branches/NFRA offices may set higher local floors (e.g. 北上深 second homes higher). Previously (2024-05-17): first 15%, second 25%.",
+      "changes_2025_2026": "No change to residential floor found. 2026-01 (银发〔2026〕14号): commercial-use property (商业用房/商住两用) floor cut to 30% (was typically 50%). 个人住房贷款管理办法(试行) 2026-08-28 Art.8: min down payment = PBOC/NFRA floor, lenders may set higher.",
+      "source": "新华网 2024-09-24 (潘功胜); search results on 银发〔2026〕14号; 新京报 on 管理办法",
+      "url": "https://www.xinhuanet.com/20240924/eeb25ebd265f4252826f2a3468e0c84a/c.html",
+      "confidence": "high"
+    },
+    "lpr_5y_history": [
+      {"date": "2019-08-20", "lpr_1y": 4.25, "lpr_5y": 4.85},
+      {"date": "2019-11-20", "lpr_1y": 4.15, "lpr_5y": 4.80},
+      {"date": "2020-02-20", "lpr_1y": 4.05, "lpr_5y": 4.75},
+      {"date": "2020-04-20", "lpr_1y": 3.85, "lpr_5y": 4.65},
+      {"date": "2022-01-20", "lpr_1y": 3.70, "lpr_5y": 4.60},
+      {"date": "2022-05-20", "lpr_1y": 3.70, "lpr_5y": 4.45},
+      {"date": "2022-08-22", "lpr_1y": 3.65, "lpr_5y": 4.30},
+      {"date": "2023-06-20", "lpr_1y": 3.55, "lpr_5y": 4.20},
+      {"date": "2024-02-20", "lpr_1y": 3.45, "lpr_5y": 3.95},
+      {"date": "2024-07-22", "lpr_1y": 3.35, "lpr_5y": 3.85},
+      {"date": "2024-10-21", "lpr_1y": 3.10, "lpr_5y": 3.60},
+      {"date": "2025-05-20", "lpr_1y": 3.00, "lpr_5y": 3.50},
+      {"date": "2026-09-20", "lpr_1y": 3.00, "lpr_5y": 3.50, "note": "latest fixing; unchanged 16 months. Only 5Y change points listed (1Y-only moves 2019-09, 2021-12, 2023-08 omitted). Next fixing 2026-10-20."}
+    ],
+    "lpr_source": {"source": "全国银行间同业拆借中心 (chinamoney) LPR history API, queried 2026-10-16", "url": "https://www.chinamoney.com.cn/chinese/bklpr/", "confidence": "high"},
+    "avg_new_rate": [
+      {"period": "2023-09 (existing first-home loans after cut)", "value": 4.27, "note": "weighted avg of repriced existing first-home loans, not new loans", "url": "https://www.cls.cn/detail/1495770", "confidence": "medium"},
+      {"period": "2024-03", "value": 3.71, "url": "https://www.chinanews.com/cj/2024/04-19/10201881.shtml", "confidence": "low (snippet)"},
+      {"period": "2024Q3", "value": 3.33, "note": "record low at the time; down 0.12pp q/q", "url": "https://wallstreetcn.com/articles/3732651", "confidence": "medium"},
+      {"period": "2024-12", "value": 3.11, "url": "https://www.toutiao.com/topic/7479228000560482358/", "confidence": "low (snippet)"},
+      {"period": "2025-03", "value": 3.1, "confidence": "low (snippet)", "url": "https://m.gelonghui.com/live/2449245"},
+      {"period": "2025-09", "value": 3.06, "note": "新发放个人住房贷款加权平均利率 (商业性 3.07%)", "url": "https://www.spgchinaratings.cn/upload/20260130_RMBS_Overview_and_Outlook_PPT.pdf", "confidence": "low (snippet)"},
+      {"period": "2025-11", "value": 3.1, "url": "https://www.yzwb.net/news/ch/202512/t20251222_302898.html", "confidence": "medium"},
+      {"period": "2026-01", "value": 3.1, "url": "https://www.nbd.com.cn/articles/2026-02-13/4262916.html", "confidence": "medium"},
+      {"period": "2026-06", "value": 3.1, "note": "PBOC spokesman: ~3.1%, flat y/y", "url": "https://m.gelonghui.com/live/2449245", "confidence": "low (snippet)"}
+    ],
+    "pricing_note": {
+      "value": "National first/second-home commercial rate floors abolished 2024-05; rates priced as LPR ± spread under provincial self-regulatory mechanisms. 上海 from 2025-08-26 no longer differentiates first/second home rates. Typical new first-home rate ≈ 3.0–3.1% (LPR-40 to -50bp).",
+      "url": "https://www.cnfin.com/hg-lb/detail/20250825/4291239_1.html",
+      "confidence": "medium"
+    },
+    "repricing": {
+      "rule": "Floating-rate loans = 5Y LPR + fixed spread; rate resets once per repricing period, by default annually on 1 January or on the loan anniversary (borrower's choice at contract). Since 2024-11-01 borrowers may negotiate shorter repricing periods (minimum-one-year restriction removed) and negotiate the spread.",
+      "batch_cut_2023": {"date": "2023-09-25", "value": "Existing first-home loans repriced: 4973万笔, 21.7万亿元 adjusted in first week; avg cut 0.73pp to 4.27%", "url": "https://www.cls.cn/detail/1495770", "confidence": "medium"},
+      "batch_cut_2024": {"date": "by 2024-10-31", "value": "All existing mortgages (first and second) with spread above LPR-30bp reset to LPR-30bp (≈3.30% at LPR 3.60%; ≈3.20% from 2025-06 resets at LPR 3.50%); avg cut ~0.5pp, ~5000万户/1.5亿人, saves ~1500亿元 interest per year. 北上深 second homes subject to local floors.", "url": "https://www.xinhuanet.com/20240924/eeb25ebd265f4252826f2a3468e0c84a/c.html", "url2": "https://www.cls.cn/detail/1821223", "confidence": "high"},
+      "hpf_repricing": "HPF loans reprice on 1 January following a rate change (e.g. 2025-05 cut applied to existing loans from 2026-01-01)",
+      "source": "PBOC 公告〔2024〕第11号 as reported",
+      "confidence": "medium-high"
+    },
+    "limits": {
+      "max_term_years": 40,
+      "max_term_rule": "个人住房贷款管理办法(试行) Art.13: '最长不得超过40年' (was 30). Hardship extensions: cumulative ≤ half original term and total ≤ 40 years.",
+      "effective": "2026-08-28 (金融监管总局+人民银行, effective on issuance; replaces 1998 rules)",
+      "url_term": "https://www.bjnews.com.cn/detail/1787913540129916.html",
+      "age_plus_term": "Not set by regulation. Bank practice: big state banks age+term ≤75 (ICBC, some CCB branches); many city/joint-stock banks ≈68–70; borrower age 18–70. After 2026 rules some banks discussing 80, not confirmed (财联社 2026-09-04).",
+      "url_age": "https://www.cls.cn/detail/2474025",
+      "dti": "Monthly mortgage payment ≤ 50% of monthly (disposable) income incl. co-borrowers; all debt payments ≤ 60% (was 55% under 2004 指引).",
+      "url_dti": "https://news.10jqka.com.cn/20260828/c679402343.shtml",
+      "ltv_note": "Loan ≤ lower of transaction price or appraisal less min down payment; collateral re-valued at least annually",
+      "confidence": "high"
+    },
+    "combined_loan": {
+      "value": "组合贷 = HPF loan up to the HPF cap/formula + a commercial mortgage from the entrusted bank for the shortfall; two contracts usually same term and same bank, each part at its own rate (HPF 2.6% / commercial LPR±spread), one down payment applies to the total. Combined total typically ≤ 80% of lower of appraisal/price. Variants: 商转公 (convert commercial to HPF, e.g. 广州 total ≤80% of value; 河南省直 introduced 商转公组合贷 2026-10).",
+      "source": "福建省住建厅 规范性文件 definition; 广州 商转公 report (search results)",
+      "url": "https://zjt.fujian.gov.cn/xxgk/zfxxgkzl/xxgkml/dfxfgzfgzhgfxwj/gfxwj/202407/P020250228598055844342.doc",
+      "confidence": "medium"
+    }
+  },
+  "market": {
+    "prepayment": {
+      "mortgage_balance_series": [
+        {"date": "2022-12-31", "value_wan_yi": 38.8, "yoy": 0.012, "note": "historic peak"},
+        {"date": "2023-12-31", "value_wan_yi": 38.17, "yoy": -0.016, "note": "first decline since 1997"},
+        {"date": "2024-12-31", "value_wan_yi": 37.68, "yoy": -0.013},
+        {"date": "2025-09-30", "value_wan_yi": 37.44, "yoy": -0.003},
+        {"date": "2025-12-31", "value_wan_yi": 37.01, "note": "also implied by 36.29 + 0.7163"},
+        {"date": "2026-06-30", "value_wan_yi": 36.29, "yoy": -0.038, "note": "H1 2026 decline 7163亿"}
+      ],
+      "balance_source": "PBOC 金融机构贷款投向统计报告 as reported (2026Q2 read directly on 中国金融信息网; others via search results citing PBOC)",
+      "url": "https://www.cnfin.com/hb-lb/detail/20260729/4447608_1.html",
+      "url_2024": "https://www.news.cn/house/20250217/9b435848dbc84c03b81642ef06b1f595/c.html",
+      "bank_evidence": "ICBC: Jan–Feb 2023 mortgage prepayments 979亿元 (+220亿 y/y). Big-6 banks' mortgage books fell 5568.57亿 (2023), 6210.57亿 (2024), 7115.16亿 (2025). Some banks tightened online prepayment quotas in 2025; banks say prepayments not clearly declining in Sept 2026.",
+      "bank_url": "https://finance.sina.cn/2023-02-21/detail-imyhncsu8673133.d.html",
+      "drivers": "Rate gap between old (≈4.9–5.9%) and new loans, low deposit/wealth-product yields; eased after 2023/2024 batch cuts",
+      "confidence": "medium-high"
+    },
+    "foreclosure": {
+      "series": [
+        {"year": 2023, "all_listings_wan": 79.6, "residential_listings_wan": 38.9, "residential_deals_wan": 9.9, "note": "listings +36.7% y/y; residential deal rate 25.4%", "url": "https://www.nbd.com.cn/articles/2025-01-09/3716175.html", "confidence": "low (snippet)"},
+        {"year": 2024, "all_listings_wan": 76.8, "all_deals_wan": 17.6, "all_value_yi": 3308, "residential_deals_wan": 11.7, "residential_value_yi": 1635.9, "residential_avg_price_per_m2": 9128, "second_auction_share": 0.513, "url": "https://www.nbd.com.cn/articles/2025-01-07/3713179.html", "confidence": "medium"},
+        {"year": 2025, "all_listings_wan": 71.9, "all_deals_wan": 16.9, "all_value_yi": 2536.2, "clearance_rate": 0.235, "avg_price_per_m2_all": 4653, "residential_deals_wan": 11.3, "residential_value_yi": 1315.8, "avg_discount_ratio": 0.741, "url": "https://www.bjnews.com.cn/detail/1768916489169552.html", "confidence": "medium"}
+      ],
+      "discount": "Average 折价率 (deal price / appraised value) ≈ 74% (2025: 74.1%; Jan–Oct 2025: 74.4%). Starting price of 1st auction usually ≤70% of appraisal, 2nd auction a further ≤20% lower (judicial-auction rules – memory/unverified). Appraisal itself is often below market, so effective discount vs market ≈ 25–35% (game assumption).",
+      "source": "中指研究院 data via 新京报/每日经济新闻",
+      "confidence": "medium"
+    },
+    "avg_loan_size": {
+      "hpf_2024": {"value_wan": 56.6, "formula": "13043.07亿 / 230.56万笔", "url": "https://caoss.org.cn/upload/file/25060609353156.pdf", "confidence": "high (derived)"},
+      "commercial": {"value": null, "note": "No official national average for new commercial mortgages found. Game assumption: ~80–100万 tier-1/2, ~40–60万 lower-tier (memory/unverified).", "confidence": "low"}
+    }
+  },
+  "gaps": [
+    "全国住房公积金2025年年度报告 not found (likely published mid-2026 but not located; mohurd.gov.cn unreachable). 2025 national contributor count therefore missing; 2024 figures used.",
+    "2025 年末城镇就业人员 not retrieved; coverage share uses 2024 (37.2%).",
+    "No official distribution of actual contribution rates (12% for 机关事业 vs 5% for private firms is an unverified assumption). No current HPF coverage for 农民工.",
+    "Shanghai rental-withdrawal 4000元/户/月 and Shanghai basic-rate set (5/6/7%) verified only via snippets/third-party.",
+    "City caps not found or outdated: 长沙, 石家庄, 兰州 (caps), 合肥 (2022 figures), 贵阳 (2024 figures); 济南 2026 figures from an AI-assisted digest; 郑州 city-center cap date unconfirmed.",
+    "Balance-multiple formulas only confirmed for 杭州 (20x), 广州 (8x balance + contribution x months to retirement), 北京 (20万/year of contribution), 兰州 (24x, 2023), 深圳 (16x, media). Others missing.",
+    "PBOC quarterly 新发放个人住房贷款加权平均利率 series incomplete; several points are 'about 3.1%' from press conferences.",
+    "HPF rate history before 2024 (2015, 2022 cuts) from memory.",
+    "No national commercial average new-mortgage size; no official 断供 (default) counts – foreclosure auctions used as proxy; commercial mortgage NPL ratio not collected.",
+    "Age+term rule for commercial loans is bank practice, not regulation; 2026 管理办法 sets no age limit.",
+    "Oct 2026 LPR (2026-10-20) not yet published as of compile date."
+  ]
+}

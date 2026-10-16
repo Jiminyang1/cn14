@@ -1,0 +1,1912 @@
+{
+ "meta": {
+  "compiled": "2026-10-16",
+  "note": "2026 data used where already published (lines, registrants, 985 intake); 2025 kept for the representative provinces and national enrollment."
+ },
+ "lines_2025": {
+  "HA": {
+   "model": "3+1+2",
+   "model_note": "2025为河南新高考首年",
+   "total": 750,
+   "physics": {
+    "special": 535,
+    "benke": 427,
+    "zhuanke": 185
+   },
+   "history": {
+    "special": 552,
+    "benke": 471,
+    "zhuanke": 185
+   },
+   "source": "中新网 2025-06-25《31省份2025高考分数线均已公布》(汇总各省教育考试院公告); 专科线及确认: 大学生必备网 (dxsbb.com, 商业升学网站, 转载省考试院数据)《2026河南高考分数线多少分（含2024-2025历年）》",
+   "url": [
+    "https://www.chinanews.com.cn/edu/2025/06-25/10437571.shtml",
+    "https://www.dxsbb.com/news/49709.html"
+   ],
+   "confidence": "high"
+  },
+  "GD": {
+   "model": "3+1+2",
+   "total": 750,
+   "physics": {
+    "special": 534,
+    "benke": 436,
+    "zhuanke": 200
+   },
+   "history": {
+    "special": 557,
+    "benke": 464,
+    "zhuanke": 215
+   },
+   "source": "中新网 2025-06-25《31省份2025高考分数线均已公布》(汇总各省教育考试院公告); 专科线: 大学生必备网 (dxsbb.com, 商业升学网站, 转载省考试院数据) 广东分数线页 (search-result extract)",
+   "url": [
+    "https://www.chinanews.com.cn/edu/2025/06-25/10437571.shtml",
+    "https://www.dxsbb.com/news/49555.html"
+   ],
+   "confidence": "high (本科/特殊); medium (专科)"
+  },
+  "BJ": {
+   "model": "3+3",
+   "total": 750,
+   "no_split": true,
+   "all": {
+    "special": 519,
+    "benke": 430,
+    "zhuanke": 120,
+    "zhuanke_note": "专科线按语数外三科总分(满分450)计"
+   },
+   "source": "中新网 2025-06-25《31省份2025高考分数线均已公布》(汇总各省教育考试院公告); 专科线: 大学生必备网 (dxsbb.com, 商业升学网站, 转载省考试院数据) (search-result extract)",
+   "url": [
+    "https://www.chinanews.com.cn/edu/2025/06-25/10437571.shtml",
+    "https://www.dxsbb.com/news/148790.html"
+   ],
+   "confidence": "high (本科/特殊); medium (专科)"
+  },
+  "SH": {
+   "model": "3+3",
+   "total": 660,
+   "no_split": true,
+   "all": {
+    "special": 505,
+    "benke": 402,
+    "zhuanke": null,
+    "zhuanke_note": "2025专科线未找到; 2020-2024年均为100分(语数外三科总分,满分450)"
+   },
+   "zhuanke_2024": 100,
+   "source": "中新网 2025-06-25《31省份2025高考分数线均已公布》(汇总各省教育考试院公告); 专科2024: 大学生必备网 (dxsbb.com, 商业升学网站, 转载省考试院数据) (search-result extract)",
+   "url": [
+    "https://www.chinanews.com.cn/edu/2025/06-25/10437571.shtml",
+    "https://www.dxsbb.com/news/28125.html"
+   ],
+   "confidence": "high (本科/特殊); medium (专科2024)"
+  },
+  "JS": {
+   "model": "3+1+2",
+   "total": 750,
+   "physics": {
+    "special": 519,
+    "benke": 463,
+    "zhuanke": null
+   },
+   "history": {
+    "special": 537,
+    "benke": 482,
+    "zhuanke": null
+   },
+   "zhuanke_note": "2025专科线未找到; 2022-2024年物理/历史均为220分",
+   "zhuanke_2024": 220,
+   "source": "中新网 2025-06-25《31省份2025高考分数线均已公布》(汇总各省教育考试院公告); 大学生必备网 (dxsbb.com, 商业升学网站, 转载省考试院数据)《2026江苏高考分数线多少分（含2024-2025历年）》; 专科2024 from dxsbb search extract",
+   "url": [
+    "https://www.chinanews.com.cn/edu/2025/06-25/10437571.shtml",
+    "https://www.dxsbb.com/news/49708.html",
+    "https://www.dxsbb.com/news/39652.html"
+   ],
+   "confidence": "high (本科/特殊); medium (专科2024)"
+  },
+  "GS": {
+   "model": "3+1+2",
+   "model_note": "2024起新高考",
+   "total": 750,
+   "physics": {
+    "special": 475,
+    "benke": 374,
+    "zhuanke": 180
+   },
+   "history": {
+    "special": 500,
+    "benke": 412,
+    "zhuanke": 160
+   },
+   "source": "中新网 2025-06-25《31省份2025高考分数线均已公布》(汇总各省教育考试院公告)",
+   "url": [
+    "https://www.chinanews.com.cn/edu/2025/06-25/10437571.shtml"
+   ],
+   "confidence": "high"
+  },
+  "GZ": {
+   "model": "3+1+2",
+   "model_note": "2024起新高考",
+   "total": 750,
+   "physics": {
+    "special": 483,
+    "benke": 387,
+    "zhuanke": 180
+   },
+   "history": {
+    "special": 517,
+    "benke": 458,
+    "zhuanke": 180
+   },
+   "source": "中新网 2025-06-25《31省份2025高考分数线均已公布》(汇总各省教育考试院公告)",
+   "url": [
+    "https://www.chinanews.com.cn/edu/2025/06-25/10437571.shtml"
+   ],
+   "confidence": "high"
+  },
+  "SD": {
+   "model": "3+3",
+   "total": 750,
+   "no_split": true,
+   "all": {
+    "special": 521,
+    "benke": 441,
+    "zhuanke": 150,
+    "benke_note": "普通类一段线",
+    "zhuanke_note": "二段线150"
+   },
+   "source": "中新网2025汇总 via search-result extract",
+   "url": [
+    "https://www.chinanews.com.cn/edu/2025/06-25/10437571.shtml"
+   ],
+   "confidence": "medium"
+  }
+ },
+ "lines_2026": {
+  "SH": {
+   "model": "3+3",
+   "total": 660,
+   "no_split": true,
+   "all": {
+    "special": 504,
+    "benke": 403,
+    "zhuanke": null
+   },
+   "source": "中新网 2026-06-24/25 综合消息: 31省(区、市)高考录取控制分数线均已公布",
+   "url": [
+    "https://www.chinanews.com/edu/2026/06-24/10646101.shtml"
+   ],
+   "confidence": "high",
+   "note_lines": "physics/history keys = 物理类/历史类 (XJ/XZ: 理科/文科)"
+  },
+  "TJ": {
+   "model": "3+3",
+   "total": 750,
+   "no_split": true,
+   "all": {
+    "special": 547,
+    "benke": 458,
+    "zhuanke": null
+   },
+   "source": "中新网 2026-06-24/25 综合消息: 31省(区、市)高考录取控制分数线均已公布",
+   "url": [
+    "https://www.chinanews.com/edu/2026/06-24/10646101.shtml"
+   ],
+   "confidence": "high",
+   "note_lines": "physics/history keys = 物理类/历史类 (XJ/XZ: 理科/文科)"
+  },
+  "GD": {
+   "model": "3+1+2",
+   "total": 750,
+   "physics": {
+    "special": 539,
+    "benke": 425,
+    "zhuanke": 200
+   },
+   "history": {
+    "special": 546,
+    "benke": 440,
+    "zhuanke": 200
+   },
+   "source": "中新网 2026-06-24/25 综合消息: 31省(区、市)高考录取控制分数线均已公布; 专科: 大学生必备网 (dxsbb.com, 商业升学网站, 转载省考试院数据)",
+   "url": [
+    "https://www.chinanews.com/edu/2026/06-24/10646101.shtml",
+    "https://www.dxsbb.com/news/49555.html"
+   ],
+   "confidence": "high",
+   "note_lines": "physics/history keys = 物理类/历史类 (XJ/XZ: 理科/文科)"
+  },
+  "NM": {
+   "model": "3+1+2",
+   "total": 750,
+   "physics": {
+    "special": 488,
+    "benke": 363,
+    "zhuanke": 160
+   },
+   "history": {
+    "special": 512,
+    "benke": 403,
+    "zhuanke": 160
+   },
+   "model_source": "memory/unverified (model inferred: 3+1+2 for these provinces by 2026)",
+   "source": "中新网 2026-06-24/25 综合消息: 31省(区、市)高考录取控制分数线均已公布",
+   "url": [
+    "https://www.chinanews.com/edu/2026/06-24/10646101.shtml"
+   ],
+   "confidence": "high",
+   "note_lines": "physics/history keys = 物理类/历史类 (XJ/XZ: 理科/文科)"
+  },
+  "XJ": {
+   "model": "old 文理",
+   "total": 750,
+   "physics": {
+    "special": null,
+    "benke": 468,
+    "zhuanke": 140,
+    "benke2": 304,
+    "note": "理科: 本科一批468, 二批304; 高职(专科)参考线140"
+   },
+   "history": {
+    "special": null,
+    "benke": 451,
+    "zhuanke": 140,
+    "benke2": 315,
+    "note": "文科: 本科一批451, 二批315"
+   },
+   "model_source": "memory/unverified (model inferred: 3+1+2 for these provinces by 2026)",
+   "source": "中新网 2026-06-24/25 综合消息: 31省(区、市)高考录取控制分数线均已公布",
+   "url": [
+    "https://www.chinanews.com/edu/2026/06-24/10646101.shtml"
+   ],
+   "confidence": "high",
+   "note_lines": "physics/history keys = 物理类/历史类 (XJ/XZ: 理科/文科)"
+  },
+  "HE": {
+   "model": "3+1+2",
+   "total": 750,
+   "physics": {
+    "special": 510,
+    "benke": 443,
+    "zhuanke": null
+   },
+   "history": {
+    "special": 542,
+    "benke": 485,
+    "zhuanke": null
+   },
+   "source": "中新网 2026-06-24/25 综合消息: 31省(区、市)高考录取控制分数线均已公布",
+   "url": [
+    "https://www.chinanews.com/edu/2026/06-24/10646101.shtml"
+   ],
+   "confidence": "high",
+   "note_lines": "physics/history keys = 物理类/历史类 (XJ/XZ: 理科/文科)"
+  },
+  "JS": {
+   "model": "3+1+2",
+   "total": 750,
+   "physics": {
+    "special": 513,
+    "benke": 456,
+    "zhuanke": null
+   },
+   "history": {
+    "special": 532,
+    "benke": 484,
+    "zhuanke": null
+   },
+   "source": "中新网 2026-06-24/25 综合消息: 31省(区、市)高考录取控制分数线均已公布",
+   "url": [
+    "https://www.chinanews.com/edu/2026/06-24/10646101.shtml"
+   ],
+   "confidence": "high",
+   "note_lines": "physics/history keys = 物理类/历史类 (XJ/XZ: 理科/文科)"
+  },
+  "CQ": {
+   "model": "3+1+2",
+   "total": 750,
+   "physics": {
+    "special": 496,
+    "benke": 406,
+    "zhuanke": null
+   },
+   "history": {
+    "special": 510,
+    "benke": 415,
+    "zhuanke": null
+   },
+   "source": "中新网 2026-06-24/25 综合消息: 31省(区、市)高考录取控制分数线均已公布",
+   "url": [
+    "https://www.chinanews.com/edu/2026/06-24/10646101.shtml"
+   ],
+   "confidence": "high",
+   "note_lines": "physics/history keys = 物理类/历史类 (XJ/XZ: 理科/文科)"
+  },
+  "FJ": {
+   "model": "3+1+2",
+   "total": 750,
+   "physics": {
+    "special": 528,
+    "benke": 446,
+    "zhuanke": null
+   },
+   "history": {
+    "special": 533,
+    "benke": 458,
+    "zhuanke": null
+   },
+   "source": "中新网 2026-06-24/25 综合消息: 31省(区、市)高考录取控制分数线均已公布",
+   "url": [
+    "https://www.chinanews.com/edu/2026/06-24/10646101.shtml"
+   ],
+   "confidence": "high",
+   "note_lines": "physics/history keys = 物理类/历史类 (XJ/XZ: 理科/文科)"
+  },
+  "LN": {
+   "model": "3+1+2",
+   "total": 750,
+   "physics": {
+    "special": 508,
+    "benke": 344,
+    "zhuanke": null
+   },
+   "history": {
+    "special": 527,
+    "benke": 442,
+    "zhuanke": null
+   },
+   "source": "中新网 2026-06-24/25 综合消息: 31省(区、市)高考录取控制分数线均已公布",
+   "url": [
+    "https://www.chinanews.com/edu/2026/06-24/10646101.shtml"
+   ],
+   "confidence": "high",
+   "note_lines": "physics/history keys = 物理类/历史类 (XJ/XZ: 理科/文科)"
+  },
+  "HL": {
+   "model": "3+1+2",
+   "total": 750,
+   "physics": {
+    "special": 464,
+    "benke": 340,
+    "zhuanke": null
+   },
+   "history": {
+    "special": 466,
+    "benke": 385,
+    "zhuanke": null
+   },
+   "model_source": "memory/unverified (model inferred: 3+1+2 for these provinces by 2026)",
+   "source": "中新网 2026-06-24/25 综合消息: 31省(区、市)高考录取控制分数线均已公布",
+   "url": [
+    "https://www.chinanews.com/edu/2026/06-24/10646101.shtml"
+   ],
+   "confidence": "high",
+   "note_lines": "physics/history keys = 物理类/历史类 (XJ/XZ: 理科/文科)"
+  },
+  "HA": {
+   "model": "3+1+2",
+   "total": 750,
+   "physics": {
+    "special": 513,
+    "benke": 419,
+    "zhuanke": 179
+   },
+   "history": {
+    "special": 534,
+    "benke": 459,
+    "zhuanke": 179
+   },
+   "source": "中新网 2026-06-24/25 综合消息: 31省(区、市)高考录取控制分数线均已公布; 专科179: 大学生必备网 (dxsbb.com, 商业升学网站, 转载省考试院数据) (未见省考试院原文)",
+   "url": [
+    "https://www.chinanews.com/edu/2026/06-24/10646101.shtml",
+    "https://www.dxsbb.com/news/49709.html"
+   ],
+   "confidence": "high",
+   "note_lines": "physics/history keys = 物理类/历史类 (XJ/XZ: 理科/文科)"
+  },
+  "BJ": {
+   "model": "3+3",
+   "total": 750,
+   "no_split": true,
+   "all": {
+    "special": 521,
+    "benke": 429,
+    "zhuanke": 120,
+    "zhuanke_note": "语数外三科总分"
+   },
+   "source": "中新网 2026-06-24/25 综合消息: 31省(区、市)高考录取控制分数线均已公布; 专科: 大学生必备网 (dxsbb.com, 商业升学网站, 转载省考试院数据) (search-result extract)",
+   "url": [
+    "https://www.chinanews.com/edu/2026/06-24/10646101.shtml",
+    "https://www.dxsbb.com/news/39483.html"
+   ],
+   "confidence": "high",
+   "note_lines": "physics/history keys = 物理类/历史类 (XJ/XZ: 理科/文科)"
+  },
+  "NX": {
+   "model": "3+1+2",
+   "total": 750,
+   "physics": {
+    "special": 437,
+    "benke": 360,
+    "zhuanke": null
+   },
+   "history": {
+    "special": 474,
+    "benke": 393,
+    "zhuanke": null
+   },
+   "source": "中新网 2026-06-24/25 综合消息: 31省(区、市)高考录取控制分数线均已公布",
+   "url": [
+    "https://www.chinanews.com/edu/2026/06-24/10646101.shtml"
+   ],
+   "confidence": "high",
+   "note_lines": "physics/history keys = 物理类/历史类 (XJ/XZ: 理科/文科)"
+  },
+  "AH": {
+   "model": "3+1+2",
+   "total": 750,
+   "physics": {
+    "special": null,
+    "benke": 451,
+    "zhuanke": null
+   },
+   "history": {
+    "special": null,
+    "benke": 490,
+    "zhuanke": null
+   },
+   "note": "特殊类型线未在汇总中列出",
+   "source": "中新网 2026-06-24/25 综合消息: 31省(区、市)高考录取控制分数线均已公布",
+   "url": [
+    "https://www.chinanews.com/edu/2026/06-24/10646101.shtml"
+   ],
+   "confidence": "high",
+   "note_lines": "physics/history keys = 物理类/历史类 (XJ/XZ: 理科/文科)"
+  },
+  "JL": {
+   "model": "3+1+2",
+   "total": 750,
+   "physics": {
+    "special": 473,
+    "benke": 321,
+    "zhuanke": null
+   },
+   "history": {
+    "special": 478,
+    "benke": 343,
+    "zhuanke": null
+   },
+   "source": "中新网 2026-06-24/25 综合消息: 31省(区、市)高考录取控制分数线均已公布",
+   "url": [
+    "https://www.chinanews.com/edu/2026/06-24/10646101.shtml"
+   ],
+   "confidence": "high",
+   "note_lines": "physics/history keys = 物理类/历史类 (XJ/XZ: 理科/文科)"
+  },
+  "GZ": {
+   "model": "3+1+2",
+   "total": 750,
+   "physics": {
+    "special": 494,
+    "benke": 393,
+    "zhuanke": null
+   },
+   "history": {
+    "special": 503,
+    "benke": 439,
+    "zhuanke": null
+   },
+   "source": "中新网 2026-06-24/25 综合消息: 31省(区、市)高考录取控制分数线均已公布",
+   "url": [
+    "https://www.chinanews.com/edu/2026/06-24/10646101.shtml"
+   ],
+   "confidence": "high",
+   "note_lines": "physics/history keys = 物理类/历史类 (XJ/XZ: 理科/文科)"
+  },
+  "JX": {
+   "model": "3+1+2",
+   "total": 750,
+   "physics": {
+    "special": 505,
+    "benke": 412,
+    "zhuanke": null
+   },
+   "history": {
+    "special": 535,
+    "benke": 479,
+    "zhuanke": null
+   },
+   "source": "中新网 2026-06-24/25 综合消息: 31省(区、市)高考录取控制分数线均已公布",
+   "url": [
+    "https://www.chinanews.com/edu/2026/06-24/10646101.shtml"
+   ],
+   "confidence": "high",
+   "note_lines": "physics/history keys = 物理类/历史类 (XJ/XZ: 理科/文科)"
+  },
+  "HN": {
+   "model": "3+1+2",
+   "total": 750,
+   "physics": {
+    "special": 481,
+    "benke": 400,
+    "zhuanke": null
+   },
+   "history": {
+    "special": 494,
+    "benke": 446,
+    "zhuanke": null
+   },
+   "source": "中新网 2026-06-24/25 综合消息: 31省(区、市)高考录取控制分数线均已公布",
+   "url": [
+    "https://www.chinanews.com/edu/2026/06-24/10646101.shtml"
+   ],
+   "confidence": "high",
+   "note_lines": "physics/history keys = 物理类/历史类 (XJ/XZ: 理科/文科)"
+  },
+  "YN": {
+   "model": "3+1+2",
+   "total": 750,
+   "physics": {
+    "special": 505,
+    "benke": 435,
+    "zhuanke": null
+   },
+   "history": {
+    "special": 545,
+    "benke": 465,
+    "zhuanke": null
+   },
+   "model_source": "memory/unverified (model inferred: 3+1+2 for these provinces by 2026)",
+   "source": "中新网 2026-06-24/25 综合消息: 31省(区、市)高考录取控制分数线均已公布",
+   "url": [
+    "https://www.chinanews.com/edu/2026/06-24/10646101.shtml"
+   ],
+   "confidence": "high",
+   "note_lines": "physics/history keys = 物理类/历史类 (XJ/XZ: 理科/文科)"
+  },
+  "HI": {
+   "model": "3+3",
+   "total": 900,
+   "no_split": true,
+   "all": {
+    "special": 568,
+    "benke": 479,
+    "zhuanke": null
+   },
+   "source": "中新网 2026-06-24/25 综合消息: 31省(区、市)高考录取控制分数线均已公布",
+   "url": [
+    "https://www.chinanews.com/edu/2026/06-24/10646101.shtml"
+   ],
+   "confidence": "high",
+   "note_lines": "physics/history keys = 物理类/历史类 (XJ/XZ: 理科/文科)"
+  },
+  "SN": {
+   "model": "3+1+2",
+   "total": 750,
+   "physics": {
+    "special": 451,
+    "benke": 376,
+    "zhuanke": null
+   },
+   "history": {
+    "special": 462,
+    "benke": 385,
+    "zhuanke": null
+   },
+   "model_source": "memory/unverified (model inferred: 3+1+2 for these provinces by 2026)",
+   "source": "中新网 2026-06-24/25 综合消息: 31省(区、市)高考录取控制分数线均已公布",
+   "url": [
+    "https://www.chinanews.com/edu/2026/06-24/10646101.shtml"
+   ],
+   "confidence": "high",
+   "note_lines": "physics/history keys = 物理类/历史类 (XJ/XZ: 理科/文科)"
+  },
+  "QH": {
+   "model": "3+1+2",
+   "total": 750,
+   "physics": {
+    "special": 417,
+    "benke": 344,
+    "zhuanke": null
+   },
+   "history": {
+    "special": 427,
+    "benke": 376,
+    "zhuanke": null
+   },
+   "model_source": "memory/unverified (model inferred: 3+1+2 for these provinces by 2026)",
+   "source": "中新网 2026-06-24/25 综合消息: 31省(区、市)高考录取控制分数线均已公布",
+   "url": [
+    "https://www.chinanews.com/edu/2026/06-24/10646101.shtml"
+   ],
+   "confidence": "high",
+   "note_lines": "physics/history keys = 物理类/历史类 (XJ/XZ: 理科/文科)"
+  },
+  "XZ": {
+   "model": "old 文理",
+   "total": 750,
+   "physics": {
+    "benke1": {
+     "A": 300,
+     "B": 400
+    },
+    "benke2": {
+     "A": 260,
+     "B": 300
+    },
+    "note": "理工类; A类/B类考生分别划线"
+   },
+   "history": {
+    "benke1": {
+     "A": 330,
+     "B": 400
+    },
+    "benke2": {
+     "A": 294,
+     "B": 304
+    },
+    "note": "文史类"
+   },
+   "model_source": "memory/unverified (model inferred: 3+1+2 for these provinces by 2026)",
+   "source": "中新网 2026-06-24/25 综合消息: 31省(区、市)高考录取控制分数线均已公布",
+   "url": [
+    "https://www.chinanews.com/edu/2026/06-24/10646101.shtml"
+   ],
+   "confidence": "high",
+   "note_lines": "physics/history keys = 物理类/历史类 (XJ/XZ: 理科/文科)"
+  },
+  "SX": {
+   "model": "3+1+2",
+   "total": 750,
+   "physics": {
+    "special": 524,
+    "benke": 401,
+    "zhuanke": null
+   },
+   "history": {
+    "special": 538,
+    "benke": 409,
+    "zhuanke": null
+   },
+   "model_source": "memory/unverified (model inferred: 3+1+2 for these provinces by 2026)",
+   "source": "中新网 2026-06-24/25 综合消息: 31省(区、市)高考录取控制分数线均已公布",
+   "url": [
+    "https://www.chinanews.com/edu/2026/06-24/10646101.shtml"
+   ],
+   "confidence": "high",
+   "note_lines": "physics/history keys = 物理类/历史类 (XJ/XZ: 理科/文科)"
+  },
+  "GX": {
+   "model": "3+1+2",
+   "total": 750,
+   "physics": {
+    "special": 510,
+    "benke": 368,
+    "zhuanke": 180
+   },
+   "history": {
+    "special": 520,
+    "benke": 398,
+    "zhuanke": 180
+   },
+   "source": "中新网 2026-06-24/25 综合消息: 31省(区、市)高考录取控制分数线均已公布",
+   "url": [
+    "https://www.chinanews.com/edu/2026/06-24/10646101.shtml"
+   ],
+   "confidence": "high",
+   "note_lines": "physics/history keys = 物理类/历史类 (XJ/XZ: 理科/文科)"
+  },
+  "GS": {
+   "model": "3+1+2",
+   "total": 750,
+   "physics": {
+    "special": 477,
+    "benke": 367,
+    "zhuanke": 180
+   },
+   "history": {
+    "special": 508,
+    "benke": 405,
+    "zhuanke": 160
+   },
+   "source": "中新网 2026-06-24/25 综合消息: 31省(区、市)高考录取控制分数线均已公布; 专科: 光明网2026-06-25 (search-result extract)",
+   "url": [
+    "https://www.chinanews.com/edu/2026/06-24/10646101.shtml",
+    "https://m.gmw.cn/2026-06/25/content_1304509663.htm"
+   ],
+   "confidence": "high",
+   "note_lines": "physics/history keys = 物理类/历史类 (XJ/XZ: 理科/文科)"
+  },
+  "SD": {
+   "model": "3+3",
+   "total": 750,
+   "no_split": true,
+   "all": {
+    "special": 525,
+    "benke": 442,
+    "zhuanke": 150,
+    "benke_note": "普通类一段线",
+    "zhuanke_note": "二段线"
+   },
+   "source": "中新网 2026-06-24/25 综合消息: 31省(区、市)高考录取控制分数线均已公布",
+   "url": [
+    "https://www.chinanews.com/edu/2026/06-24/10646101.shtml"
+   ],
+   "confidence": "high",
+   "note_lines": "physics/history keys = 物理类/历史类 (XJ/XZ: 理科/文科)"
+  },
+  "ZJ": {
+   "model": "3+3",
+   "total": 750,
+   "no_split": true,
+   "all": {
+    "special": 594,
+    "benke": 494,
+    "zhuanke": 266,
+    "benke_note": "普通类第一段线",
+    "zhuanke_note": "第二段线"
+   },
+   "source": "中新网 2026-06-24/25 综合消息: 31省(区、市)高考录取控制分数线均已公布",
+   "url": [
+    "https://www.chinanews.com/edu/2026/06-24/10646101.shtml"
+   ],
+   "confidence": "high",
+   "note_lines": "physics/history keys = 物理类/历史类 (XJ/XZ: 理科/文科)"
+  },
+  "HB": {
+   "model": "3+1+2",
+   "total": 750,
+   "physics": {
+    "special": 529,
+    "benke": 435,
+    "zhuanke": null
+   },
+   "history": {
+    "special": 532,
+    "benke": 443,
+    "zhuanke": null
+   },
+   "source": "中新网 2026-06-24/25 综合消息: 31省(区、市)高考录取控制分数线均已公布",
+   "url": [
+    "https://www.chinanews.com/edu/2026/06-24/10646101.shtml"
+   ],
+   "confidence": "high",
+   "note_lines": "physics/history keys = 物理类/历史类 (XJ/XZ: 理科/文科)"
+  },
+  "SC": {
+   "model": "3+1+2",
+   "total": 750,
+   "physics": {
+    "special": 519,
+    "benke": 435,
+    "zhuanke": null
+   },
+   "history": {
+    "special": 525,
+    "benke": 455,
+    "zhuanke": null
+   },
+   "source": "中新网 2026-06-24/25 综合消息: 31省(区、市)高考录取控制分数线均已公布",
+   "url": [
+    "https://www.chinanews.com/edu/2026/06-24/10646101.shtml"
+   ],
+   "confidence": "high",
+   "note_lines": "physics/history keys = 物理类/历史类 (XJ/XZ: 理科/文科)"
+  }
+ },
+ "registrants_2025": {
+  "national": {
+   "2026": {
+    "value_wan": 1290,
+    "source": "教育部 via 新华网 2026-06-03",
+    "url": "https://www.news.cn/20260603/8c64a5880000444d9f3ce86864b064e1/c.html",
+    "confidence": "high (search-result extract of 新华/新京报; dxsbb table also confirms)"
+   },
+   "2025": {
+    "value_wan": 1335,
+    "source": "教育部 via 大学生必备网《历年全国高考报名人数统计表（含2015-2026年）》",
+    "url": "https://www.dxsbb.com/news/46711.html",
+    "confidence": "high"
+   },
+   "composition_note": {
+    "text": "全国报名数含6月普通高考、中职单招(职教高考)及专升本三类; 2025年普通高考占总报名: 湖南63%, 山东68.5%, 江西76.8%. 实际参加夏季统考人数远低于报名数.",
+    "source": "中国教育在线 2025-06-06",
+    "url": "https://www.eol.cn/news/guancha/202506/t20250606_2672935.shtml",
+    "confidence": "high"
+   }
+  },
+  "HA": {
+   "2026": {
+    "value_wan": 136,
+    "summer_gaokao_wan": 120,
+    "source": "自主选拔在线 (zizzs.com, 标注'网传版数据'; site unreachable for direct fetch, search-result extract)",
+    "url": "https://www.zizzs.com/gk/gaokao/221911.html",
+    "confidence": "low"
+   },
+   "2026_benke_passers": {
+    "value": 452728,
+    "note": "过本科线人数 (媒体统计)",
+    "url": "https://www.zizzs.com/gk/gaokao/221911.html",
+    "confidence": "low"
+   }
+  },
+  "GD": {
+   "2026": {
+    "value_wan": 109.9,
+    "summer_gaokao_wan": 78.22,
+    "physics_wan": 45.5,
+    "history_wan": 32.5,
+    "source": "自主选拔在线 / 金羊网 (search-result extract; ycwb page body empty on fetch)",
+    "url": [
+     "https://www.zizzs.com/gk/gaokao/221749.html",
+     "https://news.ycwb.com/ikimvkmtkc/content_54162888.htm"
+    ],
+    "confidence": "medium"
+   }
+  },
+  "JS": {
+   "2026": {
+    "value_wan": 52.1,
+    "source": "自主选拔在线 (search-result extract)",
+    "url": "https://www.zizzs.com/gk/gaokao/222327.html",
+    "confidence": "low"
+   }
+  },
+  "BJ": {
+   "2026": {
+    "value_wan": 8.49,
+    "source": "自主选拔在线 (search-result extract)",
+    "url": "https://www.zizzs.com/gk/gaokao/222327.html",
+    "confidence": "low"
+   }
+  },
+  "SH": {
+   "2026": {
+    "value_wan": 6.67,
+    "source": "自主选拔在线 (search-result extract)",
+    "url": "https://www.zizzs.com/gk/gaokao/222327.html",
+    "confidence": "low"
+   }
+  },
+  "GS": {
+   "2026": {
+    "value_wan": 21.87,
+    "note": "普通高考人数",
+    "source": "自主选拔在线 (search-result extract)",
+    "url": "https://www.zizzs.com/gk/gaokao/222327.html",
+    "confidence": "low"
+   }
+  },
+  "note": "2025 provincial registrant numbers not collected (scope reduced); 2026 provincial figures from a commercial site whose pages could not be fetched directly."
+ },
+ "tiers": {
+  "985_benke_intake": {
+   "2026_actual": {
+    "value": 220425,
+    "unit": "本科新生",
+    "source": "网易号 article (media tally of 39所985高校 2026 本科新生)",
+    "url": "https://m.163.com/dy/article/L3D7GD3E0536NZ17.html",
+    "confidence": "medium"
+   },
+   "2025_plan": {
+    "value": 225000,
+    "approx": true,
+    "national_rate_pct": 1.69,
+    "rate_basis": "÷1342万报名 (as stated by source)",
+    "source": "自主选拔在线 (zizzs.com; search-result extract, page unreachable)",
+    "url": "https://www.zizzs.com/gk/qiangjijihua/222069.html",
+    "confidence": "low-medium"
+   },
+   "per_school_2026_examples": {
+    "吉林大学": 10541,
+    "山东大学": 10522,
+    "四川大学": 9453,
+    "中南大学": 9132,
+    "北京大学": 4686,
+    "南京大学": 4431,
+    "北京航空航天大学": 4307,
+    "清华大学": "4000+",
+    "复旦大学": "5100+",
+    "中国科学技术大学": "~2000",
+    "国防科技大学": "~2000",
+    "note": "多数985(20+所)本科年招4000-6000人; 2026年39所985普遍扩招",
+    "source": "21世纪经济报道 2026-09-17 (南方财经网)",
+    "url": "https://m.sfccn.com/2026/9-17/5OMDE0MDVfMjI0Mzk5OQ.html",
+    "confidence": "high"
+   },
+   "policy": {
+    "text": "'十五五'规划: '双一流'高校本科招生数增加10万人以上; 2024年双一流扩招1.6万, 2025年目标再扩2万",
+    "url": [
+     "https://m.sfccn.com/2026/9-17/5OMDE0MDVfMjI0Mzk5OQ.html",
+     "https://www.thepaper.cn/newsDetail_forward_30543500"
+    ],
+    "confidence": "high"
+   }
+  },
+  "211_benke_intake": {
+   "2025_211_only_estimate": {
+    "value_range": [
+     455000,
+     475000
+    ],
+    "note": "211不含985; 加上985约22.5万 → 全部211约68-70万",
+    "source": "自主选拔在线 (search-result extract, page unreachable)",
+    "url": "https://www.zizzs.com/gk/qiangjijihua/222069.html",
+    "confidence": "low"
+   },
+   "2025_shuangyiliu_plan": {
+    "value": 558000,
+    "approx": true,
+    "source": "same zizzs article (search-result extract)",
+    "url": "https://www.zizzs.com/gk/qiangjijihua/222069.html",
+    "confidence": "low"
+   },
+   "derived_total_211_incl_985": {
+    "value_approx": 690000,
+    "derivation": "225000 + ~465000; my calculation",
+    "confidence": "low"
+   }
+  },
+  "benke_total": {
+   "2025": {
+    "普通本科招生_wan": 503.71,
+    "专科起点本科_普通_wan": 85.42,
+    "职业本科招生_wan": 15.41,
+    "专科起点本科_职业_wan": 4.66,
+    "gross_enrollment_rate_pct": 61.3,
+    "source": "教育部《2025年全国教育事业发展统计公报》(2026-07-06) via 中国教育在线",
+    "url": "https://www.eol.cn/news/yaowen/202607/t20260707_2753348.shtml",
+    "confidence": "high"
+   }
+  },
+  "zhuanke_total": {
+   "2025": {
+    "高职专科招生_wan": 551.7,
+    "五年制高职转入专科_wan": 58.74,
+    "in_school": {
+     "普通本科_wan": 2135.77,
+     "职业本科_wan": 51.83,
+     "高职专科_wan": 1766.36,
+     "total_wan": 3953.96
+    },
+    "source": "教育部《2025年全国教育事业发展统计公报》via 中国教育在线",
+    "url": "https://www.eol.cn/news/yaowen/202607/t20260707_2753348.shtml",
+    "confidence": "high"
+   }
+  },
+  "top_share_estimate_for_game": {
+   "note": "My derivation, not a source figure. Denominator: ~1000万 who actually sit the summer exam is unknown; using 1335万 registrants (which includes 单招/专升本) understates the rate.",
+   "pct_of_1335wan_registrants": {
+    "985": 1.7,
+    "211_incl_985": 5.2,
+    "双一流": 4.2,
+    "普通本科(503.71万)": 37.7,
+    "职业本科": 1.2,
+    "高职专科(551.7万)": 41.3
+   },
+   "caveat": "普通本科招生503.71万 includes 艺体/保送/强基/港澳台/预科 etc.; 高职专科 includes 单招 (many not via summer gaokao).",
+   "confidence": "derived"
+  },
+  "share_by_province": [
+   {
+    "basis": "985/211 admission rate = 各校在该省本科计划 ÷ 该省高考报名数; data year ~2020 (article not explicit)",
+    "source": "国金证券 吴劲草《哪些省才是真正的高考地狱模式？—数据量化全国31省高考难度》, reposted by 澎湃新闻 (2021)",
+    "url": "https://www.thepaper.cn/newsDetail_forward_13028565",
+    "label": "estimate",
+    "national_avg": {
+     "985_pct": 1.62,
+     "211_pct": 5.01
+    },
+    "provinces": {
+     "TJ": {
+      "985_pct": 5.9,
+      "211": "非常友好(no number)"
+     },
+     "SH": {
+      "985_pct": 5.3,
+      "211_pct": 13.58
+     },
+     "BJ": {
+      "985_pct": 4.3,
+      "211_pct": 14.0
+     },
+     "JL": {
+      "985_pct": ">3"
+     },
+     "QH": {
+      "985_pct": ">3"
+     },
+     "AH": {
+      "985_pct": "~1.1"
+     },
+     "HA": {
+      "985_pct": "~1.1",
+      "rank": "综合最后"
+     },
+     "XJ": {
+      "985": "≈全国平均"
+     },
+     "HN": {
+      "985": "≈全国平均"
+     },
+     "JS": {
+      "211": "≈全国平均"
+     },
+     "GZ": {
+      "211": "≈全国平均"
+     },
+     "HB": {
+      "211": "≈全国平均"
+     },
+     "GD": {
+      "211": "该指标全国最低"
+     },
+     "XZ": {
+      "211": "很高"
+     }
+    },
+    "confidence": "medium (estimate)"
+   },
+   {
+    "province": "GD",
+    "year": 2024,
+    "985_benke_plan_in_GD": 11000,
+    "985_pct": 1.9,
+    "211_benke_plan_in_GD": 24000,
+    "211_pct": 3.9,
+    "source": "自主选拔在线 (search-result extract)",
+    "url": "https://www.zizzs.com/gk/guangdongxingaokao/179175.html",
+    "label": "estimate",
+    "confidence": "low"
+   },
+   {
+    "province": "SX",
+    "year": 2023,
+    "985_pct": 1.3,
+    "211_pct": 4.67,
+    "source": "自主选拔在线 (search-result extract)",
+    "url": "https://www.zizzs.com/c/202307/115764.html",
+    "label": "estimate",
+    "confidence": "low"
+   },
+   {
+    "province": "national (older)",
+    "211_admitted": 460000,
+    "211_pct_of_cohort": 2.4,
+    "985_admitted": 150000,
+    "985_pct_of_cohort": 0.8,
+    "note": "older data, % of 同龄人 not of examinees",
+    "source": "自主选拔在线 (search-result extract)",
+    "url": "https://www.zizzs.com/c/202307/115736.html",
+    "label": "estimate",
+    "confidence": "low"
+   }
+  ]
+ },
+ "universities": {
+  "985": [
+   {
+    "name": "北京大学",
+    "city": "北京",
+    "prov": "BJ"
+   },
+   {
+    "name": "清华大学",
+    "city": "北京",
+    "prov": "BJ"
+   },
+   {
+    "name": "中国人民大学",
+    "city": "北京",
+    "prov": "BJ"
+   },
+   {
+    "name": "北京师范大学",
+    "city": "北京",
+    "prov": "BJ"
+   },
+   {
+    "name": "北京航空航天大学",
+    "city": "北京",
+    "prov": "BJ"
+   },
+   {
+    "name": "中国农业大学",
+    "city": "北京",
+    "prov": "BJ"
+   },
+   {
+    "name": "北京理工大学",
+    "city": "北京",
+    "prov": "BJ"
+   },
+   {
+    "name": "中央民族大学",
+    "city": "北京",
+    "prov": "BJ"
+   },
+   {
+    "name": "南开大学",
+    "city": "天津",
+    "prov": "TJ"
+   },
+   {
+    "name": "天津大学",
+    "city": "天津",
+    "prov": "TJ"
+   },
+   {
+    "name": "东北大学",
+    "city": "沈阳",
+    "prov": "LN"
+   },
+   {
+    "name": "大连理工大学",
+    "city": "大连",
+    "prov": "LN"
+   },
+   {
+    "name": "吉林大学",
+    "city": "长春",
+    "prov": "JL"
+   },
+   {
+    "name": "哈尔滨工业大学",
+    "city": "哈尔滨",
+    "prov": "HL"
+   },
+   {
+    "name": "复旦大学",
+    "city": "上海",
+    "prov": "SH"
+   },
+   {
+    "name": "上海交通大学",
+    "city": "上海",
+    "prov": "SH"
+   },
+   {
+    "name": "同济大学",
+    "city": "上海",
+    "prov": "SH"
+   },
+   {
+    "name": "华东师范大学",
+    "city": "上海",
+    "prov": "SH"
+   },
+   {
+    "name": "南京大学",
+    "city": "南京",
+    "prov": "JS"
+   },
+   {
+    "name": "东南大学",
+    "city": "南京",
+    "prov": "JS"
+   },
+   {
+    "name": "浙江大学",
+    "city": "杭州",
+    "prov": "ZJ"
+   },
+   {
+    "name": "中国科学技术大学",
+    "city": "合肥",
+    "prov": "AH"
+   },
+   {
+    "name": "厦门大学",
+    "city": "厦门",
+    "prov": "FJ"
+   },
+   {
+    "name": "山东大学",
+    "city": "济南",
+    "prov": "SD"
+   },
+   {
+    "name": "中国海洋大学",
+    "city": "青岛",
+    "prov": "SD"
+   },
+   {
+    "name": "武汉大学",
+    "city": "武汉",
+    "prov": "HB"
+   },
+   {
+    "name": "华中科技大学",
+    "city": "武汉",
+    "prov": "HB"
+   },
+   {
+    "name": "湖南大学",
+    "city": "长沙",
+    "prov": "HN"
+   },
+   {
+    "name": "中南大学",
+    "city": "长沙",
+    "prov": "HN"
+   },
+   {
+    "name": "中国人民解放军国防科技大学",
+    "city": "长沙",
+    "prov": "HN"
+   },
+   {
+    "name": "中山大学",
+    "city": "广州",
+    "prov": "GD"
+   },
+   {
+    "name": "华南理工大学",
+    "city": "广州",
+    "prov": "GD"
+   },
+   {
+    "name": "重庆大学",
+    "city": "重庆",
+    "prov": "CQ"
+   },
+   {
+    "name": "四川大学",
+    "city": "成都",
+    "prov": "SC"
+   },
+   {
+    "name": "电子科技大学",
+    "city": "成都",
+    "prov": "SC"
+   },
+   {
+    "name": "西北工业大学",
+    "city": "西安",
+    "prov": "SN"
+   },
+   {
+    "name": "西安交通大学",
+    "city": "西安",
+    "prov": "SN"
+   },
+   {
+    "name": "西北农林科技大学",
+    "city": "杨凌",
+    "prov": "SN"
+   },
+   {
+    "name": "兰州大学",
+    "city": "兰州",
+    "prov": "GS"
+   }
+  ],
+  "211_only": [
+   {
+    "name": "北京交通大学",
+    "city": "北京",
+    "prov": "BJ"
+   },
+   {
+    "name": "北京工业大学",
+    "city": "北京",
+    "prov": "BJ"
+   },
+   {
+    "name": "北京科技大学",
+    "city": "北京",
+    "prov": "BJ"
+   },
+   {
+    "name": "北京化工大学",
+    "city": "北京",
+    "prov": "BJ"
+   },
+   {
+    "name": "北京邮电大学",
+    "city": "北京",
+    "prov": "BJ"
+   },
+   {
+    "name": "北京林业大学",
+    "city": "北京",
+    "prov": "BJ"
+   },
+   {
+    "name": "北京中医药大学",
+    "city": "北京",
+    "prov": "BJ"
+   },
+   {
+    "name": "北京外国语大学",
+    "city": "北京",
+    "prov": "BJ"
+   },
+   {
+    "name": "中国传媒大学",
+    "city": "北京",
+    "prov": "BJ"
+   },
+   {
+    "name": "对外经济贸易大学",
+    "city": "北京",
+    "prov": "BJ"
+   },
+   {
+    "name": "中央音乐学院",
+    "city": "北京",
+    "prov": "BJ"
+   },
+   {
+    "name": "中国地质大学（北京）",
+    "city": "北京",
+    "prov": "BJ"
+   },
+   {
+    "name": "中国政法大学",
+    "city": "北京",
+    "prov": "BJ"
+   },
+   {
+    "name": "中国石油大学（北京）",
+    "city": "北京",
+    "prov": "BJ"
+   },
+   {
+    "name": "华北电力大学",
+    "city": "北京",
+    "prov": "BJ"
+   },
+   {
+    "name": "中央财经大学",
+    "city": "北京",
+    "prov": "BJ"
+   },
+   {
+    "name": "北京体育大学",
+    "city": "北京",
+    "prov": "BJ"
+   },
+   {
+    "name": "中国矿业大学（北京）",
+    "city": "北京",
+    "prov": "BJ"
+   },
+   {
+    "name": "天津医科大学",
+    "city": "天津",
+    "prov": "TJ"
+   },
+   {
+    "name": "河北工业大学",
+    "city": "天津",
+    "prov": "HE"
+   },
+   {
+    "name": "太原理工大学",
+    "city": "太原",
+    "prov": "SX"
+   },
+   {
+    "name": "内蒙古大学",
+    "city": "呼和浩特",
+    "prov": "NM"
+   },
+   {
+    "name": "辽宁大学",
+    "city": "沈阳",
+    "prov": "LN"
+   },
+   {
+    "name": "大连海事大学",
+    "city": "大连",
+    "prov": "LN"
+   },
+   {
+    "name": "东北师范大学",
+    "city": "长春",
+    "prov": "JL"
+   },
+   {
+    "name": "延边大学",
+    "city": "延吉",
+    "prov": "JL"
+   },
+   {
+    "name": "哈尔滨工程大学",
+    "city": "哈尔滨",
+    "prov": "HL"
+   },
+   {
+    "name": "东北农业大学",
+    "city": "哈尔滨",
+    "prov": "HL"
+   },
+   {
+    "name": "东北林业大学",
+    "city": "哈尔滨",
+    "prov": "HL"
+   },
+   {
+    "name": "中国人民解放军海军军医大学",
+    "city": "上海",
+    "prov": "SH"
+   },
+   {
+    "name": "华东理工大学",
+    "city": "上海",
+    "prov": "SH"
+   },
+   {
+    "name": "东华大学",
+    "city": "上海",
+    "prov": "SH"
+   },
+   {
+    "name": "上海大学",
+    "city": "上海",
+    "prov": "SH"
+   },
+   {
+    "name": "上海外国语大学",
+    "city": "上海",
+    "prov": "SH"
+   },
+   {
+    "name": "上海财经大学",
+    "city": "上海",
+    "prov": "SH"
+   },
+   {
+    "name": "南京航空航天大学",
+    "city": "南京",
+    "prov": "JS"
+   },
+   {
+    "name": "南京理工大学",
+    "city": "南京",
+    "prov": "JS"
+   },
+   {
+    "name": "河海大学",
+    "city": "南京",
+    "prov": "JS"
+   },
+   {
+    "name": "南京农业大学",
+    "city": "南京",
+    "prov": "JS"
+   },
+   {
+    "name": "中国药科大学",
+    "city": "南京",
+    "prov": "JS"
+   },
+   {
+    "name": "南京师范大学",
+    "city": "南京",
+    "prov": "JS"
+   },
+   {
+    "name": "江南大学",
+    "city": "无锡",
+    "prov": "JS"
+   },
+   {
+    "name": "中国矿业大学",
+    "city": "徐州",
+    "prov": "JS"
+   },
+   {
+    "name": "苏州大学",
+    "city": "苏州",
+    "prov": "JS"
+   },
+   {
+    "name": "安徽大学",
+    "city": "合肥",
+    "prov": "AH"
+   },
+   {
+    "name": "合肥工业大学",
+    "city": "合肥",
+    "prov": "AH"
+   },
+   {
+    "name": "福州大学",
+    "city": "福州",
+    "prov": "FJ"
+   },
+   {
+    "name": "南昌大学",
+    "city": "南昌",
+    "prov": "JX"
+   },
+   {
+    "name": "中国石油大学（华东）",
+    "city": "青岛",
+    "prov": "SD"
+   },
+   {
+    "name": "郑州大学",
+    "city": "郑州",
+    "prov": "HA"
+   },
+   {
+    "name": "武汉理工大学",
+    "city": "武汉",
+    "prov": "HB"
+   },
+   {
+    "name": "中国地质大学（武汉）",
+    "city": "武汉",
+    "prov": "HB"
+   },
+   {
+    "name": "中南财经政法大学",
+    "city": "武汉",
+    "prov": "HB"
+   },
+   {
+    "name": "华中师范大学",
+    "city": "武汉",
+    "prov": "HB"
+   },
+   {
+    "name": "华中农业大学",
+    "city": "武汉",
+    "prov": "HB"
+   },
+   {
+    "name": "湖南师范大学",
+    "city": "长沙",
+    "prov": "HN"
+   },
+   {
+    "name": "暨南大学",
+    "city": "广州",
+    "prov": "GD"
+   },
+   {
+    "name": "华南师范大学",
+    "city": "广州",
+    "prov": "GD"
+   },
+   {
+    "name": "广西大学",
+    "city": "南宁",
+    "prov": "GX"
+   },
+   {
+    "name": "海南大学",
+    "city": "海口",
+    "prov": "HI"
+   },
+   {
+    "name": "西南大学",
+    "city": "重庆",
+    "prov": "CQ"
+   },
+   {
+    "name": "西南交通大学",
+    "city": "成都",
+    "prov": "SC"
+   },
+   {
+    "name": "西南财经大学",
+    "city": "成都",
+    "prov": "SC"
+   },
+   {
+    "name": "四川农业大学",
+    "city": "雅安",
+    "prov": "SC"
+   },
+   {
+    "name": "贵州大学",
+    "city": "贵阳",
+    "prov": "GZ"
+   },
+   {
+    "name": "云南大学",
+    "city": "昆明",
+    "prov": "YN"
+   },
+   {
+    "name": "西藏大学",
+    "city": "拉萨",
+    "prov": "XZ"
+   },
+   {
+    "name": "中国人民解放军空军军医大学",
+    "city": "西安",
+    "prov": "SN"
+   },
+   {
+    "name": "西北大学",
+    "city": "西安",
+    "prov": "SN"
+   },
+   {
+    "name": "西安电子科技大学",
+    "city": "西安",
+    "prov": "SN"
+   },
+   {
+    "name": "长安大学",
+    "city": "西安",
+    "prov": "SN"
+   },
+   {
+    "name": "陕西师范大学",
+    "city": "西安",
+    "prov": "SN"
+   },
+   {
+    "name": "青海大学",
+    "city": "西宁",
+    "prov": "QH"
+   },
+   {
+    "name": "宁夏大学",
+    "city": "银川",
+    "prov": "NX"
+   },
+   {
+    "name": "新疆大学",
+    "city": "乌鲁木齐",
+    "prov": "XJ"
+   },
+   {
+    "name": "石河子大学",
+    "city": "石河子",
+    "prov": "XJ"
+   }
+  ],
+  "counts": {
+   "985": 39,
+   "211_only": 76,
+   "211_total": 115
+  },
+  "source": "维基百科《211工程》学校列表 (列表含985标记; 112所 + 2005年拆分的中国地质/矿业/石油大学北京校区 = 115)",
+  "url": "https://zh.wikipedia.org/zh-cn/211工程",
+  "notes": [
+   "prov = 学校所在省份, taken from the Wikipedia list (河北工业大学 is listed under 河北 although its main campus is in 天津; set city=天津, prov=HE as listed).",
+   "city field: memory/unverified (well-known locations; Wikipedia list gives province only). confidence medium-high. 四川农业大学 main campus 雅安 (also 成都/都江堰).",
+   "Some lists say 116 by counting 第二军医大学/第四军医大学 (now 海军军医大学/空军军医大学) separately or counting split campuses differently; this list already includes both 军医大学.",
+   "双一流: all 115 211 universities are in the 双一流 list (2017 first round included all 211s; second round 2022 has 147 schools) -- memory/unverified, confidence low-medium.",
+   "Branch campuses (哈工大威海/深圳, 山大威海, 中山深圳/珠海 etc.) not listed separately."
+  ]
+ },
+ "local_advantage": [
+  {
+   "university": "浙江大学",
+   "province": "ZJ",
+   "finding": "连续三年在浙江的计划招生数占比都超过一半; 2016-2019届本科毕业生中属地生源均接近一半",
+   "source": "软科《在中国，成为C9本科生的概率是多少？》2022-09-02 (腾讯新闻)",
+   "url": "https://news.qq.com/rain/a/20220902A08EC600",
+   "confidence": "high"
+  },
+  {
+   "university": "南京大学",
+   "province": "JS",
+   "finding": "江苏占比连续三年超30%, 2020年接近四成",
+   "url": "https://news.qq.com/rain/a/20220902A08EC600",
+   "source": "同上 (软科)",
+   "confidence": "high"
+  },
+  {
+   "university": "哈尔滨工业大学/西安交通大学",
+   "finding": "本省占比多在20%-30%",
+   "url": "https://news.qq.com/rain/a/20220902A08EC600",
+   "source": "同上",
+   "confidence": "high"
+  },
+  {
+   "university": "北京大学/清华大学/中国科学技术大学",
+   "finding": "本地占比约15%",
+   "url": "https://news.qq.com/rain/a/20220902A08EC600",
+   "source": "同上",
+   "confidence": "high"
+  },
+  {
+   "university": "浙江大学 (三位一体)",
+   "finding": "2025年'三位一体'综合评价在浙江录取980人, 约占浙江省内总招生30.12% (→ 浙大在浙江招生约3250人)",
+   "source": "自主选拔在线 (search-result extract)",
+   "url": "https://www.zizzs.com/gk/zhejiangxingaokao/175923.html",
+   "confidence": "low"
+  },
+  {
+   "note": "中山大学 广东生源占比 not found as a number (a zizzs table lists 中山大学 2024 广东计划 3084人 but share not visible)."
+  }
+ ],
+ "majors": {
+  "within_university_example": {
+   "university": "山东大学 (A422)",
+   "province": "SD",
+   "year": 2025,
+   "metric": "山东普通类常规批第1次投档最低位次 (smaller = harder)",
+   "ranks": {
+    "临床医学(齐鲁医学堂创新实验班)": 2146,
+    "数学类(泰山学堂数理实验班)": 3069,
+    "临床医学(5+3一体化)": 4794,
+    "数学类": 4982,
+    "计算机科学与技术": 5196,
+    "人工智能": 5482,
+    "电子信息类(通信电子与光电方向)": 7833,
+    "临床医学(5+3一体化,儿科方向)": 8389,
+    "经济学类(经世学堂新文科实验班)": 8428,
+    "计算机类(智能科技新工科实验班)": 8590,
+    "临床医学(五年制)": 8598,
+    "经济学类": 11347,
+    "工程软件": 11576,
+    "历史学类": 11653,
+    "哲学类": 12731,
+    "预防医学(五年制)": 14388
+   },
+   "score_range": {
+    "校本部普通专业": [
+     617,
+     658
+    ],
+    "威海校区最低(海洋科学类)": 615,
+    "最低(土木水利海洋, 定向西藏就业)": {
+     "score": 580,
+     "rank": 42450
+    }
+   },
+   "takeaway": "同校最热(临床创新班/数理班/计算机/AI)与最冷(预防医学/哲学/历史/海洋)位次相差约6-7倍 (2146 vs 14388), 分差约40分",
+   "source": "大学生必备网《2025年山东常规批投档位次（第1次）》(数据源: 山东省教育招生考试院第1次投档表)",
+   "url": "https://www.dxsbb.com/news/149125.html",
+   "confidence": "high"
+  },
+  "trends": [
+   {
+    "text": "临床医学持续降温: 2026年山东26所高校41个临床医学专业中, 除3个新增创新班外, 39个投档位次全部下滑; 清华临床医学类109→133, 北大医学部八年制221→363; 南方医科大学位次跌超1万, 广州医科大学超1.3万, 广东医科大学(物理)跌37604; 部分高校兽医分数已超人医",
+    "source": "澎湃新闻 2026",
+    "url": "https://www.thepaper.cn/newsDetail_forward_33668414",
+    "confidence": "high"
+   },
+   {
+    "text": "人工智能、半导体相关工科升温; 600余所本科、近800所高职开设AI相关专业",
+    "url": "https://www.thepaper.cn/newsDetail_forward_33668414",
+    "confidence": "high"
+   },
+   {
+    "text": "浙江2025: 多校临床医学分数下降; 电气工程及其自动化、电子信息、机械类依旧热门",
+    "source": "杭州网 2025-07-22 (search-result extract)",
+    "url": "https://hznews.hangzhou.com.cn/kejiao/content/2025-07/22/content_9043958.htm",
+    "confidence": "medium"
+   },
+   {
+    "text": "清华临床医学类在山东最低投档位次 2024年83 → 2025年109",
+    "source": "search-result extract",
+    "url": "https://m.thepaper.cn/newsDetail_forward_31213577",
+    "confidence": "medium"
+   }
+  ],
+  "game_suggestion_hot": [
+   "计算机/人工智能",
+   "电子信息/集成电路",
+   "电气工程",
+   "数学(拔尖班)",
+   "临床医学(顶尖校/本博贯通仍热, 普通医学院降温)",
+   "金融/经济(顶尖校)"
+  ],
+  "game_suggestion_cold": [
+   "预防医学",
+   "哲学",
+   "历史学",
+   "农学/林学",
+   "地质/矿业/海洋/土木(定向)",
+   "生态学",
+   "护理"
+  ],
+  "game_suggestion_note": "hot/cold lists are a synthesis of the sources above plus general knowledge (农学/地质/护理 not directly verified this session)",
+  "tiaoji": {
+   "rate": null,
+   "note": "No national/provincial 专业调剂率 statistic found. Mechanism: in 院校专业组 provinces, if score clears the group line but none of the 6 majors, a candidate who ticks 服从调剂 is assigned to a major with remaining quota; otherwise 退档. 专业+院校 provinces (浙江/山东/河北/重庆/辽宁/贵州) have no 调剂, 投档比例 1:1.",
+   "url": [
+    "https://www.yzwb.net/news/jy/202606/t20260623_365240.html"
+   ],
+   "confidence": "high (mechanism)"
+  }
+ },
+ "slip_and_retake": {
+  "huadang": {
+   "value": null,
+   "note": "No 滑档 statistics found."
+  },
+  "retake": {
+   "value": null,
+   "notes": [
+    "教育部不公布复读生人数. 中国教育在线: 报名人数增长'并非…复读人数的大幅增长', 报名数含单招/专升本.",
+    "Commercial claim '2024年复读生比例40%/540万' (zizzs) is unverified and contradicts other analyses -- do not use.",
+    "中国数字时代 差值法估算: (报名数 − 普高应届生) 2024年437万 → 2025年322万, 推断复读减少 (weak method)."
+   ],
+   "url": [
+    "https://www.eol.cn/news/guancha/202506/t20250606_2672935.shtml",
+    "https://chinadigitaltimes.net/chinese/727865.html"
+   ],
+   "confidence": "low"
+  }
+ },
+ "zhiyuan_rules": {
+  "principle": {
+   "text": "平行志愿: 分数优先、遵循志愿、一轮(次)投档. 按分数从高到低排序, 轮到某考生时按其志愿顺序检索, 投出第一个符合条件的志愿, 其余志愿失效; 进档后被退档, 不再补投同批次其他志愿, 只能参加征集志愿或下一批次录取.",
+   "source": "扬子晚报 2026-06-23",
+   "url": "https://www.yzwb.net/news/jy/202606/t20260623_365240.html",
+   "confidence": "high"
+  },
+  "toudang_ratio": {
+   "text": "院校专业组模式: 调档比例原则上≤105%; 专业+院校模式 (浙江/山东/河北/重庆/辽宁/贵州): 投档比例通常1:1, 无调剂",
+   "source": "search-result extract (multiple pages)",
+   "url": "https://www.dxsbb.com/news/146390.html",
+   "confidence": "medium"
+  },
+  "benke_choices_2026": {
+   "院校专业组_45": [
+    "GD",
+    "HN",
+    "HB",
+    "AH",
+    "JX",
+    "SC",
+    "SN"
+   ],
+   "院校专业组_45_note": "每组6个专业+是否服从调剂; 页面称共12省45个, 只列出7个",
+   "专业+院校_96": [
+    "HE",
+    "SD",
+    "CQ",
+    "GZ",
+    "QH"
+   ],
+   "专业+院校_112": [
+    "LN"
+   ],
+   "ZJ": "专业+院校, 分段填报, 每段最多80个",
+   "BJ": 30,
+   "YN": 40,
+   "HA": 48,
+   "XJ_XZ": "传统模式 9-10个院校",
+   "source": "中国教育在线《2026高考志愿填报必看：各省能填多少志愿？规则一次看懂》",
+   "url": "https://www.eol.cn/kaoshi/gaokao/zytb/202606/t20260612_2744719.shtml",
+   "confidence": "high"
+  },
+  "JS": {
+   "value": "本科批40个院校专业组, 每组6个专业+1个服从调剂; 提前批20个专业组",
+   "year": 2025,
+   "source": "大学生必备网 (search-result extract)",
+   "url": "https://www.dxsbb.com/news/101147.html",
+   "confidence": "medium"
+  },
+  "SH": {
+   "value": "本科普通批24个院校专业组, 每组最多4个专业",
+   "year": "2020实施办法/2024志愿表",
+   "source": "search-result extract",
+   "url": "https://www.dxsbb.com/news/117338.html",
+   "confidence": "medium"
+  },
+  "BJ_detail": {
+   "value": "本科普通批30个院校专业组志愿",
+   "url": "https://www.eol.cn/kaoshi/gaokao/zytb/202606/t20260612_2744719.shtml",
+   "confidence": "high"
+  },
+  "2026_policy": {
+   "text": "2026年教育部要求高校将关联度高、培养要求相近的专业编入同一专业组 (减少'被调剂'到无关专业)",
+   "url": "https://www.thepaper.cn/newsDetail_forward_33207640",
+   "confidence": "medium (search-result extract)"
+  }
+ },
+ "gaps": [
+  "Scope reduced by user: 2025 lines collected for HA, GD, BJ, SH, JS, GS, GZ, SD only; 2026 lines (本科+特殊类型) collected for all 31 from one 中新网 summary.",
+  "专科 lines missing for most provinces in 2026 (have GD, HA, BJ, GS, GX, NM, SD, ZJ, XJ); 2025 专科 missing for SH and JS (2024 values given).",
+  "Most numbers are from media/commercial reprints (中新网, dxsbb.com), not directly from provincial 教育考试院 pages.",
+  "zizzs.com (自主选拔在线) refused connections; all figures attributed to it are from search-result snippets only (confidence low): 2026 provincial registrants, 2025 985/211/双一流 intake estimates.",
+  "No authoritative total for 211 (incl. 985) 本科 intake; ~69万 is a derived estimate.",
+  "Province-level 985/211 shares are from a ~2020-data securities report (2021) plus scattered later estimates; no recent full 31-province table.",
+  "No 专业调剂 rate data; no 滑档 statistics; no reliable 复读生 share.",
+  "University cities are from memory (province from Wikipedia); 双一流 status from memory.",
+  "Models for NM, XJ, HL, YN, SN, QH, XZ, SX in 2026 inferred from memory (XJ/XZ shown as old 文理 because the 2026 summary still lists 文科/理科)."
+ ]
+}

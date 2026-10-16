@@ -1,0 +1,767 @@
+{
+ "meta": {
+  "compiled": "2026-10-16",
+  "currency": "CNY (nominal, survey year)",
+  "scope": "national figures only",
+  "caution": "No public source found that gives median deposits/financial assets by income quintile *separately* for urban and rural. Figures below are the closest verified anchors; quintile ladders for the game must be modelled from them (see gaps)."
+ },
+ "financial_assets_by_group": {
+  "national_median_financial_assets_2011": {
+   "value": 6000,
+   "year": 2011,
+   "source": "西南财经大学 中国家庭金融调查报告(精选), CHFS 2011 wave (8,438 households)",
+   "url": "https://money.sohu.com/upload/chinajrdcbg0510.pdf",
+   "confidence": "high",
+   "unit": "CNY per household"
+  },
+  "national_mean_financial_assets_2011": {
+   "value": 63800,
+   "year": 2011,
+   "source": "西南财经大学 中国家庭金融调查报告(精选), CHFS 2011 wave (8,438 households)",
+   "url": "https://money.sohu.com/upload/chinajrdcbg0510.pdf",
+   "confidence": "high",
+   "unit": "CNY per household"
+  },
+  "urban_median_financial_assets_2011": {
+   "value": 16500,
+   "year": 2011,
+   "source": "西南财经大学 中国家庭金融调查报告(精选), CHFS 2011 wave (8,438 households)",
+   "url": "https://money.sohu.com/upload/chinajrdcbg0510.pdf",
+   "confidence": "high",
+   "unit": "CNY per household"
+  },
+  "urban_mean_financial_assets_2011": {
+   "value": 111714,
+   "year": 2011,
+   "source": "西南财经大学 中国家庭金融调查报告(精选), CHFS 2011 wave (8,438 households)",
+   "url": "https://money.sohu.com/upload/chinajrdcbg0510.pdf",
+   "confidence": "high",
+   "unit": "CNY per household"
+  },
+  "rural_median_financial_assets_2011": {
+   "value": 3000,
+   "year": 2011,
+   "source": "西南财经大学 中国家庭金融调查报告(精选), CHFS 2011 wave (8,438 households)",
+   "url": "https://money.sohu.com/upload/chinajrdcbg0510.pdf",
+   "confidence": "high",
+   "unit": "CNY per household"
+  },
+  "rural_mean_financial_assets_2011": {
+   "value": 30996,
+   "year": 2011,
+   "source": "西南财经大学 中国家庭金融调查报告(精选), CHFS 2011 wave (8,438 households)",
+   "url": "https://money.sohu.com/upload/chinajrdcbg0510.pdf",
+   "confidence": "high",
+   "unit": "CNY per household"
+  },
+  "bank_deposits_share_of_financial_assets_2011": {
+   "value": 0.5775,
+   "year": 2011,
+   "source": "西南财经大学 中国家庭金融调查报告(精选), CHFS 2011 wave (8,438 households)",
+   "url": "https://money.sohu.com/upload/chinajrdcbg0510.pdf",
+   "confidence": "high",
+   "unit": "share",
+   "note": "cash a further 17.93%"
+  },
+  "households_with_no_or_almost_no_saving_2011": {
+   "value": 0.55,
+   "year": 2011,
+   "source": "西南财经大学 中国家庭金融调查报告(精选), CHFS 2011 wave (8,438 households)",
+   "url": "https://money.sohu.com/upload/chinajrdcbg0510.pdf",
+   "confidence": "medium",
+   "unit": "share of households",
+   "note": "refers to annual saving flow (income minus spending), not stock of deposits"
+  },
+  "top10pct_income_saving_rate_2011": {
+   "value": 0.606,
+   "year": 2011,
+   "source": "西南财经大学 中国家庭金融调查报告(精选), CHFS 2011 wave (8,438 households)",
+   "url": "https://money.sohu.com/upload/chinajrdcbg0510.pdf",
+   "confidence": "high",
+   "unit": "saving/income",
+   "note": "top 10% income households hold 74.9% of total annual saving"
+  },
+  "urban_mean_net_worth_2012": {
+   "value": 444000,
+   "year": 2012,
+   "source": "Xie Yu & Jin Yongai (2015) 'Household Wealth in China', Chinese Sociological Review 47(3), CFPS 2012",
+   "url": "https://www.isss.pku.edu.cn/cfps/docs/20201225094946301597.pdf",
+   "confidence": "high",
+   "unit": "CNY per household"
+  },
+  "rural_mean_net_worth_2012": {
+   "value": 189000,
+   "year": 2012,
+   "source": "Xie Yu & Jin Yongai (2015) 'Household Wealth in China', Chinese Sociological Review 47(3), CFPS 2012",
+   "url": "https://www.isss.pku.edu.cn/cfps/docs/20201225094946301597.pdf",
+   "confidence": "high",
+   "unit": "CNY per household"
+  },
+  "national_net_worth_quantiles_2012": {
+   "value": {
+    "p25": 63000,
+    "p50": 158000,
+    "p75": 331000,
+    "p90": 692000,
+    "p95": 1128000
+   },
+   "year": 2012,
+   "source": "Xie Yu & Jin Yongai (2015) 'Household Wealth in China', Chinese Sociological Review 47(3), CFPS 2012",
+   "url": "https://www.isss.pku.edu.cn/cfps/docs/20201225094946301597.pdf",
+   "confidence": "high",
+   "unit": "CNY per household (adjusted)"
+  },
+  "financial_assets_share_of_wealth_2012": {
+   "value": {
+    "urban": 0.111,
+    "rural": 0.095,
+    "national": 0.106
+   },
+   "year": 2012,
+   "source": "Xie Yu & Jin Yongai (2015) 'Household Wealth in China', Chinese Sociological Review 47(3), CFPS 2012",
+   "url": "https://www.isss.pku.edu.cn/cfps/docs/20201225094946301597.pdf",
+   "confidence": "high",
+   "unit": "share of gross wealth"
+  },
+  "urban_mean_financial_assets_2012_derived": {
+   "value": 49300,
+   "year": 2012,
+   "source": "derived: CFPS 2012 urban mean net worth 444k x financial share 11.1% (Xie & Jin 2015)",
+   "url": "https://www.isss.pku.edu.cn/cfps/docs/20201225094946301597.pdf",
+   "confidence": "low",
+   "unit": "CNY per household",
+   "note": "approximation; share is of gross wealth, applied to net worth"
+  },
+  "rural_mean_financial_assets_2012_derived": {
+   "value": 18000,
+   "year": 2012,
+   "source": "derived: CFPS 2012 rural mean net worth 189k x 9.5%",
+   "url": "https://www.isss.pku.edu.cn/cfps/docs/20201225094946301597.pdf",
+   "confidence": "low",
+   "unit": "CNY per household"
+  },
+  "urban_mean_total_assets_2019": {
+   "value": 3179000,
+   "year": 2019,
+   "source": "人民银行调查统计司《2019年中国城镇居民家庭资产负债情况调查》(中国金融2020年第9期), urban only, ~30,000 households",
+   "url": "https://finance.sina.cn/china/gncj/2020-04-24/detail-iircuyvh9569535.d.html",
+   "confidence": "high",
+   "unit": "CNY per household"
+  },
+  "urban_median_total_assets_2019": {
+   "value": 1630000,
+   "year": 2019,
+   "source": "人民银行调查统计司《2019年中国城镇居民家庭资产负债情况调查》(中国金融2020年第9期), urban only, ~30,000 households",
+   "url": "https://finance.sina.cn/china/gncj/2020-04-24/detail-iircuyvh9569535.d.html",
+   "confidence": "high",
+   "unit": "CNY per household"
+  },
+  "urban_mean_net_worth_2019": {
+   "value": 2890000,
+   "year": 2019,
+   "source": "人民银行调查统计司《2019年中国城镇居民家庭资产负债情况调查》(中国金融2020年第9期), urban only, ~30,000 households",
+   "url": "https://finance.sina.cn/china/gncj/2020-04-24/detail-iircuyvh9569535.d.html",
+   "confidence": "high",
+   "unit": "CNY per household"
+  },
+  "urban_median_net_worth_2019": {
+   "value": 1410000,
+   "year": 2019,
+   "source": "人民银行调查统计司《2019年中国城镇居民家庭资产负债情况调查》(中国金融2020年第9期), urban only, ~30,000 households",
+   "url": "https://finance.sina.cn/china/gncj/2020-04-24/detail-iircuyvh9569535.d.html",
+   "confidence": "high",
+   "unit": "CNY per household"
+  },
+  "urban_mean_financial_assets_2019": {
+   "value": 649000,
+   "year": 2019,
+   "source": "人民银行调查统计司《2019年中国城镇居民家庭资产负债情况调查》(中国金融2020年第9期), urban only, ~30,000 households",
+   "url": "https://finance.sina.cn/china/gncj/2020-04-24/detail-iircuyvh9569535.d.html",
+   "confidence": "high",
+   "unit": "CNY per household",
+   "note": "20.4% of total assets; 99.7% of households hold some financial asset"
+  },
+  "urban_top10pct_income_mean_total_assets_2019": {
+   "value": 12048000,
+   "year": 2019,
+   "source": "人民银行调查统计司《2019年中国城镇居民家庭资产负债情况调查》(中国金融2020年第9期), urban only, ~30,000 households",
+   "url": "https://finance.sina.cn/china/gncj/2020-04-24/detail-iircuyvh9569535.d.html",
+   "confidence": "high",
+   "unit": "CNY per household",
+   "note": "13.7x the bottom-20% income group"
+  },
+  "urban_bottom20pct_income_mean_total_assets_2019_derived": {
+   "value": 879000,
+   "year": 2019,
+   "source": "derived: 12,048k / 13.7 (PBOC 2019)",
+   "url": "https://finance.sina.cn/china/gncj/2020-04-24/detail-iircuyvh9569535.d.html",
+   "confidence": "medium",
+   "unit": "CNY per household"
+  },
+  "urban_net_worth_share_by_wealth_group_2019": {
+   "value": {
+    "bottom20": 0.023,
+    "top20": 0.645,
+    "top10": 0.49,
+    "top1": 0.171
+   },
+   "year": 2019,
+   "source": "人民银行调查统计司《2019年中国城镇居民家庭资产负债情况调查》(中国金融2020年第9期), urban only, ~30,000 households",
+   "url": "https://finance.sina.cn/china/gncj/2020-04-24/detail-iircuyvh9569535.d.html",
+   "confidence": "high",
+   "unit": "share of total net worth"
+  },
+  "per_capita_wealth_urban_2018": {
+   "value": 292920,
+   "year": 2018,
+   "source": "经济日报社中国经济趋势研究院《中国家庭财富调查报告2019》(2018 data)",
+   "url": "http://www.ce.cn/cysc/fdc/fc/201910/30/t20191030_33470849.shtml",
+   "confidence": "medium",
+   "unit": "CNY per person"
+  },
+  "per_capita_wealth_rural_2018": {
+   "value": 87744,
+   "year": 2018,
+   "source": "经济日报社中国经济趋势研究院《中国家庭财富调查报告2019》(2018 data)",
+   "url": "http://www.ce.cn/cysc/fdc/fc/201910/30/t20191030_33470849.shtml",
+   "confidence": "medium",
+   "unit": "CNY per person"
+  },
+  "cash_and_deposits_share_of_financial_assets_2018": {
+   "value": 0.88,
+   "year": 2018,
+   "source": "经济日报社中国经济趋势研究院《中国家庭财富调查报告2019》(2018 data)",
+   "url": "http://www.ce.cn/cysc/fdc/fc/201910/30/t20191030_33470849.shtml",
+   "confidence": "medium",
+   "unit": "share"
+  },
+  "top_vs_bottom_income_decile_per_capita_cash_and_deposits_ratio_2018": {
+   "value": {
+    "cash": 4.64,
+    "demand_and_time_deposits": 3.86
+   },
+   "year": 2018,
+   "source": "经济日报社中国经济趋势研究院《中国家庭财富调查报告2019》(2018 data)",
+   "url": "http://www.ce.cn/cysc/fdc/fc/201910/30/t20191030_33470849.shtml",
+   "confidence": "medium",
+   "unit": "ratio top decile / bottom decile",
+   "note": "text ambiguous on which ratio is cash vs deposits"
+  },
+  "online_sample_financial_asset_brackets_2025Q4": {
+   "value": "report splits households into <=50k, 50k-300k, >300k financial assets but text does not give shares",
+   "year": 2025,
+   "source": "厦门大学 & 蚂蚁集团研究院《中国家庭财富与消费报告 2025年第四季度》(online survey of Alipay users, reweighted to 2020 census)",
+   "url": "https://chow.xmu.edu.cn/zhongguojiatingcaifuyuxiaofeibaogao2025niandi4jidu.pdf",
+   "confidence": "low"
+  }
+ },
+ "debt": {
+  "urban_debt_participation_2019": {
+   "value": 0.565,
+   "year": 2019,
+   "source": "人民银行调查统计司《2019年中国城镇居民家庭资产负债情况调查》(中国金融2020年第9期), urban only, ~30,000 households",
+   "url": "https://finance.sina.cn/china/gncj/2020-04-24/detail-iircuyvh9569535.d.html",
+   "confidence": "high",
+   "unit": "share of urban households"
+  },
+  "urban_debt_participation_by_asset_quintile_2019": {
+   "value": {
+    "bottom20_assets": 0.386,
+    "top20_assets": 0.633
+   },
+   "year": 2019,
+   "source": "人民银行调查统计司《2019年中国城镇居民家庭资产负债情况调查》(中国金融2020年第9期), urban only, ~30,000 households",
+   "url": "https://finance.sina.cn/china/gncj/2020-04-24/detail-iircuyvh9569535.d.html",
+   "confidence": "high",
+   "unit": "share",
+   "note": "by total ASSETS, not income; no income breakdown published"
+  },
+  "urban_debt_participation_by_head_age_2019": {
+   "value": {
+    "26-35": 0.731,
+    "65+": 0.251
+   },
+   "year": 2019,
+   "source": "人民银行调查统计司《2019年中国城镇居民家庭资产负债情况调查》(中国金融2020年第9期), urban only, ~30,000 households",
+   "url": "https://finance.sina.cn/china/gncj/2020-04-24/detail-iircuyvh9569535.d.html",
+   "confidence": "high"
+  },
+  "urban_mortgage_share_of_households_2019": {
+   "value": 0.434,
+   "year": 2019,
+   "source": "人民银行调查统计司《2019年中国城镇居民家庭资产负债情况调查》(中国金融2020年第9期), urban only, ~30,000 households",
+   "url": "https://finance.sina.cn/china/gncj/2020-04-24/detail-iircuyvh9569535.d.html",
+   "confidence": "high",
+   "unit": "share of urban households",
+   "note": "76.8% of indebted households have a housing loan; housing loans = 75.9% of household debt"
+  },
+  "urban_mean_debt_of_indebted_2019": {
+   "value": 512000,
+   "year": 2019,
+   "source": "人民银行调查统计司《2019年中国城镇居民家庭资产负债情况调查》(中国金融2020年第9期), urban only, ~30,000 households",
+   "url": "https://finance.sina.cn/china/gncj/2020-04-24/detail-iircuyvh9569535.d.html",
+   "confidence": "high",
+   "unit": "CNY",
+   "note": "53.8% of indebted owe <300k, 35.6% 300k-1M, 10.5% >1M"
+  },
+  "urban_mean_debt_by_asset_group_2019": {
+   "value": {
+    "bottom20_assets": 32000,
+    "top20_assets": 1573000
+   },
+   "year": 2019,
+   "source": "人民银行调查统计司《2019年中国城镇居民家庭资产负债情况调查》(中国金融2020年第9期), urban only, ~30,000 households",
+   "url": "https://finance.sina.cn/china/gncj/2020-04-24/detail-iircuyvh9569535.d.html",
+   "confidence": "high",
+   "unit": "CNY mean"
+  },
+  "debt_participation_2011": {
+   "value": {
+    "national": 0.3822,
+    "urban": 0.3516,
+    "rural": 0.4031
+   },
+   "year": 2011,
+   "source": "西南财经大学 中国家庭金融调查报告(精选), CHFS 2011 wave (8,438 households)",
+   "url": "https://money.sohu.com/upload/chinajrdcbg0510.pdf",
+   "confidence": "high",
+   "unit": "share of households"
+  },
+  "mean_debt_2011": {
+   "value": {
+    "urban": 100815,
+    "rural": 36504,
+    "national": 62576
+   },
+   "year": 2011,
+   "source": "西南财经大学 中国家庭金融调查报告(精选), CHFS 2011 wave (8,438 households)",
+   "url": "https://money.sohu.com/upload/chinajrdcbg0510.pdf",
+   "confidence": "high",
+   "unit": "CNY per household (all households)"
+  },
+  "urban_bank_mortgage_share_2011": {
+   "value": 0.1394,
+   "year": 2011,
+   "source": "西南财经大学 中国家庭金融调查报告(精选), CHFS 2011 wave (8,438 households)",
+   "url": "https://money.sohu.com/upload/chinajrdcbg0510.pdf",
+   "confidence": "high",
+   "unit": "share of urban households",
+   "note": "plus 7.88% of non-agricultural-hukou households borrowed outside banks for housing"
+  },
+  "mean_debt_2019": {
+   "value": {
+    "urban": 106609,
+    "rural": 41195
+   },
+   "year": 2019,
+   "source": "Zhu, Ma, Liu & Gao (2024), Front. Sustain. Food Syst. 8:1428897, citing CHFS 2019",
+   "url": "https://www.frontiersin.org/journals/sustainable-food-systems/articles/10.3389/fsufs.2024.1428897/epub",
+   "confidence": "medium",
+   "unit": "CNY per household"
+  },
+  "informal_borrowing_participation_2013": {
+   "value": {
+    "national": 0.347,
+    "rural": 0.438
+   },
+   "year": 2013,
+   "source": "《中国农村家庭金融发展报告(2014)》(西南财经大学CHFS, 2013 wave), via 每日经济新闻",
+   "url": "https://www.nbd.com.cn/articles/2014-04-21/827458.html",
+   "confidence": "medium",
+   "unit": "share of households in 民间借贷"
+  },
+  "borrowed_from_siblings_2013": {
+   "value": {
+    "national": 0.32,
+    "rural": 0.361
+   },
+   "year": 2013,
+   "source": "《中国农村家庭金融发展报告(2014)》(西南财经大学CHFS, 2013 wave), via 每日经济新闻",
+   "url": "https://www.nbd.com.cn/articles/2014-04-21/827458.html",
+   "confidence": "medium",
+   "unit": "share (base unclear in article)",
+   "note": "other relatives 30.4%; informal financial organisations 0.7%"
+  },
+  "rural_formal_credit_access_2013": {
+   "value": {
+    "rural": 0.276,
+    "national": 0.405
+   },
+   "year": 2013,
+   "source": "《中国农村家庭金融发展报告(2014)》(西南财经大学CHFS, 2013 wave), via 每日经济新闻",
+   "url": "https://www.nbd.com.cn/articles/2014-04-21/827458.html",
+   "confidence": "medium",
+   "unit": "share",
+   "note": "62.7% of rural households without bank loan needed funds but never applied"
+  },
+  "debt_participation_all_households_cfps_2010_2014": {
+   "value": 0.3082,
+   "year": "2010-2014",
+   "source": "《中国居民家庭消费性负债行为研究》财经研究2018(10), CFPS 2010-2014 panel",
+   "url": "https://qks.sufe.edu.cn/mv_html/j00001/201810/2592a7a9-bdb0-4f95-9a68-1de84db4dd32_WEB.htm",
+   "confidence": "medium",
+   "unit": "share of household-years"
+  },
+  "online_sample_no_debt_2025Q4": {
+   "value": 0.505,
+   "year": 2025,
+   "source": "厦门大学 & 蚂蚁集团研究院《中国家庭财富与消费报告 2025年第四季度》(online survey of Alipay users, reweighted to 2020 census)",
+   "url": "https://chow.xmu.edu.cn/zhongguojiatingcaifuyuxiaofeibaogao2025niandi4jidu.pdf",
+   "confidence": "low",
+   "unit": "share",
+   "note": "implies ~49.5% have some debt; Alipay-user sample skews urban/online"
+  },
+  "median_debt_amount": {
+   "value": null,
+   "year": null,
+   "source": "not found",
+   "url": "",
+   "confidence": "low",
+   "note": "no verified median debt in CNY; PBOC gives only means and ratios"
+  },
+  "rural_borrowing_reasons": {
+   "agri_housing_medical_share_of_rural_debt": {
+    "value": 0.8,
+    "year": 2019,
+    "source": "Zhu, Ma, Liu & Gao (2024), Front. Sustain. Food Syst. 8:1428897, citing CHFS 2019 (approx.)",
+    "url": "https://www.frontiersin.org/journals/sustainable-food-systems/articles/10.3389/fsufs.2024.1428897/epub",
+    "confidence": "medium",
+    "unit": "share of total rural debt",
+    "note": "agricultural + housing + medical debt ~80% of rural debt"
+   },
+   "guangdong_largest_loan_purpose_2019": {
+    "value": {
+     "risk_buffer_medical_weddings_funerals": 0.2725,
+     "large_consumption_housing_durables_education": 0.5037,
+     "investment_agri_business": 0.1549
+    },
+    "year": 2019,
+    "source": "暨南大学经济与社会研究院 广东千村调查 2019 (3,622 rural households, Guangdong only), via 澎湃",
+    "url": "https://www.thepaper.cn/newsDetail_forward_7197007",
+    "confidence": "medium",
+    "unit": "share of largest loans",
+    "note": "Guangdong only; 90% of largest loans from relatives/friends, 5.8% banks; mean largest loan ~20,000 CNY; only ~15% of households borrowed in past year"
+   },
+   "education_borrowing_concentration_2011": {
+    "value": 0.6737,
+    "year": 2011,
+    "source": "西南财经大学 中国家庭金融调查报告(精选), CHFS 2011 wave (8,438 households)",
+    "url": "https://money.sohu.com/upload/chinajrdcbg0510.pdf",
+    "confidence": "medium",
+    "unit": "share of households borrowing from relatives/non-banks for education that are rural"
+   },
+   "low_income_non_mortgage_loan_use_2025": {
+    "value": "households with income <300k use non-mortgage loans mainly for daily living and medical costs",
+    "year": 2025,
+    "source": "厦门大学 & 蚂蚁集团研究院《中国家庭财富与消费报告 2025年第四季度》(online survey of Alipay users, reweighted to 2020 census)",
+    "url": "https://chow.xmu.edu.cn/zhongguojiatingcaifuyuxiaofeibaogao2025niandi4jidu.pdf",
+    "confidence": "low"
+   },
+   "qualitative": "Rural borrowing is dominated by house building/renovation, medical bills, weddings (bride-price/marital housing) and education, mostly interest-free loans from relatives; see CFPS 'competitive debt' literature (not quantified here)."
+  }
+ },
+ "debt_to_income": {
+  "urban_avg_dti_2019": {
+   "value": 1.02,
+   "year": 2019,
+   "source": "人民银行调查统计司《2019年中国城镇居民家庭资产负债情况调查》(中国金融2020年第9期), urban only, ~30,000 households",
+   "url": "https://finance.sina.cn/china/gncj/2020-04-24/detail-iircuyvh9569535.d.html",
+   "confidence": "high",
+   "unit": "debt / annual income"
+  },
+  "urban_indebted_dti_mean_and_median_2019": {
+   "value": 1.6,
+   "year": 2019,
+   "source": "人民银行调查统计司《2019年中国城镇居民家庭资产负债情况调查》(中国金融2020年第9期), urban only, ~30,000 households",
+   "url": "https://finance.sina.cn/china/gncj/2020-04-24/detail-iircuyvh9569535.d.html",
+   "confidence": "high",
+   "unit": "ratio",
+   "note": "1.2% of households have DTI > 10"
+  },
+  "dti_2019_rural_vs_urban": {
+   "value": {
+    "rural": 1.47,
+    "urban": 1.25
+   },
+   "year": 2019,
+   "source": "Zhu, Ma, Liu & Gao (2024), Front. Sustain. Food Syst. 8:1428897, citing CHFS 2019",
+   "url": "https://www.frontiersin.org/journals/sustainable-food-systems/articles/10.3389/fsufs.2024.1428897/epub",
+   "confidence": "medium",
+   "unit": "ratio",
+   "note": "definition per paper footnote (likely debt/income of indebted)"
+  },
+  "lowest_income_quintile_dti_2016": {
+   "value": 6.0,
+   "year": 2016,
+   "source": "IMF WP/19/258 Han, Jurzyk, Guo, He & Rendak, 'Assessing Macro-Financial Risks of Household Debt in China', CFPS 2010/2016 ('reaching almost 6')",
+   "url": "https://www.imf.org/-/media/files/publications/wp/2019/wpiea2019258-print-pdf.pdf",
+   "confidence": "medium",
+   "unit": "ratio, among indebted households"
+  },
+  "share_of_debt_held_by_dti_above_4": {
+   "value": {
+    "2010": 0.25,
+    "2016": 0.5
+   },
+   "year": "2010/2016",
+   "source": "IMF WP/19/258 Han, Jurzyk, Guo, He & Rendak, 'Assessing Macro-Financial Risks of Household Debt in China', CFPS 2010/2016",
+   "url": "https://www.imf.org/-/media/files/publications/wp/2019/wpiea2019258-print-pdf.pdf",
+   "confidence": "medium",
+   "unit": "share of household debt",
+   "note": "'around a quarter' to 'almost half'"
+  },
+  "avg_debt_service_to_income_2016": {
+   "value": 0.36,
+   "year": 2016,
+   "source": "IMF WP/19/258 Han, Jurzyk, Guo, He & Rendak, 'Assessing Macro-Financial Risks of Household Debt in China', CFPS 2010/2016",
+   "url": "https://www.imf.org/-/media/files/publications/wp/2019/wpiea2019258-print-pdf.pdf",
+   "confidence": "medium",
+   "unit": "DSTI",
+   "note": "19% of households had DSTI > 0.5 (14% in 2010)"
+  },
+  "indebted_dti_cfps_2010_2014": {
+   "value": {
+    "mean": 2.138,
+    "median": 0.6757
+   },
+   "year": "2010-2014",
+   "source": "《中国居民家庭消费性负债行为研究》财经研究2018(10), CFPS 2010-2014 panel",
+   "url": "https://qks.sufe.edu.cn/mv_html/j00001/201810/2592a7a9-bdb0-4f95-9a68-1de84db4dd32_WEB.htm",
+   "confidence": "medium",
+   "unit": "ratio"
+  },
+  "urban_asset_liability_ratio_2019": {
+   "value": {
+    "all_mean": 0.091,
+    "indebted_mean": 0.148,
+    "indebted_median": 0.158
+   },
+   "year": 2019,
+   "source": "人民银行调查统计司《2019年中国城镇居民家庭资产负债情况调查》(中国金融2020年第9期), urban only, ~30,000 households",
+   "url": "https://finance.sina.cn/china/gncj/2020-04-24/detail-iircuyvh9569535.d.html",
+   "confidence": "high",
+   "unit": "debt/total assets"
+  },
+  "asset_liability_ratio_2011": {
+   "value": {
+    "national": 0.0476,
+    "urban": 0.0408,
+    "rural": 0.0981
+   },
+   "year": 2011,
+   "source": "西南财经大学 中国家庭金融调查报告(精选), CHFS 2011 wave (8,438 households)",
+   "url": "https://money.sohu.com/upload/chinajrdcbg0510.pdf",
+   "confidence": "high",
+   "unit": "debt/total assets"
+  }
+ },
+ "negative_net": {
+  "urban_indebted_financial_debt_ratio_2019": {
+   "value": {
+    "indebted_mean": 0.853,
+    "indebted_median": 1.173,
+    "all_households": 0.446
+   },
+   "year": 2019,
+   "source": "人民银行调查统计司《2019年中国城镇居民家庭资产负债情况调查》(中国金融2020年第9期), urban only, ~30,000 households",
+   "url": "https://finance.sina.cn/china/gncj/2020-04-24/detail-iircuyvh9569535.d.html",
+   "confidence": "high",
+   "unit": "debt / financial assets"
+  },
+  "urban_share_debt_exceeds_financial_assets_2019_derived": {
+   "value": 0.28,
+   "year": 2019,
+   "source": "derived: 56.5% indebted x >50% of them with debt/financial assets >1 (median 117.3%)",
+   "url": "https://finance.sina.cn/china/gncj/2020-04-24/detail-iircuyvh9569535.d.html",
+   "confidence": "medium",
+   "unit": "share of all urban households (lower bound ~28%)"
+  },
+  "urban_share_negative_net_worth_2019": {
+   "value": 0.004,
+   "year": 2019,
+   "source": "人民银行调查统计司《2019年中国城镇居民家庭资产负债情况调查》(中国金融2020年第9期), urban only, ~30,000 households",
+   "url": "https://finance.sina.cn/china/gncj/2020-04-24/detail-iircuyvh9569535.d.html",
+   "confidence": "high",
+   "unit": "share (138 households with asset-liability ratio >100%)"
+  },
+  "rural_indebted_with_debt_exceeding_assets_2013": {
+   "value": 0.105,
+   "year": 2013,
+   "source": "《中国农村家庭金融发展报告(2014)》(西南财经大学CHFS, 2013 wave), via 每日经济新闻",
+   "url": "https://www.nbd.com.cn/articles/2014-04-21/827458.html",
+   "confidence": "medium",
+   "unit": "share of indebted rural households",
+   "note": "2.4 pp above national average (~8.1%)"
+  },
+  "online_sample_debt_ratio_over_100pct_2025Q4": {
+   "value": 0.104,
+   "year": 2025,
+   "source": "厦门大学 & 蚂蚁集团研究院《中国家庭财富与消费报告 2025年第四季度》(online survey of Alipay users, reweighted to 2020 census)",
+   "url": "https://chow.xmu.edu.cn/zhongguojiatingcaifuyuxiaofeibaogao2025niandi4jidu.pdf",
+   "confidence": "low",
+   "unit": "share of households",
+   "note": "'负债率' definition not stated in text"
+  },
+  "low_income_negative_financial_margin_2016": {
+   "value": "most low-income households already had negative financial margins (income minus debt service and basic spending) before shocks",
+   "year": 2016,
+   "source": "IMF WP/19/258 Han, Jurzyk, Guo, He & Rendak, 'Assessing Macro-Financial Risks of Household Debt in China', CFPS 2010/2016",
+   "url": "https://www.imf.org/-/media/files/publications/wp/2019/wpiea2019258-print-pdf.pdf",
+   "confidence": "medium"
+  }
+ },
+ "deposits_per_household": {
+  "household_deposits_end_2025": {
+   "value": 167040000000000.0,
+   "year": 2025,
+   "source": "PBOC 2025 year-end data as quoted on Xueqiu (本外币住户存款余额 167.04万亿元)",
+   "url": "https://xueqiu.com/2657407918/382651981/401898041",
+   "confidence": "medium",
+   "unit": "CNY",
+   "note": "consistent with end-2024 RMB 151.25tn + 2025 increase 14.64tn = ~165.9tn RMB-only"
+  },
+  "household_deposit_increase_2025": {
+   "value": 14640000000000.0,
+   "year": 2025,
+   "source": "PBOC Jan-2026 release via 扬子晚报",
+   "url": "https://www.yzwb.net/news/ch/202601/t20260122_314148.html",
+   "confidence": "high",
+   "unit": "CNY"
+  },
+  "household_deposits_end_july_2026": {
+   "value": 172840000000000.0,
+   "year": 2026,
+   "source": "secondary report (Newswav citing HK Economic Journal)",
+   "url": "https://newswav.com/article/%E4%B8%AD%E5%9B%BD%E5%AE%B6%E5%BA%AD%E8%B4%A2%E5%AF%8C%E4%B8%8E%E5%82%A8%E8%93%84%E5%B7%AE%E8%B7%9D%E5%A4%A7-%E5%8D%8A%E6%95%B0%E5%AE%B6%E5%BA%AD%E5%AD%98%E6%AC%BE%E4%BB%85%E4%BA%94%E4%BD%8D%E6%95%B0-A2610_OUFRi3",
+   "confidence": "low",
+   "unit": "CNY"
+  },
+  "family_households_2020_census": {
+   "value": 494157423,
+   "year": 2020,
+   "source": "国家统计局 第七次全国人口普查公报(第二号)",
+   "url": "https://www.stats.gov.cn/xxgk/sjfb/zxfb2020/202105/t20210511_1817197.html",
+   "confidence": "high",
+   "unit": "households",
+   "note": "2.62 persons per household; text seen in search result excerpt"
+  },
+  "mean_deposits_per_household_end_2025": {
+   "value": 338000,
+   "year": 2025,
+   "source": "derived: 167.04tn / 494.16m households",
+   "url": "https://xueqiu.com/2657407918/382651981/401898041",
+   "confidence": "medium",
+   "unit": "CNY per household",
+   "note": "MEAN only; heavily skewed - top 10% hold large majority"
+  },
+  "mean_deposits_per_household_july_2026": {
+   "value": 350000,
+   "year": 2026,
+   "source": "derived: 172.84tn / 494.16m",
+   "url": "https://newswav.com/article/%E4%B8%AD%E5%9B%BD%E5%AE%B6%E5%BA%AD%E8%B4%A2%E5%AF%8C%E4%B8%8E%E5%82%A8%E8%93%84%E5%B7%AE%E8%B7%9D%E5%A4%A7-%E5%8D%8A%E6%95%B0%E5%AE%B6%E5%BA%AD%E5%AD%98%E6%AC%BE%E4%BB%85%E4%BA%94%E4%BD%8D%E6%95%B0-A2610_OUFRi3",
+   "confidence": "low",
+   "unit": "CNY per household"
+  },
+  "claimed_median_household_deposits_2026": {
+   "value": 87000,
+   "year": 2026,
+   "source": "secondary report attributing to CHFS (unverified)",
+   "url": "https://newswav.com/article/%E4%B8%AD%E5%9B%BD%E5%AE%B6%E5%BA%AD%E8%B4%A2%E5%AF%8C%E4%B8%8E%E5%82%A8%E8%93%84%E5%B7%AE%E8%B7%9D%E5%A4%A7-%E5%8D%8A%E6%95%B0%E5%AE%B6%E5%BA%AD%E5%AD%98%E6%AC%BE%E4%BB%85%E4%BA%94%E4%BD%8D%E6%95%B0-A2610_OUFRi3",
+   "confidence": "low",
+   "unit": "CNY per household",
+   "note": "median/mean ratio ~0.25 is plausible given skew"
+  }
+ },
+ "home_ownership": {
+  "urban_ownership_2019": {
+   "value": 0.96,
+   "year": 2019,
+   "source": "人民银行调查统计司《2019年中国城镇居民家庭资产负债情况调查》(中国金融2020年第9期), urban only, ~30,000 households",
+   "url": "https://finance.sina.cn/china/gncj/2020-04-24/detail-iircuyvh9569535.d.html",
+   "confidence": "high",
+   "unit": "share of urban households",
+   "note": "owns any home anywhere; 1 home 58.4%, 2 homes 31.0%, 3+ 10.5%"
+  },
+  "urban_bottom20_income_ownership_2019": {
+   "value": 0.891,
+   "year": 2019,
+   "source": "人民银行调查统计司《2019年中国城镇居民家庭资产负债情况调查》(中国金融2020年第9期), urban only, ~30,000 households",
+   "url": "https://finance.sina.cn/china/gncj/2020-04-24/detail-iircuyvh9569535.d.html",
+   "confidence": "high",
+   "unit": "share"
+  },
+  "ownership_2011": {
+   "value": {
+    "national": 0.8968,
+    "urban": 0.8539,
+    "rural": 0.926
+   },
+   "year": 2011,
+   "source": "西南财经大学 中国家庭金融调查报告(精选), CHFS 2011 wave (8,438 households)",
+   "url": "https://money.sohu.com/upload/chinajrdcbg0510.pdf",
+   "confidence": "high",
+   "unit": "share of households"
+  },
+  "rural_owner_occupied_2010_census": {
+   "value": 0.963,
+   "year": 2010,
+   "source": "国家统计局 第六次人口普查 表9-4c (乡村, long-form sample): self-built 94.2% + purchased; renting 2.5%",
+   "url": "https://www.stats.gov.cn/sj/pcsj/rkpc/6rp/html/B0904d.htm",
+   "confidence": "high",
+   "unit": "share of rural family households (derived from counts)"
+  },
+  "city_owner_occupied_2020_census": {
+   "value": 0.684,
+   "year": 2020,
+   "source": "《中国人口普查年鉴-2020》 via 第一财经: purchased 58.36% + self-built 10.06%; renting 25.57%",
+   "url": "https://www.yicai.com/news/101474692.html",
+   "confidence": "medium",
+   "unit": "share of 城市 family households living in own home"
+  },
+  "no_home_anywhere_2018": {
+   "value": 0.0314,
+   "year": 2018,
+   "source": "经济日报社中国经济趋势研究院《中国家庭财富调查报告2019》(2018 data)",
+   "url": "http://www.ce.cn/cysc/fdc/fc/201910/30/t20191030_33470849.shtml",
+   "confidence": "medium",
+   "unit": "share of households",
+   "note": "93.03% own exactly one home"
+  },
+  "mortgage_share_of_urban_owners_2019_derived": {
+   "value": 0.452,
+   "year": 2019,
+   "source": "derived: 43.4% of urban households with housing loan / 96% ownership",
+   "url": "https://finance.sina.cn/china/gncj/2020-04-24/detail-iircuyvh9569535.d.html",
+   "confidence": "medium",
+   "unit": "share of owner households with mortgage"
+  },
+  "mortgage_share_of_owners_online_2025Q4": {
+   "value": 0.407,
+   "year": 2025,
+   "source": "厦门大学 & 蚂蚁集团研究院《中国家庭财富与消费报告 2025年第四季度》(online survey of Alipay users, reweighted to 2020 census) (59.3% of owners have no mortgage)",
+   "url": "https://chow.xmu.edu.cn/zhongguojiatingcaifuyuxiaofeibaogao2025niandi4jidu.pdf",
+   "confidence": "low",
+   "unit": "share of owner households"
+  },
+  "urban_bank_mortgage_2011": {
+   "value": 0.1394,
+   "year": 2011,
+   "source": "西南财经大学 中国家庭金融调查报告(精选), CHFS 2011 wave (8,438 households)",
+   "url": "https://money.sohu.com/upload/chinajrdcbg0510.pdf",
+   "confidence": "high",
+   "unit": "share of urban households"
+  }
+ },
+ "gaps": [
+  "No verified public table of MEDIAN deposits / financial assets / net financial assets by income QUINTILE split urban vs rural (CHFS/CFPS microdata would be needed; CHFS public data at https://chfs.swufe.edu.cn/sjzx/gksjk.htm requires registration).",
+  "Most recent national urban+rural financial-asset medians verified are CHFS 2011 (urban 16,500; rural 3,000). Suggested game approach: scale 2011 medians by growth in per-household 住户存款 2011->2025 (needs a verified 2011 住户存款 figure, not collected here), and spread quintiles using CHFS saving concentration (top 10% income = ~75% of saving) and PBOC top-decile/bottom-quintile asset ratio 13.7x.",
+  "PBOC 2019 survey is urban-only and publishes debt participation by asset group and age, not income group.",
+  "No verified national median debt amount in CNY.",
+  "Recent (2017-2021) urban vs rural debt-participation rates from CHFS/CFPS not found in accessible text; latest split is CHFS 2011 (urban 35.2%, rural 40.3%).",
+  "Share with informal debt is from CHFS 2013 (rural 43.8%) via news report; no newer national figure verified.",
+  "National breakdown of rural borrowing purposes (house building vs medical vs weddings vs education) not found; only CHFS-based 'agri+housing+medical ~80% of rural debt' and Guangdong 2019 grouped purposes.",
+  "End-2025 household deposit stock (167.04tn) verified only via secondary quote; PBOC table itself not opened (lixinger table returned 403).",
+  "IMF DTI-by-quintile values are only in charts; only the narrative 'lowest quintile almost 6' was extractable.",
+  "2020 census rural tenure table not opened; 2010 census rural value used."
+ ]
+}
