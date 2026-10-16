@@ -56,6 +56,19 @@ const Entry = memo(({ e, anim }: { e: LogEntry; anim: boolean }) => (
     <p>{e.t}{e.f && <span className="f">{e.f}</span>}</p>
   </div>
 ));
+// 一年的记录。往年的记录不会再变，所以只在条数、是不是当年变了的时候才重绘：
+// 记录再多，每次刷新也只重绘当年这一组
+type YearItems = [LogEntry, number][];
+const YearGroup = memo(({ a, items, current, initial }: { a: number; items: YearItems; current: boolean; initial: number }) => (
+  <div className="yr">
+    <div className="yr-h">
+      <b>{a}岁</b><small>{S.birthYear + a}年</small>
+      {current && <YearProgress className="yr-prog" title="这一年过了多少" />}
+    </div>
+    <div className="timeline">{items.map(([e, k]) => <Entry key={k} e={e} anim={k > initial} />)}</div>
+  </div>
+), (p, q) => p.a === q.a && p.current === q.current && p.initial === q.initial && p.items.length === q.items.length);
+
 function Timeline() {
   const box = useRef<HTMLDivElement>(null);
   const prevH = useRef(0);
@@ -65,7 +78,7 @@ function Timeline() {
   const initial = useRef(0);
   if (!initial.current) initial.current = n;
   // 按年龄分组；用「第几条记录」做 key（从出生往后数），新记录插在最上面时旧的不用重建
-  const years: { a: number; items: [LogEntry, number][] }[] = [];
+  const years: { a: number; items: YearItems }[] = [];
   log.forEach((e, i) => {
     const last = years[years.length - 1];
     if (last && last.a === e.a) last.items.push([e, n - i]); else years.push({ a: e.a, items: [[e, n - i]] });
@@ -81,15 +94,7 @@ function Timeline() {
     <section className="sheet tl-card">
       <h4 className="sheet-title">人生纪录 <span className="muted small">{n} 条 · 最新的在上面</span></h4>
       <div className="tl-scroll" ref={box} onScroll={e => setAway(e.currentTarget.scrollTop > 40)}>
-        {years.map(y => (
-          <div className="yr" key={y.a}>
-            <div className="yr-h">
-              <b>{y.a}岁</b><small>{S.birthYear + y.a}年</small>
-              {y.a === S.age && S.phase === 'life' && <YearProgress className="yr-prog" title="这一年过了多少" />}
-            </div>
-            <div className="timeline">{y.items.map(([e, k]) => <Entry key={k} e={e} anim={k > initial.current} />)}</div>
-          </div>
-        ))}
+        {years.map(y => <YearGroup key={y.a} a={y.a} items={y.items} current={y.a === S.age && S.phase === 'life'} initial={initial.current} />)}
       </div>
       {away && <button className="tl-latest" type="button" onClick={() => { if (box.current) box.current.scrollTop = 0; setAway(false); }}>↑ 回到最新</button>}
     </section>
