@@ -1,0 +1,24 @@
+// 引擎的公开入口：界面和工具从这里取用。
+export * from './state';
+export * from './rng';
+export * from './format';
+export * from './journal';
+export * from './stats';
+export * from './focus';
+export * from './mortality';
+export * from './health';
+export * from './place';
+export * from './career';
+export * from './names';
+export * from './family';
+export * from './parents';
+export * from './household';
+export * from './finance';
+export * from './housing';
+export * from './romance';
+export * from './education';
+export * from './lifecycle';
+export * from './content/events';
+export * from './content/decisions';
+export * from './data';
+export type * from './types';

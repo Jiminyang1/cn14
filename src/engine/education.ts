@@ -1,11 +1,40 @@
-// 高考与填报志愿：成绩 → 全省排名 → 冲/稳/保院校 → 选专业、是否服从调剂 → 平行志愿投档 → 录取 / 调剂 / 退档 / 滑档。
-// 参数集中在 GK；research/gaokao.json 核实后由 real.js 覆盖（见 tools/build_real.py）。
+// 学历、高考与填报志愿：成绩 → 全省排名 → 冲/稳/保院校 → 选专业、是否服从调剂 → 平行志愿投档 → 录取 / 调剂 / 退档 / 滑档。
+// 参数集中在 GK；各省分数线来自 real.generated.ts。
+
 import type { Uni } from './types';
+import { BIG, PBY, PROVS } from './data';
 import { GK_LINES } from './real.generated';
-import { PBY, PROVS } from './data';
-import { S, chance, clamp, gauss, pick, wpick } from './engine';
+import { S } from './state';
+import { addDoc, out } from './journal';
+import { chance, clamp, gauss, pick, wpick } from './rng';
+import { cityLoc, moveTo } from './place';
+import { eff } from './stats';
+import { fire } from './lifecycle';
 
-
+export const EDU_LV = ['没上过学', '小学', '初中', '高中', '中专/职高', '大专', '本科', '硕士'];
+// ===== 恋爱对象 =====
+// 对象和你本人、父母用同一套「学历 → 职业 → 工资」逻辑生成（js/parents.js），只是学历、年龄、家乡和你相关：
+// · 学历门当户对：同一档约 55%，差一档约 35%，差两档约 10%；不同档时，女性找的对象学历更高的约六成（估计，参考普查夫妻学历匹配）
+// · 年龄：男方平均大 2 岁左右（2020 年普查平均初婚年龄男 29.4、女 28.0 岁）
+// · 家乡：多数是同一个省的（估计）
+export const SCHOOL_EDU = { 高中: 3, 职高: 4, 复读: 3, 大专: 5, 本科: 6, 硕士: 7 };
+// 被录取：搬去读书的城市，记下学校层次和专业
+export function enroll(c, major, adjusted) {
+  addDoc('admit', '录取通知书', [['学校', c.name], ['专业', major + (adjusted ? '（调剂）' : '')], ['层次', TIER_N[c.tier] || '']]);
+  const L = BIG[c.city] ? cityLoc(BIG[c.city].p, c.city) : PBY[c.prov].cities.includes(c.city) ? cityLoc(c.prov, c.city) : { p: c.prov, city: c.city, kind: 'city' };
+  moveTo(L);
+  S.school = c.tier === 'zhuan' ? '大专' : '本科'; S.schoolEnd = S.age + (c.tier === 'zhuan' ? 3 : 4);
+  S.flags.tier = { '985': 'top', '211': '211', ben1: 'ben1', ben2: 'ben', minban: 'ben', zhuan: 'zhuan' }[c.tier];
+  S.flags.uni = { name: c.name, city: c.city, prov: c.prov, tier: c.tier };
+  S.flags.major = major;
+  if (c.fee) eff({ h: -2 });
+  const away = c.prov === S.home.p ? '留在本省读书' : `离开${PBY[S.home.p].n}，去${PBY[c.prov].n}读书`;
+  const fire = S.home.kind === 'rural' && (c.tier === '985' || c.tier === '211') ? '村里有人放了鞭炮。' : '';
+  return { t: `被${c.name}录取，专业是${major}${adjusted ? '（服从调剂分过来的）' : ''}。${away}${c.fee ? '，民办学校一年学费两三万' : ''}。${fire}`, k: adjusted || c.fee ? 'ev' : 'good' };
+}
+export const TIER_K = { top: 0.3, '211': 0.18, ben1: 0.1, ben: 0.05, zhuan: 0.02 };
+export const tierK = () => TIER_K[S.flags.tier] || 0.05;
+export const MAJORS = ['计算机', '会计', '临床医学', '护理', '机械工程', '汉语言文学', '英语', '电子商务', '土木工程', '法学', '师范教育', '金融'];
 export const GK = {
   // 各分数线大约对应“全省前百分之几”的考生（待核实的占位值）
   share: { special: 0.2, benke: 0.68, zhuanke: 0.97 },
