@@ -95,6 +95,8 @@ export function birthText() {
 
 // ===== 年度计划 =====
 export const MILESTONES = [1, 5, 15, 30, 50, 65, 80, 90, 100];
+// 自述（「写点什么」）：暂时关闭。改成 true 即可恢复，界面部分（ui/Modal.tsx 的 Reflect）保留着
+export const ENABLE_REFLECT = false;
 export const REFLECT = {
   15: '这个孩子15岁了。你15岁的时候，在为什么事情烦恼？',
   30: '30岁的这个人，和30岁的你（或将来的你），过的日子像吗？',
@@ -113,7 +115,7 @@ export function planYear() {
   dueDecisions().slice(0, 2).forEach((id, i) => S.queue.push({ at: 0.3 + i * 0.3 + rnd() * 0.1, type: 'dec', id }));
   loveQueue();
   if (MILESTONES.includes(S.age)) S.queue.push({ at: 0.02, type: 'ms' });
-  if (!S.headless && REFLECT[S.age]) S.queue.push({ at: 0.92, type: 'ref' });
+  if (ENABLE_REFLECT && !S.headless && REFLECT[S.age]) S.queue.push({ at: 0.92, type: 'ref' });
   S.queue.sort((a, b) => a.at - b.at);
   if (S.focus && !(FOCUS[S.focus] && FOCUS[S.focus].ok())) S.focus = null;
   if (!S.focus && focusList().length) S.focus = autoFocus();
@@ -157,7 +159,7 @@ export function fire(e) {
     out(ev.run());
   } else if (e.type === 'dec') openDec(e.id);
   else if (e.type === 'ms') milestone();
-  else if (e.type === 'ref') S.pending = { type: 'ref', q: REFLECT[S.age] };
+  else if (e.type === 'ref' && ENABLE_REFLECT) S.pending = { type: 'ref', q: REFLECT[S.age] };
 }
 export function openDec(id) {
   const D = DEC[id]; if (!D) return;

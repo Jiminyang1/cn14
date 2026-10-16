@@ -1,6 +1,6 @@
 # 数据来源与口径
 
-原始数据（带出处和链接）在 `research/*.json`，由 `tools/build_real.py` 整理成游戏用的 `js/real.js`。
+原始数据（带出处和链接）在 `research/*.json`，由 `tools/build_real.py` 整理成游戏用的 `src/engine/real.generated.ts`。
 修改数据后运行：
 
 ```
@@ -59,7 +59,7 @@ python3 -I tools/build_real.py
 
 ## 模拟结果与目标的对照
 
-用 `node` 在后台跑 8000–12000 个人生得到：
+用校准脚本（`npm run calib -- <名字>`，见 `tools/calib/`）在后台跑 8000–12000 个人生得到：
 
 | 指标 | 模拟 | 目标 |
 |---|---|---|
@@ -160,7 +160,7 @@ python3 -I tools/build_real.py
 
 ## 兄弟姐妹（第五轮）
 
-参数在 `js/engine.js` 的 `SIB`。
+参数在 `src/engine/family.ts` 的 `SIB`。
 
 | 项目 | 游戏里 | 依据 |
 |---|---|---|

@@ -1,6 +1,6 @@
 {
   "version": "0.0.1",
   "configurations": [
-    { "name": "cn14", "runtimeExecutable": "python3", "runtimeArgs": ["-m", "http.server", "8714"], "port": 8714 }
+    { "name": "cn14", "runtimeExecutable": "npm", "runtimeArgs": ["run", "dev", "--", "--port", "8714", "--strictPort"], "port": 8714 }
   ]
 }

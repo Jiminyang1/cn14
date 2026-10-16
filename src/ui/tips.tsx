@@ -1,13 +1,30 @@
 // 「怎么算的」：数字旁边一个小 i，点击后弹出一张说明卡片（公式、代入这个人的数字、规则、来源）。
 // 说明在点开那一刻才计算，所以数字总是最新的。
+import type { ReactNode } from 'react';
+import {
+  EDU_LV, EDU_WAGE, FAM_REPAY, FAM_SAVE, JOBS, LE_TARGET, LOAN_RULES, LT, NAT_URBAN_INC, PARENT_DISP, PARENT_K, PBY,
+  RESID_PENSION_JOBS, S, WEALTH0, expK, famIncome, hpCounty, leOf, loanPayY, parentIncome, parentRetired, parentWage,
+  parentWorkLoc, partnerHpf, partnerLoc, placeHp, placeInc, placeName, wageBase, wan, workExpK,
+} from '../engine';
+import { QW } from './util';
 
-const ib = key => `<button class="ib" type="button" aria-label="怎么算的" data-k="${key}">i</button>`;
-const pct = x => (x * 100).toFixed(x < 0.1 ? 1 : 0) + '%';
-const T = (v, l) => ({ v, l });             // 算式里的一项：数值 v，名称 l
-const sgn = x => (x >= 0 ? '+' : '−') + Math.abs(x).toFixed(1);
+/** 算式里的一项：数值 v，名称 l；字符串是运算符 */
+export type Term = string | { v: string | number; l: string };
+export interface Tip {
+  title: string;
+  expr?: Term[]; result?: string;   // 算式 = 结果
+  big?: string;                     // 没有算式时，直接给一个大数字
+  math?: ReactNode;                 // 公式
+  rows?: [string, string][];
+  notes?: string[];
+  src?: string;
+}
 
-// 每个说明返回 { title, expr, result, big, rows, notes, src }
-const TIP = {
+const pct = (x: number) => (x * 100).toFixed(x < 0.1 ? 1 : 0) + '%';
+const T = (v: string | number, l: string): Term => ({ v, l });
+const sgn = (x: number) => (x >= 0 ? '+' : '−') + Math.abs(x).toFixed(1);
+
+export const TIPS: Record<string, (arg?: string) => Tip> = {
   famQuint() {
     const f = S.fam, n = 3 + f.sibs.length;
     return {
@@ -32,7 +49,7 @@ const TIP = {
   parentInc(who) {
     const f = S.fam, p = f[who], male = who === 'dad', hp = PBY[S.home.p], label = male ? '父亲' : '母亲';
     if (parentRetired(p, male)) {
-      const res = RESID_PKEY.has(p.jk);
+      const res = RESID_PENSION_JOBS.has(p.jk);
       return {
         title: label + '的养老金', big: wan(parentIncome(who)) + '/年',
         rows: [['类型', res ? '城乡居民基本养老金' : '城镇职工基本养老金'], ['标准', `${hp.n} 2024 年人均水平`], ['原来的工作', p.job]],
@@ -43,13 +60,12 @@ const TIP = {
     const J = JOBS[p.jk];
     if (!J || !J.m) return { title: label + '的收入', big: '没有工资收入', rows: [['学历', EDU_LV[p.edu]], ['情况', p.job]] };
     const L = parentWorkLoc(p), y = Math.max(0, p.age - p.startAge);
-    const exp = (y <= 5 ? 0.75 + 0.05 * y : Math.min(1.1, 1 + 0.02 * (y - 5))) * (p.age > 50 ? Math.max(0.8, 1 - 0.01 * (p.age - 50)) : 1);
     const ek = EDU_WAGE[p.edu], luck = p.k / ek, pk = PARENT_K[S.rural ? 'rural' : 'urban'];
     // 个人差异在同龄人里大约排第几（对数正态，σ = 0.65）
     const z = Math.log(luck) / 0.65, rank = Math.round(100 / (1 + Math.exp(-1.702 * z)));
     return {
       title: label + '的年收入（税后）',
-      expr: [T(wan(wageBase(L)), '工资基数'), '×', T(J.m, '职业系数'), '×', T(p.k.toFixed(2), '个人系数'), '×', T(exp.toFixed(2), '工龄系数'), '×', T(pk, '父母一代'), '×', T(PARENT_DISP, '税后')],
+      expr: [T(wan(wageBase(L)), '工资基数'), '×', T(J.m, '职业系数'), '×', T(p.k.toFixed(2), '个人系数'), '×', T(workExpK(p).toFixed(2), '工龄系数'), '×', T(pk, '父母一代'), '×', T(PARENT_DISP, '税后')],
       result: wan(parentIncome(who)) + '/年',
       rows: [
         ['工作', `${p.job}${L.city !== S.home.city ? '（在' + placeName(L) + '）' : ''}`],
@@ -80,7 +96,7 @@ const TIP = {
     };
   },
   famHouse() {
-    const H = S.famHouse || {};
+    const H = S.famHouse || { type: 'rent', v: 0 };
     if (H.type === 'own') return {
       title: '父母的房子', expr: [T(wan(placeHp(S.home)) + '/㎡', S.home.city + '房价'), '×', T('90 ㎡', '面积'), '×', T((0.7 + S.q * 0.12).toFixed(2), '家境系数')],
       result: wan(H.v), notes: ['家境系数是估计：家境越好，房子越大、地段越好。'], src: '房价：统计年鉴 35 个大中城市新建住宅均价、各市统计公报，或安居客挂牌价',
@@ -167,8 +183,8 @@ const TIP = {
     if (!S.loans || !S.loans.length) return { title: '房贷', big: '没有房贷' };
     return {
       title: '房贷', big: '月供 ' + wan(loanPayY() / 12),
-      rows: S.loans.map(l => [l.kind === 'hpf' ? '公积金贷款' : '商业贷款', `剩 ${wan(l.bal)} · 年利率 ${(l.rate * 100).toFixed(2)}% · 还剩 ${l.years} 年 · 月供 ${wan(l.pay / 12)}`]),
-      math: '月供 = P × r ÷ ( 1 − (1 + r)<sup>−n</sup> )',
+      rows: S.loans.map((l): [string, string] => [l.kind === 'hpf' ? '公积金贷款' : '商业贷款', `剩 ${wan(l.bal)} · 年利率 ${(l.rate * 100).toFixed(2)}% · 还剩 ${l.years} 年 · 月供 ${wan(l.pay / 12)}`]),
+      math: <>月供 = P × r ÷ ( 1 − (1 + r)<sup>−n</sup> )</>,
       notes: ['等额本息：P 贷款本金，r 月利率，n 还款月数。'],
       src: '利率：商贷新发放平均约 3.1%，公积金首套 2.6%（2025–2026）',
     };
@@ -191,42 +207,8 @@ const TIP = {
   },
 };
 
-function tipHtml(t) {
-  const term = x => typeof x === 'string' ? `<span class="tp-op">${x}</span>` : `<span class="tp-t"><b>${x.v}</b><small>${x.l}</small></span>`;
-  return `<div class="tp-h"><span>${t.title}</span><button class="tp-x" type="button" aria-label="关闭">×</button></div>
-    ${t.expr ? `<div class="tp-eq">${t.expr.map(term).join('')}<span class="tp-op">=</span><span class="tp-res">${t.result}</span></div>` : ''}
-    ${t.big ? `<div class="tp-big">${t.big}</div>` : ''}
-    ${t.math ? `<div class="tp-math">${t.math}</div>` : ''}
-    ${t.rows && t.rows.length ? `<dl class="tp-rows">${t.rows.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join('')}</dl>` : ''}
-    ${t.notes && t.notes.length ? `<ul class="tp-notes">${t.notes.map(n => `<li>${n}</li>`).join('')}</ul>` : ''}
-    ${t.src ? `<p class="tp-src">${t.src}</p>` : ''}`;
+/** 按 "名字:参数" 构建一张说明卡片 */
+export function buildTip(key: string): Tip | null {
+  const [name, arg] = key.split(':');
+  return TIPS[name] && S ? TIPS[name](arg) : null;
 }
-
-// 点击图标打开，点 ×、点别处、按 Esc 或滚动页面时关闭。打开期间暂停侧栏重绘（tipOpen）。
-let tipOpen = false;
-(() => {
-  const box = document.createElement('div');
-  box.id = 'tip'; box.hidden = true; box.setAttribute('role', 'dialog'); document.body.appendChild(box);
-  let cur = null;
-  const close = () => { box.hidden = true; if (cur) cur.classList.remove('shown'); cur = null; tipOpen = false; };
-  const open = b => {
-    const [name, arg] = b.dataset.k.split(':');
-    if (!TIP[name] || !S) return;
-    box.innerHTML = tipHtml(TIP[name](arg));
-    box.hidden = false; cur = b; b.classList.add('shown'); tipOpen = true;
-    if (window.matchMedia('(max-width: 640px)').matches) { box.style.left = box.style.top = ''; return; } // 手机：底部弹出
-    const r = b.getBoundingClientRect(), w = box.offsetWidth, h = box.offsetHeight, vw = document.documentElement.clientWidth;
-    const x = Math.min(Math.max(8, r.left + r.width / 2 - w / 2), vw - w - 8);
-    let y = r.bottom + 8;
-    if (y + h > window.innerHeight - 8) y = Math.max(8, r.top - h - 8);
-    box.style.left = x + 'px'; box.style.top = y + 'px';
-  };
-  document.addEventListener('click', e => {
-    const b = e.target.closest && e.target.closest('.ib');
-    if (b) { e.stopPropagation(); e.preventDefault(); if (cur === b) close(); else { close(); open(b); } return; }
-    if (e.target.closest('.tp-x')) { close(); return; }
-    if (!e.target.closest('#tip')) close();
-  }, true);
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
-  window.addEventListener('scroll', () => { if (cur && !window.matchMedia('(max-width: 640px)').matches) close(); }, { passive: true });
-})();
