@@ -62,7 +62,7 @@ export interface Family {
 export interface LogEntry { a: number; t: string; k: string; f: string | null }
 export interface Doc { k: string; title: string; a: number; y: number; rows: [string, string][] }
 export interface YearRow { a: number; h: number; hl: number; m: number; s: string }
-export interface QueueItem { at: number; type: 'ev' | 'dec' | 'ms' | 'ref'; id?: string }
+export interface QueueItem { at: number; type: 'ev' | 'dec' | 'ms' | 'ref' | 'day'; id?: string }
 export type Pending = { type: 'dec'; id: string; d: Decision } | { type: 'ref'; q: string };
 export interface Loan { kind: 'com' | 'hpf'; bal: number; rate: number; years: number; pay: number }
 export interface House { city: string; p: string; v: number; paid: number; at: number }
@@ -90,7 +90,7 @@ export interface Flags {
 }
 
 export interface Life {
-  v: number; seed: number; rs: number;              // 存档版本、种子、随机数状态
+  v: number; seed: number; rs: number; rs2?: number; // 存档版本、种子、主随机数状态、日常用的第二条随机数流（rng.ts）
   age: number; t: number;                           // 年龄；这一年过了多少（0–1）
   birthYear: number; birthMonth: number;
   name: string; surname: string; sex: Sex; eth: string;
@@ -115,5 +115,6 @@ export interface Life {
   log: LogEntry[]; years: YearRow[]; docs?: Doc[]; notes: { a: number; q: string; t: string }[];
   stats: { maxMoney: number; support?: number; inherit?: number };
   death?: Death; comps?: Companion[];
+  dayDone?: Record<string, number>;                // 日常条目上次出现的年龄（content/daily.ts）
   auto?: boolean;                                   // 自动抉择（也决定每年的重心）
 }

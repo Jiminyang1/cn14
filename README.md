@@ -24,7 +24,7 @@ npm run replay -- <局ID>   # 重放某一局（见下面「排查问题」）
   - `place.ts` / `career.ts` / `education.ts` 地点与收入、职业、高考志愿
   - `family.ts` / `parents.ts` / `romance.ts` 兄弟姐妹与孩子、父母、恋爱婚姻
   - `household.ts` / `finance.ts` / `housing.ts` 父母家的账、自己的账、公积金与房贷
-  - `content/events.ts` 随机事件 `EVENTS`；`content/decisions.ts` 抉择 `DEC`
+  - `content/events.ts` 随机事件 `EVENTS`；`content/decisions.ts` 抉择 `DEC`；`content/daily.ts` 日常（年节、生活片段、状态节点）
   - `data.ts` 省份等估计值；`real.generated.ts` 由 `tools/build_real.py` 从 `research/*.json` 生成（见 DATA.md）
 - `src/game/`：推进循环、速度、存档（localStorage，带格式版本和旧存档迁移）、局日志与重放
 - `src/ui/`：React 组件（首页、出生登记表、一生、弹窗、结局、「怎么算的」卡片）
@@ -57,3 +57,9 @@ npm run replay -- <局ID>   # 重放某一局（见下面「排查问题」）
   - 日志里记了当时的代码版本；之后改过规则的话，重放结果会不同（会提示）
 
 界面上算展示用的数字时，如果要调用可能消耗随机数的引擎函数，用 `peek()` 包起来，否则会改变这一生的走向、重放也对不上（开发时会在日志里记一条警告）。
+
+## 日常：让每一年都有几件小事
+
+`src/engine/content/daily.ts` 里的年节（春节、中秋……按真实月份排进这一年）、生活片段（按人生阶段和处境挑）和状态节点（存款第一次过十万、父母退休……），每年给时间线添 2–4 条。它们只写字、不改任何状态，随机数用第二条流（`rnd2`），所以加多少内容、怎么改，人生的走向都不变（`tests/daily.test.ts` 检查），也不用重新校准。同一句话 12 年内不会重复出现。无界面的人生（同伴、校准）不排日常。
+
+加一条生活片段：在 `FRAG` 里加一项 `{ ok: () => 条件, text: () => say('一句', [条件, '另一句'], …) }`。

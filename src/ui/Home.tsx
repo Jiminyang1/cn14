@@ -1,7 +1,7 @@
 // 首页：档案袋封面、建档申请表、出生地分布、过过的人生。
 import { useEffect, useMemo, useState } from 'react';
 import { BIRTH_TOTAL, NATION, PROVS } from '../engine';
-import { LENS, game, hasSave } from '../game/controller';
+import { YEAR_SEC as GAME_YEAR_SEC, game, hasSave } from '../game/controller';
 import { loadPast } from '../game/storage';
 
 const T0 = performance.now();
@@ -62,12 +62,9 @@ export function Home() {
         <section className="sheet apply">
           <h2 className="form-title">建档申请表</h2>
           <div className="frow">
-            <label>一生的长度</label>
+            <label>节奏</label>
             <div>
-              <div className="seg">
-                {LENS.map(([v, l]) => <button key={v} className={game.pref.len === v ? 'on' : ''} onClick={() => game.setLen(v)}>{l}</button>)}
-              </div>
-              <p className="hint">活到当地平均寿命大约需要这么久。可以暂停、加速；关掉页面会保存在这个浏览器里。</p>
+              <p className="hint" style={{ marginTop: 0 }}>一年约 {GAME_YEAR_SEC} 秒，活到平均寿命大约 {game.pref.len} 分钟。随时可以暂停、加速，或者快进到下一件大事；关掉页面会保存在这个浏览器里。</p>
             </div>
           </div>
           <div className="apply-actions">

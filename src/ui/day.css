@@ -1,0 +1,5 @@
+/* 时间线上的日常（年节、生活片段）：比大事淡一些 */
+.tl.day p { color: var(--muted); font-size: 14px; }
+.tl.day::before { width: 7px; height: 7px; left: -20px; top: 14px; border-width: 1.5px; border-color: var(--line); }
+/* 正在快进的按钮 */
+.dbtn.on { background: var(--ink); color: var(--paper); border-color: var(--ink); }

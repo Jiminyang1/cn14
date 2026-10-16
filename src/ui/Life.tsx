@@ -2,6 +2,7 @@
 import { memo } from 'react';
 import { EDU_LV, FOCUS, S, carer, focusList, placeName, statusLabel, type LogEntry } from '../engine';
 import { SPEEDS, game } from '../game/controller';
+import './day.css';
 import { Modal } from './Modal';
 import { RunId } from './RunId';
 import { Companions, Curve, Docs, FamilyCards, Vitals } from './Sidebar';
@@ -61,7 +62,8 @@ function Dock() {
       <div className="dock-row">
         <button className="dbtn" title="暂停/继续" onClick={() => game.togglePause()}>{game.paused ? '▶' : '❚❚'}</button>
         <div className="seg sm">{SPEEDS.map(v => <button key={v} className={game.speed === v ? 'on' : ''} onClick={() => game.setSpeed(v)}>{v}×</button>)}</div>
-        <button className="dbtn wide" onClick={() => game.fastForward()}>快进到下一个抉择</button>
+        <button className={'dbtn wide' + (game.ff === 'big' ? ' on' : '')} title="快进，直到发生一件大事（日常不算）" onClick={() => game.fastForward('big')}>下一件大事</button>
+        <button className={'dbtn wide' + (game.ff === 'dec' ? ' on' : '')} title="快进，直到要你做决定" onClick={() => game.fastForward('dec')}>下一个抉择</button>
         <label className="toggle"><input type="checkbox" checked={!!S.auto} onChange={e => game.setAuto(e.target.checked)} /> 自动抉择</label>
         {import.meta.env.DEV && <button className="dbtn" title="下载这一局的日志" onClick={() => game.exportRun()}>日志</button>}
         <button className="dbtn ghost" onClick={() => game.quit()}>离开</button>

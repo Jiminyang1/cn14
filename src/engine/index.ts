@@ -20,5 +20,6 @@ export * from './education';
 export * from './lifecycle';
 export * from './content/events';
 export * from './content/decisions';
+export * from './content/daily';
 export * from './data';
 export type * from './types';

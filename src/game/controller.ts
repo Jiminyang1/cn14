@@ -6,11 +6,15 @@ import { CAUSE, S, autoPick, newLife, placeName, setS, tick, type Pending } from
 import { sink } from './devsink';
 import { applyInput } from './replay';
 import { newRun, pushEvent, runId, type Input, type RunLog } from './runlog';
-import { clearSave, keepRun, loadPast, loadPref, loadSave, savePast, savePref, writeSave } from './storage';
+import { clearSave, keepRun, loadPast, loadSave, savePast, writeSave } from './storage';
 
 export type Screen = 'home' | 'birth' | 'life' | 'end';
-export const LENS: [number, string][] = [[10, '10 分钟'], [25, '25 分钟'], [45, '45 分钟']];
-export const SPEEDS = [1, 2, 4, 8, 16];
+// 节奏：1× 时一年 30 秒（按平均寿命约 40 分钟，不算做抉择的时间）。快不快由倍速和快进决定，不再让玩家开局选
+export const YEAR_SEC = 30;
+export const SPEEDS = [1, 2, 4, 8];
+export type FF = false | 'big' | 'dec';
+// 「下一件大事」：遇到这些类型的记录就停（日常、里程碑不算）
+const BIG_KINDS = new Set(['ev', 'good', 'bad', 'loss', 'choice', 'death']);
 const RENDER_MS = 120;   // 推进中界面最多每 120 毫秒刷新一次
 const END_DELAY = 1500;  // 离世后停留在时间线上的时间
 export const VERSION = typeof __APP_VERSION__ === 'string' ? __APP_VERSION__ : 'dev';
@@ -44,24 +48,23 @@ const here = () => ({ a: S.age, t: S.t });
 
 export const game = {
   screen: 'home' as Screen,
-  pref: loadPref(),
+  pref: { len: Math.round(80 * YEAR_SEC / 60) }, // 活到平均寿命大约几分钟（出生登记表上显示）
   speed: 1,
   paused: false,
-  ff: false,           // 快进到下一个抉择
-  yearSec: 18.75,      // 一年对应多少秒
+  ff: false as FF,     // 快进：到下一件大事 / 到下一个抉择
+  yearSec: YEAR_SEC,   // 一年对应多少秒
   ended: false,        // 已经进入结局流程
   get run() { return run; },
 
-  setLen(len: number) { this.pref = { ...this.pref, len }; savePref(this.pref); emit(); },
   bornNow() {
     const old = loadSave(); // 没跑完的上一局要被覆盖了：先留一份
     if (old && old.run && old.life.phase === 'life') keepRun({ run: { ...old.run, events: [...old.run.events, { at: new Date().toISOString(), type: 'abandoned' }] }, life: old.life });
     const seed = (Date.now() ^ Math.floor(Math.random() * 2 ** 31)) | 0;
     run = newRun(seed, VERSION);
     engine('newLife', () => newLife(seed));
-    this.yearSec = this.pref.len * 60 / 80;
+    this.yearSec = YEAR_SEC;
     this.speed = 1; S.auto = false;
-    event('start', { len: this.pref.len, ua: navigator.userAgent });
+    event('start', { yearSec: YEAR_SEC, ua: navigator.userAgent });
     this.show('birth');
   },
   startLife() {
@@ -74,14 +77,14 @@ export const game = {
     setS(sv.life);
     run = sv.run || newRun(sv.life.seed, VERSION, { id: runId(sv.life.seed), incomplete: true });
     lastRs = S.rs;
-    this.speed = sv.ui.speed; this.yearSec = sv.ui.yearSec;
+    this.speed = SPEEDS.includes(sv.ui.speed) ? sv.ui.speed : SPEEDS[SPEEDS.length - 1]; this.yearSec = YEAR_SEC; // 旧存档里的一年长度不再沿用
     event('resume', { version: VERSION });
     this.startLife();
   },
   quit() { event('quit'); this.save(); this.paused = true; this.show('home'); },
   togglePause() { this.paused = !this.paused; event(this.paused ? 'pause' : 'play'); emit(); },
   setSpeed(v: number) { this.speed = v; event('speed', { v }); emit(); },
-  fastForward() { this.ff = true; this.paused = false; event('ff'); emit(); },
+  fastForward(to: 'big' | 'dec') { this.ff = to; this.paused = false; event('ff', { to }); emit(); },
   setAuto(on: boolean) { input({ ...here(), type: 'auto', on }); emit(); },
   setFocus(k: string) { input({ ...here(), type: 'focus', k }); emit(); },
 
@@ -154,8 +157,9 @@ function loop(ts: number) {
   last = ts;
   if (game.screen === 'life' && S && S.phase === 'life' && !game.paused && !S.pending) {
     const sp = game.speed * (S.age < 6 ? 3 : 1) * (game.ff ? 40 : 1);
-    const age0 = S.age;
+    const age0 = S.age, n0 = S.log.length;
     engine('tick', () => tick(dt * sp / game.yearSec));
+    if (game.ff === 'big' && S.log.slice(0, S.log.length - n0).some(e => BIG_KINDS.has(e.k))) { game.ff = false; emit(); }
     if (S.age !== age0) game.save();
     if (S.pending) { game.ff = false; emit(); }
     else if (S.phase !== 'life') { emit(); game.finish(); } // tick 里离世了

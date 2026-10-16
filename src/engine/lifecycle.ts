@@ -4,6 +4,7 @@ import type { Life } from './types';
 import { CAUSE, DIAG, deathProb, milestone, pickCause } from './mortality';
 import { CROSS_PROV, LABOR_OUT, NATION, PROVS, REGION_OF } from './data';
 import { DEC, dueDecisions } from './content/decisions';
+import { fireDaily, planDaily } from './content/daily';
 import { EVENTS, EVMAP } from './content/events';
 import { FOCUS, applyFocus, autoFocus, focusList } from './focus';
 import { JOBS, RESID_PENSION, isWorking, mainJob, retire, retireAge } from './career';
@@ -116,6 +117,7 @@ export function planYear() {
   loveQueue();
   if (MILESTONES.includes(S.age)) S.queue.push({ at: 0.02, type: 'ms' });
   if (ENABLE_REFLECT && !S.headless && REFLECT[S.age]) S.queue.push({ at: 0.92, type: 'ref' });
+  planDaily(); // 日常：只用第二条随机数流，不影响上面这些
   S.queue.sort((a, b) => a.at - b.at);
   if (S.focus && !(FOCUS[S.focus] && FOCUS[S.focus].ok())) S.focus = null;
   if (!S.focus && focusList().length) S.focus = autoFocus();
@@ -162,6 +164,7 @@ export function fire(e) {
   } else if (e.type === 'dec') openDec(e.id);
   else if (e.type === 'ms') milestone();
   else if (e.type === 'ref' && ENABLE_REFLECT) S.pending = { type: 'ref', q: REFLECT[S.age] };
+  else if (e.type === 'day') fireDaily(e.id);
 }
 export function openDec(id) {
   const D = DEC[id]; if (!D) return;
