@@ -80,7 +80,8 @@ export function family() {
       if (pt.jk && pt.age >= retireAgeOf(pt.sex, pt.jk)) { pt.retired = 1; pt.inc = Math.round(pt.inc * 0.5); }
     }
     if (chance(lifeTable(leOf(S.loc.p, pt.sex, false), 0.004, pt.sex).q[Math.min(119, pt.age)])) {
-      pt.alive = false; log(`${pt.name}去世了，享年${pt.age}岁。你们一起走过了${S.age - pt.marriedAt}年。`, 'loss'); eff({ h: -15, so: -6 });
+      // 丧偶：不再算已婚，以后还可以再认识人（f.partner 留着，界面显示「丧偶」，再婚时被替换）
+      pt.alive = false; f.married = false; S.flags.widowed = S.age; log(`${pt.name}去世了，享年${pt.age}岁。你们一起走过了${S.age - pt.marriedAt}年。`, 'loss'); eff({ h: -15, so: -6 });
     }
   }
   for (const k of f.kids) {

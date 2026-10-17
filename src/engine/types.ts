@@ -52,6 +52,7 @@ export interface Partner {
   metAt: number; how: string; city: string; startAge: number; k: number; q: number; trait: string;
   jk: string | null; job: string | null; inc: number; hpf: boolean; fit: number;
   love?: number; asks?: number; metParents?: number; marriedAt?: number; retired?: number;
+  wh?: number;               // 对方家里要不要婚房：1 要、2 已经因为没房拒过一次求婚
 }
 export interface Family {
   mom: Parent; dad: Parent; sibs: Sibling[]; kids: Kid[];
@@ -86,7 +87,9 @@ export interface Flags {
   tier?: string; uni?: { name: string; city: string; prov: string; tier: string }; major?: string;
   zkRedo?: number; slip?: { score: number }; stuLoan?: number;
   civilRetry?: number; civilN?: number; lastJob?: string; empIns?: number; farmStop?: number;
-  badCredit?: number; heldOn?: number; supportY?: number; inherited?: number; grandkids?: number;
+  badCredit?: number; heldOn?: number; widowed?: number; supportY?: number; inherited?: number; grandkids?: number;
+  oldLive?: 'kid' | 'home';
+  parWithMe?: number;        // 爸妈和你住在一起（接来同住、回老家照顾）；你搬家他们跟着   // 晚年：和子女同住 / 住养老院
 }
 
 export interface Life {
@@ -102,6 +105,8 @@ export interface Life {
   school: string | null; schoolEnd: number | null; edu: number;
   job: string | null; jobY: number; wageK: number; jobs: { job: string; age: number; city: string }[];
   income: number; relInc?: number; pension?: number;
+  wageAcc?: number; wageT0?: number; hpfAcc?: number; // 这一年里已经结算的工资、最后这份工作从哪个进度开始算、个人已缴的公积金（finance.ts 的 accrueWage）
+  pen?: { y: number; r: number; s: number };       // 职工养老保险缴费记录（finance.ts 的 penYear）
   // 钱：经济独立以前算在家里
   indep: boolean; indepAt?: number; money: number;
   famMoney: number; famDebt: number; famDebt0: number; famDebtWhy?: string; famDebtYears: number;

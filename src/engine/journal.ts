@@ -11,4 +11,11 @@ export function addDoc(k, title, rows) {
 
 // ===== 记录 =====
 export function log(t, k = 'ev', f = null) { S.log.unshift({ a: S.age, t, k, f }); }
-export function out(r, kind = 'ev') { if (!r) return; if (typeof r === 'string') log(r, kind); else log(r.t, r.k || kind, r.f || null); }
+// 事件、抉择里顺带发生的事（例如换工作时公积金封存）先记在这里，等事件本身的文字写完再写，时间线上的先后才对
+let later: [string, string][] = [];
+export function logLater(t: string, k = 'ev') { later.push([t, k]); }
+export function out(r, kind = 'ev') {
+  if (r) { if (typeof r === 'string') log(r, kind); else log(r.t, r.k || kind, r.f || null); }
+  const l = later; later = [];
+  for (const [t, k] of l) log(t, k);
+}

@@ -172,6 +172,12 @@ export const TIPS: Record<string, (arg?: string) => Tip> = {
   },
   hpf() {
     if (!S.hpfOn && !S.hpf) return { title: '住房公积金', big: '没有', notes: ['你现在的工作没有缴公积金。骑手、个体户、务农基本都没有。'], src: '2024 年全国实缴人数约占城镇就业的 37%' };
+    // 待业、或者换到了不缴公积金的单位：账户封存，余额还在
+    if (!S.hpfOn) return {
+      title: '住房公积金', big: wan(S.hpf) + '（封存）',
+      rows: [['状态', S.job === 'seeking' ? '待业，停止缴存' : S.job === 'retired' ? '已退休，停止缴存' : '现在的工作不缴公积金'], ['账户利率', '1.5%'], ['可以提取', '付房租、买房付首付、按月还房贷']],
+      notes: ['封存的账户余额还在，照样计息。', '找到交公积金的工作后接着缴；连续缴存的年数从头算，满 1 年才能申请公积金贷款。'],
+    };
     return {
       title: '住房公积金', expr: [T(wan(S.income || 0), '年收入'), '×', T(pct(S.hpfRate || 0.05), '缴存比例'), '×', T('2', '单位 + 个人')],
       result: wan((S.income || 0) * (S.hpfRate || 0.05) * 2) + '/年',

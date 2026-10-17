@@ -28,7 +28,7 @@ export function Vitals() {
         <div className="acct">
           <div><span>存款<Ib k="myMoney" /></span><b style={red(S.money < 0)}>{wan(S.money)}</b></div>
           <div><span>{S.job === 'retired' ? '养老金' : '年收入'}<Ib k="myIncome" /></span><b>{S.job === 'retired' ? wan(S.pension || 0) : S.income ? wan(S.income) : '—'}</b></div>
-          <div><span>公积金<Ib k="hpf" /></span><b>{S.hpf ? wan(S.hpf) : S.hpfOn ? '0元' : '没有'}</b></div>
+          <div><span>公积金<Ib k="hpf" /></span><b>{S.hpf ? wan(S.hpf) + (S.hpfOn ? '' : '（封存）') : S.hpfOn ? '0元' : '没有'}</b></div>
           <div><span>房贷<Ib k="loan" /></span><b>{loanBal() ? wan(loanBal()) + ` · 月供${wan(loanPayY() / 12)}` : '—'}</b></div>
         </div>
         {(S.fam.mom.alive || S.fam.dad.alive) && <p className="hint">父母家里的存款约 {wan(Math.max(0, S.famMoney || 0))}。</p>}

@@ -41,7 +41,7 @@ export function familyMoneyYear() {
     const share = -S.famMoney / (1 + f.sibs.length);
     S.money -= share; S.famMoney = 0; S.flags.supportY = (S.flags.supportY || 0) + 1;
     S.stats.support = (S.stats.support || 0) + share;
-    if (S.flags.supportY === 1) log(`父母的积蓄花完了，养老金不够用。你开始每年给他们寄生活费，今年寄了${wan(share)}。`, 'ev', '2024 年城乡居民养老金人均每年约 2,950 元，城镇职工约 4.6 万元（中国统计年鉴 24-26、24-27）');
+    if (S.flags.supportY === 1) log(S.flags.parWithMe ? `父母的积蓄花完了，养老金不够用。他们跟你住在一起，生活开销由你来出，今年多花了${wan(share)}。` : `父母的积蓄花完了，养老金不够用。你开始每年给他们寄生活费，今年寄了${wan(share)}。`, 'ev', '2024 年城乡居民养老金人均每年约 2,950 元，城镇职工约 4.6 万元（中国统计年鉴 24-26、24-27）');
   }
   // 存款年利息约 1.5%；欠款大多是房贷或向亲戚借的，平均按约 2% 计（估计）
   S.famMoney *= S.famMoney > 0 ? 1.015 : 1.02;

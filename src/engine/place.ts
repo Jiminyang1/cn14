@@ -13,7 +13,7 @@ export const MUNI = new Set(['BJ', 'SH', 'TJ', 'CQ']);
 export function placeName(L = S.loc) {
   const p = PBY[L.p];
   if (L.kind === 'rural') return MUNI.has(L.p) ? `${L.city}郊区的村子` : `${p.n}${L.city}的农村`;
-  return MUNI.has(L.p) || L.kind === 'big' ? L.city : `${p.n}${L.city}`;
+  return MUNI.has(L.p) || L.kind === 'big' || L.city.startsWith(p.n) ? L.city : `${p.n}${L.city}`; // 「江苏老家的县城」这类地名本身带省名
 }
 // 收入、消费：城镇/农村居民人均可支配收入和消费支出（统计年鉴）；省会略高于全省城镇平均，其他城市略低
 // 地级市数据（real.js 里的 CITY，约 90 个城市）优先；没有的城市用全省平均
@@ -68,6 +68,8 @@ export function moveTo(L) {
   if (S.fam && S.fam.married && S.fam.partner) S.fam.partner.city = L.city; // 结了婚一起搬
 }
 export const awayFromHome = () => S.loc.p !== S.home.p || (S.loc.city !== S.home.city);
+// 和爸妈不在一起住、也不在一座城市：打电话、视频、回老家看他们才说得通（接来同住、回老家照顾以后就不算）
+export const farFromParents = () => awayFromHome() && !S.flags.parWithMe;
 // 打工去哪座城市：城市越大、收入越高越吸引人（人口 × 收入的三次方，估计）；省内打工的，省会再 ×2；名单外的小城市不作为打工目的地
 export function pullCity(pid, capK = 1) {
   const p = PBY[pid], pairs = [];

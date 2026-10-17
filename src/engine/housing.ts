@@ -4,7 +4,7 @@
 import { fexp, fpow } from './fmath';
 import { PBY } from './data';
 import { S } from './state';
-import { addDoc, log } from './journal';
+import { addDoc, log, logLater } from './journal';
 import { chance, gauss } from './rng';
 import { cityLoc, hpCounty, placeHp, placeInc } from './place';
 import { isWorking, retireAge } from './career';
@@ -62,8 +62,11 @@ export const HPF_JOB = {
 export function hpfStart(job) {
   const r = HPF_JOB[job];
   const on = !!r && chance(r[0]);
-  if (!on) { S.hpfOn = false; S.hpfY = 0; return; }
-  if (!S.hpfOn) S.hpfY = 0; // 断缴后重新计算连续缴存年数
+  if (!on) {
+    if (S.hpfOn && S.hpf > 0) logLater(`新单位不交公积金，你的公积金账户封存了。余额${wan(S.hpf)}还在，照样计息，买房、租房还能提取。`);
+    S.hpfOn = false; S.hpfY = 0; return;
+  }
+  if (!S.hpfOn) { S.hpfY = 0; if (S.hpf > 0) logLater('新单位交公积金，封存的账户恢复缴存了。连续缴存的年数从头算。'); } // 断缴后重新计算连续缴存年数
   S.hpfOn = true; S.hpfRate = r[1];
 }
 
@@ -130,15 +133,16 @@ export function buyHouse(price, L, plan) {
 }
 
 // ===== 每年结算 =====
-export function hpfYear() {
+// own：这一年个人缴的部分（按在缴公积金的单位实际在岗的时间算，见 finance.ts），单位再缴同样多
+export function hpfYear(own = 0) {
   if (S.hpf) S.hpf *= 1 + LOAN_RULES.hpfDeposit;
-  let dep = 0;
-  if (isWorking() && S.hpfOn) { dep += S.income * S.hpfRate * 2; S.hpfY = (S.hpfY || 0) + 1; }
-  else if (!isWorking() && S.job !== 'student') S.hpfOn = false;
+  let dep = own * 2;
+  if (own > 0 && S.hpfOn) S.hpfY = (S.hpfY || 0) + 1;
+  if (!isWorking() && S.job !== 'student') S.hpfOn = false;
   if (partnerHpf() && S.job !== 'retired') dep += S.fam.partner.inc * 0.07 * 2;
   S.hpf = (S.hpf || 0) + dep;
   // 个人缴的那一半从工资里扣
-  return S.hpfOn && isWorking() ? S.income * S.hpfRate : 0;
+  return own;
 }
 // 还房贷：先用公积金余额（还贷提取），不够的从存款里出。返回从存款里付的钱。
 export function loanYear() {
@@ -176,12 +180,12 @@ export const loanPayY = () => (S.loans || []).reduce((t, l) => t + (l.bal > 0 ? 
 export function foreclose(k = LOAN_RULES.forecloseK) {
   const got = S.house.v * k;
   S.money += got - loanBal();
-  S.loans = []; S.house = null; S.flags.badCredit = S.age;
+  S.loans = []; S.house = null; S.flags.badCredit = S.age; S.flags.heldOn = 0;
   return got;
 }
 export function sellHouse(k = 0.95) {
   const got = S.house.v * k;
   S.money += got - loanBal();
-  S.loans = []; S.house = null;
+  S.loans = []; S.house = null; S.flags.heldOn = 0;
   return got;
 }

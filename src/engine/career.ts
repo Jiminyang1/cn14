@@ -3,11 +3,12 @@
 import { fexp } from './fmath';
 import { PBY } from './data';
 import { S } from './state';
-import { addDoc, log } from './journal';
+import { addDoc, log, logLater } from './journal';
+import { wan } from './format';
 import { chance, clamp, gauss, wpick } from './rng';
 import { eff } from './stats';
-import { goIndep } from './finance';
-import { homeCity, migrantCity, moveTo, placeInc, placeName } from './place';
+import { accrueWage, goIndep, wageRate } from './finance';
+import { cityLoc, homeCity, migrantCity, moveTo, placeInc, placeName } from './place';
 import { hpfStart } from './housing';
 import { tierK } from './education';
 
@@ -46,11 +47,14 @@ export const eduWageK = () => EDU_WAGE[S.edu] * ({ top: 1.1, '211': 1.05 }[S.fla
 // 你本人、父母、配偶共用同一条曲线
 export const expCurve = (y: number, age: number) => { const k = y <= 5 ? 0.75 + 0.05 * y : Math.min(1.1, 1 + 0.02 * (y - 5)); return k * (age > 50 ? Math.max(0.8, 1 - 0.01 * (age - 50)) : 1); };
 export const expK = () => expCurve(S.jobY, S.age);
+// 还是同一行（跳槽、换城市、失业后重新找到老本行）：工龄和个人工资系数（升职加薪攒下的）都保留；换了行才从头算
 export function hire(job, L?) {
+  accrueWage(); // 旧工作这一年干到现在的工资
   if (L) moveTo(L);
-  S.job = job; S.jobY = 0;
+  const same = job === (S.job === 'seeking' ? S.flags.lastJob : S.job) && JOBS[job] && JOBS[job].m > 0;
+  S.job = job;
   goIndep();
-  S.wageK = fexp(gauss(0, 0.2)) * (0.85 + S.st.kn / 330) * eduWageK();
+  if (!same) { S.jobY = 0; S.wageK = fexp(gauss(0, 0.2)) * (0.85 + S.st.kn / 330) * eduWageK(); }
   if (JOBS[job] && (JOBS[job].stable || JOBS[job].priv)) S.flags.empIns = 1;
   hpfStart(job);
   S.jobs.push({ job, age: S.age, city: S.loc.city });
@@ -59,26 +63,46 @@ export function hire(job, L?) {
 // 18 岁以后还待在农村、却要去城里打工时，换到城市
 export function hireInCity(job) { hire(job, S.loc.kind === 'rural' ? migrantCity() : null); }
 // 法定退休年龄（2025 年起逐步延迟后的目标值）：男 63；女工人（这里按蓝领职业）55，其他女性 58。你本人、配偶、父母共用。
+// 务农没有退休一说，一直种到种不动（约 72 岁，估计）为止。
 // 简化：只交城乡居民养老保险的人实际是 60 岁起领取，这里也按上面的年龄算
-export const retireAgeOf = (sex: string, jk: string) => sex === 'M' ? 63 : JOBS[jk] && JOBS[jk].blue ? 55 : 58;
-export const retireAge = () => retireAgeOf(S.sex, S.job);
+export const FARM_STOP = 72;
+export const retireAgeOf = (sex: string, jk: string) => jk === 'farmer' ? FARM_STOP : sex === 'M' ? 63 : JOBS[jk] && JOBS[jk].blue ? 55 : 58;
+export const retireAge = () => retireAgeOf(S.sex, S.job === 'seeking' ? S.flags.lastJob || 'clerk' : S.job);
 // 只交城乡居民养老保险的职业（其余领城镇职工养老金）
 export const RESID_PENSION_JOBS = new Set(['farmer', 'migrant', 'build', 'rider', 'driver', 'shop', 'home']);
 // 城乡居民养老金：2025 年实际人均约 276 元/月（人社部统计公报推算）；城镇职工约 3900 元/月
 export const RESID_PENSION = 2950; // 全国城乡居民养老金人均（2024 年统计年鉴 24-27）
 export function retire() {
-  addDoc('retire', '退休证', [['原岗位', JOBS[S.job] ? JOBS[S.job].n : ''], ['退休年龄', S.age + '岁']]);
-  const resid = RESID_PENSION_JOBS.has(S.job);
+  if (S.job === 'seeking') S.job = S.flags.lastJob || 'clerk'; // 待业到退休：按原来那一行
+  const farm = S.job === 'farmer';
+  if (!farm) addDoc('retire', '退休证', [['原岗位', JOBS[S.job] ? JOBS[S.job].n : ''], ['退休年龄', S.age + '岁']]);
   const last = S.income || placeInc();
-  // 养老金：按退休所在省份的实际人均水平（统计年鉴 24-26 / 24-27，2024 年）。
-  // 职工养老金再按本人工资相对当地水平上下浮动；机关事业单位略高。
+  // 养老金看的是一辈子的缴费记录，不是退休前最后那份工作（finance.ts 的 penYear 每年记一笔）：
+  // 职工养老保险交满 15 年才能按月领职工养老金，否则只能领城乡居民养老金。
+  // 职工养老金：按退休所在省份的实际人均水平（统计年鉴 24-26 / 24-27，2024 年），再按在职时的平均工资（相对当地水平）
+  // 和缴费年数上下浮动（基础养老金大致和缴费年数成正比）；机关事业单位为主的略高。
+  // PEN_YEARS 取 37（模拟里缴费年数中位数 34）：使职工养老金平均约为所在省人均的 1.04 倍，和改动前一样
   const pv = PBY[S.loc.p];
   const penE = pv.penE || 45903, penR = pv.penR || RESID_PENSION;
-  S.pension = resid ? penR + (S.job === 'shop' ? last * 0.1 : 0)
-    : penE * clamp(last / ((pv.incU || pv.inc) * 2.5), 0.6, 1.8) * (JOBS[S.job].stable ? 1.2 : 1);
-  S.job = 'retired';
-  log(resid ? '到了退休的年纪。只交了城乡居民养老保险，每月领到的养老金不多，日常还得靠积蓄和孩子。' : `退休了，每月有一份养老金，大约是原来工资的${Math.round(S.pension / last * 100)}%。`, 'ev',
-    '2025年起，法定退休年龄逐步延迟：男性从60岁延到63岁，女性从50/55岁延到55/58岁');
+  const P = S.pen || penFromJobs(last, pv);
+  const emp = P.y >= PEN_MIN_YEARS;
+  S.pension = !emp ? penR + (S.job === 'shop' ? last * 0.1 : 0)
+    : penE * clamp(P.r / P.y / 2.5, 0.6, 1.8) * clamp(P.y / PEN_YEARS, 0.45, 1.25) * (P.s * 2 >= P.y ? 1.2 : 1);
+  S.job = 'retired'; S.hpfOn = false;
+  if (S.house && S.house.city !== S.loc.city) { moveTo(cityLoc(S.house.p, S.house.city)); log(`退休了，不用再待在${S.jobs[S.jobs.length - 1].city}。搬回了自己在${S.house.city}的房子。`, 'ev'); }
+  const short = P.y > 0 && !emp ? `职工养老保险只交了${Math.round(P.y)}年，不满15年，领不了职工养老金。` : '';
+  if (farm) { log(`年纪大了，地种不动了，交给了亲戚。${short}往后靠每月一点城乡居民养老金和积蓄过日子。`, 'ev'); return; }
+  const avgW = emp ? P.r / P.y * (pv.incU || pv.inc) : 0;
+  log(!emp ? `到了退休的年纪。${short || '只交了城乡居民养老保险，'}每月领到的养老金不多，日常还得靠积蓄和孩子。` : `退休了。职工养老保险交了${Math.round(P.y)}年，每月有一份养老金，大约是在职时平均工资的${Math.round(S.pension / avgW * 100)}%。`, 'ev',
+    '2025年起，法定退休年龄逐步延迟：男性从60岁延到63岁，女性从50/55岁延到55/58岁；职工养老保险最低缴费年限从2030年起由15年逐步提高到20年');
+}
+export const PEN_MIN_YEARS = 15;
+export const PEN_YEARS = 37;
+// 旧存档没有缴费记录：按工作经历估算年数，工资按最后一年的收入
+function penFromJobs(last, pv) {
+  let y = 0, s = 0;
+  S.jobs.forEach((j, i) => { const n = (S.jobs[i + 1] ? S.jobs[i + 1].age : S.age) - j.age; if (!RESID_PENSION_JOBS.has(j.job) && JOBS[j.job] && JOBS[j.job].m > 0) { y += n; if (JOBS[j.job].stable) s += n; } });
+  return { y, r: y * last / (pv.incU || pv.inc), s };
 }
 // 干得最久的那份工作
 export function mainJob(L) {
@@ -99,9 +123,18 @@ export function gradJob(big) {
   if (big && chance(clamp(tierK() + (kn - 60) / 120, 0.02, 0.6))) return 'tech';
   return wpick({ clerk: 4, sales: 2.5, engineer: lv >= 6 ? 1.5 : 0.5, teacher: lv >= 6 ? 1 : 0.3, factory: lv === 5 ? 1 : 0, rider: 0.3 });
 }
+// 离开工作（被裁员、公司倒闭、没考上……）：先结清旧工作这一年干到现在的工资；公积金账户封存（余额还在，照样计息）
+export function quitJob() {
+  accrueWage();
+  if (isWorking()) S.flags.lastJob = S.job;
+  S.job = 'seeking';
+  if (S.hpfOn) { S.hpfOn = false; if (S.hpf > 0) logLater(`公积金账户封存了，余额${wan(S.hpf)}还在，照样计息；找到交公积金的工作后接着缴。`); }
+}
+// 被裁员的经济补偿：按工龄每年一个月工资（最多算 12 年），没提前一个月通知再加一个月（N+1）
+export const severance = () => wageRate() / 12 * (Math.min(12, S.jobY) + 1);
 export function civilTry() {
   const p = clamp(0.07 + (S.st.kn - 60) / 120 + (S.edu >= 6 ? 0.05 : 0) + (S.edu >= 7 ? 0.05 : 0) + tierK() * 0.3, 0.03, 0.4);
   if (chance(p)) { hire('civil', homeCity()); S.flags.civilRetry = 0; eff({ h: 6 }); return { t: `考上了！在${S.loc.city}当了公务员。家里人逢人就说。`, k: 'good', f: '2026年度国考过审371.8万人，约98人竞争一个岗位' }; }
-  S.job = 'seeking'; S.flags.civilRetry = 1; eff({ h: -4 }); return { t: '没考上。进面试的名单上没有你的名字。', k: 'bad' };
+  quitJob(); S.flags.civilRetry = 1; eff({ h: -4 }); return { t: '没考上。进面试的名单上没有你的名字。', k: 'bad' };
 }
 export const gig = () => { hireInCity(chance(0.5) ? 'rider' : 'driver'); return `开始${S.job === 'rider' ? '送外卖' : '跑网约车'}，每天在路上跑十个小时。`; };

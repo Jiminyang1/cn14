@@ -6,12 +6,12 @@ import { BIG, BIRTH_TOTAL, NATION, PBY } from '../data';
 import { CAUSE } from '../mortality';
 import { EDU_LV, enroll, gkAutoApps, gkCandidates, gkLines, gkRank, gkResolve, gkScore } from '../education';
 import { ILL, oop, reimburse } from '../health';
-import { JOBS, civilTry, gig, gradJob, hire, hireInCity, isWorking } from '../career';
+import { JOBS, civilTry, gig, gradJob, hire, hireInCity, isWorking, quitJob, severance } from '../career';
 import { MEET_HOW, READY0, READY_K, brideAmt, loveWord, mShift, mutualP, partnerInc, partnerRows, ptJobName } from '../romance';
 import { S } from '../state';
-import { addDoc, log } from '../journal';
+import { addDoc, log, logLater } from '../journal';
 import { annualPay, bestPlan, buyHouse, foreclose, hhIncome, hometownHouse, loanBal, loanPayY, loanPlans, planSub, sellHouse } from '../housing';
-import { awayFromHome, cityLoc, homeCity, migrantCity, moveTo, placeHp, placeInc, placeName } from '../place';
+import { awayFromHome, cityLoc, farFromParents, homeCity, migrantCity, moveTo, placeHp, placeInc, placeName } from '../place';
 import { babyP, canBaby, haveKid, kidsAlive } from '../family';
 import { chance, clamp, gauss, pick, ri, wpick } from '../rng';
 import { eff } from '../stats';
@@ -29,7 +29,8 @@ export function dueDecisions() {
   if ((f.mom.alive && f.mom.ill === 1) || (f.dad.alive && f.dad.ill === 1)) { if (a >= 22) d.push('parentcare'); }
   if (f.dating && !f.married && a >= (S.sex === 'M' ? 22 : 20) && a - f.dating.metAt >= (a < 28 && !(mShift() < -2) ? 2 : 1)) d.push('marry');
   if (f.married && f.partner && f.partner.alive && canBaby() && chance(babyP())) d.push('baby');
-  if (!S.house && isWorking() && a >= 26 && a <= 50 && (f.married || a >= 30) && gapOK('house', 4) && chance(0.35)) d.push('house');
+  const ask = !!f.dating && f.dating.wh === 2; // 对方家里等着婚房
+  if (!S.house && isWorking() && a >= (ask ? 22 : 26) && a <= 50 && (f.married || a >= 30 || ask) && gapOK('house', ask ? 1 : 4) && chance(ask ? 0.8 : 0.35)) d.push('house');
   if (isWorking() && S.loc.kind !== 'big' && a >= 19 && a <= 32 && once('bigcity') && !JOBS[S.job].stable && chance(0.18)) d.push('bigcity');
   if (JOBS[S.job] && JOBS[S.job].priv && a >= 35 && a <= 48 && once('crisis') && chance(0.12)) d.push('crisis');
   if (isWorking() && JOBS[S.job].risk > 0 && a >= 24 && a <= 50 && gapOK('jobhop', 6) && chance(0.07)) d.push('jobhop');
@@ -152,12 +153,12 @@ export const DEC = {
         // 考研总体录取率约 27%–32%（2024–2025）；名校有推免名额，成功率高得多
         const base = { top: 0.75, '211': 0.6, ben1: 0.38, ben: 0.3, zhuan: 0.15 }[S.flags.tier] || 0.3;
         if (chance(clamp(base + (S.st.kn - 62) / 50, 0.08, 0.92))) { S.school = '硕士'; S.schoolEnd = S.age + 3; return { t: base >= 0.6 && chance(0.5) ? '拿到了保研名额，免试读研。' : '考上了研究生。', k: 'good' }; }
-        S.job = 'seeking'; return { t: '考研差了几分，没上线。先找工作吧。', k: 'bad', f: '2026年考研报名343万人，2025年硕士招生123.7万人' };
+        quitJob(); return { t: '考研差了几分，没上线。先找工作吧。', k: 'bad', f: '2026年考研报名343万人，2025年硕士招生123.7万人' };
       }
       if (k === 'civil') return civilTry();
       // 毕业即失业：16–24 岁（不含在校生）调查失业率 2026 年 8 月为 18.9%
       // 毕业半年后未落实去向：双一流 8.1%、地方本科 14.4%、高职 11.9%（麦可思 2024/2025 届）
-      if (chance({ top: 0.08, '211': 0.09, ben1: 0.13, ben: 0.145, zhuan: 0.12 }[S.flags.tier] || 0.14)) { if (k === 'big') { const city = wpick({ 深圳: 3, 上海: 3, 北京: 3, 杭州: 2, 广州: 2, 成都: 1.5 }); moveTo(cityLoc(BIG[city].p, city)); } else if (k === 'home') moveTo(homeCity()); S.job = 'seeking'; return { t: `投了几十份简历，毕业时还没有找到工作。`, k: 'bad', f: '2024届本科毕业生半年后去向落实率：“双一流”高校91.9%，地方本科85.6%（麦可思）' }; }
+      if (chance({ top: 0.08, '211': 0.09, ben1: 0.13, ben: 0.145, zhuan: 0.12 }[S.flags.tier] || 0.14)) { if (k === 'big') { const city = wpick({ 深圳: 3, 上海: 3, 北京: 3, 杭州: 2, 广州: 2, 成都: 1.5 }); moveTo(cityLoc(BIG[city].p, city)); } else if (k === 'home') moveTo(homeCity()); quitJob(); return { t: `投了几十份简历，毕业时还没有找到工作。`, k: 'bad', f: '2024届本科毕业生半年后去向落实率：“双一流”高校91.9%，地方本科85.6%（麦可思）' }; }
       if (k === 'big') { const city = wpick({ 深圳: 3, 上海: 3, 北京: 3, 杭州: 2, 广州: 2, 成都: 1.5 }); moveTo(cityLoc(BIG[city].p, city)); hire(gradJob(true)); return `去了${city}，成了一名${JOBS[S.job].n}。`; }
       if (k === 'stay') { hire(gradJob(false)); return `留在了${S.loc.city}，做了${JOBS[S.job].n}。`; }
       moveTo(homeCity()); hire(gradJob(false)); return `回到${S.loc.city}，做了${JOBS[S.job].n}。`;
@@ -212,8 +213,10 @@ export const DEC = {
       choices: [{ k: 'same', label: '找类似的工作，接受降薪', sub: '', w: 3 }, { k: 'gig', label: '先去送外卖或开网约车', sub: '', w: 1.5 }, { k: 'boss', label: '拿补偿金自己创业', sub: '风险很大', w: 1 }, { k: 'home', label: '回老家', sub: '', w: 1 }],
     }),
     apply: k => {
-      eff({ h: -6, money: S.income * 0.3 });
-      if (k === 'same') { if (chance(0.55)) { hire(S.job); S.wageK *= 0.8; return '投了上百份简历，几个月后找到了一份类似的工作，工资降了两成。'; } S.flags.lastJob = S.job; S.job = 'seeking'; return { t: '投了上百份简历，大多数没有回音。', k: 'bad' }; }
+      const comp = severance(); // 部门被裁撤：N+1 经济补偿
+      eff({ h: -6, money: comp });
+      logLater(`公司按工龄给了${wan(comp)}的经济补偿。`);
+      if (k === 'same') { if (chance(0.55)) { hire(S.job); S.wageK *= 0.8; return '投了上百份简历，几个月后找到了一份类似的工作，工资降了两成。'; } quitJob(); return { t: '投了上百份简历，大多数没有回音。', k: 'bad' }; }
       if (k === 'gig') return gig();
       if (k === 'boss') { eff({ money: -placeInc() * 1.5 }); hire(wpick({ boss: 1, shop: 2 })); return `拿出积蓄开了一家${pick(['奶茶店', '小饭馆', '便利店', '培训工作室', '网店'])}。`; }
       hire(wpick({ clerk: 2, sales: 1, shop: 1 }), homeCity()); return `回到了${S.loc.city}，做了${JOBS[S.job].n}。工资少了一大截，但离爸妈近了。`;
@@ -264,7 +267,9 @@ export const DEC = {
       const p = S.fam.dating, yrs = S.age - p.metAt;
       const amt = brideAmt(S.home.p);
       // 结婚的条件：男方家里出彩礼；不少女方家里希望有婚房（估计）
-      const wantHouse = S.sex === 'M' && !S.house && chance(S.loc.kind === 'rural' ? 0.4 : 0.6);
+      // 同一个对象只定一次（被拒以后不会突然不要了）
+      if (p.wh == null) p.wh = S.sex === 'M' && chance(S.loc.kind === 'rural' ? 0.4 : 0.6) ? 1 : 0;
+      const wantHouse = !!p.wh && !S.house;
       const push = p.asks >= 2 ? `${p.name}已经问过你好几次什么时候结婚。` : '';
       const body = `你和${p.name}在一起${yrs}年了，感情${loveWord(p.love)}。${push}` + (S.sex === 'M' ? `对方家里提出彩礼${wan(amt)}${wantHouse ? '，还希望你们有一套自己的房子' : ''}。` : `男方家里说可以给${wan(amt)}彩礼。`);
       // 想不想结婚：二十出头多半觉得还早，年纪越大越想定下来（READY_K 为校准系数）
@@ -272,7 +277,7 @@ export const DEC = {
       return {
         title: '结婚', body, card: partnerRows(p, { love: true }), fact: '2025年全国结婚登记676.5万对；2020年人口普查的平均初婚年龄：男29.38岁、女27.95岁',
         choices: [
-          { k: 'yes', label: S.sex === 'M' ? '求婚' : '答应结婚', sub: '办酒席、领证', w: ready * clamp(p.love / 60, 0.3, 1.6) },
+          { k: 'yes', label: S.sex === 'M' ? '求婚' : '答应结婚', sub: wantHouse ? '没有房子，对方家里可能不同意' : '办酒席、领证', w: ready * clamp(p.love / 60, 0.3, 1.6) * (wantHouse ? 0.6 : 1) },
           { k: 'wait', label: '再处处看', sub: p.asks >= 2 ? '对方可能不想再等了' : '', w: 2 },
           { k: 'no', label: '分手', sub: '', w: p.love < 45 ? 1.5 : 0.3 },
         ], ctx: { amt, wantHouse },
@@ -286,6 +291,11 @@ export const DEC = {
         return null;
       }
       if (k === 'no') { S.fam.dating = null; eff({ h: -5 }); return `你和${p.name}分手了。`; }
+      // 女方家里要婚房、你还没有：一部分人家坚持先买房（估计约一半），婚事搁下，买房的抉择会提前出现
+      if (ctx.wantHouse && !S.house && chance(0.5)) {
+        p.love = clamp(p.love - 8, 0, 100); p.wh = 2; eff({ h: -4 });
+        return { t: `${p.name}的爸妈说，没有房子不能结婚。婚事先放下了。`, k: 'bad' };
+      }
       S.fam.married = true; S.fam.partner = p; p.marriedAt = S.age; S.fam.dating = null; p.city = S.loc.city;
       if (p.jk) p.inc = partnerInc(p);
       addDoc('marry', '结婚证', [['持证人', S.name], ['配偶', p.name], ['配偶学历', EDU_LV[p.edu]], ['配偶职业', ptJobName(p)], ['登记日期', `${S.birthYear + S.age}年`]]);
@@ -374,7 +384,7 @@ export const DEC = {
       return {
         title: '房贷还不上了', body: `存款已经花光，还欠着${wan(-S.money)}。房贷每月${wan(loanPayY() / 12)}，还剩${wan(loanBal())}没还。房子现在大约值${wan(S.house.v)}。`,
         fact: '2025年全国约11.3万套住宅法拍成交，成交价约为评估价的74%',
-        choices: [{ k: 'sell', label: '把房子卖了', sub: '按市价打折卖，先还清贷款', w: S.flags.heldOn ? 3 : 1.5 }, { k: 'hold', label: '找亲戚借钱，再撑一年', sub: '幸福↓', w: S.flags.heldOn ? 1 : 3 }, { k: 'stop', label: '断供', sub: '房子被法拍，征信留下污点', w: 0.5 }],
+        choices: [{ k: 'sell', label: '把房子卖了', sub: '按市价打折卖，先还清贷款', w: S.flags.heldOn ? 3 : 1.5 }, { k: 'hold', label: '找亲戚借钱，再撑一年', sub: (S.flags.heldOn || 0) >= 2 ? '已经借过两次，亲戚那边也借不动了' : '幸福↓', off: (S.flags.heldOn || 0) >= 2, w: S.flags.heldOn ? 1 : 3 }, { k: 'stop', label: '断供', sub: '房子被法拍，征信留下污点', w: 0.5 }],
       };
     },
     apply: k => {
@@ -388,7 +398,7 @@ export const DEC = {
     build: () => {
       if (!(S.fam.mom.alive && S.fam.mom.ill === 1) && !(S.fam.dad.alive && S.fam.dad.ill === 1)) return null;
       const who = S.fam.mom.alive && S.fam.mom.ill === 1 ? 'mom' : 'dad', p = S.fam[who], wn = who === 'mom' ? '妈妈' : '爸爸';
-      const away = awayFromHome();
+      const away = farFromParents();
       const ch = away
         ? [{ k: 'back', label: '辞职回老家照顾', sub: '收入↓ 陪伴↑', w: 1.5 }, { k: 'care', label: '花钱请护工', sub: '开销↑', w: 2 }, { k: 'take', label: `把${wn}接到身边`, sub: '', w: 1.5 }]
         : [{ k: 'self', label: '自己照顾', sub: '健康↓ 陪伴↑', w: 2 }, { k: 'care', label: '花钱请护工', sub: '开销↑', w: 2 }];
@@ -396,6 +406,7 @@ export const DEC = {
     },
     apply: (k, c) => {
       S.fam[c.who].ill = 2;
+      if (k === 'back' || k === 'take') S.flags.parWithMe = 1;
       if (k === 'back') { hire(S.home.kind === 'rural' ? (chance(0.5) ? 'farmer' : 'shop') : wpick({ clerk: 1, sales: 1, shop: 1 }), S.home); eff({ so: 4, h: -3 }); return `辞了${S.jobs.length > 1 ? '大城市的' : ''}工作，回到${placeName()}。`; }
       if (k === 'care') { eff({ money: -placeInc() * 0.8, h: -2 }); return '请了护工，每个月的开销多了一大块。'; }
       if (k === 'take') { eff({ h: -3, so: 3, money: -placeInc() * 0.3 }); return '把老人接来同住。房子小了，日子挤了，但心里踏实些。'; }
@@ -437,13 +448,13 @@ export const DEC = {
   oldcare: {
     build: () => {
       const has = kidsAlive().length > 0;
-      const ch = [{ k: 'home', label: '去养老院', sub: '', w: 1.5 }, { k: 'self', label: '还是自己住', sub: '', w: 2 }];
+      const ch = [{ k: 'home', label: '去养老院', sub: `每年约${wan(placeInc() * 0.5)}`, w: 1.5 }, { k: 'self', label: '还是自己住', sub: '', w: 2 }];
       if (has) ch.unshift({ k: 'kid', label: '搬去和子女一起住', sub: '', w: 3 });
       return { title: '晚年', body: '年纪大了，一个人生活越来越吃力。', choices: ch };
     },
     apply: k => {
-      if (k === 'kid') { eff({ so: 5, h: 2 }); return '搬去和子女同住，每天看着孙辈进进出出。'; }
-      if (k === 'home') { eff({ so: 2, h: -2, money: -placeInc() * 0.5 }); return '住进了养老院，和几个老人一间屋。'; }
+      if (k === 'kid') { S.flags.oldLive = 'kid'; eff({ so: 5, h: 2 }); return '搬去和子女同住，每天看着孙辈进进出出。'; }
+      if (k === 'home') { S.flags.oldLive = 'home'; eff({ so: 2, h: -2 }); return '住进了养老院，和几个老人一间屋。每年的费用从养老金和积蓄里出。'; }
       eff({ so: -3 }); return '还是住在自己家，邻居偶尔过来看看。';
     },
   },

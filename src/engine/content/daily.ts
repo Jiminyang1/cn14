@@ -5,7 +5,7 @@
 import { S } from '../state';
 import { chance2, pick2, rnd2 } from '../rng';
 import { log } from '../journal';
-import { awayFromHome } from '../place';
+import { awayFromHome, farFromParents } from '../place';
 import { JOBS, isWorking } from '../career';
 import { kidsAlive } from '../family';
 import { carer, parentRetired } from '../parents';
@@ -29,6 +29,9 @@ const single = () => !S.fam.married && !S.fam.dating;
 const married = () => S.fam.married && !!S.fam.partner && S.fam.partner.alive;
 const widowed = () => !!S.fam.partner && !S.fam.partner.alive;
 const parentsAlive = () => S.fam.mom.alive || S.fam.dad.alive;
+const mom = () => S.fam.mom.alive, dad = () => S.fam.dad.alive, bothParents = () => mom() && dad();
+const apart = () => farFromParents() && parentsAlive();   // 和爸妈分隔两地（打电话、回家过年才说得通）
+const withParents = () => !!S.flags.parWithMe && parentsAlive() && S.age >= 18;
 const noParents = () => !S.fam.mom.alive && !S.fam.dad.alive;
 const youngKids = () => kidsAlive().some(k => k.age < 12);
 const schoolKids = () => kidsAlive().some(k => k.age >= 6 && k.age < 18);
@@ -73,10 +76,10 @@ const SPRING: DayItem = {
       [S.age >= 6 && S.age < 18 && rural(), '大年初一跟着大人挨家挨户拜年，口袋里塞满了瓜子和糖。'],
       [S.age >= 6 && S.age < 18 && !rural(), '城里不让放鞭炮，除夕夜一家人守着电视看春晚，十二点一过都去睡了。'],
       [S.age >= 6 && S.age < 18, '寒假作业还剩一大半，过年这几天谁也顾不上管你。'],
-      [student() && S.age >= 18 && awayFromHome(), '放寒假回家，妈妈每天变着花样做菜，一周胖了三斤。'],
-      [working() && awayFromHome() && parentsAlive(), '抢了好几天的票，终于挤上了回家的车。到家时爸妈已经在路口等着了。'],
-      [working() && awayFromHome() && parentsAlive(), `今年没抢到票，在${city()}过年。除夕夜和家里视频，妈妈一直说“没事，明年早点抢”。`],
-      [working() && awayFromHome() && parentsAlive() && S.money > 0, '回家前特意买了新衣服、拎了几箱礼品。在外面过得怎么样，过年这几天总要撑一撑。'],
+      [student() && S.age >= 18 && awayFromHome() && mom(), '放寒假回家，妈妈每天变着花样做菜，一周胖了三斤。'],
+      [working() && apart() && bothParents(), '抢了好几天的票，终于挤上了回家的车。到家时爸妈已经在路口等着了。'],
+      [working() && apart() && mom(), `今年没抢到票，在${city()}过年。除夕夜和家里视频，妈妈一直说“没事，明年早点抢”。`],
+      [working() && apart() && S.money > 0, '回家前特意买了新衣服、拎了几箱礼品。在外面过得怎么样，过年这几天总要撑一撑。'],
       [['rider', 'driver'].includes(S.job), '春节期间单价高，你留在城里没回家。除夕夜的街上空荡荡的，只有你们这些送外卖的人。'],
       [blue() && !['rider', 'driver'].includes(S.job), '厂里放假早，你提前半个月就回了老家，在家里待到正月十五才走。'],
       [single() && S.age >= 25 && S.age < 40, '饭桌上，亲戚们又问起有没有对象。你低头扒饭，假装没听见。'],
@@ -138,7 +141,8 @@ const HOLIDAYS: (DayItem & { id: string; m: number[] })[] = [
   { id: 'midautumn', m: [9, 10], ok: () => S.age >= 6, text: () => say(
     [S.age < 18 && !leftBehind(), '中秋节，一家人在阳台上吃月饼。你只挑蛋黄的吃。'],
     [leftBehind(), `中秋节，爸妈没有回来。你和${carer()}分了一个月饼，电话里说了几句就挂了。`],
-    [S.age >= 18 && awayFromHome(), '中秋节一个人在外面，给家里打了个电话。妈妈说月饼给你留着呢。'],
+    [S.age >= 18 && apart() && mom(), '中秋节一个人在外面，给家里打了个电话。妈妈说月饼给你留着呢。'],
+    [withParents(), '中秋节，爸妈跟你们一起过。饭后一家人在楼下散步，老人走得慢，你们也放慢了脚步。'],
     [office(), '中秋节公司发了月饼礼盒，盒子很大，月饼很小。'],
     [married() && youngKids(), '中秋晚上带着孩子下楼看月亮，孩子问月亮上有没有人。'],
     [old(), '中秋节，孩子们打来视频电话，屏幕里一家家的人轮流跟你说话。'],
@@ -180,7 +184,8 @@ const BIRTHDAY: DayItem = {
     [S.age >= 12 && S.age < 18, `${S.age}岁生日，朋友们凑钱买了一个小蛋糕，奶油抹了一脸。`],
     [S.age >= 18 && single() && S.age < 40, `${S.age}岁生日，一个人点了外卖。手机上收到几条祝福，大多是银行和商家发的。`],
     [S.age >= 18 && married(), `${S.age}岁生日，${S.fam.partner?.sex === 'M' ? '他' : '她'}订了一家餐厅，你们吃到很晚。`],
-    [S.age >= 18 && parentsAlive(), `${S.age}岁生日，妈妈一大早打来电话，第一句是“吃面了没有”。`],
+    [S.age >= 18 && apart() && mom(), `${S.age}岁生日，妈妈一大早打来电话，第一句是“吃面了没有”。`],
+    [S.age >= 18 && mom() && !apart() && (withParents() || S.age < 30), `${S.age}岁生日，妈妈一早煮了一碗长寿面，卧了两个鸡蛋。`],
     [S.age % 10 === 0 && S.age >= 30, `${S.age}岁了。你对着镜子看了一会儿，发现了几根白头发。`],
     [old() && kidsAlive().length > 0, `${S.age}岁生日，孩子们张罗着给你过寿，你嘴上说别折腾，心里高兴。`],
     [old(), `${S.age}岁生日。你不太记得自己的年纪了，是别人提醒的。`],
@@ -215,7 +220,7 @@ const FRAG: Record<string, DayItem> = {
   farmer: { ok: () => S.job === 'farmer', text: () => say('今年雨水好，地里的收成还不错。', '化肥又涨价了，算下来一亩地挣不了几个钱。', '村里的年轻人都出去了，农忙时只能请邻村的人帮忙。', '赶集时卖了几筐菜，换回了一袋米和一桶油。') },
   shop: { ok: () => S.job === 'shop' || S.job === 'boss', text: () => say('隔壁新开了一家同样的店，你这个月的生意少了一截。', '店里从早开到晚，一年到头没有休息日。', '房东要涨租金，你算了半天，决定再撑一年。') },
   publicJob: { ok: () => ['civil', 'teacher', 'doctor', 'nurse'].includes(S.job), text: () => say('又要迎接检查，写了一个星期的材料。', '单位组织体检，你的报告上多了一个箭头。', '值了一个夜班，第二天下午才睡醒。') },
-  jobless: { ok: () => S.job === 'seeking' && S.age >= 18, text: () => say('投出去的简历大多没有回音。', '白天在家投简历，晚上不太敢接家里的电话。', '去面试，等了两个小时，聊了十分钟。') },
+  jobless: { ok: () => S.job === 'seeking' && S.age >= 18, text: () => say('投出去的简历大多没有回音。', [apart(), '白天在家投简历，晚上不太敢接家里的电话。'], [!apart() && parentsAlive(), '白天在家投简历。吃饭的时候爸妈不问，你也不说。'], '去面试，等了两个小时，聊了十分钟。') },
   // 感情与家
   singleLife: { ok: () => single() && S.age >= 23 && S.age < 50, text: () => say('周末一个人去看了场电影，散场时外面下雨了。', '朋友结婚，你坐在“单身桌”。', '学会了做几个菜，一个人吃也要好好吃。', '深夜刷到老同学晒娃的照片，点了个赞。') },
   dating: { ok: () => !!S.fam.dating, text: () => say(`和${S.fam.dating.name}看完电影，在路边吃了一碗面。`, `${S.fam.dating.name}送了你一个小礼物，你一直放在包里。`, `和${S.fam.dating.name}为了周末去哪儿吵了几句，晚上又和好了。`) },
@@ -223,7 +228,15 @@ const FRAG: Record<string, DayItem> = {
   baby: { ok: () => kidsAlive().some(k => k.age < 3), text: () => say('孩子半夜哭醒好几次，你们轮流抱着在屋里走。', '孩子会叫“爸爸”“妈妈”了，全家人高兴了一整天。', '孩子发烧，你们在儿童医院的走廊里坐了一夜。') },
   parenting: { ok: () => schoolKids(), text: () => say('家长群里每天几十条消息，你只敢在深夜一条条看。', '孩子的期末成绩出来了，你忍着没发火。', '每天早上送孩子上学，路上堵得要命。', '给孩子报了兴趣班，孩子坚持了两个月。', '孩子进入了青春期，关上房门不太跟你说话了。') },
   kidsAway: { ok: () => grownKids() && S.age >= 45, text: () => say('孩子在外地工作，一个月打一次电话，每次都说“挺好的”。', '孩子带对象回家吃饭，你提前三天就开始准备菜。', '孩子说想买房，你们把存折翻出来算了一晚上。') },
-  parentsAging: { ok: () => S.age >= 30 && parentsAlive() && (S.fam.mom.age >= 60 || S.fam.dad.age >= 60), text: () => say('爸妈学会了用手机视频，常常打来，只是为了看看你。', '回家时发现，爸爸的背比以前驼了。', '妈妈在电话里说腿疼，你让她去医院看看，她说没事。', '爸妈把你小时候的东西都留着，一样也舍不得扔。') },
+  parentsAging: { ok: () => S.age >= 30 && parentsAlive() && (S.fam.mom.age >= 60 || S.fam.dad.age >= 60), text: () => say(
+    [apart() && bothParents(), '爸妈学会了用手机视频，常常打来，只是为了看看你。'],
+    [apart() && dad(), '回家时发现，爸爸的背比以前驼了。'],
+    [apart() && mom(), '妈妈在电话里说腿疼，你让她去医院看看，她说没事。'],
+    [bothParents() && !withParents(), '爸妈把你小时候的东西都留着，一样也舍不得扔。'],
+    [withParents(), '老人起得早，你出门上班时，他们已经买完菜回来了。'],
+    [withParents() && mom(), '妈妈总嫌你们买的菜贵，每天自己去早市。'],
+    [!apart() && !withParents() && mom(), '周末回爸妈家吃饭，走的时候妈妈总要给你装一兜菜。'],
+  ) },
   money: { ok: () => S.indep && S.age >= 22 && S.age < 60, text: () => say(
     [broke(), '月底了，信用卡账单比工资先到。'],
     [broke(), '找朋友借了点钱周转，说好下个月还。'],

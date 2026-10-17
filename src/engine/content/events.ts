@@ -2,12 +2,12 @@
 // 事件：{ id, a:[最小年龄,最大年龄], w:权重或函数, c:条件, once:只发生一次, gap:冷却年数, run:()=>文字或{t,k,f} }
 // k: good / bad / loss / ev；f: 附带的一条真实统计
 
-import { JOBS, hireInCity, isWorking } from '../career';
+import { JOBS, hireInCity, isWorking, quitJob, severance } from '../career';
 import { MAJORS } from '../education';
 import { PBY } from '../data';
 import { S } from '../state';
 import { addDoc } from '../journal';
-import { awayFromHome, placeInc } from '../place';
+import { farFromParents, placeInc } from '../place';
 import { carer } from '../parents';
 import { chance, clamp, gauss, pick, ri, wpick } from '../rng';
 import { eff } from '../stats';
@@ -73,12 +73,17 @@ export const EVENTS = [
   { id: 'dateTrip', a: [18, 50], gap: 2, w: 1.2, c: () => !!S.fam.dating, run: () => { const d = S.fam.dating; d.love = clamp(d.love + 6, 0, 100); eff({ h: 3, money: -placeInc() * 0.04 }); return { t: `和${d.name}去${pick(['厦门', '大理', '成都', '青岛', '西安', '桂林'])}玩了几天。${d.city !== S.loc.city ? '难得见一次面。' : ''}`, k: 'good' }; } },
   { id: 'dateFight', a: [18, 50], gap: 2, w: () => S.fam.dating && S.fam.dating.fit < 0.5 ? 1.5 : 0.6, c: () => !!S.fam.dating, run: () => { const d = S.fam.dating; d.love = clamp(d.love - 8, 0, 100); eff({ h: -3 }); return pick([`和${d.name}为了一件小事吵了一架，冷战了一个星期。`, `${d.name}嫌你回消息太慢，吵了一架。`, `${d.name}说你从来不考虑你们的以后。`]); } },
   { id: 'redEnv', a: [22, 70], gap: 4, w: 1, run: () => { const x = ri(2, 10) * 100; eff({ money: -x * ri(2, 5) }); return `这一年随了好几份份子钱，同事结婚、亲戚家孩子考上大学，每份${x}元。`; } },
-  { id: 'layoff', a: [20, 60], gap: 4, w: () => isWorking() ? JOBS[S.job].risk * 4 : 0, run: () => { const boss = ['boss', 'shop'].includes(S.job); S.flags.lastJob = S.job; S.job = 'seeking'; eff({ h: -8 }); return { t: boss ? '生意越来越难做，最后关了门。' : '公司裁员，名单上有你。', k: 'bad' }; } },
+  { id: 'layoff', a: [20, 60], gap: 4, w: () => isWorking() ? JOBS[S.job].risk * 4 : 0, run: () => {
+      const boss = ['boss', 'shop'].includes(S.job), comp = boss ? 0 : severance();
+      quitJob(); eff({ h: -8, money: comp });
+      return boss ? { t: '生意越来越难做，最后关了门。', k: 'bad' }
+        : { t: `公司裁员，名单上有你。按工龄拿到了${wan(comp)}的经济补偿，这一年的工资只发到离职那天。`, k: 'bad', f: '劳动合同法：经济补偿按在本单位工作的年数，每满一年支付一个月工资；没有提前30天通知的，再多付一个月（俗称“N+1”）' };
+    } },
   { id: 'promo', a: [25, 58], gap: 4, w: () => isWorking() ? 1.5 : 0, run: () => { S.wageK *= 1.15; eff({ h: 4 }); return { t: S.job === 'civil' ? '提了一级，工资涨了一点。' : '升职加薪了。', k: 'good' }; } },
   { id: 'stock', a: [25, 65], gap: 5, w: 1, c: () => S.money > placeInc() * 0.5, run: () => { const g = gauss(-0.05, 0.25), x = S.money * 0.3 * g; eff({ money: x, h: g > 0 ? 2 : -3 }); return g > 0 ? `跟着同事买了股票，赚了${wan(x)}。` : `跟着同事买了股票，亏了${wan(-x)}。`; } },
   { id: 'car', a: [25, 55], once: 1, w: 1.5, c: () => S.money > placeInc() * 1.2, run: () => { eff({ money: -placeInc() * 1.0, h: 3 }); return `买了一辆${chance(0.6) ? '新能源车' : '二手车'}，过年终于可以自己开车回家了。`; } },
   { id: 'travel', a: [20, 75], gap: 3, w: 1, c: () => S.money > 0, run: () => { eff({ h: 3, money: -placeInc() * 0.08 }); return `国庆假期去${pick(['西安', '三亚', '大理', '重庆', '青岛', '张家界', '哈尔滨'])}旅游，景区人山人海，看人比看风景多。`; } },
-  { id: 'springHome', a: [18, 60], gap: 3, w: () => S.loc.p !== S.home.p ? 3 : 0, run: () => { eff({ h: 2, so: 2 }); return `春运抢票抢了三天，坐了${ri(6, 30)}个小时的车回家过年。`; } },
+  { id: 'springHome', a: [18, 60], gap: 3, w: () => S.loc.p !== S.home.p && !S.flags.parWithMe ? 3 : 0, run: () => { eff({ h: 2, so: 2 }); return `春运抢票抢了三天，坐了${ri(6, 30)}个小时的车回家过年。`; } },
   { id: 'smoke', a: [15, 40], once: 1, w: () => S.sex === 'M' ? 1.6 : 0.1, run: () => { S.flags.smoke = 1; eff({ hl: -3 }); return { t: S.age < 18 ? '和几个同学躲在厕所里学会了抽烟。' : S.age < 22 ? '开始抽烟了。宿舍里的人都抽，你也跟着抽上了。' : '开始抽烟了。一开始是应酬时别人递过来的。', f: '中国成年男性的吸烟率远高于女性' }; } },
   { id: 'quitSmoke', a: [30, 75], once: 1, w: 0.8, c: () => !!S.flags.smoke, run: () => { S.flags.smoke = 0; eff({ hl: 3 }); return { t: '戒烟了。试了好几次，这次终于成功。', k: 'good' }; } },
   { id: 'drink', a: [22, 55], gap: 4, w: () => ['sales', 'boss', 'civil'].includes(S.job) ? 2 : 0.3, run: () => { eff({ hl: -2 }); return '饭局上被一轮轮敬酒，喝到吐。'; } },
@@ -87,7 +92,7 @@ export const EVENTS = [
   { id: 'kidSchool', a: [28, 55], gap: 3, w: 2, c: () => kidsAlive().some(k => k.age >= 6 && k.age <= 17), run: () => { eff({ h: -2, money: -placeInc() * 0.1 }); return pick(['为了孩子上学，研究学区、排队报名，跑了好几趟。', '每天晚上辅导孩子写作业，气得血压都上来了。', '孩子的家长群一天几百条消息。']); } },
   { id: 'reunion', a: [30, 60], gap: 10, w: 1, run: () => { eff({ so: 2, h: S.relInc > 0 ? 2 : -2 }); return '同学聚会。有人开着好车来，有人没来。大家聊着聊着，就开始聊房子和孩子。'; } },
   { id: 'scam', a: [25, 90], gap: 8, w: () => S.age > 60 ? 1.5 : 0.5, c: () => S.money > 0, run: () => { const x = Math.min(S.money * 0.3, placeInc() * (S.age > 60 ? 0.5 : 0.3)); eff({ money: -x, h: -4 }); return { t: S.age > 60 ? `听了几次“健康讲座”，买了${wan(x)}的保健品。` : `接到自称“公检法”的电话，被骗走了${wan(x)}。`, k: 'bad' }; } },
-  { id: 'visitHome', a: [22, 60], gap: 3, w: () => awayFromHome() && (S.fam.mom.alive || S.fam.dad.alive) ? 2 : 0, run: () => { eff({ so: 2, h: 1 }); return '坐高铁回老家看爸妈。他们老了很多，饭桌上的菜却还是你小时候爱吃的。'; } },
+  { id: 'visitHome', a: [22, 60], gap: 3, w: () => farFromParents() && (S.fam.mom.alive || S.fam.dad.alive) ? 2 : 0, run: () => { eff({ so: 2, h: 1 }); return '坐高铁回老家看爸妈。他们老了很多，饭桌上的菜却还是你小时候爱吃的。'; } },
   { id: 'checkup', a: [35, 75], gap: 4, w: 1.5, run: () => { eff({ hl: -1 }); return { t: `体检报告上有几个向上的箭头：${pick(['血压偏高', '血脂偏高', '血糖偏高', '尿酸偏高'])}。`, f: '中国18岁及以上居民高血压患病率为27.5%（2018年调查，2020年发布）' }; } },
   // 自然灾害：各省受灾人口相对全国的倍数（统计年鉴 8-25，2024）决定频率，农作物受灾面积的构成决定类型；地震按原来的地区名单
   { id: 'disaster', a: [0, 100], gap: 8, w: () => 0.3 * Math.min(4, PBY[S.loc.p].dzK || (PBY[S.loc.p].dz.length ? 1 : 0)), run: () => {

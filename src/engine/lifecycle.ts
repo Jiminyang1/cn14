@@ -7,7 +7,7 @@ import { DEC, dueDecisions } from './content/decisions';
 import { fireDaily, planDaily } from './content/daily';
 import { EVENTS, EVMAP } from './content/events';
 import { FOCUS, applyFocus, autoFocus, focusList } from './focus';
-import { JOBS, RESID_PENSION, isWorking, mainJob, retire, retireAge } from './career';
+import { JOBS, isWorking, mainJob, retire, retireAge } from './career';
 import { S, setS } from './state';
 import { SIB, UR, boyOf, family, newSib, olderSibSexes, planNextSib } from './family';
 import { addDoc, log, out } from './journal';
@@ -181,8 +181,9 @@ export function resolveDec(id, d, k) {
   out(DEC[id].apply(k, d.ctx || {}));
 }
 export function runHeadlessYear() {
-  while (S.phase === 'life' && S.queue.length) fire(S.queue.shift());
-  if (S.phase === 'life') endYear();
+  // 和 tickTo 一样记下每件事发生在这一年的什么时候（年中换工作、裁员按时间折算工资要用）
+  while (S.phase === 'life' && S.queue.length) { const e = S.queue.shift(); S.t = Math.max(S.t, e.at); fire(e); }
+  if (S.phase === 'life') { S.t = 1; endYear(); }
 }
 
 // ===== 年初：入学、退休、孩子长大 =====
@@ -195,8 +196,8 @@ export function yearStart() {
   }
   if (a === 6) { S.school = '小学'; S.schoolEnd = 12; log(S.loc.kind === 'rural' ? '背上新书包，走半个小时的山路去村里的小学。' : '上小学了。开学第一天，门口挤满了拍照的家长。', 'ev'); }
   if (a === 12 && S.school === '小学') { S.school = '初中'; S.schoolEnd = 15; S.edu = 1; log(S.loc.kind === 'rural' ? '小学毕业，去镇上读初中。' : '小学毕业，上了初中。', 'ev'); }
-  if (isWorking() && a >= retireAge()) retire();
-  if (S.job === 'farmer' && a >= 72 && !S.flags.farmStop) { S.flags.farmStop = 1; S.job = 'retired'; S.pension = RESID_PENSION; log('年纪大了，地种不动了，交给了亲戚。', 'ev'); }
+  // 到了退休年龄还在待业的，也直接退休（按原来那一行的退休年龄），不再找工作
+  if ((isWorking() || S.job === 'seeking') && a >= retireAge()) retire();
   for (const k of f.kids) {
     if (!k.alive) continue;
     k.age = a - k.bornAt;
@@ -222,7 +223,8 @@ export function endYear() {
   if (S.phase !== 'life') return;
   drift();
   S.years.push({ a, h: Math.round(st.h), hl: Math.round(st.hl), m: Math.round(S.money), s: statusLabel() });
-  if (S.flags.ill && S.flags.ill.treat) { if (illYear()) return; }
+  // 大病治疗期间：大病本身的风险之外，其他死因照常存在（否则高龄时确诊反而更安全）
+  if (S.flags.ill && S.flags.ill.treat) { if (illYear()) return; if (chance(deathProb())) { die(pickCause()); return; } }
   else if (!S.flags.ill && chance(deathProb())) {
     const k = pickCause();
     if (['cancer', 'heart', 'stroke', 'liver', 'resp'].includes(k) && a >= 35 && chance(0.55)) {
@@ -260,7 +262,7 @@ export function runCompanion(seed) {
 function summarizeCompanion(c, tr) {
   return {
     name: c.name, sex: c.sex, eth: c.eth, born: c.born, place: placeName(c.home), rural: c.rural, q: c.q,
-    death: c.death, edu: c.edu, job: mainJob(c), married: c.fam.married, kids: c.fam.kids.length, places: c.places, tr,
+    death: c.death, edu: c.edu, job: mainJob(c), married: c.fam.married || c.flags.widowed != null, kids: c.fam.kids.length, places: c.places, tr,
   };
 }
 export function newLife(seed) {

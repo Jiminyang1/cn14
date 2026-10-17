@@ -105,7 +105,8 @@ export function makeParent(sex, age, rural, pid) {
 // 父母在哪里挣钱：外出务工在打工城市（省会、沿海大城市为主）；农村家庭里有单位工作的，在本地级市的城区；其余在家里所在地
 export function parentWorkLoc(p) {
   if (p.jk === 'migrant') {
-    if (S.flags.mig) return S.loc;
+    // 随迁：父母在你出生时所在的城市打工（第一次调用在出生时，记下那座城市；之后你搬走、回老家中考，他们不跟着变）
+    if (S.flags.mig) return p.wloc || (p.wloc = { ...S.loc });
     // 夫妻都在外打工时，一般在同一座城市
     const o = p === S.fam.dad ? S.fam.mom : S.fam.dad;
     return p.wloc || (p.wloc = o.jk === 'migrant' && o.wloc ? o.wloc : migrantCity());
