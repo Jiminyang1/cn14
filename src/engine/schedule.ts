@@ -6,7 +6,7 @@ import { S } from './state';
 import { chance, ri, rnd, wpick } from './rng';
 import { log } from './journal';
 import { EVENTS } from './content/events';
-import { monthDecisions, schoolDecision, yearDecisions } from './content/decisions';
+import { huntMonth, monthDecisions, schoolDecision, yearDecisions } from './content/decisions';
 import { planDaily } from './content/daily';
 import { FOCUS, autoFocus, focusList } from './focus';
 import { loveQueue } from './romance';
@@ -71,6 +71,7 @@ export function planYearSchedule() {
 /** 每个月开始时（第 0 个月在 planYearSchedule 之后）：学校的日历、这个月的随机事件、这个月该弹出的抉择 */
 export function planMonth(m: number) {
   schoolMonth(m);
+  huntMonth();
   const lo = monthStart(m), hi = monthStart(m + 1);
   for (const at of S.evAt || []) {
     if (at < lo || at >= hi) continue;

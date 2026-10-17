@@ -15,6 +15,10 @@ import { awayFromHome, cityLoc, farFromParents, homeCity, migrantCity, moveTo, p
 import { babyP, canBaby, conceive, kidsAlive } from '../family';
 import { MONTHS, calYear, perMonth } from '../monthly';
 import { nowM } from '../calendar';
+
+declare module '../types' {
+  interface Flags { hunt?: { at: number; job: string; same?: number; home?: number } | null } // 正在找工作：出生后第几个月上岗、找到的是什么工作
+}
 import { chance, clamp, gauss, pick, ri, wpick } from '../rng';
 import { eff } from '../stats';
 import { parentsHelp } from '../parents';
@@ -47,6 +51,22 @@ const yearly = (id: string, p: number) => {
   return chance(q);
 };
 
+// 找工作要花的月数（估计）：降低要求找份普通工作 2–12 个月（平均 7），回老家托亲戚朋友 1–8 个月。
+// 按年推进时，从失业到「还没有工作」弹出平均约一年，这一年都没有工资；按月以后抉择一两个月内就弹出，
+// 找工作的时间放在这里。18–60 岁每 100 人年待业的月数：按年时 51.6，按月 31.5（其中备考公务员都是 8.2），
+// 即待业约占这个年龄段时间的 2.6%（按年时 4.3%；2025 年城镇调查失业率平均 5.2%，分母是劳动力）
+export const HUNT: Record<'any' | 'home', [number, number]> = { any: [2, 12], home: [1, 8] };
+/** 每个月开始时：找了一阵子的工作，到时候上岗 */
+export function huntMonth() {
+  const H = S.flags.hunt; if (!H) return;
+  if (S.job !== 'seeking' || S.school) { S.flags.hunt = null; return; } // 已经有了别的去处
+  if (nowM() < H.at) return;
+  S.flags.hunt = null;
+  if (H.home) { hire(H.job); log(`在${placeName()}找到了工作，做了${JOBS[S.job].n}。`, 'ev'); return; }
+  hireInCity(H.job);
+  log(H.same ? `又找到了一份${JOBS[S.job].n}的工作。` : `找到了一份${JOBS[S.job].n}的工作。`, 'ev');
+}
+
 /** 毕业那一年 6 月该出现的升学、毕业抉择 */
 export function schoolDecision() {
   return { 初中: 'zhongkao', 高中: 'gaokao', 复读: 'gaokao', 职高: 'vocgrad', 大专: 'graduate', 本科: 'graduate', 硕士: 'graduate' }[S.school];
@@ -57,7 +77,7 @@ export function monthDecisions() {
   const a = S.age, f = S.fam, d = [], J = JOBS[S.job], working = !!J && J.m > 0;
   // ---- 由状态触发：一出现就排 ----
   if (S.flags.ill && !S.flags.ill.treat) d.push('illness');
-  if (S.job === 'seeking' && !S.school) {
+  if (S.job === 'seeking' && !S.school && !S.flags.hunt) {
     // 公务员考试一年一次：上次考完满 12 个月才再问要不要再考，中间这一年在家备考
     if (S.flags.civilRetry && a < 35) { if (nowM() - (S.flags.civilAt ?? -Infinity) >= 12) d.push('civilretry'); }
     else d.push('seek');
@@ -75,8 +95,8 @@ export function monthDecisions() {
   const ask = !!f.dating && f.dating.wh === 2; // 对方家里等着婚房
   if (!S.house && working && a >= (ask ? 22 : 26) && a <= 50 && (f.married || a >= 30 || ask) && gapOK('house', ask ? 1 : 4) && yearly('house', ask ? 0.8 : 0.35)) d.push('house');
   if (working && S.loc.kind !== 'big' && a >= 19 && a <= 32 && once('bigcity') && !J.stable && yearly('bigcity', 0.18)) d.push('bigcity');
-  // 每年 1%：在私企干到 48 岁的约一成会遇到（智联招聘：46–50 岁求职者 11.5% 曾因年龄被裁，见 DATA.md）；同一年里不和裁员名单重复
-  if (J && J.priv && a >= 35 && a <= 48 && once('crisis') && doneAge('layofflist') !== a && !S.queue.some(e => e.id === 'layofflist') && yearly('crisis', 0.01)) d.push('crisis');
+  // 每年 1%：在私企干到 48 岁的约一成会遇到（智联招聘：46–50 岁求职者 11.5% 曾因年龄被裁，见 DATA.md）；这一年出过的，裁员名单不再出现（见 layofflist）
+  if (J && J.priv && a >= 35 && a <= 48 && once('crisis') && yearly('crisis', 0.01)) d.push('crisis');
   if (working && J.risk > 0 && a >= 24 && a <= 50 && gapOK('jobhop', 6) && yearly('jobhop', 0.07)) d.push('jobhop');
   if (a >= 78 && once('oldcare') && yearly('oldcare', 0.3)) d.push('oldcare');
   if (S.indep && a >= 24 && a <= 65 && !S.flags.sibLoan && f.sibs.some(s => s.age >= 22) && S.money > inc * 0.6 && gapOK('sibloan', 10) && yearly('sibloan', 0.015)) d.push('sibloan'); // 有兄弟姐妹的人一辈子约被借 0.6 次（估计）
@@ -231,13 +251,20 @@ export const DEC = {
       title: '还没有工作', body: `你现在没有工作。存款还有${wan(Math.max(0, S.money))}。`,
       choices: [{ k: 'gig', label: '先送外卖或跑网约车', sub: '马上有收入', w: 0.7 }, { k: 'any', label: '降低要求，找份普通工作', sub: '', w: 3.5 }, { k: 'home', label: '回老家', sub: '', w: 1 }],
     }),
+    // 送外卖、跑网约车马上能上岗，回家种地也是；其余要找一阵子（HUNT），找到以前仍是待业、没有工资，到时候由 huntMonth 上岗
     apply: k => {
       if (k === 'gig') return gig();
       const lj = S.flags.lastJob;
-      if (k === 'any' && lj && !['boss', 'shop', 'farmer'].includes(lj) && chance(0.6)) { hireInCity(lj); return `又找到了一份${JOBS[lj].n}的工作。`; }
-      if (k === 'any') { hireInCity(S.edu >= 5 ? wpick({ clerk: 3, sales: 2 }) : wpick({ factory: 2, sales: 1, migrant: 1, shop: 0.5 })); return `找到了一份${JOBS[S.job].n}的工作。`; }
-      moveTo(S.home); hire(S.home.kind === 'rural' ? (chance(0.5) ? 'farmer' : 'shop') : wpick({ clerk: 1, sales: 1, shop: 1 }));
-      return `回到了${placeName()}，${S.job === 'farmer' ? '帮家里种地' : '做了' + JOBS[S.job].n}。`;
+      if (k === 'any') {
+        const same = lj && !['boss', 'shop', 'farmer'].includes(lj) && chance(0.6);
+        S.flags.hunt = { at: nowM() + ri(...HUNT.any), job: same ? lj : S.edu >= 5 ? wpick({ clerk: 3, sales: 2 }) : wpick({ factory: 2, sales: 1, migrant: 1, shop: 0.5 }), same: same ? 1 : 0 };
+        return null;
+      }
+      moveTo(S.home);
+      const job = S.home.kind === 'rural' ? (chance(0.5) ? 'farmer' : 'shop') : wpick({ clerk: 1, sales: 1, shop: 1 });
+      if (job === 'farmer') { hire(job); return `回到了${placeName()}，帮家里种地。`; }
+      S.flags.hunt = { at: nowM() + ri(...HUNT.home), job, home: 1 };
+      return `回到了${placeName()}，托亲戚朋友打听工作。`;
     },
   },
 
