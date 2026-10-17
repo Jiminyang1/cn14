@@ -121,6 +121,10 @@ const SELF_EMP = new Set(['rider', 'driver', 'shop', 'boss', 'farmer']);
 const BIGCITY_W = { 深圳: 3, 上海: 2.5, 北京: 2, 杭州: 2, 广州: 2.5, 成都: 1.5 };
 const bigCities = () => { const inc = placeInc(); return Object.keys(BIGCITY_W).filter(c => BIG[c].inc >= inc * 1.1); };
 
+// 「35岁」每年的概率，按职业分。平均约 1%：在私企干到 48 岁的约一成会遇到（智联招聘：46–50 岁求职者 11.5% 曾因年龄被裁）。
+// 互联网最高：2020 年普查城市里信息技术业 40–44 岁的人只有 30–34 岁的 38%，全行业是 70%。各行业的倍数是估计，见 DATA.md「35 岁被裁」
+const CUT35: Record<string, number> = { tech: 0.025, clerk: 0.012, sales: 0.01, engineer: 0.008 };
+
 export function monthDecisions() {
   const a = S.age, f = S.fam, d = [], J = JOBS[S.job], working = !!J && J.m > 0;
   // ---- 由状态触发：一出现就排 ----
@@ -146,7 +150,7 @@ export function monthDecisions() {
   if (!S.house && working && a >= (ask ? 22 : 26) && a <= 50 && (f.married || a >= 30 || ask) && gapOK('house', ask ? 1 : 4) && yearly('house', ask ? 0.8 : 0.35)) d.push('house');
   if (working && S.loc.kind !== 'big' && a >= 19 && a <= 32 && once('bigcity') && !J.stable && bigCities().length && yearly('bigcity', 0.18)) d.push('bigcity');
   // 每年 1%：在私企干到 48 岁的约一成会遇到（智联招聘：46–50 岁求职者 11.5% 曾因年龄被裁，见 DATA.md）；这一年出过的，裁员名单不再出现（见 layofflist）
-  if (J && J.priv && a >= 35 && a <= 48 && once('crisis') && yearly('crisis', 0.01)) d.push('crisis');
+  if (J && J.priv && a >= 35 && a <= 48 && once('crisis') && yearly('crisis', CUT35[S.job] ?? 0.01)) d.push('crisis');
   // 跳槽：被别的公司挖，只说得通有雇主的工作（骑手、司机、个体户、小老板、务农不算）
   if (working && J.risk > 0 && !SELF_EMP.has(S.job) && a >= 24 && a <= 50 && gapOK('jobhop', 6) && yearly('jobhop', 0.07)) d.push('jobhop');
   if (a >= 78 && once('oldcare') && yearly('oldcare', 0.3)) d.push('oldcare');
