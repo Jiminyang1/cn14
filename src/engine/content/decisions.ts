@@ -37,7 +37,8 @@ export function dueDecisions() {
   const ask = !!f.dating && f.dating.wh === 2; // 对方家里等着婚房
   if (!S.house && isWorking() && a >= (ask ? 22 : 26) && a <= 50 && (f.married || a >= 30 || ask) && gapOK('house', ask ? 1 : 4) && chance(ask ? 0.8 : 0.35)) d.push('house');
   if (isWorking() && S.loc.kind !== 'big' && a >= 19 && a <= 32 && once('bigcity') && !JOBS[S.job].stable && chance(0.18)) d.push('bigcity');
-  if (JOBS[S.job] && JOBS[S.job].priv && a >= 35 && a <= 48 && once('crisis') && chance(0.12)) d.push('crisis');
+  // 每年 1%：在私企干到 48 岁的约一成会遇到（智联招聘：46–50 岁求职者 11.5% 曾因年龄被裁，见 DATA.md）
+  if (JOBS[S.job] && JOBS[S.job].priv && a >= 35 && a <= 48 && once('crisis') && chance(0.01)) d.push('crisis');
   if (isWorking() && JOBS[S.job].risk > 0 && a >= 24 && a <= 50 && gapOK('jobhop', 6) && chance(0.07)) d.push('jobhop');
   if (a >= 78 && once('oldcare') && chance(0.3)) d.push('oldcare');
   if (S.job === 'retired' && once('retireplan') && a <= 75) d.push('retireplan');
