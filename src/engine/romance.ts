@@ -302,8 +302,21 @@ declare module './types' {
     w0?: number;      // 第一次说「再等等」是哪个月（Ta 等了多久）
   }
 }
-/** 分开：时间线上写一句，记一次前任 */
-export function breakUp(d, why: string, h = -5) {
+// ===== 感情线 =====
+// 每一段感情、每一个没选的人都记下来（S.loves）：回响事件（echoes.ts）接着用，结局页列成一条感情线。
+// kind：love 在一起过、missed 没选的（相亲时选了另一个，或者很投缘却没追）。why：怎么分开的（WHY_N）
+export interface Love { name: string; sex: 'M' | 'F'; at: number; how: string; kind: 'love' | 'missed'; end?: number; why?: string; wed?: number; div?: number; died?: number; with?: string }
+declare module './types' { interface Life { loves?: Love[] } }
+export const WHY_N = { parents: '家里不同意', ldr: '异地', cold: '感情淡了', wait: '等不下去了', house: '没有婚房', no: '没走到结婚' };
+export function noteLove(p, kind: 'love' | 'missed' = 'love', withName?: string) {
+  const l = (S.loves ||= []);
+  if (l.length < 16) l.push({ name: p.name, sex: p.sex, at: S.age, how: p.how, kind, ...(withName ? { with: withName } : {}) });
+}
+/** 和这个人的那一段（还没结束的那段） */
+export const loveOf = (p): Love | undefined => (S.loves || []).slice().reverse().find(x => x.kind === 'love' && x.name === p.name);
+/** 分开：时间线上写一句，记一次前任。k：怎么分开的（WHY_N） */
+export function breakUp(d, why: string, h = -5, k = '') {
+  const e = loveOf(d); if (e) { e.end = S.age; e.why = k; }
   S.fam.dating = null; S.flags.exes = (S.flags.exes || 0) + 1; eff({ h });
   const yrs = S.age - d.metAt;
   log(`${why}你和${d.name}分手了。在一起${yrs ? yrs + '年' : '不到一年'}。`, 'bad');
@@ -330,7 +343,7 @@ export function loveStep(d) {
   if (d.love >= LOVE_COLD) return;
   if (d.coldAt == null) { d.coldAt = m; log(pick(COLD_SIGN[ldr ? 'ldr' : 'near']), 'ev'); return; }
   // 选了拖着，半年还没缓过来：Ta 先开口
-  if (d.drag != null && m - d.drag >= 6) { breakUp(d, ldr ? `${d.name}在电话里说，这样下去没意思。` : `${d.name}说，这样拖着对谁都不好。`, -6); return; }
+  if (d.drag != null && m - d.drag >= 6) { breakUp(d, ldr ? `${d.name}在电话里说，这样下去没意思。` : `${d.name}说，这样拖着对谁都不好。`, -6, ldr ? 'ldr' : 'cold'); return; }
   if (d.drag == null && m - d.coldAt >= 3 && (d.coldAsk == null || m - d.coldAsk >= 24)) { d.coldAsk = m; soon('cold'); }
 }
 // 见家长：两家都没意见的，写一句就过去了；有一边不同意的，停下来问你（抉择 parents）。

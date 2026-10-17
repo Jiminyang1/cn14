@@ -6,6 +6,7 @@ import { BIG, PBY } from './data';
 import { JOBS, mainJob } from './career';
 import { FOCUS } from './focus';
 import { FY } from './content/echoes';
+import { MEET_HOW } from './romance';
 
 // ===== 人生标签 =====
 // r：大致有多少见（1 常见、2 少见、3 罕见；估计）。标签收集在浏览器里（game/storage.ts 的 PastLife.tags），首页和结局页显示收集了几种
@@ -65,6 +66,25 @@ export function forksOf(L: Life): Fork[] {
     seen.add(f.id); out.push(f);
   }
   return out;
+}
+
+// ===== 感情线 =====
+// 少年时喜欢过的人、在一起过的每一个人、没选的人，按时间排成一条（romance.ts 的 S.loves）
+export interface LoveRow { a: number; name: string; t: string; k: 'crush' | 'love' | 'wed' | 'missed' }
+export function loveLine(L: Life): LoveRow[] {
+  const out: LoveRow[] = [], c = L.ppl?.crush;
+  if (c) out.push({ a: c.at, name: c.name, t: '少年时喜欢过的人', k: 'crush' });
+  for (const l of L.loves || []) {
+    const ta = l.sex === 'M' ? '他' : '她';
+    if (l.kind === 'missed') { out.push({ a: l.at, name: l.name, t: l.with ? `相亲时没选的那个（选了${l.with}）` : '很聊得来，没有追', k: 'missed' }); continue; }
+    const how = l.how === 'blind' ? '相亲认识' : l.how === 'reunion' ? '又联系上' : `在${MEET_HOW[l.how] || '外面'}认识`;
+    const yrs = (b: number) => b - l.at ? `${b - l.at}年` : '不到一年';
+    const END = { parents: '家里不同意，分了', ldr: '异地以后分了', cold: '感情淡了，分了', wait: `${ta}等不下去了`, house: '没有婚房，散了', no: '没走到结婚' };
+    const t = l.wed != null ? `${l.wed}岁结婚` + (l.div != null ? `，${l.div}岁离婚` : l.died != null ? `，${l.died}岁时${ta}走了` : '，一起走到了最后')
+      : l.end != null ? `在一起${yrs(l.end)}，${END[l.why] || '分了手'}` : '到最后还在一起';
+    out.push({ a: l.at, name: l.name, t: `${how}。${t}`, k: l.wed != null ? 'wed' : 'love' });
+  }
+  return out.sort((x, y) => x.a - y.a);
 }
 
 // ===== 这一生的时间 =====

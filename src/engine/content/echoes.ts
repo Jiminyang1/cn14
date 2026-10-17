@@ -11,7 +11,7 @@ import { eff } from '../stats';
 import { wan } from '../format';
 import { placeInc } from '../place';
 import { kidsAlive } from '../family';
-import { makePartner } from '../romance';
+import { WHY_N, makePartner, type Love } from '../romance';
 import { hire, isWorking, quitJob } from '../career';
 import { farFromParents } from '../place';
 import { bothParents, parentsWord } from '../parents';
@@ -62,6 +62,13 @@ const pal = () => S.ppl?.pal?.alive ? S.ppl.pal : null;
 const married = () => S.fam.married && !!S.fam.partner && S.fam.partner.alive;
 const justMarried = () => married() && S.age - S.fam.partner.marriedAt <= 1;
 // 一个人：离了婚、丧偶的，或者三十五岁以后一直没结婚的
+const taL = (l: Love) => l.sex === 'M' ? '他' : '她';
+// 分开至少 y 年的前任（没和你结过婚的）
+const ex = (y: number) => (S.loves || []).find(l => l.kind === 'love' && l.end != null && l.wed == null && S.age - l.end >= y);
+// 因为外面的事分开、至少五年的前任
+const exOut = () => (S.loves || []).find(l => l.kind === 'love' && l.end != null && l.wed == null && ['ldr', 'parents', 'house', 'wait'].includes(l.why) && S.age - l.end >= 5);
+// 没选的人，至少五年前
+const missed = () => (S.loves || []).find(l => l.kind === 'missed' && S.age - l.at >= 5);
 const alone = () => !S.fam.married && !S.fam.dating && !S.cand && (S.flags.divorced != null || S.flags.widowed != null || S.age >= 35 && !S.fam.partner);
 /** 把一个抉择排在稍后（同一个月里）：回响事件引出的岔路口 */
 function soon(id: string) {
@@ -152,6 +159,37 @@ export const ECHO_EVENTS: any[] = [
     p.name = c.name; p.sur = c.name.slice(0, 1); p.fit = clamp(p.fit + 0.2, 0.05, 0.95);
     S.cand = p; soon('romance');
     return { t: `${c.name}也是一个人。你们加了微信，从当年的班主任聊到各自的这些年，一直聊到半夜。`, k: 'good' };
+  } },
+
+  // ---- 前任、没选的人（S.loves，romance.ts 的感情线） ----
+  // 分开两年以后：听说 Ta 结婚了
+  { id: 'exWed', a: [22, 50], once: 1, w: 3, c: () => !!ex(2), run: () => {
+    const e = ex(2), single = !S.fam.married;
+    eff({ h: single ? -2 : -1 });
+    return pick([`刷朋友圈，看到${e.name}结婚了。你点了个赞，又取消了。`, `听共同的朋友说，${e.name}结婚了。${single ? '那天晚上你一个人喝了两罐啤酒。' : '你“哦”了一声，接着吃饭。'}`]);
+  } },
+  // 十年以后：碰见了
+  { id: 'exMeet', a: [32, 75], once: 1, w: 3, c: () => !!ex(10), run: () => {
+    const e = ex(10), t = taL(e);
+    const outside = ['ldr', 'parents', 'house', 'wait'].includes(e.why);
+    return pick([`在${S.loc.city}的商场里碰见了${e.name}，${t}牵着一个孩子。你们站着聊了五分钟，谁都没提当年。`, `在高铁站碰见了${e.name}。${t}胖了一点，笑起来还是老样子。`])
+      + (outside ? `临走时${t}说：“要是当年……”话没说完，就被广播打断了。` : '');
+  } },
+  // 当年因为外面的事分开的（异地、家里、房子、等不下去），两个人又都是一个人：重新开始的可能（引出「心动」）
+  { id: 'exAgain', a: [30, 68], once: 1, w: 4, c: () => alone() && !!exOut(), run: () => {
+    const e = exOut(), p = makePartner('reunion');
+    p.name = e.name; p.sur = e.name.slice(0, 1); p.fit = clamp(p.fit + 0.2, 0.05, 0.95);
+    S.cand = p; soon('romance');
+    return { t: `当年因为${WHY_N[e.why]}分开的${e.name}，现在也是一个人。你们约着吃了顿饭，从中午一直坐到天黑。`, k: 'good' };
+  } },
+  // 没选的那个人：几年以后听说了 Ta 的消息
+  { id: 'missedNews', a: [28, 75], once: 1, w: 3, c: () => !!missed(), run: () => {
+    const m = missed(), t = taL(m);
+    const now = pick([`${t}后来${m.sex === 'M' ? '娶了一个当老师的' : '嫁给了一个当医生的'}，生了两个孩子`, `${t}去了深圳，自己开了个小公司`, `${t}到现在还是一个人`]);
+    const head = m.how === 'blind' ? `听介绍人说，当年相亲见过的${m.name}，` : `听朋友说，当年很聊得来、你却没追的${m.name}，`;
+    // 当年选的那个人后来没走下去：会想一想
+    const w = m.with && (S.loves || []).find(x => x.kind === 'love' && x.name === m.with);
+    return head + now + '。' + (w && (w.end != null || w.div != null) ? `你偶尔会想，要是当年选的是${t}……` : '');
   } },
 
   // ---- 不打算结婚（抉择 single） ----

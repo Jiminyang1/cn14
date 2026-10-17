@@ -1,7 +1,7 @@
 // 档案封存：回看这一生。先是小传、人生标签、人生大事、走过的岔路口、同一秒建档的人；
 // 履历表、这一生的钱、一生曲线、证件、自述收在最下面的「档案附件」里（见 AGENTS.md「回看这一生」）。
 import { useState } from 'react';
-import { CAUSE, EDU_LV, LT, PBY, S, TAG_N, lifeTime, deathText, forksOf, inheritedValue, lifeStory, lifeTags, loanBal, mainJob, lifeMajors, netWorth, persWords, shownZ, wan, wanM } from '../engine';
+import { CAUSE, EDU_LV, LT, PBY, S, TAG_N, lifeTime, deathText, forksOf, loveLine, inheritedValue, lifeStory, lifeTags, loanBal, mainJob, lifeMajors, netWorth, persWords, shownZ, wan, wanM } from '../engine';
 import { game } from '../game/controller';
 import { loadPast } from '../game/storage';
 import { Cell } from './BirthCert';
@@ -23,7 +23,7 @@ export function End() {
   // 出生地以出生登记表为准：随迁子女出生在父母打工的城市，不是户口所在的老家（S.home）
   const bornAt = S.docs.find(x => x.k === 'birth').rows.find(r => r[0] === '出生地')[1];
   const cashflow = S.cashflow;
-  const story = lifeStory(S), tags = lifeTags(S), majors = lifeMajors(S), forks = forksOf(S);
+  const story = lifeStory(S), tags = lifeTags(S), majors = lifeMajors(S), forks = forksOf(S), loves = loveLine(S);
   // 收集过的人生标签：所有封存过的档案（这一生在 game.finish 里已经存进去了）
   const seen = new Set(loadPast().flatMap(x => x.tags || []));
   const shownMajors = allMajors ? majors : majors.slice(0, 12);
@@ -68,6 +68,13 @@ export function End() {
           {shownMajors.map((e, i) => <li key={i} className={e.k}><span className="mono">{e.a}岁</span><p>{e.t}</p></li>)}
         </ol>
         {majors.length > shownMajors.length && <button className="btn" type="button" onClick={() => setAllMajors(true)}>还有 {majors.length - shownMajors.length} 件</button>}
+      </div>}
+
+      {loves.length > 0 && <div className="end-sec">
+        <h4>感情线</h4>
+        <ol className="loveline">
+          {loves.map((l, i) => <li key={i} className={l.k}><span className="mono">{l.a}岁</span><b>{l.name}</b><span>{l.t}</span></li>)}
+        </ol>
       </div>}
 
       {forks.length > 0 && <div className="end-sec">

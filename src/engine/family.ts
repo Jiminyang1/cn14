@@ -11,7 +11,7 @@ import { nowM } from './calendar';
 import { eff } from './stats';
 import { kinLT, qMonth } from './mortality';
 import { makeName } from './names';
-import { partnerInc, partnerJob } from './romance';
+import { loveOf, partnerInc, partnerJob } from './romance';
 import { placeInc } from './place';
 
 declare module './types' {
@@ -145,7 +145,7 @@ function familyDeaths() {
   const pt = f.partner;
   if (pt && pt.alive && f.married && chance(qMonth(kinLT('pt', pt.sex), pt.age + 1))) {
     // 丧偶：不再算已婚，以后还可以再认识人（f.partner 留着，界面显示「丧偶」，再婚时被替换）
-    pt.alive = false; f.married = false; S.flags.widowed = S.age; major(`${pt.name}去世了，享年${pt.age}岁。你们一起走过了${S.age - pt.marriedAt}年。`, 'loss'); eff({ h: -15, so: -6 });
+    pt.alive = false; f.married = false; S.flags.widowed = S.age; const le = loveOf(pt); if (le) le.died = S.age; major(`${pt.name}去世了，享年${pt.age}岁。你们一起走过了${S.age - pt.marriedAt}年。`, 'loss'); eff({ h: -15, so: -6 });
     if (S.sex === 'M' && S.flags.preg) S.flags.preg = null; // 怀着孩子的是她
   }
   for (const s of f.sibs) if (s.alive) sibMonth(s);

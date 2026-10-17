@@ -8,7 +8,7 @@ import { CAUSE } from '../mortality';
 import { EDU_LV, HS_NAME, admit, enroll, gkAutoApps, gkCandidates, gkLines, gkRank, gkResolve, gkScore, gkShock, hsTier, schoolStart, tutorFee } from '../education';
 import { ILL, oop, reimburse } from '../health';
 import { JOBS, RAISE, RESID_PENSION_JOBS, civilTry, gig, gradJob, hire, hireInCity, isWorking, quitJob, raise, retire } from '../career';
-import { LOVE_COLD, MEET_HOW, READY0, READY_K, breakUp, brideAmt, bianzhi, famSay, famView, feelWord, famPts, loveWord, partnerBrief, selfP, theirWhys, matchmaker, mShift, mutualP, partnerInc, partnerJob, partnerLoc, partnerRows, pickW, ptJobName, theirView } from '../romance';
+import { LOVE_COLD, MEET_HOW, READY0, READY_K, breakUp, brideAmt, bianzhi, famSay, famView, feelWord, famPts, loveOf, loveWord, noteLove, partnerBrief, selfP, theirWhys, matchmaker, mShift, mutualP, partnerInc, partnerJob, partnerLoc, partnerRows, pickW, ptJobName, theirView } from '../romance';
 import { S } from '../state';
 import { addDoc, log, logLater } from '../journal';
 import { annualPay, bestPlan, buyHouse, houseHelp, inlawHelp, mate, foreclose, hhIncome, hometownHouse, loanBal, loanArrears, loanPayY, loanPlans, planSub, sellHouse, sellInherited } from '../housing';
@@ -622,7 +622,7 @@ export const DEC = {
         };
       }
       const blind = p.how === 'blind';
-      const body = (blind ? `${matchmaker()}托人介绍了${p.name}。见了一面，${feelWord(p)}。` : `在${MEET_HOW[p.how]}认识了${p.name}，${feelWord(p)}。`) + (theirView(p) || '') + (famSay(p) || '');
+      const body = (blind ? `${matchmaker()}托人介绍了${p.name}。见了一面，${feelWord(p)}。` : p.how === 'reunion' ? `又和${p.name}联系上了，${feelWord(p)}。` : `在${MEET_HOW[p.how]}认识了${p.name}，${feelWord(p)}。`) + (theirView(p) || '') + (famSay(p) || '');
       return {
         title: blind ? '相亲' : '心动', body, card: partnerRows(p), fact,
         choices: [
@@ -634,7 +634,10 @@ export const DEC = {
       };
     },
     apply: k => {
-      const p = k === 'go2' ? S.cand2 : S.cand, first = S.cand; S.cand = S.cand2 = null;
+      const p = k === 'go2' ? S.cand2 : S.cand, first = S.cand, alt = k === 'go' ? S.cand2 : k === 'go2' ? S.cand : null; S.cand = S.cand2 = null;
+      // 没选的人记下来（回响、感情线）：相亲时没选的那个；很投缘却没追的
+      if (alt) noteLove(alt, 'missed', p.name);
+      else if (k !== 'go' && first.fit >= 0.7) noteLove(first, 'missed');
       if (k === 'pass') return null;
       if (k === 'later') {
         // 读书的到毕业那年的 7 月，至少一年；不读书的一年
@@ -649,7 +652,7 @@ export const DEC = {
         return { t: p.how === 'blind' ? `又见了两次，${p.name}说觉得你们不太合适。` : `你鼓起勇气表白，${p.name}说只想做朋友。`, k: 'bad' };
       }
       p.love = clamp(55 + 25 * (p.fit - 0.5) + gauss(0, 8), 20, 90); p.asks = 0;
-      S.fam.dating = p; eff({ h: 6 });
+      S.fam.dating = p; noteLove(p); eff({ h: 6 });
       return { t: `你和${p.name}在一起了。`, k: 'good' };
     },
   },
@@ -672,7 +675,7 @@ export const DEC = {
     },
     apply: k => {
       const d = S.fam.dating, ldr = d.city !== S.loc.city;
-      if (k === 'split') { breakUp(d, '', -5); return null; }
+      if (k === 'split') { breakUp(d, '', -5, ldr ? 'ldr' : 'cold'); return null; }
       if (k === 'drag') { d.drag = nowM(); return null; }
       // 谈得开的可能：合得来的大一些，异地的小一些（估计）。谈不拢就算拖着了
       if (chance(clamp(0.3 + 0.5 * d.fit - (ldr ? 0.15 : 0), 0.1, 0.85))) {
@@ -707,7 +710,7 @@ export const DEC = {
     },
     apply: k => {
       const d = S.fam.dating, v = famView(d);
-      if (k === 'split') { breakUp(d, '家里不同意，', -6); return null; }
+      if (k === 'split') { breakUp(d, '家里不同意，', -6, 'parents'); return null; }
       if (k === 'slow') { d.slowed = nowM(); d.metParents = 0; d.love = clamp(d.love - 5, 0, 100); return '你们说好，过一阵再说。'; }
       d.slowed = undefined; eff({ h: -3 });
       return `你说：“我就认定${d.name}了。”` + (d.par < 0 && v.who ? `${v.who}叹了口气，没再说什么。` : '');
@@ -731,7 +734,7 @@ export const DEC = {
     },
     apply: k => {
       const d = S.fam.dating;
-      if (k === 'split') { breakUp(d, '', -5); return null; }
+      if (k === 'split') { breakUp(d, '', -5, 'ldr'); return null; }
       if (k === 'ldr') return '你们开始异地恋。';
       // 愿不愿意过来看感情；有编制的舍不得（估计）
       if (chance((0.35 + d.love / 250) * (bianzhi(d.jk) ? 0.5 : 1))) {
@@ -873,10 +876,10 @@ export const DEC = {
       if (k.startsWith('wait:')) {
         p.asks = (p.asks || 0) + 1; p.wf = k.slice(5); p.wAt = nowM(); p.w0 ??= p.wAt;
         // 选项下面已经写明 Ta 家里在给 Ta 介绍别人：这时再等，Ta 有四成可能不等了（估计）
-        if (ctx.restless && chance(0.4)) { breakUp(p, `${p.name}说不想再等了。`, -7); return null; }
+        if (ctx.restless && chance(0.4)) { breakUp(p, `${p.name}说不想再等了。`, -7, 'wait'); return null; }
         return p.wf === 'think' ? null : `你对${p.name}说，${WAIT_SAID[p.wf]}。`;
       }
-      if (k === 'no') { breakUp(p, '', -5); return null; }
+      if (k === 'no') { breakUp(p, '', -5, 'no'); return null; }
       p.wf = undefined;
       // 女方家里要婚房、你还没有：第一次求婚，婚事先搁下，买房的抉择会提前出现（p.wh = 2）。
       // 第二次还是没房：感情不错的松口（不再要婚房，当场答应），不然就散了。都写在选项下面
@@ -887,7 +890,7 @@ export const DEC = {
           p.love = clamp(p.love - 8, 0, 100); p.wh = 2; eff({ h: -4 });
           return { t: `${p.name}的爸妈说，没有房子不能结婚。婚事先放下了。`, k: 'bad' };
         }
-        if (!ctx.relent) { breakUp(p, `${p.name}的爸妈还是那句话：没有房子，不能结婚。又拖了一阵，`, -8); return null; }
+        if (!ctx.relent) { breakUp(p, `${p.name}的爸妈还是那句话：没有房子，不能结婚。又拖了一阵，`, -8, 'house'); return null; }
         p.wh = 0; pre = `${p.name}的爸妈松了口：房子以后再说，先把婚结了。`;
       }
       // Ta 婚前就有房、你还没有：婚后住进 Ta 那套（在别的城市的先空着）；离婚时归 Ta
@@ -898,6 +901,7 @@ export const DEC = {
         home = L.city === S.loc.city ? `婚后住进了${p.name}的房子，不用再租房了。` : `${p.name}在${L.city}有一套房，先空着。`;
       }
       S.fam.married = true; S.fam.partner = p; p.marriedAt = S.age; S.fam.dating = null; p.city = S.loc.city;
+      const le = loveOf(p); if (le) le.wed = S.age;
       if (p.jk) p.inc = partnerInc(p);
       addDoc('marry', '结婚证', [['持证人', S.name], ['配偶', p.name], ['配偶学历', EDU_LV[p.edu]], ['配偶职业', ptJobName(p)], ['登记日期', `${calYear()}年`]]);
       // 彩礼和兄弟姐妹结婚时一样（kin.ts 的 sibWed）：娶亲的，父母在世就由家里出，不够的父母去借；父母都不在了才自己出。

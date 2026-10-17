@@ -11,6 +11,7 @@ import { MAJORS } from '../education';
 import { PBY } from '../data';
 import { S } from '../state';
 import { addDoc, vary } from '../journal';
+import { loveOf } from '../romance';
 import { awayFromHome, farFromParents, placeInc } from '../place';
 import { anyParent, bothParents, carer, parentsWord } from '../parents';
 import { chance, clamp, gauss, pick, ri, wpick } from '../rng';
@@ -90,6 +91,7 @@ const canDivorce = () => { const f = S.fam, p = f.partner; return f.married && !
 /** 离婚：存款分走四成；配偶婚前的房归对方。返回时间线上的一条（人生大事）。why：谁提的、为什么（可以为空） */
 export function divorce(p, why = '') {
   S.fam.married = false; S.fam.partner = null; S.flags.divorced = S.age; p.crisis = p.stay = undefined;
+  const le = loveOf(p); if (le) le.div = S.age;
   addDoc('divorce', '离婚证', [['对方', p.name]]);
   eff({ h: -8, so: -4, money: -Math.max(0, S.money) * 0.4 });
   const back = S.house?.pt ? (S.house = null, `房子是${p.name}婚前的，归了${p.sex === 'M' ? '他' : '她'}。你搬了出去。`) : '';
@@ -326,7 +328,7 @@ export const EVMAP = {};
 // 事件属于哪个领域：格子放在这个领域上，这类事更容易抽到（focus.ts 的 domK），好事坏事一起多
 export const EV_DOM: Record<string, string> = {
   homework: 'study', olympiad: 'study', cadre: 'study', essay: 'study', cet: 'study', nosleep: 'study', myopia: 'study',
-  workTrip: 'work', workClash: 'work', workPraise: 'work', famKid: 'family', famParents: 'family', inlawCare: 'family', famHome: 'family',
+  workTrip: 'work', workClash: 'work', workPraise: 'work', famKid: 'family', famParents: 'family', inlawCare: 'family', exWed: 'love', exMeet: 'love', exAgain: 'love', missedNews: 'love', famHome: 'family',
   halfMara: 'health', keepFit: 'health', hobbyDeep: 'leisure', friendsNight: 'social',
   game: 'leisure', pet: 'leisure', snack: 'leisure', campSummer: 'leisure', river: 'leisure', travel: 'leisure', dance: 'leisure', phoneOld: 'leisure', viral: 'leisure',
   bestie: 'social', fightKid: 'social', dorm: 'social', reunion: 'social', redEnv: 'social', newYearShow: 'social', oldFriend: 'social', palMid: 'social', crushMeet: 'social', bulliedMeet: 'social', star: 'social',
