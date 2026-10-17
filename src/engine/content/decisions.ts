@@ -397,10 +397,8 @@ export const DEC = {
     },
     apply: k => {
       if (k === 'no') return null;
-      // 怀孕约十个月后出生（family.ts 的 conceive）；还是马上出生的版本会直接返回孩子
-      const kid = conceive(); eff({ h: 6, so: 4, money: -placeInc() * 0.3 });
-      if (kid && kid.name) return { t: `${kid.name}出生了，是个${kid.sex === 'M' ? '男孩' : '女孩'}。`, k: 'good' };
-      return { t: S.sex === 'F' ? '你怀孕了。' : `${S.fam.partner.name}怀孕了。`, k: 'good' };
+      // 怀孕约十个月后出生（family.ts 的 conceive）；出生时的幸福、人际和开销在出生那个月记，这里不再加
+      return conceive();
     },
   },
 
