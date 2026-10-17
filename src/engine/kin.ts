@@ -8,7 +8,7 @@ import { chance, ri } from './rng';
 import { eff } from './stats';
 import { brideAmt } from './romance';
 import { placeHp, placeInc } from './place';
-import { kidsAlive } from './family';
+import { kidsAlive, sibsAlive } from './family';
 import { wan } from './format';
 
 // ===== 拆迁 =====
@@ -32,7 +32,7 @@ export function demolDue() {
 const ur = () => S.home.kind === 'rural' ? 'rural' : 'urban';
 function demolCash(mult: number) {
   const H = S.famHouse, total = Math.round(H.v * DEMOL_K.cash[ur()] * mult / 1e3) * 1e3;
-  const gift = S.indep ? total * DEMOL_GIFT : 0, mine = gift / (1 + S.fam.sibs.length);
+  const gift = S.indep ? total * DEMOL_GIFT : 0, mine = gift / (1 + sibsAlive().length);
   S.famHouse = { type: 'own', v: Math.round(total * DEMOL_HOUSE / 1e3) * 1e3, where: H.where };
   S.famMoney += total * (1 - DEMOL_HOUSE) - gift;
   if (mine) S.money += mine;
@@ -75,7 +75,7 @@ export function marryKid(k: Kid, spend: number) {
 
 // ===== 兄弟姐妹 =====
 /** 兄弟姐妹结婚（随机事件 sibWed）：儿子娶亲家里出彩礼，女儿出嫁家里收彩礼 */
-export const sibToWed = () => S.fam.sibs.find(s => !s.married && s.age >= 24 && s.age <= 34);
+export const sibToWed = () => sibsAlive().find(s => !s.married && s.age >= 24 && s.age <= 34);
 export function sibWed() {
   const s = sibToWed() as Sibling, amt = brideAmt(S.home.p);
   s.married = S.age;
@@ -94,7 +94,7 @@ export function sibWed() {
     return { t: `${s.rel}结婚了。家里给女方出了${wan(amt)}彩礼${borrowed > 1e3 ? `，其中${wan(borrowed)}是借的` : ''}。${mine ? `你包了${wan(mine)}的红包，回去帮着张罗了酒席。` : ''}`, f };
   }
   S.famMoney += amt * 0.5; // 收到的彩礼一半做陪嫁带走，一半留在家里（估计）
-  const bro = S.sex === 'M' || S.fam.sibs.some(x => x !== s && x.sex === 'M' && !x.married);
+  const bro = S.sex === 'M' || sibsAlive().some(x => x !== s && x.sex === 'M' && !x.married);
   return { t: `${s.rel}出嫁了。男方给了${wan(amt)}彩礼，一半做了陪嫁，另一半${bro ? '爸妈说先存着，留给家里的儿子将来娶媳妇用' : '爸妈存了起来'}。`, f };
 }
 // 借给兄弟姐妹的钱会不会还、几年后还（估计）

@@ -73,7 +73,7 @@ export function moneyMonth(m: number) {
     inc += (S.pension || 0) / MONTHS;
     // 子女赡养：成年子女每人每年给一些（按当地消费水平估计）
     let grown = 0;
-    for (const k of f.kids) if (k.alive && S.age - k.bornAt >= 25) grown++;
+    for (const k of f.kids) if (k.alive && k.age >= 25) grown++;
     if (grown) inc += H.cons * 0.35 * Math.min(2, grown) / MONTHS;
   }
   S.income = Math.round(inc * MONTHS); // 现在的年收入（这个月的收入 × 12）
@@ -176,7 +176,7 @@ export function monthlyIncome() {
   if (J && J.m) return wageRate() * incomeLuckNow(J.v) / MONTHS;
   if (S.job === 'retired') {
     let grown = 0;
-    for (const k of S.fam.kids) if (k.alive && S.age - k.bornAt >= 25) grown++;
+    for (const k of S.fam.kids) if (k.alive && k.age >= 25) grown++;
     return ((S.pension || 0) + (grown ? here().cons * 0.35 * Math.min(2, grown) : 0)) / MONTHS;
   }
   return S.job === 'seeking' && S.flags.empIns && (S.uiOn ? S.uiM > 0 : uiMonths() > 0) ? uiPay() / MONTHS : 0;

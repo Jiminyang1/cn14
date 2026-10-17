@@ -8,6 +8,7 @@ import { log } from './journal';
 import { parentIncome, parentRetired } from './parents';
 import { placeCons } from './place';
 import { wan } from './format';
+import { sibsAlive } from './family';
 
 declare module './types' {
   interface Life {
@@ -15,10 +16,9 @@ declare module './types' {
     stuDebt?: number;   // 助学贷款余额：只有学费、生活费的缺口，按每年的上限借；经济独立时转到你自己名下（finance.ts 的 goIndep）
   }
   interface Flags { supportA?: number }     // 上一次贴补父母生活费是几岁那年（supportY 每年只记一次）
-  interface Sibling { alive?: boolean }     // 兄弟姐妹去世时为 false（family.ts）
 }
-// 还在世的兄弟姐妹（分遗产、分摊父母的生活费）
-export const sibsAlive = () => S.fam.sibs.filter(s => s.alive !== false).length;
+// 还在世的兄弟姐妹有几个（分遗产、分摊父母的生活费）
+const sibsN = () => sibsAlive().length;
 
 // 家庭每年的结余：家庭人均可支配收入 × 3 口人 × 储蓄率（按家境），减去孩子上学的开销
 // 家庭净储蓄率（扣掉盖房、人情、看病等大额开销后，估计）；2024 年农村居民（收入−消费）÷收入约 17%，城镇约 34%
@@ -58,7 +58,7 @@ export function familyMoneyMonth(m: number) {
   // 父母都不上班以后，存款花光了，由已经工作的子女补贴生活费（还在世的兄弟姐妹一起分摊）；父母还在上班时，欠款由他们自己慢慢还
   // supportY 记的是贴补了几年（每个年龄年记一次）
   if (S.indep && S.famMoney < 0 && !working) {
-    const share = -S.famMoney / (1 + sibsAlive());
+    const share = -S.famMoney / (1 + sibsN());
     S.money -= share; S.famMoney = 0;
     S.stats.support = (S.stats.support || 0) + share;
     if (S.flags.supportA !== S.age) {
@@ -87,7 +87,7 @@ function payTuition() {
 function orphanMonth(m: number) {
   if (S.indep !== false) {
     // 已经独立以后，还有钱进到家里的账上（例如拆迁款）：按还在世的兄弟姐妹平分，你那一份转进存款
-    if (S.flags.inherited && S.famMoney > 0) { S.money += S.famMoney / (1 + sibsAlive()); S.famMoney = 0; }
+    if (S.flags.inherited && S.famMoney > 0) { S.money += S.famMoney / (1 + sibsN()); S.famMoney = 0; }
     return;
   }
   if (S.famMoney > 0) S.famMoney = Math.max(0, S.famMoney - placeCons(S.home) * ORPHAN_COST / MONTHS);
@@ -131,12 +131,12 @@ export function famDebtPaidText() {
 // 父母都去世以后：存款和房子由兄弟姐妹分。有兄弟姐妹、又有老房子的，先商量怎么分（抉择 heritage），没有的直接平分
 export function inherit() {
   if (S.flags.inherited) return;
-  if (S.indep && sibsAlive() && S.famHouse && S.famHouse.v > 0) { S.flags.heirDue = 1; return; }
+  if (S.indep && sibsN() && S.famHouse && S.famHouse.v > 0) { S.flags.heirDue = 1; return; }
   inheritSplit(1);
 }
 /** 你能分到多少：存款平分，房子按 houseK 倍的平分份额（0 = 房子让给别人，1 = 平分，n = 房子全归你）。欠款先用存款抵，不够再用房子抵；子女不承担超出遗产的债务 */
 export function heirShares(houseK = 1) {
-  const n = 1 + sibsAlive(), H = S.famHouse || { v: 0 };
+  const n = 1 + sibsN(), H = S.famHouse || { v: 0 };
   const cash = (S.famMoney || 0) - (S.famDebt || 0), house = Math.max(0, (H.v || 0) + Math.min(0, cash));
   return { n, cash: Math.max(0, cash), house, share: Math.max(0, cash) / n + house / n * houseK };
 }

@@ -9,8 +9,7 @@ declare module './types' {
   interface LogEntry { y: number; m: number }
 }
 
-// 现在是这一年的第几个月：出生时 S.month 还没有设；长一岁以后、排下一年以前（生日那个月的年初结算）S.t 已经归零，S.month 却还停在上一年的最后一个月，都按第 0 个月算
-const curM = () => S.t === 0 || S.month == null ? 0 : S.month;
+const curM = () => S.month;
 
 // ===== 证件：人生每个关口往档案里放一份 =====
 // k: 证件类型（决定样式），title: 名称，rows: [[栏目, 内容]...]

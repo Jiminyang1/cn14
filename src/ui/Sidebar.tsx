@@ -1,7 +1,7 @@
 // 一生页面的侧栏：体检表与账户、家庭状况、证件夹、一生曲线、同一秒建档的人。
 import { useEffect, useState } from 'react';
 import {
-  AX, AX_NAME, CAUSE, EDU_LV, FAM_HOUSE_N, JOBS, PBY, S, axWord, leOf, partnerTrait, shownZ, loanBal, loanPayY, loveWord, parentIncome, parentRetired, parentsPerCap, ptJobName, wan,
+  AX, AX_NAME, CAUSE, EDU_LV, FAM_HOUSE_N, JOBS, PBY, S, axWord, leOf, partnerTrait, shownZ, loanBal, loanPayY, loveWord, parentIncome, parentRetired, parentsPerCap, ptJobName, wan, wanM, monthlyIncome,
   type Companion, type Doc,
 } from '../engine';
 import { Ib } from './TipLayer';
@@ -48,8 +48,8 @@ export function Vitals() {
         <h5 className="acct-h">个人账户 <span className="muted small">{S.indepAt != null ? S.indepAt + '岁开始工作' : ''}</span></h5>
         <div className="acct">
           <div><span>存款<Ib k="myMoney" /></span><b style={red(S.money < 0)}>{wan(S.money)}</b></div>
-          <div><span>{S.job === 'retired' ? '养老金' : '年收入'}<Ib k="myIncome" /></span><b>{S.job === 'retired' ? wan(S.pension || 0) : S.income ? wan(S.income) : '—'}</b></div>
-          {S.flags.rehire && <div><span>返聘收入</span><b>{wan(S.flags.rehire.inc)}/年</b></div>}
+          <div><span>{S.job === 'retired' ? '养老金' : '月收入'}<Ib k="myIncome" /></span><b>{S.job === 'retired' ? wanM(S.pension || 0) : monthlyIncome() ? wanM(monthlyIncome() * 12) : '—'}</b></div>
+          {S.flags.rehire && <div><span>返聘收入</span><b>{wanM(S.flags.rehire.inc)}</b></div>}
           <div><span>公积金<Ib k="hpf" /></span><b>{S.hpf ? wan(S.hpf) + (S.hpfOn ? '' : '（封存）') : S.hpfOn ? '0元' : '没有'}</b></div>
           <div><span>房贷<Ib k="loan" /></span><b>{loanBal() ? wan(loanBal()) + ` · 月供${wan(loanPayY() / 12)}` : '—'}</b></div>
         </div>
@@ -65,7 +65,7 @@ function ParentRow({ who, label }: { who: 'mom' | 'dad'; label: string }) {
   const ret = parentRetired(p, male), inc = parentIncome(who);
   return (
     <div className="fr"><span>{label}</span><b>{p.age}岁 · {ret ? '退休（原' + p.job + '）' : p.job}</b>
-      <em>{inc ? <>{(ret ? '养老金 ' : '年收入 ') + wan(inc) + '/年'}<Ib k={'parentInc:' + who} /></> : '没有收入'}</em></div>
+      <em>{inc ? <>{(ret ? '养老金 ' : '月收入 ') + wanM(inc)}<Ib k={'parentInc:' + who} /></> : '没有收入'}</em></div>
   );
 }
 
@@ -82,12 +82,12 @@ function ParentsCard({ title }: { title: string }) {
         {!!S.flags.parDiv && <div className="fr"><span></span><b className="muted">父母已离婚</b></div>}
         {S.flags.lb === 'both' && S.age < 16 && <div className="fr"><span>照看人</span><b>{S.flags.carer}（父母在外打工）</b></div>}
         {/* 兄弟姐妹去世后 alive 为 false（family.ts 加的字段，合并后可以去掉类型断言） */}
-        {f.sibs.length > 0 && <div className="fr"><span>兄弟姐妹</span><b>{f.sibs.map(x => `${x.rel} ${(x as { alive?: boolean }).alive === false ? '已去世' : x.age + '岁'}`).join('、')}</b></div>}
+        {f.sibs.length > 0 && <div className="fr"><span>兄弟姐妹</span><b>{f.sibs.map(x => `${x.rel} ${x.alive ? x.age + '岁' : '已去世'}`).join('、')}</b></div>}
       </div>
       {anyParent ? <>
         <div className="acct">
           <div><span>家境</span><b className="dots">{dots(S.q)}</b></div>
-          <div><span>{S.indep === false ? '家庭人均可支配收入' : '父母收入合计'}<Ib k="famPerCap" /></span><b>{S.indep === false ? wan(parentsPerCap()) : wan(parentIncome('mom') + parentIncome('dad'))}/年</b></div>
+          <div><span>{S.indep === false ? '家庭人均可支配收入' : '父母收入合计'}<Ib k="famPerCap" /></span><b>{wanM(S.indep === false ? parentsPerCap() : parentIncome('mom') + parentIncome('dad'))}</b></div>
           <div><span>住房<Ib k="famHouse" /></span><b>{FAM_HOUSE_N[H.type]}{H.v ? ' · 估值约' + wan(H.v) : ''}</b></div>
           {/* 存款花超了记作欠款；另外还背着欠款（famDebt）时，这一行仍叫「存款」、写成负数，免得出现两行「欠款」 */}
           <div><span>{S.famMoney < 0 && !(S.famDebt > 0) ? '欠款' : '存款'}<Ib k="famMoney" /></span><b style={red(S.famMoney < 0)}>{S.famMoney < 0 && S.famDebt > 0 ? '−' : ''}{wan(Math.abs(S.famMoney || 0))}</b></div>
@@ -112,7 +112,7 @@ function LoveCard() {
       <div className="acct">
         <div><span>学历</span><b>{d.jk ? EDU_LV[d.edu] : EDU_LV[d.edu] + '在读'}</b></div>
         <div><span>职业</span><b>{ptJobName(d)}{ldr ? '（在' + d.city + '）' : ''}</b></div>
-        <div><span>年收入{d.jk && <Ib k="ptInc:dating" />}</span><b>{d.inc ? wan(d.inc) + '/年' : '没有收入'}</b></div>
+        <div><span>月收入{d.jk && <Ib k="ptInc:dating" />}</span><b>{d.inc ? wanM(d.inc) : '没有收入'}</b></div>
         <div><span>家乡</span><b>{PBY[d.home].n}{d.rural ? '农村' : '城里'}</b></div>
         <div><span>对方家境</span><b className="dots">{dots(d.q)}</b></div>
         <div><span>感情</span><b>{loveWord(d.love)} <span className="dots">{dots(Math.max(1, Math.round(d.love / 20)))}</span></b></div>
@@ -147,16 +147,16 @@ export function FamilyCards() {
           {pt && (
             <div className={'fr' + (pt.alive ? '' : ' gone')}><span>{pt.sex === 'M' ? '丈夫' : '妻子'}</span>
               <b>{pt.name} · {pt.alive ? pt.age + '岁 · ' + (pt.edu && !ptStudy ? EDU_LV[pt.edu] + ' · ' : '') + (pt.retired ? '退休' : pt.k != null ? ptJobName(pt) : JOBS[pt.job] ? JOBS[pt.job].n : '') : '已去世'}</b>
-              <em>{pt.alive && (pt.inc ? <>{(pt.retired ? '养老金 ' : '年收入 ') + wan(pt.inc) + '/年'}{pt.k != null && <Ib k="ptInc:partner" />}</> : '没有收入')}</em></div>
+              <em>{pt.alive && (pt.inc ? <>{(pt.retired ? '养老金 ' : '月收入 ') + wanM(pt.inc)}{pt.k != null && <Ib k="ptInc:partner" />}</> : '没有收入')}</em></div>
           )}
           {!f.married && !!S.flags.divorced && <div className="fr"><span>婚姻</span><b>离异</b></div>}
           {kids.map((k, i) => (
             <div key={i} className={'fr' + (k.alive ? '' : ' gone')}><span>{k.sex === 'M' ? '儿子' : '女儿'}</span>
-              <b>{k.name} · {k.alive ? (S.age - k.bornAt) + '岁' + (k.path ? ' · ' + k.path.replace(/^考上了/, '') : '') : '已离世'}</b></div>
+              <b>{k.name} · {k.alive ? k.age + '岁' + (k.path ? ' · ' + k.path.replace(/^考上了/, '') : '') : '已离世'}</b></div>
           ))}
           {S.flags.grandkids > 0 && <div className="fr"><span>孙辈</span><b>{S.flags.grandkids}人</b></div>}
         </div>
-        <div className="acct"><div><span>家庭年收入</span><b>{wan(hh)}</b></div><div><span>房子</span><b>{myHome()}</b></div></div>
+        <div className="acct"><div><span>家庭月收入</span><b>{wanM(hh)}</b></div><div><span>房子</span><b>{myHome()}</b></div></div>
       </div>
       <ParentsCard title="父母" />
     </div>

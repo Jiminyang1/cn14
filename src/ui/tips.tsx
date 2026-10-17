@@ -4,7 +4,7 @@ import type { ReactNode } from 'react';
 import {
   DEBT_FREEZE, DEBT_SR, EDU_LV, EDU_WAGE, FAM_REPAY, FAM_SAVE, JOBS, LE_TARGET, LOAN_RULES, LT, NAT_URBAN_INC, PARENT_DISP, PARENT_K, PBY,
   PEN_MIN_YEARS, PEN_YEARS, RESID_PENSION_JOBS, RET_DRAW, S, SAVE_BASE, WAGE_G_MAX, WAGE_REV, WEALTH0, WEALTH_MPC, clamp, expK, famIncome,
-  hpCounty, incomeLuckNow, leOf, loanPayY, parentIncome, parentRetired, parentWage, parentWorkLoc, partnerHpf, partnerLoc, peek,
+  hpCounty, incomeLuckNow, leOf, loanPayY, parentIncome, parentRetired, parentWage, parentWorkLoc, partnerHpf, partnerLoc, peek, sibsAlive,
   placeHp, placeInc, placeName, uiPay, wageBase, wageRate, wan, workExpK,
 } from '../engine';
 import { QW } from './util';
@@ -37,7 +37,7 @@ const sgn = (x: number) => (x >= 0 ? '+' : '−') + Math.abs(x).toFixed(1);
 export const TIPS: Record<string, (arg?: string) => Tip> = {
   famQuint() {
     // 家境是出生时定的：按父母那时的工资（年龄倒回出生那年）和同住老人的收入算，和 parents.ts 的 famPC 一样
-    const f = S.fam, n = S.famSize || 3 + f.sibs.length, atBirth = p => parentWage({ ...p, alive: true, age: p.age - S.age });
+    const f = S.fam, n = S.famSize || 3 + sibsAlive().length, atBirth = p => parentWage({ ...p, alive: true, age: p.age - S.age });
     const gpInc = f.gp ? f.gp * (S.rural ? (PBY[S.home.p].penR || 2950) * 1.5 : (PBY[S.home.p].penE || 45903) * 0.6) : 0;
     const calc = ((atBirth(f.dad) + atBirth(f.mom)) * PARENT_DISP + gpInc) / n;
     // 出生以后父母换过工作，按现在的工作倒推对不上出生时的数：只给结果
@@ -57,7 +57,7 @@ export const TIPS: Record<string, (arg?: string) => Tip> = {
   },
   famPerCap() {
     const f = S.fam, a = parentIncome('dad'), b = parentIncome('mom');
-    const n = (f.mom.alive ? 1 : 0) + (f.dad.alive ? 1 : 0) + (S.indep === false ? 1 + f.sibs.filter(x => x.age < 18).length : 0);
+    const n = (f.mom.alive ? 1 : 0) + (f.dad.alive ? 1 : 0) + (S.indep === false ? 1 + sibsAlive().filter(x => x.age < 18).length : 0);
     return {
       title: S.indep === false ? '家庭人均可支配收入（每月）' : '父母收入合计（每月）',
       expr: S.indep === false ? ['(', T(yuan(a / 12), '父亲'), '+', T(yuan(b / 12), '母亲'), ')', '÷', T(n + ' 人', '靠他们生活的人')] : [T(yuan(a / 12), '父亲'), '+', T(yuan(b / 12), '母亲')],
@@ -151,8 +151,8 @@ export const TIPS: Record<string, (arg?: string) => Tip> = {
   ptInc(who) {
     const p = who === 'dating' ? S.fam.dating : S.fam.partner;
     if (!p || !p.jk) return { title: '对方的收入', big: '没有收入', notes: ['还在读书。毕业以后按学历找工作。'] };
-    if (p.retired) return { title: `${p.name}的退休收入（每月）`, big: perMo(p.inc), notes: [`一年约 ${wan(p.inc)}。退休以后约为退休前收入的一半（估计）。`] };
-    // 对方的收入每年更新一次（生日那个月）。这一年里搬了家（或对方在外省：partnerLoc 每次随机挑一座城市），现在的数和按现在的地方算的对不上：不列算式，免得乘不出来
+    if (p.retired) return { title: `${p.name}的退休收入（每月）`, big: perMo(p.inc), notes: [`一年约 ${wan(p.inc)}。和你同一套规则：务农、打零工、个体户这类领城乡居民养老金，其余领职工养老金（按参加工作一直缴到退休估算）。`] };
+    // 对方的收入每年更新一次（生日那个月）。这一年里搬了家，现在的数和按现在的地方算的对不上：不列算式，免得乘不出来
     const L = partnerLoc(p), live = wageBase(L) * JOBS[p.jk].m * p.k * workExpK(p);
     if (Math.abs(live - p.inc) > Math.max(100, p.inc * 0.01)) return {
       title: `${p.name}的月收入`, big: perMo(p.inc),
@@ -175,7 +175,7 @@ export const TIPS: Record<string, (arg?: string) => Tip> = {
     const F = S.flags, side: [string, string][] = [];
     if (S.job === 'retired') {
       const pv = PBY[S.penP || S.loc.p], P = S.pen || { y: 0, r: 0, s: 0 }, emp = P.y >= PEN_MIN_YEARS, penE = pv.penE || 45903, penR = pv.penR || 2950;
-      const grown = S.fam.kids.filter(k => k.alive && S.age - k.bornAt >= 25).length;
+      const grown = S.fam.kids.filter(k => k.alive && k.age >= 25).length;
       if (grown) side.push(['子女给的', `成年子女每人每月约当地人均消费的 35% ÷ 12（最多算两个），另算`]);
       if (F.rehire) side.push(['返聘', `每月约 ${perMo(F.rehire.inc)}，到 ${F.rehire.until} 岁，另算`]);
       if (!emp) return {
