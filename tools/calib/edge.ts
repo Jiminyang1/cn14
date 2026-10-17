@@ -46,7 +46,7 @@ function checkYear(L, st) {
   if (L.school && L.age > 32) flag('32岁以后还在上学', L, L.school);
   if (L.job === 'seeking') { st.seekY++; if (st.seekY === 4) flag('连续4年以上待业', L, `civilRetry ${L.flags.civilRetry}`); } else st.seekY = 0;
   if (L.age >= 40 && !L.job && !L.school) flag('40岁以后没有任何职业状态', L);
-  if (L.age >= 25 && L.indep === false && !L.school) flag('25岁以后还没有经济独立', L, `job ${L.job} school ${L.school}`);
+  if (L.age >= 25 && L.indep === false && !L.school && !L.flags.toSchool) flag('25岁以后还没有经济独立', L, `job ${L.job} school ${L.school}`);
   const f = L.fam;
   if (f.married && !f.partner) flag('已婚但没有配偶', L);
   if (f.married && f.partner && !f.partner.alive) flag('已婚但配偶已去世', L);

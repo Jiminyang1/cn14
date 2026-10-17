@@ -218,6 +218,7 @@ export function statusLabel() {
   if (S.age < 3) return '婴儿';
   if (S.age < 6) return '幼儿';
   if (S.school) return `读${S.school}`;
+  if (S.job === 'seeking' && S.flags.disabled) return '养病'; // 中风致残以后辞了职，到病退年龄以前
   if (S.job) return S.job === 'retired' ? '退休' : `${JOBS[S.job].n} · ${S.loc.city}`;
   return '';
 }
