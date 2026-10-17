@@ -254,6 +254,7 @@ export function Account({ m }: { m?: string }) {
       <Row k={<>{S.job === 'retired' ? '我的养老金' : '我的月收入'}<Ib k="myIncome" /></>} v={S.job === 'retired' ? wanM(S.pension || 0) : myInc()} />
       {S.flags.rehire && <Row k="返聘收入" v={wanM(S.flags.rehire.inc)} />}
       <Row k={<>公积金<Ib k="hpf" /></>} v={S.hpf ? wan(S.hpf) + (S.hpfOn ? '' : '（封存）') : S.hpfOn ? '0元' : '没有'} />
+      {S.inv && S.inv.w + S.inv.f >= 1 && <Row k="理财和基金" v={<>{wan(S.inv.w + S.inv.f)}<small>{[S.inv.w >= 1 && `理财 ${wan(S.inv.w)}`, S.inv.f >= 1 && `基金 ${wan(S.inv.f)}`].filter(Boolean).join(' · ')}，不算现金</small></>} />}
       {!home && <Row k="住在" v={myHome()} />}
       <Row k="净资产" v={wan(netWorth())} />
       {home && <>

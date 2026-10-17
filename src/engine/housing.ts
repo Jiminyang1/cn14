@@ -236,7 +236,8 @@ export function sellHouse(k = 0.95) {
 
 export const loanArrears = () => (S.loans || []).reduce((total, loan) => total + (loan.arrears || 0), 0);
 export const inheritedValue = () => (S.inheritedHomes || []).reduce((total, home) => total + home.v, 0);
-export const netWorth = () => liquidBalance() + (S.hpf || 0) + (S.house?.v || 0) + inheritedValue() - loanBal();
+// 理财和基金（plans/invest.ts 的 S.inv）不是现金，但算净资产
+export const netWorth = () => liquidBalance() + (S.hpf || 0) + (S.inv ? S.inv.w + S.inv.f : 0) + (S.house?.v || 0) + inheritedValue() - loanBal();
 export function sellInherited(index: number) {
   const home = S.inheritedHomes?.[index];
   if (!home) return 0;
