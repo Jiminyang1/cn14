@@ -144,7 +144,7 @@ const FAM_K = 0.06;
 export const mutualP = p => clamp(selfP(p) + FAM_K * clamp(famPts(p), -3, 3), 0.05, 0.92);
 export function partnerRows(p, opts: { love?: boolean } = {}): [string, string][] {
   const r: [string, string][] = [['年龄', `${p.age}岁`], ['学历', p.jk ? EDU_LV[p.edu] : `${EDU_LV[p.edu]}在读`], ['职业', p.jk ? JOBS[p.jk].n + (bianzhi(p.jk) ? '（有编制）' : '') : '还在读书'],
-    ['月收入', p.inc ? (p.jk && !p.retired ? `到手${wanM(partnerPay(p).net)}（税前${wanM(p.inc)}）` : wanM(p.inc)) : '没有收入']];
+    ['月收入', p.inc ? (p.jk && !p.retired ? `到手${wanM(partnerPay(p).net)}` : wanM(p.inc)) : '没有收入']];
   if (p.jk && p.house != null) r.push(['房子', p.house ? '有自己的房' : '还没有']);
   r.push(['家乡', `${PBY[p.home].n}${p.rural ? '农村' : '城里'}`], ['家境', '●'.repeat(p.q) + '○'.repeat(5 - p.q)]);
   if (p.only != null) r.push(['家里', p.only ? '独生子女' : '有兄弟姐妹']);
@@ -162,32 +162,57 @@ export function partnerBrief(p): [string, string][] {
 export const feelWord = p => p.fit >= 0.7 ? '聊得很投缘' : p.fit >= 0.5 ? '感觉还可以' : '好像不太聊得来';
 
 // ===== 两家的看法 =====
-// 中国人谈对象，看的不只是两个人：对方家里看你的房子、编制、收入，你家里看对方的家境、工作、是哪里人。
-// 这些都写在抉择单上，不藏在骰子里。确定的，不消耗随机数（界面上也会算）
-// 对方家里看你的条件：每一项一个分数和一句话。famPts 是总分（算愿不愿意、见家长时满不满意），theirView 挑最要紧的一条写在单子上。
-// 还在读书的，家里还不过问
-type Why = { k: string; v: number; t: (subj: string) => string };
-export function theirWhys(p): Why[] {
-  if (S.school || S.age < 22) return [];
-  const male = S.sex === 'M', jn = S.job && JOBS[S.job] ? JOBS[S.job].n : '', r: Why[] = [];
-  const add = (k: string, v: number, t: (subj: string) => string) => r.push({ k, v, t });
-  const alt = <T,>(a: T[]) => a[(S.age + p.age) % a.length]; // 同样的条件换着说，不用随机数（界面上也会算）
-  // 工作、收入、房子
-  if (bianzhi(S.job)) add('bz', 1, alt([x => `${x}听说你是${jn}，有编制，挺满意。`, x => `${x}一听是${jn}，有编制，脸上就有了笑。`]));
-  if (S.job === 'seeking') add('seek', male ? -1.5 : -1, x => `${x}问你在哪儿上班，你说还在找。`);
-  if (S.house) add('house', male ? 1 : 0.5, alt([x => `${x}听说你在${S.house.city}有房，挺满意。`, x => `${x}知道你在${S.house.city}有自己的房子，放心了不少。`]));
-  else if (male && S.age >= 25) add('nohouse', p.q >= 4 ? -1 : -0.5, alt([x => `${x}托人问了两次：你有没有房。`, x => `${x}第一句就问：在${S.loc.city}买房了没有？`]));
-  if (S.income > placeInc() * RICH_K) add('rich', 0.5, x => `听说你收入不错，${x}没什么好挑的。`);
-  // 你家的情况：家境、城乡、兄弟姐妹、父母以后要不要你养
-  const gap = S.q - p.q;
-  if (gap <= -2) add('poor', 0.5 * (gap + 1), x => `${x}条件好，话里话外嫌你家底薄。`);
-  else if (gap >= 1) add('wealth', 0.3 * gap, x => `${x}听说你家里条件不错，挺满意。`);
-  if (S.home.kind === 'rural' && !p.rural) add('rural', -0.5, alt([x => `${x}听说你是农村出来的，有点犹豫。`, x => `${x}打听了你老家在哪儿，听说是村里的，没再往下问。`]));
-  if (!S.fam.sibs.some(b => b.alive)) add('only', 0.3, x => `${x}听说你是独生子女，家里的心思都在你身上，挺放心。`);
+// 中国人谈对象，看的不只是两个人。两家用同一张条件表互相看：工作（编制、有没有工作）、房子、收入、家境、城乡、是不是外地的、
+// 兄弟姐妹、爸妈以后要不要养、年龄差。对方家里看你（theirWhys）、你家里看对方（myWhys）都是这张表，只是说法不同。
+// 每一条一个分数：总分 ≥ 1 是满意、≤ −1 是不太满意（见家长时用）；对方家里的总分也算进 Ta 愿不愿意（mutualP）。
+// 确定的，不消耗随机数（界面上也会算）。二十二岁以前、还在读书的，家里还不过问
+type Prof = { male: boolean; age: number; bz: boolean; noJob: boolean; house: boolean; rich: boolean; q: number; rural: boolean; home: string; only: boolean; burden: string };
+const meProf = (): Prof => {
   const par = [S.fam.mom, S.fam.dad].filter(x => x.alive);
-  if (par.some(x => x.ill)) add('ill', -0.5, x => `${x}听说你家里老人身体不好，有点犹豫。`);
-  else if (par.length && par.every(x => RESID_PENSION_JOBS.has(x.jk))) add('pension', -0.5, alt([x => `${x}问起你爸妈有没有退休金，你说没有。`, x => `${x}算了算：你爸妈没有退休金，以后得靠你养。`]));
+  return { male: S.sex === 'M', age: S.age, bz: bianzhi(S.job), noJob: S.job === 'seeking', house: !!S.house, rich: S.income > placeInc() * RICH_K, q: S.q, rural: S.home.kind === 'rural', home: S.home.p,
+    only: !S.fam.sibs.some(b => b.alive), burden: par.some(x => x.ill) ? 'ill' : par.length && par.every(x => RESID_PENSION_JOBS.has(x.jk)) ? 'pension' : '' };
+};
+const taProf = (p): Prof => ({ male: p.sex === 'M', age: p.age, bz: bianzhi(p.jk), noJob: !p.jk && p.age >= 24, house: !!p.house, rich: p.inc * 12 > placeInc() * RICH_K, q: p.q, rural: p.rural, home: p.home, only: !!p.only, burden: '' });
+/** a 在 b 家眼里的每一条：[哪一条, 分数] */
+function score(a: Prof, b: Prof): [string, number][] {
+  const r: [string, number][] = [];
+  if (a.bz) r.push(['bz', 1]);
+  if (a.noJob) r.push(['seek', a.male ? -1.5 : -1]);
+  if (a.house) r.push(['house', a.male ? 1 : 0.5]);
+  else if (a.male && a.age >= 25) r.push(['nohouse', b.q >= 4 ? -1 : -0.5]);
+  if (a.rich) r.push(['rich', 0.5]);
+  const gap = a.q - b.q;
+  if (gap <= -2) r.push(['poor', 0.5 * (gap + 1)]); else if (gap >= 1) r.push(['wealth', 0.3 * gap]);
+  if (a.rural && !b.rural) r.push(['rural', -0.5]);
+  if (a.home !== b.home) r.push(['far', -0.5]);
+  if (a.only) r.push(['only', 0.3]);
+  if (a.burden) r.push([a.burden, -0.5]);
+  if (Math.abs(a.age - b.age) >= 6) r.push(['age', -0.5]);
   return r;
+}
+const involved = () => !S.school && S.age >= 22;
+type Why = { k: string; v: number; t: (subj: string) => string };
+/** 对方家里看你：每一条配一句话（subj 是「张三家里」） */
+export function theirWhys(p): Why[] {
+  if (!involved()) return [];
+  const jn = S.job && JOBS[S.job] ? JOBS[S.job].n : '', ag = Math.abs(p.age - S.age);
+  const alt = <T,>(a: T[]) => a[(S.age + p.age) % a.length]; // 同样的条件换着说，不用随机数
+  const T: Record<string, (x: string) => string> = {
+    bz: alt([x => `${x}听说你是${jn}，有编制，挺满意。`, x => `${x}一听是${jn}，有编制，脸上就有了笑。`]),
+    seek: x => `${x}问你在哪儿上班，你说还在找。`,
+    house: alt([x => `${x}听说你在${S.house?.city}有房，挺满意。`, x => `${x}知道你在${S.house?.city}有自己的房子，放心了不少。`]),
+    nohouse: alt([x => `${x}托人问了两次：你有没有房。`, x => `${x}第一句就问：在${S.loc.city}买房了没有？`]),
+    rich: x => `听说你收入不错，${x}没什么好挑的。`,
+    poor: x => `${x}条件好，话里话外嫌你家底薄。`,
+    wealth: x => `${x}听说你家里条件不错，挺满意。`,
+    rural: alt([x => `${x}听说你是农村出来的，有点犹豫。`, x => `${x}打听了你老家在哪儿，听说是村里的，没再往下问。`]),
+    far: x => `${x}听说你老家在${PBY[S.home.p].n}，嫌远。`,
+    only: x => `${x}听说你是独生子女，家里的心思都在你身上，挺放心。`,
+    ill: x => `${x}听说你家里老人身体不好，有点犹豫。`,
+    pension: alt([x => `${x}问起你爸妈有没有退休金，你说没有。`, x => `${x}算了算：你爸妈没有退休金，以后得靠你养。`]),
+    age: x => `${x}嫌你们差了${ag}岁。`,
+  };
+  return score(meProf(), taProf(p)).map(([k, v]) => ({ k, v, t: T[k] }));
 }
 export const famPts = p => theirWhys(p).reduce((a, w) => a + w.v, 0);
 /** 对方家里怎么看你（subj：「张三家里」）：最满意的一条和最在意的一条各说一句 */
@@ -198,20 +223,25 @@ export function theirView(p, subj = `${p.name}家里`): string | null {
   if (best.v > 0 && worst.v < 0) return best.t(subj) + worst.t(`不过${ta}家里`);
   return (best.v > 0 ? best : worst).t(subj);
 }
+/** 你家里看对方：同一张表，你爸妈的口气 */
+export function myWhys(p): { k: string; v: number; t: string }[] {
+  if (!involved() || !(S.fam.mom.alive || S.fam.dad.alive)) return [];
+  const ta = p.sex === 'M' ? '他' : '她', ag = Math.abs(p.age - S.age);
+  const T: Record<string, string> = {
+    bz: '有编制，稳当', seek: '还没工作', house: '自己有房，省心', nohouse: '还没买房', rich: '收入不错',
+    poor: '家里条件差了点', wealth: '家里条件不错',
+    rural: S.sex === 'M' ? '农村的，彩礼怕是不少' : `农村的，以后过年回${ta}家，你待得惯吗`,
+    far: S.sex === 'F' ? `${PBY[p.home].n}的？嫁那么远，以后想回趟家都难` : '外地的？以后过年回谁家',
+    only: '独生子女，家里的心思都在一个人身上', age: `${p.age > S.age ? '大' : '小'}了${ag}岁`,
+  };
+  return score(taProf(p), meProf()).map(([k, v]) => ({ k, v, t: T[k] }));
+}
 /** 你家里怎么看对方：好的、担心的各取最要紧的一条。par：1 满意、0 没意见、-1 不太满意 */
 export function famView(p): { who: string | null; good: string | null; bad: string | null; par: number } {
-  const { mom, dad } = S.fam, who = mom.alive ? '妈妈' : dad.alive ? '爸爸' : null;
-  if (!who || S.age < 22) return { who: null, good: null, bad: null, par: 0 }; // 二十出头以前，家里还不过问
-  const ta = p.sex === 'M' ? '他' : '她', gap = Math.abs(p.age - S.age);
-  const good = bianzhi(p.jk) ? '有编制，稳当' : p.house ? '自己有房，省心' : p.q - S.q === 1 ? '家里条件不错' : null;
-  let bad: string | null = null, sc = good ? 1 : 0;
-  if (!p.jk && S.age >= 24) { bad = '还没工作'; sc--; }
-  else if (S.q - p.q >= 2) { bad = '家里条件差了点'; sc--; }
-  else if (p.home !== S.home.p) { bad = S.sex === 'F' ? `${PBY[p.home].n}的？嫁那么远，以后想回趟家都难` : '外地的？以后过年回谁家'; sc--; }
-  else if (p.rural && S.home.kind !== 'rural') { bad = S.sex === 'M' ? '农村的，彩礼怕是不少' : `农村的，以后过年回${ta}家，你待得惯吗`; sc--; }
-  else if (gap >= 6) { bad = `比你${p.age > S.age ? '大' : '小'}了${gap}岁`; sc--; }
-  else if (p.q - S.q >= 2) bad = '人家条件那么好，你以后别受气'; // 高攀：担心，但不算反对
-  return { who, good, bad, par: Math.sign(sc) };
+  const who = S.fam.mom.alive ? '妈妈' : S.fam.dad.alive ? '爸爸' : null, ws = myWhys(p);
+  if (!ws.length) return { who: involved() ? who : null, good: null, bad: null, par: 0 };
+  const best = ws.reduce((a, b) => b.v > a.v ? b : a), worst = ws.reduce((a, b) => b.v < a.v ? b : a), f = ws.reduce((a, w) => a + w.v, 0);
+  return { who, good: best.v > 0 ? best.t : null, bad: worst.v < 0 ? worst.t : null, par: f <= -1 ? -1 : f >= 1 ? 1 : 0 };
 }
 /** 「妈妈说：“……”」 */
 export function famSay(p): string | null {
@@ -305,7 +335,7 @@ export const theirPar = p => { const f = famPts(p); return f <= -1 ? -1 : f >= 1
 function meetParents(d) {
   // 先缓过一阵的，家里有一半的可能松口（估计）
   if (d.slowed != null) { if (d.par < 0 && chance(0.5)) d.par = 0; if (d.tpar < 0 && chance(0.5)) d.tpar = 0; }
-  else { d.par ??= famView(d).par; d.tpar = theirPar(d); }
+  else { d.par = famView(d).par; d.tpar = theirPar(d); }
   d.metParents = 1;
   if (d.par < 0 || d.tpar < 0) { soon('parents'); return; }
   log(S.sex === 'M' ? `第一次去${d.name}家见家长，提了两大袋礼物。${d.q >= 4 ? '对方爸妈话不多，问了问你的工作和房子。' : '对方爸妈留你吃了顿饭，一直往你碗里夹菜。'}` : meetMyParents(d), 'ev');

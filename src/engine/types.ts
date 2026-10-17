@@ -77,7 +77,7 @@ export interface YearRow { a: number; h: number; hl: number; m: number; s: strin
 export interface QueueItem { at: number; type: 'ev' | 'dec' | 'ms' | 'ref' | 'day'; id?: string }
 export type Pending = { type: 'dec'; id: string; d: Decision } | { type: 'ref'; q: string };
 export interface Loan { kind: 'com' | 'hpf'; bal: number; rate: number; years: number; pay: number; arrears?: number }
-export interface House { city: string; p: string; v: number; paid: number; at: number }
+export interface House { city: string; p: string; v: number; paid: number; at: number; pt?: number } // pt：配偶婚前的房（离婚时归对方）
 export interface InheritedHome { city: string; p: string; v: number; share: number; reviewed?: boolean }
 export interface MonthlyStatement {
   year: number; month: number; opening: number; closing: number;

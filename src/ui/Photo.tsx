@@ -10,7 +10,7 @@ export const TICK_MS = 250;
 
 /** 抉择 id → 插画 */
 const DEC_SCENE: Record<string, SceneId> = {
-  gaokao: 'gaokao', marry: 'wedding', house: 'house', romance: 'date', graduate: 'grad', vocgrad: 'grad',
+  gaokao: 'gaokao', marry: 'wedding', house: 'house', romance: 'date', newyear: 'newyear', ldr: 'train', graduate: 'grad', vocgrad: 'grad',
   bigcity: 'train', crisis: 'layoff', baby: 'nursery', illness: 'ward', parentcare: 'oldage', oldcare: 'oldage',
   demolish: 'demolish', kidhome: 'kidhome', sibloan: 'sibloan', heritage: 'heritage', layofflist: 'layofflist', retireplan: 'retire', tight: 'sibloan',
 };

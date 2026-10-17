@@ -17,7 +17,6 @@ import { chance, clamp, gauss, pick, ri, wpick } from '../rng';
 import { fexp } from '../fmath';
 import { eff } from '../stats';
 import { kidsAlive, sibsAlive } from '../family';
-import { single } from '../romance';
 import { wan } from '../format';
 import { sibToWed, sibWed } from '../kin';
 import { shape, tiltW } from '../personality';
@@ -209,7 +208,6 @@ export const EVENTS = [
   { id: 'gigExit', a: [20, 58], gap: 2, w: () => ['rider', 'driver'].includes(S.job) && S.jobY >= 2 ? 2 : 0, run: () => { const was = JOBS[S.job].n; hireInCity(wpick({ factory: 2, sales: 2, clerk: S.edu >= 5 ? 2 : 0.5, shop: 1, skilled: S.edu === 4 ? 2 : 0.3 })); return `做了几年${was}，换成了${JOBS[S.job].n}。`; } },
   { id: 'factoryLine', a: [16, 60], gap: 3, w: () => ['factory', 'migrant'].includes(S.job) ? 3 : 0, run: () => { eff({ hl: -2, money: placeInc() * 0.05 }); return vary('factoryLine', ['旺季每天上十二个小时的班，宿舍八个人一间。', '流水线换了新机器，班组里裁了三个人。你被留了下来，一个人干两个人的活。', '这个月加班多，工资条上的数字是平时的一倍半。你给家里转了一半。', '夜班上到第三个星期，白天怎么也睡不着。']); } },
   { id: 'buildSite', a: [16, 65], gap: 3, w: () => S.job === 'build' ? 3 : 0, run: () => { eff({ hl: -3 }); if (chance(0.05)) { eff({ hl: -10, money: -placeInc() * 0.3 }); return { t: '在工地上从脚手架摔下来，腿骨折了，躺了三个月。', k: 'bad' }; } return '工程结束，包工头拖了三个月才把工钱结清。'; } },
-  { id: 'blind', a: [23, 42], gap: 1, c: single, w: () => S.age >= 27 ? 1.5 : 0.6, run: () => { eff({ h: -1 }); return '被家里安排去相亲。在咖啡馆坐了一个小时，对方问的全是收入和房子。'; } },
   // 催婚：过年时（1–2 月，状态事件）。在谈恋爱的、丧偶不到一年的不问；人在老家的是「走亲戚」，不是「回家」
   { id: 'urge', a: [25, 40], gap: 2, mo: [1, 2], pm: () => URGE_PM, c: () => !S.fam.married && !S.fam.dating && !(S.flags.widowed != null && S.age - S.flags.widowed <= 1), run: () => { eff({ h: -3 }); return `${awayFromHome() ? '过年回家' : '过年走亲戚'}，七大姑八大姨轮流问：“有对象了吗？什么时候结婚？”`; } },
   { id: 'dateTrip', a: [18, 50], gap: 2, w: 1.2, c: () => !!S.fam.dating, run: () => { const d = S.fam.dating; d.love = clamp(d.love + 6, 0, 100); eff({ h: 3, money: -placeInc() * 0.04 }); return { t: `和${d.name}去${pick(['厦门', '大理', '成都', '青岛', '西安', '桂林'])}玩了几天。${d.city !== S.loc.city ? '难得见一次面。' : ''}`, k: 'good' }; } },
@@ -239,7 +237,7 @@ export const EVENTS = [
   { id: 'drink', a: [22, 55], gap: 4, w: () => ['sales', 'boss', 'civil'].includes(S.job) ? 2 : 0.3, run: () => { eff({ hl: -2 }); return vary('drink', ['饭局上被一轮轮敬酒，喝到吐。', '酒桌上领导说「感情深，一口闷」。你闷了，第二天头疼了一整天。', '陪客户喝到半夜，打车回家，在楼下坐了半个小时才上楼。', '体检说你有脂肪肝。你看着报告，想起这几年喝过的酒。']); } },
   { id: 'low', a: [14, 70], gap: 6, w: () => S.st.h < 40 ? 2 : 0.15, run: () => { eff({ h: -3 }); if (chance(0.15)) { eff({ h: 8 }); return { t: '有一段时间每天都很累，什么都不想做。后来你去医院看了心理科，慢慢好了一些。', f: '中国抑郁障碍患者中，一年内接受过任何治疗的不到一成（Lancet Psychiatry 2021）。全国心理援助热线：12356' }; } return { t: '有一段时间每天都很累，什么都不想做，觉得一切都没有意义。你没有告诉任何人。', k: 'bad', f: '全国心理援助热线：12356' }; } },
   // 离婚：状态事件，风险见上面的 divorceRisk（每个月取年风险的 1/12）。月初排进来、月中才发生，c 在发生时再查一次（这个月里刚怀上的不离）
-  { id: 'divorce', big: 1, a: [20, 100], pm: () => divorceRisk() / 12, c: canDivorce, run: () => { const p = S.fam.partner; S.fam.married = false; S.fam.partner = null; S.flags.divorced = S.age; addDoc('divorce', '离婚证', [['对方', p.name]]); eff({ h: -8, so: -4, money: -Math.max(0, S.money) * 0.4 }); return { t: `你和${p.name}离婚了。`, k: 'bad', f: '2023年全国离婚360.5万对，其中民政部门登记259.3万对，其余为法院判决或调解' }; } },
+  { id: 'divorce', big: 1, a: [20, 100], pm: () => divorceRisk() / 12, c: canDivorce, run: () => { const p = S.fam.partner; S.fam.married = false; S.fam.partner = null; S.flags.divorced = S.age; addDoc('divorce', '离婚证', [['对方', p.name]]); eff({ h: -8, so: -4, money: -Math.max(0, S.money) * 0.4 }); const back = S.house?.pt ? (S.house = null, `房子是${p.name}婚前的，归了${p.sex === 'M' ? '他' : '她'}。你搬了出去。`) : ''; return { t: `你和${p.name}离婚了。${back}`, k: 'bad', f: '2023年全国离婚360.5万对，其中民政部门登记259.3万对，其余为法院判决或调解' }; } },
   { id: 'kidSchool', a: [28, 55], gap: 3, w: 2, c: () => kidsAlive().some(k => k.age >= 6 && k.age <= 17), run: () => { eff({ h: -2, money: -placeInc() * 0.1 }); return pick(['为了孩子上学，研究学区、排队报名，跑了好几趟。', '每天晚上辅导孩子写作业，气得血压都上来了。', '孩子的家长群一天几百条消息。']); } },
   { id: 'reunion', a: [30, 60], gap: 10, w: 1, run: () => { eff({ so: 2, h: S.relInc > 0 ? 2 : -2 }); return vary('reunion', ['同学聚会。有人开着好车来，有人没来。大家聊着聊着，就开始聊房子和孩子。', '同学聚会，当年的班长致辞，说「二十年了，大家都没怎么变」。所有人都笑了。', '同学聚会上，有人提起了已经不在的一位同学。桌上安静了一会儿，又有人举起了杯子。', '同学聚会，回了一趟母校。教学楼翻新了，你们的教室变成了实验室。']); } },
   { id: 'scam', a: [25, 90], gap: 8, w: () => S.age > 60 ? 1.5 : 0.5, c: () => S.money > 0, run: () => { const x = Math.min(S.money * 0.3, placeInc() * (S.age > 60 ? 0.5 : 0.3)); eff({ money: -x, h: -4 }); return { t: S.age > 60 ? vary('scamOld', [`听了几次“健康讲座”，买了${wan(x)}的保健品。`, `有人上门推销“磁疗床垫”，说能治腰疼。你买了一张，花了${wan(x)}。`, `一个说是“老战友的儿子”的人打来电话借钱，你转了${wan(x)}。后来才知道是骗子。`]) : vary('scam', [`接到自称“公检法”的电话，被骗走了${wan(x)}。`, `在网上碰到一个“稳赚不赔”的投资群，投进去${wan(x)}，群第二天就解散了。`, `网购退款，对方让你下载一个软件。卡里的${wan(x)}没了。`]), k: 'bad' }; } },
@@ -272,6 +270,16 @@ export const EVENTS = [
   { id: 'workClash', a: [22, 60], gap: 4, w: 0.4, c: () => isWorking(), run: () => { eff({ h: -3, so: -1 }); return vary('workClash', ['和同事因为一个方案吵了起来，之后在电梯里遇到都不说话。', '领导当着全组的面批评你的报告。你回到座位上，盯着屏幕看了很久。', '被客户投诉了一次。你写了三页的情况说明，没人看。']); } },
   { id: 'workPraise', a: [22, 60], gap: 4, w: 0.4, c: () => isWorking(), run: () => { eff({ h: 3, so: 1 }); return { t: vary('workPraise', ['你做的项目拿了年度奖。奖金不多，奖杯摆在了工位上。', '新来的同事说，进来之前就听说过你。', '年终总结会上，领导拿你的事当了例子。']), k: 'good' }; } },
   { id: 'famKid', a: [24, 60], gap: 3, w: 0.5, c: () => kidsAlive().some(k => k.age >= 3 && k.age < 13), run: () => { eff({ h: 3, so: 1 }); return vary('famKid', ['周末带孩子去公园放风筝。线断了，风筝飞走了，孩子笑得比放起来还开心。', '陪孩子写作业到十点，一道题讲到第三遍，你自己先急了。', '孩子学校开运动会，你请了假去当啦啦队，嗓子喊哑了。']); } },
+  // 对方是独生子女：Ta 爸妈老了，只有你们两个能照顾（你也是独生子女的，四个老人就靠你们俩）
+  { id: 'inlawCare', a: [42, 66], once: 1, w: 1.2, c: () => S.fam.married && !!S.fam.partner?.alive && !!S.fam.partner.only && S.age - S.fam.partner.marriedAt >= 2, run: () => {
+    const p = S.fam.partner, who = pick(['爸爸', '妈妈']), four = !S.fam.sibs.some(b => b.alive) && (S.fam.mom.alive || S.fam.dad.alive);
+    eff({ h: -4, hl: -1, money: -placeInc() * 0.3 });
+    const t = pick([
+      `${p.name}的${who}住院了。${p.name}是独生子女，没有兄弟姐妹能搭把手，你们请了假两头跑，跑了一个多月。`,
+      `半夜接到电话，${p.name}的${who}摔了一跤。${p.name}是独生子女，你们连夜开车赶回去，在医院陪了两个星期。`,
+    ]);
+    return { t: t + (four ? '你也是独生子女。四个老人，就你们两个。' : ''), k: 'bad' };
+  } },
   { id: 'famParents', a: [28, 65], gap: 3, w: 0.5, c: () => bothParents() && !S.flags.parDiv, run: () => { eff({ h: 2, so: 1 }); return vary('famParents', ['带爸妈去做了一次全面体检，排了一上午的队。爸爸一直说「花这个钱干什么」。', '周末陪妈妈去逛菜市场，她跟每个摊主都介绍「这是我孩子」。', '给爸妈换了一台大电视，遥控器教了三遍。']); } },
   { id: 'famHome', a: [24, 85], gap: 3, w: 0.4, c: () => S.fam.married && !!S.fam.partner && S.fam.partner.alive, run: () => { eff({ h: 3 }); return vary('famHome', ['一家人难得在家吃了一顿晚饭，谁都没看手机。', `结婚纪念日，你和${S.fam.partner.name}回到了第一次约会的那家店。店还在，老板换了。`, `周末和${S.fam.partner.name}把家里大扫除了一遍，翻出了结婚时的照片，看了一下午。`]); } },
   { id: 'halfMara', a: [20, 60], once: 1, w: 0.3, run: () => { eff({ hl: 2, h: 4 }); return { t: '跑完了人生第一个半程马拉松。到终点的时候，腿已经不是自己的了。', k: 'good' }; } },
@@ -300,13 +308,13 @@ export const EVMAP = {};
 // 事件属于哪个领域：格子放在这个领域上，这类事更容易抽到（focus.ts 的 domK），好事坏事一起多
 export const EV_DOM: Record<string, string> = {
   homework: 'study', olympiad: 'study', cadre: 'study', essay: 'study', cet: 'study', nosleep: 'study', myopia: 'study',
-  workTrip: 'work', workClash: 'work', workPraise: 'work', famKid: 'family', famParents: 'family', famHome: 'family',
+  workTrip: 'work', workClash: 'work', workPraise: 'work', famKid: 'family', famParents: 'family', inlawCare: 'family', famHome: 'family',
   halfMara: 'health', keepFit: 'health', hobbyDeep: 'leisure', friendsNight: 'social',
   game: 'leisure', pet: 'leisure', snack: 'leisure', campSummer: 'leisure', river: 'leisure', travel: 'leisure', dance: 'leisure', phoneOld: 'leisure', viral: 'leisure',
   bestie: 'social', fightKid: 'social', dorm: 'social', reunion: 'social', redEnv: 'social', newYearShow: 'social', oldFriend: 'social', palMid: 'social', crushMeet: 'social', bulliedMeet: 'social', star: 'social',
   sportsDay: 'health', peTest: 'health', checkup: 'health', quitSmoke: 'health',
   overtime: 'work', promo: 'work', drink: 'work', factoryLine: 'work', buildSite: 'work', riderRain: 'work', parttime: 'work', palCall: 'work',
-  crush: 'love', blind: 'love', dateTrip: 'love', dateFight: 'love',
+  crush: 'love', dateTrip: 'love', dateFight: 'love',
   visitHome: 'family', kidSchool: 'family', grandcare: 'family', sibWed: 'family', echoLego: 'family', echoLb: 'family',
 };
 EVENTS.forEach(e => { EVMAP[e.id] = e; });
