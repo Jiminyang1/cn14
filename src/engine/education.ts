@@ -11,6 +11,7 @@ import { chance, clamp, gauss, pick, wpick } from './rng';
 import { cityLoc, moveTo } from './place';
 import { eff } from './stats';
 import { fire } from './lifecycle';
+import { calYear } from './monthly';
 
 export const EDU_LV = ['没上过学', '小学', '初中', '高中', '中专/职高', '大专', '本科', '硕士'];
 // ===== 恋爱对象 =====
@@ -24,7 +25,7 @@ export function enroll(c, major, adjusted) {
   addDoc('admit', '录取通知书', [['学校', c.name], ['专业', major + (adjusted ? '（调剂）' : '')], ['层次', TIER_N[c.tier] || '']]);
   const L = BIG[c.city] ? cityLoc(BIG[c.city].p, c.city) : PBY[c.prov].cities.includes(c.city) ? cityLoc(c.prov, c.city) : { p: c.prov, city: c.city, kind: 'city' };
   moveTo(L);
-  S.school = c.tier === 'zhuan' ? '大专' : '本科'; S.schoolEnd = S.age + (c.tier === 'zhuan' ? 3 : 4);
+  S.school = c.tier === 'zhuan' ? '大专' : '本科'; S.schoolEnd = calYear() + (c.tier === 'zhuan' ? 3 : 4);
   S.flags.tier = { '985': 'top', '211': '211', ben1: 'ben1', ben2: 'ben', minban: 'ben', zhuan: 'zhuan' }[c.tier];
   S.flags.uni = { name: c.name, city: c.city, prov: c.prov, tier: c.tier };
   S.flags.major = major;

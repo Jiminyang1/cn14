@@ -1,4 +1,4 @@
-// 抉择：哪些抉择今年会出现（dueDecisions），以及每个抉择的选项和结果（DEC）。
+// 抉择：哪些抉择会出现、在哪个月（monthDecisions、yearDecisions、schoolDecision），以及每个抉择的选项和结果（DEC）。
 // 抉择：{ build: () => { title, body, fact?, card?, choices, ctx? } | null, apply: (选中的 k, ctx) => 文字或{t,k,f} | null }
 
 import type { Choice } from '../types';
@@ -12,7 +12,9 @@ import { S } from '../state';
 import { addDoc, log, logLater } from '../journal';
 import { annualPay, bestPlan, buyHouse, foreclose, hhIncome, hometownHouse, loanBal, loanPayY, loanPlans, planSub, sellHouse } from '../housing';
 import { awayFromHome, cityLoc, farFromParents, homeCity, migrantCity, moveTo, placeHp, placeInc, placeName } from '../place';
-import { babyP, canBaby, haveKid, kidsAlive } from '../family';
+import { babyP, canBaby, conceive, kidsAlive } from '../family';
+import { MONTHS, calYear, perMonth } from '../monthly';
+import { nowM } from '../calendar';
 import { chance, clamp, gauss, pick, ri, wpick } from '../rng';
 import { eff } from '../stats';
 import { parentsHelp } from '../parents';
@@ -22,33 +24,74 @@ import { DEMOL_K, demolDue, demolish, kidHomeCost, lendSib, marryKid, weddingKid
 import { heirShares, inheritSplit } from '../household';
 import { KEEP, goHomeOld, jumpShip, lastJob, layOff, listDue, rehireText, severance, startRehire, startSnowbird } from '../turns';
 
-export function dueDecisions() {
-  const a = S.age, f = S.fam, d = [];
-  const once = id => S.done['dec_' + id] == null;
-  const gapOK = (id, g) => S.done['dec_' + id] == null || a - S.done['dec_' + id] >= g;
+// ===== 哪些抉择会出现 =====
+// 四类：
+// · 学校的日历（schoolDecision）：毕业那一年的 6 月（中考、高考）或 6–7 月（毕业），由 schedule.ts 的 schoolMonth 排；
+// · 由状态触发的（monthDecisions 的前半）：每个月开始时都查，状态一出现，最晚下个月就弹出；
+// · 本来就是「每年有一定概率」的（monthDecisions 的后半）：每月按 perMonth 换算的概率判定，同一个年龄年里最多一次，
+//   所以处境不变时一年里出现的概率和原来一样；间隔（gapOK）仍按年龄算——出现的月份前后都是随机的，平均间隔不变；
+// · 每年判定一次、落在随机月份的（yearDecisions）：结婚（每年谈一次）、裁员名单和拆迁（判定在 turns.ts 的 listDue、kin.ts 的 demolDue，按年）。
+// S.done['dec_'+id] 是弹出时的年龄（lifecycle.ts 的 openDec 记的）；需要按月算间隔的，用 S.decAt（排进日程时是出生后第几个月，schedule.ts 记）。
+const DKEY: Record<string, string> = {};
+const doneAge = (id: string) => S.done[DKEY[id] ||= 'dec_' + id];
+const once = (id: string) => doneAge(id) == null;
+const gapOK = (id: string, g: number) => doneAge(id) == null || S.age - doneAge(id) >= g;
+/** 离上次排进日程过了几个月；旧存档没有月份记录的，按弹出那年的年初算 */
+const monthsSince = (id: string) => { const at = S.decAt && S.decAt[id] != null ? S.decAt[id] : doneAge(id) != null ? doneAge(id) * MONTHS : null; return at == null ? Infinity : nowM() - at; };
+/** 每年概率 p 的抉择：这个年龄年里还没出现过，这个月按 perMonth(p) 判定（换算结果缓存起来：每月都要查，fpow 不便宜） */
+const PM = new Map<number, number>();
+const yearly = (id: string, p: number) => {
+  if (doneAge(id) === S.age) return false;
+  let q = PM.get(p);
+  if (q == null) PM.set(p, q = perMonth(p));
+  return chance(q);
+};
+
+/** 毕业那一年 6 月该出现的升学、毕业抉择 */
+export function schoolDecision() {
+  return { 初中: 'zhongkao', 高中: 'gaokao', 复读: 'gaokao', 职高: 'vocgrad', 大专: 'graduate', 本科: 'graduate', 硕士: 'graduate' }[S.school];
+}
+
+/** 每个月开始时：这个月该出现的抉择（按优先级排，schedule.ts 每月最多排两个） */
+export function monthDecisions() {
+  const a = S.age, f = S.fam, d = [], J = JOBS[S.job], working = !!J && J.m > 0;
+  // ---- 由状态触发：一出现就排 ----
   if (S.flags.ill && !S.flags.ill.treat) d.push('illness');
-  if (S.school && S.schoolEnd === a) d.push({ 初中: 'zhongkao', 高中: 'gaokao', 复读: 'gaokao', 职高: 'vocgrad', 大专: 'graduate', 本科: 'graduate', 硕士: 'graduate' }[S.school]);
-  if (S.job === 'seeking' && !S.school) d.push(S.flags.civilRetry && a < 35 ? 'civilretry' : 'seek');
+  if (S.job === 'seeking' && !S.school) {
+    // 公务员考试一年一次：上次考完满 12 个月才再问要不要再考，中间这一年在家备考
+    if (S.flags.civilRetry && a < 35) { if (nowM() - (S.flags.civilAt ?? -Infinity) >= 12) d.push('civilretry'); }
+    else d.push('seek');
+  }
   if ((f.mom.alive && f.mom.ill === 1) || (f.dad.alive && f.dad.ill === 1)) { if (a >= 22) d.push('parentcare'); }
   if (weddingKid()) d.push('kidhome');
   if (S.flags.heirDue && !S.flags.inherited) d.push('heritage');
-  if (f.dating && !f.married && a >= (S.sex === 'M' ? 22 : 20) && a - f.dating.metAt >= (a < 28 && !(mShift() < -2) ? 2 : 1)) d.push('marry');
-  if (f.married && f.partner && f.partner.alive && canBaby() && chance(babyP())) d.push('baby');
-  const ask = !!f.dating && f.dating.wh === 2; // 对方家里等着婚房
-  if (!S.house && isWorking() && a >= (ask ? 22 : 26) && a <= 50 && (f.married || a >= 30 || ask) && gapOK('house', ask ? 1 : 4) && chance(ask ? 0.8 : 0.35)) d.push('house');
-  if (isWorking() && S.loc.kind !== 'big' && a >= 19 && a <= 32 && once('bigcity') && !JOBS[S.job].stable && chance(0.18)) d.push('bigcity');
-  // 每年 1%：在私企干到 48 岁的约一成会遇到（智联招聘：46–50 岁求职者 11.5% 曾因年龄被裁，见 DATA.md）
-  if (JOBS[S.job] && JOBS[S.job].priv && a >= 35 && a <= 48 && once('crisis') && chance(0.01)) d.push('crisis');
-  if (isWorking() && JOBS[S.job].risk > 0 && a >= 24 && a <= 50 && gapOK('jobhop', 6) && chance(0.07)) d.push('jobhop');
-  if (a >= 78 && once('oldcare') && chance(0.3)) d.push('oldcare');
   if (S.job === 'retired' && once('retireplan') && a <= 75) d.push('retireplan');
-  if (isWorking() && gapOK('layofflist', 4) && S.done.dec_crisis !== a && listDue()) d.push('layofflist');
+  // 欠款超过一年的月供（或半年的当地收入）才算真的还不上；小额缺口靠信用卡、亲戚周转。「再撑一年」：上次问过满 12 个月才再问
+  const lb = loanBal(), inc = lb || S.indep ? placeInc() : 0;
+  const arrears = lb && S.money < -Math.max(loanPayY() * 1.5, inc);
+  if (arrears && monthsSince('arrears') >= 12) d.push('arrears');
+  // ---- 每年一定概率：按月换算 ----
+  if (f.married && f.partner && f.partner.alive && canBaby() && yearly('baby', babyP())) d.push('baby');
+  const ask = !!f.dating && f.dating.wh === 2; // 对方家里等着婚房
+  if (!S.house && working && a >= (ask ? 22 : 26) && a <= 50 && (f.married || a >= 30 || ask) && gapOK('house', ask ? 1 : 4) && yearly('house', ask ? 0.8 : 0.35)) d.push('house');
+  if (working && S.loc.kind !== 'big' && a >= 19 && a <= 32 && once('bigcity') && !J.stable && yearly('bigcity', 0.18)) d.push('bigcity');
+  // 每年 1%：在私企干到 48 岁的约一成会遇到（智联招聘：46–50 岁求职者 11.5% 曾因年龄被裁，见 DATA.md）；同一年里不和裁员名单重复
+  if (J && J.priv && a >= 35 && a <= 48 && once('crisis') && doneAge('layofflist') !== a && !S.queue.some(e => e.id === 'layofflist') && yearly('crisis', 0.01)) d.push('crisis');
+  if (working && J.risk > 0 && a >= 24 && a <= 50 && gapOK('jobhop', 6) && yearly('jobhop', 0.07)) d.push('jobhop');
+  if (a >= 78 && once('oldcare') && yearly('oldcare', 0.3)) d.push('oldcare');
+  if (S.indep && a >= 24 && a <= 65 && !S.flags.sibLoan && f.sibs.some(s => s.age >= 22) && S.money > inc * 0.6 && gapOK('sibloan', 10) && yearly('sibloan', 0.015)) d.push('sibloan'); // 有兄弟姐妹的人一辈子约被借 0.6 次（估计）
+  if (lb && !arrears && S.money - inc * 1.5 > Math.max(inc * 0.5, lb * 0.2) && gapOK('prepay', 4) && yearly('prepay', 0.3)) d.push('prepay');
+  return d;
+}
+
+/** 生日那个月：每年判定一次的抉择，schedule.ts 把它们放在这一年随机的一个月 */
+export function yearDecisions() {
+  const a = S.age, f = S.fam, d = [];
+  // 谈了一两年，每年谈一次结婚的事
+  if (f.dating && !f.married && a >= (S.sex === 'M' ? 22 : 20) && a - f.dating.metAt >= (a < 28 && !(mShift() < -2) ? 2 : 1)) d.push('marry');
+  if (isWorking() && gapOK('layofflist', 4) && listDue()) d.push('layofflist');
   if (a >= 18 && demolDue()) d.push('demolish');
-  if (S.indep && a >= 24 && a <= 65 && !S.flags.sibLoan && f.sibs.some(s => s.age >= 22) && S.money > placeInc() * 0.6 && gapOK('sibloan', 10) && chance(0.015)) d.push('sibloan'); // 有兄弟姐妹的人一辈子约被借 0.6 次（估计）
-  // 欠款超过一年的月供（或半年的当地收入）才算真的还不上；小额缺口靠信用卡、亲戚周转
-  if (loanBal() && S.money < -Math.max(loanPayY() * 1.5, placeInc()) && gapOK('arrears', 1)) d.push('arrears');
-  else if (loanBal() && S.money - placeInc() * 1.5 > Math.max(placeInc() * 0.5, loanBal() * 0.2) && gapOK('prepay', 4) && chance(0.3)) d.push('prepay');
-  return d.filter(Boolean);
+  return d;
 }
 
 // ===== 抉择 =====
@@ -74,9 +117,9 @@ export const DEC = {
     apply: (k, ctx) => {
       if (ctx.back) { S.flags.migBack = 1; moveTo(S.home); }
       S.edu = Math.max(S.edu, 2);
-      if (k === 'gao') { S.school = '高中'; S.schoolEnd = S.age + 3; addDoc('school', '学籍卡', [['学校', `${S.loc.city}的一所普通高中`], ['入学', `${S.birthYear + S.age}年`]]); return '开始读高中了。'; }
-      if (k === 'voc') { S.school = '职高'; S.schoolEnd = S.age + 3; return `进了职业高中，学的是${pick(['数控技术', '汽车维修', '电子商务', '学前教育', '护理', '烹饪', '计算机应用'])}。`; }
-      if (k === 'redo') { S.flags.zkRedo = 1; S.school = '初中'; S.schoolEnd = S.age + 1; eff({ kn: 5, h: -5 }); return '又回到初三的教室，坐在一群比你小一岁的同学中间。'; }
+      if (k === 'gao') { S.school = '高中'; S.schoolEnd = calYear() + 3; addDoc('school', '学籍卡', [['学校', `${S.loc.city}的一所普通高中`], ['入学', `${calYear()}年`]]); return '开始读高中了。'; }
+      if (k === 'voc') { S.school = '职高'; S.schoolEnd = calYear() + 3; return `进了职业高中，学的是${pick(['数控技术', '汽车维修', '电子商务', '学前教育', '护理', '烹饪', '计算机应用'])}。`; }
+      if (k === 'redo') { S.flags.zkRedo = 1; S.school = '初中'; S.schoolEnd = calYear() + 1; eff({ kn: 5, h: -5 }); return '又回到初三的教室，坐在一群比你小一岁的同学中间。'; }
       S.school = null; hire(chance(0.6) ? 'factory' : 'migrant', migrantCity()); eff({ h: -3 });
       return `收拾行李去了${S.loc.city}，进了一家工厂。你是车间里年纪最小的。`;
     },
@@ -102,7 +145,7 @@ export const DEC = {
     },
     apply: (k, ctx) => {
       S.edu = Math.max(S.edu, 3);
-      if (k === 'redo') { S.school = '复读'; S.schoolEnd = S.age + 1; eff({ kn: 4, h: -6 }); return '回到高三，又过了一年每天只睡六个小时的日子。'; }
+      if (k === 'redo') { S.school = '复读'; S.schoolEnd = calYear() + 1; eff({ kn: 4, h: -6 }); return '回到高三，又过了一年每天只睡六个小时的日子。'; }
       if (k === 'work') { S.school = null; hireInCity(wpick({ factory: 2, migrant: 2, rider: 1, sales: 1.5, shop: 0.5 })); return `没有再读书，去了${S.loc.city}，做了${JOBS[S.job].n}。`; }
       const sel = k === 'apply' ? gkAutoApps(ctx) : JSON.parse(k.slice(6));
       const apps = sel.apps.map(a => ({ c: ctx.cands[a.i], major: a.major }));
@@ -123,7 +166,7 @@ export const DEC = {
       return { title: '滑档之后', body: '本科批没有被录取。征集志愿里还剩一些学校有空位，也可以复读一年。', choices: ch };
     },
     apply: k => {
-      if (k === 'redo') { S.school = '复读'; S.schoolEnd = S.age + 1; eff({ kn: 4, h: -6 }); return '决定复读。'; }
+      if (k === 'redo') { S.school = '复读'; S.schoolEnd = calYear() + 1; eff({ kn: 4, h: -6 }); return '决定复读。'; }
       if (k === 'work') { S.school = null; hireInCity(wpick({ factory: 2, migrant: 2, sales: 1.5 })); return `去了${S.loc.city}，做了${JOBS[S.job].n}。`; }
       const P = PBY[S.home.p], city = pick(P.cities);
       return enroll({ name: `${city}的一所高职`, city, prov: S.home.p, tier: 'zhuan', attr: '' }, pick(['护理', '电子商务', '会计', '机械工程', '计算机']), false);
@@ -138,7 +181,7 @@ export const DEC = {
     apply: k => {
       S.edu = Math.max(S.edu, 4); S.school = null; addDoc('grad', '中专毕业证书', [['学历', '中专/职高']]);
       if (k === 'skilled') { hireInCity('skilled'); return `在${S.loc.city}的一家工厂当了技术工人。`; }
-      if (k === 'zhuan') { S.school = '大专'; S.schoolEnd = S.age + 3; moveTo(cityLoc(S.home.p, PBY[S.home.p].cities[0])); return `考上了${S.loc.city}的一所高职。`; }
+      if (k === 'zhuan') { S.school = '大专'; S.schoolEnd = calYear() + 3; moveTo(cityLoc(S.home.p, PBY[S.home.p].cities[0])); return `考上了${S.loc.city}的一所高职。`; }
       hire(wpick({ migrant: 2, rider: 1, factory: 2, sales: 1 }), migrantCity()); return `去了${S.loc.city}，做了${JOBS[S.job].n}。`;
     },
   },
@@ -162,7 +205,7 @@ export const DEC = {
       if (k === 'kaoyan') {
         // 考研总体录取率约 27%–32%（2024–2025）；名校有推免名额，成功率高得多
         const base = { top: 0.75, '211': 0.6, ben1: 0.38, ben: 0.3, zhuan: 0.15 }[S.flags.tier] || 0.3;
-        if (chance(clamp(base + (S.st.kn - 62) / 50, 0.08, 0.92))) { S.school = '硕士'; S.schoolEnd = S.age + 3; return { t: base >= 0.6 && chance(0.5) ? '拿到了保研名额，免试读研。' : '考上了研究生。', k: 'good' }; }
+        if (chance(clamp(base + (S.st.kn - 62) / 50, 0.08, 0.92))) { S.school = '硕士'; S.schoolEnd = calYear() + 3; return { t: base >= 0.6 && chance(0.5) ? '拿到了保研名额，免试读研。' : '考上了研究生。', k: 'good' }; }
         quitJob(); return { t: '考研差了几分，没上线。先找工作吧。', k: 'bad', f: '2026年考研报名343万人，2025年硕士招生123.7万人' };
       }
       if (k === 'civil') return civilTry();
@@ -308,7 +351,7 @@ export const DEC = {
       }
       S.fam.married = true; S.fam.partner = p; p.marriedAt = S.age; S.fam.dating = null; p.city = S.loc.city;
       if (p.jk) p.inc = partnerInc(p);
-      addDoc('marry', '结婚证', [['持证人', S.name], ['配偶', p.name], ['配偶学历', EDU_LV[p.edu]], ['配偶职业', ptJobName(p)], ['登记日期', `${S.birthYear + S.age}年`]]);
+      addDoc('marry', '结婚证', [['持证人', S.name], ['配偶', p.name], ['配偶学历', EDU_LV[p.edu]], ['配偶职业', ptJobName(p)], ['登记日期', `${calYear()}年`]]);
       eff({ money: (S.sex === 'M' ? -ctx.amt : ctx.amt * 0.3) - placeInc() * 0.1, h: 8, so: 6 });
       return { t: `你和${p.name}结婚了。酒席摆了${ri(10, 40)}桌。`, k: 'good' };
     },
@@ -327,8 +370,10 @@ export const DEC = {
     },
     apply: k => {
       if (k === 'no') return null;
-      const kid = haveKid(); eff({ h: 6, so: 4, money: -placeInc() * 0.3 });
-      return { t: `${kid.name}出生了，是个${kid.sex === 'M' ? '男孩' : '女孩'}。`, k: 'good' };
+      // 怀孕约十个月后出生（family.ts 的 conceive）；还是马上出生的版本会直接返回孩子
+      const kid = conceive(); eff({ h: 6, so: 4, money: -placeInc() * 0.3 });
+      if (kid && kid.name) return { t: `${kid.name}出生了，是个${kid.sex === 'M' ? '男孩' : '女孩'}。`, k: 'good' };
+      return { t: S.sex === 'F' ? '你怀孕了。' : `${S.fam.partner.name}怀孕了。`, k: 'good' };
     },
   },
 
@@ -580,7 +625,8 @@ export const DEC = {
   // ---------- 工作和晚年的关口（规则在 turns.ts） ----------
   layofflist: {
     build: () => {
-      if (!(JOBS[S.job] && JOBS[S.job].priv)) return null;
+      // 这一年已经因为「35岁」被裁过的，不再有裁员名单
+      if (!(JOBS[S.job] && JOBS[S.job].priv) || doneAge('crisis') === S.age) return null;
       const pct = ri(1, 3) * 10, n = severance(), insY = S.jobY >= 10 ? 24 : S.jobY >= 5 ? 18 : 12;
       return {
         title: '裁员名单',
