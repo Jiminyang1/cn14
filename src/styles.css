@@ -392,3 +392,6 @@ table.cmp th { font-weight: 500; font-family: var(--form); color: var(--muted); 
 /* 人生纪录里的小照片 */
 .tl .pix-log { width: min(100%, 220px); margin: 6px 0 4px; padding: 4px; transform: rotate(-1deg); }
 .tl:nth-child(even) .pix-log { transform: rotate(1deg); }
+/* 右栏顶上的实时画面 */
+.pix-live { width: 100%; max-width: 384px; margin: 0 auto; padding: 5px 5px 4px; transform: none; }
+.pix-live figcaption { font: 11px var(--mono); color: #7d6c57; text-align: right; padding: 3px 2px 0; }

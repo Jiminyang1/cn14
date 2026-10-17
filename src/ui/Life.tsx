@@ -4,7 +4,7 @@ import { EDU_LV, FOCUS, S, calMonth, calYear, carer, focusList, persWords, place
 import { SPEEDS, game } from '../game/controller';
 import './day.css';
 import { Modal } from './Modal';
-import { LogPic } from './Photo';
+import { LiveScene, LogPic } from './Photo';
 import { YearProgress } from './Progress';
 import { RunId } from './RunId';
 import { Companions, Curve, Docs, FamilyCards, Vitals } from './Sidebar';
@@ -119,6 +119,7 @@ function SideTabs() {
   const fresh = docsN - seen.current;
   return (
     <aside className="col-side">
+      <LiveScene />
       <div className="side-tabs" role="tablist">
         {TABS.map(([k, n]) => (
           <button key={k} type="button" role="tab" aria-selected={tab === k} className={tab === k ? 'on' : ''} onClick={() => pick(k)}>

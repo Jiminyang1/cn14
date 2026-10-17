@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import { S, type Pending } from '../engine';
 import { hash } from './pixel/pix';
 import { H, SCENES, W, type SceneCtx, type SceneId } from './pixel/scenes';
+import { drawWorld, viewOf, type View } from './pixel/world';
 
 export const TICK_MS = 250;
 
@@ -33,7 +34,7 @@ export function useTick(on = true) {
   const [t, setT] = useState(0);
   useEffect(() => {
     if (!on || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    const iv = setInterval(() => setT(n => n + 1), TICK_MS);
+    const iv = setInterval(() => { if (!document.hidden) setT(n => n + 1); }, TICK_MS); // 页面看不见时不走
     return () => clearInterval(iv);
   }, [on]);
   return t;
@@ -71,6 +72,28 @@ export function Photo({ id, sex }: { id: SceneId; sex?: 'M' | 'F' }) {
     <figure className="pix-photo">
       <PixCanvas id={id} ctx={{ rural: S.loc.kind === 'rural', sex: sex || S.sex, seed: S.seed }} />
       <span className="pix-date">{stamp(id)}</span>
+    </figure>
+  );
+}
+
+// ===== 实时画面：这一刻家里是什么样（右栏顶上） =====
+const ROLE_N: Record<string, string> = { me: '你', mom: '妈妈', dad: '爸爸', grandma: '奶奶', grandpa: '爷爷', sib: '兄弟姐妹', partner: '爱人', kid: '孩子', mate: '室友' };
+const SEASON_N = { spring: '春', summer: '夏', autumn: '秋', winter: '冬' };
+const HOME_N = { yard: '农村的院子', flat: '楼下', dorm: '宿舍楼下' };
+/** 给读屏用的一句话 */
+export function describeView(v: View) {
+  const who = v.people.map(r => ROLE_N[r.role]).filter((x, i, a) => a.indexOf(x) === i).join('、');
+  return `${HOME_N[v.home]}，${v.month}月（${SEASON_N[v.season]}）${v.festival === 'spring' ? '，过年' : v.festival === 'midautumn' ? '，中秋' : ''}。在家的有：${who}${v.away ? '；爸妈在外地，正在视频' : ''}。`;
+}
+export function LiveScene() {
+  const ref = useRef<HTMLCanvasElement>(null);
+  const t = useTick();
+  const v = viewOf(S);
+  useEffect(() => { if (ref.current) drawWorld(v, t).draw(ref.current); });
+  return (
+    <figure className="pix-photo pix-live">
+      <canvas ref={ref} width={W} height={H} role="img" aria-label={describeView(v)} />
+      <figcaption>{v.month}月 · {SEASON_N[v.season]}{v.festival === 'spring' ? ' · 过年' : v.festival === 'midautumn' ? ' · 中秋' : ''}</figcaption>
     </figure>
   );
 }

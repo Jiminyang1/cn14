@@ -7,19 +7,24 @@
 //   npm run pixel -- --scale 4 --out logs/pixel/a.png
 //   npm run pixel -- --save base           记下每一格的指纹到 logs/pixel/base.json
 //   npm run pixel -- --compare base        和记下的指纹比，列出变了的格子（重构素材时确认画面没变）
+//   npm run pixel -- --lives 12 --ages 3,8,15,22,35,50,70   模拟真实的人生，按这些年龄画实时画面（每一生一行），检查 viewOf / drawWorld
 //
 import { createHash } from 'node:crypto';
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname } from 'node:path';
 import { deflateSync } from 'node:zlib';
 import { H, SCENES, W, type SceneCtx, type SceneId } from '../src/ui/pixel/scenes';
+import { drawWorld, viewOf } from '../src/ui/pixel/world';
+import { S, birth, runHeadlessYear } from '../src/engine';
+import type { Pix } from '../src/ui/pixel/pix';
 
 // ---------- 参数 ----------
 const argv = process.argv.slice(2);
 const opt = (k: string) => { const i = argv.indexOf(k); return i >= 0 ? argv.splice(i, 2)[1] : null; };
 const opts = (k: string) => { const r: string[] = []; let v; while ((v = opt(k)) != null) r.push(v); return r; };
 const range = (s: string) => s.split(',').flatMap(p => { const [a, b] = p.split('-').map(Number); return b == null ? [a] : Array.from({ length: b - a + 1 }, (_, i) => a + i); });
-const frames = range(opt('--frames') || '0,3,6,9');
+const livesN = +(opt('--lives') || 0), lifeAges = range(opt('--ages') || '3,8,15,22,35,50,70');
+const frames = livesN ? lifeAges : range(opt('--frames') || '0,3,6,9');
 const scale = +(opt('--scale') || 3);
 const out = opt('--out') || 'logs/pixel/sheet.png';
 const save = opt('--save'), compare = opt('--compare');
@@ -33,7 +38,21 @@ const ids = argv.length ? argv.filter(a => { if (!(a in SCENES)) { console.error
 // ---------- 画 ----------
 const hex = (c: string) => [parseInt(c.slice(1, 3), 16), parseInt(c.slice(3, 5), 16), parseInt(c.slice(5, 7), 16)];
 const PAD = 6 * scale, LABEL = 7 * 2, cw = W * scale, ch = H * scale;
-const rows = ids.flatMap(id => vars.map(([vn, ctx]) => ({ id, vn, ctx })));
+type Row = { id: string; vn: string; ctx: SceneCtx; cells?: (Pix | null)[] };
+const rows: Row[] = livesN ? [] : ids.flatMap(id => vars.map(([vn, ctx]) => ({ id, vn, ctx })));
+// 模拟真实的人生：每一生一行，每一格是到了那个年龄时的实时画面
+for (let i = 0; i < livesN; i++) {
+  birth(7000 + i * 13, { headless: true });
+  const L = S, cells: (Pix | null)[] = [];
+  for (const a of lifeAges) {
+    let g = 0; while (L.phase === 'life' && L.age < a && g++ < 130) runHeadlessYear();
+    if (L.phase !== 'life') { cells.push(null); continue; }
+    const v = viewOf(L);
+    cells.push(drawWorld(v, 0));
+    console.log(`life ${i} ${L.sex} ${a}岁 ${v.home}${v.big ? '(大城市)' : ''} ${v.month}月 ${v.festival || ''} ${v.away ? '留守 ' : ''}${v.people.map(r => r.role + r.age + (r.ill ? '病' : '')).join(' ')} ${Object.keys(v.props).filter(k => (v.props as any)[k]).join(',')}`);
+  }
+  rows.push({ id: `life ${i}`, vn: `${L.sex === 'F' ? 'f' : 'm'} ${L.rural ? 'rural' : 'urban'}`, ctx: {}, cells });
+}
 const SW = PAD + frames.length * (cw + PAD), SH = PAD + rows.length * (LABEL + ch + PAD);
 const img = Buffer.alloc(SW * SH * 4);
 const put = (x: number, y: number, [r, g, b]: number[]) => { if (x < 0 || y < 0 || x >= SW || y >= SH) return; const k = (y * SW + x) * 4; img[k] = r; img[k + 1] = g; img[k + 2] = b; img[k + 3] = 255; };
@@ -58,8 +77,9 @@ rows.forEach(({ id, vn, ctx }, r) => {
   const y0 = PAD + r * (LABEL + ch + PAD);
   text(`${id}  ${vn}`, PAD, y0);
   frames.forEach((t, c) => {
-    const x0 = PAD + c * (cw + PAD), pic = SCENES[id](ctx, t);
-    text(`t=${t}`, x0 + cw - 24, y0);
+    const x0 = PAD + c * (cw + PAD), pic = rows[r].cells ? rows[r].cells![c] : SCENES[id as SceneId](ctx, t);
+    text(livesN ? `${t}` : `t=${t}`, x0 + cw - 24, y0);
+    if (!pic) return;
     prints[`${id}|${vn}|${t}`] = createHash('md5').update(pic.d.join(',')).digest('hex').slice(0, 12);
     for (let j = 0; j < H; j++) for (let i = 0; i < W; i++) {
       const col = pic.d[j * W + i]; if (!col) continue;
