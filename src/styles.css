@@ -281,17 +281,25 @@ textarea { font: 15px/1.7 var(--sans); color: var(--ink); width: 100%; min-heigh
 .ds-body > :only-child { grid-column: 1 / -1; }
 .ds-body p { margin: 0; font-size: 15.5px; line-height: 1.8; }
 .ds-body .pix-photo { width: 192px; margin: 0; }
-.fact { margin: 14px 0 0; padding: 10px 12px; background: var(--tint); font-size: 12.5px; color: var(--ink2); line-height: 1.6; }
+.fact { margin: 10px 0 0; padding: 8px 12px; background: var(--tint); font-size: 12.5px; color: var(--ink2); line-height: 1.6; }
 .fact b { font-family: var(--serif); color: var(--ink); margin-right: 6px; }
-.pcard { margin-top: 12px; }
+.pcard { margin-top: 12px; border-top: 1px solid var(--hair); }
+.pcard .row { padding: 4px 0; }
+.pcard .row:first-child { border-top: 0; }
+/* 一个人的资料：一行两项，长的（月收入）独占一行；dense 让后面的短项补上空位 */
+.pcard.kv { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-auto-flow: dense; column-gap: 28px; }
+.pcard.kv .row:nth-child(2) { border-top: 0; }
+.pcard.kv .row.w { grid-column: 1 / -1; }
+.pcard.kv .row { grid-template-columns: 4.5em minmax(0, 1fr); }
+.pcard.kv .row > .v { text-align: left; }
 /* 相亲：两个人并排 */
 .pcard .row.r2 { grid-template-columns: max-content minmax(0, 1fr) minmax(0, 1fr); }
 .pcard .row.hd > .v { font-family: var(--serif); font-weight: 600; color: var(--ink, inherit); }
-.ds-ask { display: flex; align-items: baseline; gap: 8px; margin: 20px 0 4px; }
+.ds-ask { display: flex; align-items: baseline; gap: 8px; margin: 14px 0 2px; }
 .ds-ask b { font-family: var(--serif); font-size: 13px; }
 .ds-ask span { font-size: 12px; color: var(--muted); }
 .choices { border-bottom: 1px solid var(--hair); }
-.choices > button { width: 100%; text-align: left; display: grid; grid-template-columns: 28px minmax(0, 1fr) 64px; gap: 14px; align-items: center; padding: 13px 12px; border: 0; border-top: 1px solid var(--hair); background: transparent; color: var(--ink); cursor: pointer; position: relative; }
+.choices > button { width: 100%; text-align: left; display: grid; grid-template-columns: 28px minmax(0, 1fr) 64px; gap: 14px; align-items: center; padding: 8px 12px; border: 0; border-top: 1px solid var(--hair); background: transparent; color: var(--ink); cursor: pointer; position: relative; }
 .choices > button:hover:not(:disabled) { background: var(--tint); }
 .choices .n { font-family: var(--mono); font-size: 12px; color: var(--muted); }
 .choices .lb { font-family: var(--serif); font-size: 16px; font-weight: 700; }
@@ -299,8 +307,8 @@ textarea { font: 15px/1.7 var(--sans); color: var(--ink); width: 100%; min-heigh
 .choices > button.pick { background: var(--tint); }
 .choices > button.pick .n { color: var(--seal); font-weight: 700; }
 .choices > button:disabled { opacity: .45; cursor: not-allowed; }
-.choices .seal { position: static; width: 60px; height: 60px; margin: -10px 0; font-size: 15px; font-weight: 900; letter-spacing: .15em; border-width: 2.5px; }
-.ds-foot { display: flex; align-items: center; gap: 14px; margin-top: 16px; font-size: 12.5px; color: var(--muted); flex-wrap: wrap; }
+.choices .seal { position: static; width: 52px; height: 52px; margin: -10px 0; font-size: 15px; font-weight: 900; letter-spacing: .15em; border-width: 2.5px; }
+.ds-foot { display: flex; align-items: center; gap: 14px; margin-top: 12px; font-size: 12.5px; color: var(--muted); flex-wrap: wrap; }
 .ds-foot .chk { margin-left: auto; color: var(--ink2); }
 .ds-foot .stamp-btn { margin-left: auto; }
 /* 志愿表 */
@@ -515,8 +523,10 @@ table.cmp th { font-weight: 500; font-family: var(--serif); color: var(--muted);
   .modal { padding: 24px 10px 10px; }
   .ds-sheet { padding: 18px 16px; }
   .ds-body { grid-template-columns: 1fr; }
-  .ds-body .pix-photo { order: -1; width: 100%; max-width: 320px; margin: 0 auto 4px; }
-  .choices > button { grid-template-columns: 24px minmax(0, 1fr) 52px; padding: 12px 6px; }
+  .ds-body .pix-photo { order: -1; width: 100%; max-width: 192px; margin: 0 auto; }
+  .choices > button { grid-template-columns: 24px minmax(0, 1fr) 52px; padding: 9px 6px; }
+  .pcard .row { font-size: 13px; padding: 5px 0; }
+  .pcard.kv { column-gap: 16px; }
   .choices .seal { width: 50px; height: 50px; font-size: 13px; }
   .home-top, .home-low { grid-template-columns: 1fr; gap: 28px; }
   .home { padding: 28px 16px 32px; }

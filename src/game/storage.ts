@@ -19,7 +19,7 @@ function del(k: string) {
 // 不做旧存档的兼容：人生对象的结构变了就把 SAVE_FORMAT 加一，格式不同的存档直接当作没有
 export interface UiPrefs { speed: number }
 export interface Save { life: Life; ui: UiPrefs; run: RunLog }
-const SAVE_FORMAT = 12;
+const SAVE_FORMAT = 13;
 
 export function loadSave(): Save | null {
   const raw = get<any>(SAVE_KEY);

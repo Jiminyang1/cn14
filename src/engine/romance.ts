@@ -2,7 +2,7 @@
 // 对象和你本人、父母用同一套「学历 → 职业 → 工资」逻辑生成（parents.ts），只是学历、年龄、家乡和你相关。
 
 import { EDU_LV, SCHOOL_EDU } from './education';
-import { JOBS, isWorking, luckK } from './career';
+import { JOBS, RESID_PENSION_JOBS, isWorking, luckK } from './career';
 import { HPF_JOB } from './housing';
 import { PBY, PROVS } from './data';
 import { S } from './state';
@@ -33,7 +33,7 @@ export const MEET_HOW = { friends: '朋友聚会上', work: '公司', wedding: '
 // 还要靠自动抉择替玩家挡掉大半，结果替玩家「主动追求」了一个 Ta 从没见过的人）。
 // MEET_K、MEET_KF、BREAK_K 是校准系数：无界面的人生 32 岁未婚、初婚年龄大致不离谱就行。
 // 遇见的人少了以后分手也调轻了（BREAK_K 1.3 → 0.7），不然一辈子单身的太多：32 岁未婚 男 25.9% / 女 10.0%，初婚 28.1 / 25.7
-export const MEET_K = 1.6, MEET_KF = 0.95, MUTUAL0 = 0.4, BREAK_K = 0.7, READY0 = 0.6, READY_K = 0.8;
+export const MEET_K = 1.6, MEET_KF = 0.95, MUTUAL0 = 0.4, READY0 = 0.6, READY_K = 0.8;
 // 单身时一年里遇见一个人的可能（按年龄，估计）：大学、刚工作、家里催的那几年最多
 export const MEET_P = a => a < 18 ? 0 : a < 22 ? 0.5 : a < 27 ? 0.6 : a < 34 ? 0.7 : a < 45 ? 0.45 : 0.2;
 // 上一个人以后（认识、分手、离婚、丧偶）至少隔这么多个月才遇见下一个；时间放在恋爱上的短一些
@@ -50,9 +50,6 @@ export function meetHow() {
   if (S.age >= 26 && chance(Math.min(0.7, (S.age - 24) * 0.1 + (myCondOK() ? 0.15 : 0)))) return 'blind';
   return wpick({ friends: 3, work: isWorking() ? 3 : 0, wedding: S.age >= 24 ? 1.5 : 0.3, hobby: 1, app: 2 });
 }
-// 每月都要换算的概率（认识人、分手）只有几十种取值：记下来，免得每月都算一次 fpow（结果和直接算完全相同）
-const PM = new Map<number, number>();
-const pm = (p: number) => { let v = PM.get(p); if (v === undefined) PM.set(p, v = perMonth(p)); return v; };
 // 单身的人这个月会不会遇见一个人：MEET_P 是一年的，换算成每月。外向的人遇见的多一些（每个标准差约 ×1.28）。
 // 「恋爱」每占一格，机会多 LOVE_FOCUS_K 倍那么多（一格 ×1.8，两格都放 ×2.3）；「朋友」每格 ×1.2（朋友多了，介绍的人也多）；
 // 有编制、有房的 ×1.25（介绍人主动上门）
@@ -109,8 +106,8 @@ export function makePartner(how) {
   // 是不是独生子女（城里的多，估计）；工作了几年的，家境越好越可能已经有自己的房（估计）
   p.only = chance(p.rural ? 0.25 : 0.55);
   p.house = !!p.jk && p.age >= 24 && chance(clamp(0.05 + 0.1 * (p.q - 1) + 0.03 * (p.age - 24), 0.05, 0.8));
-  // 合不合得来：学历、年龄差得越多越难（估计）；再加一点说不清的缘分
-  p.fit = clamp(0.62 - 0.1 * Math.abs(edu - myEdu()) - 0.03 * Math.abs(age - S.age) + gauss(0, 0.17), 0.05, 0.95);
+  // 合不合得来：学历、年龄差得越多越难；两个人里敏感的越多越容易磕碰，随和的跟谁都处得来（估计）；再加一点说不清的缘分
+  p.fit = clamp(0.62 - 0.1 * Math.abs(edu - myEdu()) - 0.03 * Math.abs(age - S.age) + persFit(p) + gauss(0, 0.17), 0.05, 0.95);
   return p;
 }
 // 对方的工作：还在读书的没有工作；其余按学历抽职业（和父母同一张表）
@@ -138,17 +135,13 @@ export const loveWord = v => v >= 75 ? '很好' : v >= 58 ? '不错' : v >= 42 ?
 // 「收入高」：税前年收入超过当地人均可支配收入的 RICH_K 倍。原来是 1.3 倍（24–34 岁未婚在职男性约 68% 满足）；
 // 工资对齐统计局以后同样 1.3 倍只有 44%，改成 1.0 倍（69%），保持原来的比例
 export const RICH_K = 1.0;
-// 对方愿不愿意：合不合得来，加上你的人际、工作和房子（婚恋市场上，男方的房子和收入更被看重，估计）
-export function mutualP(p) {
-  let x = MUTUAL0 + 0.5 * p.fit + (S.st.so - 55) / 100 + (p.how === 'blind' ? 0.08 : 0) + 0.04 * pz('e');
-  const male = S.sex === 'M';
-  if (S.house) x += male ? 0.08 : 0.03;
-  if (S.income > placeInc() * RICH_K) x += male ? 0.06 : 0.03;
-  if (S.job === 'seeking') x -= male ? 0.12 : 0.06;
-  if (bianzhi(S.job)) x += 0.06;
-  x -= 0.03 * Math.max(0, p.q - S.q - 1); // 对方家里比你家好很多：门不当户不对
-  return clamp(x, 0.05, 0.92);
-}
+// 对方愿不愿意 = Ta 本人（selfP）+ Ta 家里（famPts，见下面的条件表）。抉择单上只写合起来的可能（约几成）
+// Ta 本人：合不合得来（含两个人的性格），加上你会不会来事（人际、外向）
+export const persFit = p => -0.05 * (pz('n') + ptz(p, 'n')) + 0.04 * (pz('a') + ptz(p, 'a'));
+export const selfP = p => MUTUAL0 + 0.5 * p.fit + (S.st.so - 55) / 100 + 0.04 * pz('e') + (p.how === 'blind' ? 0.05 : 0);
+// Ta 家里每一分（famPts）约 6 个百分点（估计）
+const FAM_K = 0.06;
+export const mutualP = p => clamp(selfP(p) + FAM_K * clamp(famPts(p), -3, 3), 0.05, 0.92);
 export function partnerRows(p, opts: { love?: boolean } = {}): [string, string][] {
   const r: [string, string][] = [['年龄', `${p.age}岁`], ['学历', p.jk ? EDU_LV[p.edu] : `${EDU_LV[p.edu]}在读`], ['职业', p.jk ? JOBS[p.jk].n + (bianzhi(p.jk) ? '（有编制）' : '') : '还在读书'],
     ['月收入', p.inc ? (p.jk && !p.retired ? `到手${wanM(partnerPay(p).net)}（税前${wanM(p.inc)}）` : wanM(p.inc)) : '没有收入']];
@@ -159,21 +152,51 @@ export function partnerRows(p, opts: { love?: boolean } = {}): [string, string][
   if (opts.love) r.push(['在一起', `${S.age - p.metAt}年`], ['感情', loveWord(p.love)]);
   return r;
 }
+/** 相亲时两个人并排比：每项压成一行，表短一些 */
+export function partnerBrief(p): [string, string][] {
+  return [['年龄', `${p.age}岁 · ${EDU_LV[p.edu]}`], ['工作', p.jk ? JOBS[p.jk].n + (bianzhi(p.jk) ? '（有编制）' : '') : '还在读书'],
+    ['月收入', p.jk && p.inc ? `到手${wanM(partnerPay(p).net)}` : '没有收入'],
+    ['家里', `${PBY[p.home].n}${p.rural ? '农村' : '城里'} · ${p.only ? '独生子女' : '有兄弟姐妹'}`],
+    ['家境', '●'.repeat(p.q) + '○'.repeat(5 - p.q) + (p.jk ? (p.house ? ' · 有房' : ' · 没房') : '')], ['性格', partnerTrait(p)]];
+}
 export const feelWord = p => p.fit >= 0.7 ? '聊得很投缘' : p.fit >= 0.5 ? '感觉还可以' : '好像不太聊得来';
 
 // ===== 两家的看法 =====
 // 中国人谈对象，看的不只是两个人：对方家里看你的房子、编制、收入，你家里看对方的家境、工作、是哪里人。
 // 这些都写在抉择单上，不藏在骰子里。确定的，不消耗随机数（界面上也会算）
-/** 对方家里怎么看你（subj：「张三家里」或「两边家里」）。还在读书的还没到这一步 */
+// 对方家里看你的条件：每一项一个分数和一句话。famPts 是总分（算愿不愿意、见家长时满不满意），theirView 挑最要紧的一条写在单子上。
+// 还在读书的，家里还不过问
+type Why = { k: string; v: number; t: (subj: string) => string };
+export function theirWhys(p): Why[] {
+  if (S.school || S.age < 22) return [];
+  const male = S.sex === 'M', jn = S.job && JOBS[S.job] ? JOBS[S.job].n : '', r: Why[] = [];
+  const add = (k: string, v: number, t: (subj: string) => string) => r.push({ k, v, t });
+  const alt = <T,>(a: T[]) => a[(S.age + p.age) % a.length]; // 同样的条件换着说，不用随机数（界面上也会算）
+  // 工作、收入、房子
+  if (bianzhi(S.job)) add('bz', 1, alt([x => `${x}听说你是${jn}，有编制，挺满意。`, x => `${x}一听是${jn}，有编制，脸上就有了笑。`]));
+  if (S.job === 'seeking') add('seek', male ? -1.5 : -1, x => `${x}问你在哪儿上班，你说还在找。`);
+  if (S.house) add('house', male ? 1 : 0.5, alt([x => `${x}听说你在${S.house.city}有房，挺满意。`, x => `${x}知道你在${S.house.city}有自己的房子，放心了不少。`]));
+  else if (male && S.age >= 25) add('nohouse', p.q >= 4 ? -1 : -0.5, alt([x => `${x}托人问了两次：你有没有房。`, x => `${x}第一句就问：在${S.loc.city}买房了没有？`]));
+  if (S.income > placeInc() * RICH_K) add('rich', 0.5, x => `听说你收入不错，${x}没什么好挑的。`);
+  // 你家的情况：家境、城乡、兄弟姐妹、父母以后要不要你养
+  const gap = S.q - p.q;
+  if (gap <= -2) add('poor', 0.5 * (gap + 1), x => `${x}条件好，话里话外嫌你家底薄。`);
+  else if (gap >= 1) add('wealth', 0.3 * gap, x => `${x}听说你家里条件不错，挺满意。`);
+  if (S.home.kind === 'rural' && !p.rural) add('rural', -0.5, alt([x => `${x}听说你是农村出来的，有点犹豫。`, x => `${x}打听了你老家在哪儿，听说是村里的，没再往下问。`]));
+  if (!S.fam.sibs.some(b => b.alive)) add('only', 0.3, x => `${x}听说你是独生子女，家里的心思都在你身上，挺放心。`);
+  const par = [S.fam.mom, S.fam.dad].filter(x => x.alive);
+  if (par.some(x => x.ill)) add('ill', -0.5, x => `${x}听说你家里老人身体不好，有点犹豫。`);
+  else if (par.length && par.every(x => RESID_PENSION_JOBS.has(x.jk))) add('pension', -0.5, alt([x => `${x}问起你爸妈有没有退休金，你说没有。`, x => `${x}算了算：你爸妈没有退休金，以后得靠你养。`]));
+  return r;
+}
+export const famPts = p => theirWhys(p).reduce((a, w) => a + w.v, 0);
+/** 对方家里怎么看你（subj：「张三家里」）：最满意的一条和最在意的一条各说一句 */
 export function theirView(p, subj = `${p.name}家里`): string | null {
-  if (S.school || S.age < 22) return null;
-  const jn = S.job && JOBS[S.job] ? JOBS[S.job].n : '';
-  if (bianzhi(S.job)) return `${subj}听说你是${jn}，有编制，挺满意。`;
-  if (S.job === 'seeking') return `${subj}问你在哪儿上班，你说还在找。`;
-  if (S.sex === 'M' && S.age >= 25) return S.house ? `${subj}听说你在${S.house.city}有房，挺满意。` : `${subj}托人问了两次：你有没有房。`;
-  if (p.q - S.q >= 2) return `${subj}条件好，话里话外嫌你家底薄。`;
-  if (S.income > placeInc() * RICH_K) return `听说你收入不错，${subj}没什么好挑的。`;
-  return null;
+  const ws = theirWhys(p).filter(w => Math.abs(w.v) >= 0.3); if (!ws.length) return null;
+  const best = ws.reduce((a, b) => b.v > a.v ? b : a), worst = ws.reduce((a, b) => b.v < a.v ? b : a);
+  const ta = p.sex === 'M' ? '他' : '她';
+  if (best.v > 0 && worst.v < 0) return best.t(subj) + worst.t(`不过${ta}家里`);
+  return (best.v > 0 ? best : worst).t(subj);
 }
 /** 你家里怎么看对方：好的、担心的各取最要紧的一条。par：1 满意、0 没意见、-1 不太满意 */
 export function famView(p): { who: string | null; good: string | null; bad: string | null; par: number } {
@@ -228,31 +251,64 @@ function partnerYear(d) {
 // 双方的性格：敏感的人感情差一些、随和的人好一些（各算一次；性格相似度本身几乎不起作用，Dyrenforth 2010，所以不算「合不合」）
 const ptz = (d: { pz?: PZ }, x: keyof PZ) => d.pz ? d.pz[x] : 0;
 const loveP = d => -2 * (pz('n') + ptz(d, 'n')) + 1.5 * (pz('a') + ptz(d, 'a'));
-// 分手：敏感的人更容易分，随和、认真的不容易（每个标准差），双方各乘一次
-export const SPLIT_T = { n: 0.2, a: -0.15, c: -0.1 };
-// 没有性格时和原来一样查表；有性格时概率随人变，直接换算
-const pBreakM = (p, d) => { if (!S.pers) return pm(p); const k = tiltW(SPLIT_T) * tiltW(SPLIT_T, d.pz || null); return perMonth(Math.min(0.95, p * k)); };
 // 每年靠拢 0.35、波动 7（估计），换算成每月；在一起满一年后，每年有一半的机会去见家长
 const LOVE_K = approachPerMonth(0.35), LOVE_SD = sdPerMonth(7), PARENTS_P = perMonth(0.5);
-// 恋爱中的每个月：感情向一个目标值靠拢（合不合得来、花多少时间、是不是异地），感情差了就可能分手
+// 感情淡了：感情掉到 LOVE_COLD 以下，先有苗头（时间线上写一句），过三个月还没好，停下来问你（抉择 cold）；
+// 回到 LOVE_COLD + 5 以上算缓过来了。原来每个月掷骰子分手，人说没就没，现在分开要么是你选的，要么是苗头出来、你选了拖着以后 Ta 选的
+export const LOVE_COLD = 40;
+declare module './types' {
+  interface Partner {
+    coldAt?: number;  // 感情淡下来的苗头是哪个月出现的
+    coldAsk?: number; // 上一次问你「感情淡了」是哪个月（两年内不再问）
+    drag?: number;    // 你选了「就这么拖着」是哪个月：半年后还没缓过来，Ta 会先开口
+    tpar?: number;    // 对方家里的态度：1 满意、0 没意见、-1 不太满意（见家长时定下）
+    slowed?: number;  // 见家长时选了「先缓一缓」是哪个月（一年以后再见）
+    wf?: string;      // 结婚的事，你说要等什么：grad 毕业、job 工作稳定、house 买了房、think 还没想好
+    wAt?: number;     // 说「再等等」是哪个月
+    w0?: number;      // 第一次说「再等等」是哪个月（Ta 等了多久）
+  }
+}
+/** 分开：时间线上写一句，记一次前任 */
+export function breakUp(d, why: string, h = -5) {
+  S.fam.dating = null; S.flags.exes = (S.flags.exes || 0) + 1; eff({ h });
+  const yrs = S.age - d.metAt;
+  log(`${why}你和${d.name}分手了。在一起${yrs ? yrs + '年' : '不到一年'}。`, 'bad');
+}
+/** 把一个抉择排在稍后（同一个月里） */
+export function soon(id: string) {
+  if (S.queue.some(e => e.type === 'dec' && e.id === id)) return;
+  const at = Math.min(S.t + 0.01, 0.999);
+  let i = S.queue.length; while (i > 0 && S.queue[i - 1].at > at) i--;
+  S.queue.splice(i, 0, { at, type: 'dec', id });
+}
+const COLD_SIGN = {
+  ldr: ['异地以后，一周打不了两次电话，打了也不知道说什么。', '你们约好的视频，又有一次谁都没想起来。'],
+  near: ['最近总是吵架，吵完谁也不先低头。', '一起吃饭的时候，两个人各看各的手机。', '周末各过各的，好几天没说上话。'],
+};
+// 恋爱中的每个月：感情向一个目标值靠拢（合不合得来、花多少时间、是不是异地）；满一年去见家长；感情淡了先有苗头，再问你
 export function loveStep(d) {
   const ldr = d.city !== S.loc.city;
   const T = 48 + 32 * d.fit + 10 * slotW('love') - 5 * slotW('work') + (ldr ? -12 : 0) + (S.st.h - 55) * 0.2 + loveP(d);
   d.love = clamp(d.love + (T - d.love) * LOVE_K + gauss(0, LOVE_SD), 0, 100);
-  const yrs = S.age - d.metAt;
-  let met = false; // 这个月刚见过家长：这个月不会分手
-  if (yrs >= 1 && !d.metParents && chance(PARENTS_P)) {
-    d.metParents = 1; met = true;
-    log(S.sex === 'M' ? `第一次去${d.name}家见家长，提了两大袋礼物。${d.q >= 4 ? '对方爸妈话不多，问了问你的工作和房子。' : '对方爸妈留你吃了顿饭，一直往你碗里夹菜。'}` : meetMyParents(d), 'ev');
-  }
-  // 分手的可能（一年的）：感情越差越容易分；刚在一起的头两年、年纪轻的时候更容易分（BREAK_K 为校准系数）。换算成每月
-  const pBreak = ((d.love < 30 ? 0.45 : d.love < 45 ? 0.22 : 0.06) + (yrs <= 2 ? 0.05 : 0) + (S.age < 24 ? 0.08 : 0)) * BREAK_K + (ldr ? 0.08 : 0) + (d.asks >= 2 ? 0.1 : 0);
-  if (!met && chance(pBreakM(pBreak, d))) {
-    S.fam.dating = null; S.flags.exes = (S.flags.exes || 0) + 1;
-    eff({ h: d.love > 55 ? -8 : -4 });
-    const why = ldr ? '异地太久，联系越来越少，' : d.asks >= 2 ? '对方等不到你的答复，' : d.love < 35 ? '吵得越来越多，' : pick(['两家对彩礼和房子谈不拢，', '对未来的打算不一样，', '慢慢觉得不合适，']);
-    log(`${why}你和${d.name}分手了。在一起${yrs ? yrs + '年' : '不到一年'}。`, 'bad');
-  }
+  const yrs = S.age - d.metAt, m = nowM();
+  if (yrs >= 1 && !d.metParents && (d.slowed == null || m - d.slowed >= 12) && chance(PARENTS_P)) { meetParents(d); return; }
+  if (d.love >= LOVE_COLD + 5) { d.coldAt = d.drag = undefined; return; }
+  if (d.love >= LOVE_COLD) return;
+  if (d.coldAt == null) { d.coldAt = m; log(pick(COLD_SIGN[ldr ? 'ldr' : 'near']), 'ev'); return; }
+  // 选了拖着，半年还没缓过来：Ta 先开口
+  if (d.drag != null && m - d.drag >= 6) { breakUp(d, ldr ? `${d.name}在电话里说，这样下去没意思。` : `${d.name}说，这样拖着对谁都不好。`, -6); return; }
+  if (d.drag == null && m - d.coldAt >= 3 && (d.coldAsk == null || m - d.coldAsk >= 24)) { d.coldAsk = m; soon('cold'); }
+}
+// 见家长：两家都没意见的，写一句就过去了；有一边不同意的，停下来问你（抉择 parents）。
+// 对方家里满不满意就是上面那张条件表的总分
+export const theirPar = p => { const f = famPts(p); return f <= -1 ? -1 : f >= 1 ? 1 : 0; };
+function meetParents(d) {
+  // 先缓过一阵的，家里有一半的可能松口（估计）
+  if (d.slowed != null) { if (d.par < 0 && chance(0.5)) d.par = 0; if (d.tpar < 0 && chance(0.5)) d.tpar = 0; }
+  else { d.par ??= famView(d).par; d.tpar = theirPar(d); }
+  d.metParents = 1;
+  if (d.par < 0 || d.tpar < 0) { soon('parents'); return; }
+  log(S.sex === 'M' ? `第一次去${d.name}家见家长，提了两大袋礼物。${d.q >= 4 ? '对方爸妈话不多，问了问你的工作和房子。' : '对方爸妈留你吃了顿饭，一直往你碗里夹菜。'}` : meetMyParents(d), 'ev');
 }
 // 女方带男朋友回家见父母：父母不在了的，带他去看看父母；还有一方在世的，见那一位
 function meetMyParents(d) {
@@ -262,13 +318,11 @@ function meetMyParents(d) {
   const ask = mom.alive ? '妈妈' : '爸爸';
   return `${d.name}第一次来家里见${who}。${S.q <= 2 ? `${ask}私下问你：“他家里条件怎么样？”` : `${mom.alive && dad.alive ? '爸妈' : ask}挺满意，说小伙子看着踏实。`}`;
 }
-// 你搬去别的城市时，恋人要么跟着去，要么开始异地。还在读书的走不开：说好毕业后过来，先异地（毕业时见 partnerYear）
+// 你搬去别的城市时：还在读书的走不开，说好毕业后过来（毕业时见 partnerYear）；已经工作的，问你怎么办（抉择 ldr）
 export function loveMove() {
   const d = S.fam.dating; if (!d || d.city === S.loc.city) return;
-  if (chance(0.35 + d.love / 250)) {
-    if (!d.jk) { d.follow = 1; log(`你去了${S.loc.city}。${d.name}还在读书，说好毕业以后就过来找你。`, 'ev'); return; }
-    d.city = S.loc.city; d.follow = 0; partnerJob(d); log(`${d.name}辞了工作，跟你一起去了${S.loc.city}。`, 'ev');
-  } else { d.follow = 0; log(`你去了${S.loc.city}，${d.name}留在${d.city}。你们开始异地恋。`, 'ev'); }
+  if (!d.jk) { d.follow = 1; log(`你去了${S.loc.city}。${d.name}还在读书，说好毕业以后就过来找你。`, 'ev'); return; }
+  d.follow = 0; soon('ldr');
 }
 // 彩礼：各省调查/报道的区间（见 DATA.md，可信度多为中低）；没有数据的省份用农村调查均值 3.86 万
 export const brideAmt = pid => { const b = PBY[pid].bride; return b ? Math.round((b[0] + (b[1] - b[0]) * rnd()) / 1e3) * 1e3 : 38600; };

@@ -8,7 +8,7 @@ import { CAUSE } from '../mortality';
 import { EDU_LV, HS_NAME, admit, enroll, gkAutoApps, gkCandidates, gkLines, gkRank, gkResolve, gkScore, gkShock, hsTier, schoolStart, tutorFee } from '../education';
 import { ILL, oop, reimburse } from '../health';
 import { JOBS, RAISE, RESID_PENSION_JOBS, civilTry, gig, gradJob, hire, hireInCity, isWorking, quitJob, raise, retire } from '../career';
-import { MEET_HOW, READY0, READY_K, brideAmt, famSay, famView, feelWord, loveWord, matchmaker, mShift, mutualP, partnerInc, partnerRows, pickW, ptJobName, theirView } from '../romance';
+import { LOVE_COLD, MEET_HOW, READY0, READY_K, breakUp, brideAmt, bianzhi, famSay, famView, feelWord, famPts, loveWord, partnerBrief, selfP, theirWhys, matchmaker, mShift, mutualP, partnerInc, partnerJob, partnerRows, pickW, ptJobName, theirView } from '../romance';
 import { S } from '../state';
 import { addDoc, log, logLater } from '../journal';
 import { annualPay, bestPlan, buyHouse, houseHelp, inlawHelp, mate, foreclose, hhIncome, hometownHouse, loanBal, loanArrears, loanPayY, loanPlans, planSub, sellHouse, sellInherited } from '../housing';
@@ -158,7 +158,7 @@ export function monthDecisions() {
   if (a <= 14) for (const c of CHILD) if (a >= c.a[0] && a <= c.a[1] && once(c.id) && (!c.m || c.m.includes(calMonth())) && (!c.c || c.c()) && yearly(c.id, c.p, c.m ? c.m.length : 12)) d.push(c.id);
   // ---- 每年一定概率：按月换算 ----
   if (f.married && f.partner && f.partner.alive && canBaby() && yearly('baby', babyP())) d.push('baby');
-  const ask = !!f.dating && f.dating.wh === 2; // 对方家里等着婚房
+  const ask = !!f.dating && (f.dating.wh === 2 || f.dating.wf === 'house'); // 对方家里等着婚房，或者你说了等买了房再结婚
   if (!S.house && working && a >= (ask ? 22 : 26) && a <= 50 && (f.married || a >= 30 || ask) && gapOK('house', ask ? 1 : 4) && yearly('house', ask ? 0.8 : 0.35)) d.push('house');
   if (working && S.loc.kind !== 'big' && a >= 19 && a <= 32 && once('bigcity') && !J.stable && bigCities().length && yearly('bigcity', 0.18)) d.push('bigcity');
   // 每年 1%：在私企干到 48 岁的约一成会遇到（智联招聘：46–50 岁求职者 11.5% 曾因年龄被裁，见 DATA.md）；这一年出过的，裁员名单不再出现（见 layofflist）
@@ -178,8 +178,18 @@ export const HOUSE_FIRST = 0.4;
 const marryOK = () => {
   const p = S.fam.dating; if (!p || S.fam.married) return false;
   const man = S.sex === 'M' ? S.age : p.age, woman = S.sex === 'M' ? p.age : S.age;
-  return man >= 22 && woman >= 20 && S.age - p.metAt >= (S.age < 28 && !(mShift() < -2) ? 2 : 1);
+  return man >= 22 && woman >= 20 && S.age - p.metAt >= (S.age < 28 && !(mShift() < -2) ? 2 : 1) && waitDone(p);
 };
+// 说了「再等等」的，等的那件事到了再问你：毕业了、工作满一年、买了房；「还没想好」的一年半以后。
+// 等了三年还没等到，也再问一次（「房子还是没买上」）
+const waitDone = p => {
+  if (!p.wf) return true;
+  const m = nowM() - p.wAt;
+  if (m >= 36) return true;
+  return p.wf === 'grad' ? !S.school && !!p.jk : p.wf === 'job' ? isWorking() && m >= 12 : p.wf === 'house' ? !!S.house : m >= 18;
+};
+const WAIT_SAID = { grad: '等毕业了再说', job: '等工作稳定了再说', house: '等买了房再说', think: '还没想好' };
+const WAIT_DONE = { grad: '上次说等毕业了再说，现在书读完了。', job: '上次说等工作稳定了再说，现在工作也稳当了。', house: '上次说等买了房再说，现在房子有了。', think: '' };
 
 /** 生日那个月：每年判定一次的抉择，schedule.ts 把它们放在这一年随机的一个月 */
 export function yearDecisions() {
@@ -190,6 +200,16 @@ export function yearDecisions() {
   if (a >= 18 && demolDue()) d.push('demolish');
   return d;
 }
+
+// 见家长时，对方家里最在意的那一条当面是什么样子
+const MEET_WHY: Record<string, (n: string) => string> = {
+  seek: n => `${n}爸妈问你在哪儿上班，你说还在找。一顿饭吃得很安静。`,
+  nohouse: n => `${n}爸爸开门见山：“结婚得有房。”`,
+  poor: n => `${n}妈妈细细问了你家里的情况，听完没再说话。`,
+  rural: n => `${n}妈妈问你老家在哪个村，听完半天没说话。`,
+  ill: n => `${n}爸妈问起你家里老人的身体，听完都没接话。`,
+  pension: n => `${n}爸妈问你爸妈有没有退休金。你说没有，饭桌上安静了一会儿。`,
+};
 
 // ===== 抉择 =====
 export const DEC = {
@@ -572,13 +592,14 @@ export const DEC = {
       const p = S.cand, q = S.cand2;
       if (!p || S.fam.married || S.fam.dating) { S.cand = S.cand2 = null; return null; }
       const later: Choice = { k: 'later', label: '现在不想谈恋爱', sub: S.school ? '先把书读完，毕业以前不再考虑' : '先顾好眼前的事，这一年不再考虑', w: S.school ? 0.3 : 0.15, tilt: { c: 0.3, e: -0.3 } };
-      const odds = x => { const P = mutualP(x); return `对方也有意的可能：${P >= 0.65 ? '比较大' : P >= 0.4 ? '一半一半' : '不太大'}`; };
-      const fact = '对方愿不愿意，看你们合不合得来，也看你的工作（有没有编制）、收入和房子。';
+      // 成的可能：本人和家里综合起来，取整到一成
+      const odds = x => `对方也有意的可能：约${'一二三四五六七八九'[clamp(Math.round(mutualP(x) * 10), 1, 9) - 1]}成`;
+      const fact = '成不成，看你们合不合得来，也看你和你家的条件。';
       if (q) {
         // 相亲：两个人并排放在一张表上
-        const A = partnerRows(p), B = partnerRows(q), lb = new Set(B.map(r => r[0]));
-        const card: [string, string, string?][] = [['', p.name, q.name], ...A.filter(r => lb.has(r[0])).map(([k, v]): [string, string, string] => [k, v, B.find(r => r[0] === k)[1]]), ['见了一面', feelWord(p), feelWord(q)]];
-        const fa = famView(p), fb = famView(q), why = v => v.good && v.bad ? `${v.good}，就是${v.bad}` : v.good || v.bad || '人看着挺好';
+        const A = partnerBrief(p), B = partnerBrief(q);
+        const card: [string, string, string?][] = [['', p.name, q.name], ...A.map(([k, v], i): [string, string, string] => [k, v, B[i][1]]), ['见了一面', feelWord(p), feelWord(q)]];
+        const fa = famView(p), fb = famView(q), why = v => v.bad || v.good || '人看着挺好'; // 两个人放在一起说，每人只说最要紧的一句
         const say = fa.who ? `${fa.who}说：“${p.name}${why(fa)}；${q.name}${why(fb)}。”` : '';
         const hi = p.q >= q.q ? p : q, tv = theirView(hi);
         return {
@@ -612,48 +633,153 @@ export const DEC = {
         S.flags.noLove = nowM() + Math.max(12, grad);
         return S.school ? `你对${first.name}说，现在只想先把书读完。` : `你对${first.name}说，现在没心思谈恋爱。`;
       }
-      if (!chance(mutualP(p))) { eff({ h: -3 }); return { t: p.how === 'blind' ? `又见了两次，${p.name}说觉得你们不太合适。` : `你鼓起勇气表白，${p.name}说只想做朋友。`, k: 'bad' }; }
+      if (!chance(mutualP(p))) {
+        eff({ h: -3 });
+        // Ta 本人愿意、是家里拦着的，说清楚
+        if (famPts(p) <= -1 && selfP(p) >= 0.6) return { t: `${p.name}挺喜欢你，可${p.sex === 'M' ? '他' : '她'}家里不同意。${theirView(p) || ''}`, k: 'bad' };
+        return { t: p.how === 'blind' ? `又见了两次，${p.name}说觉得你们不太合适。` : `你鼓起勇气表白，${p.name}说只想做朋友。`, k: 'bad' };
+      }
       p.love = clamp(55 + 25 * (p.fit - 0.5) + gauss(0, 8), 20, 90); p.asks = 0; p.par = famView(p).par;
       S.fam.dating = p; eff({ h: 6 });
       return { t: `你和${p.name}在一起了。`, k: 'good' };
     },
   },
 
+  // 感情淡了（romance.ts 的 loveStep）：苗头出现三个月还没缓过来。不再每个月掷骰子分手
+  cold: {
+    build: () => {
+      const d = S.fam.dating; if (!d || d.love >= LOVE_COLD) return null;
+      const ldr = d.city !== S.loc.city, yrs = S.age - d.metAt, ta = d.sex === 'M' ? '他' : '她';
+      return {
+        title: '感情淡了',
+        body: `你和${d.name}在一起${yrs ? yrs + '年' : '快一年'}了。${ldr ? `你在${S.loc.city}，${ta}在${d.city}，见一面要提前好几个星期安排。` : '这几个月话越来越少，一开口就吵。'}`,
+        card: partnerRows(d, { love: true }),
+        choices: [
+          { k: 'talk', label: '好好谈一次', sub: '也许能说开，也许谈不拢', w: 1 + d.fit * 2, tilt: { a: 0.4, e: 0.2 } },
+          { k: 'drag', label: '就这么拖着', sub: `${d.name}可能会先开口`, w: 1, tilt: { c: -0.3, n: 0.2 } },
+          { k: 'split', label: '分手', sub: '', w: 0.8, tilt: { n: 0.3, a: -0.2 } },
+        ],
+      };
+    },
+    apply: k => {
+      const d = S.fam.dating, ldr = d.city !== S.loc.city;
+      if (k === 'split') { breakUp(d, '', -5); return null; }
+      if (k === 'drag') { d.drag = nowM(); return null; }
+      // 谈得开的可能：合得来的大一些，异地的小一些（估计）。谈不拢就算拖着了
+      if (chance(clamp(0.3 + 0.5 * d.fit - (ldr ? 0.15 : 0), 0.1, 0.85))) {
+        d.love = clamp(d.love + 20, 0, 100); d.coldAt = undefined; eff({ h: 2 });
+        return { t: ldr ? `你请了几天假去${d.city}找${d.name}，两个人把话都说开了。` : '你们找了个周末，把憋着的话都说开了。', k: 'good' };
+      }
+      d.drag = nowM(); d.love = clamp(d.love - 5, 0, 100); eff({ h: -2 });
+      return { t: '谈到半夜，谁也说服不了谁。', k: 'bad' };
+    },
+  },
+
+  // 见家长：有一边家里不同意（romance.ts 的 meetParents）。两家的态度后面落到彩礼、婚房上（marry）
+  parents: {
+    fork: true,
+    build: () => {
+      const d = S.fam.dating; if (!d || !(d.par < 0 || d.tpar < 0)) return null;
+      const v = famView(d), ta = d.sex === 'M' ? '他' : '她';
+      // 对方家里最在意的那一条（和算满不满意的是同一张表，romance.ts 的 theirWhys）
+      const worst = theirWhys(d).filter(w => w.v < 0).sort((a, b) => a.v - b.v)[0];
+      const why = (MEET_WHY[worst?.k] || MEET_WHY.poor)(d.name);
+      const again = d.slowed != null;
+      const theirs = d.tpar < 0 ? (again ? `又去了一趟${d.name}家。` : S.sex === 'M' ? `第一次去${d.name}家见家长。` : `${d.name}带你回家见了${ta}爸妈。`) + why : '';
+      const mine = d.par < 0 && v.who ? `${d.name}${again ? '又来了一次' : '第一次来'}家里。人走了以后，${v.who}跟你说：“${v.bad || '这门亲事我不太同意'}。”` : '';
+      return {
+        title: '见家长', body: mine + theirs, card: partnerRows(d, { love: true }),
+        choices: [
+          { k: 'stick', label: '坚持在一起', sub: d.par < 0 ? '家里不高兴，以后结婚家里可能不帮衬' : `${d.name}家里不高兴，结婚时要求会更多`, w: 1.5 * clamp(d.love / 60, 0.3, 1.6), tilt: { a: -0.2, r: 0.3 } },
+          { k: 'slow', label: '先缓一缓', sub: '过一阵再见，家里也许会松口', w: 1.2, tilt: { c: 0.3 } },
+          { k: 'split', label: '听家里的，分手', sub: '', w: 0.4 + (d.love < 50 ? 0.8 : 0), tilt: { a: 0.3, n: 0.2 } },
+        ],
+      };
+    },
+    apply: k => {
+      const d = S.fam.dating, v = famView(d);
+      if (k === 'split') { breakUp(d, '家里不同意，', -6); return null; }
+      if (k === 'slow') { d.slowed = nowM(); d.metParents = 0; d.love = clamp(d.love - 5, 0, 100); return '你们说好，过一阵再说。'; }
+      d.slowed = undefined; eff({ h: -3 });
+      return `你说：“我就认定${d.name}了。”` + (d.par < 0 && v.who ? `${v.who}叹了口气，没再说什么。` : '');
+    },
+  },
+
+  // 你搬去别的城市，Ta 在原来的城市有工作（romance.ts 的 loveMove）
+  ldr: {
+    fork: true,
+    build: () => {
+      const d = S.fam.dating; if (!d || d.city === S.loc.city || !d.jk) return null;
+      const ta = d.sex === 'M' ? '他' : '她';
+      return {
+        title: '异地', body: `你去了${S.loc.city}，${d.name}还在${d.city}做${ptJobName(d)}。`, card: partnerRows(d, { love: true }),
+        choices: [
+          { k: 'come', label: `让${d.name}跟你过来`, sub: bianzhi(d.jk) ? `${ta}有编制，过来就得辞掉；愿不愿意，看感情` : `${ta}要辞掉那边的工作；愿不愿意，看感情`, w: 2, tilt: { e: 0.3 } },
+          { k: 'ldr', label: '先异地', sub: '见面少了，感情容易淡', w: 1.5, tilt: { c: 0.2 } },
+          { k: 'split', label: '分手', sub: '', w: 0.4 + (d.love < 50 ? 1 : 0), tilt: { a: -0.3 } },
+        ],
+      };
+    },
+    apply: k => {
+      const d = S.fam.dating;
+      if (k === 'split') { breakUp(d, '', -5); return null; }
+      if (k === 'ldr') return '你们开始异地恋。';
+      // 愿不愿意过来看感情；有编制的舍不得（估计）
+      if (chance((0.35 + d.love / 250) * (bianzhi(d.jk) ? 0.5 : 1))) {
+        d.city = S.loc.city; partnerJob(d); eff({ h: 3 });
+        return { t: `${d.name}辞了工作，跟你来了${S.loc.city}，成了一名${ptJobName(d)}。`, k: 'good' };
+      }
+      return { t: `${d.name}说放不下那边的${bianzhi(d.jk) ? '编制' : '工作'}。你们开始异地恋。`, k: 'bad' };
+    },
+  },
+
   marry: {
     fork: true,
-    // 说了「再处处看」的，隔一年再问你；中间那一年顺其自然地接着处（对方家里等着婚房的照样问）
-    quiet: () => { const p = S.fam.dating; return !!p && p.asks % 2 === 1 && !(p.wh === 2) ? 'wait' : false; },
+    // 不替你定，也不限次数：时机不成熟就一直等，但要说清楚等什么（WAIT_SAID）；等的那件事到了再问你（waitDone）。
+    // 等得越久，Ta 越着急：卡片上写着 Ta 等了几年；Ta 到了年纪、又等了两年以上，选项下面写明 Ta 家里开始给 Ta 介绍别人，这时再等，Ta 可能就走了
     build: () => {
       // 年初排下以后，可能已经分手、换了人：弹出时再查一遍婚龄和在一起的年数
       if (!marryOK()) return null;
-      const p = S.fam.dating, yrs = S.age - p.metAt;
-      const amt = S.age >= 50 ? 0 : brideAmt(S.home.p);
-      // 结婚的条件：男方家里出彩礼；不少女方家里希望有婚房（估计）
-      // 同一个对象只定一次（被拒以后不会突然不要了）
-      if (p.wh == null) p.wh = S.sex === 'M' && chance(S.loc.kind === 'rural' ? 0.4 : 0.6) ? 1 : 0;
+      const p = S.fam.dating, yrs = S.age - p.metAt, ta = p.sex === 'M' ? '他' : '她';
+      // 彩礼按女方老家的行情
+      const amt = S.age >= 50 ? 0 : brideAmt(S.sex === 'M' ? p.home : S.home.p);
+      // 结婚的条件：男方家里出彩礼；不少女方家里希望有婚房（估计）；见家长时不太满意的，一定要房。同一个对象只定一次（被拒以后不会突然不要了）
+      if (p.wh == null) p.wh = S.sex === 'M' && (p.tpar < 0 || chance(S.loc.kind === 'rural' ? 0.4 : 0.6)) ? 1 : 0;
       const wantHouse = !!p.wh && !S.house;
-      const push = p.asks >= 2 ? `${p.name}已经问过你好几次什么时候结婚。` : '';
+      const waited = p.w0 != null ? Math.floor((nowM() - p.w0) / 12) : 0;
+      const done = p.wf && waitDone(p) ? WAIT_DONE[p.wf] || '' : '';
+      const push = waited >= 1 ? `${p.name}已经等了你${waited}年。` : '';
       const again = wantHouse && p.wh === 2 ? `上次求婚，${p.name}的爸妈说没有房子不能结婚。` : '';
-      const body = `你和${p.name}在一起${yrs}年了，感情${loveWord(p.love)}。${push}${again}` + (S.sex === 'M' ? (amt >= 1000 ? `对方家里提出彩礼${wan(amt)}${wantHouse ? '，还希望你们有一套自己的房子' : ''}。` : wantHouse ? '对方家里不要彩礼，只希望你们有一套自己的房子。' : '对方家里不要彩礼。') : amt >= 1000 ? `男方家里说可以给${wan(amt)}彩礼。` : '男方家里没提彩礼的事。');
+      const body = `你和${p.name}在一起${yrs}年了，感情${loveWord(p.love)}。${done}${push}${again}` + (S.sex === 'M' ? (amt >= 1000 ? `对方家里提出彩礼${wan(amt)}${wantHouse ? '，还希望你们有一套自己的房子' : ''}。` : wantHouse ? '对方家里不要彩礼，只希望你们有一套自己的房子。' : '对方家里不要彩礼。') : amt >= 1000 ? `男方家里说可以给${wan(amt)}彩礼。` : '男方家里没提彩礼的事。');
       // 想不想结婚：二十出头多半觉得还早，年纪越大越想定下来（READY_K 为校准系数）
       const ready = READY0 + Math.max(0, S.age - (S.sex === 'F' ? 24 : 26) - mShift()) * READY_K + Math.max(0, S.age - 30) * 0.5; // 三十岁以后家里催得更紧
+      // Ta 等不下去了：到了年纪（女方 28、男方 30），又等了两年以上
+      const restless = p.age >= (p.sex === 'F' ? 28 : 30) && waited >= 2;
+      const wsub = restless ? `${p.name}家里已经开始给${ta}介绍别人了` : waited >= 1 ? `${p.name}已经等了${waited}年` : '';
+      const waits: Choice[] = [];
+      if (S.school || !p.jk) waits.push({ k: 'wait:grad', label: '等毕业了再说', sub: wsub, w: 1.2, tilt: { c: 0.3 } });
+      if (!isWorking()) waits.push({ k: 'wait:job', label: '等工作稳定了再说', sub: wsub, w: 1, tilt: { c: 0.3 } });
+      if (!S.house && (wantHouse || S.sex === 'M')) waits.push({ k: 'wait:house', label: '等买了房再说', sub: wsub || '买房的事会提上日程', w: wantHouse ? 1.2 : 0.6, tilt: { c: 0.3, r: -0.2 } });
+      waits.push({ k: 'wait:think', label: '还没想好，再处处看', sub: wsub, w: 1, tilt: { n: 0.5, r: -0.2 } });
       return {
         title: '结婚', body, card: partnerRows(p, { love: true }), fact: '2025年全国结婚登记676.5万对；2020年人口普查的平均初婚年龄：男29.38岁、女27.95岁',
         choices: [
           { k: 'yes', label: S.sex === 'M' ? '求婚' : '答应结婚', sub: wantHouse ? '没有房子，对方家里可能不同意' : '办酒席、领证', w: ready * clamp(p.love / 60, 0.3, 1.6) * (wantHouse ? 0.6 : 1), tilt: { c: 0.3 } },
-          { k: 'wait', label: '再处处看', sub: p.asks >= 2 ? '对方可能不想再等了' : '', w: 2, tilt: { n: 0.5, r: -0.2 } },
+          ...waits,
           { k: 'no', label: '分手', sub: '', w: p.love < 45 ? 1.5 : 0.3, tilt: { a: -0.4 } },
-        ], ctx: { amt, wantHouse },
+        ], ctx: { amt, wantHouse, restless },
       };
     },
     apply: (k, ctx) => {
       const p = S.fam.dating;
-      if (k === 'wait') {
-        p.asks = (p.asks || 0) + 1;
-        if (p.asks >= 3 && S.age >= 27 && chance(0.4)) { S.fam.dating = null; eff({ h: -7 }); return { t: `${p.name}说不想再等了。你们分手了。`, k: 'bad' }; }
-        return null;
+      if (k.startsWith('wait:')) {
+        p.asks = (p.asks || 0) + 1; p.wf = k.slice(5); p.wAt = nowM(); p.w0 ??= p.wAt;
+        // 选项下面已经写明 Ta 家里在给 Ta 介绍别人：这时再等，Ta 有四成可能不等了（估计）
+        if (ctx.restless && chance(0.4)) { breakUp(p, `${p.name}说不想再等了。`, -7); return null; }
+        return p.wf === 'think' ? null : `你对${p.name}说，${WAIT_SAID[p.wf]}。`;
       }
-      if (k === 'no') { S.fam.dating = null; eff({ h: -5 }); return `你和${p.name}分手了。`; }
+      if (k === 'no') { breakUp(p, '', -5); return null; }
+      p.wf = undefined;
       // 女方家里要婚房、你还没有：一部分人家坚持先买房（估计约一半），婚事搁下，买房的抉择会提前出现（p.wh = 2）。
       // 被拒也算对方问过一次（asks）。坚持过一次的人家，第二次求婚时还是没房：要么松口（不再要婚房，当场答应），要么分手。
       // 松口的可能看感情：感情一般（50）的约一半，很好（75）的约八成，冷淡（35）的约三成（估计）
@@ -665,8 +791,7 @@ export const DEC = {
           return { t: `${p.name}的爸妈说，没有房子不能结婚。婚事先放下了。`, k: 'bad' };
         }
         if (!chance(clamp(0.5 + (p.love - 50) / 85, 0.15, 0.85))) {
-          S.fam.dating = null; S.flags.exes = (S.flags.exes || 0) + 1; eff({ h: -8 });
-          return { t: `${p.name}的爸妈还是那句话：没有房子，不能结婚。又拖了一阵，你们分手了。`, k: 'bad' };
+          breakUp(p, `${p.name}的爸妈还是那句话：没有房子，不能结婚。又拖了一阵，`, -8); return null;
         }
         p.wh = 0; pre = `${p.name}的爸妈松了口：房子以后再说，先把婚结了。`;
       }
@@ -678,11 +803,17 @@ export const DEC = {
       // 原来男方一律自己出：48% 的男主角婚后欠着钱，其中不少父母存款超过 10 万
       const amt = S.age >= 50 ? 0 : ctx.amt, par = S.fam.mom.alive || S.fam.dad.alive, pw = parentsWord() || '家里'; // 五十岁以后再婚：不讲彩礼、不办酒席
       let bride = '';
+      // 见家长时你家里不同意、你坚持了的：娶亲的家里不出彩礼，出嫁的彩礼全留在家里；男方家里不太情愿的，彩礼只给一半
+      const against = par && p.par < 0;
       if (S.sex === 'M') {
-        if (par) { const b = famPayBride(amt); bride = `${pw}出了${wan(amt)}彩礼${b > 1e3 ? `，其中${wan(b)}是借的` : ''}。`; }
-        else { eff({ money: -amt }); bride = `彩礼${wan(amt)}是你自己出的。`; }
-      } else if (par) { eff({ money: amt * 0.5 }); S.famMoney += amt * 0.5; bride = `男方给了${wan(amt)}彩礼，一半做了你的陪嫁，另一半留在了娘家。`; }
-      else { eff({ money: amt }); bride = `男方给了${wan(amt)}彩礼，都做了你的陪嫁。`; }
+        if (par && !against) { const b = famPayBride(amt); bride = `${pw}出了${wan(amt)}彩礼${b > 1e3 ? `，其中${wan(b)}是借的` : ''}。`; }
+        else { eff({ money: -amt }); bride = against ? `${pw}一直不太同意这门亲事，彩礼${wan(amt)}是你自己出的。` : `彩礼${wan(amt)}是你自己出的。`; }
+      } else {
+        const got = p.tpar < 0 ? Math.round(amt / 2e3) * 1e3 : amt, half = p.tpar < 0 ? `男方家里不太情愿，彩礼只给了${wan(got)}` : `男方给了${wan(got)}彩礼`;
+        if (against) { S.famMoney += got; bride = `${half}，${pw}一直不太满意，都留在了家里。`; }
+        else if (par) { eff({ money: got * 0.5 }); S.famMoney += got * 0.5; bride = `${half}，一半做了你的陪嫁，另一半留在了娘家。`; }
+        else { eff({ money: got }); bride = `${half}，都做了你的陪嫁。`; }
+      }
       eff({ money: S.age >= 50 ? 0 : -placeInc() * 0.1, h: 8, so: 6 });
       if (S.age >= 50) return { t: `${pre}你和${p.name}去领了证。没办酒席，两家的孩子凑在一起吃了顿饭。`, k: 'good' };
       return { t: `${pre}你和${p.name}结婚了。${bride}酒席摆了${ri(10, 40)}桌。`, k: 'good' };
@@ -718,7 +849,7 @@ export const DEC = {
     fork: true,
     // 说过「继续租房」的，八年内不再主动问（对方家里等着婚房的除外）
     quiet: () => {
-      const last = S.flags.houseAsk, ask = !!S.fam.dating && S.fam.dating.wh === 2;
+      const last = S.flags.houseAsk, ask = !!S.fam.dating && (S.fam.dating.wh === 2 || S.fam.dating.wf === 'house');
       if (ask || last == null || S.age - last >= 8) { S.flags.houseAsk = S.age; return false; }
       return 'rent';
     },

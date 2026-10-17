@@ -32,12 +32,13 @@ function Head({ k, title, children, photo }: { k: string; title: string; childre
     <div className="ds-body"><div>{children}</div>{photo}</div>
   </>;
 }
-function Body({ d }: { d: Decision }) {
+/** 资料卡和附注：放在正文和配图下面，占满整行。一个人的卡片一行放两项（长的独占一行），相亲的两个人并排成三列 */
+function Card({ d }: { d: Decision }) {
+  const pair = !!d.card?.some(r => r[2] != null);
   return <>
-    <p>{d.body}</p>
-    {d.card && <div className="pcard">{d.card.map(([k, v, v2], i) => v2 == null
-      ? <div key={i} className="row"><span className="k">{k}</span><span className="v">{v}</span></div>
-      : <div key={i} className={'row r2' + (i === 0 ? ' hd' : '')}><span className="k">{k}</span><span className="v">{v}</span><span className="v">{v2}</span></div>)}</div>}
+    {d.card && <div className={'pcard' + (pair ? '' : ' kv')}>{d.card.map(([k, v, v2], i) => pair
+      ? <div key={i} className={'row r2' + (i === 0 ? ' hd' : '')}><span className="k">{k}</span><span className="v">{v}</span><span className="v">{v2}</span></div>
+      : <div key={i} className={'row' + (v.length > 9 ? ' w' : '')}><span className="k">{k}</span><span className="v">{v}</span></div>)}</div>}
     {d.fact && <p className="fact"><b>附注</b>{d.fact}</p>}
   </>;
 }
@@ -74,7 +75,8 @@ function DecisionSheet({ P, photo }: { P: Extract<Pending, { type: 'dec' }>; pho
   }, [P]); // eslint-disable-line react-hooks/exhaustive-deps
   const on = picked || hint;
   return <>
-    <Head k="抉择" title={d.title} photo={photo}><Body d={d} /></Head>
+    <Head k="抉择" title={d.title} photo={photo}><p>{d.body}</p></Head>
+    <Card d={d} />
     <div className="ds-ask"><b>请选择一项</b><span>点一下即盖章生效</span></div>
     <div className="choices">
       {d.choices.map((c, i) => (
