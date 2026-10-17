@@ -15,6 +15,7 @@ import { matePay, myPay, wageRate } from './finance';
 import { changeMoney, liquidBalance } from './accounts';
 
 declare module './types' {
+  interface Flags { inlawHelped?: number } // 买房时亲家已经出过钱了（只出一次）
   interface Loan { mo?: number }   // 还剩几个月（loanMonth）
   interface Life { hpK?: number }  // 这一年房价每月的涨跌倍数（houseMonth）
 }
@@ -101,16 +102,30 @@ export const hhIncome = () => {
   return (mine ? mine.net : S.net || 0) + (mate ? matePay(mate, mine ? mine.gross : 0).net : 0);
 };
 
+// 亲家帮的钱：结了婚，买房是两个人的事，对方爸妈也会出一份（只出一次）。
+// 按对方的家境和这里的收入水平估：家境 1–5 分别约当地人均年收入的 0、0.5、1.5、3、6 倍；男方家里多出一些、女方家里少一些（估计）。
+// 对方 60 岁以后不再算（爸妈多半不在了，或者没有余力了）
+const INLAW_K = [0, 0, 0.5, 1.5, 3, 6];
+export const mate = () => S.fam.married && S.fam.partner && S.fam.partner.alive ? S.fam.partner : null;
+export const inlawHelp = () => {
+  const p = mate();
+  if (!p || p.age >= 60 || S.flags.inlawHelped) return 0;
+  const x = Math.round(placeInc() * INLAW_K[p.q] * (p.sex === 'M' ? 1.3 : 0.7) / 1e3) * 1e3;
+  return x >= 1e4 ? x : 0;
+};
+// 买房时爸妈帮的钱：不到一万块的不算（拿一两千块出来帮着付首付，读着不像回事）
+export const houseHelp = () => { const x = parentsHelp(); return x >= 1e4 ? x : 0; };
+
 // 给一套房算出几种贷款方案
 export function loanPlans(price, L) {
-  const R = LOAN_RULES, inc = hhIncome(), cash = liquidBalance() + parentsHelp() + (S.hpf || 0); // 有欠款时先抵扣
+  const R = LOAN_RULES, inc = hhIncome(), cash = liquidBalance() + houseHelp() + inlawHelp() + (S.hpf || 0); // 有欠款时先抵扣
   const comYears = Math.max(5, Math.min(R.comMaxTerm, R.comMaxAge - S.age));
   const hpfYears = Math.max(5, Math.min(R.maxTerm, retireAge() + R.hpfAgeOverRetire - S.age, R.hpfMaxAge - S.age));
   const plans = [];
   const mk = (kind, label, down, parts) => {
     const pay = parts.reduce((t, p) => t + annualPay(p.bal, p.rate, p.years), 0);
     const interest = parts.reduce((t, p) => t + totalInterest(p.bal, p.rate, p.years), 0);
-    const why = S.debt > 0 ? '先处理现有欠款，再申请房贷' : pay > inc * R.dti ? `月供${wan(pay / 12)}，超过家庭收入的一半，银行不批` : cash < down ? `首付${wan(down)}，加上爸妈帮忙和公积金也凑不齐` : '';
+    const why = S.debt > 0 ? '先处理现有欠款，再申请房贷' : pay > inc * R.dti ? `月供${wan(pay / 12)}，超过家庭收入的一半，银行不批` : cash < down ? `首付${wan(down)}，加上两边爸妈帮忙和公积金也凑不齐` : '';
     plans.push({ kind, label, down, parts, pay, interest, off: !!why, why });
   };
   // 纯商贷
@@ -134,16 +149,17 @@ export function loanPlans(price, L) {
 export const planSub = p => p.off ? p.why : `首付${wan(p.down)}，月供约${wan(p.pay / 12)}，${p.parts[0].years}年共付利息约${wan(p.interest)}`;
 export const bestPlan = plans => plans.filter(p => !p.off).sort((a, b) => a.pay - b.pay)[0] || null;
 
-// 买下：首付先用公积金余额，再用爸妈的钱，最后是自己的存款（不够时就是欠亲戚的钱）
+// 买下：首付先用公积金余额，再用爸妈的钱、亲家的钱，最后是自己（结了婚就是你们俩）的存款（不够时就是欠亲戚的钱）
 export function buyHouse(price, L, plan) {
   let down = plan.down;
   const fromHpf = Math.min(S.hpf || 0, down); S.hpf -= fromHpf; down -= fromHpf;
-  const help = Math.min(parentsHelp(), down); down -= help; S.famMoney -= help;
+  const help = Math.min(houseHelp(), down); down -= help; S.famMoney -= help;
+  const inlaw = Math.min(inlawHelp(), down); down -= inlaw; if (inlaw > 0) S.flags.inlawHelped = 1;
   changeMoney(-down);
   S.house = { city: L.city, p: L.p, v: price, paid: price, at: S.age };
   S.loans = plan.parts.map(p => ({ ...p, pay: annualPay(p.bal, p.rate, p.years) }));
   addDoc('house', '房产证', [['坐落', L.city], ['面积', '约90平方米'], ['价格', wan(price)], ['贷款', plan.parts.map(p => `${p.kind === 'hpf' ? '公积金' : '商贷'}${wan(p.bal)}`).join(' + ')]]);
-  return { fromHpf, help };
+  return { fromHpf, help, inlaw };
 }
 
 // ===== 每月结算 =====

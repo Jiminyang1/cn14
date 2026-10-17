@@ -11,7 +11,7 @@ import { JOBS, RAISE, RESID_PENSION_JOBS, civilTry, gig, gradJob, hire, hireInCi
 import { MEET_HOW, READY0, READY_K, brideAmt, loveWord, mShift, mutualP, partnerInc, partnerRows, ptJobName } from '../romance';
 import { S } from '../state';
 import { addDoc, log, logLater } from '../journal';
-import { annualPay, bestPlan, buyHouse, foreclose, hhIncome, hometownHouse, loanBal, loanArrears, loanPayY, loanPlans, planSub, sellHouse, sellInherited } from '../housing';
+import { annualPay, bestPlan, buyHouse, houseHelp, inlawHelp, mate, foreclose, hhIncome, hometownHouse, loanBal, loanArrears, loanPayY, loanPlans, planSub, sellHouse, sellInherited } from '../housing';
 import { awayFromHome, cityLoc, farFromParents, homeCity, migrantCity, moveTo, placeCons, placeHp, placeInc, placeName } from '../place';
 import { babyP, canBaby, conceive, kidsAlive, sibsAlive } from '../family';
 import { calMonth, calYear, perMonth } from '../monthly';
@@ -28,7 +28,7 @@ declare module '../types' {
 }
 import { chance, clamp, gauss, pick, ri, wpick } from '../rng';
 import { eff } from '../stats';
-import { bothParents, carer, parentsHelp, parentsWord } from '../parents';
+import { bothParents, carer, parentsWord } from '../parents';
 import { rural } from './events';
 import { ECHO_DEC, meetCrush } from './echoes';
 import { wan } from '../format';
@@ -692,20 +692,25 @@ export const DEC = {
         home = { price: H.price, L, plan: bp };
         ch.push({ k: 'home', label: H.where, off: bad || !bp, sub: bp ? `90平米约${wan(H.price)}，${bp.label}，${planSub(bp)}` : `90平米约${wan(H.price)}，眼下负担不起`, w: H.price < price ? 1 : 0.3 });
       }
-      const help = parentsHelp();
+      // 结了婚是两个人一起买：存款、公积金都是家里的，两边的爸妈各出一份
+      const help = houseHelp(), pt = mate(), inlaw = inlawHelp();
+      const who = pt ? '你们' : '你', helps = [help ? `${pt ? '你' : ''}${parentsWord()}说能拿出${wan(help)}` : '', pt && inlaw ? `${pt.name}的爸妈说能拿出${wan(inlaw)}` : ''].filter(Boolean);
       return {
         title: '买房',
-        body: `${S.loc.city}一套90平米的房子大约${wan(price)}。${cashLeft('你手上有')}${S.hpf ? `，公积金账户里有${wan(S.hpf)}` : '，没有公积金'}${help >= 1000 ? `，${parentsWord()}说能拿出${wan(help)}` : ''}。`,
+        body: `${pt ? `你和${pt.name}商量着买房。` : ''}${S.loc.city}一套90平米的房子大约${wan(price)}。${cashLeft(`${who}手上有`)}${S.hpf ? `，${pt ? '两个人的' : ''}公积金账户里有${wan(S.hpf)}` : '，没有公积金'}${helps.length ? '，' + helps.join('，') : ''}。`,
         fact: '商贷最低首付15%、最长40年（2026年8月起）；公积金贷款首套利率2.6%，但有最高额度，而且要连续缴存一段时间才能贷',
         choices: ch, ctx: { price, plans, home },
       };
     },
     apply: (k, c) => {
       if (k === 'rent') return null;
-      if (k === 'home') { const r = buyHouse(c.home.price, c.home.L, c.home.plan); eff({ h: 2 }); return `在${c.home.L.city}买了一套房（${c.home.plan.label}）。平时空着，过年回去住几天。${r.fromHpf ? `首付用了${wan(r.fromHpf)}公积金。` : ''}`; }
+      const pt = mate(), we = pt ? '你们' : '';
+      // 首付里谁出了多少：公积金、你爸妈、亲家
+      const from = r => [r.fromHpf ? `${wan(r.fromHpf)}是公积金` : '', r.help ? `${wan(r.help)}是${parentsWord() || '爸妈'}给的` : '', r.inlaw && pt ? `${wan(r.inlaw)}是${pt.name}家里给的` : ''].filter(Boolean);
+      if (k === 'home') { const r = buyHouse(c.home.price, c.home.L, c.home.plan), f = from(r); eff({ h: 2 }); return `${we}在${c.home.L.city}买了一套房（${c.home.plan.label}）。平时空着，过年回去住几天。${f.length ? `首付里${f.join('，')}。` : ''}`; }
       const plan = c.plans.find(p => 'buy:' + p.kind === k);
-      const r = buyHouse(c.price, S.loc, plan); eff({ h: 5 });
-      return { t: `在${S.loc.city}买了房，${plan.label}${plan.parts.map(p => `${p.kind === 'hpf' ? '公积金' : '商贷'}${wan(p.bal)}`).join('、')}，${plan.parts[0].years}年还清。${r.fromHpf ? `首付里有${wan(r.fromHpf)}是公积金。` : ''}`, k: 'good' };
+      const r = buyHouse(c.price, S.loc, plan), f = from(r); eff({ h: 5 });
+      return { t: `${we}在${S.loc.city}买了房，${plan.label}${plan.parts.map(p => `${p.kind === 'hpf' ? '公积金' : '商贷'}${wan(p.bal)}`).join('、')}，${plan.parts[0].years}年还清。${f.length ? `首付里${f.join('，')}。` : ''}${pt ? `房产证上写了两个人的名字。` : ''}`, k: 'good' };
     },
   },
 
