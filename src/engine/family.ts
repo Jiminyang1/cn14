@@ -134,7 +134,9 @@ export function canBaby() {
   const wifeAge = S.sex === 'F' ? S.age : S.fam.partner.age;
   return wifeAge >= 22 && wifeAge <= 42 && kidsAlive().length < 3;
 }
-export const babyP = () => [0.3, 0.09, 0.02][Math.min(2, kidsAlive().length)];
+// 已婚、能生的人每年决定要孩子的概率（按已有几个孩子）。按月以后结婚更早，原来的 [0.3, 0.09, 0.02] 让人均孩子从 1.14 升到 1.20；
+// 整体乘约 0.83 回到 1.11（联合国估计近年总和生育率约 1.0，2020 年普查 1.3）
+export const babyP = () => [0.25, 0.075, 0.017][Math.min(2, kidsAlive().length)];
 
 // ===== 生日那个月 =====
 /** 家人长一岁（配偶的工作、收入跟着更新），然后弟弟妹妹出生（出生时就定好了在你几岁时出生） */
