@@ -157,8 +157,13 @@ export function hpfMonth(own = 0, working = isWorking(), mate = 0) {
   if (own > 0 && S.hpfOn) S.hpfY = plusMonth(S.hpfY);
   if (!working && S.job !== 'student') S.hpfOn = false;
   S.hpf = (S.hpf || 0) + (own + mate) * 2;
-  // 你已经退休（退休时已销户提取，见 career.ts 的 retire）、配偶也不再缴了：配偶账户里的钱同样提取出来，转进存款
-  if (S.job === 'retired' && !(mate > 0) && S.hpf > 0) { S.money += S.hpf; S.hpf = 0; }
+  // 你已经退休（退休时已销户提取，见 career.ts 的 retire）、配偶也不再缴了：配偶账户里的钱同样提取出来，转进存款。
+  // 你退休以后配偶还缴了好些年的，这笔钱可能有几十万：写一条记录（原来不写，存款突然多了一大块，看不出是哪来的）
+  if (S.job === 'retired' && !(mate > 0) && S.hpf > 0) {
+    const x = S.hpf, p = S.fam.partner; S.money += x; S.hpf = 0;
+    if (x >= 1000) log(p && p.alive && S.fam.married ? `${p.name}${p.retired ? '也退休了' : '不再缴公积金了'}，公积金账户销户，里面的${wan(x)}转进了存款。`
+      : `公积金账户里剩下的${wan(x)}提取了出来，转进了存款。`, 'ev');
+  }
 }
 // 还房贷（每月一期，等额本息，月利率 = 年利率 ÷ 12，和 annualPay 一样）：先用公积金余额（还贷提取），不够的从存款里出。返回从存款里付的钱。
 // l.mo 是还剩几个月；l.years 跟着取整（界面显示「还剩几年」、提前还款时重算月供用）。

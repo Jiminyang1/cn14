@@ -87,11 +87,12 @@ export const expCurve = (y: number, age: number, jk?: string) => {
   return k * (age > 50 ? Math.max(0.85, 1 - 0.01 * (age - 50)) : 1);
 };
 export const expK = () => expCurve(S.jobY, S.age, S.job);
-// 还是同一行（跳槽、换城市、失业后重新找到老本行）：工龄和个人工资系数（升职加薪攒下的）都保留；换了行才从头算
+// 还是同一行（跳槽、换城市、失业后重新找到老本行）：工龄和个人工资系数（升职加薪攒下的）都保留；换了行才从头算。
+// 每次 hire 都是进了一家新单位：在本单位的年数 empY 从头算（经济补偿按它算，见 turns.ts 的 severance）
 export function hire(job, L?) {
   if (L) moveTo(L);
   const same = job === (S.job === 'seeking' ? S.flags.lastJob : S.job) && JOBS[job] && JOBS[job].m > 0;
-  S.job = job;
+  S.job = job; S.empY = 0;
   goIndep();
   if (!same) { S.jobY = 0; S.wageK = S.wageK0 = luckK(WAGE_SD) * knWageK() * eduWageK(job); }
   if (JOBS[job] && (JOBS[job].stable || JOBS[job].priv)) S.flags.empIns = 1;

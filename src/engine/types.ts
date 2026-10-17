@@ -123,6 +123,7 @@ export interface Life {
   // 学业与工作
   school: string | null; schoolEnd: number | null; edu: number;
   job: string | null; jobY: number; wageK: number; jobs: { job: string; age: number; city: string }[];
+  empY?: number;                                   // 在现在这家单位干了几年（按月累计；经济补偿的 N 按它算，换单位就从头算）
   income: number; relInc?: number; pension?: number;
   pen?: { y: number; r: number; s: number };       // 职工养老保险缴费记录（finance.ts 的 penMonth）
   // 钱：经济独立以前算在家里

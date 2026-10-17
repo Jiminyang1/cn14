@@ -81,7 +81,8 @@ export function moneyMonth(m: number) {
     gross += myW / MONTHS; net += pay.net / MONTHS; hpfOwn = pay.hpf / MONTHS;
     penMonth(penBase(myW, S.job, S.loc.p) / MONTHS);
     if (J.stable || J.priv) S.uiY = plusMonth(S.uiY); // 有单位的工作交失业保险（和 career.ts 的 hire 设 empIns 的条件一样）
-    if (m === MONTHS - 1) S.jobY++; // 工龄按年记：这一年最后一个月还在上班就加一年
+    if (m === MONTHS - 1) { S.jobY++; if (J.v) luckLog(J.v, myW); } // 工龄按年记：这一年最后一个月还在上班就加一年
+    S.empY = plusMonth(S.empY); // 在本单位的年数按月记
   }
   const ui = uiMonth(); // 失业保险金免个税
   gross += ui; net += ui;
@@ -165,16 +166,39 @@ function here() {
   return hereVal;
 }
 // 个体户、销售、小老板的收入一年好一年坏：每年抽一次（这一年第一个干这类工作的月份，通常就是第 0 个月），这一年每个月都乘同一个倍数。
-// 抽的是标准正态值 z，倍数是 exp(v·z − v²/2)：对数正态的均值正好是 1，这一行多年平均的收入就是 JOBS 里的倍数
-// （原来是 exp(v·z)，均值 exp(v²/2)：小老板被放大到 ×1.28、个体户 ×1.20）。年中换到另一种波动的行当，沿用这一年的运气
+// 抽的是标准正态值 z，倍数是 exp(v·z − v²/2)（原来是 exp(v·z)，均值 exp(v²/2)：小老板被放大到 ×1.28、个体户 ×1.20）。年中换到另一种波动的行当，沿用这一年的运气。
+// z 限在 ±LUCK_Z 以内（估计）：原来不封顶，小老板偶尔抽到 ×10（一年税前一百六十多万），存款一年翻倍，时间线上却什么都没有。
+// 封顶以后最多约 小老板 ×3.2、个体户 ×2.8、销售 ×1.9，最少约 ×0.2、×0.26、×0.47；再除以封顶后的均值（luckMean），这一行多年平均的收入仍是 JOBS 里的倍数。
+// 倍数到 LUCK_LOG 以上的年份，在这一年最后一个月写进时间线（moneyMonth）
+export const LUCK_Z = 2, LUCK_LOG = 1.8;
+const luckMeans = new Map<number, number>();
+// exp(v·clamp(z) − v²/2) 的均值：在 [−8, 8] 上按 0.001 的步长数值积分（每种 v 只算一次；只用加减乘除和 fexp，各环境结果相同）
+function luckMean(v: number) {
+  let k = luckMeans.get(v);
+  if (k == null) {
+    k = 0;
+    for (let i = -8000; i <= 8000; i++) { const z = i / 1000; k += fexp(-z * z / 2 + v * clamp(z, -LUCK_Z, LUCK_Z) - v * v / 2); }
+    k = k / 1000 / Math.sqrt(2 * Math.PI);
+    luckMeans.set(v, k);
+  }
+  return k;
+}
+export const luckOf = (v: number, z: number) => fexp(v * clamp(z, -LUCK_Z, LUCK_Z) - v * v / 2) / luckMean(v);
 function incomeLuck(v: number) {
   if (!v) return 1;
   const L = S.incLuck && S.incLuck.a === S.age ? S.incLuck : (S.incLuck = { a: S.age, z: gauss(0, 1) });
-  return fexp(v * L.z - v * v / 2);
+  return luckOf(v, L.z);
 }
 /** 这一年已经抽好的收入运气倍数（界面显示用，不消耗随机数；这一年还没抽过就是 1） */
 export function incomeLuckNow(v = (JOBS[S.job] || {} as any).v) {
-  return v && S.incLuck && S.incLuck.a === S.age ? fexp(v * S.incLuck.z - v * v / 2) : 1;
+  return v && S.incLuck && S.incLuck.a === S.age ? luckOf(v, S.incLuck.z) : 1;
+}
+// 收入运气特别好的一年：在这一年最后一个月写一条（w 是这个月按一年算的税前收入）
+function luckLog(v: number, w: number) {
+  const k = incomeLuckNow(v);
+  if (k < LUCK_LOG) return;
+  log(S.job === 'sales' ? `这一年业绩特别好，提成拿了不少，税前收入约${wan(w)}，差不多是平常年份的${k.toFixed(1)}倍。`
+    : `这一年生意特别好，税前赚了约${wan(w)}，差不多是平常年份的${k.toFixed(1)}倍。`, 'good');
 }
 // 职工养老保险的缴费记录：交了几年（y）、每年工资相对当地城镇人均可支配收入的倍数之和（r）、其中在机关事业单位的年数（s）。
 // 只交城乡居民养老保险的职业（务农、打零工、个体户……）不算。每个月在岗记一个月（w 是这个月的缴费基数：本人工资限在社平工资的 60%–300%，

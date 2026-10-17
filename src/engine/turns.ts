@@ -25,11 +25,14 @@ export const KEEP = {
 };
 // 当地职工月平均工资 ≈ 城镇居民人均可支配收入 × 1.8 ÷ 12（估计；2024 年城镇非私营单位平均工资约为人均可支配收入的 2.3 倍，私营单位约 1.3 倍）
 const AVG_WAGE_K = 1.8;
-/** N+1：《劳动合同法》第47条，每满一年一个月工资，不满半年按半个月；月工资超过当地职工月平均工资 3 倍的按 3 倍算、最多 12 年。
- *  第40条：没有提前 30 天通知的，再额外付一个月工资（“+1”） */
+/** N+1：《劳动合同法》第47条，按在本单位工作的年限，每满一年一个月工资，六个月以上不满一年按一年，不满六个月按半个月；
+ *  月工资超过当地职工月平均工资 3 倍的按 3 倍算、最多 12 年。第40条：没有提前 30 天通知的，再额外付一个月工资（“+1”）。
+ *  N 按在这家单位的年数（empY），不是干这一行的年数（jobY）：原来按 jobY，被裁后又找到老本行的，前一家单位的年数已经补偿过，下次被裁又算一遍
+ *  （一局 58 岁的公司职员按 33 年拿了 71 万，实际在第二家单位只干了 15 年，应约 34 万） */
+const sevYears = (y = S.empY || 0) => Math.max(0.5, Math.floor(y) + (y % 1 >= 0.5 ? 1 : y % 1 > 0 ? 0.5 : 0));
 export function severance() {
   const monthly = (wageRate() || S.income || placeInc()) / 12, cap = placeInc() * AVG_WAGE_K / 12 * 3;
-  const m = Math.min(monthly, cap), n = monthly > cap ? Math.min(12, Math.max(0.5, S.jobY)) : Math.max(0.5, S.jobY);
+  const m = Math.min(monthly, cap), n = monthly > cap ? Math.min(12, sevYears()) : sevYears();
   return Math.round((n * m + monthly) / 100) * 100;
 }
 export function layOff() {
