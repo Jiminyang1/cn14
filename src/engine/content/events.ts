@@ -14,6 +14,7 @@ import { eff } from '../stats';
 import { kidsAlive } from '../family';
 import { single, soloK } from '../romance';
 import { wan } from '../format';
+import { sibToWed, sibWed } from '../kin';
 
 export const rural = () => S.loc.kind === 'rural';
 export const dz = t => PBY[S.loc.p].dz.includes(t);
@@ -73,7 +74,8 @@ export const EVENTS = [
   { id: 'dateTrip', a: [18, 50], gap: 2, w: 1.2, c: () => !!S.fam.dating, run: () => { const d = S.fam.dating; d.love = clamp(d.love + 6, 0, 100); eff({ h: 3, money: -placeInc() * 0.04 }); return { t: `和${d.name}去${pick(['厦门', '大理', '成都', '青岛', '西安', '桂林'])}玩了几天。${d.city !== S.loc.city ? '难得见一次面。' : ''}`, k: 'good' }; } },
   { id: 'dateFight', a: [18, 50], gap: 2, w: () => S.fam.dating && S.fam.dating.fit < 0.5 ? 1.5 : 0.6, c: () => !!S.fam.dating, run: () => { const d = S.fam.dating; d.love = clamp(d.love - 8, 0, 100); eff({ h: -3 }); return pick([`和${d.name}为了一件小事吵了一架，冷战了一个星期。`, `${d.name}嫌你回消息太慢，吵了一架。`, `${d.name}说你从来不考虑你们的以后。`]); } },
   { id: 'redEnv', a: [22, 70], gap: 4, w: 1, run: () => { const x = ri(2, 10) * 100; eff({ money: -x * ri(2, 5) }); return `这一年随了好几份份子钱，同事结婚、亲戚家孩子考上大学，每份${x}元。`; } },
-  { id: 'layoff', a: [20, 60], gap: 4, w: () => isWorking() ? JOBS[S.job].risk * 4 : 0, run: () => { const boss = ['boss', 'shop'].includes(S.job); S.flags.lastJob = S.job; S.job = 'seeking'; eff({ h: -8 }); return { t: boss ? '生意越来越难做，最后关了门。' : '公司裁员，名单上有你。', k: 'bad' }; } },
+  // 私企岗位（销售、职员、程序员、工程师）改成先听到风声、再决定怎么应对：抉择 layofflist（turns.ts）
+  { id: 'layoff', a: [20, 60], gap: 4, w: () => isWorking() && !JOBS[S.job].priv ? JOBS[S.job].risk * 4 : 0, run: () => { const boss = ['boss', 'shop'].includes(S.job); S.flags.lastJob = S.job; S.job = 'seeking'; eff({ h: -8 }); return { t: boss ? '生意越来越难做，最后关了门。' : '公司裁员，名单上有你。', k: 'bad' }; } },
   { id: 'promo', a: [25, 58], gap: 4, w: () => isWorking() ? 1.5 : 0, run: () => { S.wageK *= 1.15; eff({ h: 4 }); return { t: S.job === 'civil' ? '提了一级，工资涨了一点。' : '升职加薪了。', k: 'good' }; } },
   { id: 'stock', a: [25, 65], gap: 5, w: 1, c: () => S.money > placeInc() * 0.5, run: () => { const g = gauss(-0.05, 0.25), x = S.money * 0.3 * g; eff({ money: x, h: g > 0 ? 2 : -3 }); return g > 0 ? `跟着同事买了股票，赚了${wan(x)}。` : `跟着同事买了股票，亏了${wan(-x)}。`; } },
   { id: 'car', a: [25, 55], once: 1, w: 1.5, c: () => S.money > placeInc() * 1.2, run: () => { eff({ money: -placeInc() * 1.0, h: 3 }); return `买了一辆${chance(0.6) ? '新能源车' : '二手车'}，过年终于可以自己开车回家了。`; } },
@@ -102,6 +104,8 @@ export const EVENTS = [
       if (t === 'cold') { eff({ hl: -1 }); return '一场大雪加寒潮，道路结冰，停课停工了好几天。'; }
       eff({ hl: -1 }); return '沙尘暴来了，天空一片昏黄，出门要戴口罩。';
     } },
+  // ---------- 兄弟姐妹 ----------
+  { id: 'sibWed', a: [8, 75], w: 2.5, c: () => !!sibToWed() && (S.fam.mom.alive || S.fam.dad.alive), run: sibWed },
   // ---------- 老年 ----------
   { id: 'dance', a: [50, 85], once: 1, w: () => S.sex === 'F' ? 3 : 0.8, c: () => S.job === 'retired' || S.age > 58, run: () => { eff({ so: 5, hl: 2, h: 3 }); return '加入了小区的广场舞队，每天晚上七点准时出现。'; } },
   { id: 'grandcare', a: [50, 80], gap: 4, w: 2, c: () => (S.flags.grandkids || 0) > 0, run: () => { eff({ so: 3, hl: -1, h: 2 }); return '帮子女带孙辈，每天接送上学、做饭，比上班还忙。'; } },

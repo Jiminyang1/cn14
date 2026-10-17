@@ -10,6 +10,7 @@ export const TICK_MS = 250;
 const DEC_SCENE: Record<string, SceneId> = {
   gaokao: 'gaokao', marry: 'wedding', house: 'house', romance: 'date', graduate: 'grad', vocgrad: 'grad',
   bigcity: 'train', crisis: 'layoff', baby: 'nursery', illness: 'ward', parentcare: 'oldage', oldcare: 'oldage',
+  demolish: 'demolish', kidhome: 'kidhome', sibloan: 'sibloan', heritage: 'heritage', layofflist: 'layofflist', retireplan: 'retire',
 };
 /** 这个抉择配哪张图；画的是谁（父母生病时画父母） */
 export function decScene(P: Pending): { id: SceneId; sex?: 'M' | 'F' } | null {
@@ -20,6 +21,8 @@ export function decScene(P: Pending): { id: SceneId; sex?: 'M' | 'F' } | null {
 export const ALT: Record<SceneId, string> = {
   birth: '产房里，妈妈抱着刚出生的你', gaokao: '考点门外', wedding: '婚礼', house: '新楼盘', date: '傍晚的湖边长椅',
   grad: '毕业典礼', train: '高铁站台', layoff: '雨里抱着纸箱走出写字楼', nursery: '夜里的婴儿床', ward: '病房', oldage: '午后的摇椅',
+  demolish: '老房子墙上的“拆”字和挖掘机', kidhome: '售楼处的沙盘前', sibloan: '夜里的饭桌', heritage: '堂屋里的遗像和香',
+  layofflist: '会议室里，HR 手上的名单', retire: '“光荣退休”欢送会',
 };
 
 /** 每 TICK_MS 加一；不动或者系统要求减少动效时一直是 0 */
