@@ -29,7 +29,7 @@ const scale = +(opt('--scale') || 3);
 const out = opt('--out') || 'logs/pixel/sheet.png';
 const save = opt('--save'), compare = opt('--compare');
 const vars: [string, SceneCtx][] = opts('--var').map(v => [v, Object.fromEntries(v.split(',').map(kv => {
-  const [k, x] = kv.split('='); return [k, k === 'sex' || k === 'season' ? x : k === 'rural' ? x === '1' || x === 'true' : +x];
+  const [k, x] = kv.split('='); return [k, k === 'sex' || k === 'season' || k === 'home' ? x : k === 'rural' ? x === '1' || x === 'true' : +x];
 }))]);
 if (!vars.length) vars.push(['sex=M', { sex: 'M', seed: 2 }]);
 const all = Object.keys(SCENES) as SceneId[];

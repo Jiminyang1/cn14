@@ -11,7 +11,7 @@ export type SceneId = 'birth' | 'gaokao' | 'wedding' | 'house' | 'date' | 'grad'
   | 'demolish' | 'kidhome' | 'sibloan' | 'heritage' | 'layofflist' | 'retire'
   | 'newyear' | 'kinder' | 'primary' | 'middle' | 'high' | 'voc' | 'uni' | 'master'
   | 'ages' | 'yard'; // 这两张在 world.ts：实时面板的雏形 // 后面这几张在 school.ts，配在人生纪录里
-export interface SceneCtx { rural?: boolean; sex?: 'M' | 'F'; seed?: number; season?: Season; age?: number }
+export interface SceneCtx { rural?: boolean; sex?: 'M' | 'F'; seed?: number; season?: Season; age?: number; home?: string } // home：画廊里看实时画面的各种住处
 
 
 // ---------- 出生：产科病房 ----------

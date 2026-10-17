@@ -4,6 +4,7 @@ import { S, type Pending } from '../engine';
 import { hash } from './pixel/pix';
 import { H, SCENES, W, type SceneCtx, type SceneId } from './pixel/scenes';
 import { drawWorld, viewOf, type View } from './pixel/world';
+import { dissolve, type Pix } from './pixel/pix';
 
 export const TICK_MS = 250;
 
@@ -79,17 +80,32 @@ export function Photo({ id, sex }: { id: SceneId; sex?: 'M' | 'F' }) {
 // ===== 实时画面：这一刻家里是什么样（右栏顶上） =====
 const ROLE_N: Record<string, string> = { me: '你', mom: '妈妈', dad: '爸爸', grandma: '奶奶', grandpa: '爷爷', sib: '兄弟姐妹', partner: '爱人', kid: '孩子', mate: '室友' };
 const SEASON_N = { spring: '春', summer: '夏', autumn: '秋', winter: '冬' };
-const HOME_N = { yard: '农村的院子', flat: '楼下', dorm: '宿舍楼下' };
+const HOME_N: Record<View['home'], string> = { yard: '农村的院子', town: '县城的老小区', flat: '楼下', rental: '城中村的出租屋', dorm: '宿舍楼下', nursing: '养老院', hospital: '医院' };
 /** 给读屏用的一句话 */
 export function describeView(v: View) {
   const who = v.people.map(r => ROLE_N[r.role]).filter((x, i, a) => a.indexOf(x) === i).join('、');
   return `${HOME_N[v.home]}，${v.month}月（${SEASON_N[v.season]}）${v.festival === 'spring' ? '，过年' : v.festival === 'midautumn' ? '，中秋' : ''}。在家的有：${who}${v.away ? '；爸妈在外地，正在视频' : ''}。`;
 }
+const MOVE_TICKS = 10;   // 搬家转场：约 2.5 秒溶解到新家
+const BOX_MONTHS = 3;    // 搬家后门口的纸箱留几个月
 export function LiveScene() {
   const ref = useRef<HTMLCanvasElement>(null);
   const t = useTick();
   const v = viewOf(S);
-  useEffect(() => { if (ref.current) drawWorld(v, t).draw(ref.current); });
+  // 搬家（住处的类型或城市变了）：从上一张画面像素溶解过来，门口堆几个月纸箱
+  const mv = useRef<{ key: string; last: Pix | null; from: Pix | null; at: number; month: number }>({ key: '', last: null, from: null, at: 0, month: -99 });
+  const key = `${v.home}|${S.loc.city}`, nowM = S.age * 12 + (S.month || 0), m = mv.current;
+  if (m.key && m.key !== key) { m.from = m.last; m.at = t; if (!['hospital', 'nursing', 'dorm'].includes(v.home)) m.month = nowM; }
+  m.key = key;
+  if (nowM - m.month < BOX_MONTHS) v.props.boxes = true;
+  useEffect(() => {
+    if (!ref.current) return;
+    let pic = drawWorld(v, t);
+    m.last = pic;
+    const still = matchMedia('(prefers-reduced-motion: reduce)').matches; // 不动的时候直接换，不做转场
+    if (m.from && !still && t - m.at < MOVE_TICKS) pic = dissolve(m.from, pic, (t - m.at) / MOVE_TICKS);
+    pic.draw(ref.current);
+  });
   return (
     <figure className="pix-photo pix-live">
       <canvas ref={ref} width={W} height={H} role="img" aria-label={describeView(v)} />
