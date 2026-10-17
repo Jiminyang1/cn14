@@ -41,7 +41,8 @@ export const closeWord = (c: number) => c >= 75 ? '很亲' : c >= 55 ? '还算�
 export const grownClose = () => { const ks = kidsAlive().filter(k => k.age >= 18); return ks.length ? ks.reduce((t, k) => t + kidClose(k), 0) / ks.length : null; };
 
 /** 生日那个月：亲疏每年向一个目标值靠拢（父母一年走 25%，孩子 20%）。目标值看去年你是怎么做的：
- *  · 父母：基础 55；住得远 −25；去年每回一次家 +8（最多四次）、给过钱 +5；「家人」每格 +10；和你住一起 +20；
+ *  · 父母：基础 60；住得远 −25；去年每回一次家 +8（最多四次）、给过钱 +5；和你住一起 +20。只看行动，不看格子：
+ *    「家人」格子管的是自己的小家（配偶、孩子），父母那边要你自己回去、自己给（见 AGENTS.md）；
  *  · 成年的孩子：基础 45；去年一起旅行、给过钱各 +8；「家人」每格 +12，「工作」每格 −8（忙着工作的父母和孩子远）；
  *  · 小时候的孩子：基础 65；「家人」每格 +12，「工作」每格 −10。
  *  自动的人生大致落在五六十；常回家的会越来越亲，不管不问的几年就疏远了 */
@@ -49,7 +50,7 @@ export function closeYear() {
   const last = S.actN && S.actN.a === S.age - 1 ? S.actN.n : {}, n = (k: string) => last[k] || 0;
   const fam = slotW('family'), work = slotW('work');
   if (anyParent() && S.age >= 18) {
-    const T = 55 + (S.flags.parWithMe ? 20 : farFromParents() ? -25 : 0) + 8 * Math.min(4, n('visit')) + (n('giveParents') ? 5 : 0) + 10 * fam;
+    const T = 60 + (S.flags.parWithMe ? 20 : farFromParents() ? -25 : 0) + 8 * Math.min(4, n('visit')) + (n('giveParents') ? 5 : 0);
     addPar((clamp(T, 0, 100) - parClose()) * 0.25);
   }
   for (const k of kidsAlive()) {
