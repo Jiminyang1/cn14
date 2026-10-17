@@ -68,11 +68,11 @@ export function flatHome(p: Pix, v: View, t: number) {
   bins(p, 84, 38); lamp(p, 93, 47, 18);
   bike(p, 70, 47, C.gold); bike(p, 78, 47, C.blueLt);
   if (v.festival === 'midautumn') for (const i of [16, 34, 43]) disc(p, i, 1, 1, C.redLt);
-  // 时不时有骑电动车的外卖员从楼下经过
+  // 时不时有骑电动车的外卖员从楼下经过：走的是人身后那条路（车轮在第 41 行），所以会被站在前面的人挡住，不会从人身上穿过去
   const rx = 104 - (t * 3) % 160;
   if (rx > -14 && rx < W) {
-    man(p, rx, 34, dress({ top: C.gold, topSh: C.goldDk }, WEAR.pants, { hair: C.gold }), { sit: true, t });
-    p.rect(rx - 2, 50, 14, 2, C.grayDk); p.rect(rx + 8, 46, 4, 4, C.gold); for (const wx of [rx - 1, rx + 10]) p.rect(wx, 52, 3, 2, C.ink);
+    man(p, rx, 21, dress({ top: C.gold, topSh: C.goldDk }, WEAR.pants, { hair: C.gold }), { sit: true, t });
+    p.rect(rx - 2, 38, 14, 2, C.grayDk); p.rect(rx + 8, 34, 4, 4, C.gold); for (const wx of [rx - 1, rx + 10]) p.rect(wx, 40, 3, 2, C.ink);
   }
 }
 
