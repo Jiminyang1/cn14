@@ -195,7 +195,7 @@ export const DEC = {
     }),
     apply: k => {
       kidPick('kidKg', k);
-      shape(k === 'cry' ? { n: 0.12, e: -0.08 } : k === 'teacher' ? { a: 0.06, c: 0.05, r: -0.1, n: -0.06 } : { e: 0.1, r: 0.1, n: -0.1 });
+      shape(k === 'cry' ? { n: 0.12, e: -0.08 } : k === 'teacher' ? { a: 0.03, c: 0.03, r: -0.1, n: -0.06 } : { e: 0.1, r: 0.1, n: -0.1 });
       if (k === 'cry') { eff({ h: -1 }); return '你哭了一整个上午。第二天还是哭，第三天就和同桌抢起了积木。'; }
       if (k === 'teacher') { eff({ so: 1 }); return '你一直跟在老师身边，放学时老师夸你最乖。'; }
       eff({ h: 1 }); return '你扑向那一屋子玩具。放学来接你的时候，你还不想走。';
@@ -231,11 +231,11 @@ export const DEC = {
   kidWallet: {
     build: () => ({
       title: '捡到钱包', body: '放学路上，你在路边捡到一个钱包，里面有两百块钱。',
-      choices: [{ k: 'teacher', label: '交给老师', sub: '', w: 3, tilt: { c: 0.4, a: 0.3 } }, { k: 'keep', label: '偷偷留下来', sub: '', w: 1, tilt: { c: -0.5, a: -0.3 } }, { k: 'back', label: '放回原地', sub: '', w: 1, tilt: { e: -0.3, r: -0.2 } }],
+      choices: [{ k: 'teacher', label: '交给老师', sub: '', w: 3, tilt: { c: 0.4, a: 0.3 } }, { k: 'keep', label: '偷偷留下来', sub: '', w: 1, tilt: { c: -0.5, a: -0.3 }, noWhy: true }, { k: 'back', label: '放回原地', sub: '', w: 1, tilt: { e: -0.3, r: -0.2 } }],
     }),
     apply: k => {
       kidPick('kidWallet', k);
-      shape(k === 'teacher' ? { c: 0.04, e: 0.05, n: -0.04 } : k === 'keep' ? { c: -0.15, a: -0.12, n: 0.1 } : { e: -0.12 });
+      shape(k === 'teacher' ? { c: 0.04, e: 0.05, n: -0.04 } : k === 'keep' ? { c: -0.15, a: -0.08, n: 0.1 } : { e: -0.12 });
       if (k === 'teacher') { eff({ h: 1, so: 1 }); return '你把钱包交给了老师。失主送来一面锦旗，校长在升旗仪式上念了你的名字。'; }
       if (k === 'keep') { eff({ h: -1 }); return '你把钱藏在了书包夹层里。买了几次零食，每次都心里发慌。'; }
       return '你把钱包放回原地，站在旁边等了好久，没有人来。';
@@ -248,7 +248,7 @@ export const DEC = {
     }),
     apply: k => {
       kidPick('kidBully', k);
-      shape(k === 'stand' ? { r: 0.15, a: -0.12, n: -0.06 } : k === 'tell' ? { c: 0.06, a: 0.06, n: -0.04 } : { n: 0.08, r: -0.08 });
+      shape(k === 'stand' ? { r: 0.15, a: -0.12, n: -0.06 } : k === 'tell' ? { c: 0.03, a: 0.06, n: -0.04 } : { n: 0.08, r: -0.08 });
       if (k === 'stand') { if (chance(0.4)) { eff({ hl: -1, so: 1 }); return '你冲上去，被推倒在地上，膝盖破了。那个同学后来成了你的好朋友。'; } eff({ so: 1, h: 1 }); return '你冲上去大喊了一声，那几个人骂骂咧咧地走了。'; }
       if (k === 'tell') { eff({ so: 1 }); return '老师来了，把那几个学生带去了办公室。'; }
       eff({ h: -2 }); return '你低着头走开了。那天晚上，你一直想着那个同学的眼神。';
@@ -378,7 +378,7 @@ export const DEC = {
   vocgrad: {
     build: () => ({
       title: '职高毕业', body: '三年职高读完了。', fact: '技术工人是中国制造业长期紧缺的岗位',
-      choices: [{ k: 'skilled', label: '进厂当技术工人', sub: '收入稳定', w: 2, tilt: { r: -0.4 } }, { k: 'zhuan', label: '考高职，读大专', sub: '再读三年', w: 4, tilt: { c: 0.4 } }, { k: 'city', label: '去大城市打工', sub: '', w: 1.5, tilt: { r: 0.5, e: 0.2 } }],
+      choices: [{ k: 'skilled', label: '进厂当技术工人', sub: '收入稳定', w: 2, tilt: { r: -0.2 } }, { k: 'zhuan', label: '考高职，读大专', sub: '再读三年', w: 4, tilt: { c: 0.4 } }, { k: 'city', label: '去大城市打工', sub: '', w: 1.5, tilt: { r: 0.3, e: 0.2 } }],
     }),
     apply: k => {
       S.edu = Math.max(S.edu, 4); S.school = null; addDoc('grad', '中专毕业证书', [['学历', '中专/职高']]);
@@ -394,11 +394,11 @@ export const DEC = {
       const ch = [];
       // 深造率：中上游 985 约 53%–75%，211 约 50%–64%，地方本科国内读研约 14%（各校就业质量报告、麦可思）
       if (lv === 6) ch.push({ k: 'kaoyan', label: S.flags.tier === 'top' || S.flags.tier === '211' ? '读研（保研或考研）' : '考研', sub: '再读三年', w: { top: 9, '211': 6, ben1: 3, ben: 2.5 }[S.flags.tier] || 2, tilt: { c: 0.4 } });
-      ch.push({ k: 'civil', label: '考公务员或事业编', sub: '稳定，但竞争激烈', w: 2, tilt: { r: -0.6, c: 0.2 } });
-      ch.push({ k: 'big', label: '去大城市找工作', sub: '工资高，房租也高', w: top ? 4 : 2, tilt: { r: 0.5, e: 0.2 } });
+      ch.push({ k: 'civil', label: '考公务员或事业编', sub: '稳定，但竞争激烈', w: 2, tilt: { r: -0.3, c: 0.2 } });
+      ch.push({ k: 'big', label: '去大城市找工作', sub: '工资高，房租也高', w: top ? 4 : 2, tilt: { r: 0.3, e: 0.2 } });
       const U = S.flags.uni;
       if (U && U.prov !== S.home.p && !BIG[U.city]) ch.push({ k: 'stay', label: `留在${U.city}工作`, sub: '读了几年书，已经熟悉这座城市', w: 2 });
-      ch.push({ k: 'home', label: awayFromHome() ? '回家乡找份工作' : '留在家乡找份工作', sub: '离家近，节奏慢', w: 2, tilt: { r: -0.4 } });
+      ch.push({ k: 'home', label: awayFromHome() ? '回家乡找份工作' : '留在家乡找份工作', sub: '离家近，节奏慢', w: 2, tilt: { r: -0.2 } });
       return { title: '毕业去向', body: `${S.school}毕业了。${S.flags.major ? `你学的是${S.flags.major}。` : ''}`, fact: '2026届全国高校毕业生预计为1270万人', choices: ch, ctx: { lv } };
     },
     apply: (k, ctx) => {
@@ -461,7 +461,7 @@ export const DEC = {
       const r = BIG[city].inc / placeInc();
       return {
         title: '去大城市闯一闯？', body: `老同学在${city}，说那边机会多。${city}的收入水平大约是你这里的${r.toFixed(1)}倍，房租也贵得多。`,
-        choices: [{ k: 'go', label: `去${city}`, sub: '收入↑ 房租↑ 离家更远', w: 2, tilt: { r: 0.6, e: 0.2 } }, { k: 'stay', label: '留在这里', sub: '', w: 3 }], ctx: { city },
+        choices: [{ k: 'go', label: `去${city}`, sub: '收入↑ 房租↑ 离家更远', w: 2, tilt: { r: 0.4, e: 0.2 } }, { k: 'stay', label: '留在这里', sub: '', w: 3 }], ctx: { city },
       };
     },
     apply: (k, ctx) => {
@@ -503,7 +503,7 @@ export const DEC = {
       const more = x >= 1.15 ? '两成' : x >= 1.05 ? '一成左右' : '一点';
       return {
         title: '跳槽？', body: `另一家公司来挖你，工资高${more}，但听说更忙。`,
-        choices: [{ k: 'hop', label: '跳槽', sub: '收入↑ 健康↓', w: 2, tilt: { r: 0.5 } }, { k: 'stay', label: '留在原来的地方', sub: '', w: 3, tilt: { r: -0.2, a: 0.2 } }, { k: 'boss', label: '干脆辞职自己干', sub: '风险很大', w: 0.4, tilt: { r: 0.8 } }],
+        choices: [{ k: 'hop', label: '跳槽', sub: '收入↑ 健康↓', w: 2, tilt: { r: 0.3 } }, { k: 'stay', label: '留在原来的地方', sub: '', w: 3, tilt: { a: 0.2 } }, { k: 'boss', label: '干脆辞职自己干', sub: '风险很大', w: 0.4, tilt: { r: 0.5 } }],
         ctx: { more },
       };
     },
@@ -561,7 +561,7 @@ export const DEC = {
         choices: [
           { k: 'yes', label: S.sex === 'M' ? '求婚' : '答应结婚', sub: wantHouse ? '没有房子，对方家里可能不同意' : '办酒席、领证', w: ready * clamp(p.love / 60, 0.3, 1.6) * (wantHouse ? 0.6 : 1), tilt: { c: 0.3 } },
           { k: 'wait', label: '再处处看', sub: p.asks >= 2 ? '对方可能不想再等了' : '', w: 2, tilt: { n: 0.5, r: -0.2 } },
-          { k: 'no', label: '分手', sub: '', w: p.love < 45 ? 1.5 : 0.3, tilt: { a: -0.4, n: 0.2 } },
+          { k: 'no', label: '分手', sub: '', w: p.love < 45 ? 1.5 : 0.3, tilt: { a: -0.4 } },
         ], ctx: { amt, wantHouse },
       };
     },
@@ -660,7 +660,7 @@ export const DEC = {
       const ch: Choice[] = [];
       if (spare > bal || part >= bal) ch.push({ k: 'all', label: `一次还清剩下的${wan(bal)}`, sub: '无债一身轻', w: part >= bal ? 4 : 2, tilt: { r: -0.5, c: 0.2 } });
       if (part < bal) ch.push({ k: 'part', label: `提前还${wan(part)}`, sub: '月供变少，利息省一些', w: 2, tilt: { r: -0.3 } });
-      ch.push({ k: 'no', label: '不还，钱留在手里', sub: '应急、理财或者给孩子用', w: 2, tilt: { r: 0.3 } });
+      ch.push({ k: 'no', label: '不还，钱留在手里', sub: '应急、理财或者给孩子用', w: 2, tilt: { r: 0.3 }, noWhy: true });
       return { title: '提前还房贷？', body: `房贷还剩${wan(bal)}，利率${(S.loans[0].rate * 100).toFixed(2)}%。存款理财的收益越来越低，身边不少人都在提前还贷。`, fact: '2023–2024年出现“提前还贷潮”，全国个人住房贷款余额连续下降', choices: ch, ctx: { part } };
     },
     apply: (k, c) => {
@@ -696,8 +696,8 @@ export const DEC = {
       // 不在老家、也没和父母住在一起的，才有「回老家照顾」和「接到身边」；中风致残的自己干不了活，没有「回老家找份工作」
       const away = farFromParents(), work = isWorking();
       const ch = away
-        ? [...(S.flags.disabled ? [] : [{ k: 'back', label: work ? '辞职回老家照顾' : '回老家照顾', sub: work ? '收入↓ 陪伴↑' : '陪伴↑', w: 1.5, tilt: { a: 0.5 } }]), { k: 'care', label: '花钱请护工', sub: '开销↑', w: 2, tilt: { a: -0.3 } }, { k: 'take', label: `把${wn}接到身边`, sub: '', w: 1.5, tilt: { a: 0.4 } }]
-        : [{ k: 'self', label: '自己照顾', sub: '健康↓ 陪伴↑', w: 2, tilt: { a: 0.5, c: 0.2 } }, { k: 'care', label: '花钱请护工', sub: '开销↑', w: 2, tilt: { a: -0.3 } }];
+        ? [...(S.flags.disabled ? [] : [{ k: 'back', label: work ? '辞职回老家照顾' : '回老家照顾', sub: work ? '收入↓ 陪伴↑' : '陪伴↑', w: 1.5, tilt: { a: 0.5 } }]), { k: 'care', label: '花钱请护工', sub: '开销↑', w: 2, noWhy: true }, { k: 'take', label: `把${wn}接到身边`, sub: '', w: 1.5, tilt: { a: 0.4 } }]
+        : [{ k: 'self', label: '自己照顾', sub: '健康↓ 陪伴↑', w: 2, tilt: { a: 0.5, c: 0.2 } }, { k: 'care', label: '花钱请护工', sub: '开销↑', w: 2, noWhy: true }];
       return { title: `${wn}病了`, body: `${wn}${p.age}岁了，${pick(['中风后行动不便', '查出了阿尔茨海默病，开始认不出人', '摔了一跤，髋骨骨折，卧床了'])}，需要人照顾。`, choices: ch, ctx: { who } };
     },
     apply: (k, c) => {

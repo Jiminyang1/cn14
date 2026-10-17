@@ -169,7 +169,7 @@ export function autoPick(d) {
   const wb = S.pers ? balanceW(w0, ts) : w0, w = cs.map((c, i) => wb[i] * tiltW(c.tilt));
   const k = wpick(cs.map((c, i) => [c.k, w[i]]));
   if (S.pers) {
-    const t = whyPick(wb, ts, cs.findIndex(c => c.k === k));
+    const i = cs.findIndex(c => c.k === k), t = i >= 0 && !cs[i].noWhy ? whyPick(wb, ts, i) : null;
     d.why = t ? { k, t } : undefined;
   }
   return k;

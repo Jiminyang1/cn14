@@ -28,7 +28,7 @@ export interface Loc { p: string; city: string; kind: 'big' | 'capital' | 'city'
 export type Ax = 'e' | 'n' | 'c' | 'a' | 'r';
 export type PZ = Record<Ax, number>;
 /** 抉择里的一个选项。w 是自动抉择时的权重，tilt 是性格对这个权重的影响（每个标准差，见 personality.ts 的 tiltW），off 表示不可选 */
-export interface Choice { k: string; label: string; sub?: string; w?: number; tilt?: Partial<PZ>; off?: boolean }
+export interface Choice { k: string; label: string; sub?: string; w?: number; tilt?: Partial<PZ>; noWhy?: boolean; off?: boolean } // noWhy：自动选中时不写性格理由（读起来不对的几项）
 export interface Decision { title: string; body: string; fact?: string; form?: string; card?: [string, string][]; choices: Choice[]; ctx?: any; why?: { k: string; t: string } } // why：自动抉择时性格起了明显作用，记下理由
 
 /** 院校（gaokao.ts） */
