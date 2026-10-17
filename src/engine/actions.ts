@@ -136,7 +136,7 @@ const used = (k: string) => S.actN && S.actN.a === S.age ? S.actN.n[k] || 0 : 0;
 export function actState(k: string) {
   const A = ACTS[k], left = A.max - used(k), cost = A.cost();
   const cool = A.gap && S.actAt?.[k] != null && S.age - S.actAt[k] < A.gap ? A.gap - (S.age - S.actAt[k]) : 0;
-  const why = !A.ok() ? '现在做不了' : cool ? `${cool}年后才能再做` : left <= 0 ? '今年已经做过了' : liquidBalance() < cost ? '手头的钱不够' : '';
+  const why = !A.ok() ? '现在做不了' : cool ? `${cool}年后才能再做` : left <= 0 ? '今年已经做过了' : cost > 0 && liquidBalance() < cost ? '手头的钱不够' : ''; // 不花钱的（戒烟）欠着钱也能做
   return { ok: !why, why, left: Math.max(0, left), cost };
 }
 /** 现在能做的行动（界面只列出能做的和「今年做过了」「钱不够」的，完全不相干的不列） */

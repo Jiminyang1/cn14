@@ -84,7 +84,7 @@ function ActionsSheet({ onClose }: { onClose: () => void }) {
                 const A = ACTS[k], st = actState(k);
                 return <div key={k} className={'act' + (st.ok ? '' : ' off')}>
                   <div className="act-t"><b>{A.n}</b><small>{A.d()}</small></div>
-                  <div className="act-m"><span>约{wan(st.cost)}</span><small>{st.ok ? (A.max > 1 ? `今年还能${st.left}次` : '一年一次') : st.why}</small></div>
+                  <div className="act-m"><span>{st.cost > 0 ? `约${wan(st.cost)}` : '不花钱'}</span><small>{st.ok ? (A.max > 1 ? `今年还能${st.left}次` : '一年一次') : st.why}</small></div>
                   <button type="button" className="ctl primary" disabled={!st.ok} onClick={() => doIt(k)}>去做</button>
                 </div>;
               })}
