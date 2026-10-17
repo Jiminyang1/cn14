@@ -10,6 +10,12 @@ import { cityLoc, hpCounty, placeHp, placeInc } from './place';
 import { isWorking, retireAge } from './career';
 import { parentsHelp } from './parents';
 import { wan } from './format';
+import { MONTHS } from './monthly';
+
+declare module './types' {
+  interface Loan { mo?: number }   // 还剩几个月（loanMonth）
+  interface Life { hpK?: number }  // 这一年房价每月的涨跌倍数（houseMonth）
+}
 
 // 回老家买房：北京、上海、天津没有“县城”，按那座城市本身的房价算；其他地方按县城房价
 export function hometownHouse() {
@@ -132,29 +138,38 @@ export function buyHouse(price, L, plan) {
   return { fromHpf, help };
 }
 
-// ===== 每年结算 =====
-// own：这一年个人缴的部分（按在缴公积金的单位实际在岗的时间算，见 finance.ts），单位再缴同样多
-export function hpfYear(own = 0) {
-  if (S.hpf) S.hpf *= 1 + LOAN_RULES.hpfDeposit;
+// ===== 每月结算 =====
+// 按月累计的年数（公积金连续缴存年数、养老保险缴费年数）：每次加一个月，落在 1/12 的整数倍上，
+// 免得 12 个 1/12 加起来差一点不到 1（交满 15 年的判断就会差一个月）
+export const plusMonth = (y = 0) => Math.round((y + 1 / MONTHS) * MONTHS) / MONTHS;
+// 公积金账户的年利率换算成每月
+const HPF_DEP_M = fpow(1 + LOAN_RULES.hpfDeposit, 1 / MONTHS);
+// own：这个月个人缴的部分（这个月月底在缴公积金的单位上班才有，见 finance.ts），单位再缴同样多
+export function hpfMonth(own = 0, working = isWorking()) {
+  if (S.hpf) S.hpf *= HPF_DEP_M;
   let dep = own * 2;
-  if (own > 0 && S.hpfOn) S.hpfY = (S.hpfY || 0) + 1;
-  if (!isWorking() && S.job !== 'student') S.hpfOn = false;
-  if (partnerHpf() && S.job !== 'retired') dep += S.fam.partner.inc * 0.07 * 2;
+  if (own > 0 && S.hpfOn) S.hpfY = plusMonth(S.hpfY);
+  if (!working && S.job !== 'student') S.hpfOn = false;
+  if (partnerHpf() && S.job !== 'retired') dep += S.fam.partner.inc * 0.07 * 2 / MONTHS;
   S.hpf = (S.hpf || 0) + dep;
   // 个人缴的那一半从工资里扣
   return own;
 }
-// 还房贷：先用公积金余额（还贷提取），不够的从存款里出。返回从存款里付的钱。
-export function loanYear() {
+// 还房贷（每月一期，等额本息，月利率 = 年利率 ÷ 12，和 annualPay 一样）：先用公积金余额（还贷提取），不够的从存款里出。返回从存款里付的钱。
+// l.mo 是还剩几个月；l.years 跟着取整（界面显示「还剩几年」、提前还款时重算月供用）。
+// 每月按剩下的本金和月数重算月供：没有提前还款时就是同一个数；提前还款后（content/decisions.ts 按整年数重算 l.pay）也正好在剩下的月数里还完
+export function loanMonth() {
   if (!S.loans || !S.loans.length) return 0;
   let fromCash = 0;
   for (const l of S.loans) {
     if (l.bal <= 0) continue;
-    const pay = Math.min(l.pay, l.bal * (1 + l.rate));
-    const interest = l.bal * l.rate;
-    l.bal = Math.max(0, l.bal - (pay - interest));
-    l.years--;
-    if (l.years <= 0) l.bal = 0;
+    if (l.mo == null) l.mo = Math.round(l.years * MONTHS);
+    const r = l.rate / MONTHS, owe = l.bal * (1 + r);
+    const pay = l.mo > 1 ? Math.min(owe, l.bal * r / (1 - fpow(1 + r, -l.mo))) : owe;
+    l.bal = Math.max(0, owe - pay);
+    l.mo--; l.years = Math.ceil(l.mo / MONTHS);
+    if (l.mo > 0) l.pay = pay * MONTHS;
+    else l.bal = 0;
     const fromHpf = Math.min(S.hpf || 0, pay);
     S.hpf -= fromHpf;
     fromCash += pay - fromHpf;
@@ -163,16 +178,17 @@ export function loanYear() {
   if (!S.loans.length) log('房贷终于还完了。', 'good');
   return fromCash;
 }
-// 租房提取：没有在这座城市买房的人，每年可以取出一部分公积金付房租
+// 租房提取：没有在这座城市买房的人，可以取出一部分公积金付房租（rent 是这个月的房租）
 export function rentDraw(rent) {
   if (!S.hpf || rent <= 0) return 0;
   const x = Math.min(S.hpf, rent * LOAN_RULES.rentDraw);
   S.hpf -= x;
   return x;
 }
-// 房价每年随机波动（没有方向性假设）
-export function houseYear() {
-  if (S.house) S.house.v *= fexp(gauss(0, 0.04));
+// 房价每年随机波动（没有方向性假设）：每年在第 0 个月抽一次这一年的涨跌，摊到 12 个月
+export function houseMonth(m: number) {
+  if (m === 0) S.hpK = S.house ? fexp(gauss(0, 0.04) / MONTHS) : 1;
+  if (S.house && S.hpK) S.house.v *= S.hpK;
 }
 export const loanBal = () => (S.loans || []).reduce((t, l) => t + l.bal, 0);
 export const loanPayY = () => (S.loans || []).reduce((t, l) => t + (l.bal > 0 ? l.pay : 0), 0);
