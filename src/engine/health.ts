@@ -6,7 +6,15 @@ import { S } from './state';
 import { chance } from './rng';
 import { eff } from './stats';
 import { addDoc, log } from './journal';
-import { MONTHS } from './monthly';
+import { MONTHS, calMonth, calYear, perMonth } from './monthly';
+
+declare module './types' {
+  // am：确诊在第几个月（年龄 × 12 + 月份，下同）；mo：开始治疗以后过了几个月
+  interface Illness { am?: number; mo?: number }
+  interface Death { month?: number }                // 离世是公历几月（year 是公历哪一年）
+}
+/** 这一生的第几个月：年龄 × 12 + 这一年的第几个月 */
+export const lifeMonth = (m = S.month) => S.age * MONTHS + m;
 
 // ===== 大病：存活、费用、医保（来源见 research/health.json） =====
 // 每年死亡概率按 5 年生存率换算：癌症全国 43.7%（城市 46.7%、农村 33.6%，国家癌症中心 2019–2021）；
@@ -29,18 +37,26 @@ export function reimburse(where) {
   return { r: Math.max(0.2, r), emp };
 }
 export const oop = (k, where) => Math.round(ILL[k].cost[where] * (1 - reimburse(where).r) / 1e3) * 1e3;
-export function illYear() {
+// 治疗按月判定：上面的年死亡率按 perMonth 换成每月；复查、吃药的钱从第二年起每月记 1/12；治满 5 年（60 个月）算挺过来。
+// 原来按年时，治疗从年中开始，到年底才第一次判定，5 次判定实际只覆盖约 4.6 年；按月以后是完整的 5 年
+export const ILL_SURVIVE_MO = 60;
+// 确诊了却一直没有开始治疗（抉择没来得及做）：约一年后离世
+export const ILL_UNTREATED_MO = 12;
+export function illMonth() {
   const il = S.flags.ill;
-  il.y = (il.y || 0) + 1;
+  if (il.mo == null) il.mo = (il.y || 0) * MONTHS; // 按年推进时期的存档
+  il.mo++;
   const p = (ILL[il.k] || ILL.cancer).die[il.treat] * (S.rural && il.k === 'cancer' ? 1.15 : 1);
-  if (il.y > 1 && il.treat !== 'none') S.money -= oop(il.k, il.treat) * 0.3; // 之后每年复查、吃药
-  if (chance(p)) { die(il.k); return true; }
-  if (il.y >= 5 && il.treat !== 'none') { S.flags.ill = null; S.flags.survivor = 1; log('复查结果一直稳定。医生说，可以算是挺过来了。', 'good'); eff({ h: 8 }); }
+  if (il.mo > MONTHS && il.treat !== 'none') S.money -= oop(il.k, il.treat) * 0.3 / MONTHS; // 之后每年复查、吃药，按月记
+  if (chance(perMonth(p))) { die(il.k); return true; }
+  if (il.mo >= ILL_SURVIVE_MO && il.treat !== 'none') { S.flags.ill = null; S.flags.survivor = 1; log('复查结果一直稳定。医生说，可以算是挺过来了。', 'good'); eff({ h: 8 }); }
   return false;
 }
 export function die(k) {
   S.phase = 'end'; S.pending = null; S.queue = [];
-  S.death = { age: S.age, cause: k, year: S.birthYear + S.age };
+  // 长到 110 岁（endYear 里）离世时已经过了生日、S.t 归零，但 S.month 还停在上一年的最后一个月
+  const m = S.t === 0 ? 0 : S.month;
+  S.death = { age: S.age, cause: k, year: calYear(m), month: calMonth(m) };
   log(deathText(k), 'death');
 }
 export function deathText(k) {
@@ -52,23 +68,27 @@ export function deathText(k) {
 }
 
 // ===== 每个月月底 =====
-/** 生病和死亡：在治疗中的按治疗结果算；没生病的按生命表判定会不会出事（大病先确诊、给一次治疗的机会）；
- *  确诊了却没开始治疗的，一年多以后离世。返回这个月是否离世。兼容模式：一年判定一次，在第 12 个月 */
+const MAJOR = ['cancer', 'heart', 'stroke', 'liver', 'resp'];
+/** 生病和死亡，每个月判定一次（年概率按 perMonth 换算）：在治疗中的按治疗结果算；没生病的按生命表判定会不会出事（大病先确诊、给一次治疗的机会）；
+ *  确诊了却一直没开始治疗的，约一年后离世。返回这个月是否离世 */
 export function healthMonth(m: number): boolean {
-  if (m !== MONTHS - 1) return false;
-  const a = S.age;
-  // 大病治疗期间：大病本身的风险之外，其他死因照常存在（否则高龄时确诊反而更安全）
-  if (S.flags.ill && S.flags.ill.treat) { if (illYear()) return true; if (chance(deathProb())) { die(pickCause()); return true; } return false; }
-  if (!S.flags.ill && chance(deathProb())) {
+  const a = S.age, il = S.flags.ill;
+  if (il) {
+    if (il.treat) { if (illMonth()) return true; }
+    else if (lifeMonth(m) - (il.am ?? il.at * MONTHS + MONTHS - 1) >= ILL_UNTREATED_MO) { die(il.k); return true; }
+    // 生病期间（治疗中，或确诊后还没决定怎么治）：大病本身的风险之外，其他死因照常存在（否则高龄时确诊反而更安全）
+    if (chance(perMonth(deathProb()))) { die(pickCause()); return true; }
+    return false;
+  }
+  if (chance(perMonth(deathProb()))) {
     const k = pickCause();
-    if (['cancer', 'heart', 'stroke', 'liver', 'resp'].includes(k) && a >= 35 && chance(0.55)) {
-      S.flags.ill = { k, at: a };
-      addDoc('ill', '诊断书', [['诊断', CAUSE[k]], ['日期', `${S.birthYear + a}年`]]);
+    if (MAJOR.includes(k) && a >= 35 && chance(0.55)) {
+      S.flags.ill = { k, at: a, am: lifeMonth(m) };
+      addDoc('ill', '诊断书', [['诊断', CAUSE[k]], ['日期', `${calYear(m)}年${calMonth(m)}月`]]);
       log(DIAG[k], 'bad');
       return false;
     }
     die(k); return true;
   }
-  if (S.flags.ill && !S.flags.ill.treat && a > S.flags.ill.at + 1) { die(S.flags.ill.k); return true; }
   return false;
 }

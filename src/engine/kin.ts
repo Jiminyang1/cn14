@@ -105,7 +105,10 @@ export function lendSib(rel: string, amt: number) {
   S.flags.sibLoan = { rel, amt, at: S.age, back: back ? S.age + ri(...SIB_REPAY.years) : null };
 }
 
-// ===== 每年年初：拆迁和借钱的后续 =====
+// ===== 生日那个月：拆迁和借钱的后续 =====
+// 按月推进以后仍然留在生日那个月：这些本来就是年度判定（小时候拆迁每年抽一次），或者是按「几岁时」定好的节点
+// （安置房几岁交房、先不签的拖一年、借的钱几岁还），改成按月不会更准，只会多抽随机数。
+// demolDue 保持年度概率：你还小的时候在这里每年调用一次；成年以后由抉择那边每年调用一次、落在随机的月份
 export function kinYear() {
   const a = S.age, F = S.flags;
   // 你还小的时候，拆迁由爸妈决定

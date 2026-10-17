@@ -1,15 +1,23 @@
-// 家人：兄弟姐妹、自己的孩子，以及每年家人的变化（衰老、去世、配偶的工作）。
+// 家人：兄弟姐妹、自己的孩子（怀孕、出生），以及家人的变化（生日那个月长一岁、配偶的工作；每个月判定去世、父母病倒）。
 import type { Kid, Sex } from './types';
 
 import { JOBS, retireAgeOf } from './career';
 import { S } from './state';
 import { addDoc, log } from './journal';
 import { chance, gauss, wpick } from './rng';
-import { MONTHS } from './monthly';
+import { MONTHS, perMonth } from './monthly';
 import { eff } from './stats';
-import { leOf, lifeTable, parentQ } from './mortality';
+import { kinLT, qMonth } from './mortality';
 import { makeName } from './names';
 import { partnerInc, partnerJob } from './romance';
+import { placeInc } from './place';
+
+declare module './types' {
+  interface Flags {
+    // 怀孕：due 是第几个月出生（年龄 × 12 + 月份）；pa、sur 是孩子另一位家长的名字和姓（离婚、丧偶以后孩子照样出生，证件和姓氏用得到）
+    preg?: { due: number; pa: string; sur: string } | null;
+  }
+}
 
 // ===== 兄弟姐妹 =====
 // 参数来源见 DATA.md「兄弟姐妹」
@@ -59,17 +67,15 @@ export function newSib() {
   log(`家里多了一个${sx === 'M' ? '弟弟' : '妹妹'}。大人的注意力一下子都跑到了小婴儿身上。`, 'ev');
   planNextSib();
 }
-export function family() {
+// ===== 家人的变化 =====
+// 年龄一年长一次，在你生日那个月（第 0 岁那年不长：出生时的年龄就是那一年的年龄）。
+// 去世、父母生病按月判定，年概率按 perMonth 换算。生命表的口径沿用按年时期：那时是年末先长一岁再判定，
+// 所以父母、配偶在你 a 岁这一年用的是「现在的年龄 + 1」那一行，这样一年下来的死亡概率和原来一样，父母、配偶的寿命分布不变。
+// 孩子原来就用当年的年龄（你的年龄 − 出生时你的年龄），照旧。
+const PAR_ILL_M = perMonth(0.03); // 父母 62 岁以后每年约 3% 病倒、需要人照顾（估计）
+function famAgeUp() {
   const f = S.fam;
-  for (const [k, male] of [["mom", false], ["dad", true]] as const) {
-    const p = f[k]; if (!p.alive) continue;
-    p.age++;
-    if (chance(parentQ(p, male) * (p.ill ? 2 : 1))) {
-      p.alive = false; p.diedAt = S.age;
-      log(`${male ? '爸爸' : '妈妈'}去世了，享年${p.age}岁。${S.age < 18 ? '你还没有长大。' : ''}`, 'loss');
-      eff({ h: S.age < 18 ? -14 : -9, so: -3 });
-    } else if (p.age >= 62 && !p.ill && chance(0.03)) p.ill = 1;
-  }
+  for (const k of ['mom', 'dad'] as const) if (f[k].alive) f[k].age++;
   for (const s of f.sibs) s.age++;
   const pt = f.partner;
   if (pt && pt.alive && f.married) {
@@ -80,24 +86,41 @@ export function family() {
       else if (pt.jk) pt.inc = partnerInc(pt);
       if (pt.jk && pt.age >= retireAgeOf(pt.sex, pt.jk)) { pt.retired = 1; pt.inc = Math.round(pt.inc * 0.5); }
     }
-    if (chance(lifeTable(leOf(S.loc.p, pt.sex, false), 0.004, pt.sex).q[Math.min(119, pt.age)])) {
-      // 丧偶：不再算已婚，以后还可以再认识人（f.partner 留着，界面显示「丧偶」，再婚时被替换）
-      pt.alive = false; f.married = false; S.flags.widowed = S.age; log(`${pt.name}去世了，享年${pt.age}岁。你们一起走过了${S.age - pt.marriedAt}年。`, 'loss'); eff({ h: -15, so: -6 });
-    }
+  }
+}
+function parentMonth(p, male: boolean) {
+  const T = kinLT('par', male ? 'M' : 'F'), x = p.age + 1;
+  if (chance(p.ill ? perMonth(Math.min(1, T.q[Math.min(119, x)] * 2)) : qMonth(T, x))) {
+    p.alive = false; p.diedAt = S.age;
+    log(`${male ? '爸爸' : '妈妈'}去世了，享年${p.age}岁。${S.age < 18 ? '你还没有长大。' : ''}`, 'loss');
+    eff({ h: S.age < 18 ? -14 : -9, so: -3 });
+  } else if (x >= 62 && !p.ill && chance(PAR_ILL_M)) p.ill = 1;
+}
+function familyDeaths() {
+  const f = S.fam;
+  if (f.mom.alive) parentMonth(f.mom, false);
+  if (f.dad.alive) parentMonth(f.dad, true);
+  const pt = f.partner;
+  if (pt && pt.alive && f.married && chance(qMonth(kinLT('pt', pt.sex), pt.age + 1))) {
+    // 丧偶：不再算已婚，以后还可以再认识人（f.partner 留着，界面显示「丧偶」，再婚时被替换）
+    pt.alive = false; f.married = false; S.flags.widowed = S.age; log(`${pt.name}去世了，享年${pt.age}岁。你们一起走过了${S.age - pt.marriedAt}年。`, 'loss'); eff({ h: -15, so: -6 });
+    if (S.sex === 'M' && S.flags.preg) S.flags.preg = null; // 怀着孩子的是她
   }
   for (const k of f.kids) {
     if (!k.alive) continue;
-    const kq = lifeTable(leOf(S.loc.p, k.sex, false), 0.003, k.sex).q[Math.min(119, S.age - k.bornAt)];
-    if (chance(kq)) { k.alive = false; log(`${k.name}走了，才${S.age - k.bornAt}岁。没有什么比这更痛。`, 'loss'); eff({ h: -25, so: -5 }); }
+    if (chance(qMonth(kinLT('kid', k.sex), S.age - k.bornAt))) { k.alive = false; log(`${k.name}走了，才${S.age - k.bornAt}岁。没有什么比这更痛。`, 'loss'); eff({ h: -25, so: -5 }); }
   }
 }
 export const kidsAlive = () => S.fam.kids.filter(k => k.alive);
-export function haveKid() {
-  const _k = haveKid0(); addDoc('kid', '出生医学证明', [['新生儿', _k.name], ['性别', _k.sex === 'M' ? '男' : '女'], ['父母', S.sex === 'M' ? `${S.name}、${S.fam.partner ? S.fam.partner.name : ''}` : `${S.fam.partner ? S.fam.partner.name : ''}、${S.name}`]]); return _k;
+/** 孩子出生。pa：另一位家长（默认是现在的配偶；怀孕期间离婚、丧偶的，用怀孕时记下的） */
+export function haveKid(pa?: { name: string; sur: string }) {
+  const o = pa || S.fam.partner, on = o ? o.name : '';
+  const _k = haveKid0(pa); addDoc('kid', '出生医学证明', [['新生儿', _k.name], ['性别', _k.sex === 'M' ? '男' : '女'], ['父母', S.sex === 'M' ? `${S.name}、${on}` : `${on}、${S.name}`]]); return _k;
 }
-export function haveKid0() {
+export function haveKid0(pa?: { name: string; sur: string }) {
   const sex: Sex = chance(0.524) ? 'M' : 'F';
-  const sur = S.sex === 'M' ? S.surname : (S.fam.partner ? S.fam.partner.sur : S.surname);
+  const o = pa || S.fam.partner;
+  const sur = S.sex === 'M' ? S.surname : (o ? o.sur : S.surname);
   const nm = makeName(sex, S.eth, sur || undefined);
   const k: Kid = { name: nm.full, sex, bornAt: S.age, age: 0, alive: true };
   S.fam.kids.push(k);
@@ -105,15 +128,18 @@ export function haveKid0() {
 }
 
 // ===== 哪些抉择今年会出现 =====
+/** 能不能考虑要孩子：怀着孕的时候不能 */
 export function canBaby() {
+  if (S.flags.preg) return false;
   const wifeAge = S.sex === 'F' ? S.age : S.fam.partner.age;
   return wifeAge >= 22 && wifeAge <= 42 && kidsAlive().length < 3;
 }
 export const babyP = () => [0.3, 0.09, 0.02][Math.min(2, kidsAlive().length)];
 
 // ===== 生日那个月 =====
-/** 弟弟妹妹出生（出生时就定好了在你几岁时出生） */
+/** 家人长一岁（配偶的工作、收入跟着更新），然后弟弟妹妹出生（出生时就定好了在你几岁时出生） */
 export function sibYearStart() {
+  if (S.age > 0) famAgeUp();
   if (S.flags.nextSib === S.age && S.fam.mom.alive) newSib();
 }
 /** 你的孩子长大：上学、高考、结婚、生孩子 */
@@ -133,11 +159,29 @@ export function kidsYearStart() {
 }
 
 // ===== 每个月月底 =====
-/** 家人：父母、兄弟姐妹、配偶、孩子的衰老、生病、去世。兼容模式：一年做一次，在第 12 个月 */
+/** 家人：怀孕到期的孩子出生，父母、配偶、孩子的去世，父母病倒。每个月判定一次 */
 export function familyMonth(m: number) {
-  if (m === MONTHS - 1) family();
+  const pg = S.flags.preg;
+  if (pg && S.age * MONTHS + m >= pg.due) babyBorn(pg);
+  familyDeaths();
 }
-/** 决定要孩子以后：兼容模式马上出生（以后改成怀孕约十个月） */
+// 孕期按 40 周（约 9.2 个月）算：决定要孩子的那个月不算，往后第 9 个月月底出生，离做决定 9–10 个月
+export const PREG_MONTHS = 9;
+/** 决定要孩子以后：怀孕，约十个月后出生（familyMonth 里到期出生）。返回给抉择用的一段话 */
 export function conceive() {
-  return haveKid();
+  const p = S.fam.partner;
+  if (S.flags.preg || !p) return null;
+  S.flags.preg = { due: S.age * MONTHS + S.month + PREG_MONTHS, pa: p.name, sur: p.sur };
+  return { t: S.sex === 'F' ? '你怀孕了。' : `${p.name}怀孕了。`, k: 'good' as const };
+}
+// 出生：高兴，也花钱（生产、坐月子；数字沿用原来「要孩子」抉择里的）
+function babyBorn(pg: { pa: string; sur: string }) {
+  S.flags.preg = null;
+  const pt = S.fam.partner, same = !!pt && pt.name === pg.pa;
+  const kid = haveKid(same ? undefined : { name: pg.pa, sur: pg.sur });
+  eff({ h: 6, so: 4, money: -placeInc() * 0.3 });
+  // 配偶在怀孕期间去世（只会是你怀着孩子），或者离了婚
+  const widow = same ? !pt.alive : S.flags.widowed != null && S.age - S.flags.widowed <= 1;
+  const tail = same && pt.alive ? '' : widow ? '孩子的爸爸没能等到这一天。' : `这时你和${pg.pa}已经分开了。`;
+  log(`${kid.name}出生了，是个${kid.sex === 'M' ? '男孩' : '女孩'}。${tail}`, 'good');
 }

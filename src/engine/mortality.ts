@@ -7,6 +7,7 @@ import { S } from './state';
 import { clamp, wpick } from './rng';
 import { hlExp } from './stats';
 import { log } from './journal';
+import { perMonth } from './monthly';
 import { rural } from './content/events';
 
 // ===== 生命表 =====
@@ -54,8 +55,27 @@ export const leOf = (pid, sex, rural) => leRaw(pid, sex, rural) + LE_SHIFT[sex];
 // 婴儿死亡率：全国水平用 UN IGME 2024（男 4.3‰、女 3.9‰），各省、城乡按相对倍数分配，再归一到全国水平
 export const IMK_NORM = PROVS.reduce((t, p) => t + p.b * p.imk * (p.u / 100 * 0.8 + (1 - p.u / 100) * 1.3), 0) / BIRTH_TOTAL;
 export const q0Of = (pid, rural, sex = 'M') => Q0_NAT[sex] * PBY[pid].imk * (rural ? 1.3 : 0.8) / IMK_NORM;
-export const LT = () => lifeTable(leOf(S.born, S.sex, S.rural), q0Of(S.born, S.rural, S.sex), S.sex);
-export function parentQ(p, male) { return lifeTable(leOf(S.born, male ? 'M' : 'F', S.rural) - 3, 0.005, male ? 'M' : 'F').q[Math.min(119, p.age)]; }
+// 你本人的生命表：每个月都要用，按（出生省份、性别、城乡）记住上一次的结果，省掉拼缓存键
+let ltKey: [string, string, boolean] | null = null, ltVal: { q: number[]; l: number[] } | null = null;
+export const LT = () => {
+  if (!ltKey || ltKey[0] !== S.born || ltKey[1] !== S.sex || ltKey[2] !== S.rural) { ltVal = lifeTable(leOf(S.born, S.sex, S.rural), q0Of(S.born, S.rural, S.sex), S.sex); ltKey = [S.born, S.sex, S.rural]; }
+  return ltVal;
+};
+/** 一张生命表第 x 岁的每月死亡概率（年概率按 perMonth 换算；每张表只算一次，挂在表上） */
+export function qMonth(T: { q: number[]; qm?: number[] }, x: number) {
+  return (T.qm || (T.qm = T.q.map(perMonth)))[Math.min(119, x)];
+}
+// 家人的生命表：父母按你出生的地方（比你这一代低 3 岁，估计），配偶、孩子按你现在住的省。
+// 每个月都要查好几次：按 种类 → 省 → 性别 分层缓存，不拼字符串键
+const KIN_LT = { par: {}, parR: {}, pt: {}, kid: {} };
+export function kinLT(kind: 'par' | 'pt' | 'kid', sex: string) {
+  const par = kind === 'par', pid = par ? S.born : S.loc.p;
+  const byP = KIN_LT[par && S.rural ? 'parR' : kind], bySex = byP[pid] || (byP[pid] = {});
+  return bySex[sex] || (bySex[sex] = par
+    ? lifeTable(leOf(pid, sex, S.rural) - 3, 0.005, sex)
+    : lifeTable(leOf(pid, sex, false), kind === 'pt' ? 0.004 : 0.003, sex));
+}
+export function parentQ(p, male) { return kinLT('par', male ? 'M' : 'F').q[Math.min(119, p.age)]; }
 
 // ===== 死亡 =====
 export const CAUSE = {
@@ -71,7 +91,10 @@ export const DIAG = {
   liver: '一直觉得累，查出来是肝硬化。',
   resp: '咳嗽和气短越来越重，确诊为慢性阻塞性肺病。',
 };
-export const MORT_K = { M: 1.43, F: 1.57 }; // npm run calib -- mortk
+// npm run calib -- mortk。按月判定以后重调（原来 M 1.43、F 1.57）：大病治疗按月判满 5 年（原来按年只判到约 4.6 年）、
+// 确诊后等着治疗的几个月里其他死因照常存在，女性的模拟寿命短了约 0.4 岁，F 调到 1.51；男性不用动。
+// 这是在「确诊后一两个月内就弹出治疗抉择」（日程按月以后）的前提下校准的
+export const MORT_K = { M: 1.43, F: 1.51 };
 export function deathProb() {
   const hm = S.age < 15 ? 1 : clamp(fexp((hlExp(S.age) - S.st.hl) / 30), 0.6, 2.2);
   // ×MORT_K：抵消“确诊后治愈”带走的那部分死亡，使模拟的平均寿命对上生命表
