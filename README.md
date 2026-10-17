@@ -13,7 +13,14 @@ npm run build      # 产出 dist/
 npm run replay -- <局ID>   # 重放某一局（见下面「排查问题」）
 ```
 
-部署：构建命令 `npm run build`，输出目录 `dist`。
+## 部署（Cloudflare Workers）
+
+纯静态网站：`dist` 里的文件由 Cloudflare Workers 托管（配置见 `wrangler.jsonc`），没有后端。
+
+- 自动：GitHub 仓库连在 Cloudflare 后台（Workers Builds），推送到 `main` 就自动构建、部署；别的分支有自己的预览链接。构建命令 `npm run build`，部署命令 `npx wrangler deploy`。
+- 手动：第一次先 `npx wrangler login`，之后 `npm run deploy`（构建 + 上传）。
+
+开发用的局日志（`logs/runs`）只在 `npm run dev` 时写，线上版本不会往外发任何东西。
 
 ## 结构
 

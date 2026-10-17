@@ -1,0 +1,11 @@
+// Cloudflare Workers：只托管 dist 里的静态文件（游戏全在浏览器里跑，没有后端）。
+// 手动部署：npm run deploy；GitHub 推送到 main 时 Cloudflare 也会自动构建、部署（Workers Builds，在 Cloudflare 后台连接仓库）
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "cn14",
+  "compatibility_date": "2026-10-01",
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "single-page-application"
+  }
+}
