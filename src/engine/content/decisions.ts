@@ -21,7 +21,7 @@ declare module '../types' {
 }
 import { chance, clamp, gauss, pick, ri, wpick } from '../rng';
 import { eff } from '../stats';
-import { parentsHelp } from '../parents';
+import { carer, parentsHelp } from '../parents';
 import { rural } from './events';
 import { wan } from '../format';
 import { DEMOL_K, demolDue, demolish, kidHomeCost, lendSib, marryKid, weddingKid } from '../kin';
@@ -73,6 +73,22 @@ export function schoolDecision() {
 }
 
 /** 每个月开始时：这个月该出现的抉择（按优先级排，schedule.ts 每月最多排两个） */
+// ===== 童年的小抉择 =====
+// 让玩家从小就参与：每个抉择有一个年龄窗口，在窗口里大约九成的人会遇到一次（每年概率按窗口长短定）。
+// 效果都很小；选了什么记在 S.flags.kid 里，以后可以接着写
+const CHILD: { id: string; a: [number, number]; p: number; c?: () => boolean }[] = [
+  { id: 'kidOut', a: [2, 3], p: 0.7 },
+  { id: 'kidKg', a: [3, 4], p: 0.7 },
+  { id: 'kidClass', a: [5, 7], p: 0.55, c: () => !rural() && S.q >= 2 },
+  { id: 'kidSummer', a: [6, 10], p: 0.4, c: () => S.flags.lb === 'both' },
+  { id: 'kidWallet', a: [7, 10], p: 0.45 },
+  { id: 'kidBully', a: [8, 12], p: 0.38 },
+  { id: 'kidMoney', a: [8, 13], p: 0.33 },
+  { id: 'kidCopy', a: [9, 13], p: 0.38, c: () => !!S.school },
+  { id: 'kidCrush', a: [12, 14], p: 0.5, c: () => !!S.school },
+];
+const kidPick = (id: string, k: string) => { (S.flags.kid ||= {})[id] = k; };
+
 export function monthDecisions() {
   const a = S.age, f = S.fam, d = [], J = JOBS[S.job], working = !!J && J.m > 0;
   // ---- 由状态触发：一出现就排 ----
@@ -90,6 +106,8 @@ export function monthDecisions() {
   const lb = loanBal(), inc = lb || S.indep ? placeInc() : 0;
   const arrears = lb && S.money < -Math.max(loanPayY() * 1.5, inc);
   if (arrears && monthsSince('arrears') >= 12) d.push('arrears');
+  // ---- 童年的小抉择 ----
+  if (a <= 14) for (const c of CHILD) if (a >= c.a[0] && a <= c.a[1] && once(c.id) && (!c.c || c.c()) && yearly(c.id, c.p)) d.push(c.id);
   // ---- 每年一定概率：按月换算 ----
   if (f.married && f.partner && f.partner.alive && canBaby() && yearly('baby', babyP())) d.push('baby');
   const ask = !!f.dating && f.dating.wh === 2; // 对方家里等着婚房
@@ -116,6 +134,118 @@ export function yearDecisions() {
 
 // ===== 抉择 =====
 export const DEC = {
+  // ---------- 童年的小抉择（时间表见 CHILD） ----------
+  kidOut: {
+    build: () => ({
+      title: '外面的世界', body: `${carer()}第一次带你去广场。那里有很多小孩、很多狗，音乐响得震耳朵。`,
+      choices: [{ k: 'run', label: '挣脱大人的手，跑过去', sub: '人际↑', w: 2 }, { k: 'hide', label: '躲在大人身后偷偷看', sub: '', w: 2 }, { k: 'cry', label: '哭着要回家', sub: '幸福↓', w: 1 }],
+    }),
+    apply: k => {
+      kidPick('kidOut', k);
+      if (k === 'run') { eff({ so: 1, h: 1 }); return chance(0.3) ? '你冲进一群小孩里，摔了一跤，爬起来接着跑。' : '你冲进一群小孩里，不一会儿就跟着他们一起追泡泡。'; }
+      if (k === 'hide') { eff({ so: 1 }); return '你攥着大人的衣角看了好久。快回家的时候，终于有个小孩过来拉你一起玩。'; }
+      eff({ h: -1 }); return '一只大狗朝你跑过来，你吓得大哭。那天之后，你见到狗就绕着走。';
+    },
+  },
+  kidKg: {
+    build: () => ({
+      title: '幼儿园第一天', body: `${S.flags.lb === 'both' ? S.flags.carer : '妈妈'}把你交给老师，转身要走。`,
+      choices: [{ k: 'cry', label: '抱着门框大哭', sub: '', w: 2 }, { k: 'teacher', label: '拉着老师的手走进去', sub: '人际↑', w: 1.5 }, { k: 'toy', label: '看见一屋子玩具，头也不回', sub: '幸福↑', w: 1.5 }],
+    }),
+    apply: k => {
+      kidPick('kidKg', k);
+      if (k === 'cry') { eff({ h: -1 }); return '你哭了一整个上午。第二天还是哭，第三天就和同桌抢起了积木。'; }
+      if (k === 'teacher') { eff({ so: 1 }); return '你一直跟在老师身边，放学时老师夸你最乖。'; }
+      eff({ h: 1 }); return '你扑向那一屋子玩具。放学来接你的时候，你还不想走。';
+    },
+  },
+  kidClass: {
+    build: () => ({
+      title: '兴趣班', body: '爸妈说上小学前要报一个兴趣班，问你想学什么。', fact: '城镇家庭的课外班开销，常常是孩子教育支出里最大的一块',
+      choices: [{ k: 'draw', label: '画画', sub: '幸福↑', w: 2 }, { k: 'piano', label: '钢琴', sub: '学识↑ 家里开销↑', w: S.q >= 4 ? 2 : 0.5 }, { k: 'swim', label: '游泳', sub: '健康↑', w: 1.5 }, { k: 'none', label: '什么都不想学', sub: '', w: 1 }],
+    }),
+    apply: k => {
+      kidPick('kidClass', k);
+      const fee = placeInc() * (k === 'piano' ? 0.15 : 0.06);
+      if (k === 'draw') { eff({ h: 1, money: -fee }); return '每个周末去画画班。你画的太阳总是带着一张笑脸。'; }
+      if (k === 'piano') { eff({ kn: 1, h: -1, money: -fee }); return '开始学钢琴。每天练半个小时，妈妈坐在旁边盯着。'; }
+      if (k === 'swim') { eff({ hl: 2, money: -fee }); return '学会了游泳，呛了好几口水，最后能一口气游二十五米。'; }
+      eff({ h: 1 }); return '爸妈拗不过你，什么班都没报。周末你在楼下玩到天黑。';
+    },
+  },
+  kidSummer: {
+    build: () => ({
+      title: '暑假', body: '爸妈打电话来，问你暑假要不要去他们打工的城市。',
+      choices: [{ k: 'go', label: '去', sub: '能见到爸妈', w: 3 }, { k: 'stay', label: `留在家里陪${S.flags.carer || '奶奶'}`, sub: '', w: 1 }],
+    }),
+    apply: k => {
+      kidPick('kidSummer', k);
+      if (k === 'go') { eff({ h: 1, money: -placeInc() * 0.03 }); return '坐了一夜的火车到了城里。爸妈白天上班，你一个人在出租屋里看电视，晚上一家人挤在一张床上。'; }
+      eff({ so: 1, h: -1 }); return `留在了家里。暑假里，你和${S.flags.carer || '奶奶'}一起去地里，晚上坐在院子里乘凉。`;
+    },
+  },
+  kidWallet: {
+    build: () => ({
+      title: '捡到钱包', body: '放学路上，你在路边捡到一个钱包，里面有两百块钱。',
+      choices: [{ k: 'teacher', label: '交给老师', sub: '', w: 3 }, { k: 'keep', label: '偷偷留下来', sub: '', w: 1 }, { k: 'back', label: '放回原地', sub: '', w: 1 }],
+    }),
+    apply: k => {
+      kidPick('kidWallet', k);
+      if (k === 'teacher') { eff({ h: 1, so: 1 }); return '你把钱包交给了老师。失主送来一面锦旗，校长在升旗仪式上念了你的名字。'; }
+      if (k === 'keep') { eff({ h: -1 }); return '你把钱藏在了书包夹层里。买了几次零食，每次都心里发慌。'; }
+      return '你把钱包放回原地，站在旁边等了好久，没有人来。';
+    },
+  },
+  kidBully: {
+    build: () => ({
+      title: '看见同学被欺负', body: '课间，几个高年级的学生把你们班一个瘦小的同学堵在了厕所门口。',
+      choices: [{ k: 'stand', label: '站出来', sub: '可能挨打', w: 1 }, { k: 'tell', label: '跑去告诉老师', sub: '', w: 2 }, { k: 'ignore', label: '假装没看见', sub: '', w: 2 }],
+    }),
+    apply: k => {
+      kidPick('kidBully', k);
+      if (k === 'stand') { if (chance(0.4)) { eff({ hl: -1, so: 1 }); return '你冲上去，被推倒在地上，膝盖破了。那个同学后来成了你的好朋友。'; } eff({ so: 1, h: 1 }); return '你冲上去大喊了一声，那几个人骂骂咧咧地走了。'; }
+      if (k === 'tell') { eff({ so: 1 }); return '老师来了，把那几个学生带去了办公室。'; }
+      eff({ h: -2 }); return '你低着头走开了。那天晚上，你一直想着那个同学的眼神。';
+    },
+  },
+  kidMoney: {
+    build: () => ({
+      title: '压岁钱', body: `过年收了${S.q >= 4 ? '一千多' : S.q >= 2 ? '几百' : '一百多'}块压岁钱。这一次，妈妈说让你自己做主。`,
+      choices: [{ k: 'save', label: '存起来', sub: '', w: 2 }, { k: 'buy', label: '买那个想要很久的东西', sub: '幸福↑', w: 2 }, { k: 'give', label: '交给爸妈', sub: '', w: 1 }],
+    }),
+    apply: k => {
+      kidPick('kidMoney', k);
+      if (k === 'save') { eff({ h: 1 }); return '你把钱存进了一个小猪存钱罐，每隔几天就摇一摇听听响。'; }
+      if (k === 'buy') { eff({ h: 1 }); return `用压岁钱买了${pick(['一套乐高', '一个游戏机', '一双新球鞋', '一大堆漫画书'])}，高兴了一整个寒假。`; }
+      eff({ so: 1 }); return '你把钱交给了妈妈。她说帮你存着，以后给你交学费。';
+    },
+  },
+  kidCopy: {
+    build: () => ({
+      title: '抄作业', body: '同桌把作业本推过来：「快抄，课代表马上要收了。」',
+      choices: [{ k: 'copy', label: '抄', sub: '', w: 2 }, { k: 'self', label: '不抄，自己写', sub: '学识↑', w: 1.5 }, { k: 'look', label: '只看看思路', sub: '', w: 1.5 }],
+    }),
+    apply: k => {
+      kidPick('kidCopy', k);
+      if (k === 'copy') { eff({ kn: -1, h: 1 }); return chance(0.3) ? '你们俩错得一模一样，被老师一眼看了出来，罚抄了十遍。' : '你飞快地抄完，交了上去。'; }
+      if (k === 'self') { eff({ kn: 1, h: -1 }); return '你埋头自己写完，交得最晚，对的却最多。'; }
+      eff({ kn: 0.5 }); return '你看了看同桌的思路，自己算了一遍，才明白那道题是怎么回事。';
+    },
+  },
+  kidCrush: {
+    build: () => ({
+      title: '喜欢的人', body: '你发现自己总是忍不住看班里的一个同学。',
+      choices: [{ k: 'note', label: '递一张纸条', sub: '', w: 1 }, { k: 'secret', label: '藏在心里', sub: '', w: 3 }, { k: 'friend', label: '告诉最好的朋友', sub: '', w: 1 }],
+    }),
+    apply: k => {
+      kidPick('kidCrush', k);
+      if (k === 'note') { if (chance(0.4)) { eff({ h: 1 }); return '对方回了一张纸条，只有三个字：「我也是。」你把它夹在了日记本里。'; } eff({ h: -2 }); return '纸条被传到了一半，落在了班主任手里。'; }
+      if (k === 'secret') return '你什么都没说。毕业那天，你看着那个人的背影，想了很久。';
+      if (chance(0.5)) { eff({ h: -2 }); return '第二天，全班都知道了。'; }
+      eff({ so: 1 }); return '最好的朋友帮你保守了秘密，还帮你打听到了对方喜欢什么。';
+    },
+  },
+
   zhongkao: {
     build: () => {
       const back = !!S.flags.mig && !S.flags.migBack && chance(0.6);

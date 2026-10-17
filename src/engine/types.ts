@@ -77,6 +77,7 @@ export interface Companion {
 
 /** 一生里零散的标记（多数只在少数事件里用到） */
 export interface Flags {
+  kid?: Record<string, string>; // 童年小抉择选了什么（content/decisions.ts 的 CHILD）
   solo?: boolean;            // 一辈子不结婚
   nextSib?: number | null;   // 弟弟妹妹会在你几岁时出生
   lb?: 'both' | 'one';       // 留守：父母都外出 / 一方外出
