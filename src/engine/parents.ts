@@ -22,6 +22,8 @@ declare module './types' {
 export function carer() {
   const F = S.flags, f = S.fam;
   if (F.lb === 'both') return F.carer;
+  // 父母离婚以后：跟着判给的那一位（events.ts 的 parentsDiv 记的），不在了换另一位
+  if (F.parDiv && F.parDivWith) { const w = F.parDivWith, o = w === 'mom' ? 'dad' : 'mom'; if (f[w].alive) return w === 'mom' ? '妈妈' : '爸爸'; if (f[o].alive) return o === 'mom' ? '妈妈' : '爸爸'; return F.carer || '奶奶'; }
   const home = F.lb && F.lbWho === 'mom' ? 'dad' : 'mom', other = home === 'mom' ? 'dad' : 'mom';
   if (f[home].alive) return home === 'mom' ? '妈妈' : '爸爸';
   if (!F.lb && f[other].alive) return other === 'mom' ? '妈妈' : '爸爸';

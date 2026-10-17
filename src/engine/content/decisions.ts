@@ -104,7 +104,7 @@ const TERM = [9, 10, 11, 12, 1, 3, 4, 5, 6]; // 上学的月份：去掉暑假�
 const CHILD: { id: string; a: [number, number]; p: number; c?: () => boolean; m?: number[] }[] = [
   { id: 'kidOut', a: [2, 3], p: 0.7 },
   // 幼儿园第一天：只在入园那个月（满 3 岁那年 9 月，schedule.ts 的 schoolMonth 先写「上幼儿园了」），没上幼儿园的没有
-  { id: 'kidKg', a: [2, 4], p: 0.9, m: [9], c: () => inKg() && calYear() === entryYear() - 3 },
+  // 幼儿园第一天（kidKg）不在这里：入园那个月由 schedule.ts 直接排进来
   { id: 'kidClass', a: [5, 7], p: 0.55, c: () => !rural() && S.q >= 2 && !!parentsWord() },
   { id: 'kidSummer', a: [6, 10], p: 0.4, m: [7, 8], c: () => S.flags.lb === 'both' && !!parentsWord() },
   { id: 'kidWallet', a: [7, 10], p: 0.45, m: TERM, c: () => !!S.school },
@@ -894,7 +894,7 @@ export const DEC = {
   layofflist: {
     build: () => {
       // 这一年已经因为「35岁」被裁过的，不再有裁员名单
-      if (!(JOBS[S.job] && JOBS[S.job].priv) || doneAge('crisis') === S.age) return null;
+      if (!(JOBS[S.job] && JOBS[S.job].priv) || doneAge('crisis') === S.age || S.done.promo === S.age) return null; // 这一年刚升过职的也不上名单
       // 失业保险金能领几个月按缴费年数算（finance.ts 的 uiMonths）；S.jobY 是这一行干了几年（跳槽了也接着算），所以写「这一行」
       const pct = ri(1, 3) * 10, n = severance(), ui = uiMonths();
       return {
