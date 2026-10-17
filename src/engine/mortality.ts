@@ -7,7 +7,8 @@ import { S } from './state';
 import { clamp, wpick } from './rng';
 import { hlExp } from './stats';
 import { log } from './journal';
-import { perMonth } from './monthly';
+import { MONTHS, perMonth } from './monthly';
+import { nowM } from './calendar';
 import { rural } from './content/events';
 
 // ===== 生命表 =====
@@ -101,10 +102,20 @@ export function deathProb() {
   // ×MORT_K：抵消“确诊后治愈”带走的那部分死亡，使模拟的平均寿命对上生命表
   return LT().q[Math.min(119, S.age)] * hm * (S.age >= 35 ? MORT_K[S.sex] : 1) * (S.flags.smoke && S.age > 40 ? 1.3 : 1);
 }
+// 死因要看处境：
+// · 孕产期并发症只落在怀孕中或产后一年内的女性身上。死因表里这一项是同一档年龄所有女性的平均，所以在这段时间里放大 MATERNAL_K 倍，
+//   使整体比例不变：模拟里怀孕或产后一年内的月份占女性的 7.0%（15–34 岁）、2.8%（35–59 岁）（npm run calib -- sim 的 perinatalShare），
+//   倍数取倒数 14、36。折算下来 15–34 岁每次生育约 15 / 10 万（这个年龄的女性年死亡率约 0.035%，其中 1.8% 是孕产期并发症，× 14、× 约 21 个月），和孕产妇死亡率（2023 年 15.1 / 10 万）相当。
+// · 认知症在 60 岁以前很少致死：死因表 35–59 岁那一档的认知症几乎都在 55 岁以后（认知症死亡率随年龄约每 4 年翻一番，比全因死亡率涨得快），
+//   所以 60 岁以前每早一岁再乘 e^−0.2（55 岁约 0.45，50 岁约 0.17，45 岁约 0.06，估计）
+export const MATERNAL_K = { young: 14, old: 36 };
+const perinatal = () => !!S.flags.preg || S.fam.kids.some(k => nowM() - k.bornM < MONTHS);
 export function pickCause() {
   const tbl = CAUSE_REAL[S.sex];
   const row = tbl.find(r => S.age >= r[0] && S.age <= r[1]);
   const w = { ...row[2] };
+  if (w.maternal) w.maternal = S.sex === 'F' && perinatal() ? w.maternal * MATERNAL_K[S.age < 35 ? 'young' : 'old'] : 0;
+  if (w.dementia && S.age < 60) w.dementia *= fexp(0.2 * (S.age - 59));
   if (w.suicide && S.st.h < 35) w.suicide *= 2.5;
   if (w.cancer && S.flags.smoke) w.cancer *= 1.4;
   if (w.traffic) w.traffic *= PBY[S.loc.p].trafK || 1; // 各省交通事故死亡率差异（统计年鉴 24-6）
