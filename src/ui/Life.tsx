@@ -1,82 +1,121 @@
-// 一生：顶部的姓名和年龄、本年度计划、时间线、侧栏、底部播放条。
-import { memo, useLayoutEffect, useRef, useState } from 'react';
-import { EDU_LV, FOCUS, S, calMonth, calYear, carer, focusList, persWords, placeName, shownZ, statusLabel, type LogEntry } from '../engine';
+// 一生：页头（档案号、播放控制）；左栏 一、基本情况 二、体检与鉴定；中栏 三、本年度时间安排 四、大事记；
+// 右栏 五、家庭经济 六、个人账户，底下是材料目录 / 同批建档 / 一生曲线。手机上是单栏，下面用五个标签切换。
+import { memo, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { FOCUS, S, calYear, carer, focusList, type LogEntry } from '../engine';
 import { SPEEDS, game } from '../game/controller';
-import './day.css';
 import { Modal } from './Modal';
-import { LiveScene, LogPic } from './Photo';
+import { LogPic } from './Photo';
 import { YearProgress } from './Progress';
 import { RunId } from './RunId';
-import { Companions, Curve, Docs, FamilyCards, Vitals, preschool } from './Sidebar';
-import { fileNo, sexW } from './util';
+import { Account, ArchiveTabs, Basic, Body, Econ, FamilySec } from './Sidebar';
+import { cnNum, fileNo } from './util';
+
+// ===== 页头：档案号、播放控制、更多 =====
+function Menu() {
+  const [open, setOpen] = useState(false);
+  const box = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!open) return;
+    const off = (e: MouseEvent) => { if (box.current && !box.current.contains(e.target as Node)) setOpen(false); };
+    document.addEventListener('click', off, true);
+    return () => document.removeEventListener('click', off, true);
+  }, [open]);
+  return (
+    <div className="menu-w" ref={box}>
+      <button className="ctl ghost" type="button" aria-label="更多" aria-expanded={open} onClick={() => setOpen(o => !o)}>···</button>
+      {open && <div className="menu" role="menu">
+        <label className="chk m-auto"><input type="checkbox" checked={!!S.auto} onChange={e => game.setAuto(e.target.checked)} /> 自动抉择</label>
+        {import.meta.env.DEV && <button type="button" onClick={() => game.exportRun()}>下载这一局的日志</button>}
+        <button type="button" onClick={() => game.quit()}>离开（会保存）</button>
+        <RunId />
+      </div>}
+    </div>
+  );
+}
+
+const PauseIcon = () => <svg width="10" height="12" viewBox="0 0 10 12" fill="currentColor" aria-hidden="true"><rect width="3.5" height="12" /><rect x="6.5" width="3.5" height="12" /></svg>;
+const PlayIcon = () => <svg width="11" height="12" viewBox="0 0 11 12" fill="currentColor" aria-hidden="true"><path d="M0 0l11 6-11 6z" /></svg>;
 
 function Header() {
-  const status = statusLabel();
-  const study = S.school ? '在读' + S.school : preschool() ? '学龄前' : EDU_LV[S.edu];
-  const pw = S.pers && S.age >= 3 ? persWords(shownZ(), 2) : [];
+  const nextSpeed = SPEEDS[(SPEEDS.indexOf(game.speed) + 1) % SPEEDS.length];
   return (
     <header className="lhead">
-      <div className="who">
-        <div className="who-1">
-          <b>{S.name}</b>
-          <span className="small muted">{sexW(S.sex)} · {S.eth} · 现居{placeName(S.loc)} · {study}{status && !S.school && S.age >= 16 ? ' · ' + status.split(' · ')[0] : ''}{pw.length ? ' · ' + pw.join('、') : ''}</span>
-        </div>
-        <div className="who-2"><span className="mono small muted">档案号 {fileNo(S)}</span><RunId /></div>
+      <span className="brand-s">14亿分之<span>1</span></span>
+      <span className="ftab"><b>人生档案</b><span className="mono">{fileNo(S)}</span></span>
+      <span className="lid">立档 {S.birthYear}.{String(S.birthMonth).padStart(2, '0')}</span>
+      <div className="ctrls">
+        <button className={'ctl' + (game.paused ? ' on' : '')} type="button" aria-label={game.paused ? '继续' : '暂停'} title="暂停/继续" onClick={() => game.togglePause()}>{game.paused ? <PlayIcon /> : <PauseIcon />}</button>
+        <div className="spd">{SPEEDS.map(v => <button key={v} type="button" className={'ctl mono' + (game.speed === v ? ' on' : '')} onClick={() => game.setSpeed(v)}>{v}×</button>)}</div>
+        <button className="ctl mono spd1" type="button" aria-label={`速度 ${game.speed} 倍，点一下换成 ${nextSpeed} 倍`} onClick={() => game.setSpeed(nextSpeed)}>{game.speed}×</button>
+        <label className="chk"><input type="checkbox" checked={!!S.auto} onChange={e => game.setAuto(e.target.checked)} /> 自动抉择</label>
+        <button className={'ctl' + (game.ff === 'dec' ? ' on' : '')} type="button" title="快进，直到要你做决定" onClick={() => game.fastForward('dec')}>下一个抉择</button>
+        <button className={'ctl primary' + (game.ff === 'big' ? ' on' : '')} type="button" title="快进，直到发生一件大事（日常不算）" onClick={() => game.fastForward('big')}>下一件大事</button>
       </div>
-      <div className="agebig"><b>{S.age}</b><span>岁</span><small>{calYear()}年{calMonth()}月 · 1年≈{Math.round(game.yearSec)}秒</small></div>
+      <Menu />
     </header>
   );
 }
 
-// 今年的重心：一排小按钮，下面一行说明当前选的那一项
+// ===== 三、本年度时间安排 =====
+const FOCUS_C: Record<string, string> = { study: 'var(--kn)', play: 'var(--h)', friends: 'var(--so)', sport: 'var(--hl)', work: 'var(--ink2)', love: '#C2557A', family: 'var(--kraft)', hobby: '#2F8C8C', rest: '#7C9A5E' };
+const STAT_N: Record<string, string> = { h: '幸福', hl: '健康', kn: '学识', so: '人际' };
+const fxText = (e: Record<string, number>) => Object.entries(e).map(([k, v]) => `${STAT_N[k]} ${v > 0 ? '+' : '−'}${Math.abs(v)}`).join('　');
 function FocusPlan() {
   const l = focusList();
   if (!l.length) return (
-    <div className="sheet plan">
-      <p className="plan-d"><b className="plan-h">今年的重心</b>还是个孩子，正由{carer()}带着长大。六岁起可以选每一年把时间花在哪里；这段时间可以用 8× 快进。</p>
-    </div>
+    <section className="pg plan">
+      <div className="sec"><span className="no">三</span><h3>本年度时间安排</h3></div>
+      <p className="plan-d" style={{ margin: 0 }}>还是个孩子，正由{carer()}带着长大。六岁起可以选每一年把时间花在哪里；这段时间可以用 8× 快进。</p>
+    </section>
   );
   const cur = S.focus && FOCUS[S.focus];
   return (
-    <div className="sheet plan">
-      <div className="plan-row">
-        <b className="plan-h" title="这一年主要把时间花在哪里。随时可改，每个月按花在各项上的时间结算">今年的重心</b>
-        <div className="plan-chips" role="radiogroup" aria-label="今年的重心">
-          {l.map(k => <button key={k} role="radio" aria-checked={S.focus === k} className={S.focus === k ? 'on' : ''} title={FOCUS[k].d} onClick={() => game.setFocus(k)}>{FOCUS[k].n}</button>)}
-        </div>
+    <section className="pg plan">
+      <div className="sec"><span className="no">三</span><h3>本年度时间安排</h3><small>按月结算 · 随时可改</small></div>
+      <div className="plan-chips" role="radiogroup" aria-label="今年把时间花在哪里">
+        {l.map(k => <button key={k} type="button" role="radio" aria-checked={S.focus === k} className={'fz' + (S.focus === k ? ' on' : '')} title={FOCUS[k].d} style={{ '--c': FOCUS_C[k] || 'var(--muted)' } as React.CSSProperties} onClick={() => game.setFocus(k)}><i />{FOCUS[k].n}</button>)}
+        {cur && <span className="plan-fx">全年：{fxText(cur.e)}</span>}
       </div>
-      <p className="plan-d">{cur ? cur.d + '。' : '选一项。'}随时可改，每个月按花在各项上的时间结算。</p>
-    </div>
+      <p className="plan-d">{cur ? cur.d + '。' : '选一项。'}每个月按花在各项上的时间结算。</p>
+    </section>
   );
 }
 
-// 人生纪录：放在一张单独滚动的卡片里，按年分组，最新的在上面，每一年的标题在滚动时吸顶。
-// 记录一旦写下就不再变，所以按对象缓存
-// 只有之后新出现的记录才淡入；打开页面、读档时已有的几百条直接显示
+// ===== 四、大事记 =====
+// 记录一旦写下就不再变，所以按对象缓存；只有之后新出现的记录才淡入
 // 人生的几个关口（上幼儿园、上小学……）配一张像素小照片：当年的会动，往年的不动
-const Entry = memo(({ e, anim, live }: { e: LogEntry; anim: boolean; live: boolean }) => (
-  <div className={`tl ${e.k}${anim ? ' new' : ''}`}>
-    <p>{e.t}{e.f && <span className="f">{e.f}</span>}</p>
-    {e.pic && <LogPic id={e.pic} live={live} />}
-  </div>
-));
-// 一年的记录。往年的记录不会再变，所以只在条数、是不是当年、现在是哪一年变了的时候才重绘：
-// 记录再多，每次刷新也只重绘当年这一组
+const Entry = memo(({ e, anim, live }: { e: LogEntry; anim: boolean; live: boolean }) => {
+  const kind = e.pic ? 'big' : e.k;
+  // 抉择写成「标题 —— 选项」：标题前盖一个「定」
+  const dec = e.k === 'choice' ? e.t.split(' —— ') : null;
+  return (
+    <div className={`tl ${kind}${anim ? ' new' : ''}`}>
+      <span className="t">{e.m}月</span>
+      <div className="tx">
+        <div>
+          <p>{dec && dec.length === 2 ? <><span className="chop">定</span><span className="dec-t">{dec[0]}</span>{dec[1]}</> : e.t}</p>
+          {e.f && <span className="f">{e.f}</span>}
+        </div>
+        {e.pic && <LogPic id={e.pic} live={live} />}
+      </div>
+    </div>
+  );
+});
 type YearItems = [LogEntry, number][];
-// 一个年龄年从生日那个月开始，常常跨两个公历年：标题写这一年的记录实际落在哪几年（当年再算上现在这一年），如「2043–44年」
+// 一个年龄年从生日那个月开始，常常跨两个公历年：标题写这一年的记录实际落在哪几年（当年再算上现在这一年），如「2043–44」
 function yearSpan(items: YearItems, now: number) {
   let y0 = now || Infinity, y1 = now || -Infinity;
   for (const [e] of items) { y0 = Math.min(y0, e.y); y1 = Math.max(y1, e.y); }
   if (y0 === Infinity) return '';
-  return y0 === y1 ? `${y0}年` : `${y0}–${Math.floor(y0 / 100) === Math.floor(y1 / 100) ? String(y1 % 100).padStart(2, '0') : y1}年`;
+  return y0 === y1 ? `${y0}` : `${y0} – ${Math.floor(y0 / 100) === Math.floor(y1 / 100) ? String(y1 % 100).padStart(2, '0') : y1}`;
 }
 const YearGroup = memo(({ a, items, current, now, initial }: { a: number; items: YearItems; current: boolean; now: number; initial: number }) => (
   <div className="yr">
     <div className="yr-h">
-      <b>{a}岁</b><small>{yearSpan(items, now)}</small>
+      <b>{cnNum(a)}岁</b><small>{yearSpan(items, now)}</small>
       {current && <YearProgress className="yr-prog" title="这一年过了多少" />}
     </div>
-    <div className="timeline">{items.map(([e, k]) => <Entry key={k} e={e} anim={k > initial} live={current} />)}</div>
+    {items.map(([e, k]) => <Entry key={k} e={e} anim={k > initial} live={current} />)}
   </div>
 ), (p, q) => p.a === q.a && p.current === q.current && p.now === q.now && p.initial === q.initial && p.items.length === q.items.length);
 
@@ -102,8 +141,8 @@ function Timeline() {
     prevH.current = el.scrollHeight;
   }, [n]);
   return (
-    <section className="sheet tl-card">
-      <h4 className="sheet-title">人生纪录 <span className="muted small">{n} 条 · 最新的在上面</span></h4>
+    <section className="pg tl-card" data-m="log">
+      <div className="sec"><span className="no">四</span><h3>大事记</h3><small>共 {n} 条 · 新的在上</small></div>
       <div className="tl-scroll" ref={box} onScroll={e => setAway(e.currentTarget.scrollTop > 40)}>
         {years.map(y => { const cur = y.a === S.age && S.phase === 'life'; return <YearGroup key={y.a} a={y.a} items={y.items} current={cur} now={cur ? calYear() : 0} initial={initial.current} />; })}
       </div>
@@ -112,63 +151,22 @@ function Timeline() {
   );
 }
 
-// 右栏：分成几个标签页，不再从上到下堆一长串
-const TABS = [['now', '概况'], ['docs', '证件'], ['cmp', '对照']] as const;
-type Tab = typeof TABS[number][0];
-const TAB_KEY = 'cn14.tab';
-function SideTabs() {
-  const [tab, setTab] = useState<Tab>(() => { try { return (localStorage.getItem(TAB_KEY) as Tab) || 'now'; } catch { return 'now'; } });
-  const pick = (k: Tab) => { setTab(k); try { localStorage.setItem(TAB_KEY, k); } catch { /* 存不了也没关系 */ } };
-  // 证件标签上提示有几份新证件（上次看证件以后发的）
-  const docsN = (S.docs || []).length;
-  const seen = useRef(docsN);
-  if (tab === 'docs') seen.current = docsN;
-  const fresh = docsN - seen.current;
-  return (
-    <aside className="col-side">
-      <LiveScene />
-      <div className="side-tabs" role="tablist">
-        {TABS.map(([k, n]) => (
-          <button key={k} type="button" role="tab" aria-selected={tab === k} className={tab === k ? 'on' : ''} onClick={() => pick(k)}>
-            {n}{k === 'docs' && fresh > 0 && <i className="tab-badge" aria-label={`${fresh} 份新证件`}>{fresh}</i>}
-          </button>
-        ))}
-      </div>
-      {tab === 'now' && <><Vitals /><FamilyCards /></>}
-      {tab === 'docs' && <Docs />}
-      {tab === 'cmp' && <>
-        <div className="sheet"><h4 className="sheet-title">一生曲线 <span className="muted small">幸福 · 健康</span></h4><Curve /></div>
-        <div className="sheet"><h4 className="sheet-title">同一秒建档的人 <span className="muted small">此刻，同样的年纪</span></h4><Companions /></div>
-      </>}
-    </aside>
-  );
-}
-
-function Dock() {
-  return (
-    <nav className="dock">
-      <YearProgress className="dock-prog" />
-      <div className="dock-row">
-        <button className="dbtn" title="暂停/继续" onClick={() => game.togglePause()}>{game.paused ? '▶' : '❚❚'}</button>
-        <div className="seg sm">{SPEEDS.map(v => <button key={v} className={game.speed === v ? 'on' : ''} onClick={() => game.setSpeed(v)}>{v}×</button>)}</div>
-        <button className={'dbtn wide' + (game.ff === 'big' ? ' on' : '')} title="快进，直到发生一件大事（日常不算）" onClick={() => game.fastForward('big')}>下一件大事</button>
-        <button className={'dbtn wide' + (game.ff === 'dec' ? ' on' : '')} title="快进，直到要你做决定" onClick={() => game.fastForward('dec')}>下一个抉择</button>
-        <label className="toggle"><input type="checkbox" checked={!!S.auto} onChange={e => game.setAuto(e.target.checked)} /> 自动抉择</label>
-        {import.meta.env.DEV && <button className="dbtn" title="下载这一局的日志" onClick={() => game.exportRun()}>日志</button>}
-        <button className="dbtn ghost" onClick={() => game.quit()}>离开</button>
-      </div>
-    </nav>
-  );
-}
+// ===== 手机上的标签 =====
+const MTABS = [['log', '大事记'], ['body', '体检'], ['home', '家与钱'], ['doc', '材料'], ['peer', '同批']] as const;
+type MTab = typeof MTABS[number][0];
 
 export function Life() {
-  return <div className="life-app">
+  const [mtab, setMtab] = useState<MTab>('log');
+  return <div className={'life-app m-' + mtab}>
     <Header />
     <main className="lbody">
-      <section className="col-time"><FocusPlan /><Timeline /></section>
-      <SideTabs />
+      <div className="col col-l"><Basic /><Body m="body" /></div>
+      <div className="col col-c"><FocusPlan /><Timeline /></div>
+      <nav className="mtabs" role="tablist">
+        {MTABS.map(([k, n]) => <button key={k} type="button" role="tab" aria-selected={mtab === k} className={mtab === k ? 'on' : ''} onClick={() => setMtab(k)}>{n}</button>)}
+      </nav>
+      <div className="col col-r"><FamilySec m="home" /><Econ m="home" /><Account m="home" /><ArchiveTabs mtab={mtab} /></div>
     </main>
-    <Dock />
     <Modal />
   </div>;
 }
