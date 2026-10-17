@@ -1,5 +1,5 @@
 import { execSync } from 'node:child_process';
-import { defineConfig } from 'vitest/config';
+import { configDefaults, defineConfig } from 'vitest/config';
 import react from '@vitejs/plugin-react';
 import { runlog } from './tools/vite-runlog.ts';
 
@@ -15,5 +15,6 @@ function gitVersion() {
 export default defineConfig({
   plugins: [react(), runlog()],
   define: { __APP_VERSION__: JSON.stringify(gitVersion()) },
-  test: { testTimeout: 60000 },
+  // .claude/ 下面是各个会话的 worktree，里面的测试不属于这个检出
+  test: { testTimeout: 60000, exclude: [...configDefaults.exclude, '.claude/**'] },
 });
