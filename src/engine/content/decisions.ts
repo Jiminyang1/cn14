@@ -19,6 +19,10 @@ import { parentsHelp } from '../parents';
 import { rural } from './events';
 import { wan } from '../format';
 
+// 「35岁」每年的概率。平均约 1%：在私企干到 48 岁的约一成会遇到（智联招聘：46–50 岁求职者 11.5% 曾因年龄被裁）。
+// 互联网最高：2020 年普查城市里信息技术业 40–44 岁的人只有 30–34 岁的 38%，全行业是 70%。各行业的倍数是估计，见 DATA.md
+const CUT35 = { tech: 0.025, clerk: 0.012, sales: 0.01, engineer: 0.008 };
+
 export function dueDecisions() {
   const a = S.age, f = S.fam, d = [];
   const once = id => S.done['dec_' + id] == null;
@@ -31,8 +35,7 @@ export function dueDecisions() {
   if (f.married && f.partner && f.partner.alive && canBaby() && chance(babyP())) d.push('baby');
   if (!S.house && isWorking() && a >= 26 && a <= 50 && (f.married || a >= 30) && gapOK('house', 4) && chance(0.35)) d.push('house');
   if (isWorking() && S.loc.kind !== 'big' && a >= 19 && a <= 32 && once('bigcity') && !JOBS[S.job].stable && chance(0.18)) d.push('bigcity');
-  // 每年 1%：在私企干到 48 岁的约一成会遇到（智联招聘：46–50 岁求职者 11.5% 曾因年龄被裁，见 DATA.md）
-  if (JOBS[S.job] && JOBS[S.job].priv && a >= 35 && a <= 48 && once('crisis') && chance(0.01)) d.push('crisis');
+  if (JOBS[S.job] && JOBS[S.job].priv && a >= 35 && a <= 48 && once('crisis') && chance(CUT35[S.job] ?? 0.01)) d.push('crisis');
   if (isWorking() && JOBS[S.job].risk > 0 && a >= 24 && a <= 50 && gapOK('jobhop', 6) && chance(0.07)) d.push('jobhop');
   if (a >= 78 && once('oldcare') && chance(0.3)) d.push('oldcare');
   // 欠款超过一年的月供（或半年的当地收入）才算真的还不上；小额缺口靠信用卡、亲戚周转
