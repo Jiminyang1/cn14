@@ -1,6 +1,6 @@
 // 弹窗：抉择单（含高考填报志愿）与自述。选定后在那一行盖一个「已定」章，再结算。
 import { useEffect, useRef, useState, type ReactNode } from 'react';
-import { NO_TIAOJI, S, TIER_N, calMonth, calYear, majorP, majorsOf, type Decision, type Pending } from '../engine';
+import { MAJOR_LIST, NO_TIAOJI, S, TIER_N, calMonth, calYear, groupLine, groupP, majorP, majorsOf, type Decision, type Pending } from '../engine';
 import { game } from '../game/controller';
 import { Photo, decScene } from './Photo';
 import { fileNo } from './util';
@@ -89,7 +89,11 @@ function DecisionSheet({ P, photo }: { P: Extract<Pending, { type: 'dec' }>; pho
 function Zhiyuan({ P, photo }: { P: Extract<Pending, { type: 'dec' }>; photo: ReactNode }) {
   const d = P.d, c = d.ctx;
   const [order, setOrder] = useState<number[]>([]);
-  const [majors, setMajors] = useState<Record<number, string>>(() => Object.fromEntries(c.cands.map((u, i) => [i, majorsOf(u)[0].n])));
+  // 默认选够得着的专业里排在最前的（专业表大致按热门程度排）；都够不着就选把握最大的
+  const [majors, setMajors] = useState<Record<number, string>>(() => Object.fromEntries(c.cands.map((u, i) => {
+    const ms = majorsOf(u), ok = ms.find(m => majorP(c.score, u, m) >= 0.5);
+    return [i, (ok || ms.reduce((a, b) => majorP(c.score, u, b) > majorP(c.score, u, a) ? b : a)).n];
+  })));
   const [adjust, setAdjust] = useState(true);
   const [picked, choose] = useChoose();
   const pc = (p: number) => p >= 0.9 ? '很稳' : p >= 0.6 ? '较稳' : p >= 0.35 ? '有希望' : '冲一冲';
@@ -99,14 +103,14 @@ function Zhiyuan({ P, photo }: { P: Extract<Pending, { type: 'dec' }>; photo: Re
     const rows = c.cands.map((u, i) => [u, i]).filter(([u]) => u.group === g);
     if (!rows.length) return null;
     return <div key={g}><h4 className="zy-g">{g}</h4>{rows.map(([u, i]) => {
-      const k = order.indexOf(i);
+      const k = order.indexOf(i), m = MAJOR_LIST.find(x => x.n === majors[i]) || majorsOf(u)[0], gp = groupP(c.score, u, m);
       return (
         <div key={i} className={'zy-row' + (k >= 0 ? ' on' : '')}>
           <label>
             <input type="checkbox" checked={k >= 0} onChange={e => toggle(i, e.target.checked)} />
             <span className="zy-ord">{k >= 0 ? `第${k + 1}志愿 ` : ''}</span>
             <b>{u.name}</b> <span className="tag">{TIER_N[u.tier]}</span><br />
-            <small>{u.city} · {u.prov === S.home.p ? '本省' : '外省'}{u.fee ? ' · 学费高' : ''} · 投档线约 {u.line} 分 · 录取把握 {Math.round(u.p * 100)}%（{pc(u.p)}）</small>
+            <small>{u.city} · {u.prov === S.home.p ? '本省' : '外省'}{u.fee ? ' · 学费高' : ''} · 最低投档线约 {u.line} 分 · {u.nt ? '这个专业' : '这个专业所在的组'}约 {groupLine(u, m)} 分，把握 {Math.round(gp * 100)}%（{pc(gp)}）</small>
           </label>
           <select value={majors[i]} onChange={e => setMajors(m => ({ ...m, [i]: e.target.value }))}>
             {majorsOf(u).map(m => <option key={m.n} value={m.n}>{m.n}{m.heat < 0.8 ? '·热' : m.heat > 1.2 ? '·冷' : ''} {Math.round(majorP(c.score, u, m) * 100)}%</option>)}

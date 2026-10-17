@@ -105,7 +105,7 @@ function parDivRisk() {
  *  父母都在外打工的，判给一方，照样由老人带；其余跟着妈妈的多（估计 65%） */
 function parentsDivorce() {
   const F = S.flags;
-  F.parDiv = 1; eff({ h: -10 });
+  F.parDiv = 1; F.parDivM = nowM(); eff({ h: -10 });
   if (F.lb === 'one' && (F.lbWho === 'dad' || F.lbWho === 'mom')) {
     const out = F.lbWho, w = out === 'dad' ? 'mom' : 'dad';
     F.parDivWith = w;
