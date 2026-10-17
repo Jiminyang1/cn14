@@ -4,7 +4,7 @@ import { S } from './state';
 import { clamp } from './rng';
 import { placeInc } from './place';
 import { JOBS, isWorking } from './career';
-import { MONTHS } from './monthly';
+import { MONTHS, approachPerMonth } from './monthly';
 
 export function eff(o) {
   for (const k in o) {
@@ -14,30 +14,34 @@ export function eff(o) {
     else S.st[k] = clamp(S.st[k] + o[k], 0, 100);
   }
 }
+// 每年向目标值靠拢的比例：健康 0.18、幸福 0.25、人际 0.12（估计），换算成每月：目标不变时一年后的结果和原来一样
+const K_HL = approachPerMonth(0.18), K_H = approachPerMonth(0.25), K_SO = approachPerMonth(0.12);
+/** 健康、幸福、人际向各自的目标值靠拢一个月（目标按这个月月底的状态算） */
 export function drift() {
   const st = S.st, f = S.fam, a = S.age;
-  const kids = f.kids.filter(k => k.alive).length;
+  let kids = 0; for (const k of f.kids) if (k.alive) kids++;
   const hT = hlExp(a) + (S.q - 3) * 1.5 + (S.money < 0 && a >= 22 ? -3 : 0) + (S.flags.smoke ? -6 : 0) + (S.flags.ill ? -20 : 0);
-  st.hl = clamp(st.hl + (hT - st.hl) * 0.18, 1, 100);
+  st.hl = clamp(st.hl + (hT - st.hl) * K_HL, 1, 100);
   const rel = a < 18 ? (S.q - 3) * 2.5 : (S.relInc || 0);
-  const debt = a >= 22 && S.money < -placeInc() ? 7 : 0;
+  const debt = a >= 22 && S.money < 0 && S.money < -placeInc() ? 7 : 0; // 先看有没有欠款，免得每月都去算当地收入
   const hpT = 56 + rel + (f.married && f.partner && f.partner.alive ? 5 : 0) + Math.min(6, kids * 3) + (st.so - 50) * 0.25 + (st.hl - 60) * 0.15
     - debt - (S.flags.lb && a < 16 ? 6 : 0) - (S.job === 'seeking' ? 6 : 0);
-  st.h = clamp(st.h + (hpT - st.h) * 0.25, 0, 100);
+  st.h = clamp(st.h + (hpT - st.h) * K_H, 0, 100);
   const soT = 50 + (f.married ? 8 : 0) + Math.min(9, kids * 3) + (S.flags.lb && a < 16 ? -4 : 0) + (a > 75 ? -6 : 0);
-  st.so = clamp(st.so + (soT - st.so) * 0.12, 0, 100);
+  st.so = clamp(st.so + (soT - st.so) * K_SO, 0, 100);
 }
 export const hlExp = a => clamp(90 - Math.max(0, a - 22) * 0.8, 15, 90);
 
 // ===== 每个月月底 =====
-/** 身体：上了年纪学识慢慢下降，工作对健康和幸福的影响。兼容模式：一年一次，在第 12 个月 */
+/** 身体：上了年纪学识慢慢下降（每年 0.3），工作对健康和幸福的影响（每年为职业表里的一半）。每月记 1/12，看这个月月底在不在工作 */
 export function bodyMonth(m: number) {
-  if (m !== MONTHS - 1) return;
+  void m;
   const st = S.st;
-  if (S.age >= 68 && st.kn > 25) st.kn -= 0.3;
-  if (isWorking()) { const J = JOBS[S.job]; st.hl = clamp(st.hl + (J.hl || 0) * 0.5, 0, 100); st.h = clamp(st.h + (J.h || 0) * 0.5, 0, 100); }
+  if (S.age >= 68 && st.kn > 25) st.kn -= 0.3 / MONTHS;
+  if (isWorking()) { const J = JOBS[S.job]; st.hl = clamp(st.hl + (J.hl || 0) * 0.5 / MONTHS, 0, 100); st.h = clamp(st.h + (J.h || 0) * 0.5 / MONTHS, 0, 100); }
 }
-/** 健康、幸福、人际向各自的目标值靠拢。兼容模式：一年一次，在第 12 个月 */
+/** 健康、幸福、人际每月向各自的目标值靠拢 */
 export function driftMonth(m: number) {
-  if (m === MONTHS - 1) drift();
+  void m;
+  drift();
 }
