@@ -7,12 +7,12 @@ import { Modal } from './Modal';
 import { LiveScene, LogPic } from './Photo';
 import { YearProgress } from './Progress';
 import { RunId } from './RunId';
-import { Companions, Curve, Docs, FamilyCards, Vitals } from './Sidebar';
+import { Companions, Curve, Docs, FamilyCards, Vitals, preschool } from './Sidebar';
 import { fileNo, sexW } from './util';
 
 function Header() {
   const status = statusLabel();
-  const study = S.school ? '在读' + S.school : S.age < 6 ? '学龄前' : EDU_LV[S.edu];
+  const study = S.school ? '在读' + S.school : preschool() ? '学龄前' : EDU_LV[S.edu];
   const pw = S.pers && S.age >= 3 ? persWords(shownZ(), 2) : [];
   return (
     <header className="lhead">
@@ -60,18 +60,25 @@ const Entry = memo(({ e, anim, live }: { e: LogEntry; anim: boolean; live: boole
     {e.pic && <LogPic id={e.pic} live={live} />}
   </div>
 ));
-// 一年的记录。往年的记录不会再变，所以只在条数、是不是当年变了的时候才重绘：
+// 一年的记录。往年的记录不会再变，所以只在条数、是不是当年、现在是哪一年变了的时候才重绘：
 // 记录再多，每次刷新也只重绘当年这一组
 type YearItems = [LogEntry, number][];
-const YearGroup = memo(({ a, items, current, initial }: { a: number; items: YearItems; current: boolean; initial: number }) => (
+// 一个年龄年从生日那个月开始，常常跨两个公历年：标题写这一年的记录实际落在哪几年（当年再算上现在这一年），如「2043–44年」
+function yearSpan(items: YearItems, now: number) {
+  let y0 = now || Infinity, y1 = now || -Infinity;
+  for (const [e] of items) { y0 = Math.min(y0, e.y); y1 = Math.max(y1, e.y); }
+  if (y0 === Infinity) return '';
+  return y0 === y1 ? `${y0}年` : `${y0}–${Math.floor(y0 / 100) === Math.floor(y1 / 100) ? String(y1 % 100).padStart(2, '0') : y1}年`;
+}
+const YearGroup = memo(({ a, items, current, now, initial }: { a: number; items: YearItems; current: boolean; now: number; initial: number }) => (
   <div className="yr">
     <div className="yr-h">
-      <b>{a}岁</b><small>{S.birthYear + a}年</small>
+      <b>{a}岁</b><small>{yearSpan(items, now)}</small>
       {current && <YearProgress className="yr-prog" title="这一年过了多少" />}
     </div>
     <div className="timeline">{items.map(([e, k]) => <Entry key={k} e={e} anim={k > initial} live={current} />)}</div>
   </div>
-), (p, q) => p.a === q.a && p.current === q.current && p.initial === q.initial && p.items.length === q.items.length);
+), (p, q) => p.a === q.a && p.current === q.current && p.now === q.now && p.initial === q.initial && p.items.length === q.items.length);
 
 function Timeline() {
   const box = useRef<HTMLDivElement>(null);
@@ -98,7 +105,7 @@ function Timeline() {
     <section className="sheet tl-card">
       <h4 className="sheet-title">人生纪录 <span className="muted small">{n} 条 · 最新的在上面</span></h4>
       <div className="tl-scroll" ref={box} onScroll={e => setAway(e.currentTarget.scrollTop > 40)}>
-        {years.map(y => <YearGroup key={y.a} a={y.a} items={y.items} current={y.a === S.age && S.phase === 'life'} initial={initial.current} />)}
+        {years.map(y => { const cur = y.a === S.age && S.phase === 'life'; return <YearGroup key={y.a} a={y.a} items={y.items} current={cur} now={cur ? calYear() : 0} initial={initial.current} />; })}
       </div>
       {away && <button className="tl-latest" type="button" onClick={() => { if (box.current) box.current.scrollTop = 0; setAway(false); }}>↑ 回到最新</button>}
     </section>
