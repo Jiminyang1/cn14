@@ -1,13 +1,14 @@
 // 一生：页头（档案号、播放控制）；左栏 一、基本情况 二、体检与鉴定；中栏 三、本年度时间安排 四、大事记；
-// 右栏 五、家庭经济 六、个人账户，底下是材料目录 / 同批建档 / 一生曲线。手机上是单栏，下面用五个标签切换。
-import { memo, useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { FOCUS, S, calYear, carer, focusList, type LogEntry } from '../engine';
+// 右栏 五、我的经济 六、收支账本，底下是材料目录 / 同批建档 / 一生曲线。手机上是单栏，下面用五个标签切换。
+import { memo, useEffect, useRef, useState } from 'react';
+import { FOCUS, S, calYear, carer, focusList, type LogEntry, type MonthlyStatement } from '../engine';
 import { SPEEDS, game } from '../game/controller';
 import { Modal } from './Modal';
 import { LogPic } from './Photo';
 import { YearProgress } from './Progress';
 import { RunId } from './RunId';
-import { Account, ArchiveTabs, Basic, Body, Econ, FamilySec } from './Sidebar';
+import { Account, ArchiveTabs, Basic, Body, FamilySec } from './Sidebar';
+import { MonthlyLedger, TimelineFinance, statementAge } from './Finance';
 import { cnNum, fileNo } from './util';
 
 // ===== 页头：档案号、播放控制、更多 =====
@@ -103,50 +104,67 @@ const Entry = memo(({ e, anim, live }: { e: LogEntry; anim: boolean; live: boole
 });
 type YearItems = [LogEntry, number][];
 // 一个年龄年从生日那个月开始，常常跨两个公历年：标题写这一年的记录实际落在哪几年（当年再算上现在这一年），如「2043–44」
-function yearSpan(items: YearItems, now: number) {
+function yearSpan(items: YearItems, bills: MonthlyStatement[], now: number) {
   let y0 = now || Infinity, y1 = now || -Infinity;
   for (const [e] of items) { y0 = Math.min(y0, e.y); y1 = Math.max(y1, e.y); }
+  for (const bill of bills) { y0 = Math.min(y0, bill.year); y1 = Math.max(y1, bill.year); }
   if (y0 === Infinity) return '';
   return y0 === y1 ? `${y0}` : `${y0} – ${Math.floor(y0 / 100) === Math.floor(y1 / 100) ? String(y1 % 100).padStart(2, '0') : y1}`;
 }
-const YearGroup = memo(({ a, items, current, now, initial }: { a: number; items: YearItems; current: boolean; now: number; initial: number }) => (
+const YearGroup = memo(({ a, items, bills, current, now, initial }: { a: number; items: YearItems; bills: MonthlyStatement[]; current: boolean; now: number; initial: number }) => (
   <div className="yr">
     <div className="yr-h">
-      <b>{cnNum(a)}岁</b><small>{yearSpan(items, now)}</small>
+      <b>{cnNum(a)}岁</b><small>{yearSpan(items, bills, now)}</small>
       {current && <YearProgress className="yr-prog" title="这一年过了多少" />}
     </div>
+    <TimelineFinance bills={bills} completed={a < S.age} />
     {items.map(([e, k]) => <Entry key={k} e={e} anim={k > initial} live={current} />)}
   </div>
-), (p, q) => p.a === q.a && p.current === q.current && p.now === q.now && p.initial === q.initial && p.items.length === q.items.length);
+), (p, q) => p.a === q.a && p.current === q.current && p.now === q.now && p.initial === q.initial && p.items.length === q.items.length
+  && p.bills.length === q.bills.length && p.bills[p.bills.length - 1] === q.bills[q.bills.length - 1]);
 
-function Timeline() {
+export function Timeline() {
   const box = useRef<HTMLDivElement>(null);
-  const prevH = useRef(0);
-  const [away, setAway] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [oldestLoadedAge, setOldestLoadedAge] = useState<number | null>(null);
+  const minimumAge = Math.max(0, Math.min(S.age - 2, oldestLoadedAge ?? S.age - 2));
   const log = S.log, n = log.length;
+  const bills = S.statements?.length ? S.statements : S.statement ? [S.statement] : [];
   // 打开页面时已经有的记录（按序号），它们不淡入
   const initial = useRef(0);
   if (!initial.current) initial.current = n;
   // 按年龄分组；用「第几条记录」做 key（从出生往后数），新记录插在最上面时旧的不用重建
-  const years: { a: number; items: YearItems }[] = [];
+  const groups = new Map<number, { a: number; items: YearItems; bills: MonthlyStatement[] }>();
+  const older = new Set<number>();
+  const group = (age: number) => {
+    if (!groups.has(age)) groups.set(age, { a: age, items: [], bills: [] });
+    return groups.get(age);
+  };
   log.forEach((e, i) => {
-    const last = years[years.length - 1];
-    if (last && last.a === e.a) last.items.push([e, n - i]); else years.push({ a: e.a, items: [[e, n - i]] });
+    if (e.a < minimumAge) older.add(e.a);
+    else group(e.a).items.push([e, n - i]);
   });
-  if (S.phase === 'life' && (!years.length || years[0].a !== S.age)) years.unshift({ a: S.age, items: [] }); // 这一年还没有记录
-  // 往下翻着看旧记录时，上面插进新记录不要把正在看的内容顶走
-  useLayoutEffect(() => {
-    const el = box.current; if (!el) return;
-    if (el.scrollTop > 8 && prevH.current) el.scrollTop += el.scrollHeight - prevH.current;
-    prevH.current = el.scrollHeight;
-  }, [n]);
+  for (const bill of bills) {
+    const age = statementAge(bill, S.birthYear, S.birthMonth);
+    if (age < minimumAge) older.add(age);
+    else group(age).bills.push(bill);
+  }
+  if (S.phase === 'life') group(S.age);
+  const years = [...groups.values()].sort((first, second) => second.a - first.a);
+  const olderAges = [...older].sort((first, second) => second - first);
+  const nextCount = Math.min(6, olderAges.length);
   return (
     <section className="pg tl-card" data-m="log">
-      <div className="sec"><span className="no">四</span><h3>大事记</h3><small>共 {n} 条 · 新的在上</small></div>
-      <div className="tl-scroll" ref={box} onScroll={e => setAway(e.currentTarget.scrollTop > 40)}>
-        {years.map(y => { const cur = y.a === S.age && S.phase === 'life'; return <YearGroup key={y.a} a={y.a} items={y.items} current={cur} now={cur ? calYear() : 0} initial={initial.current} />; })}
+      <div className="sec">
+        <span className="no">四</span><h3>大事记</h3><small>共 {n} 条</small>
       </div>
-      {away && <button className="tl-latest" type="button" onClick={() => { if (box.current) box.current.scrollTop = 0; setAway(false); }}>↑ 回到最新</button>}
+      <div className="tl-scroll" ref={box} onScroll={event => setScrolled(event.currentTarget.scrollTop > 8)}>
+        {years.map(y => { const cur = y.a === S.age && S.phase === 'life'; return <YearGroup key={y.a} a={y.a} items={y.items} bills={y.bills} current={cur} now={cur ? calYear() : 0} initial={initial.current} />; })}
+        {nextCount > 0 && <button className="tl-more" type="button" onClick={() => setOldestLoadedAge(olderAges[nextCount - 1])}>
+          加载更早{nextCount}年<small>还有 {olderAges.length} 年记录未加载</small>
+        </button>}
+      </div>
+      <button className={'tl-top' + (scrolled ? ' visible' : '')} type="button" onClick={() => { if (box.current) box.current.scrollTop = 0; }}>↑ 回到最新</button>
     </section>
   );
 }
@@ -165,7 +183,7 @@ export function Life() {
       <nav className="mtabs" role="tablist">
         {MTABS.map(([k, n]) => <button key={k} type="button" role="tab" aria-selected={mtab === k} className={mtab === k ? 'on' : ''} onClick={() => setMtab(k)}>{n}</button>)}
       </nav>
-      <div className="col col-r"><FamilySec m="home" /><Econ m="home" /><Account m="home" /><ArchiveTabs mtab={mtab} /></div>
+      <div className="col col-r"><Account m="home" /><MonthlyLedger m="home" /><FamilySec m="home" /><ArchiveTabs mtab={mtab} /></div>
     </main>
     <Modal />
   </div>;

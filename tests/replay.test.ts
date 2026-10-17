@@ -45,6 +45,7 @@ test('replay reproduces interactive lives exactly', () => {
   let withInputs = 0;
   for (let i = 0; i < 30; i++) {
     const { run, life } = play((7777 + i * 104729) | 0);
+    if (life.cashflow) expect(life.statements).toHaveLength(life.cashflow.months);
     if (run.inputs.length) withInputs++;
     const want = stable(life);
     const got = stable(replay(run));

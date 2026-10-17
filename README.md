@@ -30,12 +30,14 @@ npm run replay -- <局ID>   # 重放某一局（见下面「排查问题」）
   - `mortality.ts` / `health.ts` 生命表、死因、大病与医保
   - `place.ts` / `career.ts` / `education.ts` 地点与收入、职业、高考志愿
   - `family.ts` / `parents.ts` / `romance.ts` 兄弟姐妹与孩子、父母、恋爱婚姻
-  - `household.ts` / `finance.ts` / `housing.ts` 父母家的账、自己的账、公积金与房贷
+  - `accounts.ts` / `budget.ts` 现金与欠款、家庭生活预算；`household.ts` / `finance.ts` / `housing.ts` 父母家的账、自己的账、公积金与房贷（规则见 [财务模型](docs/finance.md)）
   - `content/events.ts` 随机事件 `EVENTS`；`content/decisions.ts` 抉择 `DEC`；`content/daily.ts` 日常（年节、生活片段、状态节点）
   - `data.ts` 省份等估计值；`real.generated.ts` 由 `tools/build_real.py` 从 `research/*.json` 生成（见 DATA.md）
-- `src/game/`：推进循环、速度、存档（localStorage，带格式版本和旧存档迁移）、局日志与重放
+- `src/game/`：推进循环、速度、存档（localStorage，带格式版本，格式不兼容时需重新开始）、局日志与重放
 - `src/ui/`：React 组件（首页、出生登记表、一生、弹窗、结局、「怎么算的」卡片）
 - `tools/calib/`：校准脚本，`npm run calib -- sim 3000`
+
+大事记默认只加载当前及前两岁的记录，点击底部“加载更早记录”每次再加载六年。旧记录仍完整保存在存档中，已经手动加载的年份会继续保留。更新记录或进入下一岁时不强制回顶部；往下滚动后，底部才显示悬浮的“回到最新”按钮，点击后回到顶部并隐藏。列表末尾预留空间，避免遮挡加载按钮。
 
 ## 加一个事件
 

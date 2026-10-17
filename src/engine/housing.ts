@@ -12,6 +12,7 @@ import { parentsHelp } from './parents';
 import { wan } from './format';
 import { MONTHS } from './monthly';
 import { matePay, myPay, wageRate } from './finance';
+import { changeMoney, liquidBalance } from './accounts';
 
 declare module './types' {
   interface Loan { mo?: number }   // 还剩几个月（loanMonth）
@@ -80,6 +81,7 @@ export function hpfStart(job) {
 // 等额本息：每年还款额（按月计算后 ×12）
 export function annualPay(principal, rate, years) {
   if (principal <= 0 || years <= 0) return 0;
+  if (rate === 0) return principal / years;
   const r = rate / 12, n = years * 12;
   return principal * r / (1 - fpow(1 + r, -n)) * 12;
 }
@@ -101,14 +103,14 @@ export const hhIncome = () => {
 
 // 给一套房算出几种贷款方案
 export function loanPlans(price, L) {
-  const R = LOAN_RULES, inc = hhIncome(), cash = S.money + parentsHelp() + (S.hpf || 0); // 有欠款时先抵扣
+  const R = LOAN_RULES, inc = hhIncome(), cash = liquidBalance() + parentsHelp() + (S.hpf || 0); // 有欠款时先抵扣
   const comYears = Math.max(5, Math.min(R.comMaxTerm, R.comMaxAge - S.age));
   const hpfYears = Math.max(5, Math.min(R.maxTerm, retireAge() + R.hpfAgeOverRetire - S.age, R.hpfMaxAge - S.age));
   const plans = [];
   const mk = (kind, label, down, parts) => {
     const pay = parts.reduce((t, p) => t + annualPay(p.bal, p.rate, p.years), 0);
     const interest = parts.reduce((t, p) => t + totalInterest(p.bal, p.rate, p.years), 0);
-    const why = pay > inc * R.dti ? `月供${wan(pay / 12)}，超过家庭收入的一半，银行不批` : cash < down ? `首付${wan(down)}，加上爸妈帮忙和公积金也凑不齐` : '';
+    const why = S.debt > 0 ? '先处理现有欠款，再申请房贷' : pay > inc * R.dti ? `月供${wan(pay / 12)}，超过家庭收入的一半，银行不批` : cash < down ? `首付${wan(down)}，加上爸妈帮忙和公积金也凑不齐` : '';
     plans.push({ kind, label, down, parts, pay, interest, off: !!why, why });
   };
   // 纯商贷
@@ -137,7 +139,7 @@ export function buyHouse(price, L, plan) {
   let down = plan.down;
   const fromHpf = Math.min(S.hpf || 0, down); S.hpf -= fromHpf; down -= fromHpf;
   const help = Math.min(parentsHelp(), down); down -= help; S.famMoney -= help;
-  S.money -= down;
+  changeMoney(-down);
   S.house = { city: L.city, p: L.p, v: price, paid: price, at: S.age };
   S.loans = plan.parts.map(p => ({ ...p, pay: annualPay(p.bal, p.rate, p.years) }));
   addDoc('house', '房产证', [['坐落', L.city], ['面积', '约90平方米'], ['价格', wan(price)], ['贷款', plan.parts.map(p => `${p.kind === 'hpf' ? '公积金' : '商贷'}${wan(p.bal)}`).join(' + ')]]);
@@ -165,28 +167,27 @@ export function hpfMonth(own = 0, working = isWorking(), mate = 0) {
       : `公积金账户里剩下的${wan(x)}提取了出来，转进了存款。`, 'ev');
   }
 }
-// 还房贷（每月一期，等额本息，月利率 = 年利率 ÷ 12，和 annualPay 一样）：先用公积金余额（还贷提取），不够的从存款里出。返回从存款里付的钱。
-// l.mo 是还剩几个月；l.years 跟着取整（界面显示「还剩几年」、提前还款时重算月供用）。
-// 每月按剩下的本金和月数重算月供：没有提前还款时就是同一个数；提前还款后（content/decisions.ts 按整年数重算 l.pay）也正好在剩下的月数里还完
-export function loanMonth() {
-  if (!S.loans || !S.loans.length) return 0;
-  let fromCash = 0;
-  for (const l of S.loans) {
-    if (l.bal <= 0) continue;
-    if (l.mo == null) l.mo = Math.round(l.years * MONTHS);
-    const r = l.rate / MONTHS, owe = l.bal * (1 + r);
-    const pay = l.mo > 1 ? Math.min(owe, l.bal * r / (1 - fpow(1 + r, -l.mo))) : owe;
-    l.bal = Math.max(0, owe - pay);
-    l.mo--; l.years = Math.ceil(l.mo / MONTHS);
-    if (l.mo > 0) l.pay = pay * MONTHS;
-    else l.bal = 0;
-    const fromHpf = Math.min(S.hpf || 0, pay);
-    S.hpf -= fromHpf;
-    fromCash += pay - fromHpf;
+export function loanMonth(available = S.money) {
+  const result = { cash: 0, hpf: 0, interest: 0, arrears: 0 };
+  if (!S.loans?.length) return result;
+  for (const loan of S.loans) {
+    if (loan.bal <= 0) continue;
+    if (loan.mo == null) loan.mo = Math.round(loan.years * MONTHS);
+    const interest = loan.bal * loan.rate / MONTHS;
+    const owed = loan.bal + interest;
+    const due = loan.mo > 1 ? Math.min(owed, loan.pay / MONTHS + (loan.arrears || 0)) : owed;
+    const fromHpf = Math.min(S.hpf || 0, due);
+    const fromCash = Math.min(Math.max(0, available - result.cash), due - fromHpf);
+    const paid = fromHpf + fromCash;
+    S.hpf = (S.hpf || 0) - fromHpf;
+    loan.bal = Math.max(0, owed - paid);
+    loan.arrears = Math.max(0, due - paid);
+    loan.mo = Math.max(0, loan.mo - 1); loan.years = Math.ceil(loan.mo / MONTHS);
+    result.cash += fromCash; result.hpf += fromHpf; result.interest += interest; result.arrears += loan.arrears;
   }
-  S.loans = S.loans.filter(l => l.bal > 1);
+  S.loans = S.loans.filter(loan => loan.bal > 0.01);
   if (!S.loans.length) log('房贷终于还完了。', 'good');
-  return fromCash;
+  return result;
 }
 // 租房提取：没有在这座城市买房的人，可以取出一部分公积金付房租（rent 是这个月的房租）
 export function rentDraw(rent) {
@@ -205,13 +206,25 @@ export const loanPayY = () => (S.loans || []).reduce((t, l) => t + (l.bal > 0 ? 
 // 断供：房子被法拍，按市价打折卖掉，还不清的部分仍然是欠款
 export function foreclose(k = LOAN_RULES.forecloseK) {
   const got = S.house.v * k;
-  S.money += got - loanBal();
+  changeMoney(got - loanBal());
   S.loans = []; S.house = null; S.flags.badCredit = S.age; S.flags.heldOn = 0;
   return got;
 }
 export function sellHouse(k = 0.95) {
   const got = S.house.v * k;
-  S.money += got - loanBal();
+  changeMoney(got - loanBal());
   S.loans = []; S.house = null; S.flags.heldOn = 0;
   return got;
+}
+
+export const loanArrears = () => (S.loans || []).reduce((total, loan) => total + (loan.arrears || 0), 0);
+export const inheritedValue = () => (S.inheritedHomes || []).reduce((total, home) => total + home.v, 0);
+export const netWorth = () => liquidBalance() + (S.hpf || 0) + (S.house?.v || 0) + inheritedValue() - loanBal();
+export function sellInherited(index: number) {
+  const home = S.inheritedHomes?.[index];
+  if (!home) return 0;
+  const proceeds = home.v * 0.95;
+  changeMoney(proceeds);
+  S.inheritedHomes.splice(index, 1);
+  return proceeds;
 }

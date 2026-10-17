@@ -1,6 +1,6 @@
 // 你自己的账：经济独立、每个月的收入和开销。
 
-import { fexp, flog, fpow } from './fmath';
+import { fexp, fpow } from './fmath';
 import { JOBS, RESID_PENSION_JOBS, expK, wageMonth } from './career';
 import { PBY } from './data';
 import { S } from './state';
@@ -10,11 +10,13 @@ import { HPF_JOB, houseMonth, hpfMonth, loanMonth, plusMonth, rentDraw } from '.
 import { log } from './journal';
 import { NAT_URBAN_INC, placeCons, placeHp, placeInc, wageBase } from './place';
 import { wan } from './format';
-import { MONTHS } from './monthly';
+import { MONTHS, calMonth, calYear } from './monthly';
 import { turnsMonth } from './turns';
 import { partnerLoc } from './romance';
 import { dedOf, netOf, penBase, type DedRow, type NetPay } from './tax';
 import type { Partner } from './types';
+import { changeMoney, repayDebt } from './accounts';
+import { livingBudget } from './budget';
 
 declare module './types' {
   interface Life {
@@ -34,42 +36,25 @@ export function goIndep() {
   S.indep = true; S.indepAt = S.age;
   const f = S.fam;
   if (!f.mom.alive && !f.dad.alive && S.famMoney > 0) {
-    const x = S.famMoney; S.money += x; S.famMoney = 0;
+    const x = S.famMoney; changeMoney(x); S.famMoney = 0;
     log(`开始自己过日子了。父母留下的钱这些年由亲戚帮着管，供你吃穿上学，剩下的${wan(x)}交到了你手里。`, 'ev');
   }
-  if (S.stuDebt > 0) { S.money -= S.stuDebt; log(`开始工作时，身上还背着${wan(S.stuDebt)}的助学贷款。`, 'ev'); S.stuDebt = 0; }
+  if (S.stuDebt > 0) { S.debt = (S.debt || 0) + S.stuDebt; log(`开始工作时，身上还背着${wan(S.stuDebt)}的助学贷款。`, 'ev'); S.stuDebt = 0; }
 }
-// 储蓄率模型的参数（见 moneyMonth）。SAVE_BASE：收入正好是当地人均水平的人存下的比例。
-// 收入改成扣掉五险一金、个税以后的到手（tax.ts）以后，0.2 → 0.24：使在职者按公式算出的储蓄率（按家庭到手收入加权）仍约 32%，和全国居民储蓄率一致
-// （公式里比的是当地人均可支配收入，原来代入的是只扣了公积金的税前工资；npm run calib -- money）。
-// 工资对齐统计局以后（DATA.md「工资」）0.24 → 0.265：加权储蓄率 29.7% → 32.3%（统计局 2025 年全国居民 32.0%）
-export const SAVE_BASE = 0.265;
-// 财富效应：在职时，存款多的家庭花得也多，每年多花存款的 WEALTH_MPC（估计；发达国家的研究多在 2%–5%，中国家庭偏低）。
-// 存款利息照样进账，所以存款本身每年净减约 1.5 个百分点，免得一辈子只进不出
-export const WEALTH_MPC = 0.06;
-// 退休以后：不再按储蓄率存钱，收入（养老金、子女给的、配偶的收入）全部花掉，再每年花掉存款的 RET_DRAW（估计；常说的「4% 法则」，
-// 中国老人留钱给子女、防病的动机强，取 4% 到 5% 之间）。看病、住养老院的钱另算
-export const RET_DRAW = 0.05;
-// 欠着钱的时候：至少拿出收入的 DEBT_SR 还债，日常开销可以压到平时下限的 DEBT_FLOOR（估计）。
-// 工资对齐统计局以后（DATA.md「工资」）0.25 → 0.35、八成 → 0.65：收入低了，按原来的比例还债，欠款几年都还不完，
-// 买过房的人里后来急着卖房、被法拍的从约 8% 升到约 11%；调了以后约 9%
-export const DEBT_SR = 0.35, DEBT_FLOOR = 0.65;
-// 相对收入（幸福的目标值里用，stats.ts）：家庭到手收入（结了婚除以 1.6）÷（当地人均可支配收入 × REL_REF）。
-// 幸福的目标值是按原来偏高的工资调的（25–59 岁 relInc 平均约 5.4）；工资对齐统计局以后平均降到约 3.9，离婚多了约一个百分点。
-// 参照点乘 0.84，使平均回到约 5.4，不改变幸福、恋爱、离婚的校准
 export const REL_REF = 0.84;
-// 存款年利息约 1.5%，欠款（多是信用卡、网贷、亲戚的钱）约 4%：换算成每月复利。
-// 欠款超过当地 DEBT_FREEZE 年人均收入的部分不再计息：欠到这个份上已经还不上，亲戚的钱不再算利息，网贷、信用卡逾期后起诉的，法院只支持有限的利息（估计）
 const SAVE_INT_M = fpow(1.015, 1 / MONTHS), DEBT_INT_M = fpow(1.04, 1 / MONTHS);
-export const DEBT_FREEZE = 3;
 
 // ===== 每个月月底 =====
 /** 钱：你自己和父母家的收支、房贷、公积金，每月结算一个月的量。
  *  工资按这个月月底的工作发：年中换工作、被裁员、找到工作、退休，都从那个月起按新的状态算（一个月之内不再细分） */
 export function moneyMonth(m: number) {
+  const opening = S.statement?.closing ?? S.money;
+  const events = S.money - opening;
+  const beforeFamily = S.money;
   familyMoneyMonth(m);
   if (S.indep === false && S.job && !S.school && S.age >= 15) goIndep();
   if (S.indep === false || S.age < 15) return;
+  let transfers = S.money - beforeFamily;
   const J = JOBS[S.job], H = here(), working = !!(J && J.m > 0);
   const f = S.fam, mate = f.married && f.partner && f.partner.alive ? f.partner : null;
   // 工资是税前的：先算这个月的税前工资（折成一年），扣掉五险、公积金个人部分和个税（tax.ts），到手的钱进存款，公积金进公积金账户
@@ -93,43 +78,56 @@ export function moneyMonth(m: number) {
   S.income = Math.round(gross * MONTHS); // 现在的年收入（税前，这个月 × 12）
   S.net = Math.round(net * MONTHS);      // 到手
   const P = H.inc, mp = mate ? matePay(mate, myW) : null;
-  let hh = net;
-  hpfMonth(hpfOwn, working, mp ? mp.hpf / MONTHS : 0); // 你和配偶个人缴的公积金（已经从到手里扣掉了），单位再缴同样多
-  if (mp) hh += mp.net / MONTHS;
-  // 房贷先算：背着房贷的家庭会压缩日常开销（但不低于当地最低生活水平）
-  const mort = loanMonth();
+  const beforeHpf = S.money;
+  hpfMonth(hpfOwn, working, mp ? mp.hpf / MONTHS : 0);
+  transfers += S.money - beforeHpf;
+  const lateLife = turnsMonth(m);
+  const hh = net + (mp ? mp.net / MONTHS : 0) + lateLife.income;
+  changeMoney(hh);
   houseMonth(m);
-  let cost = 0;
-  const retired = S.job === 'retired', debt = S.money <= 0;
-  const adult = working || S.job === 'seeking' || S.job === 'retired' || S.job === 'home';
-  if (adult) {
-    // 储蓄率模型：全国居民储蓄率 ≈ (可支配收入 − 消费) ÷ 可支配收入 ≈ 32%（2025）。
-    // 收入越高于当地水平，存得越多；但开销不低于当地人均消费（最低生活）。储蓄率按年化的收入（这个月 × 12）算，和按年结算时含义相同。
-    // 在职时另按存款多花一点（财富效应，WEALTH_MPC）；欠着钱时至少拿 DEBT_SR 还债、开销压到下限的 DEBT_FLOOR
-    const adults = mate ? 2 : 1, cons = H.cons, save = debt ? 0 : S.money;
-    const per = hh * MONTHS / adults;
-    let sr = retired ? 0 : per > 0 ? clamp(SAVE_BASE + 0.15 * flog(per / P), -0.2, 0.55) : 0;
-    if (debt) sr = Math.max(sr, DEBT_SR);
-    const spend = hh * (1 - sr) - mort * 0.6 + save * (retired ? RET_DRAW : WEALTH_MPC) / MONTHS;
-    let extra = 0;
-    // 养孩子：人均消费里已经摊进了一部分孩子的开销，这里只加额外的教育、看护支出
-    for (const k of f.kids) if (k.alive && k.age < 22) extra += cons * 0.25 / MONTHS;
-    // 在城里租房的人，房租比当地平均水平多出一块（统计里的居住支出多为自有住房折算）；欠着钱的人租便宜的房子（合租、城中村），按六成算（估计）
-    // 老了住进养老院：每月的费用代替房租；搬去和子女同住：不付房租
-    const ownHere = S.house && S.house.city === S.loc.city;
-    if (S.flags.oldLive === 'home') extra += P * 0.5 / MONTHS;
-    else if (!ownHere && S.loc.kind !== 'rural' && S.flags.oldLive !== 'kid' && !S.flags.grandHelp) { const rent = H.hp * 45 * 0.018 * 0.6 * (debt ? 0.6 : 1) / MONTHS; extra += rent - rentDraw(rent); }
-    const floor = cons * adults * (retired ? 0.6 : 0.9) * (debt ? DEBT_FLOOR : 1) / MONTHS;
-    // 退休以后：收入全部花掉，再花存款的 RET_DRAW，房租、养老院也从这里面出（不够时不低于最低生活 + 房租，但只花到存款用完为止）；
-    // 没了积蓄、欠着钱（多是看病）就借不到钱了：自己的开销最多花到收入的 1 − DEBT_SR，剩下的拿去还债；不够的由子女、亲戚和低保兜底，不再记成自己的欠款
-    if (retired) { cost = Math.max(spend, Math.min(floor + extra, hh + save)); if (debt) cost = Math.min(cost, Math.max(0, hh) * (1 - DEBT_SR)); }
-    else cost = Math.max(spend, floor) + extra;
+  if (S.job === 'retired' && (!mate || mate.retired) && S.retirementLifestyle == null) S.retirementLifestyle = S.lifestyle;
+  const budget = livingBudget({ consumption: H.cons, income: hh, adults: mate ? 2 : 1,
+    retiredAdults: Number(S.job === 'retired') + Number(!!mate?.retired),
+    children: f.kids.filter(child => child.alive && child.age < 22).map(child => child.age), lifestyle: S.lifestyle,
+    retirementLifestyle: S.retirementLifestyle });
+  S.lifestyle = budget.lifestyle;
+  const basic = budget.living + budget.children;
+  const basicPaid = Math.min(S.money, basic);
+  S.money -= basicPaid;
+  const living = basic ? basicPaid * budget.living / basic : 0;
+  const children = basicPaid - living;
+  const ownHere = S.house && S.house.city === S.loc.city;
+  const rentDue = S.flags.oldLive === 'home' ? P * 0.5 / MONTHS
+    : !ownHere && S.loc.kind !== 'rural' && S.flags.oldLive !== 'kid' && !S.flags.grandHelp ? H.hp * 45 * 0.018 * 0.6 / MONTHS : 0;
+  const rentHpf = rentDraw(rentDue);
+  changeMoney(rentHpf); transfers += rentHpf;
+  const rent = Math.min(S.money, rentDue);
+  changeMoney(-rentDue);
+  const mortgage = loanMonth(S.money);
+  S.money -= mortgage.cash;
+  const debtInterest = (S.debt || 0) * (DEBT_INT_M - 1);
+  S.debt = (S.debt || 0) + debtInterest;
+  const reserve = basic + rentDue;
+  const debtRepaid = repayDebt(Math.max(0, S.money - reserve));
+  const discretionary = Math.min(budget.discretionary + lateLife.cost, Math.max(0, S.money - reserve));
+  S.money -= discretionary;
+  const depositInterest = S.money * (SAVE_INT_M - 1);
+  S.money += depositInterest;
+  const previous = S.statement;
+  S.statement = { year: calYear(m), month: calMonth(m), opening, closing: S.money, events, transfers, income: hh,
+    incomeDetails: { personal: net, partner: mp ? mp.net / MONTHS : 0, rehire: lateLife.income },
+    living, children, discretionary, rent, mortgage: mortgage.cash, mortgageInterest: mortgage.interest,
+    mortgageHpf: mortgage.hpf, debtRepaid, depositInterest, debtInterest,
+    shortfall: basic - basicPaid + rentDue - rent, arrears: mortgage.arrears, debt: S.debt };
+  if (!S.headless) {
+    const history = S.statements ||= previous ? [previous] : [];
+    const last = history[history.length - 1];
+    if (last?.year === S.statement.year && last.month === S.statement.month) history[history.length - 1] = S.statement;
+    else history.push(S.statement);
   }
-  cost += mort;
-  turnsMonth(m); // 返聘的工资、候鸟的开销（turns.ts）
-  S.money += hh - cost;
-  if (S.money > 0) S.money *= SAVE_INT_M;
-  else if (S.money < 0) S.money -= Math.min(-S.money, DEBT_FREEZE * P) * (DEBT_INT_M - 1);
+  const totals = S.cashflow ||= { months: 0, income: 0, spending: 0, mortgage: 0, debtRepaid: 0 };
+  totals.months++; totals.income += hh; totals.spending += living + children + discretionary + rent;
+  totals.mortgage += mortgage.cash; totals.debtRepaid += debtRepaid;
   S.relInc = clamp((hh * MONTHS / (f.married ? 1.6 : 1) / (P * REL_REF) - 1) * 6, -10, 10);
   if (S.money > S.stats.maxMoney) S.stats.maxMoney = S.money;
 }

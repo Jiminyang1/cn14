@@ -6,10 +6,11 @@ import { placeInc } from './place';
 import { JOBS, isWorking } from './career';
 import { MONTHS, approachPerMonth } from './monthly';
 import { pz } from './personality';
+import { changeMoney, liquidBalance } from './accounts';
 
 export function eff(o) {
   for (const k in o) {
-    if (k === 'money') { if (S.indep === false) S.famMoney += o.money; else S.money += o.money; }
+    if (k === 'money') { if (S.indep === false) S.famMoney += o.money; else changeMoney(o.money); }
     // 学识：越高越难再提高（边际递减）
     else if (k === 'kn' && o.kn > 0) S.st.kn = clamp(S.st.kn + o.kn * (1 - S.st.kn / 115), 0, 100);
     else S.st[k] = clamp(S.st[k] + o[k], 0, 100);
@@ -27,10 +28,11 @@ export function drift() {
   let kids = 0; for (const k of f.kids) if (k.alive) kids++;
   // 中风留下残疾（content/decisions.ts 的治疗抉择里设 flags.disabled）：健康的目标值一直低 10（估计；残疾后的死亡风险经 deathProb 的健康倍数升高），幸福低 4
   const dis = S.flags.disabled ? 1 : 0;
-  const hT = hlExp(a) + (S.q - 3) * 1.5 + (S.money < 0 && a >= 22 ? -3 : 0) + (S.flags.smoke ? -6 : 0) + (S.flags.ill ? -20 : 0) - dis * 10 + 0.8 * pz('c');
+  const hardship = S.statement && S.statement.shortfall > 0 ? 3 : 0;
+  const hT = hlExp(a) + (S.q - 3) * 1.5 + (liquidBalance() < 0 && a >= 22 ? -3 : 0) + (S.flags.smoke ? -6 : 0) + (S.flags.ill ? -20 : 0) - dis * 10 - hardship + 0.8 * pz('c');
   st.hl = clamp(st.hl + (hT - st.hl) * K_HL, 1, 100);
   const rel = a < 18 ? (S.q - 3) * 2.5 : (S.relInc || 0);
-  const debt = a >= 22 && S.money < 0 && S.money < -placeInc() ? 7 : 0; // 先看有没有欠款，免得每月都去算当地收入
+  const debt = a >= 22 && liquidBalance() < -placeInc() ? 7 : 0;
   const hpT = 56 + rel + (f.married && f.partner && f.partner.alive ? 5 : 0) + Math.min(6, kids * 3) + (st.so - 50) * 0.25 + (st.hl - 60) * 0.15
     - debt - (S.flags.lb && a < 16 ? 6 : 0) - (S.job === 'seeking' ? 6 : 0) - dis * 4 + persH();
   st.h = clamp(st.h + (hpT - st.h) * K_H, 0, 100);

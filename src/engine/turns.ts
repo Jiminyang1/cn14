@@ -81,10 +81,8 @@ export function turnsYear() {
 }
 // 候鸟在南方住的月份（公历 11 月到第二年 2 月），一年的开销摊在这几个月里
 const WINTER = [11, 12, 1, 2];
-// 每个月月底（finance.ts 的 moneyMonth 调用）：返聘的工资每月发 1/12（从选了返聘的下个月起，不再等到下一个生日）；候鸟的房租、路费在冬天的几个月里付。
-// 和原来一样直接进出存款，不算进储蓄率模型的收入
 export function turnsMonth(m: number) {
   const F = S.flags;
-  if (F.rehire) S.money += F.rehire.inc / MONTHS;
-  if (F.snowbird && WINTER.includes(calMonth(m))) S.money -= placeInc() * SNOWBIRD.cost / WINTER.length;
+  return { income: F.rehire ? F.rehire.inc / MONTHS : 0,
+    cost: F.snowbird && WINTER.includes(calMonth(m)) ? placeInc() * SNOWBIRD.cost / WINTER.length : 0 };
 }

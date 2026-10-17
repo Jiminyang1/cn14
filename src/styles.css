@@ -74,6 +74,9 @@ button { font: inherit; }
 .row > .v small { display: block; font-size: 12px; color: var(--muted); }
 .row.off > .v, .row.gone > .v { color: var(--muted); }
 .row b { font-weight: 500; }
+.person-details > summary { cursor: pointer; list-style-position: inside; min-height: 24px; }
+.person-details[open] > summary { margin-bottom: 4px; }
+.person-details > summary:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
 .neg { color: var(--bad); }
 .f4 { display: grid; grid-template-columns: 2.4em minmax(0, 1fr) 2.4em minmax(0, 1fr); gap: 4px 8px; font-size: 13px; }
 .f4 > .k { font-family: var(--serif); font-size: 12px; color: var(--muted); padding-top: 1px; }
@@ -174,9 +177,12 @@ textarea { font: 15px/1.7 var(--sans); color: var(--ink); width: 100%; min-heigh
 .plan-fx { margin-left: auto; font-size: 12px; color: var(--muted); white-space: nowrap; }
 
 /* 四、大事记 */
-.tl-card { flex: 1; min-height: 0; display: flex; flex-direction: column; padding-bottom: 0; overflow: hidden; }
+.tl-card { position: relative; flex: 1; min-height: 0; display: flex; flex-direction: column; padding-bottom: 0; overflow: hidden; }
 .tl-card > .sec { margin-bottom: 0; flex: none; }
-.tl-scroll { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; overflow-anchor: none; margin: 0 -18px; padding: 0 18px 16px; scrollbar-width: thin; }
+.tl-top { visibility: hidden; position: absolute; z-index: 2; bottom: 12px; left: 50%; transform: translateX(-50%); width: max-content; max-width: calc(100% - 24px); min-height: 36px; padding: 8px 16px; border: 1px solid var(--rule); border-radius: 999px; background: var(--ink); color: var(--card); box-shadow: var(--shadow); font: 13px var(--sans); cursor: pointer; }
+.tl-top.visible { visibility: visible; }
+.tl-top:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+.tl-scroll { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; margin: 0 -18px; padding: 0 18px 72px; scrollbar-width: thin; }
 .yr-h { position: sticky; top: 0; z-index: 1; display: flex; align-items: center; gap: 10px; margin: 10px 0 2px; padding: 4px 10px; background: var(--tint); border-left: 3px solid var(--kraft); }
 .yr-h b { font-family: var(--serif); font-size: 15px; font-weight: 900; letter-spacing: .1em; }
 .yr-h small { font-family: var(--mono); font-size: 12px; color: var(--muted); }
@@ -198,7 +204,9 @@ textarea { font: 15px/1.7 var(--sans); color: var(--ink); width: 100%; min-heigh
 .tl.note p::before { content: '自述'; font: 700 11px var(--sans); color: var(--kraft-ink); background: var(--kraft); padding: 1px 6px; border-radius: 2px; margin-right: 8px; vertical-align: 1px; }
 .tl.death p { font-family: var(--serif); font-weight: 900; font-size: 17px; color: var(--seal); }
 .tl .dec-t { font-family: var(--serif); font-weight: 700; margin-right: 8px; }
-.tl-latest { position: absolute; z-index: 2; bottom: 14px; left: 50%; transform: translateX(-50%); font: 13px var(--sans); color: var(--card); background: var(--ink); border: 0; border-radius: 999px; padding: 6px 14px; cursor: pointer; box-shadow: 0 4px 14px rgba(30, 20, 8, .25); }
+.tl-more { display: block; width: 100%; min-height: 44px; margin-top: 16px; padding: 10px; border: 1px solid var(--rule); border-radius: 4px; background: var(--tint); color: var(--ink); font: 13px var(--sans); cursor: pointer; }
+.tl-more small { display: block; margin-top: 4px; font-size: 11px; color: var(--muted); }
+.tl-more:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
 @keyframes fadein { from { opacity: 0; transform: translateY(-4px); } }
 
 /* 右栏底部的分隔签：材料目录 / 同批建档 / 一生曲线 */
@@ -426,6 +434,10 @@ table.cmp th { font-weight: 500; font-family: var(--serif); color: var(--muted);
 @media (max-width: 900px) {
   body { font-size: 15px; }
   .life-app { display: block; height: auto; min-height: 100dvh; padding-bottom: 84px; }
+  .life-app.m-log { display: flex; flex-direction: column; height: 100dvh; padding-bottom: calc(84px + env(safe-area-inset-bottom)); }
+  .m-log .lhead { flex: none; }
+  .m-log .lbody { overflow-y: auto; }
+  .m-log .basic, .m-log .plan, .m-log .mtabs { flex: none; }
   .lhead { position: sticky; top: 0; height: 52px; padding: 0 12px; }
   .lhead .ftab { margin-left: 6px; font-size: 11px; padding: 2px 8px 1px; }
   .lhead .lid { display: none; }
@@ -452,6 +464,8 @@ table.cmp th { font-weight: 500; font-family: var(--serif); color: var(--muted);
   .m-only { display: block; }
   .d-only { display: none !important; }
   .tl-card { min-height: 60dvh; max-height: 72dvh; }
+  .m-log .tl-card { flex: 1 0 200px; min-height: 200px; max-height: none; }
+  .tl-top { position: fixed; z-index: 19; bottom: calc(88px + env(safe-area-inset-bottom)); min-height: 44px; padding: 10px 18px; font-size: 14px; }
   .tabs-card { overflow: visible; }
   .tabs-card .tabs { display: none; }
   .t-doc .tp:not([data-t="doc"]), .t-peer .tp:not([data-t="peer"]), .t-curve .tp:not([data-t="curve"]) { display: block; }
@@ -488,3 +502,43 @@ table.cmp th { font-weight: 500; font-family: var(--serif); color: var(--muted);
   .notes3 .wide { grid-column: auto; }
   .tip { left: 0 !important; right: 0; bottom: 0; top: auto !important; width: 100%; max-height: 65vh; overflow: auto; border-radius: 10px 10px 0 0; padding-bottom: 20px; }
 }
+.finance-balance { display: flex; flex-direction: column; gap: 3px; padding: 6px 0 12px; }
+.finance-balance > span { color: var(--muted); font-family: var(--serif); font-size: 12px; }
+.finance-balance strong { font-family: var(--serif); font-size: 30px; font-weight: 700; line-height: 1.25; }
+.finance-period { margin: 0 0 8px; font-size: 11px; color: var(--muted); }
+.finance-metrics { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 12px; margin: 0 0 12px; }
+.finance-metrics dt { color: var(--muted); font-size: 11px; }
+.finance-metrics dd { margin: 3px 0 0; font-size: 14px; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.finance-metrics > div:last-child { grid-column: 1 / -1; display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding-top: 8px; border-top: 1px solid var(--hair); }
+.money-up { color: var(--good); }
+.finance-fold { border-top: 1px solid var(--line); }
+.finance-fold > summary, .account-statement > summary { display: flex; align-items: center; gap: 8px; list-style: none; min-height: 44px; cursor: pointer; padding: 10px 0; font-size: 12px; }
+.finance-fold > summary::-webkit-details-marker, .account-statement > summary::-webkit-details-marker { display: none; }
+.finance-fold > summary::after, .account-statement > summary::after { content: '›'; width: 16px; height: 16px; line-height: 16px; text-align: center; font-size: 18px; color: var(--muted); flex: 0 0 16px; }
+.finance-fold[open] > summary::after, .account-statement[open] > summary::after { transform: rotate(90deg); }
+.finance-fold > summary > span:first-child { min-width: 0; }
+.finance-fold > summary small { display: block; margin-top: 3px; font-size: 11px; color: var(--muted); }
+.finance-fold .fold-meta { margin-left: auto; color: var(--muted); font-size: 11px; text-align: right; }
+.finance-fold-body { padding-bottom: 8px; }
+.finance-fold > summary:focus-visible, .account-statement > summary:focus-visible, .ledger-toolbar select:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+.ledger-toolbar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; font-size: 11px; color: var(--muted); }
+.ledger-toolbar label { display: flex; align-items: center; gap: 7px; }
+.ledger-toolbar select { min-height: 32px; border: 1px solid var(--rule); border-radius: 3px; padding: 3px 6px; background: var(--card); color: var(--ink); font: inherit; font-size: 12px; }
+.ledger-totals { margin: 12px 0 0; }
+.ledger-hint { margin: 8px 0; color: var(--muted); }
+.ledger-empty { color: var(--muted); margin: 12px 0 6px; }
+.account-statement { margin: 0; font-size: 12px; border-top: 1px solid var(--hair); }
+.account-statement .statement-date { font-family: var(--serif); }
+.account-statement summary small { display: block; color: var(--muted); font-family: var(--sans); font-size: 11px; font-weight: 400; margin: 2px 0; }
+.statement-change { margin-left: auto; text-align: right; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.statement-body { padding: 4px 0 12px; }
+.account-statement dl { margin: 0; }
+.account-statement dl > div { display: flex; justify-content: space-between; gap: 12px; padding: 4px 0; }
+.account-statement dd { margin: 0; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.statement-income { margin-top: 10px; padding-top: 8px; border-top: 1px dashed var(--line); color: var(--muted); font-size: 11px; }
+.account-note { font-size: 12px; line-height: 1.6; }
+.timeline-finance { margin: 4px 0 8px 56px; padding: 0 10px; background: var(--tint); border-left: 2px solid var(--kraft); font-size: 12px; }
+.timeline-finance > summary { cursor: pointer; list-style-position: inside; padding: 8px 0; line-height: 1.8; }
+.timeline-finance > summary:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+.timeline-finance-label { font-family: var(--serif); font-weight: 700; margin-right: 8px; }
+.timeline-finance-body { padding-bottom: 4px; }

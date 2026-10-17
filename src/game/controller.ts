@@ -166,10 +166,10 @@ function loop(ts: number) {
   last = ts;
   if (game.screen === 'life' && S && S.phase === 'life' && !game.paused && !S.pending) {
     const sp = game.speed * (game.ff ? 40 : 1);
-    const age0 = S.age, n0 = S.log.length;
+    const age0 = S.age, n0 = S.log.length, statement0 = S.statement;
     engine('tick', () => tick(dt * sp / game.yearSec));
     if (game.ff === 'big' && S.log.slice(0, S.log.length - n0).some(e => BIG_KINDS.has(e.k))) { game.ff = false; emit(); }
-    if (S.age !== age0) game.save();
+    if (S.age !== age0 || S.statement !== statement0) game.save();
     if (S.pending) { game.ff = false; emit(); }
     else if (S.phase !== 'life') { emit(); game.finish(); } // tick 里离世了
     else if (ts - lastEmit > RENDER_MS) emit();

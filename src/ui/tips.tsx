@@ -2,8 +2,8 @@
 // 说明在点开那一刻才计算，所以数字总是最新的。
 import type { ReactNode } from 'react';
 import {
-  DEBT_FLOOR, DEBT_FREEZE, DEBT_SR, EDU_LV, EXP0, EXP5, EXP_BLUE, EXP_PEAK, EXP_PEAK_Y, FAM_REPAY, FAM_SAVE, HPF_JOB, INS_FLEX, INS_RESID, JOBS, LE_TARGET, LOAN_RULES, LT, NAT_URBAN_INC, PARENT_K, PBY,
-  PARENT_SD, PARTNER_SD, PEN_MIN_YEARS, PEN_YEARS, RESID_PENSION_JOBS, RET_DRAW, S, SAVE_BASE, WAGE_G0, WAGE_G_MAX, WAGE_REV, WEALTH0, WEALTH_MPC, clamp, expK, famIncome,
+  EDU_LV, EXP0, EXP5, EXP_BLUE, EXP_PEAK, EXP_PEAK_Y, FAM_REPAY, HPF_JOB, INS_FLEX, INS_RESID, JOBS, LE_TARGET, LOAN_RULES, LT, NAT_URBAN_INC, PARENT_K, PBY,
+  PARENT_SD, PARTNER_SD, PEN_MIN_YEARS, PEN_YEARS, RESID_PENSION_JOBS, S, WAGE_G0, WAGE_G_MAX, WAGE_REV, WEALTH0, clamp, expK, famIncome,
   hpCounty, incomeLuckNow, leOf, loanPayY, matePay, myPay, parentIncome, parentPay, parentRetired, parentWage, parentWorkLoc, partnerHpf, partnerLoc, partnerPay, peek, sibsAlive,
   eduRel, personK, placeHp, placeInc, placeName, socAvg, uiPay, wageBase, wageRate, wan, workExpK,
   type DedRow, type NetPay,
@@ -172,14 +172,14 @@ export const TIPS: Record<string, (arg?: string) => Tip> = {
       rows: [
         ['出生时', `积蓄约为全家年收入的 ${W.save[q]} 倍（中位数，因人而异）`],
         ['欠款的可能', `${S.rural ? '农村' : '城镇'}家境第 ${S.q} 档约 ${pct(W.debtP[q])} 的家庭有欠款`],
-        ['父母上班时', `收入 × 净储蓄率 ${pct(FAM_SAVE[S.q - 1])}（家境第 ${S.q} 档）`],
-        ['父母退休后', '养老金 − 当地人均消费 × 0.7 × 人数'],
+        ['日常收支', '收入减去基本生活、孩子、住房、医疗和可选消费，剩余才是结余'],
+        ['父母退休后', '沿用家庭预算，养老金够用时仍可存钱，不固定扣除积蓄'],
         ['孩子上学', '开学时交一学年：高中约 3,000 元，大学约 2 万元，民办更高；家里拿不出的部分办助学贷款'],
         ...loan,
         ['其他', '父母生病另有开销；存款年利息约 1.5%，欠款约 2%（多是房贷或亲戚借款）'],
         ['花光以后', '由已经工作的子女补贴（还在世的兄弟姐妹一起分摊）'],
       ],
-      notes: ['出生时的积蓄已按家庭金融调查校准：金融资产中位数约城镇 4.6 万、农村 8,500 元（CHFS 2011 按收入增长折算）。各档倍数和净储蓄率仍是估计。'],
+      notes: ['出生时的积蓄已按家庭金融调查校准：金融资产中位数约城镇 4.6 万、农村 8,500 元（CHFS 2011 按收入增长折算）。各档倍数和生活预算仍是估计。'],
       src: '参考：2024 年农村居民（收入 − 消费）÷ 收入约 17%，城镇约 34%',
     };
   },
@@ -205,7 +205,7 @@ export const TIPS: Record<string, (arg?: string) => Tip> = {
     const W = WEALTH0[S.rural ? 'rural' : 'urban'], q = S.q - 1;
     return {
       title: '父母的欠款', big: wan(S.famDebt || 0),
-      rows: [['原因', S.famDebtWhy || '借款'], ['出生时', `${wan(S.famDebt0 || 0)}，约为全家年收入的 ${W.debt[q]} 倍（中位数，因人而异）`], ['怎么还', S.famDebtWhy === '房贷' ? `按商贷利率 ${pct(LOAN_RULES.comRate)} 等额本息，从工资里扣，还剩约 ${S.famDebtYears || 0} 年；父母退休后从存款里扣` : `家里每年省下的钱（约收入的 ${pct(FAM_REPAY[S.rural ? 'rural' : 'urban'][q])}）先拿去还债，这几年不再存钱。照现在的收入，还要约 ${S.famDebtYears >= 99 ? '很多' : S.famDebtYears || 0} 年；父母退休后还没还完的，用存款还`], ['父母去世', '先用遗产抵，子女不承担超出遗产的部分']],
+      rows: [['原因', S.famDebtWhy || '借款'], ['出生时', `${wan(S.famDebt0 || 0)}，约为全家年收入的 ${W.debt[q]} 倍（中位数，因人而异）`], ['怎么还', S.famDebtWhy === '房贷' ? `按商贷利率 ${pct(LOAN_RULES.comRate)} 等额本息，从实际可用资金支付，还剩约 ${S.famDebtYears || 0} 年；没有支付的部分继续欠着` : `在职时每年计划拿收入的约 ${pct(FAM_REPAY[S.rural ? 'rural' : 'urban'][q])} 还债，但不超过实际可用资金；退休后用剩余存款偿还。照现在的还款额，还要约 ${S.famDebtYears >= 99 ? '很多' : S.famDebtYears || 0} 年`], ['父母去世', '先用遗产抵，子女不承担超出遗产的部分']],
       notes: [`${S.rural ? '农村' : '城镇'}家境第 ${S.q} 档约 ${pct(W.debtP[q])} 的家庭有欠款。整体已按调查校准：有负债的家庭城镇约 44%、农村约 40%；负债约为年收入的 1.3–1.5 倍（CHFS 2011、2019，人民银行 2019）。`],
     };
   },
@@ -298,18 +298,17 @@ export const TIPS: Record<string, (arg?: string) => Tip> = {
   },
   myMoney() {
     return {
-      title: '你的存款', big: wan(S.money),
+      title: '现金与欠款', big: wan(S.money),
       rows: [
-        ['每月变化', '到手收入（税前扣掉五险一金、个税）− 生活开销 − 房租 − 房贷，再加利息'],
-        ['上班时的开销', `收入 ×（1 − 储蓄率）+ 存款的 ${pct(WEALTH_MPC)}/年；不低于当地人均消费的九成`],
-        ['储蓄率', `${pct(SAVE_BASE)} + 15% × ln（人均到手收入 ÷ 当地人均可支配收入），在 −20% 到 55% 之间`],
-        ['退休以后', `收入全部花掉，再花存款的 ${pct(RET_DRAW)}/年，房租、养老院也从这里出`],
-        ['欠着钱时', `至少拿收入的 ${pct(DEBT_SR)} 还债，开销压到下限的 ${pct(DEBT_FLOOR)}；退休以后不再借钱`],
-        ['房贷', '先用公积金余额还，不够再用存款'],
-        ['利息', `存款约 1.5%，欠款约 4%；欠款超过当地 ${DEBT_FREEZE} 年人均收入的部分不再计息`],
+        ['现金', '当前能够使用的存款；欠款、公积金和房产分别记账'],
+        ['基本生活', '根据所在地消费水平、家庭人数和孩子年龄计算'],
+        ['可选消费', '生活习惯随收入逐月调整；资金紧张时先压缩，不按存款比例扣钱'],
+        ['退休以后', '继续按生活预算支出，养老金高于开销时可以存钱'],
+        ['欠款', `${wan(S.debt || 0)}；包括借款和未付账单，按年利率约 4% 计息，有余钱优先偿还`],
+        ['房贷', '公积金和现金实际付了多少才还多少；没有付的记为逾期'],
+        ['利息', '现金存款年利率约 1.5%；利息到账会列在月度账单里'],
       ],
-      notes: ['背着房贷的家庭会压缩日常开销。', '存款多的家庭花得也多（人情、装修、换车、帮衬家人），所以存款不会只进不出。'],
-      src: '参考：2025 年全国居民储蓄率约 32%',
+      notes: ['收支账本按年份保留每月记录，点开月份可以查看明细。', '生活预算系数是游戏估计值；没有钱满足基本生活时会影响健康。'],
     };
   },
   hpf() {

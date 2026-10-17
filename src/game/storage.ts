@@ -19,7 +19,7 @@ function del(k: string) {
 // 不做旧存档的兼容：人生对象的结构变了就把 SAVE_FORMAT 加一，格式不同的存档直接当作没有
 export interface UiPrefs { speed: number }
 export interface Save { life: Life; ui: UiPrefs; run: RunLog }
-const SAVE_FORMAT = 7; // 3：加了性格；4：审查修复（孩子按月算年龄、兄弟姐妹会去世、助学贷款单独记账……）；5：个税和五险一金（2026-10-16）；6：工资对齐统计局（父母、对象的个人系数不再含学历溢价）；7：经济补偿按在本单位的年数（empY）、收入运气封顶
+const SAVE_FORMAT = 8;
 
 export function loadSave(): Save | null {
   const raw = get<any>(SAVE_KEY);

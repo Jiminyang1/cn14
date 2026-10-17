@@ -1,10 +1,11 @@
 // 档案封存：这一生的履历、证件、自述，以及同一秒建档的人走完的一生。
 import { useState } from 'react';
-import { CAUSE, EDU_LV, LT, PBY, S, deathText, mainJob, persWords, shownZ, wan, wanM } from '../engine';
+import { CAUSE, EDU_LV, LT, PBY, S, deathText, mainJob, persWords, shownZ, wan, wanM, netWorth, inheritedValue, loanBal } from '../engine';
 import { game } from '../game/controller';
 import { Cell } from './BirthCert';
 import { RunId } from './RunId';
 import { Curve, DocCard } from './Sidebar';
+import { MonthlyLedger } from './Finance';
 import { dots, fileNo } from './util';
 
 export function End() {
@@ -15,6 +16,7 @@ export function End() {
   const leave = (then: () => void) => { game.saveLastWords(words.trim()); then(); };
   // 出生地以出生登记表为准：随迁子女出生在父母打工的城市，不是户口所在的老家（S.home）
   const bornAt = S.docs.find(x => x.k === 'birth').rows.find(r => r[0] === '出生地')[1];
+  const cashflow = S.cashflow;
   return (
     <div className="wrap narrow">
       <div className="folder sealed">
@@ -38,8 +40,24 @@ export function End() {
           <Cell k="孩子" v={kids.length ? kids.length + '个' : '没有'} /><Cell k="房子" v={S.house ? S.house.city : '没有'} />
           {S.pers && S.age >= 3 && <Cell k="性格" v={persWords(shownZ(), 3).join('、') || '平和'} wide />}
           <Cell k="存款最多的时候" v={wan(S.stats.maxMoney)} /><Cell k="离开时的存款" v={wan(S.money)} /><Cell k="退休金" v={S.pension ? wanM(S.pension) : '—'} />
+          <Cell k="其他欠款" v={wan(S.debt || 0)} /><Cell k="继承房产权益" v={wan(inheritedValue())} /><Cell k="净资产" v={wan(netWorth())} />
+          <Cell k="剩余房贷" v={wan(loanBal())} /><Cell k="公积金余额" v={wan(S.hpf || 0)} />
         </div>
       </div>
+      {cashflow && <div className="sheet end-sec">
+        <h4 className="sheet-title">这一生的钱</h4>
+        <div className="ftable">
+          <Cell k="累计家庭到手收入" v={wan(cashflow.income)} />
+          <Cell k="累计日常消费与房租" v={wan(cashflow.spending)} />
+          <Cell k="现金偿还房贷" v={wan(cashflow.mortgage)} />
+          <Cell k="偿还其他欠款" v={wan(cashflow.debtRepaid)} />
+          <Cell k="事件、资产转账及利息净额" v={wan(S.money - cashflow.income + cashflow.spending + cashflow.mortgage + cashflow.debtRepaid)} />
+          <Cell k="最终可用现金" v={wan(S.money)} />
+        </div>
+        <p className="account-note">家庭到手收入含配偶、养老金和返聘；日常消费与房租不含买房、医疗等事件。公积金直接还贷不计入现金支出，继承后未出售的房产不计入现金。</p>
+        <h4>逐月收支</h4>
+        <MonthlyLedger embedded />
+      </div>}
       <div className="sheet end-sec"><h4 className="sheet-title">一生曲线</h4><Curve W={680} H={170} /></div>
       <div className="end-sec"><h4>档案里的 {(S.docs || []).length} 份证件</h4><div className="doc-gallery">{(S.docs || []).map((x, i) => <DocCard key={i} d={x} open />)}</div></div>
       {S.notes.length > 0 && <div className="end-sec notes"><h4>自述</h4>{S.notes.map((n, i) => <p key={i}><span className="small muted">{n.a}岁 · {n.q}</span><br />{n.t}</p>)}</div>}

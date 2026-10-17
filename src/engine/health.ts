@@ -46,7 +46,7 @@ export function illMonth() {
   const il = S.flags.ill;
   il.mo++;
   const p = (ILL[il.k] || ILL.cancer).die[il.treat] * (S.rural && il.k === 'cancer' ? 1.15 : 1);
-  if (il.mo > MONTHS && il.treat !== 'none') S.money -= oop(il.k, il.treat) * 0.3 / MONTHS; // 之后每年复查、吃药，按月记
+  if (il.mo > MONTHS && il.treat !== 'none') eff({ money: -oop(il.k, il.treat) * 0.3 / MONTHS });
   if (chance(perMonth(p))) { die(il.k); return true; }
   if (il.mo >= ILL_SURVIVE_MO && il.treat !== 'none') { S.flags.ill = null; S.flags.survivor = 1; log('复查结果一直稳定。医生说，可以算是挺过来了。', 'good'); eff({ h: 8 }); }
   return false;

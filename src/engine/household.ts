@@ -1,14 +1,16 @@
 // 父母家里的账：每月的结余、还欠款、供孩子上学、父母去世后的遗产。
 
 import { fpow } from './fmath';
-import { LOAN_RULES } from './housing';
+import { LOAN_RULES, annualPay } from './housing';
 import { MONTHS, monthOfCal } from './monthly';
 import { S } from './state';
 import { log } from './journal';
 import { parentIncome, parentRetired } from './parents';
-import { placeCons } from './place';
+import { placeCons, placeHp } from './place';
 import { wan } from './format';
 import { sibsAlive } from './family';
+import { livingBudget } from './budget';
+import { changeMoney } from './accounts';
 
 declare module './types' {
   interface Life {
@@ -20,14 +22,9 @@ declare module './types' {
 // 还在世的兄弟姐妹有几个（分遗产、分摊父母的生活费）
 const sibsN = () => sibsAlive().length;
 
-// 家庭每年的结余：家庭人均可支配收入 × 3 口人 × 储蓄率（按家境），减去孩子上学的开销
-// 家庭净储蓄率（扣掉盖房、人情、看病等大额开销后，估计）；2024 年农村居民（收入−消费）÷收入约 17%，城镇约 34%
-export const FAM_SAVE = [0.02, 0.04, 0.06, 0.1, 0.15];
-// 有非房贷的欠款（盖房、看病、办婚事、做生意，多是向亲戚借的，一般不算利息）时，家里先还债、不再存钱，每年能拿出收入的这么多（按家境，估计）。
+// 有非房贷的欠款（盖房、看病、办婚事、做生意，多是向亲戚借的，一般不算利息）时，每年计划拿出收入的这么多还债（按家境，估计）。
 // 参考：2024 年（收入 − 消费）÷ 收入，农村约 17%，城镇约 34%。欠得越多、家里越穷，还得越久。
 export const FAM_REPAY = { rural: [0.06, 0.1, 0.14, 0.18, 0.25], urban: [0.1, 0.16, 0.22, 0.28, 0.35] };
-// 父母都退休以后每年花掉存款的比例（和你自己退休后的 RET_DRAW 一样，估计）
-export const PAR_DRAW = 0.05;
 export const SCHOOL_COST = { 高中: 3000, 职高: 2000, 复读: 6000, 大专: 18000, 本科: 20000, 硕士: 22000 };
 // 生源地信用助学贷款每人每年的上限：2023 年秋季学期起，全日制本专科生 2 万元、研究生 2.5 万元（财政部、教育部、人民银行、金融监管总局）
 export const STU_LOAN_CAP = { 大专: 20000, 本科: 20000, 硕士: 25000 };
@@ -44,26 +41,33 @@ export function familyMoneyMonth(m: number) {
   // 收入：在职按职业分摊的工资，退休后是养老金（parentIncome 对已去世的人是 0）
   const inc = (parentIncome('mom') + parentIncome('dad')) / MONTHS;
   const working = (mom && !parentRetired(f.mom, false)) || (dad && !parentRetired(f.dad, true));
-  // 开销：还有人在上班时，按家境的净储蓄率存钱；都退休以后，和你自己退休后一样（finance.ts 的 RET_DRAW）：养老金全部花掉，再每年花掉存款的 PAR_DRAW，
-  // 生活费不低于当地消费水平的七成（估计），再加看病。原来退休后照样存「养老金 − 生活费」，高养老金的父母到去世时存款越滚越多
   const mortgage = S.famDebtWhy === '房贷';
   const ill = (mom && f.mom.ill ? 1 : 0) + (dad && f.dad.ill ? 1 : 0);
-  // 还在还其他欠款的时候，家里省下的钱先拿去还债，不再往存款里放
-  let net = working ? (S.famDebt > 0 && !mortgage ? 0 : inc * FAM_SAVE[S.q - 1])
-    : inc - Math.max(inc, placeCons(S.home) * 0.7 * ((mom ? 1 : 0) + (dad ? 1 : 0)) / MONTHS) - Math.max(0, S.famMoney) * PAR_DRAW / MONTHS;
-  if (ill) net -= placeCons(S.home) * 0.3 * ill / MONTHS;
-  S.famMoney += net;
-  if (S.famDebt > 0) famDebtMonth(inc, working, mortgage);
+  const children = f.sibs.filter(child => child.alive && child.age < 18).map(child => child.age);
+  if (S.indep === false && S.age < 18) children.push(S.age);
+  if (!working && S.parentRetirementLifestyle == null) S.parentRetirementLifestyle = S.parentLifestyle;
+  const budget = livingBudget({ consumption: placeCons(S.home), income: inc,
+    adults: Number(mom) + Number(dad),
+    retiredAdults: Number(mom && parentRetired(f.mom, false)) + Number(dad && parentRetired(f.dad, true)),
+    children, lifestyle: S.parentLifestyle, retirementLifestyle: S.parentRetirementLifestyle });
+  S.parentLifestyle = budget.lifestyle;
+  const rent = S.famHouse?.type === 'rent' ? placeHp(S.home) * 45 * 0.018 * 0.6 / MONTHS : 0;
+  const essential = budget.living + budget.children + rent + placeCons(S.home) * 0.3 * ill / MONTHS;
+  S.famMoney += inc - essential;
   if (S.indep === false && S.school && m === monthOfCal(9)) payTuition();
+  if (S.famDebt > 0) famDebtMonth(inc, working, mortgage);
+  const optional = Math.min(budget.discretionary, Math.max(0, S.famMoney - essential));
+  S.famMoney -= optional;
   // 父母都不上班以后，存款花光了，由已经工作的子女补贴生活费（还在世的兄弟姐妹一起分摊）；父母还在上班时，欠款由他们自己慢慢还
   // supportY 记的是贴补了几年（每个年龄年记一次）
   if (S.indep && S.famMoney < 0 && !working) {
     const share = -S.famMoney / (1 + sibsN());
-    S.money -= share; S.famMoney = 0;
-    S.stats.support = (S.stats.support || 0) + share;
-    if (S.flags.supportA !== S.age) {
+    const paid = Math.min(S.money, share);
+    changeMoney(-paid); S.famMoney += paid + share * sibsN();
+    S.stats.support = (S.stats.support || 0) + paid;
+    if (paid > 0 && S.flags.supportA !== S.age) {
       S.flags.supportA = S.age; S.flags.supportY = (S.flags.supportY || 0) + 1;
-      if (S.flags.supportY === 1) log(S.flags.parWithMe ? `父母的积蓄花完了，养老金不够用。他们跟你住在一起，生活开销由你来出，这个月多花了${wan(share)}。` : `父母的积蓄花完了，养老金不够用。你开始每个月给他们寄生活费，这个月寄了${wan(share)}。`, 'ev', '2024 年城乡居民养老金人均每年约 2,950 元，城镇职工约 4.6 万元（中国统计年鉴 24-26、24-27）');
+      if (S.flags.supportY === 1) log(S.flags.parWithMe ? `父母的积蓄花完了，养老金不够用。他们跟你住在一起，这个月你贴补了${wan(paid)}。` : `父母的积蓄花完了，养老金不够用。你开始给他们寄生活费，这个月寄了${wan(paid)}。`, 'ev');
     }
   }
   S.famMoney *= S.famMoney > 0 ? SAVE_INT_M : DEBT_INT_M;
@@ -87,7 +91,7 @@ function payTuition() {
 function orphanMonth(m: number) {
   if (S.indep !== false) {
     // 已经独立以后，还有钱进到家里的账上（例如拆迁款）：按还在世的兄弟姐妹平分，你那一份转进存款
-    if (S.flags.inherited && S.famMoney > 0) { S.money += S.famMoney / (1 + sibsN()); S.famMoney = 0; }
+    if (S.flags.inherited && S.famMoney > 0) { changeMoney(S.famMoney / (1 + sibsN())); S.famMoney = 0; }
     return;
   }
   if (S.famMoney > 0) S.famMoney = Math.max(0, S.famMoney - placeCons(S.home) * ORPHAN_COST / MONTHS);
@@ -95,27 +99,24 @@ function orphanMonth(m: number) {
   if (S.famMoney < 0) S.famMoney = 0;
   S.famMoney *= SAVE_INT_M;
 }
-// 父母还欠款（每月一期；inc 是这个月的收入）：
-// · 房贷：按商贷利率等额本息，每月从工资里扣（家里照常存钱）；父母都退休后从存款里扣。还剩几个月记在 famDebtM，famDebtYears 跟着取整（界面显示用）
-// · 其他借款：用家里每月省下的钱还（见 FAM_REPAY），不计利息；父母都退休后，有存款就先拿存款还清
 export function famDebtMonth(inc, working, mortgage) {
   const before = S.famDebt;
-  let pay;
+  let pay = 0;
   if (mortgage) {
     if (S.famDebtM == null) S.famDebtM = Math.max(1, S.famDebtYears || 1) * MONTHS;
-    const r = LOAN_RULES.comRate / MONTHS, n = Math.max(1, S.famDebtM), owe = S.famDebt * (1 + r);
-    pay = n > 1 ? Math.min(owe, S.famDebt * r / (1 - fpow(1 + r, -n))) : owe;
-    S.famDebt = owe - pay; S.famDebtM = n - 1; S.famDebtYears = Math.ceil(S.famDebtM / MONTHS);
-    if (!working) S.famMoney -= pay;
-  } else if (working) {
-    pay = Math.min(S.famDebt, inc * FAM_REPAY[S.rural ? 'rural' : 'urban'][S.q - 1]);
+    const interest = S.famDebt * LOAN_RULES.comRate / MONTHS;
+    const due = S.famDebtM > 1 ? annualPay(S.famDebt, LOAN_RULES.comRate, S.famDebtM / MONTHS) / MONTHS : S.famDebt + interest;
+    pay = Math.min(due, Math.max(0, S.famMoney));
+    S.famDebt = Math.max(0, S.famDebt + interest - pay);
+    S.famDebtM = Math.max(0, S.famDebtM - 1); S.famDebtYears = Math.ceil(S.famDebtM / MONTHS);
+  } else {
+    const allowance = working ? inc * FAM_REPAY[S.rural ? 'rural' : 'urban'][S.q - 1] : Math.max(0, S.famMoney);
+    pay = Math.min(S.famDebt, allowance, Math.max(0, S.famMoney));
     S.famDebt -= pay;
     S.famDebtYears = pay > 0 ? Math.ceil(S.famDebt / (pay * MONTHS)) : 99;
-  } else {
-    pay = Math.min(S.famDebt, Math.max(0, S.famMoney));
-    S.famDebt -= pay; S.famMoney -= pay; S.famDebtYears = S.famDebt > 0 ? 99 : 0;
   }
-  if (S.famDebt < 100) {
+  S.famMoney -= pay;
+  if (S.famDebt < 0.01) {
     S.famDebt = 0; S.famDebtYears = 0; S.famDebtM = 0;
     if (S.famDebt0 >= 1e4) log(famDebtPaidText(), 'ev');
   }
@@ -140,18 +141,20 @@ export function heirShares(houseK = 1) {
   const cash = (S.famMoney || 0) - (S.famDebt || 0), house = Math.max(0, (H.v || 0) + Math.min(0, cash));
   return { n, cash: Math.max(0, cash), house, share: Math.max(0, cash) / n + house / n * houseK };
 }
-export function inheritSplit(houseK, quiet = false) {
+export function inheritSplit(houseK, quiet = false, sell = false) {
   S.flags.inherited = 1; S.flags.heirDue = 0;
-  const H = S.famHouse || { v: 0 }, { share, n } = heirShares(houseK);
-  S.famDebt = 0; S.famMoney = 0; S.famHouse = { ...H, type: 'gone', v: 0 } as any;
-  if (share < 1000) return 0;
-  // 还没独立：先放在家里的账上，由抚养你的亲戚管着，独立时转给你（goIndep）
-  if (S.indep === false) {
-    S.famMoney = share; S.stats.inherit = share;
-    if (!quiet) log(`父母都走了。${H.v ? '老房子和' : ''}存款${n > 1 ? `由兄弟姐妹${n}人分，你那一份` : ''}约${wan(share)}，由亲戚帮你管着，供你吃穿上学。`, 'ev');
-    return share;
+  const home = S.famHouse || { v: 0 };
+  const estate = heirShares(houseK);
+  const property = estate.house / estate.n * houseK;
+  const cash = estate.cash / estate.n + (sell ? property * 0.95 : 0);
+  const total = cash + (sell ? 0 : property);
+  S.famDebt = 0; S.famMoney = 0; S.famHouse = { ...home, type: 'gone', v: 0 } as any;
+  if (!sell && property > 0) {
+    (S.inheritedHomes ||= []).push({ city: S.home.city, p: S.home.p, v: property, share: houseK / estate.n });
   }
-  S.money += share; S.stats.inherit = share;
-  if (!quiet) log(`父母都走了。${H.v ? '老房子和' : ''}存款${n > 1 ? `由兄弟姐妹${n}人分了，` : '都留给了你，'}你分到约${wan(share)}。`, 'ev');
-  return share;
+  if (S.indep === false) S.famMoney = cash;
+  else changeMoney(cash);
+  S.stats.inherit = (S.stats.inherit || 0) + total;
+  if (!quiet && total > 0) log(`父母都走了。你继承了存款${wan(cash)}${!sell && property > 0 ? `和价值约${wan(property)}的房产权益，房子还没有卖` : ''}。${S.indep === false ? '现金由亲戚代管，供你吃穿上学。' : ''}`, 'ev');
+  return total;
 }

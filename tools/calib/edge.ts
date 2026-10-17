@@ -33,7 +33,7 @@ function flag(kind, L, extra = '') {
 const fin = v => v == null || Number.isFinite(v);
 
 function checkYear(L, st) {
-  const nums = { money: L.money, famMoney: L.famMoney, famDebt: L.famDebt, hpf: L.hpf, income: L.income, pension: L.pension, wageK: L.wageK, ...L.st };
+  const nums = { money: L.money, debt: L.debt, famMoney: L.famMoney, famDebt: L.famDebt, hpf: L.hpf, income: L.income, pension: L.pension, wageK: L.wageK, ...L.st };
   for (const k in nums) if (!fin(nums[k])) flag('数值不是有限数：' + k, L, String(nums[k]));
   for (const k of ['hl', 'h', 'kn', 'so']) if (L.st[k] < 0 || L.st[k] > 100) flag('状态越界：' + k, L, L.st[k]);
   for (const l of L.loans || []) if (!fin(l.bal) || !fin(l.pay) || l.bal < 0) flag('房贷数值异常', L, JSON.stringify(l));
@@ -60,8 +60,10 @@ function checkYear(L, st) {
     if (wifeAge != null && wifeAge > 45 && k.bornAt === L.age) flag('母亲45岁以后生孩子', L, wifeAge);
   }
   const P = E.placeInc(L.loc);
-  if (L.money < -20 * P) flag('负债超过当地20年收入', L, `money ${Math.round(L.money)} inc ${Math.round(P)}`);
-  if (L.age >= 85 && L.money < -3 * P) flag('85岁以后负债超过3年收入', L, `money ${Math.round(L.money)}`);
+  const liquid = L.money - (L.debt || 0);
+  if (L.money < 0 || L.debt < 0) flag('现金或欠款为负', L);
+  if (liquid < -20 * P) flag('负债超过当地20年收入', L, `liquid ${Math.round(liquid)} inc ${Math.round(P)}`);
+  if (L.age >= 85 && liquid < -3 * P) flag('85岁以后负债超过3年收入', L, `liquid ${Math.round(liquid)}`);
   if (L.house && L.loans && L.loans.length && L.age >= 85) flag('85岁以后还在还房贷', L);
   if (L.fam.sibs.some(s => s.age < 0)) flag('兄弟姐妹年龄为负', L);
   if (L.school === '复读') { st.redo++; if (st.redo === 3) flag('复读了3年以上', L); }
@@ -101,7 +103,7 @@ function runLife(seed, dp, fp) {
       let k;
       try { k = DEC_POL[dp](d); } catch (e) { flag('选不出选项：' + id, L); k = d.choices[0].k; }
       const P0 = E.placeInc(L.loc);
-      if ((id === 'marry' && k === 'yes' || id === 'baby' && k === 'yes') && L.money < -3 * P0) flag(`负债超过3年收入时${id === 'marry' ? '结婚' : '生孩子'}`, L, `money ${Math.round(L.money)}`);
+      if ((id === 'marry' && k === 'yes' || id === 'baby' && k === 'yes') && L.money - (L.debt || 0) < -3 * P0) flag(`负债超过3年收入时${id === 'marry' ? '结婚' : '生孩子'}`, L, `liquid ${Math.round(L.money - (L.debt || 0))}`);
       E.resolveDec(id, d, k);
       E.tickTo(L.t);
       continue;
@@ -115,7 +117,7 @@ function runLife(seed, dp, fp) {
   const P = E.placeInc(L.loc);
   if (st.retRent >= 10) flag('（信息）退休后在城里租房10年以上', L, `${st.retRent}年 ${L.loc.city}`);
   if (L.flags.widowed != null) flag('（信息）丧偶' + (L.fam.partner && L.fam.partner.alive ? '后再婚' : '后没再婚'), L, `丧偶 ${L.flags.widowed}岁`);
-  return { age: L.death.age, maxM: L.stats.maxMoney / P, endM: L.money / P, edu: L.edu, tier: L.flags.tier, kids: L.fam.kids.length, ever: !!(L.fam.partner || L.flags.divorced), jobs: L.jobs.length, house: !!L.house, h: L.years.length ? L.years.reduce((t, y) => t + y.h, 0) / L.years.length : 0, cause: L.death.cause };
+  return { age: L.death.age, maxM: L.stats.maxMoney / P, endM: (L.money - (L.debt || 0)) / P, edu: L.edu, tier: L.flags.tier, kids: L.fam.kids.length, ever: !!(L.fam.partner || L.flags.divorced), jobs: L.jobs.length, house: !!L.house, h: L.years.length ? L.years.reduce((t, y) => t + y.h, 0) / L.years.length : 0, cause: L.death.cause };
 }
 
 const med = a => { const s = [...a].sort((x, y) => x - y); return s[s.length >> 1]; };
@@ -133,7 +135,7 @@ for (const [dp, fpk] of combos) {
   }
   rows.push({
     抉择: dp, 重心: fpk, 寿命: mean(R.map(r => r.age)).toFixed(1), 平均幸福: mean(R.map(r => r.h)).toFixed(1),
-    '财富峰值(年收入倍)': med(R.map(r => r.maxM)).toFixed(1), '离世时存款(倍)': med(R.map(r => r.endM)).toFixed(1),
+    '财富峰值(年收入倍)': med(R.map(r => r.maxM)).toFixed(1), '离世时净现金(倍)': med(R.map(r => r.endM)).toFixed(1),
     '离世时负债%': (R.filter(r => r.endM < 0).length / R.length * 100).toFixed(0),
     '本科+%': (R.filter(r => r.edu >= 6).length / R.length * 100).toFixed(0), '985/211%': (R.filter(r => r.tier === 'top' || r.tier === '211').length / R.length * 100).toFixed(1),
     '结过婚%': (R.filter(r => r.ever).length / R.length * 100).toFixed(0), 孩子: mean(R.map(r => r.kids)).toFixed(2), '有房%': (R.filter(r => r.house).length / R.length * 100).toFixed(0), 工作数: mean(R.map(r => r.jobs)).toFixed(1),

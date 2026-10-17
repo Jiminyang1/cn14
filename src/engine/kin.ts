@@ -102,7 +102,7 @@ export function sibWed() {
 export const SIB_REPAY = { p: 0.6, years: [2, 6] as [number, number], forget: 8 };
 export function lendSib(rel: string, amt: number) {
   const back = chance(SIB_REPAY.p);
-  S.money -= amt;
+  eff({ money: -amt });
   S.flags.sibLoan = { rel, amt, at: S.age, back: back ? S.age + ri(...SIB_REPAY.years) : null };
 }
 

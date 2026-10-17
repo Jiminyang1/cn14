@@ -11,7 +11,7 @@ import { JOBS, RAISE, RESID_PENSION_JOBS, civilTry, gig, gradJob, hire, hireInCi
 import { MEET_HOW, READY0, READY_K, brideAmt, loveWord, mShift, mutualP, partnerInc, partnerRows, ptJobName } from '../romance';
 import { S } from '../state';
 import { addDoc, log, logLater } from '../journal';
-import { annualPay, bestPlan, buyHouse, foreclose, hhIncome, hometownHouse, loanBal, loanPayY, loanPlans, planSub, sellHouse } from '../housing';
+import { annualPay, bestPlan, buyHouse, foreclose, hhIncome, hometownHouse, loanBal, loanArrears, loanPayY, loanPlans, planSub, sellHouse, sellInherited } from '../housing';
 import { awayFromHome, cityLoc, farFromParents, homeCity, migrantCity, moveTo, placeHp, placeInc, placeName } from '../place';
 import { babyP, canBaby, conceive, kidsAlive, sibsAlive } from '../family';
 import { calMonth, calYear, perMonth } from '../monthly';
@@ -29,6 +29,7 @@ import { bothParents, carer, parentsHelp, parentsWord } from '../parents';
 import { rural } from './events';
 import { wan } from '../format';
 import { uiMonths } from '../finance';
+import { borrowMoney, changeMoney, liquidBalance } from '../accounts';
 import { inKg } from '../schedule';
 import { DEMOL_K, demolDue, demolish, kidHomeCost, lendSib, marryKid, weddingKid } from '../kin';
 import { heirShares, inheritSplit } from '../household';
@@ -60,8 +61,7 @@ const yearly = (id: string, p: number, n = 12) => {
   return chance(q);
 };
 
-/** 手上的钱怎么说：有存款写多少（have 是前面的说法），花光了、欠着钱的照实说，不写「0元」 */
-const cashLeft = (have = '存款还有') => S.money >= 100 ? have + wan(S.money) : S.money > -1000 ? '存款已经花光了' : `存款已经花光了，还欠着${wan(-S.money)}`;
+const cashLeft = (have = '存款还有') => `${have}${wan(S.money)}${S.debt > 0 ? `，另有欠款${wan(S.debt)}` : ''}`;
 
 // 找工作要花的月数（估计）：降低要求找份普通工作 2–12 个月（平均 7），回老家托亲戚朋友 1–8 个月。
 // 按年推进时，从失业到「还没有工作」弹出平均约一年，这一年都没有工资；按月以后抉择一两个月内就弹出，
@@ -137,11 +137,12 @@ export function monthDecisions() {
   if ((f.mom.alive && f.mom.ill === 1) || (f.dad.alive && f.dad.ill === 1)) { if (a >= 22) d.push('parentcare'); }
   if (weddingKid()) d.push('kidhome');
   if (S.flags.heirDue && !S.flags.inherited) d.push('heritage');
+  if (S.indep && S.inheritedHomes?.length && monthsSince('inheritedhome') >= 12 &&
+    (S.inheritedHomes.some(home => !home.reviewed) || liquidBalance() < 0 || loanArrears() > 0)) d.push('inheritedhome');
   if (S.job === 'retired' && once('retireplan') && a <= 75) d.push('retireplan');
-  // 欠款超过一年的月供（或半年的当地收入）才算真的还不上；小额缺口靠信用卡、亲戚周转。「再撑一年」：上次问过满 12 个月才再问
   const lb = loanBal(), inc = lb || S.indep ? placeInc() : 0;
-  const arrears = lb && S.money < -Math.max(loanPayY() * 1.5, inc);
-  if (arrears && monthsSince('arrears') >= 12) d.push('arrears');
+  const arrears = lb && loanArrears() >= Math.max(1, loanPayY() / 12 * 2);
+  if (arrears && monthsSince('arrears') >= 3) d.push('arrears');
   // ---- 童年的小抉择 ----
   if (a <= 14) for (const c of CHILD) if (a >= c.a[0] && a <= c.a[1] && once(c.id) && (!c.m || c.m.includes(calMonth())) && (!c.c || c.c()) && yearly(c.id, c.p, c.m ? c.m.length : 12)) d.push(c.id);
   // ---- 每年一定概率：按月换算 ----
@@ -155,7 +156,7 @@ export function monthDecisions() {
   if (working && J.risk > 0 && !SELF_EMP.has(S.job) && a >= 24 && a <= 50 && gapOK('jobhop', 6) && yearly('jobhop', 0.07)) d.push('jobhop');
   if (a >= 78 && once('oldcare') && yearly('oldcare', 0.3)) d.push('oldcare');
   if (S.indep && a >= 24 && a <= 65 && !S.flags.sibLoan && sibsAlive().some(s => s.age >= 22) && S.money > inc * 0.6 && gapOK('sibloan', 10) && yearly('sibloan', 0.015)) d.push('sibloan'); // 有兄弟姐妹的人一辈子约被借 0.6 次（估计）
-  if (lb && !arrears && S.money - inc * 1.5 > Math.max(inc * 0.5, lb * 0.2) && gapOK('prepay', 4) && yearly('prepay', 0.3)) d.push('prepay');
+  if (lb && !arrears && !(S.debt > 0) && S.money - inc * 1.5 > Math.max(inc * 0.5, lb * 0.2) && gapOK('prepay', 4) && yearly('prepay', 0.3)) d.push('prepay');
   return d;
 }
 
@@ -672,9 +673,9 @@ export const DEC = {
     },
     apply: (k, c) => {
       if (k === 'no') return null;
-      if (k === 'all') { S.money -= loanBal(); S.loans = []; eff({ h: 4 }); return { t: '把房贷一次还清了。', k: 'good' }; }
-      let left = c.part; S.money -= c.part;
-      for (const l of S.loans.sort((a, b) => b.rate - a.rate)) { const x = Math.min(l.bal, left); l.bal -= x; left -= x; l.pay = annualPay(l.bal, l.rate, l.years); }
+      if (k === 'all') { changeMoney(-loanBal()); S.loans = []; eff({ h: 4 }); return { t: '把房贷一次还清了。', k: 'good' }; }
+      let left = c.part; changeMoney(-c.part);
+      for (const l of S.loans.sort((a, b) => b.rate - a.rate)) { const x = Math.min(l.bal, left); l.bal -= x; left -= x; l.pay = annualPay(l.bal, l.rate, l.mo != null ? l.mo / 12 : l.years); }
       S.loans = S.loans.filter(l => l.bal > 1); eff({ h: 2 });
       return S.loans.length ? `提前还了${wan(c.part)}，月供降到了${wan(loanPayY() / 12)}。` : { t: `提前还了${wan(c.part)}，房贷还清了。`, k: 'good' };
     },
@@ -684,14 +685,14 @@ export const DEC = {
     build: () => {
       if (!S.house || !loanBal()) return null;
       return {
-        title: '房贷还不上了', body: `存款已经花光，还欠着${wan(-S.money)}。房贷每月${wan(loanPayY() / 12)}，还剩${wan(loanBal())}没还。房子现在大约值${wan(S.house.v)}。`,
+        title: '房贷还不上了', body: `手上现金${wan(S.money)}，房贷已逾期${wan(loanArrears())}，另外还有欠款${wan(S.debt || 0)}。房贷每月${wan(loanPayY() / 12)}，还剩${wan(loanBal())}没还。房子现在大约值${wan(S.house.v)}。`,
         fact: '2025年全国约11.3万套住宅法拍成交，成交价约为评估价的74%',
-        choices: [{ k: 'sell', label: '把房子卖了', sub: '按市价打折卖，先还清贷款', w: S.flags.heldOn ? 3 : 1.5, tilt: { r: -0.4 } }, { k: 'hold', label: '找亲戚借钱，再撑一年', sub: (S.flags.heldOn || 0) >= 2 ? '已经借过两次，亲戚那边也借不动了' : '幸福↓', off: (S.flags.heldOn || 0) >= 2, w: S.flags.heldOn ? 1 : 3, tilt: { e: 0.3 } }, { k: 'stop', label: '断供', sub: '房子被法拍，征信留下污点', w: 0.5, tilt: { r: 0.6, c: -0.3 } }],
+        choices: [{ k: 'sell', label: '把房子卖了', sub: '按市价打折卖，先还清贷款', w: S.flags.heldOn ? 3 : 1.5, tilt: { r: -0.4 } }, { k: 'hold', label: '找亲戚借钱周转', sub: (S.flags.heldOn || 0) >= 2 ? '已经借过两次，亲戚那边也借不动了' : '幸福↓', off: (S.flags.heldOn || 0) >= 2 || (S.debt || 0) >= placeInc() * 0.5, w: S.flags.heldOn ? 1 : 3, tilt: { e: 0.3 } }, { k: 'stop', label: '断供', sub: '房子被法拍，征信留下污点', w: 0.5, tilt: { r: 0.6, c: -0.3 } }],
       };
     },
     apply: k => {
-      if (k === 'hold') { eff({ h: -6, so: -3 }); S.flags.heldOn = (S.flags.heldOn || 0) + 1; return { t: '找亲戚东拼西凑，先把这一年的月供补上了。', k: 'bad' }; }
-      if (k === 'sell') { const got = sellHouse(0.92); eff({ h: -8 }); return { t: `急着出手，房子卖了${wan(got)}，还完贷款${S.money >= 0 ? '还剩一点' : '还欠着一些'}。`, k: 'bad' }; }
+      if (k === 'hold') { const borrowed = borrowMoney(loanArrears() + loanPayY() / 4, placeInc() * 0.5); eff({ h: -6, so: -3 }); S.flags.heldOn = (S.flags.heldOn || 0) + 1; return { t: `找亲戚借到了${wan(borrowed)}，先周转眼前的月供。这笔钱还要还。`, k: 'bad' }; }
+      if (k === 'sell') { const got = sellHouse(0.92); eff({ h: -8 }); return { t: `急着出手，房子卖了${wan(got)}，还完贷款${liquidBalance() >= 0 ? '还剩一点' : '还欠着一些'}。`, k: 'bad' }; }
       const got = foreclose(); eff({ h: -15, so: -5 }); return { t: `停止还贷。几个月后房子被法院拍卖，只卖了${wan(got)}。`, k: 'bad' };
     },
   },
@@ -759,7 +760,7 @@ export const DEC = {
         }
         S.flags.hunt = null;
       }
-      if (S.money < 0 && !S.flags.illDebt) { S.flags.illDebt = 1; log('为了治病，家里欠下了一笔债。', 'bad', '大病医疗费用曾是农村家庭致贫的主要原因：2016年建档立卡贫困户中约42%因病致贫'); }
+      if (S.debt > 0 && !S.flags.illDebt) { S.flags.illDebt = 1; log('为了治病，家里欠下了一笔债。', 'bad', '大病医疗费用曾是农村家庭致贫的主要原因：2016年建档立卡贫困户中约42%因病致贫'); }
       if (k === 'big') return '在大医院排了一个月队，住进了病房。家里人轮流请假来陪床。';
       if (k === 'local') return '在本地医院开始治疗。';
       return '决定不做大的治疗，回家好好过剩下的日子。';
@@ -837,7 +838,7 @@ export const DEC = {
       const spend = c.feast + (c.son ? c.bride + (k === 'all' ? c.down : k === 'part' ? c.down / 2 : 0) : (k === 'all' ? c.car + c.down / 2 : k === 'part' ? c.car : 0));
       marryKid(kd, spend);
       eff({ h: k === 'none' ? (c.son ? -2 : 1) : 4 });
-      const owe = `${c.son && c.bride >= 1000 ? '连彩礼、酒席在内' : '连酒席在内'}，一共花了约${wan(spend)}。` + (S.money < 0 ? `为这场婚事，你还欠着${wan(-S.money)}。` : '');
+      const owe = `${c.son && c.bride >= 1000 ? '连彩礼、酒席在内' : '连酒席在内'}，一共花了约${wan(spend)}。` + (S.debt > 0 ? `目前还欠着${wan(S.debt)}。` : '');
       if (c.son) return { t: `${kd.name}结婚了。${k === 'none' ? '婚房没买成，小两口先租房住，亲家那边有些不高兴。' : `你出了${k === 'all' ? '全部' : '一半'}首付，婚房写的是他们的名字。`}${owe}`, k: 'good' };
       return { t: `${kd.name}出嫁了。${k === 'none' ? '男方给的彩礼，你们原样让她带了过去。' : k === 'all' ? '你陪嫁了一辆车，还帮小两口出了一半首付。' : '你陪嫁了一辆车。'}${owe}`, k: 'good' };
     },
@@ -868,6 +869,33 @@ export const DEC = {
     },
   },
 
+  inheritedhome: {
+    build: () => {
+      const index = S.inheritedHomes?.findIndex(home => !home.reviewed) ?? -1;
+      const selected = index >= 0 ? index : 0, home = S.inheritedHomes?.[selected];
+      if (!home) return null;
+      return { title: '继承的房子怎么安排', body: `${home.city}的房产权益估值约${wan(home.v)}。这笔资产还没有变成现金。`,
+        choices: [
+          { k: 'sell', label: '出售，拿到现金', sub: `扣除交易折价后约${wan(home.v * 0.95)}`, w: liquidBalance() < 0 ? 5 : 1 },
+          { k: 'move', label: '搬进去住', sub: '省下当地的房租', off: !!S.house || home.share < 0.999, w: 2 },
+          { k: 'keep', label: '先留着', sub: '继续持有，不计租金收入', w: 2 },
+        ], ctx: { index: selected } };
+    },
+    apply: (choice, context) => {
+      const home = S.inheritedHomes?.[context.index];
+      if (!home) return '';
+      if (choice === 'sell') return `出售了继承的房产权益，实际到账${wan(sellInherited(context.index))}。`;
+      if (choice === 'move' && !S.house && home.share >= 0.999) {
+        S.house = { city: home.city, p: home.p, v: home.v, paid: 0, at: S.age };
+        moveTo(home.p === S.home.p && home.city === S.home.city ? { ...S.home } : cityLoc(home.p, home.city));
+        S.inheritedHomes.splice(context.index, 1);
+        return '搬进了父母留下的房子，往后不用再付这边的房租。';
+      }
+      home.reviewed = true;
+      return '把房子留了下来。房产记在名下，存款没有增加。';
+    },
+  },
+
   heritage: {
     build: () => {
       const H = S.famHouse, f = S.fam, rural = S.home.kind === 'rural';
@@ -876,8 +904,8 @@ export const DEC = {
       // 老规矩：房子（尤其农村的宅子）留给儿子。你是女儿、家里有兄弟时，多半让出来；你是唯一的儿子时，多半归你
       const daughter = S.sex === 'F' && bros > 0, onlySon = S.sex === 'M' && bros === 0;
       const got = (x: number) => x >= 100 ? `你分到约${wan(x)}` : '存款没剩下什么，你几乎分不到钱';
-      const ch: Choice[] = [{ k: 'equal', label: '房子卖了，所有东西平分', sub: got(eq.share), w: rural ? 1.5 : 3 }];
-      if (onlySon) ch.push({ k: 'take', label: '按老规矩，房子归你，姐妹只分存款', sub: got(all.share), w: rural ? 3 : 1, tilt: { a: -0.3 } });
+      const ch: Choice[] = [{ k: 'equal', label: '房子卖了，所有东西平分', sub: got((eq.cash + eq.house * 0.95) / eq.n), w: rural ? 1.5 : 3 }];
+      if (onlySon) ch.push({ k: 'take', label: '按老规矩，房子归你，姐妹只分存款', sub: `继承约${wan(all.share)}的资产，房子暂不变现`, w: rural ? 3 : 1, tilt: { a: -0.3 } });
       const heir = bros ? '兄弟' : '姐妹';
       if (!onlySon) ch.push({ k: 'give', label: `房子留给${heir}，你只分存款`, sub: got(cashOnly.share), w: daughter ? (rural ? 4 : 2) : 1, tilt: { a: 0.5 } });
       ch.push({ k: 'court', label: '谈不拢，去法院', sub: '按法律平分，但要打官司', w: 0.12, tilt: { a: -0.6, r: 0.3 } });
@@ -890,8 +918,8 @@ export const DEC = {
     },
     apply: (k, c) => {
       if (k === 'give') { const x = inheritSplit(0, true); eff({ so: 2, h: c.daughter ? -2 : 0 }); return `父母都走了。房子留给了${c.heir}，${x >= 100 ? `你分到存款约${wan(x)}` : '存款没剩下什么，你什么也没分到'}。${c.daughter ? '你没说什么，回去的路上一直没说话。' : ''}`; }
-      if (k === 'take') { const x = inheritSplit(c.n, true); eff({ so: -2 }); return `父母都走了。按老规矩，房子归了你，连同存款你一共分到约${wan(x)}。姐妹们没争，只是后来走动少了。`; }
-      const x = inheritSplit(1, true);
+      if (k === 'take') { const x = inheritSplit(c.n, true); eff({ so: -2 }); return `父母都走了。按老规矩，房子归了你，连同存款共继承约${wan(x)}的资产，房子还没有卖。姐妹们没争，只是后来走动少了。`; }
+      const x = inheritSplit(1, true, true);
       if (k === 'court') { const fee = Math.round(x * 0.05 / 1e2) * 1e2; eff({ money: -fee, so: -8, h: -5 }); return { t: `父母都走了，兄弟姐妹为老房子打了一年多官司。按法律平分，你分到约${wan(x)}，律师费花了${wan(fee)}。兄弟姐妹之间，从此不再来往。`, k: 'bad' }; }
       eff({ so: -1 }); return `父母都走了。老房子卖了，所有东西兄弟姐妹${c.n}人平分，你分到约${wan(x)}。`;
     },

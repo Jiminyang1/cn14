@@ -73,7 +73,7 @@ const renting = () => S.indep && !(S.house && S.house.city === S.loc.city) && !r
   && (awayFromHome() || !anyParent() || S.famHouse?.type === 'rent');
 const poor = () => S.q <= 2;
 const flush = () => S.money > 50e4;
-const broke = () => S.indep && S.money < 0;
+const broke = () => S.indep && (S.debt || 0) > S.money;
 const city = () => S.loc.city;
 
 /** 从满足条件的几句里挑一句：[条件, 文字] 或直接文字。12 年内写过的句子不再选；都写过了就这次不写 */

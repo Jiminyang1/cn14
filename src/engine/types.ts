@@ -73,8 +73,18 @@ export interface Doc { k: string; title: string; a: number; y: number; rows: [st
 export interface YearRow { a: number; h: number; hl: number; m: number; s: string }
 export interface QueueItem { at: number; type: 'ev' | 'dec' | 'ms' | 'ref' | 'day'; id?: string }
 export type Pending = { type: 'dec'; id: string; d: Decision } | { type: 'ref'; q: string };
-export interface Loan { kind: 'com' | 'hpf'; bal: number; rate: number; years: number; pay: number }
+export interface Loan { kind: 'com' | 'hpf'; bal: number; rate: number; years: number; pay: number; arrears?: number }
 export interface House { city: string; p: string; v: number; paid: number; at: number }
+export interface InheritedHome { city: string; p: string; v: number; share: number; reviewed?: boolean }
+export interface MonthlyStatement {
+  year: number; month: number; opening: number; closing: number;
+  events: number; transfers: number; income: number;
+  incomeDetails?: { personal: number; partner: number; rehire: number };
+  living: number; children: number; discretionary: number; rent: number;
+  mortgage: number; mortgageInterest: number; mortgageHpf: number;
+  debtRepaid: number; depositInterest: number; debtInterest: number;
+  shortfall: number; arrears: number; debt: number;
+}
 export interface FamHouse { type: 'self' | 'own' | 'rent' | 'gone'; v: number; where?: string }
 export interface Death { age: number; cause: string; year: number }
 export interface Illness { k: string; at: number; treat?: 'big' | 'local' | 'none' }
@@ -128,6 +138,12 @@ export interface Life {
   pen?: { y: number; r: number; s: number };       // 职工养老保险缴费记录（finance.ts 的 penMonth）
   // 钱：经济独立以前算在家里
   indep: boolean; indepAt?: number; money: number;
+  debt?: number; lifestyle?: number; parentLifestyle?: number;
+  retirementLifestyle?: number; parentRetirementLifestyle?: number;
+  statement?: MonthlyStatement;
+  statements?: MonthlyStatement[];
+  cashflow?: { months: number; income: number; spending: number; mortgage: number; debtRepaid: number };
+  inheritedHomes?: InheritedHome[];
   famMoney: number; famDebt: number; famDebt0: number; famDebtWhy?: string; famDebtYears: number;
   famHouse?: FamHouse; famPC: number; famSize: number;
   house: House | null; loans?: Loan[];
