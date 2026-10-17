@@ -139,6 +139,60 @@ test('a care home fee covers board instead of being charged on top of basic livi
   expect(bills[1].rent).toBeCloseTo(E.placeInc(E.S.loc) * E.CARE_K / 12, 6);
 });
 
+test('frugal living spends less on basics until the debt is cleared', () => {
+  const bills = [0, 1].map(frugal => {
+    const life = household(); life.flags.frugal = frugal; life.debt = 50000; life.money = 0;
+    E.moneyMonth(1); checkStatement(life.statement);
+    return life.statement.living;
+  });
+  expect(bills[1]).toBeCloseTo(bills[0] * E.FRUGAL_K, 6);
+  const life = household(); life.flags.frugal = 1; life.debt = 0; life.money = 100000;
+  E.moneyMonth(1);
+  expect(life.flags.frugal).toBe(0);
+});
+
+test('minimum living allowance tops household income up to the local standard and stops when no longer eligible', () => {
+  const life = household(); life.house = null; life.money = 0; life.job = 'retired'; life.pension = 3000; life.age = 75;
+  life.fam.kids = []; life.flags.dibao = 1;
+  E.moneyMonth(1); checkStatement(life.statement);
+  expect(life.statement.incomeDetails.aid).toBeCloseTo(E.DIBAO_M.city - 3000 / 12, 6);
+  expect(life.statement.income).toBeCloseTo(E.DIBAO_M.city, 6);
+  life.pension = 60000;
+  E.moneyMonth(2);
+  expect(life.flags.dibao).toBe(0);
+  expect(life.statement.incomeDetails.aid).toBeUndefined();
+});
+
+test('money from parents and children is transferred, not created', () => {
+  const life = household(); life.debt = 30000; life.money = 0; life.fam.mom.alive = true; life.famMoney = 200000; life.famDebt = 0; life.age = 25;
+  const x = E.askParents(E.placeCons());
+  expect(x).toBeGreaterThan(30000);
+  expect(life.famMoney).toBeCloseTo(200000 - x, 6);
+  expect(life.debt).toBe(0);
+  expect(life.money + life.famMoney).toBeCloseTo(200000 - 30000, 6);
+  // 子女垫付的，从他们以后每月给的钱里扣回
+  const old = household(); old.age = 75; old.job = 'retired'; old.pension = 24000; old.debt = 10000; old.money = 0;
+  old.fam.kids = [{ name: '甲', sex: 'M', bornAt: 30, bornM: 360, age: 45, alive: true }];
+  const lent = E.askKids(E.placeCons());
+  expect(lent).toBe(10000); expect(old.kidAdv).toBe(10000); expect(old.debt).toBe(0);
+  const support = E.kidSupportY(E.placeCons()) / 12;
+  E.moneyMonth(1);
+  expect(old.kidAdv).toBeCloseTo(10000 - support, 6);
+  expect(old.statement.income).toBeCloseTo(24000 / 12, 6);
+});
+
+test('the tight-money decision offers only the ways out that fit the situation', () => {
+  const keys = () => E.DEC.tight.build().choices.filter(c => !c.off).map(c => c.k);
+  const young = household(); young.age = 25; young.house = null; young.debt = 20000; young.money = 0;
+  young.fam.mom.alive = true; young.famMoney = 100000; young.famDebt = 0; young.statement = undefined;
+  expect(keys()).toEqual(expect.arrayContaining(['parents', 'frugal', 'hold']));
+  expect(keys()).not.toContain('sell'); expect(keys()).not.toContain('kids');
+  const old = household(); old.age = 66; old.job = 'retired'; old.pension = 20000; old.debt = 20000; old.money = 0;
+  old.fam.kids = [{ name: '甲', sex: 'F', bornAt: 28, bornM: 336, age: 44, alive: true }];
+  expect(keys()).toEqual(expect.arrayContaining(['sell', 'downsize', 'kids', 'ask', 'work', 'frugal', 'hold']));
+  expect(keys()).not.toContain('parents'); expect(keys()).not.toContain('dibao'); // 有房的不能申请低保
+});
+
 test('parents pay mortgages from their actual funds while employed', () => {
   const balances = [0, 500000].map(mortgage => {
     const life = household();

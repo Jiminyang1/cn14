@@ -17,6 +17,7 @@ import { dedOf, netOf, penBase, type DedRow, type NetPay } from './tax';
 import type { Partner } from './types';
 import { changeMoney, repayDebt } from './accounts';
 import { drawRate, livingBudget, savingsDraw } from './budget';
+import { dibaoMonth, frugalEnd, frugalK, kidAdvMonth, kidSupportY, tightMonth } from './tight';
 
 declare module './types' {
   interface Life {
@@ -72,7 +73,8 @@ export function moneyMonth(m: number) {
   const ui = uiMonth(); // 失业保险金免个税
   gross += ui; net += ui;
   if (S.job === 'retired') {
-    const x = retireMonthly(H.cons); // 养老金免个税，子女给的钱也不交税
+    // 养老金免个税，子女给的钱也不交税；子女垫付过钱的，先从他们每月给的钱里扣回（tight.ts）
+    const x = retireMonthly(H.cons) - kidAdvMonth(kidSupportY(H.cons) / MONTHS);
     gross += x; net += x;
   }
   S.income = Math.round(gross * MONTHS); // 现在的年收入（税前，这个月 × 12）
@@ -82,7 +84,9 @@ export function moneyMonth(m: number) {
   hpfMonth(hpfOwn, working, mp ? mp.hpf / MONTHS : 0);
   transfers += S.money - beforeHpf;
   const lateLife = turnsMonth(m);
-  const hh = net + (mp ? mp.net / MONTHS : 0) + lateLife.income;
+  const earned = net + (mp ? mp.net / MONTHS : 0) + lateLife.income;
+  const aid = dibaoMonth(earned, mate ? 2 : 1); // 低保：按户人均收入补到当地标准（tight.ts）
+  const hh = earned + aid;
   changeMoney(hh);
   houseMonth(m);
   if (S.job === 'retired' && (!mate || mate.retired) && S.retirementLifestyle == null) S.retirementLifestyle = S.lifestyle;
@@ -93,10 +97,12 @@ export function moneyMonth(m: number) {
   S.lifestyle = budget.lifestyle;
   // 住养老院：费用里包了吃住，不再另扣大人的基本生活（原来两样都扣，每月多扣约一份基本生活）
   const inCare = S.flags.oldLive === 'home';
-  const basic = (inCare ? 0 : budget.living) + budget.children;
+  // 节衣缩食的（tight.ts）：欠款还清以前，大人的基本生活少花一些
+  const adultBasic = inCare ? 0 : budget.living * frugalK();
+  const basic = adultBasic + budget.children;
   const basicPaid = Math.min(S.money, basic);
   S.money -= basicPaid;
-  const living = basic ? basicPaid * (inCare ? 0 : budget.living) / basic : 0;
+  const living = basic ? basicPaid * adultBasic / basic : 0;
   const children = basicPaid - living;
   const ownHere = S.house && S.house.city === S.loc.city;
   const rentDue = inCare ? careFeeY() / MONTHS
@@ -119,7 +125,7 @@ export function moneyMonth(m: number) {
   S.money += depositInterest;
   const previous = S.statement;
   S.statement = { year: calYear(m), month: calMonth(m), opening, closing: S.money, events, transfers, income: hh,
-    incomeDetails: { personal: net, partner: mp ? mp.net / MONTHS : 0, rehire: lateLife.income },
+    incomeDetails: { personal: net, partner: mp ? mp.net / MONTHS : 0, rehire: lateLife.income, ...(aid ? { aid } : {}) },
     living, children, discretionary, savingsSpend, rent, mortgage: mortgage.cash, mortgageInterest: mortgage.interest,
     mortgageHpf: mortgage.hpf, debtRepaid, depositInterest, debtInterest,
     shortfall: basic - basicPaid + rentDue - rent, arrears: mortgage.arrears, debt: S.debt };
@@ -134,6 +140,8 @@ export function moneyMonth(m: number) {
   totals.mortgage += mortgage.cash; totals.debtRepaid += debtRepaid;
   S.relInc = clamp((hh * MONTHS / (f.married ? 1.6 : 1) / (P * REL_REF) - 1) * 6, -10, 10);
   if (S.money > S.stats.maxMoney) S.stats.maxMoney = S.money;
+  tightMonth(S.statement.shortfall, previous?.debt ?? 0);
+  frugalEnd();
 }
 // ===== 失业保险金 =====
 // 《失业保险条例》第14、17条：缴费满 1 年、非本人意愿中断就业的可以领；缴费 1–5 年最长 12 个月、5–10 年 18 个月、10 年以上 24 个月；
@@ -212,9 +220,7 @@ export function penMonth(w: number) {
 }
 // 退休以后每月的收入：养老金，加上成年子女每人每年给的一些（按当地消费水平估计）
 function retireMonthly(cons: number) {
-  let grown = 0;
-  for (const k of S.fam.kids) if (k.alive && k.age >= 25) grown++;
-  return ((S.pension || 0) + (grown ? cons * 0.35 * Math.min(2, grown) : 0)) / MONTHS;
+  return ((S.pension || 0) + kidSupportY(cons)) / MONTHS;
 }
 // 养老院：每人每年约当地人均可支配收入的一半（估计；含吃住和日常照料，普通床位多在每月两三千元），老伴还在的两个人一起住
 export const CARE_K = 0.5;

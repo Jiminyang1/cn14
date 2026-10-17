@@ -58,6 +58,7 @@ export function AccountStatement({ bill = S.statement }: { bill?: MonthlyStateme
           <div><dt>本人收入／养老金及补贴</dt><dd>{cashAmount(bill.incomeDetails.personal)}</dd></div>
           {bill.incomeDetails.partner > 0 && <div><dt>配偶到手收入</dt><dd>{cashAmount(bill.incomeDetails.partner)}</dd></div>}
           {bill.incomeDetails.rehire > 0 && <div><dt>返聘收入</dt><dd>{cashAmount(bill.incomeDetails.rehire)}</dd></div>}
+          {bill.incomeDetails.aid > 0 && <div><dt>低保</dt><dd>{cashAmount(bill.incomeDetails.aid)}</dd></div>}
         </dl>
       </div>}
       <p className="account-note">公积金另付房贷 {cashAmount(bill.mortgageHpf)}；房贷本月计息 {cashAmount(bill.mortgageInterest)}，已计入贷款余额；其他欠款新增利息 {cashAmount(bill.debtInterest)}，未从现金扣除。</p>

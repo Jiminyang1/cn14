@@ -12,7 +12,7 @@ export const TICK_MS = 250;
 const DEC_SCENE: Record<string, SceneId> = {
   gaokao: 'gaokao', marry: 'wedding', house: 'house', romance: 'date', graduate: 'grad', vocgrad: 'grad',
   bigcity: 'train', crisis: 'layoff', baby: 'nursery', illness: 'ward', parentcare: 'oldage', oldcare: 'oldage',
-  demolish: 'demolish', kidhome: 'kidhome', sibloan: 'sibloan', heritage: 'heritage', layofflist: 'layofflist', retireplan: 'retire',
+  demolish: 'demolish', kidhome: 'kidhome', sibloan: 'sibloan', heritage: 'heritage', layofflist: 'layofflist', retireplan: 'retire', tight: 'sibloan',
 };
 /** 这个抉择配哪张图；画的是谁（父母生病时画父母） */
 export function decScene(P: Pending): { id: SceneId; sex?: 'M' | 'F' } | null {

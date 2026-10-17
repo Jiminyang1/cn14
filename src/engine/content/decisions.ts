@@ -12,7 +12,7 @@ import { MEET_HOW, READY0, READY_K, brideAmt, loveWord, mShift, mutualP, partner
 import { S } from '../state';
 import { addDoc, log, logLater } from '../journal';
 import { annualPay, bestPlan, buyHouse, foreclose, hhIncome, hometownHouse, loanBal, loanArrears, loanPayY, loanPlans, planSub, sellHouse, sellInherited } from '../housing';
-import { awayFromHome, cityLoc, farFromParents, homeCity, migrantCity, moveTo, placeHp, placeInc, placeName } from '../place';
+import { awayFromHome, cityLoc, farFromParents, homeCity, migrantCity, moveTo, placeCons, placeHp, placeInc, placeName } from '../place';
 import { babyP, canBaby, conceive, kidsAlive, sibsAlive } from '../family';
 import { calMonth, calYear, perMonth } from '../monthly';
 import { entryYear, nowM } from '../calendar';
@@ -37,6 +37,7 @@ import { DEMOL_K, demolDue, demolish, famPayBride, kidHomeCost, lendSib, marryKi
 import { heirShares, inheritSplit } from '../household';
 import { KEEP, goHomeOld, jumpShip, lastJob, layOff, listDue, rehireText, severance, startRehire, startSnowbird } from '../turns';
 import { shape } from '../personality';
+import { DIBAO_M, DOWNSIZE_K, KID_ADV_Y, PAR_SHARE, SELL_K, askKids, askParents, parentsCan, dibaoOK, downsize, grownKids, kidSupportY, tightDue, tightText } from '../tight';
 
 // ===== 哪些抉择会出现 =====
 // 四类：
@@ -145,6 +146,8 @@ export function monthDecisions() {
   const lb = loanBal(), inc = lb || S.indep ? placeInc() : 0;
   const arrears = lb && loanArrears() >= Math.max(1, loanPayY() / 12 * 2);
   if (arrears && monthsSince('arrears') >= 3) d.push('arrears');
+  // 手头紧了（tight.ts）：连续几个月付不起基本开销或者欠款还在涨。房贷断供有自己的抉择（arrears），那时不再问这个
+  if (S.indep && !S.school && a >= 18 && !arrears && monthsSince('tight') >= 12 && tightDue(placeInc())) d.push('tight');
   // ---- 童年的小抉择 ----
   if (a <= 14) for (const c of CHILD) if (a >= c.a[0] && a <= c.a[1] && once(c.id) && (!c.m || c.m.includes(calMonth())) && (!c.c || c.c()) && yearly(c.id, c.p, c.m ? c.m.length : 12)) d.push(c.id);
   // ---- 每年一定概率：按月换算 ----
@@ -706,6 +709,52 @@ export const DEC = {
       if (k === 'hold') { const borrowed = borrowMoney(loanArrears() + loanPayY() / 4, placeInc() * 0.5); eff({ h: -6, so: -3 }); S.flags.heldOn = (S.flags.heldOn || 0) + 1; return { t: `找亲戚借到了${wan(borrowed)}，先周转眼前的月供。这笔钱还要还。`, k: 'bad' }; }
       if (k === 'sell') { const got = sellHouse(0.92); eff({ h: -8 }); return { t: `急着出手，房子卖了${wan(got)}，还完贷款${liquidBalance() >= 0 ? '还剩一点' : '还欠着一些'}。`, k: 'bad' }; }
       const got = foreclose(); eff({ h: -15, so: -5 }); return { t: `停止还贷。几个月后房子被法院拍卖，只卖了${wan(got)}。`, k: 'bad' };
+    },
+  },
+
+  // 手头紧了：选项按处境出现，每一项都有代价。规则和后续在 tight.ts。
+  // 自动抉择的权重（估计）：卖房是最后一招，欠得越多（相对一年的收入）越可能卖；约 41% 的老人和成年子女同住（CHARLS），
+  // 所以有成年子女的老人搬去同住、向子女开口都常见；在别处有自己房子的，搬回去住最省钱；符合低保条件的多会去申请；
+// 年轻人（没找到工作、刚工作、销售行情差的年份）最常见的是找父母要钱，30 岁以后少一些
+  tight: {
+    build: () => {
+      const st = S.statement, incM = st ? st.income - (st.incomeDetails?.aid || 0) : 0, size = S.fam.married && S.fam.partner?.alive ? 2 : 1;
+      const sev = clamp((S.debt || 0) / Math.max(placeInc() * 0.3, incM * 12), 0.3, 3); // 欠款相对一年收入有多重
+      const H = S.house, here = !!H && H.city === S.loc.city, elsewhere = !!H && !here;
+      const retired = S.job === 'retired', idle = !isWorking(), kids = grownKids(), lj = lastJob(), work = rehireText();
+      const ch: Choice[] = [];
+      if (H) ch.push({ k: 'sell', label: here ? '把房子卖了还债' : `把${H.city}的房子卖了`, sub: `房子大约值${wan(H.v)}，卖掉按九五折到手${loanBal() ? '，先还清房贷' : ''}${here ? '，以后租房住' : ''}`, w: 0.5 * sev, tilt: { r: 0.2 } });
+      if (here && !loanBal()) ch.push({ k: 'downsize', label: '换一套小点的房子', sub: `卖了换套便宜些的，差价约${wan(H.v * (SELL_K - DOWNSIZE_K))}拿来还债、过日子`, w: 1 * sev, tilt: { c: 0.2 } });
+      if (parentsCan()) ch.push({ k: 'parents', label: `找${parentsWord() || '爸妈'}要钱`, sub: `${parentsWord() || '爸妈'}最多能拿出约${wan(Math.min((S.debt || 0) + placeCons() / 4, S.famMoney * PAR_SHARE))}`, w: S.age < 30 ? 3 : 1.5, tilt: { a: 0.2, r: -0.2 } });
+      if (S.age >= 60 && kids && !S.flags.oldLive && !S.flags.grandHelp) ch.push({ k: 'kids', label: '搬去和子女一起住', sub: '不用再付房租，吃住在一起', w: 2.5, tilt: { a: 0.3 } });
+      if (retired && kids && !(S.kidAdv > 0) && S.debt > 0) ch.push({ k: 'ask', label: '跟子女开口', sub: `子女先拿出约${wan(Math.min(S.debt, kidSupportY(placeCons()) * KID_ADV_Y))}帮你还债，以后每月给你的钱先扣回这笔`, w: 2, tilt: { a: 0.2, n: -0.2 } });
+      if (idle && !S.flags.oldLive && !S.flags.grandHelp && (elsewhere || awayFromHome())) ch.push({ k: 'move', label: elsewhere ? `搬回${H.city}自己的房子住` : `回老家${S.home.city}`, sub: elsewhere ? '不用再付这边的房租' : S.home.kind === 'rural' ? '老家不用租房，开销也小' : '那边房租、开销都便宜些', w: elsewhere ? 2.5 : 1.2, tilt: { r: -0.2 } });
+      if (retired && !S.flags.rehire && S.age < 70 && S.st.hl > 40 && !S.flags.disabled && lj !== 'farmer') ch.push({ k: 'work', label: '再出去找点活干', sub: work, w: 1.5, tilt: { c: 0.3 } });
+      if (!S.flags.frugal) ch.push({ k: 'frugal', label: '节衣缩食', sub: '吃穿都省着，还清以前基本生活少花两成', w: 2.5, tilt: { c: 0.3 } });
+      if (!S.flags.dibao && dibaoOK(incM, size)) ch.push({ k: 'dibao', label: '去社区申请低保', sub: `按家里人均收入补到每人每月${S.loc.kind === 'rural' ? DIBAO_M.rural : DIBAO_M.city}元`, w: 3 });
+      ch.push({ k: 'hold', label: '先扛着', sub: '欠的钱照样计息', w: 2, tilt: { r: 0.2 } });
+      const why = st && st.shortfall > 0 ? '这几个月连基本开销都付不起' : '这几个月欠的钱一直在涨，还不上';
+      return {
+        title: '手头紧了', body: `${tightText()}。${why}，每月到手约${wan(incM)}。`,
+        fact: `2025年5月底，全国城乡低保平均标准分别为每人每月${DIBAO_M.city}元、${DIBAO_M.rural}元（民政部）`,
+        choices: ch, ctx: { work },
+      };
+    },
+    apply: (k, c) => {
+      if (k === 'sell') { const city = S.house.city, lb = loanBal(), got = sellHouse(SELL_K); eff({ h: -6 }); return { t: `把${city}的房子卖了，到手${wan(got)}，${lb ? '先还清了房贷，' : ''}剩下的拿来还债。`, k: 'bad' }; }
+      if (k === 'parents') { const pw = parentsWord() || '爸妈', x = askParents(placeCons()); eff({ h: -2 }); return `硬着头皮给${pw}打了电话。${pw}没多问，转过来${wan(x)}，只说“别饿着自己”。`; }
+      if (k === 'downsize') { const x = downsize(); eff({ h: -3 }); return `卖掉老房子，在附近换了一套小一点的。差价${wan(x)}，先把欠的钱还上了。`; }
+      if (k === 'kids') { S.flags.oldLive = 'kid'; eff({ so: 3, h: -1 }); return '搬去和子女一起住。房租省下了，就是凡事要看人脸色，说话也得掂量着。'; }
+      if (k === 'ask') { const x = askKids(placeCons()); eff({ h: -3 }); return `跟子女开了口。他们凑了${wan(x)}帮你把账还了，嘴上没说什么。`; }
+      if (k === 'move') {
+        const H = S.house, elsewhere = !!H && H.city !== S.loc.city;
+        moveTo(elsewhere ? cityLoc(H.p, H.city) : S.home); eff({ so: -2 });
+        return elsewhere ? `搬回了${S.loc.city}自己的房子，不用再付房租了。` : `回到了老家${S.loc.city}，开销小了不少。`;
+      }
+      if (k === 'work') { startRehire(); eff({ hl: -1 }); return `又出去干活了：${c.work}。每年能挣${wan(S.flags.rehire.inc)}。`; }
+      if (k === 'frugal') { S.flags.frugal = 1; eff({ h: -2 }); return '开始节衣缩食：菜挑便宜的买，衣服缝缝补补，能不出门就不出门。'; }
+      if (k === 'dibao') { S.flags.dibao = 1; eff({ h: -2 }); return { t: '去社区申请了低保。填了好几张表，入户核查过了，名字在小区门口公示了一个星期。', f: '低保按家庭人均收入低于当地标准的差额发放，审批要入户调查、公示' }; }
+      eff({ h: -1 }); return '咬着牙先扛着，想着过一阵就好了。';
     },
   },
 

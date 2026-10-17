@@ -79,7 +79,7 @@ export interface InheritedHome { city: string; p: string; v: number; share: numb
 export interface MonthlyStatement {
   year: number; month: number; opening: number; closing: number;
   events: number; transfers: number; income: number;
-  incomeDetails?: { personal: number; partner: number; rehire: number };
+  incomeDetails?: { personal: number; partner: number; rehire: number; aid?: number }; // aid：低保（tight.ts）
   living: number; children: number; discretionary: number; rent: number;
   savingsSpend?: number;     // 动用积蓄的花销（budget.ts 的 savingsDraw）
   mortgage: number; mortgageInterest: number; mortgageHpf: number;

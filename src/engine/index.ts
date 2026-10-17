@@ -19,6 +19,7 @@ export * from './accounts';
 export * from './budget';
 export * from './tax';
 export * from './housing';
+export * from './tight';
 export * from './romance';
 export * from './education';
 export * from './lifecycle';
