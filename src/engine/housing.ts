@@ -6,7 +6,7 @@ import { PBY } from './data';
 import { S } from './state';
 import { addDoc, log, logLater } from './journal';
 import { chance, gauss } from './rng';
-import { cityLoc, hpCounty, placeHp, placeInc } from './place';
+import { cityLoc, homeCounty, hpCounty, placeHp, placeInc } from './place';
 import { isWorking, retireAge } from './career';
 import { parentsHelp } from './parents';
 import { wan } from './format';
@@ -23,7 +23,7 @@ declare module './types' {
 export function hometownHouse() {
   const muni = ['BJ', 'SH', 'TJ'].includes(S.home.p);
   const per = muni ? placeHp(cityLoc(S.home.p, PBY[S.home.p].cities[0])) : hpCounty(PBY[S.home.p]);
-  return { price: Math.round(per * 90 / 1e4) * 1e4, where: muni ? `回${S.home.city}买一套` : '在老家县城买一套', city: muni ? S.home.city : `${PBY[S.home.p].n}老家的县城` };
+  return { price: Math.round(per * 90 / 1e4) * 1e4, where: muni ? `回${S.home.city}买一套` : '在老家县城买一套', city: muni ? S.home.city : homeCounty() };
 }
 export const LOAN_RULES = {
   comRate: 0.031,              // 商业贷款：新发放个人住房贷款加权平均利率约 3.1%（5 年期 LPR 3.5%）

@@ -71,7 +71,11 @@ export function moveTo(L) {
   const d = S.fam && S.fam.dating;
   if (d && d.jk && d.city === L.city) d.inc = partnerInc(d); // 恋爱对象跟着来了
 }
-export const awayFromHome = () => S.loc.p !== S.home.p || (S.loc.city !== S.home.city);
+// 老家的县城（housing.ts 的 hometownHouse 在那里买房）：地名是「某省老家的县城」，和出生登记的城市名不同
+export const homeCounty = (p = S.home.p) => `${PBY[p].n}老家的县城`;
+// 不在老家：不在出生登记的那座城市，也不在老家的县城（在老家县城买了房、住在那里的，算在老家；原来地名对不上，算成了在外地，
+// 清明「没能回去扫墓」、手头紧时还会被问要不要「回老家」）
+export const awayFromHome = () => S.loc.p !== S.home.p || (S.loc.city !== S.home.city && S.loc.city !== homeCounty());
 // 和爸妈不在一起住、也不在一座城市：打电话、视频、回老家看他们才说得通（接来同住、回老家照顾以后就不算）
 export const farFromParents = () => awayFromHome() && !S.flags.parWithMe;
 // 打工去哪座城市：城市越大、收入越高越吸引人（人口 × 收入的三次方，估计）；省内打工的，省会再 ×2；名单外的小城市不作为打工目的地
