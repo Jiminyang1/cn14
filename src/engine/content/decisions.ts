@@ -21,7 +21,7 @@ declare module '../types' {
   interface Flags {
     hunt?: { at: number; job: string; same?: number; home?: number } | null; // 正在找工作：出生后第几个月上岗、找到的是什么工作
     toWork?: number;   // 中考后不读了、还不满 16 岁：在家待到 16 岁再出去打工（见 huntMonth）
-    singleAsk?: number; // 「一个人过？」问过几次（30 岁、40 岁各一次）
+    singleAt?: number;  // 上一次问「一个人过？」是几岁（三十岁起每五年问一次，到五十岁）
     nyHome?: string;   // 回谁家过年：mine 你家、theirs 对方家、turn 轮着、apart 各回各家（抉择 newyear）
     babyAsk?: { n: number; a: number }; // 上一次问你要不要孩子：当时有几个孩子、几岁（抉择 baby 的 quiet）
     houseAsk?: number; // 上一次问你买不买房是几岁（抉择 house 的 quiet）
@@ -200,9 +200,9 @@ export function yearDecisions() {
   const a = S.age, d = [];
   // 谈了一两年，每年谈一次结婚的事（弹出时再查一遍：这期间可能分手、换了人）
   if (marryOK()) d.push('marry');
-  // 三十岁、四十岁还没结过婚、身边也没人：问一次以后怎么打算（不打算结婚的不再问）
-  const n = S.flags.singleAsk || 0, never = !S.fam.partner && S.flags.divorced == null && S.flags.widowed == null;
-  if (never && !S.fam.dating && !S.cand && S.flags.noWed == null && (a >= 30 && n < 1 || a >= 40 && n < 2)) d.push('single');
+  // 三十岁起还没结过婚、身边也没人：每五年问一次以后怎么打算，到五十岁（不打算结婚的不再问）
+  const last = S.flags.singleAt, never = !S.fam.partner && S.flags.divorced == null && S.flags.widowed == null;
+  if (never && !S.fam.dating && !S.cand && S.flags.noWed == null && a >= 30 && a <= 50 && (last == null || a - last >= 5)) d.push('single');
   if (isWorking() && gapOK('layofflist', 4) && listDue()) d.push('layofflist');
   if (a >= 18 && demolDue()) d.push('demolish');
   return d;
@@ -801,7 +801,7 @@ export const DEC = {
     },
   },
 
-  // 一个人过？三十岁、四十岁各问一次（yearDecisions）。不打算结婚是一条正经的路：不再相亲、家里慢慢不催了；
+  // 一个人过？三十岁起每五年问一次（yearDecisions）。不打算结婚是一条正经的路：不再相亲、家里慢慢不催了；
   // 想谈了，把时间放在恋爱上就行（romance.ts 的 meetMonth）
   single: {
     fork: true,
@@ -819,7 +819,7 @@ export const DEC = {
       };
     },
     apply: k => {
-      S.flags.singleAsk = (S.flags.singleAsk || 0) + 1;
+      S.flags.singleAt = S.age;
       if (k === 'look') { S.flags.look = nowM() + 24; return '你托朋友、托家里帮忙留意。'; }
       if (k === 'easy') return null;
       S.flags.noWed = 1; S.flags.soloAt ??= S.age; eff({ h: 2 });

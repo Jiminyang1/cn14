@@ -46,3 +46,19 @@ test('slots: two of the same count 1.6, and each slot raises its domain', () => 
   expect(E.domK('love')).toBe(1);
   expect(E.domK('leisure')).toBeCloseTo(1 + E.DOM_K);
 });
+
+test('staying single: asked at 30, then every five years until 50', () => {
+  const life = single20();
+  life.school = null; life.fam.partner = null;
+  const asked = (age: number) => { life.age = age; return E.yearDecisions().includes('single'); };
+  expect(asked(29)).toBe(false);
+  expect(asked(30)).toBe(true);
+  life.flags.singleAt = 30;
+  expect(asked(34)).toBe(false);
+  expect(asked(35)).toBe(true);
+  life.flags.singleAt = 50;
+  expect(asked(55)).toBe(false);
+  // 说了不打算结婚的不再问
+  life.flags.singleAt = 35; life.flags.noWed = 1;
+  expect(asked(40)).toBe(false);
+});
