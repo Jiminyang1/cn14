@@ -28,7 +28,7 @@ import { persInit, persWords, persYear, shape, shownZ, tiltW, whyOf } from './pe
 // ===== 出生 =====
 export function birth(seed, opts: { year?: number; headless?: boolean } = {}) {
   setS(<Life>{
-    v: 1, seed, rs: seed | 0, age: 0, t: 0, birthYear: opts.year || 2026, birthMonth: 1,
+    seed, rs: seed | 0, age: 0, t: 0, birthYear: opts.year || 2026, birthMonth: 1,
     st: {}, flags: {}, done: {}, recent: [], log: [], years: [], queue: [], fT: {}, notes: [], places: [], jobs: [],
     stats: { maxMoney: 0 }, phase: 'life', money: 0, income: 0, job: null, jobY: 0, wageK: 1,
     school: null, schoolEnd: null, edu: 0, house: null, focus: null, pending: null, headless: !!opts.headless,
@@ -212,11 +212,6 @@ export function endYear() {
   if (S.age >= 110) { die('old'); return; }
   persYear();
   planYear();
-}
-// 旧存档（按年推进时期）没有月份：按这一年过了多少补上
-export function migrateLife(L: Life) {
-  if (L.month == null) L.month = Math.min(MONTHS - 1, Math.floor(L.t * MONTHS));
-  if (!L.pers) persInit(L); // 加性格以前的存档：由种子补上
 }
 export function statusLabel() {
   if (S.age < 3) return '婴儿';

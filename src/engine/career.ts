@@ -89,7 +89,7 @@ export function retire() {
   // PEN_YEARS 取 37（模拟里缴费年数中位数 34）：使职工养老金平均约为所在省人均的 1.04 倍，和改动前一样
   const pv = PBY[S.loc.p];
   const penE = pv.penE || 45903, penR = pv.penR || RESID_PENSION;
-  const P = S.pen || penFromJobs(last, pv);
+  const P = S.pen || { y: 0, r: 0, s: 0 }; // 一个月都没交过职工养老保险
   const emp = P.y >= PEN_MIN_YEARS;
   S.pension = !emp ? penR + (S.job === 'shop' ? last * 0.1 : 0)
     : penE * clamp(P.r / P.y / 2.5, 0.6, 1.8) * clamp(P.y / PEN_YEARS, 0.45, 1.25) * (P.s * 2 >= P.y ? 1.2 : 1);
@@ -103,12 +103,6 @@ export function retire() {
 }
 export const PEN_MIN_YEARS = 15;
 export const PEN_YEARS = 37;
-// 旧存档没有缴费记录：按工作经历估算年数，工资按最后一年的收入
-function penFromJobs(last, pv) {
-  let y = 0, s = 0;
-  S.jobs.forEach((j, i) => { const n = (S.jobs[i + 1] ? S.jobs[i + 1].age : S.age) - j.age; if (!RESID_PENSION_JOBS.has(j.job) && JOBS[j.job] && JOBS[j.job].m > 0) { y += n; if (JOBS[j.job].stable) s += n; } });
-  return { y, r: y * last / (pv.incU || pv.inc), s };
-}
 // 干得最久的那份工作
 export function mainJob(L) {
   let best = null, span = -1;

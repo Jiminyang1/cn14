@@ -13,7 +13,7 @@ import { addDoc, log, logLater } from '../journal';
 import { annualPay, bestPlan, buyHouse, foreclose, hhIncome, hometownHouse, loanBal, loanPayY, loanPlans, planSub, sellHouse } from '../housing';
 import { awayFromHome, cityLoc, farFromParents, homeCity, migrantCity, moveTo, placeHp, placeInc, placeName } from '../place';
 import { babyP, canBaby, conceive, kidsAlive } from '../family';
-import { MONTHS, calYear, perMonth } from '../monthly';
+import { calYear, perMonth } from '../monthly';
 import { nowM } from '../calendar';
 
 declare module '../types' {
@@ -41,8 +41,8 @@ const DKEY: Record<string, string> = {};
 const doneAge = (id: string) => S.done[DKEY[id] ||= 'dec_' + id];
 const once = (id: string) => doneAge(id) == null;
 const gapOK = (id: string, g: number) => doneAge(id) == null || S.age - doneAge(id) >= g;
-/** 离上次排进日程过了几个月；旧存档没有月份记录的，按弹出那年的年初算 */
-const monthsSince = (id: string) => { const at = S.decAt && S.decAt[id] != null ? S.decAt[id] : doneAge(id) != null ? doneAge(id) * MONTHS : null; return at == null ? Infinity : nowM() - at; };
+/** 离上次排进日程过了几个月；没排过的是无穷大 */
+const monthsSince = (id: string) => { const at = S.decAt && S.decAt[id]; return at == null ? Infinity : nowM() - at; };
 /** 每年概率 p 的抉择：这个年龄年里还没出现过，这个月按 perMonth(p) 判定（换算结果缓存起来：每月都要查，fpow 不便宜） */
 const PM = new Map<number, number>();
 const yearly = (id: string, p: number) => {

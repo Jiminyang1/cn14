@@ -44,7 +44,6 @@ export const ILL_SURVIVE_MO = 60;
 export const ILL_UNTREATED_MO = 12;
 export function illMonth() {
   const il = S.flags.ill;
-  if (il.mo == null) il.mo = (il.y || 0) * MONTHS; // 按年推进时期的存档
   il.mo++;
   const p = (ILL[il.k] || ILL.cancer).die[il.treat] * (S.rural && il.k === 'cancer' ? 1.15 : 1);
   if (il.mo > MONTHS && il.treat !== 'none') S.money -= oop(il.k, il.treat) * 0.3 / MONTHS; // 之后每年复查、吃药，按月记
@@ -83,7 +82,7 @@ export function healthMonth(m: number): boolean {
   if (chance(perMonth(deathProb()))) {
     const k = pickCause();
     if (MAJOR.includes(k) && a >= 35 && chance(0.55)) {
-      S.flags.ill = { k, at: a, am: lifeMonth(m) };
+      S.flags.ill = { k, at: a, am: lifeMonth(m), mo: 0 };
       addDoc('ill', '诊断书', [['诊断', CAUSE[k]], ['日期', `${calYear(m)}年${calMonth(m)}月`]]);
       log(DIAG[k], 'bad');
       return false;

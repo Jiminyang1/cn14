@@ -2,10 +2,10 @@
 // 引擎直接修改当前人生对象 S，所以 React 组件通过 useGame() 订阅一个版本号，版本号变了就重新读 S。
 // 会影响模拟结果的操作（抉择、改重心、开关自动抉择）一律先记进局日志，再通过 applyInput 生效，这样每一局都能精确重放。
 import { useSyncExternalStore } from 'react';
-import { CAUSE, S, autoPick, leOf, migrateLife, newLife, placeName, setS, tick, type Life, type Pending } from '../engine';
+import { CAUSE, S, autoPick, leOf, newLife, placeName, setS, tick, type Life, type Pending } from '../engine';
 import { sink } from './devsink';
 import { applyInput } from './replay';
-import { newRun, pushEvent, runId, type Input, type RunLog } from './runlog';
+import { newRun, pushEvent, type Input, type RunLog } from './runlog';
 import { clearSave, keepRun, loadPast, loadSave, savePast, writeSave } from './storage';
 
 export type Screen = 'home' | 'birth' | 'life' | 'end';
@@ -62,7 +62,7 @@ export const game = {
 
   bornNow() {
     const old = loadSave(); // 没跑完的上一局要被覆盖了：先留一份
-    if (old && old.run && old.life.phase === 'life') keepRun({ run: { ...old.run, events: [...old.run.events, { at: new Date().toISOString(), type: 'abandoned' }] }, life: old.life });
+    if (old && old.life.phase === 'life') keepRun({ run: { ...old.run, events: [...old.run.events, { at: new Date().toISOString(), type: 'abandoned' }] }, life: old.life });
     const seed = (Date.now() ^ Math.floor(Math.random() * 2 ** 31)) | 0;
     run = newRun(seed, VERSION);
     engine('newLife', () => newLife(seed));
@@ -79,10 +79,9 @@ export const game = {
   resume() {
     const sv = loadSave(); if (!sv) return;
     setS(sv.life);
-    migrateLife(S); // 按年推进时期的存档没有月份
-    run = sv.run || newRun(sv.life.seed, VERSION, { id: runId(sv.life.seed), incomplete: true });
+    run = sv.run;
     lastRs = S.rs;
-    this.speed = SPEEDS.includes(sv.ui.speed) ? sv.ui.speed : SPEEDS[SPEEDS.length - 1]; this.yearSec = yearSecOf(S); // 旧存档里的一年长度不再沿用
+    this.speed = sv.ui.speed; this.yearSec = yearSecOf(S);
     event('resume', { version: VERSION });
     this.startLife();
   },
@@ -122,7 +121,7 @@ export const game = {
 
   save() {
     if (!S || S.headless || !run) return;
-    if (S.phase === 'life') writeSave(S, { speed: this.speed, yearSec: this.yearSec }, run);
+    if (S.phase === 'life') writeSave(S, { speed: this.speed }, run);
     sink.snapshot(run, S);
   },
   show(s: Screen) { this.screen = s; window.scrollTo(0, 0); emit(); },

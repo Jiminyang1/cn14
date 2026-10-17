@@ -25,7 +25,7 @@ function calc(L: Life) {
   const P = L.pers, w = wG(L.age), s = Math.sqrt(Math.max(0, 1 - w * w - 0.03));
   for (const x of AX) P.z[x] = w * P.g[x] + s * P.u[x] + P.k[x];
 }
-/** 出生（或读旧存档）时生成：天生部分和起伏各抽一次 */
+/** 出生时生成：天生部分和起伏各抽一次 */
 export function persInit(L: Life = S) {
   if (!PERS.on) return;
   const g = zero(), u = zero();

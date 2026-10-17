@@ -13,7 +13,7 @@ import { carer } from './parents';
 import { isWorking, retire, retireAge } from './career';
 import { ENABLE_REFLECT, MILESTONES, REFLECT } from './lifecycle';
 import { MONTHS, calMonth, calYear, monthStart, posIn } from './monthly';
-import { entryYear, fixSchoolEnd, nowM } from './calendar';
+import { entryYear, nowM } from './calendar';
 import { reportCard } from './personality';
 
 declare module './types' {
@@ -91,7 +91,6 @@ export function planMonth(m: number) {
 // ===== 学校的日历（见 calendar.ts）=====
 // 9 月：上幼儿园、上小学、小学毕业升初中；6 月：中考、高考；6–7 月：职高、大学毕业
 function schoolMonth(m: number) {
-  fixSchoolEnd();
   const cm = calMonth(m), cy = calYear(m), rural = S.loc.kind === 'rural';
   if (cm === 9) {
     if (cy === entryYear() - 3 && !S.school) {

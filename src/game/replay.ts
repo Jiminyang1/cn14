@@ -46,7 +46,6 @@ export interface ReplayOptions {
 
 /** 从头重放一局，返回重放出来的人生（同时也是当前的 S） */
 export function replay(run: RunLog, opts: ReplayOptions = {}): Life {
-  if (run.incomplete) throw new ReplayError('这一局来自旧存档，没有完整的输入记录，不能重放');
   newLife(run.seed);
   S.auto = false;
   const limit = opts.untilAge ?? Infinity;

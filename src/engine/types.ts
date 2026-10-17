@@ -57,7 +57,7 @@ export interface Partner {
   jk: string | null; job: string | null; inc: number; hpf: boolean; fit: number;
   love?: number; asks?: number; metParents?: number; marriedAt?: number; retired?: number;
   wh?: number;               // 对方家里要不要婚房：1 要、2 已经因为没房拒过一次求婚
-  pz?: PZ;                   // 对方的性格（固定不变；旧存档里没有，按 0 算）
+  pz?: PZ;                   // 对方的性格（固定不变；关掉性格时没有）
 }
 export interface Family {
   mom: Parent; dad: Parent; sibs: Sibling[]; kids: Kid[];
@@ -74,7 +74,7 @@ export interface Loan { kind: 'com' | 'hpf'; bal: number; rate: number; years: n
 export interface House { city: string; p: string; v: number; paid: number; at: number }
 export interface FamHouse { type: 'self' | 'own' | 'rent' | 'gone'; v: number; where?: string }
 export interface Death { age: number; cause: string; year: number }
-export interface Illness { k: string; at: number; treat?: 'big' | 'local' | 'none'; y?: number }
+export interface Illness { k: string; at: number; treat?: 'big' | 'local' | 'none' }
 export interface Companion {
   name: string; sex: Sex; eth: string; born: string; place: string; rural: boolean; q: number;
   death: Death; edu: number; job: string; married: boolean; kids: number; places: string[]; tr: string[];
@@ -107,7 +107,7 @@ export interface Flags {
 }
 
 export interface Life {
-  v: number; seed: number; rs: number; rs2?: number; rs3?: number; // 存档版本、种子、主随机数状态、日常用的第二条随机数流、性格用的第三条（rng.ts）
+  seed: number; rs: number; rs2?: number; rs3?: number; // 种子、主随机数状态、日常用的第二条随机数流、性格用的第三条（rng.ts）
   age: number; t: number;                           // 年龄；这一年过了多少（0–1）
   birthYear: number; birthMonth: number;
   name: string; surname: string; sex: Sex; eth: string;

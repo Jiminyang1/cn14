@@ -12,8 +12,3 @@ export const nowM = () => S.age * MONTHS + S.month;
 // 简化：不考虑各地的提前、推迟入学；幼儿园同样按这条线，满 3 岁那年的 9 月入园。
 export const SCHOOL_AGE = 6;
 export const entryYear = () => S.birthYear + SCHOOL_AGE + (S.birthMonth >= 9 ? 1 : 0);
-/** 旧存档里 schoolEnd 是年龄：换成那个年龄年里 6 月所在的公历年份 */
-export const juneYearOfAge = (a: number) => S.birthYear + a + (S.birthMonth > 6 ? 1 : 0);
-export function fixSchoolEnd() {
-  if (S.schoolEnd != null && S.schoolEnd < 1000) S.schoolEnd = juneYearOfAge(S.schoolEnd);
-}

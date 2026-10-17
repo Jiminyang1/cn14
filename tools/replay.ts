@@ -40,13 +40,9 @@ try {
   L = (await import('../src/engine')).S;
 }
 
-// 和记录的状态逐项对比（JSON 往返一次，去掉 undefined）。
-// 引擎已经只用逐位确定的数学函数（fmath.ts），正常情况下不会出现浮点末位差异；出现的话说明有人在引擎里用了 Math.exp 之类，或者日志来自换函数之前的版本
-const ulps: string[] = [];
-const close = (x: number, y: number) => Math.abs(x - y) <= 1e-9 * Math.max(1, Math.abs(x), Math.abs(y));
+// 和记录的状态逐项对比（JSON 往返一次，去掉 undefined）。引擎只用逐位确定的数学函数（fmath.ts），所以要求完全相同
 function diff(a: unknown, b: unknown, p: string, out: string[]) {
   if (out.length >= 20) return;
-  if (typeof a === 'number' && typeof b === 'number' && a !== b && close(a, b)) { ulps.push(p); return; }
   if (typeof a !== typeof b || Array.isArray(a) !== Array.isArray(b) || (a === null) !== (b === null)) { out.push(`${p}: ${JSON.stringify(a)?.slice(0, 80)} ≠ ${JSON.stringify(b)?.slice(0, 80)}`); return; }
   if (a && typeof a === 'object') {
     for (const k of new Set([...Object.keys(a), ...Object.keys(b as object)])) diff(a[k], b[k], p ? `${p}.${k}` : k, out);
@@ -55,8 +51,7 @@ function diff(a: unknown, b: unknown, p: string, out: string[]) {
 if (untilAge == null) {
   const out: string[] = [];
   diff(JSON.parse(JSON.stringify(L)), life, '', out);
-  const note = ulps.length ? `（另有 ${ulps.length} 处只差浮点末位，如 ${ulps.slice(0, 3).join('、')}：可能是日志来自换成 fmath 之前的版本，或者引擎里又用了 Math.exp 之类）` : '';
-  console.log(out.length ? `\n✖ 重放结果和记录不一致（重放 ≠ 记录），前 ${out.length} 处：\n  ` + out.join('\n  ') + '\n' + note : `\n✔ 重放结果和记录一致${note}`);
+  console.log(out.length ? `\n✖ 重放结果和记录不一致（重放 ≠ 记录），前 ${out.length} 处：\n  ` + out.join('\n  ') : '\n✔ 重放结果和记录一致');
 }
 
 console.log(`\n${L.name}　${L.sex === 'M' ? '男' : '女'}　${L.eth}　出生地 ${L.born}${L.rural ? '（农村）' : ''}　家境 ${L.q}/5　学历 ${EDU_LV[L.edu]}`);
