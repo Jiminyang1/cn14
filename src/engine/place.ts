@@ -6,7 +6,7 @@ import { BIG, CROSS_PROV, LEAN_OF, MIGRANT_DEST, MIGRANT_LEAN, PBY, REGION_OF } 
 import { CITY } from './real.generated';
 import { S } from './state';
 import { chance, pick, wpick } from './rng';
-import { loveMove } from './romance';
+import { loveMove, partnerInc } from './romance';
 
 // ===== 地点、收入、房价 =====
 export const MUNI = new Set(['BJ', 'SH', 'TJ', 'CQ']);
@@ -65,7 +65,11 @@ export function moveTo(L) {
   S.loc = { ...L };
   if (!S.places.includes(L.city)) S.places.push(L.city);
   if (S.fam && S.fam.dating) loveMove();
-  if (S.fam && S.fam.married && S.fam.partner) S.fam.partner.city = L.city; // 结了婚一起搬
+  // 结了婚一起搬；到了新的城市工资按新城市算（不然要等到下一个生日才更新）
+  const pt = S.fam && S.fam.married ? S.fam.partner : null;
+  if (pt) { pt.city = L.city; if (pt.alive && pt.jk && !pt.retired && pt.k != null) pt.inc = partnerInc(pt); }
+  const d = S.fam && S.fam.dating;
+  if (d && d.jk && d.city === L.city) d.inc = partnerInc(d); // 恋爱对象跟着来了
 }
 export const awayFromHome = () => S.loc.p !== S.home.p || (S.loc.city !== S.home.city);
 // 和爸妈不在一起住、也不在一座城市：打电话、视频、回老家看他们才说得通（接来同住、回老家照顾以后就不算）
