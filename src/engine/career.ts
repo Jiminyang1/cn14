@@ -11,11 +11,15 @@ import { goIndep } from './finance';
 import { cityLoc, homeCity, migrantCity, moveTo, placeInc, placeName } from './place';
 import { hpfStart } from './housing';
 import { tierK } from './education';
-import { calYear } from './monthly';
+import { approachPerMonth, calYear } from './monthly';
 import { nowM } from './calendar';
 
 declare module './types' {
   interface Flags { civilAt?: number } // 最近一次考公务员是出生后第几个月（考试一年一次，见 content/decisions.ts 的 civilretry）
+  interface Life {
+    wageK0?: number; // 刚入这一行时的个人工资系数（学识、学历、运气），升职加薪攒下的部分 = wageK ÷ wageK0
+    penP?: string;   // 退休时所在的省（养老金按这个省的水平算，界面「怎么算的」用）
+  }
 }
 
 // ===== 职业 =====
@@ -59,11 +63,30 @@ export function hire(job, L?) {
   const same = job === (S.job === 'seeking' ? S.flags.lastJob : S.job) && JOBS[job] && JOBS[job].m > 0;
   S.job = job;
   goIndep();
-  if (!same) { S.jobY = 0; S.wageK = fexp(gauss(0, 0.2)) * (0.85 + S.st.kn / 330) * eduWageK(); }
+  if (!same) { S.jobY = 0; S.wageK = S.wageK0 = fexp(gauss(0, 0.2)) * (0.85 + S.st.kn / 330) * eduWageK(); }
   if (JOBS[job] && (JOBS[job].stable || JOBS[job].priv)) S.flags.empIns = 1;
   hpfStart(job);
   S.jobs.push({ job, age: S.age, city: S.loc.city });
   if (!S.headless && JOBS[job] && JOBS[job].m > 0) addDoc(job === 'civil' ? 'civil' : 'job', job === 'civil' ? '录用通知' : JOBS[job].blue ? '务工登记' : '劳动合同', [['岗位', JOBS[job].n], ['工作地', placeName()], ['起始', `${calYear()}年`]]);
+}
+// 升职加薪攒下的部分 g = wageK ÷ wageK0。工龄曲线 expCurve 是同龄人平均的收入曲线，里面已经含了一般人的升职加薪，
+// 所以 g 只表示「比同龄同行涨得多还是少」：
+// · 每年向 1 回落 WAGE_REV（估计：比别人多涨的部分约 5–6 年减半。别人也会升职、跳槽的人换了单位从头熬）；
+// · 涨工资时越接近上限 WAGE_G_MAX 涨得越少，到了上限就不再涨（估计：同一行里收入前 5% 的人约为中位数的 2 倍）。
+// 原来只往上乘（升职 ×1.15、拼工作 ×1.12、跳槽 ×1.2），50 岁时 wageK 中位数约 1.9、前 10% 超过 3.3
+export const WAGE_REV = 0.12, WAGE_G_MAX = 1.8;
+const WAGE_REV_M = approachPerMonth(WAGE_REV);
+/** 涨工资（k > 1）或降薪（k < 1）。涨幅随 g 接近上限递减，降薪照实算。返回实际的倍数 */
+export function raise(k: number) {
+  const k0 = S.wageK0 || S.wageK, g = S.wageK / k0;
+  const g2 = k >= 1 ? Math.min(WAGE_G_MAX, g * (1 + (k - 1) * clamp((WAGE_G_MAX - g) / (WAGE_G_MAX - 1), 0, 1))) : g * k;
+  const x = g2 / g; S.wageK *= x; return x;
+}
+/** 每个在岗的月份：多涨（或少涨）的部分向 1 回落一点；直接乘 wageK 的地方（事件、抉择）超过上限的部分在这里截掉 */
+export function wageMonth() {
+  const k0 = S.wageK0; if (!k0) return;
+  const g = Math.min(WAGE_G_MAX, S.wageK / k0);
+  S.wageK = k0 * (g + (1 - g) * WAGE_REV_M);
 }
 // 18 岁以后还待在农村、却要去城里打工时，换到城市
 export function hireInCity(job) { hire(job, S.loc.kind === 'rural' ? migrantCity() : null); }
@@ -87,19 +110,24 @@ export function retire() {
   // 职工养老金：按退休所在省份的实际人均水平（统计年鉴 24-26 / 24-27，2024 年），再按在职时的平均工资（相对当地水平）
   // 和缴费年数上下浮动（基础养老金大致和缴费年数成正比）；机关事业单位为主的略高。
   // PEN_YEARS 取 37（模拟里缴费年数中位数 34）：使职工养老金平均约为所在省人均的 1.04 倍，和改动前一样
-  const pv = PBY[S.loc.p];
+  const pv = PBY[S.penP = S.loc.p];
   const penE = pv.penE || 45903, penR = pv.penR || RESID_PENSION;
   const P = S.pen || { y: 0, r: 0, s: 0 }; // 一个月都没交过职工养老保险
   const emp = P.y >= PEN_MIN_YEARS;
   S.pension = !emp ? penR + (S.job === 'shop' ? last * 0.1 : 0)
     : penE * clamp(P.r / P.y / 2.5, 0.6, 1.8) * clamp(P.y / PEN_YEARS, 0.45, 1.25) * (P.s * 2 >= P.y ? 1.2 : 1);
   S.job = 'retired'; S.hpfOn = false;
+  // 退休时公积金销户提取，余额转进存款（《住房公积金管理条例》第24条：离休、退休的可以提取）。时间线上写在退休那一条后面
+  const hpfOut = S.hpf > 0 ? S.hpf : 0;
+  if (hpfOut) { S.money += hpfOut; S.hpf = 0; }
+  const hpfLog = () => { if (hpfOut >= 100) log(`办了公积金销户提取，账户里的${wan(hpfOut)}转进了存款。`, 'ev'); };
   if (S.house && S.house.city !== S.loc.city) { moveTo(cityLoc(S.house.p, S.house.city)); log(`退休了，不用再待在${S.jobs[S.jobs.length - 1].city}。搬回了自己在${S.house.city}的房子。`, 'ev'); }
   const short = P.y > 0 && !emp ? `职工养老保险只交了${Math.round(P.y)}年，不满15年，领不了职工养老金。` : '';
-  if (farm) { log(`年纪大了，地种不动了，交给了亲戚。${short}往后靠每月一点城乡居民养老金和积蓄过日子。`, 'ev'); return; }
+  if (farm) { log(`年纪大了，地种不动了，交给了亲戚。${short}往后靠每月一点城乡居民养老金和积蓄过日子。`, 'ev'); hpfLog(); return; }
   const avgW = emp ? P.r / P.y * (pv.incU || pv.inc) : 0;
   log(!emp ? `到了退休的年纪。${short || '只交了城乡居民养老保险，'}每月领到的养老金不多，日常还得靠积蓄和孩子。` : `退休了。职工养老保险交了${Math.round(P.y)}年，每月有一份养老金，大约是在职时平均工资的${Math.round(S.pension / avgW * 100)}%。`, 'ev',
     '2025年起，法定退休年龄逐步延迟：男性从60岁延到63岁，女性从50/55岁延到55/58岁；职工养老保险最低缴费年限从2030年起由15年逐步提高到20年');
+  hpfLog();
 }
 export const PEN_MIN_YEARS = 15;
 export const PEN_YEARS = 37;
@@ -122,7 +150,7 @@ export function gradJob(big) {
   if (big && chance(clamp(tierK() + (kn - 60) / 120, 0.02, 0.6))) return 'tech';
   return wpick({ clerk: 4, sales: 2.5, engineer: lv >= 6 ? 1.5 : 0.5, teacher: lv >= 6 ? 1 : 0.3, factory: lv === 5 ? 1 : 0, rider: 0.3 });
 }
-// 离开工作（被裁员、公司倒闭、没考上……）：先结清旧工作这一年干到现在的工资；公积金账户封存（余额还在，照样计息）
+// 离开工作（被裁员、公司倒闭、没考上……）：工资按月发，从下个月起没有；公积金账户封存（余额还在，照样计息）
 export function quitJob() {
   if (isWorking()) S.flags.lastJob = S.job;
   S.job = 'seeking';
