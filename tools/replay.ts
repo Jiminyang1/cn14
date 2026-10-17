@@ -24,7 +24,7 @@ const { run, life } = JSON.parse(fs.readFileSync(file, 'utf8')) as { run: RunLog
 const untilAge = opt('--until') != null ? +opt('--until') : undefined;
 
 let gitNow = 'unknown';
-try { gitNow = execSync('git rev-parse --short HEAD').toString().trim() + (execSync('git status --porcelain').toString().trim() ? '-dirty' : ''); } catch { /* 不在 git 里 */ }
+try { gitNow = execSync('git rev-parse --short HEAD').toString().trim() + (execSync('git status --porcelain --untracked-files=no').toString().trim() ? '-dirty' : ''); } catch { /* 不在 git 里 */ }
 
 console.log(`局 ${run.id}　种子 ${run.seed}　开始于 ${run.startedAt}`);
 console.log(`当时的代码 ${run.version}　现在的代码 ${gitNow}${run.version !== gitNow ? '　⚠ 版本不同，规则改过的话重放结果会不一样' : ''}`);

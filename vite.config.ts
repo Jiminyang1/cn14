@@ -7,7 +7,7 @@ import { runlog } from './tools/vite-runlog.ts';
 function gitVersion() {
   try {
     const sha = execSync('git rev-parse --short HEAD').toString().trim();
-    const dirty = execSync('git status --porcelain').toString().trim() ? '-dirty' : '';
+    const dirty = execSync('git status --porcelain --untracked-files=no').toString().trim() ? '-dirty' : '';
     return sha + dirty;
   } catch { return 'unknown'; }
 }
