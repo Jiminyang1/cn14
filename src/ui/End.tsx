@@ -36,7 +36,7 @@ export function End() {
           <Cell k="生活过的城市" v={S.places.join('、')} wide />
           <Cell k="婚姻" v={S.fam.partner ? (S.fam.partner.alive ? '已婚' : '丧偶') : S.flags.divorced ? '离异' : '未婚'} />
           <Cell k="孩子" v={kids.length ? kids.length + '个' : '没有'} /><Cell k="房子" v={S.house ? S.house.city : '没有'} />
-          {S.pers && <Cell k="性格" v={persWords(shownZ(), 3).join('、') || '平和'} wide />}
+          {S.pers && S.age >= 3 && <Cell k="性格" v={persWords(shownZ(), 3).join('、') || '平和'} wide />}
           <Cell k="存款最多的时候" v={wan(S.stats.maxMoney)} /><Cell k="离开时的存款" v={wan(S.money)} /><Cell k="退休金" v={S.pension ? wanM(S.pension) : '—'} />
         </div>
       </div>

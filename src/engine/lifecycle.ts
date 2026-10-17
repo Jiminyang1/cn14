@@ -23,7 +23,7 @@ import { kinYear } from './kin';
 import { turnsYear } from './turns';
 import { loveMonth } from './romance';
 import { makeName } from './names';
-import { persInit, persWords, persYear, shape, shownZ, tiltW, whyOf } from './personality';
+import { balanceW, persInit, persWords, persYear, shape, shownOf, tiltW, whyPick } from './personality';
 
 // ===== 出生 =====
 export function birth(seed, opts: { year?: number; headless?: boolean } = {}) {
@@ -163,12 +163,13 @@ export function openDec(id) {
   S.pending = { type: 'dec', id, d };
 }
 // 自动抉择：按选项的权重抽，权重再乘上性格的倾向（tilt）。性格把选中的那一项抬高了不少时，记下理由（resolveDec 写在记录下面）
+// 基础权重先做份额修正（balanceW）：性格只决定谁选哪一项，人群里选各项的比例和不看性格时一样
 export function autoPick(d) {
-  const cs = d.choices.filter(c => !c.off), w0 = cs.map(c => c.w == null ? 1 : c.w), w = cs.map((c, i) => w0[i] * tiltW(c.tilt));
+  const cs = d.choices.filter(c => !c.off), ts = cs.map(c => c.tilt), w0 = cs.map(c => c.w == null ? 1 : c.w);
+  const wb = S.pers ? balanceW(w0, ts) : w0, w = cs.map((c, i) => wb[i] * tiltW(c.tilt));
   const k = wpick(cs.map((c, i) => [c.k, w[i]]));
   if (S.pers) {
-    const i = cs.findIndex(c => c.k === k), s0 = w0.reduce((a, b) => a + Math.max(0, b), 0), s1 = w.reduce((a, b) => a + Math.max(0, b), 0);
-    const t = i >= 0 && s1 > 0 && w0[i] > 0 ? whyOf(cs[i].tilt, (w[i] / s1) / (w0[i] / s0)) : null;
+    const t = whyPick(wb, ts, cs.findIndex(c => c.k === k));
     d.why = t ? { k, t } : undefined;
   }
   return k;
@@ -239,7 +240,7 @@ function summarizeCompanion(c, tr) {
   return {
     name: c.name, sex: c.sex, eth: c.eth, born: c.born, place: placeName(c.home), rural: c.rural, q: c.q,
     death: c.death, edu: c.edu, job: mainJob(c), married: c.fam.married || c.flags.widowed != null, kids: c.fam.kids.length, places: c.places, tr,
-    pw: c.pers ? persWords(shownZ(c), 2) : undefined,
+    pw: c.pers && c.age >= 3 ? persWords(shownOf(c.pers.z, Math.min(c.age, 40), c.sex), 2) : undefined, // 同伴旁边整个一生都显示：按成年（40 岁，或离世时）的样子
   };
 }
 export function newLife(seed) {
