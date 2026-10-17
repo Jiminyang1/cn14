@@ -21,7 +21,10 @@ declare module './types' {
     evAt?: number[];                 // 这一年随机事件的位置（生日那个月定好；到了那个月才按当时的处境抽是哪件事）
     decAt?: Record<string, number>;  // 各抉择最近一次排进日程是出生后的第几个月（按月的间隔用，见 content/decisions.ts）
   }
+  interface Flags { kg?: number }    // 幼儿园：1 上了、0 没上（满 3 岁那年 9 月定，见 schoolMonth）；之前是 undefined
 }
+/** 正在上幼儿园（上了幼儿园、还没上小学）。写幼儿园的事件、日常、抉择都要看这个 */
+export const inKg = () => S.flags.kg === 1 && !S.school && S.edu === 0;
 
 /** 放进队列，保持按 at 排序（同一时刻的排在已有条目后面） */
 export function enqueue(e: QueueItem) {
@@ -94,7 +97,8 @@ function schoolMonth(m: number) {
   const cm = calMonth(m), cy = calYear(m), rural = S.loc.kind === 'rural';
   if (cm === 9) {
     if (cy === entryYear() - 3 && !S.school) {
-      if (chance(rural ? 0.85 : 0.96)) log(rural ? '上了镇上的幼儿园，每天坐校车来回。' : '上幼儿园了。第一天你抱着门框哭，第二天就交到了朋友。', 'ev', null, 'kinder');
+      S.flags.kg = chance(rural ? 0.85 : 0.96) ? 1 : 0;
+      if (S.flags.kg) log(rural ? '上了镇上的幼儿园，每天坐校车来回。' : '上幼儿园了。第一天你抱着门框哭，第二天就交到了朋友。', 'ev', null, 'kinder');
       else log(`没有上幼儿园，每天跟着${carer()}在家附近转。`, 'ev');
     }
     if (!S.school && S.edu === 0 && S.age <= 8 && cy >= entryYear()) {

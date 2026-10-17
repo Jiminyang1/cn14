@@ -22,6 +22,12 @@ export function carer() {
   if (!F.lb && f[other].alive) return other === 'mom' ? '妈妈' : '爸爸';
   return F.carer || '奶奶';
 }
+// 父母谁还在世。文字里提到父母时一律先看这几个：「爸妈」只在两人都在世时用，只剩一位时说「爸爸」或「妈妈」
+export const momAlive = () => S.fam.mom.alive, dadAlive = () => S.fam.dad.alive;
+export const bothParents = () => S.fam.mom.alive && S.fam.dad.alive;
+export const anyParent = () => S.fam.mom.alive || S.fam.dad.alive;
+/** 还在世的父母怎么称呼：「爸妈」「爸爸」「妈妈」，都不在了是 null */
+export const parentsWord = () => bothParents() ? '爸妈' : momAlive() ? '妈妈' : dadAlive() ? '爸爸' : null;
 // 父母能拿出的钱：按家境对应的城乡收入五等份组人均可支配收入（统计年鉴 6-7 / 6-12，2024）× 积蓄年数（估计）
 // ===== 父母的家：收入、养老金、住房 =====
 // 退休年龄和你本人、配偶用同一条规则（career.ts 的 retireAgeOf）
