@@ -40,7 +40,8 @@ export interface View {
   season: Season; month: number;             // 公历月份
   festival: 'spring' | 'midautumn' | null;   // 春节（1–2 月）、中秋（9 月）
   people: Resident[];                        // 现在在家的人，从左到右
-  away: boolean;                             // 留守：爸妈不在家，奶奶举着手机和他们视频
+  away: boolean;                             // 留守：在外地打工的爸爸或妈妈不在家，家里的大人举着手机和他们视频
+  awayWho?: ('mom' | 'dad')[];               // 不在家的是谁
   props: { wedding?: boolean; mourning?: boolean; demolish?: boolean; car?: boolean; boxes?: boolean }; // boxes：刚搬家，门口堆着纸箱（由界面在搬家后几个月里加上）
   seed: number;
 }
@@ -52,6 +53,7 @@ export function viewOf(L: Life): View {
   const meR: Resident = { role: 'me', sex: L.sex, age: a, job: L.school ? 'student' : L.job, ill: !!L.flags.ill, low: L.st.h < 35 };
   const people: Resident[] = [];
   let away = false;
+  const awayWho: ('mom' | 'dad')[] = [];
   // 住在哪：刚查出大病、正在治疗的那一年在医院；住进养老院的在养老院；大学在宿舍；
   // 其他按地方：农村院子、地级市和县城的老小区、省会和大城市的楼；在大城市、省会租房的年轻人和随迁的孩子住城中村
   const ill = L.flags.ill, hosp = !!(ill && ill.treat && ill.treat !== 'none' && a - ill.at <= 0);
@@ -82,10 +84,17 @@ export function viewOf(L: Life): View {
     const pa = Math.max(f.mom.age, f.dad.age), gpAge = pa + 27;
     if ((f.gp || 0) >= 2 && gpAge < 88) people.push({ role: 'grandpa', sex: 'M', age: gpAge + 2 });
     if ((f.gp || 0) >= 1 && gpAge < 90) people.push({ role: 'grandma', sex: 'F', age: gpAge });
-    const both = L.flags.lb === 'both', one = L.flags.lb === 'one';
-    away = (both || one) && a < 16;
-    if (f.dad.alive && !(away && (both || one))) people.push({ role: 'dad', sex: 'M', age: f.dad.age, job: f.dad.jk, ill: f.dad.ill === 1 });
-    if (f.mom.alive && !(away && both)) people.push({ role: 'mom', sex: 'F', age: f.mom.age, job: f.mom.jk, ill: f.mom.ill === 1 });
+    // 留守：都出去了，或者只有一方——按谁的工作是外出务工来定（都不是的话算爸爸）
+    const lb = a < 16 ? L.flags.lb : undefined;
+    const momOut = lb === 'both' || (lb === 'one' && f.mom.jk === 'migrant');
+    const dadOut = lb === 'both' || (lb === 'one' && !momOut);
+    away = momOut || dadOut;
+    if (dadOut) awayWho.push('dad');
+    if (momOut) awayWho.push('mom');
+    // 爸妈都出去了、家里又没有同住的祖父母：带你的那个人（flags.carer，比如外婆）在家
+    if (momOut && dadOut && !people.length) { const c = L.flags.carer || '奶奶'; people.push({ role: /爷|公/.test(c) ? 'grandpa' : 'grandma', sex: /爷|公/.test(c) ? 'M' : 'F', age: gpAge }); }
+    if (f.dad.alive && !dadOut) people.push({ role: 'dad', sex: 'M', age: f.dad.age, job: f.dad.jk, ill: f.dad.ill === 1 });
+    if (f.mom.alive && !momOut) people.push({ role: 'mom', sex: 'F', age: f.mom.age, job: f.mom.jk, ill: f.mom.ill === 1 });
     people.push(meR);
     for (const sb of f.sibs) if (sb.age < 22 && !sb.married) people.push({ role: 'sib', sex: sb.sex, age: sb.age });
   } else {
@@ -99,7 +108,7 @@ export function viewOf(L: Life): View {
   return {
     home, big: kind === 'big', month,
     season: seasonOf(month), festival: month <= 2 ? 'spring' : month === 9 ? 'midautumn' : null,
-    people, away,
+    people, away, awayWho,
     props: {
       wedding: !!(f.married && f.partner && f.partner.marriedAt === a),
       mourning: died(f.mom) || died(f.dad) || !!(f.partner && !f.partner.alive && L.flags.widowed === a),
@@ -160,8 +169,8 @@ export function drawWorld(v: View, t: number): Pix {
       personAt(p, r.sex, r.age, x, 47, look, { ...pose, sit: true, nod: 1 });
       p.rect(x + 1, 39, 8, 5, '#b7cfdc');
     } else personAt(p, r.sex, r.age, x, 48, look, { ...pose, walk: r.role === 'me' && r.age >= 2 && r.age < 10 });
-    // 留守：奶奶（或爷爷）举着手机和外地的爸妈视频
-    if (v.away && (r.role === 'grandma' || (r.role === 'grandpa' && !v.people.some(q => q.role === 'grandma')))) {
+    // 留守：家里的大人（先奶奶，再爷爷、妈妈、爸爸）举着手机和在外地的爸爸或妈妈视频
+    if (v.away && r.role === (['grandma', 'grandpa', 'mom', 'dad'] as Role[]).find(x => v.people.some(q => q.role === x))) {
       p.rect(x + 9, 34, 3, 4, C.ink); p.rect(x + 10, 35, 1, 2, (t >> 1) % 2 ? C.sky : C.skyLt);
     }
     x += ws[k] + gap;

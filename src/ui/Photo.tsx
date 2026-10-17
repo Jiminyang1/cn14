@@ -84,7 +84,7 @@ const HOME_N: Record<View['home'], string> = { yard: '农村的院子', town: '�
 /** 给读屏用的一句话 */
 export function describeView(v: View) {
   const who = v.people.map(r => ROLE_N[r.role]).filter((x, i, a) => a.indexOf(x) === i).join('、');
-  return `${HOME_N[v.home]}，${v.month}月（${SEASON_N[v.season]}）${v.festival === 'spring' ? '，过年' : v.festival === 'midautumn' ? '，中秋' : ''}。在家的有：${who}${v.away ? '；爸妈在外地，正在视频' : ''}。`;
+  return `${HOME_N[v.home]}，${v.month}月（${SEASON_N[v.season]}）${v.festival === 'spring' ? '，过年' : v.festival === 'midautumn' ? '，中秋' : ''}。在家的有：${who}${v.away ? `；${(v.awayWho || []).length === 2 ? '爸妈' : v.awayWho?.[0] === 'mom' ? '妈妈' : '爸爸'}在外地打工，正在视频` : ''}。`;
 }
 const MOVE_TICKS = 10;   // 搬家转场：约 2.5 秒溶解到新家
 const BOX_MONTHS = 3;    // 搬家后门口的纸箱留几个月
