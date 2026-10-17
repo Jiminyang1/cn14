@@ -795,7 +795,8 @@ export const DEC = {
       if (parentsCan()) ch.push({ k: 'parents', label: `找${parentsWord() || '爸妈'}要钱`, sub: `${parentsWord() || '爸妈'}最多能拿出约${wan(Math.min((S.debt || 0) + placeCons() / 4, S.famMoney * PAR_SHARE))}`, w: S.age < 30 ? 3 : 1.5, tilt: { a: 0.2, r: -0.2 } });
       if (S.age >= 60 && kids && !S.flags.oldLive && !S.flags.grandHelp) ch.push({ k: 'kids', label: '搬去和子女一起住', sub: '不用再付房租，吃住在一起', w: 2.5, tilt: { a: 0.3 } });
       if (retired && kids && !(S.kidAdv > 0) && S.debt > 0) ch.push({ k: 'ask', label: '跟子女开口', sub: `子女先拿出约${wan(Math.min(S.debt, kidSupportY(placeCons()) * KID_ADV_Y))}帮你还债，以后每月给你的钱先扣回这笔`, w: 2, tilt: { a: 0.2, n: -0.2 } });
-      if (idle && !S.flags.oldLive && !S.flags.grandHelp && (elsewhere || awayFromHome())) ch.push({ k: 'move', label: elsewhere ? `搬回${H.city}自己的房子住` : `回老家${S.home.city}`, sub: elsewhere ? '不用再付这边的房租' : S.home.kind === 'rural' ? '老家不用租房，开销也小' : '那边房租、开销都便宜些', w: elsewhere ? 2.5 : 1.2, tilt: { r: -0.2 } });
+      // 回老家只给在这里没有房子的人：在这里有房的本来就不付房租，回老家反倒要租房（原来约 0.24% 的「手头紧了」里，当地有房的被安排回了老家）
+      if (idle && !S.flags.oldLive && !S.flags.grandHelp && !here && (elsewhere || awayFromHome())) ch.push({ k: 'move', label: elsewhere ? `搬回${H.city}自己的房子住` : `回老家${S.home.city}`, sub: elsewhere ? '不用再付这边的房租' : S.home.kind === 'rural' ? '老家不用租房，开销也小' : '那边房租、开销都便宜些', w: elsewhere ? 2.5 : 1.2, tilt: { r: -0.2 } });
       if (retired && !S.flags.rehire && S.age < 70 && S.st.hl > 40 && !S.flags.disabled && lj !== 'farmer') ch.push({ k: 'work', label: '再出去找点活干', sub: work, w: 1.5, tilt: { c: 0.3 } });
       if (!S.flags.frugal) ch.push({ k: 'frugal', label: '节衣缩食', sub: '吃穿都省着，还清以前基本生活少花两成', w: 2.5, tilt: { c: 0.3 } });
       if (!S.flags.dibao && dibaoOK(incM, size)) ch.push({ k: 'dibao', label: '去社区申请低保', sub: `按家里人均收入补到每人每月${S.loc.kind === 'rural' ? DIBAO_M.rural : DIBAO_M.city}元`, w: 3 });
