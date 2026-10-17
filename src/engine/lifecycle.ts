@@ -9,7 +9,7 @@ import { EVMAP } from './content/events';
 import { focusMonth } from './focus';
 import { JOBS, isWorking, mainJob, retire, retireAge } from './career';
 import { S, setS } from './state';
-import { SIB, UR, boyOf, familyMonth, kidsYearStart, olderSibSexes, planNextSib, sibYearStart } from './family';
+import { SIB, UR, boyOf, familyMonth, olderSibSexes, planNextSib, sibYearStart } from './family';
 import { addDoc, log, out } from './journal';
 import { MONTHS, monthStart } from './monthly';
 import { planMonth, planYearSchedule, scheduleYearStart } from './schedule';
@@ -63,7 +63,7 @@ export function birth(seed, opts: { year?: number; headless?: boolean } = {}) {
   S.flags.solo = chance(S.sex === 'M' ? 0.045 : 0.015); // 有些人一辈子没有结婚（2020年普查45–49岁未婚：男4.4%、女1.3%）
   const sexes = olderSibSexes(S.order - 1);
   let age = span;
-  for (let i = 0; i < S.order - 1; i++) { S.fam.sibs.push({ rel: sexes[i] === 'M' ? '哥哥' : '姐姐', sex: sexes[i], age }); age -= gaps[i]; }
+  for (let i = 0; i < S.order - 1; i++) { S.fam.sibs.push({ rel: sexes[i] === 'M' ? '哥哥' : '姐姐', sex: sexes[i], age, alive: true }); age -= gaps[i]; }
   planNextSib();
 
   // 留守 / 随迁
@@ -74,8 +74,8 @@ export function birth(seed, opts: { year?: number; headless?: boolean } = {}) {
   if (dm && mm) {
     // 随迁子女里外省迁入占 47%，高于外出农民工整体的跨省比例 38.3%；按地区比例同步放大
     if (chance(0.6)) { S.flags.mig = 1; moveTo(migrantCity(chance(Math.min(0.9, CROSS_PROV[REGION_OF[p.id] || 'west'] * 0.47 / 0.383)))); }
-    else { S.flags.lb = 'both'; S.flags.carer = chance(0.7) ? '奶奶' : '外婆'; }
-  } else if ((dm || mm) && LABOR_OUT.has(p.id)) S.flags.lb = 'one';
+    else { S.flags.lb = 'both'; S.flags.lbWho = 'both'; S.flags.carer = chance(0.7) ? '奶奶' : '外婆'; }
+  } else if ((dm || mm) && LABOR_OUT.has(p.id)) { S.flags.lb = 'one'; S.flags.lbWho = dm ? 'dad' : 'mom'; }
 
   S.st = {
     hl: clamp(gauss(76, 7) - (S.rural ? 2 : 0), 30, 98),
@@ -183,13 +183,13 @@ export function resolveDec(id, d, k) {
 export function runHeadlessYear() { tickTo(1); }
 
 // ===== 生日那个月：一年的开始 =====
-// 顺序和原来的「年初」一样：弟弟妹妹出生 → 家里的大事 → 返聘、候鸟 → 入学、退休 → 孩子长大
+// 顺序和原来的「年初」一样：弟弟妹妹出生 → 家里的大事 → 返聘、候鸟 → 入学、退休。
+// 你的孩子在他们自己的生日那个月长一岁（family.ts 的 familyMonth），不在这里
 export function yearStart() {
   sibYearStart();
   kinYear();
   turnsYear();
   scheduleYearStart();
-  kidsYearStart();
 }
 
 // ===== 年末结算 =====

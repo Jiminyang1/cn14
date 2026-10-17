@@ -65,14 +65,15 @@ export const LT = () => {
 export function qMonth(T: { q: number[]; qm?: number[] }, x: number) {
   return (T.qm || (T.qm = T.q.map(perMonth)))[Math.min(119, x)];
 }
-// 家人的生命表：父母按你出生的地方（比你这一代低 3 岁，估计），配偶、孩子按你现在住的省。
-// 每个月都要查好几次：按 种类 → 省 → 性别 分层缓存，不拼字符串键
-const KIN_LT = { par: {}, parR: {}, pt: {}, kid: {} };
-export function kinLT(kind: 'par' | 'pt' | 'kid', sex: string) {
-  const par = kind === 'par', pid = par ? S.born : S.loc.p;
-  const byP = KIN_LT[par && S.rural ? 'parR' : kind], bySex = byP[pid] || (byP[pid] = {});
-  return bySex[sex] || (bySex[sex] = par
+// 家人的生命表：父母按你出生的地方（比你这一代低 3 岁，估计），兄弟姐妹和你同一代、同一个出生地（就是你自己那张表的口径），
+// 配偶、孩子按你现在住的省。每个月都要查好几次：按 种类 → 省 → 性别 分层缓存，不拼字符串键
+const KIN_LT = { par: {}, parR: {}, sib: {}, sibR: {}, pt: {}, kid: {} };
+export function kinLT(kind: 'par' | 'sib' | 'pt' | 'kid', sex: string) {
+  const home = kind === 'par' || kind === 'sib', pid = home ? S.born : S.loc.p;
+  const byP = KIN_LT[home && S.rural ? kind + 'R' : kind], bySex = byP[pid] || (byP[pid] = {});
+  return bySex[sex] || (bySex[sex] = kind === 'par'
     ? lifeTable(leOf(pid, sex, S.rural) - 3, 0.005, sex)
+    : kind === 'sib' ? lifeTable(leOf(pid, sex, S.rural), q0Of(pid, S.rural, sex), sex)
     : lifeTable(leOf(pid, sex, false), kind === 'pt' ? 0.004 : 0.003, sex));
 }
 export function parentQ(p, male) { return kinLT('par', male ? 'M' : 'F').q[Math.min(119, p.age)]; }
