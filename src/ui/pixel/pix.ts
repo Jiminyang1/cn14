@@ -308,3 +308,10 @@ export function digits(p: Pix, n: number | string, x: number, y: number, c: stri
 export const disc = (p: Pix, cx: number, cy: number, r: number, c: string) => {
   for (let y = -r; y <= r; y++) for (let x = -r; x <= r; x++) if (x * x + y * y <= r * r + r) p.px(cx + x, cy + y, c);
 };
+
+/** 两张图之间的像素溶解：k 从 0 到 1，b 的像素按固定的随机顺序一点点盖住 a（搬家时的转场） */
+export function dissolve(a: Pix, b: Pix, k: number) {
+  const out = new Pix(a.w, a.h);
+  out.d = b.d.map((c, i) => hash(i, 7) < k ? c : a.d[i]);
+  return out;
+}
