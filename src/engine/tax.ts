@@ -5,7 +5,7 @@
 // 一、五险一金个人部分（单位那一半不从工资里扣，不算在这里）
 //  · 有单位的工作（JOBS 里除了务农、打工、个体户、小老板、骑手、网约车，即 career.ts 的 RESID_PENSION_JOBS 以外的）：单位代扣
 //    养老 8%、医疗 2%、失业 0.5%（《社会保险法》；国办发〔2019〕13 号；失业保险个人费率各地 0.2%–0.5%，取常见的 0.5%）。
-//    缴费基数 = 本人工资，不低于本省全口径城镇单位就业人员平均工资（「社平工资」）的 60%，不高于 300%。
+//    缴费基数 = 本人工资，不低于本省全口径城镇单位就业人员平均工资（「社平工资」）的 60%，不高于 300%（工资低于最低工资的按实际工资，见 unitBase）。
 //    住房公积金：个人和单位各缴 5%–12%（《住房公积金管理条例》；housing.ts 的 HPF_JOB），基数同样不超过社平工资的 3 倍。
 //  · 小老板：以灵活就业人员身份自己交职工养老（20%，其中 8% 进个人账户）和职工医保（各地 6%–10%，取 8%），
 //    多数人按最低的 60% 档交（估计）。所以小老板退休领职工养老金（career.ts），和原来的规则一致。
@@ -60,10 +60,15 @@ export function insKind(jk: string): 'unit' | 'flex' | 'resid' | 'none' {
   return RESID_PENSION_JOBS.has(jk) ? 'resid' : 'unit';
 }
 export const unitInsured = (jk: string) => insKind(jk) === 'unit';
-/** 职工养老保险的缴费基数（一年）：单位职工按本人工资，限在社平工资的 60%–300%；灵活就业按 60% 档；其余 0（不交职工养老） */
+// 单位职工的缴费基数：本人工资，不低于社平工资的 60%、不高于 300%。
+// 简化：一年工资还不到当地最低工资标准 × 12 的（非全日制、季节性的活，游戏里主要是父母一代工资很低的人），按实际工资算——
+// 这样的工作现实中多是按实际工资申报或者干脆不缴；按下限交会扣掉工资的一大半。各省最低工资标准第一档约为社平工资的 25%（如广东 2,500 元/月，估计）
+export const MIN_WAGE_K = 0.25;
+const unitBase = (gross: number, A: number) => gross < MIN_WAGE_K * A ? gross : Math.min(3 * A, Math.max(0.6 * A, gross));
+/** 职工养老保险的缴费基数（一年）：单位职工见 unitBase；灵活就业按 60% 档；其余 0（不交职工养老） */
 export function penBase(gross: number, jk: string, pid: string) {
   const k = insKind(jk), A = socAvg(pid);
-  return k === 'unit' ? Math.min(3 * A, Math.max(0.6 * A, gross)) : k === 'flex' ? INS_FLEX.base * A : 0;
+  return k === 'unit' ? unitBase(gross, A) : k === 'flex' ? INS_FLEX.base * A : 0;
 }
 
 // ===== 个人所得税 =====
@@ -86,7 +91,7 @@ export function netOf(gross: number, o: TaxOpts): NetPay {
   if (!(gross > 0) || kind === 'none') return { gross: Math.max(0, gross || 0), base: 0, ins: 0, hpf: 0, ded: 0, taxable: 0, rate: 0, tax: 0, net: Math.max(0, gross || 0), kind };
   const A = socAvg(o.p);
   let base = 0, ins: number;
-  if (kind === 'unit') { base = Math.min(3 * A, Math.max(0.6 * A, gross)); ins = base * (INS_UNIT.pen + INS_UNIT.med + INS_UNIT.une); }
+  if (kind === 'unit') { base = unitBase(gross, A); ins = base * (INS_UNIT.pen + INS_UNIT.med + INS_UNIT.une); }
   else if (kind === 'flex') { base = INS_FLEX.base * A; ins = base * (INS_FLEX.pen + INS_FLEX.med); }
   else ins = INS_RESID.med + INS_RESID.pen;
   ins = Math.min(ins, gross);
