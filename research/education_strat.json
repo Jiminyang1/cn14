@@ -1,0 +1,2561 @@
+{
+ "meta": {
+  "compiled": "2026-10-17",
+  "note": "教育分层：家庭背景与升学、高中分层、补习与留守、考试发挥。用于校准学识的增长和中考、高考（src/engine/education.ts 的 STUDY、ZK、GKR，lifecycle.ts 出生时的学识）。各条目带来源、可信度；derived 为本人计算。"
+ },
+ "family_background": {
+  "parent_edu_to_child": [
+   {
+    "metric": "子女最终学历达到 高中及以上（含中专/职高/技校）的比例",
+    "groups": {
+     "文盲/半文盲": 0.2485,
+     "小学": 0.4243,
+     "初中": 0.5853,
+     "高中(含中专)": 0.6938,
+     "大专": 0.8439,
+     "本科": 0.85,
+     "硕士": 1.0
+    },
+    "denominator": "CFPS 2018 中已离校成年子女（按父母中最高学历分组）；同龄人口径（非考生口径）",
+    "cohort": "未按出生队列切分；文中扩招分组显示约 96% 样本出生于 1981 年后（3484/3610）",
+    "year": 2018,
+    "source": "Li X., Xie W., Wang L., Zou T. (2023), Frontiers in Psychology 14:1116217，数据 CFPS 2018 (表2、表3)",
+    "url": "https://www.frontiersin.org/journals/psychology/articles/10.3389/fpsyg.2023.1116217/full",
+    "confidence": "medium",
+    "derived_from": "表2 行百分比相加：高中+专科+本科+硕士+博士"
+   },
+   {
+    "metric": "子女最终学历为 大专（专科）的比例",
+    "groups": {
+     "文盲/半文盲": 0.046,
+     "小学": 0.1009,
+     "初中": 0.1524,
+     "高中(含中专)": 0.1494,
+     "大专": 0.1615,
+     "本科": 0.08,
+     "硕士": 0.0
+    },
+    "denominator": "同上",
+    "cohort": "同上",
+    "year": 2018,
+    "source": "Li X., Xie W., Wang L., Zou T. (2023), Frontiers in Psychology 14:1116217，数据 CFPS 2018 (表2、表3)",
+    "url": "https://www.frontiersin.org/journals/psychology/articles/10.3389/fpsyg.2023.1116217/full",
+    "confidence": "medium"
+   },
+   {
+    "metric": "子女最终学历为 本科及以上 的比例",
+    "groups": {
+     "文盲/半文盲": 0.0349,
+     "小学": 0.0624,
+     "初中": 0.1001,
+     "高中(含中专)": 0.2208,
+     "大专": 0.2605,
+     "本科": 0.4,
+     "硕士": 1.0
+    },
+    "denominator": "同上",
+    "cohort": "同上",
+    "year": 2018,
+    "source": "Li X., Xie W., Wang L., Zou T. (2023), Frontiers in Psychology 14:1116217，数据 CFPS 2018 (表2、表3)",
+    "url": "https://www.frontiersin.org/journals/psychology/articles/10.3389/fpsyg.2023.1116217/full",
+    "confidence": "medium",
+    "caveat": "父母本科及以上组样本很小（本科组行百分比为整数，疑约100人；硕士组仅3人）；样本筛选句为'selects the data of adults who have completed high school'，含义不清；'College'=15年按大专理解"
+   },
+   {
+    "metric": "父亲学历 -> 子女达到 大专及以上 的比例（Mosteller 标准化转换矩阵，非原始比例！）",
+    "groups": {
+     "未上学": 0.0103,
+     "小学": 0.0402,
+     "初中": 0.1229,
+     "高中": 0.2421,
+     "大专及以上": 0.5848
+    },
+    "denominator": "CHIP 2018 父子/父女配对，出生 1951-1995；矩阵经 Mosteller 迭代使父代与子代边际分布相同（反事实分布）",
+    "cohort": "1951-1995 出生",
+    "year": 2018,
+    "source": "杨娟、赵心慧 (2022)《代际教育流动性的变化趋势》，《中国经济问题》2022年第4期，表3",
+    "url": "https://ces.xmu.edu.cn/CN/article/downloadArticleFile.do?attachType=PDF&id=662",
+    "confidence": "low",
+    "caveat": "只能用来看相对梯度，不能当作真实升学率；同表 2002/2007/2013 年父亲大专+ 对应 49.6%/56.6%/57.9%"
+   },
+   {
+    "metric": "子女'考上大学'的比例（按父母双方学历组合）",
+    "groups": {
+     "父母均不高于义务教育(全国)": 0.1,
+     "父母均为大专以上(全国)": 0.8,
+     "全国平均": 0.17,
+     "父母均不高于义务教育(城镇)": 0.33,
+     "父母均为大专以上(城镇)": 0.91,
+     "城镇平均": 0.51
+    },
+    "denominator": "CHIPs 2014 受访者（同龄人口径），'大学'口径含专科与否文中未说明",
+    "cohort": "1980-1994 出生",
+    "year": 2014,
+    "source": "chenqin（陈沁）《数据观察》澎湃号·湃客 2019-07-28，基于 CHIPs 2014 自行计算",
+    "url": "https://www.thepaper.cn/newsDetail_forward_4028052",
+    "confidence": "low",
+    "caveat": "媒体/自媒体二手计算，图表数值未全部给出；队列偏老（扩招前后混合）"
+   },
+   {
+    "metric": "城镇子女进入 985 高校的比例（按父母学历组合）",
+    "groups": {
+     "父母均低于大专": 0.022,
+     "一方大专及以上": 0.053,
+     "父母均大专及以上": 0.141,
+     "城镇平均": 0.025
+    },
+    "denominator": "CHIPs 2014 城镇样本受访者（同龄人口径）",
+    "cohort": "1980-1994 出生",
+    "year": 2014,
+    "source": "chenqin《数据观察》澎湃号 2019-07-28（CHIPs 2014）",
+    "url": "https://www.thepaper.cn/newsDetail_forward_4028052",
+    "confidence": "low",
+    "caveat": "文中另称 985 学生中 77.8% 来自父母均低于大专的家庭、87.7% 至少一方低于大专；文中数字有自相矛盾处（14.1% vs 5.2%）"
+   },
+   {
+    "metric": "毕业生中父母最高学历为'大学及以上'/'初中及以下'的占比（学生口径，非升学率）",
+    "groups": {
+     "211本科_父母大学及以上": 0.29,
+     "211本科_父母初中及以下": 0.4,
+     "非211本科_父母大学及以上": 0.16,
+     "非211本科_父母初中及以下": 0.51,
+     "高职高专_父母大学及以上": 0.11,
+     "高职高专_父母初中及以下": 0.58
+    },
+    "denominator": "2016届大学毕业生（毕业半年后调查，约28.9万）",
+    "cohort": "2016届毕业生（约2012年高考）",
+    "year": 2016,
+    "source": "麦可思研究院，新浪教育专栏 2017-09-25",
+    "url": "https://edu.sina.com.cn/zl/oversea/2017-09-25/doc-ifymesii5423502.shtml",
+    "confidence": "medium",
+    "extra": {
+     "职业阶层_农民与农民工占比": {
+      "211本科": 0.38,
+      "非211本科": 0.44,
+      "高职高专": 0.51
+     },
+     "职业阶层_管理阶层占比": {
+      "211本科": 0.18,
+      "非211本科": 0.14,
+      "高职高专": 0.1
+     }
+    }
+   },
+   {
+    "metric": "第一代大学生（父母均未上过大学）在本科生中的占比",
+    "groups": {
+     "全国本科高校": 0.7
+    },
+    "denominator": "本科在校生（学生口径）；'始终在70%以上'",
+    "cohort": "2011-2018 年调查",
+    "year": 2018,
+    "source": "清华大学'中国大学生学习与发展追踪研究'(CCSS) 项目组，经澎湃/虎嗅转述",
+    "url": "https://www.huxiu.com/article/307718.html",
+    "confidence": "medium",
+    "extra": {
+     "第一代大学生中来自农村": 0.6974,
+     "第一代大学生父亲初中及以下": 0.6976,
+     "第一代大学生母亲初中及以下": 0.798
+    }
+   },
+   {
+    "metric": "重点大学(985/211为主)学生父亲学历分布（学生口径，小样本）",
+    "groups": {
+     "小学至高中": 0.625,
+     "大专": 0.094,
+     "本科": 0.146,
+     "硕士": 0.034,
+     "博士": 0.009
+    },
+    "denominator": "天津、合肥、兰州重点高校在校生问卷 885 份",
+    "cohort": "2016-2017 在校生",
+    "year": 2017,
+    "source": "陈超（南开大学）国家社科基金课题组，《光明日报》2017-05-21，每日经济新闻转载",
+    "url": "https://www.nbd.com.cn/articles/2017-05-21/1108280.html",
+    "confidence": "low",
+    "extra": {
+     "母亲学历_小学至高中": 0.657,
+     "父亲职业_农民": 0.32
+    }
+   },
+   {
+    "metric": "参照：全国分年龄人口的受教育程度分布（可当作'父母一代'和'子女一代'的边际分布）",
+    "groups": {
+     "25-29岁(约1990-95年生)": {
+      "小学及以下": 0.04,
+      "初中": 0.339,
+      "高中(含中职)": 0.216,
+      "大专": 0.2,
+      "本科": 0.176,
+      "研究生": 0.027
+     },
+     "30-34岁(约1985-90年生)": {
+      "小学及以下": 0.057,
+      "初中": 0.407,
+      "高中(含中职)": 0.211,
+      "大专": 0.165,
+      "本科": 0.14,
+      "研究生": 0.019
+     },
+     "45-49岁(约1970-75年生，2010后出生孩子的典型父母代)": {
+      "小学及以下": 0.209,
+      "初中": 0.514,
+      "高中(含中职)": 0.156,
+      "大专": 0.068,
+      "本科": 0.048,
+      "研究生": 0.005
+     },
+     "35-39岁(约1980-85年生)": {
+      "小学及以下": 0.082,
+      "初中": 0.455,
+      "高中(含中职)": 0.191,
+      "大专": 0.13,
+      "本科": 0.123,
+      "研究生": 0.018
+     },
+     "20-24岁(含在校生)": {
+      "小学及以下": 0.031,
+      "初中": 0.25,
+      "高中(含中职)": 0.201,
+      "大专": 0.246,
+      "本科": 0.252,
+      "研究生": 0.021
+     }
+    },
+    "denominator": "第七次全国人口普查（2020）全部 3 岁及以上人口，同龄人口径；受教育程度含在校生",
+    "cohort": "按年龄组",
+    "year": 2020,
+    "source": "国家统计局《中国人口普查年鉴-2020》表4-1 全国分年龄、性别、受教育程度的3岁及以上人口（本人从 xls 计算比例）",
+    "url": "https://www.stats.gov.cn/sj/pcsj/rkpc/7rp/zk/html/A0401.xls",
+    "confidence": "high"
+   }
+  ],
+  "ses_income": [
+   {
+    "metric": "子女最终学历分布 × 家庭人均纯收入五等分（2018年当期收入）",
+    "groups": {
+     "0-20%": {
+      "高中及以上": 0.3741,
+      "大专": 0.0813,
+      "本科及以上": 0.0454,
+      "初中及以下": 0.626
+     },
+     "20-40%": {
+      "高中及以上": 0.4778,
+      "大专": 0.1025,
+      "本科及以上": 0.0834
+     },
+     "40-60%": {
+      "高中及以上": 0.5516,
+      "大专": 0.1438,
+      "本科及以上": 0.0943,
+      "初中及以下": 0.4484
+     },
+     "60-80%": {
+      "高中及以上": 0.5925,
+      "大专": 0.1395,
+      "本科及以上": 0.1286
+     },
+     "80-100%": {
+      "高中及以上": 0.7103,
+      "大专": 0.1617,
+      "本科及以上": 0.2351,
+      "初中及以下": 0.2897
+     }
+    },
+    "denominator": "CFPS 2018 已离校成年子女（同龄人口径）",
+    "cohort": "未切分，绝大多数 1981 年后出生",
+    "year": 2018,
+    "source": "Li X., Xie W., Wang L., Zou T. (2023), Frontiers in Psychology 14:1116217，数据 CFPS 2018 (表2、表3)",
+    "url": "https://www.frontiersin.org/journals/psychology/articles/10.3389/fpsyg.2023.1116217/full",
+    "confidence": "medium",
+    "caveat": "收入是调查当年的家庭收入，不是子女成长期的收入，且子女收入可能计入家庭收入（反向因果）"
+   },
+   {
+    "metric": "精英大学入学概率：收入最高 1/5 家庭 vs 最低 1/5 家庭的倍数",
+    "groups": {
+     "中国_top_vs_bottom_quintile": 2.3,
+     "美国_对照": 11.2
+    },
+    "denominator": "未在摘要中说明（大学毕业生大样本调查 + 全国代表性家户调查合并）",
+    "cohort": "近年大学毕业生",
+    "year": 2024,
+    "source": "Ruixue Jia, Hongbin Li, Lingsheng Meng (2024), 'Elite College Education and Social Mobility in China', Economic Development and Cultural Change",
+    "url": "https://fsi.stanford.edu/node/37254",
+    "confidence": "medium",
+    "extra": {
+     "note": "作者称分数线规则本身收入中性，低收入劣势主要来自高考分数更低；上精英大学使子女收入排名提升近 20 个百分位"
+    }
+   },
+   {
+    "metric": "重点大学生源中'中低收入阶层'子女的占比（学生口径）",
+    "groups": {
+     "中低收入阶层": 0.6,
+     "农民家庭子女": 0.3,
+     "农村与困难背景合计": 0.4
+    },
+    "denominator": "天津/合肥/兰州重点高校在校生 885 份",
+    "cohort": "2016-2017",
+    "year": 2017,
+    "source": "陈超课题组，《光明日报》2017-05-21",
+    "url": "https://www.nbd.com.cn/articles/2017-05-21/1108280.html",
+    "confidence": "low",
+    "caveat": "均为'以上'下限值；中低收入的定义未给出"
+   }
+  ],
+  "urban_rural": [
+   {
+    "metric": "按常住地（城市/镇/乡村）分的 25-29 岁人口学历",
+    "groups": {
+     "城市": {
+      "大专": 0.247,
+      "本科及以上": 0.297
+     },
+     "镇": {
+      "大专": 0.2,
+      "本科及以上": 0.163
+     },
+     "乡村": {
+      "大专": 0.126,
+      "本科及以上": 0.08
+     },
+     "全国": {
+      "大专": 0.2,
+      "本科及以上": 0.203
+     }
+    },
+    "denominator": "七普常住人口（同龄人口径）",
+    "cohort": "约 1990-1995 年出生",
+    "year": 2020,
+    "source": "国家统计局《中国人口普查年鉴-2020》表4-1a/4-1b/4-1c（本人计算比例）",
+    "url": "https://www.stats.gov.cn/sj/pcsj/rkpc/7rp/zk/html/A0401c.xls",
+    "confidence": "high",
+    "caveat": "这是'现住地'而非'户籍/出身'：农村出身的大学生毕业后多留在城市，会严重高估城乡差距，不能直接当农村户籍本科率"
+   },
+   {
+    "metric": "高等教育（含专科）获得的模型预测概率，按户口 × 父母职业地位(ISEI)",
+    "groups": {
+     "农业户口_低ISEI": 0.3475,
+     "农业户口_中ISEI": 0.4669,
+     "农业户口_高ISEI": 0.6234,
+     "非农户口_低ISEI": 0.598,
+     "非农户口_中ISEI": 0.6968,
+     "非农户口_高ISEI": 0.775,
+     "全样本观测均值": 0.374
+    },
+    "denominator": "CFPS 2010-2018 追踪的 10-15 岁儿童（N=1835，83% 农业户口），2018 年观察是否获得/就读高等教育",
+    "cohort": "1996-1999 出生（约 2014-2018 年高考）",
+    "year": 2018,
+    "source": "Lai T., Liu F., Huang Y. (2022), 'The Influence of Parental Educational Expectations on Children's Higher Education Attainment: Re-estimation Based on Instrumental Variables', Frontiers in Psychology 13:899348，表5",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9152259/",
+    "confidence": "medium",
+    "caveat": "预测概率而非原始比例；'高等教育'含专科、可能含在读"
+   },
+   {
+    "metric": "贫困县农村青年 vs 城市青年 的上大学几率倍数（2003 年全体高考考生）",
+    "groups": {
+     "任何大学_城市是贫困县农村的倍数": 7,
+     "211高校_倍数": 11
+    },
+    "denominator": "2003 年全部高考报名考生（考生口径 + 同龄人推算）",
+    "cohort": "2003 年高考（扩招后不久，偏老）",
+    "year": 2003,
+    "source": "Li H., Loyalka P., Rozelle S., Wu B., Xie J. (2015), 'Unequal Access to College in China: How Far Have Poor, Rural Students Been Left Behind?', The China Quarterly 221:185-207",
+    "url": "https://core-cms.cambridgecore.org/core/journals/china-quarterly/article/unequal-access-to-college-in-china-how-far-have-poor-rural-students-been-left-behind/5218CF8B6F33DC0F89EB6E9E465AB050",
+    "confidence": "medium",
+    "caveat": "只看到摘要；差距主要来自城乡而非贫困县/非贫困县"
+   },
+   {
+    "metric": "参加中考的比例：贫困县 vs 非贫困县学生",
+    "groups": {
+     "贫困县": 0.6,
+     "非贫困县": 1.0
+    },
+    "denominator": "某省（一个地区）行政数据 30 多万名初中生",
+    "cohort": "2010年代初",
+    "year": 2017,
+    "source": "Loyalka P., Chu J., Wei J., Johnson N., Reniker J. (2017), 'Inequalities in the Pathway to College in China: When Do Students from Poor Areas Fall Behind?', The China Quarterly 229:172-194",
+    "url": "https://www.cambridge.org/core/journals/china-quarterly/article/inequalities-in-the-pathway-to-college-in-china-when-do-students-from-poor-areas-fall-behind/680E82E79996F913424E1B0FC8EA5788",
+    "confidence": "medium",
+    "extra": {
+     "进普高/重点普高的可能性": "贫困县约低 1.5 倍",
+     "非贫困县": "'nearly 100%'"
+    }
+   },
+   {
+    "metric": "上高中比例：城市青少年 vs 农村贫困地区青少年",
+    "groups": {
+     "城市": 0.93,
+     "农村贫困": 0.5
+    },
+    "denominator": "15-18岁青少年（同龄人口径）",
+    "cohort": "2010年代中期",
+    "year": 2020,
+    "source": "Scott Rozelle 在 IFPRI《Invisible China》新书发布会上的发言（经搜索摘要）",
+    "url": "https://www.ifpri.org/blog/book-launch-casting-light-invisible-china/",
+    "confidence": "low",
+    "extra": {
+     "界面新闻转引REAP": "贫困农村地区仅 37% 学生读完高中，城市超九成（年份不明）"
+    }
+   },
+   {
+    "metric": "清华本科新生中农村生源占比（学生口径）",
+    "groups": {
+     "2015_自强+农村贫困定向": 0.1,
+     "2018_农村及贫困地区": 0.179,
+     "2019_农村及贫困地区": 0.193,
+     "2021_农村及专项计划": 0.21
+    },
+    "denominator": "当年本科新生（2019 约 3800 人；2021 可能仅指内地生约 3500 人）",
+    "cohort": "2015-2021 级",
+    "year": 2021,
+    "source": "清华新闻网转载《中国教育报》等（2015-08-20；2019-08-16；2021-09-03）；2018 数值仅见搜索摘要",
+    "url": "https://www.tsinghua.edu.cn/info/1182/50166.htm",
+    "confidence": "medium",
+    "caveat": "口径逐年不同（'农村及贫困地区' vs '农村及专项计划实施区域'），不是严格的农村户籍比例",
+    "extra": {
+     "2024_自强计划录取": 278,
+     "2024_自强+国家专项合计": "530余人",
+     "2025_自强计划": "270余人",
+     "2025_国家专项": "280余人",
+     "2016_国家专项录取": 255,
+     "2016_自强计划": 104
+    }
+   },
+   {
+    "metric": "北大本科新生中农村生源占比（学生口径）",
+    "groups": {
+     "1978-1998_约": 0.3,
+     "2000-2010_约": 0.1,
+     "2013": 0.142,
+     "2014_农村户籍": 0.185,
+     "2016_校本部": 0.163
+    },
+    "denominator": "当年新生",
+    "cohort": "各年",
+    "year": 2016,
+    "source": "2014: 新华社 2015-06-12（清华新闻网转载）；2013 与 2000-2010: 界面新闻；1978-2000s: 刘云杉（北大教育学院）统计，媒体转述；2016: 搜索摘要",
+    "url": "https://www.tsinghua.edu.cn/info/1182/41331.htm",
+    "confidence": "medium",
+    "caveat": "仅 2014 年 18.5% 我直接核对了原文；其余为媒体转述"
+   },
+   {
+    "metric": "重点高校面向农村和脱贫地区的专项计划（国家+地方+高校专项）年录取人数",
+    "groups": {
+     "2012": 10000,
+     "2017": 100000,
+     "2018": 103800,
+     "2022": 131000,
+     "2012-2022累计": 950000
+    },
+    "denominator": "录取人数（绝对数）；2017 年其中国家专项约 6.4 万",
+    "cohort": "2012-2022",
+    "year": 2022,
+    "source": "教育部 2022-09-15 新闻发布会（高校学生司司长王辉），新京报/证券时报转述；2017 年数据为教育部发言人续梅 2017-08 发布会，澎湃转述",
+    "url": "https://www.stcn.com/kuaixun/ss/202209/t20220915_4860509.html",
+    "confidence": "medium",
+    "caveat": "2023 年后全国总数未查到；可对照每年本科招生约 450-480 万（本次未核）"
+   }
+  ],
+  "achievement_gaps": [
+   {
+    "metric": "城乡初中生认知测试差距（标准差单位）",
+    "groups": {
+     "城-乡差距_以城市SD计": 0.37,
+     "城-乡差距_以农村SD计": 0.41,
+     "原始分差": 1.41,
+     "相对差": 0.17
+    },
+    "denominator": "CEPS 2013-14 基线七、九年级学生",
+    "cohort": "约 2000-2002 年出生",
+    "year": 2014,
+    "source": "Zhao G., Ye J., Li Z., Xue S. (2017), 'How and why do Chinese urban students outperform their rural counterparts?', China Economic Review 45:103-123",
+    "url": "https://ideas.repec.org/a/eee/chieco/v45y2017icp103-123.html",
+    "confidence": "high",
+    "extra": {
+     "可观测因素解释比例": "约一半，主要是兄弟姐妹数、父母教育、家校互动；改用3PL IRT 分数差距略缩小"
+    }
+   },
+   {
+    "metric": "学前教育对七年级城乡认知差距的解释比例",
+    "groups": {
+     "解释比例_下限": 0.28,
+     "解释比例_上限": 0.44
+    },
+    "denominator": "CEPS 基线七年级",
+    "cohort": "约 2001-2002 年出生",
+    "year": 2019,
+    "source": "郑磊、翁秋怡、龚欣 (2019)，《社会学研究》（基于 CEPS 基线，Blinder-Oaxaca 分解）",
+    "url": "https://shxyj.ajcass.com/Magazine/show/?id=74713",
+    "confidence": "medium"
+   },
+   {
+    "metric": "CFPS 儿童字词+数学测试：城乡差与父母教育效应（标准差单位，本人按文中 SD=7.706 换算）",
+    "groups": {
+     "城-乡差_控制省份年级后": 0.1,
+     "城-乡差_再控制父母教育和收入后": 0.03,
+     "父母受教育年限每+1年_模型3": 0.018,
+     "父母受教育年限每+1年_全模型": 0.015,
+     "家庭人均收入对数每+1_模型3": 0.038
+    },
+    "denominator": "CFPS 2010 义务教育阶段儿童 N=2750",
+    "cohort": "约 1995-2004 年出生",
+    "year": 2010,
+    "source": "李忠路、邱泽奇 (2016)《家庭背景如何影响儿童学业成就？——义务教育阶段家庭社会经济地位影响差异分析》，《社会学研究》2016年第4期，表2",
+    "url": "http://www.shehui.pku.edu.cn/upload/editor/file/20180904/20180904105257_2423.pdf",
+    "confidence": "medium",
+    "caveat": "原始系数：城市 .775、父母受教育年限 .139/.118、收入对数 .290；换算为本人计算。父母小学(6年) vs 大学(16年) 约差 0.18 SD，远小于 CEPS 的城乡差，量表与年龄标准化方式不同"
+   },
+   {
+    "metric": "PISA 2018 京沪苏浙（B-S-J-Z）：社会经济地位与成绩",
+    "groups": {
+     "阅读_优势vs弱势学生分差(分)": 82,
+     "OECD平均分差": 89,
+     "ESCS解释数学方差": 0.1,
+     "OECD数学": 0.14,
+     "ESCS解释科学方差": 0.11,
+     "OECD科学": 0.13,
+     "弱势学生中阅读进入本地前1/4(抗逆)": 0.12,
+     "优势学生中阅读顶尖(5-6级)": 0.41,
+     "弱势学生中阅读顶尖": 0.1
+    },
+    "denominator": "15岁在校学生（四省市覆盖 81% 的15岁人口）；优势/弱势=本地 ESCS 最高/最低 25%",
+    "cohort": "约 2002-2003 年出生",
+    "year": 2018,
+    "source": "OECD (2019), PISA 2018 Country Note: B-S-J-Z (China)",
+    "url": "https://www.oecd.org/content/dam/oecd/en/about/programmes/edu/pisa/publications/national-reports/pisa-2018/featured-country-specific-overviews/PISA2018_CN_QCI.pdf",
+    "confidence": "high",
+    "extra": {
+     "高分但不预期上大学": "高成就弱势学生约 1/4，高成就优势学生约 1/25",
+     "阅读均分": 555,
+     "PISA量表": "OECD 学生 SD≈100，82 分约 0.8 个 OECD SD（本人换算）"
+    }
+   },
+   {
+    "metric": "家庭 SES 与学业成就的相关（元分析）",
+    "groups": {
+     "r": 0.32
+    },
+    "denominator": "中国 22 项研究/25 个独立样本，N=79665",
+    "cohort": "幼儿园至中学",
+    "year": 2016,
+    "source": "邓小平、罗秀文、邬雨臻 (2016)《父母卷入在家庭社会经济地位与学业成就间的中介作用：元分析结构方程模型》，《心理科学进展》24(12):1844-1853",
+    "url": "https://journal.psych.ac.cn/xlkxjz/CN/Y2016/V24/I12/1844",
+    "confidence": "high",
+    "extra": {
+     "父母卷入中介": "部分中介，仅在幼儿园/小学显著，中学不显著"
+    }
+   },
+   {
+    "metric": "SES 与校内期中成绩的相关（CEPS）",
+    "groups": {
+     "r_SES_成绩": 0.073,
+     "SES_beta_控制父母参与后": 0.04
+    },
+    "denominator": "CEPS 2013-14 初中生 N=19487",
+    "cohort": "约 2000-2002 年出生",
+    "year": 2018,
+    "source": "Duan W., Guan Y., Bu H. (2018), Frontiers in Psychology 9:952",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6018534/",
+    "confidence": "medium",
+    "caveat": "期中成绩是校内/班内标准化的，学校间差距被消掉，所以相关极低；不要拿来当全国 SES 梯度"
+   }
+  ],
+  "parenting": [
+   {
+    "metric": "父母教育期望 -> 子女上大学（含专科）",
+    "groups": {
+     "Logit系数_每多期望1年": 0.105,
+     "IV-Logit系数": 0.285,
+     "IV边际效应_每多期望1年(百分点)": 0.07
+    },
+    "denominator": "CFPS 2010-2018，10-15 岁儿童 N=1835",
+    "cohort": "1996-1999 出生",
+    "year": 2022,
+    "source": "Lai T., Liu F., Huang Y. (2022), Frontiers in Psychology 13:899348",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9152259/",
+    "confidence": "medium",
+    "caveat": "IV 用省份录取机会指数做工具变量，外生性存疑；7 个百分点/年的边际效应偏大"
+   },
+   {
+    "metric": "父母教育期望 -> 学业成绩（留守儿童）",
+    "groups": {
+     "期望_beta": 0.35,
+     "r": 0.35,
+     "情感卷入_beta": 0.05,
+     "智力卷入(含辅导)_beta": -0.01
+    },
+    "denominator": "CEPS 2013-14 留守儿童 N=5078",
+    "cohort": "约 2000-2002 年出生",
+    "year": 2024,
+    "source": "Li J., Xue E., You H. (2024), Behavioral Sciences 14(5):371",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11118807/",
+    "confidence": "medium",
+    "caveat": "横截面相关，含反向因果（成绩好→期望高）；文中表内数字有多处不一致"
+   },
+   {
+    "metric": "学业社会化（含期望）与家庭监督（含检查作业）对成绩的效应",
+    "groups": {
+     "学业社会化_beta": 0.27,
+     "家庭监督参与_beta": -0.08,
+     "家庭监督参与_r": 0.023
+    },
+    "denominator": "CEPS 2013-14 初中生 N=19487",
+    "cohort": "约 2000-2002 年出生",
+    "year": 2018,
+    "source": "Duan W., Guan Y., Bu H. (2018), Frontiers in Psychology 9:952",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6018534/",
+    "confidence": "medium",
+    "caveat": "家庭监督（检查作业等）与成绩基本不相关；AS 量表信度很低(alpha=0.36)"
+   },
+   {
+    "metric": "家长期望高于孩子自身期望（'向上偏差'）对成绩的影响（标准差单位）",
+    "groups": {
+     "向上偏差_vs_一致": -0.189,
+     "向下偏差_vs_一致": -0.01
+    },
+    "denominator": "CEPS 九年级 N≈7884",
+    "cohort": "约 2000 年出生",
+    "year": 2022,
+    "source": "程刚、杜思慧、余倩 (2022)《你的教育期望合理吗？》，《华东师范大学学报(教育科学版)》40(1):74-87",
+    "url": "https://xbjk.ecnu.edu.cn/EN/10.16382/j.cnki.1000-5560.2022.01.006",
+    "confidence": "medium"
+   },
+   {
+    "metric": "家长教育参与（检查作业、讨论学校事情等）与上辅导班对 CFPS 测试分的效应（本人按 SD=7.706 换算）",
+    "groups": {
+     "家长参与得分每+1": 0.037,
+     "上辅导班": 0.06
+    },
+    "denominator": "CFPS 2010 义务教育阶段儿童 N=2750",
+    "cohort": "约 1995-2004 年出生",
+    "year": 2016,
+    "source": "李忠路、邱泽奇 (2016)，《社会学研究》第4期，表2（原始系数 .283、.456）",
+    "url": "http://www.shehui.pku.edu.cn/upload/editor/file/20180904/20180904105257_2423.pdf",
+    "confidence": "medium",
+    "extra": {
+     "城市儿童上辅导班发生比": "农村的 4.66 倍",
+     "父母受教育每+1年_家长参与得分": 0.05
+    }
+   }
+  ],
+  "notes": [
+   "没查到：按父母学历分组、且限定 2015 年后高考队列的'上普通高中/本科/专科/985'原始比例（CFPS/CEPS 原表）。最接近的是 CFPS 2018 转换矩阵（Li et al. 2023），但它不分队列，父母本科及以上组样本很小。要精确到 2010 后出生，需要自己用 CFPS/CEPS 微观数据算。",
+   "没查到：农村户籍 vs 城镇户籍的同龄人本科率（按户籍，不按现住地）。七普只有现住地口径，会高估差距；Lai et al. (2022) 有户口×父母职业的预测概率可以替代。",
+   "没查到：CEPS 按父母学历/SES 分组、以标准差计的认知分差。CEPS 认知测试心理计量报告（王卫东、李佩华）没有分组表。只查到城乡差（0.37-0.41 SD）和 CFPS 的父母教育年限系数。",
+   "PISA 2018 京沪苏浙阅读成绩被 ESCS 解释的方差比例：国别简报只给了数学 10%、科学 11%。搜索摘要里的 OECD 卷 II 快照表一行是 '555 | 0.81 | 12.6 | 82 | 12'，列的含义没法确认（12.6 可能是解释比例，也可能是斜率），所以没写进数据。",
+   "PISA 2015 京沪苏粤（B-S-J-G）的 SES 梯度据说更陡，但没查到可核对的原始数字。",
+   "家庭收入五等分的本科率只有 CFPS 2018 当期收入版本（Li et al. 2023），有反向因果；没找到按童年期收入分组的数字。",
+   "学生口径和同龄人口径要分开：麦可思、CCSS（第一代大学生 70%+）、清华北大农村生占比、陈超小样本都是'在校生/毕业生中的构成'，不是升学率。拿七普 45-54 岁人口的学历分布当父母代分布，可以把构成换算成相对机会（代表性比率）。",
+   "杨娟、赵心慧 (2022) 的 CHIP 转换矩阵做过 Mosteller 标准化，只能看相对梯度，不是真实比例，已标 low。",
+   "专项计划年录取 13.1 万（2022）是绝对人数；年本科招生总数本次没核对，算占比请另查。",
+   "七普'受教育程度'含在校生，20-24 岁组里有不少还在读本科。25-29 岁（约 1990-95 年出生）组最接近'已完成学历'的年轻队列：本科及以上 20.3%，大专 20.0%。"
+  ]
+ },
+ "high_school": {
+  "tier_scale": [
+   {
+    "metric": "县、县级市举办的普通高中学校数占全国普通高中比例",
+    "value": 0.51,
+    "detail": "7243所 / 约1.42万所",
+    "scope": "全国",
+    "year": 2020,
+    "source": "教育部等九部门《“十四五”县域普通高中发展提升行动计划》（每日经济新闻转述原文）",
+    "url": "https://www.nbd.com.cn/articles/2021-12-16/2042270.html",
+    "confidence": "high"
+   },
+   {
+    "metric": "县中在校生占全国普通高中在校生比例",
+    "value": 0.59,
+    "detail": "1468.4万人",
+    "scope": "全国",
+    "year": 2020,
+    "source": "《“十四五”县域普通高中发展提升行动计划》",
+    "url": "https://www.nbd.com.cn/articles/2021-12-16/2042270.html",
+    "confidence": "high"
+   },
+   {
+    "metric": "县中学校数占比 / 在校生占比",
+    "value": {
+     "schools": 7839,
+     "school_share": 0.4976,
+     "students_10k": 1673.61,
+     "student_share": 0.5727
+    },
+    "scope": "全国",
+    "year": 2024,
+    "source": "虎嗅文章引用，未注明原始出处；1673.61/2922.28=57.27%与教育部2024在校生总数自洽；教育部基础教育司负责人2025年口径为“近60%”",
+    "url": "https://www.huxiu.com/article/4799894.html",
+    "confidence": "medium"
+   },
+   {
+    "metric": "普通高中在校生按学校所在地分布（城区/镇区/乡村）",
+    "value": {
+     "urban_城区": 0.505,
+     "town_镇区": 0.451,
+     "rural_乡村": 0.044
+    },
+    "detail": "总计29,222,814人；城区14,763,135；镇区13,175,995；乡村1,283,684（按教育部表格计算）。注意：县城一般计入“镇区”，地级市及县级市主城区计入“城区”，与“县中”口径不同",
+    "scope": "全国",
+    "year": 2024,
+    "source": "教育部《2024年教育统计数据》普通高中教育学生分举办者情况",
+    "url": "http://www.moe.gov.cn/jyb_sjzl/moe_560/2024/quanguo/202603/t20260317_1431163.html",
+    "confidence": "high"
+   },
+   {
+    "metric": "普通高中学校数按所在地分布（城区/镇区/乡村）",
+    "value": {
+     "urban_城区": 8407,
+     "town_镇区": 6426,
+     "rural_乡村": 922,
+     "total": 15755
+    },
+    "scope": "全国",
+    "year": 2024,
+    "source": "教育部《2024年教育统计数据》普通高中校数、班数",
+    "url": "http://www.moe.gov.cn/jyb_sjzl/moe_560/2024/quanguo/202603/t20260317_1431164.html",
+    "confidence": "high"
+   },
+   {
+    "metric": "普通高中在校生按旧口径分布（城市/县镇/农村）",
+    "value": {
+     "city_城市": 0.448,
+     "county_town_县镇": 0.51,
+     "rural_农村": 0.042
+    },
+    "detail": "在校生24,548,227：城市10,987,519；县镇12,527,046；农村1,033,662",
+    "scope": "全国",
+    "year": 2011,
+    "source": "国家统计局《中国统计年鉴2012》表20-23 普通高中学校和学生情况",
+    "url": "https://www.stats.gov.cn/sj/ndsj/2012/html/U2023C.HTM",
+    "confidence": "high"
+   },
+   {
+    "metric": "民办普通高中占比",
+    "value": {
+     "school_share": 0.3059,
+     "student_share": 0.2014,
+     "students_10k": 588.49
+    },
+    "scope": "全国",
+    "year": 2024,
+    "source": "2024年全国教育事业发展统计公报（中国教育在线转载）",
+    "url": "https://www.eol.cn/shuju/tongji/jysy/202506/t20250611_2674041.shtml",
+    "confidence": "high"
+   },
+   {
+    "metric": "普通高中寄宿生占在校生比例",
+    "value": 0.686,
+    "detail": "寄宿生20,041,000 / 在校生29,222,814（计算值）",
+    "scope": "全国",
+    "year": 2024,
+    "source": "教育部《2024年教育统计数据》普通高中教育学生分类型情况",
+    "url": "http://www.moe.gov.cn/jyb_sjzl/moe_560/2024/quanguo/202603/t20260317_1431157.html",
+    "confidence": "high"
+   },
+   {
+    "metric": "省级示范高中招生计划占全部普高招生计划比例（合肥市区）",
+    "value": 0.6832,
+    "detail": "22所省示范（含校区）计划22990人 / 普高计划33650人；四大名校（一中、六中、八中、168）12580人，占37.39%",
+    "scope": "合肥市区",
+    "year": 2025,
+    "source": "合肥家长圈（转述合肥市教育局中招计划）",
+    "url": "https://www.toutiao.com/zixun/7522318312060028968/",
+    "confidence": "medium"
+   },
+   {
+    "metric": "省市示范高中招生占普高招生比例（武汉）",
+    "value": 0.78,
+    "detail": "省、市示范高中拟招约2.88万人，读普高的初中毕业生约3.68万人",
+    "scope": "武汉",
+    "year": 2012,
+    "source": "中国教育在线",
+    "url": "https://www.eol.cn/hubei/hubeinews/201204/t20120427_770695.shtml",
+    "confidence": "medium"
+   },
+   {
+    "metric": "省、市级示范性高中录取人数占普通高中录取人数比例（郑州）",
+    "value": 0.587,
+    "scope": "郑州市区",
+    "year": 2008,
+    "source": "郑州晚报 2009-07-21（经搜索摘要转述，未逐字核对原版面）",
+    "url": "https://zzwb.zynews.cn/page/2/2009-07/21/A09/20090721A09_pdf.PDF",
+    "confidence": "low"
+   },
+   {
+    "metric": "某地级市城区：1所旗舰校+2所重点校学生占全部高中样本比例",
+    "value": 0.524,
+    "detail": "样本5239人中旗舰1148、重点1597（计算值）；样本已剔除中考400分以下；全市高中计划只覆盖不超过65.5%的初中毕业生",
+    "scope": "某中部地级市（匿名）",
+    "year": 2010,
+    "source": "Huang, Li, Walker & Zhu, IZA DP 15756 (2022) Table 2",
+    "url": "https://docs.iza.org/dp15756.pdf",
+    "confidence": "high"
+   },
+   {
+    "metric": "甘肃4县样本中就读重点（magnet）高中的比例",
+    "value": 0.54,
+    "detail": "样本口径（有高中记录者），非全县人口比例",
+    "scope": "甘肃4个农村县",
+    "year": 2005,
+    "source": "Park, Shi, Hsieh & An (2015) Table 2",
+    "url": "https://iems.ust.hk/assets/publications/working-papers-2015/iemswp2015-07.pdf",
+    "confidence": "medium"
+   }
+  ],
+  "zhongkao": [
+   {
+    "metric": "普高招生 / (普高+中职招生)",
+    "value": 0.744,
+    "detail": "普高1074.93万，中职369.93万（公报未明确是否含技工）",
+    "scope": "全国",
+    "year": 2025,
+    "source": "2025年全国教育事业发展统计公报",
+    "url": "https://www.eol.cn/news/yaowen/202607/t20260707_2753348.shtml",
+    "confidence": "high"
+   },
+   {
+    "metric": "普高招生 / 初中毕业生",
+    "value": 0.624,
+    "detail": "1074.93万 / 1723.74万（计算值，含复读、跨年等口径差异）",
+    "scope": "全国",
+    "year": 2025,
+    "source": "2025年全国教育事业发展统计公报",
+    "url": "https://www.eol.cn/news/yaowen/202607/t20260707_2753348.shtml",
+    "confidence": "high"
+   },
+   {
+    "metric": "普高招生 / (普高+中职招生，不含技工)",
+    "value": 0.712,
+    "detail": "普高1036.20万，中职418.33万；普高招生/初中毕业生1698.24万 = 61.0%",
+    "scope": "全国",
+    "year": 2024,
+    "source": "2024年全国教育事业发展统计公报",
+    "url": "https://www.eol.cn/shuju/tongji/jysy/202506/t20250611_2674041.shtml",
+    "confidence": "high"
+   },
+   {
+    "metric": "高中阶段毛入学率",
+    "value": 0.92,
+    "scope": "全国",
+    "year": 2025,
+    "source": "2025年全国教育事业发展统计公报",
+    "url": "https://www.eol.cn/news/yaowen/202607/t20260707_2753348.shtml",
+    "confidence": "high"
+   },
+   {
+    "metric": "普高招生计划占中考报名人数（合肥市区）",
+    "value": 0.7862,
+    "detail": "报名42800人，计划33650；2020–2023约69%，2024年72%；省示范计划占报名人数约53.7%（22990/42800，计算值），四大名校约29.4%",
+    "scope": "合肥市区",
+    "year": 2025,
+    "source": "合肥家长圈/澎湃转述",
+    "url": "https://www.toutiao.com/zixun/7522318312060028968/",
+    "confidence": "medium"
+   },
+   {
+    "metric": "深圳普高录取率 / 公办普高录取率",
+    "value": {
+     "all": 0.73,
+     "public": 0.52
+    },
+    "detail": "计划13.7万，其中公办普高7.4万；口径争议较大",
+    "scope": "深圳",
+    "year": 2025,
+    "source": "媒体汇总（搜索摘要）",
+    "url": "",
+    "confidence": "low"
+   },
+   {
+    "metric": "北京普高 vs 中职招生规模",
+    "value": {
+     "academic_10k": 8.5,
+     "vocational_10k": 3.3
+    },
+    "detail": "约72%（计算值）",
+    "scope": "北京",
+    "year": 2025,
+    "source": "新京报等媒体转述北京市教委计划（搜索摘要）",
+    "url": "https://m.bjnews.com.cn/detail/1742290430168377.html",
+    "confidence": "medium"
+   },
+   {
+    "metric": "济宁“初升高”比例",
+    "value": 0.713,
+    "detail": "2023年51.9%；公办高中录取占比79%",
+    "scope": "济宁",
+    "year": 2025,
+    "source": "媒体报道（搜索摘要）",
+    "url": "",
+    "confidence": "low"
+   },
+   {
+    "metric": "广东“普高率”规划目标",
+    "value": 0.7,
+    "scope": "广东",
+    "year": 2030,
+    "source": "广东“十五五”规划纲要（搜索摘要）",
+    "url": "",
+    "confidence": "medium"
+   },
+   {
+    "metric": "郑州省级示范高中分配生（指标到校）计划/实录",
+    "value": {
+     "plan": 2761,
+     "admitted": 2202,
+     "fill_rate": 0.798
+    },
+    "detail": "14所省示范；分配生占统招计划45%；郑州2009普高计划20694人约占考生69.4%",
+    "scope": "郑州市区",
+    "year": 2009,
+    "source": "郑州晚报 2009-07-21（搜索摘要）",
+    "url": "https://zzwb.zynews.cn/page/2/2009-07/21/A09/20090721A09_pdf.PDF",
+    "confidence": "low"
+   },
+   {
+    "metric": "贫困县参加中考的学生比例",
+    "value": 0.6,
+    "detail": "非贫困县接近100%；贫困县学生上普高、上重点普高的概率约为非贫困县的1/1.5",
+    "scope": "某省级地区（匿名），30万+学生行政数据",
+    "year": 2017,
+    "source": "Loyalka, Chu, Wei, Johnson & Reniker (2017) The China Quarterly 229",
+    "url": "https://www.cambridge.org/core/journals/china-quarterly/article/inequalities-in-the-pathway-to-college-in-china-when-do-students-from-poor-areas-fall-behind/680E82E79996F913424E1B0FC8EA5788",
+    "confidence": "high"
+   },
+   {
+    "metric": "择校生（三限生）政策：比例上限与取消时间",
+    "value": {
+     "cap_2011": 0.3,
+     "cap_2012": 0.2,
+     "abolish_within_years_from_2012": 3
+    },
+    "detail": "“三限”=限分数、限人数、限钱数；2012秋起择校生比例降到20%以内，3年内取消。广东过渡：2012年20%、2013年15%、2014年10%、2015年全省取消",
+    "scope": "全国/广东",
+    "year": 2012,
+    "source": "多份地方文件与媒体转述（未核到教育部原文文号）",
+    "url": "https://www.eol.cn/hubei/hb_gk/gkxw/201207/t20120725_816296.shtml",
+    "confidence": "medium"
+   },
+   {
+    "metric": "各省取消公办高中择校费时间",
+    "value": {
+     "上海/浙江": 2012,
+     "北京": 2014,
+     "20个省份": 2015,
+     "7个省份": 2016,
+     "重庆": 2019
+    },
+    "scope": "全国31省",
+    "year": 2024,
+    "source": "汪栋、王子威《“县中塌陷”水平的测度与时空异质性分析》现代教育论丛 2024(3) 表3",
+    "url": "https://xdjylc.scnu.edu.cn/cn/article/id/6423356e-1bb8-43dd-8c45-b2754112c4ae",
+    "confidence": "medium"
+   },
+   {
+    "metric": "择校生占各类公办高中名额比例与费用（取消前）",
+    "value": {
+     "flagship_regulated_fee": 0.19,
+     "elite_regulated_fee": 0.138,
+     "normal_public_regulated_fee": 0.107,
+     "unregulated_fee_flagship": 0.122,
+     "unregulated_fee_elite": 0.118
+    },
+    "detail": "2010年择校费：旗舰校每年+1万元、重点校每年+8000元（基本学费每年330元）；“非规范”高价生学费可达约1万美元；Dee & Lan (2015)内蒙古某市择校生约一次性3000美元",
+    "scope": "某中部地级市城区",
+    "year": 2010,
+    "source": "Huang, Li, Walker & Zhu, IZA DP 15756 (2022) Table 2 及正文",
+    "url": "https://docs.iza.org/dp15756.pdf",
+    "confidence": "high"
+   },
+   {
+    "metric": "优质普高招生名额分配到区域内初中（指标到校）比例要求",
+    "value": 0.5,
+    "detail": "国家层面要求不低于50%（转述，未核到原文）；四川省示范≥50%；重庆≥50%、鼓励到70%；武汉省示范计划的50%",
+    "scope": "全国/川渝鄂",
+    "year": 2022,
+    "source": "四川、重庆教育厅文件及媒体转述",
+    "url": "https://jw.cq.gov.cn/zwgk/zfxxgkml/zcwj/fzhsxwj/202012/W020250217361258592983.doc",
+    "confidence": "medium"
+   }
+  ],
+  "outcomes_by_tier": [
+   {
+    "metric": "达到本科（四年制）资格线的比例，按高中层级",
+    "value": {
+     "tier1": 0.81,
+     "tier2": 0.26,
+     "tier3_4": 0.05,
+     "all": 0.42
+    },
+    "detail": "能达到重点（elite）大学线的几乎全部是一类高中毕业生；一类校38%教师为特级/高级“superior”，二类16%，三四类7%",
+    "scope": "某省会城市两个郊区（匿名），2007年中考队列",
+    "year": 2007,
+    "source": "Hoekstra, Mouganie & Wang (2018) JOLE 36(4)；NBER WP 22337 Table 1 描述统计",
+    "url": "https://www.nber.org/papers/w22337",
+    "confidence": "high"
+   },
+   {
+    "metric": "国家级示范高中评估标准中的升学要求",
+    "value": {
+     "elite_college_line_share_min": 0.25,
+     "four_year_line_share_min": 0.6
+    },
+    "detail": "该省教育厅国家级示范校评估方案：至少25%学生达省重点线、60%达本科线；至少30%教师有研究生学历或特级/高级职称",
+    "scope": "Hoekstra等研究所在省",
+    "year": 2016,
+    "source": "Hoekstra, Mouganie & Wang NBER WP 22337 脚注8",
+    "url": "https://www.nber.org/papers/w22337",
+    "confidence": "medium"
+   },
+   {
+    "metric": "两所精英大学（A、B）非直辖市生源中来自县域高中的比例",
+    "value": {
+     "2007": 0.244,
+     "2013": 0.219
+    },
+    "detail": "地市级高中占75.6%→78.1%；生源高中数868→746所；2013年1981个县级区只有431个（21.8%）出过这两校学生，其中87.5%的县生源全来自县内同一所高中；分区：华东35.2%、华中27.7%、西南16.7%、华北14.1%，东北/西北/华南约一成",
+    "scope": "全国（非直辖市）",
+    "year": 2013,
+    "source": "郭丛斌，北京大学教育经济研究所简报2021年第02期",
+    "url": "https://iee.gse.pku.edu.cn/__local/3/9E/93/F4C9531BF25C77D0DACAD74A86F_45D8DFA5_68399.pdf",
+    "confidence": "high"
+   },
+   {
+    "metric": "县域高中高三学生家庭背景",
+    "value": {
+     "family_income_below_50k": 0.65,
+     "father_middle_school_or_less": 0.737
+    },
+    "detail": "10省70所县中线上调查；农业户口占比原文显示为“74.%”（缺位）",
+    "scope": "10省70所县中",
+    "year": 2020,
+    "source": "郭丛斌，北大教育经济研究所简报2021第02期",
+    "url": "https://iee.gse.pku.edu.cn/__local/3/9E/93/F4C9531BF25C77D0DACAD74A86F_45D8DFA5_68399.pdf",
+    "confidence": "high"
+   },
+   {
+    "metric": "极端案例：县最好高中一本上线率",
+    "value": {
+     "2016": 0.0,
+     "2017": 0.002
+    },
+    "detail": "广西凤山高级中学2016年零一本；2017年千余考生仅2人上一本线",
+    "scope": "广西凤山县",
+    "year": 2017,
+    "source": "北大简报引新闻",
+    "url": "https://iee.gse.pku.edu.cn/__local/3/9E/93/F4C9531BF25C77D0DACAD74A86F_45D8DFA5_68399.pdf",
+    "confidence": "medium"
+   },
+   {
+    "metric": "湖北某县中一本率与清北人数",
+    "value": {
+     "yiben_rate_2021": 0.31,
+     "qingbei_2004_2008": 16,
+     "qingbei_2021": 0
+    },
+    "detail": "2014–2021年县中考前100名超过一半流失，前30名只约15%留在本地",
+    "scope": "湖北某县",
+    "year": 2021,
+    "source": "杨华、雷望红等《县乡的孩子们》九省调研（南方都市报转述）",
+    "url": "https://m.mp.oeeee.com/oe/BAAFRD000020240122903032.html",
+    "confidence": "medium"
+   },
+   {
+    "metric": "西南某省部分县中特控线（原一本）上线率",
+    "value": "约2%；5%–7%已算不错",
+    "scope": "西南某省",
+    "year": 2024,
+    "source": "南风窗报道（作者团队调研）",
+    "url": "https://chinadigitaltimes.net/chinese/705948.html",
+    "confidence": "low"
+   },
+   {
+    "metric": "各省前5所中学清北录取占全省清北比例（集中度）",
+    "value": {
+     "天津": 0.944,
+     "陕西": "接近0.9",
+     "京沪渝": ">0.75",
+     "浙江": ">0.6",
+     "辽宁/广东": "0.4–0.6",
+     "湖南": "<0.5",
+     "江苏/山东": "<0.3"
+    },
+    "scope": "全国各省",
+    "year": 2022,
+    "source": "星球数据派（知乎）/搜狐转载；分母未明确，自媒体统计",
+    "url": "https://www.sohu.com/a/681803439_121651744",
+    "confidence": "low"
+   },
+   {
+    "metric": "北京6所超级中学占北京清北录取比例",
+    "value": 0.65,
+    "detail": "北京清北639人；人大附119、十一72、北师大实验64、四中57、清华附53、北师大二附50（含自招/综评，学校/媒体统计）",
+    "scope": "北京",
+    "year": 2017,
+    "source": "未来网/中国教育在线",
+    "url": "https://gaokao.eol.cn/news/201707/t20170727_1543864.shtml",
+    "confidence": "low"
+   },
+   {
+    "metric": "北大自招+保送名单的学校集中度",
+    "value": {
+     "北京前5校": 0.545,
+     "安徽前4校": 0.494,
+     "甘肃西北师大附中": 0.375
+    },
+    "detail": "湖南33名保送生全部来自长沙4所；河南33名中31名来自郑州2校",
+    "scope": "多省",
+    "year": 2018,
+    "source": "21世纪经济报道（界面转载），依据阳光高考公示名单统计",
+    "url": "https://www.jiemian.com/article/2237817.html",
+    "confidence": "medium"
+   },
+   {
+    "metric": "朝阳区本科上线率（区均值，非分层）",
+    "value": 0.968,
+    "scope": "北京朝阳区",
+    "year": 2024,
+    "source": "朝阳区教科院公布，升学网站转载",
+    "url": "https://www.zizzs.com/gk/gaokao/194798.html",
+    "confidence": "low"
+   },
+   {
+    "metric": "内蒙古固阳县高中本科上线率",
+    "value": {
+     "2021": 0.72,
+     "2025": 0.955
+    },
+    "detail": "学校/地方宣传口径，可能有夸大或口径（如含艺体、专项）差异",
+    "scope": "内蒙古固阳县",
+    "year": 2025,
+    "source": "央广网",
+    "url": "https://nm.cnr.cn/gstjnmg/20250626/t20250626_527229694.shtml",
+    "confidence": "low"
+   }
+  ],
+  "causal_effects": [
+   {
+    "study": "Park, Shi, Hsieh & An 2015, Journal of Comparative Economics 43(4):825-843",
+    "setting": "甘肃4个农村县，2005年中考队列；县重点（magnet）高中 vs 普通高中",
+    "method": "RD（中考录取线）",
+    "effect": "高考成绩 +0.39 SD（0.387）；达到大学录取线概率 +27.8个百分点；无性别/年龄异质性。注：仅62%学生观测到高考成绩，录取线处就读概率跳升约为Hoekstra样本的一半",
+    "url": "https://iems.ust.hk/assets/publications/working-papers-2015/iemswp2015-07.pdf",
+    "confidence": "high"
+   },
+   {
+    "study": "Hoekstra, Mouganie & Wang 2018, Journal of Labor Economics 36(4):841-884（NBER WP 22337, 2016）",
+    "setting": "某人口大省省会两个郊区，2007年中考队列，教育部行政数据，高考成绩观测率91%",
+    "method": "RD（多断点堆叠 + 一类校断点）",
+    "effect": "跨所有断点平均：同伴质量+0.2 SD，但高考无提升；只在一类/二类断点有效：资格（ITT）高考+0.07~0.09 SD，就读（TOT）约+0.16 SD；本科资格+5~14个百分点（大带宽才显著）；过一类线使同伴质量+0.30~0.37 SD、就读一类校概率+66~70个百分点；一类校内部更挑剔的学校无效。机制归因于特级/高级教师而非同伴",
+    "url": "https://www.nber.org/papers/w22337",
+    "confidence": "high"
+   },
+   {
+    "study": "Anderson, Gong, Hong & Zhang 2016, China Economic Review 40:121-134",
+    "setting": "北京某郊区，2005年中考队列",
+    "method": "RD",
+    "effect": "最顶尖的重点（elite）校对高考无效应；更挑剔的非重点校 +0.36 SD（据Huang等2022转述）",
+    "url": "https://ideas.repec.org/a/eee/chieco/v40y2016icp121-134.html",
+    "confidence": "medium"
+   },
+   {
+    "study": "Dee & Lan 2015, Economics of Education Review 47:128-142",
+    "setting": "内蒙古某大城市，2006–2008年入学；主要识别择校生边际",
+    "method": "模糊RD",
+    "effect": "过线显著降低费用、提高进重点概率，但对边际学生学业成绩（统考、高考）没有实质提升",
+    "url": "https://ideas.repec.org/a/eee/ecoedu/v47y2015icp128-142.html",
+    "confidence": "high"
+   },
+   {
+    "study": "Wu, Wei, Zhang & Zhou 2019, China Economic Review 55:143-167",
+    "setting": "湖南某贫困农村县，2008–2010年中考",
+    "method": "RD（两套录取程序）",
+    "effect": "重点高中：对边际生高考效应小且不显著（点估计略负）；重点班（实验班）：高考 +0.435 SD；教师效应约为同伴效应的40%；实验班提高上高质量大学概率",
+    "url": "https://scholars.hkbu.edu.hk/en/publications/elite-schools-magnet-classes-and-academic-performances-regression-2/",
+    "confidence": "high"
+   },
+   {
+    "study": "Huang, Li, Walker & Zhu 2022, IZA DP 15756（工作论文）",
+    "setting": "某中部地级市城区全体考生，2010年中考，1旗舰+2重点+4普通公办+11民办",
+    "method": "累积多断点RD + 断点内标准化合并模糊RD",
+    "effect": "重点 vs 普通公办、普通公办 vs 低质民办：不显著；旗舰 vs 重点：学业水平考试 -0.43 SD（1%显著，仅纯分数录取者；政策照顾/愿付择校费者为+0.11、-0.04且不显著）；女生、半城镇户口、中考理科偏弱者负效应更大。结果变量是会考而非高考",
+    "url": "https://docs.iza.org/dp15756.pdf",
+    "confidence": "high"
+   },
+   {
+    "study": "王骏、孙志军 2015,《北京大学教育评论》13(4):82-109",
+    "setting": "F县普通高中",
+    "method": "RD",
+    "effect": "理科生总分、语文、数学显著更高但“差距不大”；文科生不显著；女生和城市学生总分效应更大，农村学生语数效应更大。具体系数未在摘要中给出",
+    "url": "https://ericdata.com/tw/detail.aspx?no=212890",
+    "confidence": "medium"
+   },
+   {
+    "study": "《“宁做鸡头”不做“凤尾”？——新高考背景下优质高中对学生学业表现的影响研究》（作者、期刊未核实）",
+    "setting": "某新高考省份高中毕业生调查数据",
+    "method": "RD",
+    "effect": "优质高中未显著提升高考成绩；勉强进入第一梯队者相对在第二梯队做“鸡头”可能处于劣势；选科和学习投入差异不大",
+    "url": "https://www.efnchina.com/uploadfile/2023/paper/2604.pdf",
+    "confidence": "low"
+   },
+   {
+    "study": "Canaan, Mouganie & Zhang 2025, Journal of Policy Analysis and Management 44(4):1347-1373",
+    "setting": "甘肃某地级市旗舰高中，2015–2017入学，校内分实验班",
+    "method": "RD（入学分班考试）",
+    "effect": "数学 +0.23 SD并持续三年，语文英语较小；进入精英大学 +17个百分点（主要经由高考分数）；机制：更好的教师",
+    "url": "https://ideas.repec.org/a/wly/jpamgt/v44y2025i4p1347-1373.html",
+    "confidence": "high"
+   },
+   {
+    "study": "Ma & Shi（河北某城市重点高中实验班，据Huang等2022转述）",
+    "setting": "河北某重点高中",
+    "method": "RD",
+    "effect": "实验班使高一第一学期期末总分 +0.65 SD（短期）",
+    "url": "https://docs.iza.org/dp15756.pdf",
+    "confidence": "low"
+   },
+   {
+    "study": "Abdulkadiroğlu, Angrist & Pathak 2014, Econometrica 82(1):137-196",
+    "setting": "波士顿、纽约考试学校（exam schools）",
+    "method": "模糊RD",
+    "effect": "对大多数学生成绩几乎无效应；同伴质量大幅跳升但对成绩和大学质量几乎无因果作用；波士顿少数族裔英语有小幅正效应",
+    "url": "https://www.nber.org/papers/w17264",
+    "confidence": "high"
+   },
+   {
+    "study": "Dobbie & Fryer 2014（纽约考试学校，据Huang等转述）",
+    "setting": "纽约",
+    "method": "模糊RD",
+    "effect": "对大学入学、毕业、大学质量无正效应，如有则略负",
+    "url": "https://docs.iza.org/dp15756.pdf",
+    "confidence": "medium"
+   },
+   {
+    "study": "Pop-Eleches & Urquiola 2013, American Economic Review 103(4):1289-1324",
+    "setting": "罗马尼亚，近2000个断点",
+    "method": "RD",
+    "effect": "进入更好学校提高高中毕业会考（Baccalaureate）成绩，不影响参考率；SD量级本次未核实",
+    "url": "https://www.nber.org/papers/w16886",
+    "confidence": "medium"
+   },
+   {
+    "study": "Jackson 2010（特立尼达和多巴哥）；Lucas & Mbiti 2014（肯尼亚）；Clark 2010（英国文法学校）——据Huang等转述",
+    "setting": "发展中国家/英国",
+    "method": "RD/IV",
+    "effect": "特立尼达：精英中学对毕业考有较大正效应；肯尼亚国家级中学：估计精确但不显著；英国文法学校：测试成绩效应小",
+    "url": "https://docs.iza.org/dp15756.pdf",
+    "confidence": "medium"
+   }
+  ],
+  "peer_teacher": [
+   {
+    "study": "Ding & Lehrer 2007, Review of Economics and Statistics 89(2):300-312",
+    "setting": "江苏某县，1995年初中毕业队列，高中→高考",
+    "finding": "同伴效应为正且非线性；同伴成绩方差越大越不利；同伴质量提高1%的边际效应相当于自身前期成绩提高1%的8–15%；高能力学生受益更大。省重点线附近±20分（685分制）子样本：入校分几乎相同，省重点生高考平均高约20分（约3%）",
+    "url": "https://www.nber.org/papers/w12305",
+    "confidence": "high"
+   },
+   {
+    "study": "Hoekstra, Mouganie & Wang 2018 JOLE",
+    "setting": "同上",
+    "finding": "同伴质量在所有断点都跳升，但只有特级/高级教师占比跳升的一类/二类断点有成绩回报 → 教师质量而非同伴；若superior教师增值0.25 SD即可解释全部回报。教师结构：一类38%、二类16%、三四类7%为superior；一类班额55人 vs 二类53、三四类51",
+    "url": "https://www.nber.org/papers/w22337",
+    "confidence": "high"
+   },
+   {
+    "study": "Hannum & Park 2001（据Hoekstra等转述）",
+    "setting": "甘肃",
+    "finding": "最高职级教师相对最低职级使学生成绩高0.17 SD",
+    "url": "https://www.nber.org/papers/w22337",
+    "confidence": "medium"
+   },
+   {
+    "study": "Park, Shi, Hsieh & An 2015",
+    "setting": "甘肃4县",
+    "finding": "重点校最高职级教师占比比普通校高0.10（普通校0.07）；本科学历教师占比高0.42（普通校0.34）；班额多约9人（+17%）；在校生多852人；图书多1026%；达标办学条件概率高52.6个百分点（普通校仅32%达标）",
+    "url": "https://iems.ust.hk/assets/publications/working-papers-2015/iemswp2015-07.pdf",
+    "confidence": "high"
+   },
+   {
+    "study": "Wu, Wei, Zhang & Zhou 2019",
+    "setting": "湖南贫困县",
+    "finding": "实验班中教师效应约为同伴效应的40%（提示性证据）",
+    "url": "https://scholars.hkbu.edu.hk/en/publications/elite-schools-magnet-classes-and-academic-performances-regression-2/",
+    "confidence": "medium"
+   },
+   {
+    "study": "Canaan, Mouganie & Zhang 2025 JPAM",
+    "setting": "甘肃旗舰校实验班",
+    "finding": "实验班同伴更强、班额更小、教师更好、教学更深更快；作者认为教师是最可能机制",
+    "url": "https://ideas.repec.org/a/wly/jpamgt/v44y2025i4p1347-1373.html",
+    "confidence": "high"
+   },
+   {
+    "study": "Xu, Zhang & Zhou 2022, Journal of Human Resources 57(2):555-596",
+    "setting": "全国代表性初中随机分班（CEPS），非高中",
+    "finding": "留级生同伴占比+1个百分点 → 非留级生学业成绩约-0.021 SD；46人班多1名留级生约-0.042 SD；主要来自男生留级生",
+    "url": "https://jhr.uwpress.org/content/57/2/555",
+    "confidence": "high"
+   },
+   {
+    "study": "《“十四五”县域普通高中发展提升行动计划》",
+    "setting": "全国县中，2020",
+    "finding": "3776所县中生师比超标；县中教师缺编7.7万；1121所县中校舍不达标；县中百生教学用计算机仅为市区六成",
+    "url": "https://www.nbd.com.cn/articles/2021-12-16/2042270.html",
+    "confidence": "high"
+   },
+   {
+    "study": "北师大教育国情调查中心《县域普通高中发展提升行动计划实施调研报告》（虎嗅转述）",
+    "setting": "全国",
+    "finding": "城区高中2023年经费投入平均总量比县中高2800多万元",
+    "url": "https://www.huxiu.com/article/4799894.html",
+    "confidence": "medium"
+   }
+  ],
+  "notes": [
+   "省级示范性/重点高中占全国普通高中学校数、在校生的比例：没有查到全国统一统计（教育部统计表不按示范等级分类），各省也极少公开在校生口径。只找到城市招生计划口径：合肥2025省示范占普高计划68%（约占中考报名54%）、武汉2012省市示范约占普高学生78%、郑州2008省市示范约占普高录取58.7%。这些是省会城市，县域会低很多。",
+   "“城市/县城/乡镇”学生比例：教育部按学校所在地分城区/镇区/乡村，县城通常算镇区，因此镇区45%近似“县城+乡镇”，并不等于县中口径（县中按举办主体，2020年为59%）。乡村高中只有约4%。",
+   "Hoekstra等：0.07~0.09 SD是“过线资格”效应（ITT），0.16 SD是NBER工作论文报告的“就读”效应。Huang等转述期刊版为0.07 SD，口径可能不同，使用时注意区分。",
+   "因果效应总体规律：以全国大多数学校（城市、学校密集、层级间差异小）为对象时，跨过重点线的边际效应约为0或很小（0~0.1 SD），甚至在最顶尖学校为负（Huang等-0.43 SD，结果是会考）；在资源差距极大的贫困农村县（甘肃），重点校效应很大（+0.39 SD，本科资格+28个百分点）；校内实验班效应往往大于校间效应（+0.23~0.44 SD）。国外考试学校（波士顿/纽约）大多为零。",
+   "所有RD都是“边际学生”的局部效应：不能推断中考远高于录取线的学生在普通校会怎样，也不能直接推断平均处理效应。",
+   "层级间升学结果的原始差距（例如一类校81%、二类26%、三四类5%达本科线）主要是生源筛选的结果；因果部分只占很小一块，模拟时应主要靠能力/中考分驱动，学校层次只加小幅修正。",
+   "清北/超级中学集中度多来自学校喜报、自媒体统计（含自主招生/强基/保送等），可能有夸大或重复计数；北大简报的两所精英大学生源数据（2007–2013）是唯一的学术口径数据，但两所大学匿名、只到2013年。",
+   "县中一本率/特控线上线率：只找到个案（湖北某县中2021年约31%；西南某省部分县中2%~7%；广西凤山2016年零一本）。没有找到县中整体本科率、一本率的系统统计。学校/地方宣传的本科率（如固阳95.5%）可能含艺体/专项等口径，已标low。",
+   "某市各高中按层次的本科上线率：没有找到官方逐校公布的可靠数据（多地禁止宣传升学率/状元）。Hoekstra 2007队列的分层本科资格率是目前最可靠的分层数据，但只代表某省会郊区、2010年前后。",
+   "985率按高中层次：没有查到。",
+   "《宁做鸡头不做凤尾》一文的作者和期刊没有核实（原PDF链接404），只能依据搜索摘要，标low。王骏、孙志军2015只看到摘要，没有效应系数。",
+   "国家要求优质高中指标到校比例不低于50%的教育部原文没有核到文号；“三限”择校生在2012–2015年间按20%→取消执行，各省取消时间见汪栋等2024。择校/高价生在取消前约占重点校名额的25%–30%（Huang等2010年数据：规范择校费13.8%–19%，加上非规范约12%）。",
+   "Park等(2015)、Hoekstra等(2016)、Huang等(2022)、Ding & Lehrer (2006)全文由PDF提取阅读；其他研究多数只读到摘要或二手转述，已按此标注置信度。"
+  ]
+ },
+ "tutoring_left_behind": {
+  "meta": {
+   "compiled": "2026-10-17",
+   "scope": "中国大陆；补习（校外培训）参与率/花费/效果；留守儿童规模/学业差距/升学；随迁（流动）子女",
+   "confidence_scale": "high=直接读到原文/官方表格；medium=只读到摘要或作者综述/简报转述；low=媒体二手转述或未能核对原文"
+  },
+  "tutoring": {
+   "participation": [
+    {
+     "metric": "中小学生校外学科类培训参与率（全国，加权，CIEFR-HS 各轮）",
+     "values": {
+      "2017": "36.1%",
+      "2019": "约24%",
+      "2022(双减后,2021-22学年)": "16.5%",
+      "2023": "13.5%"
+     },
+     "note": "同文表1未加权均值：2017 0.38；2019 0.243；2021第一批(双减前,2020秋-2021暑) 0.243；2021第二批(双减后,2021秋-2022暑) 0.174；2023 0.137。非学科类(兴趣)：0.209/0.155/0.163/0.17/0.135",
+     "source": "魏易《减负政策的短期效果评估：基于中国教育财政家庭调查的分析》，北大中国教育财政科学研究所《中国教育财政》简报2024年第11期",
+     "year": 2024,
+     "url": "https://ciefr.pku.edu.cn/docs/2024-12/bcd3767a1681440c99e79c5c9e94fcd0.pdf",
+     "confidence": "high"
+    },
+    {
+     "metric": "双减政策对学科类培训参与率的因果效应",
+     "values": {
+      "CEM加权": "-8.1个百分点(SE 0.013)",
+      "个体FE-DID": "-6.2个百分点(SE 0.016)",
+      "非学科类": "不显著(-1.0/-0.9pp)"
+     },
+     "note": "按家庭人均收入五等分DID：只有60-80%分位(中上收入)显著下降；0-60%和最高20%无显著变化。双减后校内课后服务参与率+6.1pp(DID)/托管+10.9pp(CEM)",
+     "source": "同上，魏易2024，表2、图3",
+     "year": 2024,
+     "url": "https://ciefr.pku.edu.cn/docs/2024-12/bcd3767a1681440c99e79c5c9e94fcd0.pdf",
+     "confidence": "high"
+    },
+    {
+     "metric": "2017-2023 学科类培训参与率（《中国教育财政家庭调查报告(2023)》口径）",
+     "values": {
+      "2016-17学年": "34.3%",
+      "2021-22学年": "15.1%",
+      "2022-23学年": "13.5%",
+      "非学科类": "17.7%→18.9%→13.6%"
+     },
+     "note": "与上一条口径略有差异(加权/样本不同)。报告称：家庭消费水平越高、母亲学历越高参与率越高；低消费家庭参与率下降更快；最高25%家庭校外培训支出是最低25%的6倍(学科类)/5.4倍(非学科类)；双减主要影响消费水平40-80%分位家庭",
+     "source": "魏易《〈中国教育财政家庭调查报告（2023）〉导论》，《中国教育财政》简报2025年11月11日",
+     "year": 2025,
+     "url": "https://ciefr.pku.edu.cn/docs/2025-11/7a932131bc8443fbbbd19c713b746e78.pdf",
+     "confidence": "high"
+    },
+    {
+     "metric": "2019（2018-19学年）学科类校外培训参与率，分学段×城乡（CIEFR-HS 2019）",
+     "values": {
+      "小学": {
+       "全国": "25.3%",
+       "城镇": "32.4%",
+       "农村": "14.9%",
+       "一线城市": "44.1%",
+       "二线": "36.5%",
+       "县城": "20.8%"
+      },
+      "初中": {
+       "全国": "27.8%",
+       "城镇": "36.5%",
+       "农村": "16.0%",
+       "一线城市": "57.3%",
+       "二线": "36.0%",
+       "县城": "22.8%"
+      },
+      "高中": {
+       "全国": "18.1%",
+       "城镇": "23.2%",
+       "农村": "9.0%",
+       "一线城市": "39.6%",
+       "二线": "25.7%",
+       "县城": "16.0%"
+      },
+      "合计": {
+       "全国": "24.4%",
+       "城镇": "31.4%",
+       "农村": "14.1%",
+       "一线城市": "46.2%",
+       "二线": "34.0%",
+       "县城": "20.1%"
+      }
+     },
+     "note": "兴趣类参与率：小学22.3%(城32.5/乡7.4)，初中9.6%，高中5.8%，合计15.5%(城22.2/乡5.5)。提供者：参与者中26.6%上机构、>70%主要找个人；农村87.6%找个人；在职教师有偿补习在农村和高中比例最高",
+     "source": "Wei Yi (魏易), Household Expenditure on Education in China: Key Findings From the CIEFR-HS, ECNU Review of Education 7(3), Table 5/6",
+     "year": 2024,
+     "url": "https://files.eric.ed.gov/fulltext/EJ1438084.pdf",
+     "confidence": "high"
+    },
+    {
+     "metric": "2017 vs 2019 义务教育阶段补习参与率，分城乡×学段",
+     "values": {
+      "农村小学": "21.0% → 15.5%",
+      "城镇小学": "40.5% → 33.4%",
+      "农村初中": "24.5% → 17.1%",
+      "城镇初中": "52.0% → 37.1%"
+     },
+     "note": "兴趣班：农村小学6.9→6.7%，城镇小学38.5→34.3%，农村初中3.1→2.7%，城镇初中21.7→14.2%。作者定性：低收入家庭参与率下降、高收入上升，未给分收入组数字",
+     "source": "魏易《2017-2019年我国义务教育阶段学生家庭教育支出情况的变化》，北大教育财政所科研简报 表4",
+     "year": 2021,
+     "url": "https://ciefr.pku.edu.cn/cbw/kyjb/cac4da171131482499f199e97d386fec.htm",
+     "confidence": "high"
+    },
+    {
+     "metric": "2017 基础教育阶段校外教育参与率（含学科+兴趣），城乡/学段/家庭消费分位",
+     "values": {
+      "校外教育总参与率": "47.2%（城镇57.2%，农村24.7%）",
+      "学科补习参与率": "城镇44.8%，农村21.8%；小学33.4%，初高中40%以上",
+      "兴趣班参与率": "城镇29.0%，农村5.4%；小学27.9%，初中16.2%，高中13.2%",
+      "按家庭消费": "最低5%家庭学科补习7.5%/兴趣0.8%；最高5%家庭学科补习54.3%/兴趣45.7%",
+      "按父母学历": "父母未上学<20%；大学及以上>70%（总参与率）"
+     },
+     "note": "47.2%是学科+兴趣合并口径；与上面学科类36-38%不矛盾",
+     "source": "魏易、刘舒畅，光明日报“数读”2018-02-03（基于CIEFR-HS 2017），新浪转载",
+     "year": 2018,
+     "url": "https://news.sina.cn/2018-02-03/detail-ifyremfz4122897.d.html",
+     "confidence": "medium"
+    },
+    {
+     "metric": "CEPS 2013-15 初中生参加任一科补习比例",
+     "values": {
+      "任一科": "48.5%",
+      "数学": "23.4%",
+      "英语": "26.1%",
+      "语文": "12.2%"
+     },
+     "source": "Sun, Shafiq, McClure, Guo 2020, International Journal of Educational Development 72, Table 1",
+     "year": 2020,
+     "url": "https://sites.pitt.edu/~mnshafiq/M_Najeeb_Shafiq_%28University_of_Pittsburgh%29/Research_files/Private%20tutoring%20in%20China%20%282020%29.pdf",
+     "confidence": "high"
+    },
+    {
+     "metric": "CFPS 2010 10-15岁儿童过去一年参加补习比例",
+     "values": {
+      "参加率": "25%",
+      "参加者年均花费": "1281元(SD 2166)"
+     },
+     "source": "Zhang Yueyun & Yu Xie, Family Background, Private Tutoring, and Children's Educational Performance in Contemporary China, Chinese Sociological Review 48(1)",
+     "year": 2016,
+     "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6226058/",
+     "confidence": "high"
+    },
+    {
+     "metric": "双减后全国调查（北师大中国教育与社会发展研究院）",
+     "values": {
+      "参加校外学科培训": "16.5%",
+      "参加非学科类培训": "36.7%",
+      "未参加学科培训": "83.5%"
+     },
+     "note": "学校抽样调查(3564所)，口径与CIEFR-HS不同；经魏易2024引述",
+     "source": "北京师范大学中国教育与社会发展研究院《全国“双减”成效调查报告》2022（魏易2024文献综述转引）",
+     "year": 2022,
+     "url": "https://ciefr.pku.edu.cn/docs/2024-12/bcd3767a1681440c99e79c5c9e94fcd0.pdf",
+     "confidence": "medium"
+    }
+   ],
+   "spending": [
+    {
+     "metric": "学科类校外培训支出（全体在校生平摊，含0）",
+     "values": {
+      "2017": "1777元",
+      "2023": "1350元",
+      "占该生家庭教育支出比例": "2017 10.5% → 2023 8.4%"
+     },
+     "note": "非学科类：633元→914元；占比4.6%→8.1%。表1未加权均值(含0)：学科类2017 2256元、2019 2022元、2021双减前 2454元、双减后 1508元、2023 1625元；双减使学科类支出对数-0.58~-0.73、占比-5.6~-6.7pp",
+     "source": "魏易2024，《中国教育财政》简报2024年第11期",
+     "year": 2024,
+     "url": "https://ciefr.pku.edu.cn/docs/2024-12/bcd3767a1681440c99e79c5c9e94fcd0.pdf",
+     "confidence": "high"
+    },
+    {
+     "metric": "2019 参与者的学科类培训年支出（元），分学段×城乡",
+     "values": {
+      "小学": {
+       "全国": 6580,
+       "城镇": 7811,
+       "农村": 2702,
+       "一线": 18125,
+       "二线": 7658,
+       "县城": 2895
+      },
+      "初中": {
+       "全国": 9887,
+       "城镇": 11772,
+       "农村": 4167,
+       "一线": 21748,
+       "二线": 13318,
+       "县城": 5012
+      },
+      "高中": {
+       "全国": 12208,
+       "城镇": 13628,
+       "农村": 6064,
+       "一线": 28602,
+       "二线": 13398,
+       "县城": 8021
+      },
+      "合计": {
+       "全国": 8438,
+       "城镇": 9926,
+       "农村": 3581,
+       "一线": 20881,
+       "二线": 10169,
+       "县城": 4495
+      }
+     },
+     "note": "仅参与者；中位数3000元（均值远高于中位数，分布右偏）。兴趣类参与者年均5340元(中位3000)。2017→2019参与者支出：学科类6139→8438元，兴趣类4105→5340元（参与率降、单价升）",
+     "source": "Wei Yi 2024, ECNU Review of Education 7(3), Table 5 & Table 8",
+     "year": 2024,
+     "url": "https://files.eric.ed.gov/fulltext/EJ1438084.pdf",
+     "confidence": "high"
+    },
+    {
+     "metric": "2017→2019 义务教育阶段有校外支出家庭的校外教育支出（元/学年，含补习+兴趣）",
+     "values": {
+      "农村小学": "1724 → 2449",
+      "城镇小学": "6246 → 8798",
+      "农村初中": "1729 → 3960",
+      "城镇初中": "6762 → 12312"
+     },
+     "source": "魏易2021，北大教育财政所科研简报 表4",
+     "year": 2021,
+     "url": "https://ciefr.pku.edu.cn/cbw/kyjb/cac4da171131482499f199e97d386fec.htm",
+     "confidence": "high"
+    },
+    {
+     "metric": "2017 学科补习/兴趣班花费与平摊费用",
+     "values": {
+      "学科补习": "全体生均平摊1982元；参与者平均5021元；市场规模约3369亿元",
+      "兴趣班": "生均平摊773元；参与者约3554元",
+      "城乡平摊（学科补习）": "城镇2712元，农村345元",
+      "机构补习参与者平均": "小学7410/初中8739/高中14042元",
+      "个人家教参与者平均": "小学3310/初中4610/高中4904元"
+     },
+     "source": "魏易、刘舒畅，光明日报2018-02-03（CIEFR-HS 2017），新浪转载",
+     "year": 2018,
+     "url": "https://news.sina.cn/2018-02-03/detail-ifyremfz4122897.d.html",
+     "confidence": "medium"
+    },
+    {
+     "metric": "家庭教育总支出占家庭总支出比例（非仅补习）",
+     "values": {
+      "2019 全国生均": "8139元，占家庭总支出10.8%"
+     },
+     "note": "2023报告：普高阶段农村低收入家庭教育负担率>20%；公办普高参与校外教育的家庭中校外部分占其教育支出60%以上；民办普高最低四分位家庭负担32.3%",
+     "source": "Wei Yi 2024 ECNU Review of Education；魏易2025 CIEFR-HS 2023报告导论",
+     "year": 2024,
+     "url": "https://files.eric.ed.gov/fulltext/EJ1438084.pdf",
+     "confidence": "high"
+    },
+    {
+     "metric": "补习支出占家庭收入比例（按收入分组）",
+     "values": {},
+     "note": "未查到可靠的“补习支出/家庭收入”分组数字；CIEFR-HS 只给到占家庭教育支出比例、分位倍数（最高25%为最低25%的6倍）。见notes",
+     "source": "",
+     "year": null,
+     "url": "",
+     "confidence": "n/a"
+    }
+   ],
+   "effects": [
+    {
+     "study": "Sun, Shafiq, McClure & Guo 2020, International Journal of Educational Development 72",
+     "data": "CEPS 2013-15 初中追踪",
+     "method": "PSM-DID（倾向值匹配+双重差分，消除不随时间变化的个体异质性）",
+     "effect": "全样本：补习与语文/数学/英语标准分无显著关系；总分小幅负向(-0.009，作者称“SD”，p<0.1)。分组：农村学生英语+0.036***（唯一显著正效应）；城镇数学+0.027*；补习降低负面情绪约0.06-0.085分(1-5量表)",
+     "url": "https://sites.pitt.edu/~mnshafiq/M_Najeeb_Shafiq_%28University_of_Pittsburgh%29/Research_files/Private%20tutoring%20in%20China%20%282020%29.pdf",
+     "year": 2020,
+     "source": "全文PDF（作者主页）",
+     "confidence": "high（数字为原文表5；但标准分量纲表述不清，换算成SD需谨慎）"
+    },
+    {
+     "study": "Guo, Chen, Zhai & Pei 2020, Asia & the Pacific Policy Studies 7(3):322-343",
+     "data": "CEPS，8年级",
+     "method": "DID，部分结合PSM",
+     "effect": "学科补习对8年级语文、数学成绩有显著正效应，但作者称“modest in size”（摘要未给数值）；主要通过应试技巧/学科知识而非一般认知；对女生、低分生、父母高学历高收入者更大",
+     "url": "https://ideas.repec.org/a/bla/asiaps/v7y2020i3p322-343.html",
+     "year": 2020,
+     "source": "摘要",
+     "confidence": "medium（未拿到效应数值）"
+    },
+    {
+     "study": "李昂然 2022，《社会》42(2):94-125",
+     "data": "CEPS 8年级",
+     "method": "倾向值分层的异质性处理效应",
+     "effect": "控制背景后平均效应不显著；倾向值居中学生有正效应；低倾向(弱势)与高倾向(优势)学生作用微乎其微（摘要未给数值）",
+     "url": "https://www.society.shu.edu.cn/CN/Y2022/V42/I2/94",
+     "year": 2022,
+     "source": "摘要",
+     "confidence": "medium"
+    },
+    {
+     "study": "Zhang Yu 2013, Economics of Education Review 32:1-28",
+     "data": "2010 济南高三学生，高考成绩",
+     "method": "处理选择偏差（作者博士论文为IV、三层HLM、Heckman两步）",
+     "effect": "补习对高考总分平均效应不显著；分科混合；对城市中低成绩学生、某些质量学校可能显著正向（摘要无数值）",
+     "url": "https://ideas.repec.org/a/eee/ecoedu/v32y2013icp1-28.html",
+     "year": 2013,
+     "source": "摘要",
+     "confidence": "medium"
+    },
+    {
+     "study": "Zhao Guochang 2015, China Economic Review 35:83-104",
+     "data": "19个城市城镇小学生",
+     "method": "Lewbel(2012)异方差识别IV；IV分位数回归",
+     "effect": "补习支出每增加1000元（约0.54个SD的支出）→ 数学成绩+1.07个百分点 ≈ +0.15 SD；语文无显著效应；对分数分布底部学生效应最大，顶部趋零或负（不显著）",
+     "url": "https://ideas.repec.org/a/eee/chieco/v35y2015icp83-104.html",
+     "year": 2015,
+     "source": "摘要",
+     "confidence": "medium（识别策略较弱，属于上限估计）"
+    },
+    {
+     "study": "Zhang Yueyun & Yu Xie 2016, Chinese Sociological Review 48(1):64-82",
+     "data": "CFPS 2010，10-15岁",
+     "method": "逐步加控制的OLS（非因果；作者自承存在选择偏差）",
+     "effect": "字词测验：仅控人口学 +0.285 SD → 加家庭背景 +0.164 → 加先前成绩 +0.141 SD；数学：+0.101 → +0.016(n.s.) → +0.010 SD(n.s.)。说明大部分原始差距是选择",
+     "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6226058/",
+     "year": 2016,
+     "source": "全文",
+     "confidence": "high（数字）；作为因果效应为low"
+    },
+    {
+     "study": "Zhang Yueyun 2018, Chinese Journal of Sociology 4(2):277-298",
+     "data": "全国代表性初中生数据（摘要未点名，疑为CEPS）",
+     "method": "PSM + 多层模型",
+     "effect": "补习显著提高认知能力和学校投入，低质量学校效应更大。二手检索摘要称朴素差距0.355/0.311 SD、匹配后认知能力效应降至0.039 SD——未能在原文核实",
+     "url": "https://www.cjs.shu.edu.cn/EN/Y2018/V4/I2/277",
+     "year": 2018,
+     "source": "摘要；SD数字来自搜索引擎摘要",
+     "confidence": "low（数值未核实）"
+    },
+    {
+     "study": "胡咏梅、范文凤、丁维莉 2015（PISA 2012 上海）",
+     "data": "PISA 2012 上海",
+     "method": "加权倾向值匹配(RPSM)",
+     "effect": "数学补习对数学成绩有正效应，并可能缩小SES成绩差距（检索结果未给数值）",
+     "url": "https://ericdata.com/tw/detail.aspx?no=212875",
+     "year": 2015,
+     "source": "摘要",
+     "confidence": "medium"
+    },
+    {
+     "study": "张琳婧(Zhang Linjing) 2024, Frontiers of Education in China 19(3):335-353（元分析）",
+     "data": "21项中国实证研究，79个效应量，N=242,601",
+     "method": "元分析 + trim-and-fill 校正发表偏倚",
+     "effect": "补习与成绩仅弱相关；校正发表偏倚后不显著；性别、学段、SES、地区、科目、时长、班型等9个调节变量均不显著（摘要未给合并效应量数值）",
+     "url": "https://academic.hep.com.cn/fed/EN/10.3868/s110-010-024-0018-8",
+     "year": 2024,
+     "source": "摘要",
+     "confidence": "medium"
+    },
+    {
+     "study": "双减对成绩的影响（局部研究）",
+     "data": "湖南资兴30所小学（吉首大学学报2024）；广州一所中学（Journal of Economic Analysis 2025）",
+     "method": "Tukey多重比较；DID",
+     "effect": "方向不一致：资兴四年级负、五年级正；广州一校数学负向。均为单地/单校，外推性差",
+     "url": "https://skxb.jsu.edu.cn/CN/Y2024/V45/I5/122",
+     "year": 2024,
+     "source": "摘要（检索）",
+     "confidence": "low"
+    }
+   ]
+  },
+  "left_behind": {
+   "scale": [
+    {
+     "metric": "留守儿童（普查口径：父母一方或双方跨乡镇外出半年以上，0-17岁）",
+     "values": {
+      "2020 全部留守儿童": "6693万",
+      "2020 农村留守儿童": "4177万（占农村儿童37.9%，占全部留守62.4%）",
+      "2020 城镇留守儿童": "2516万",
+      "2020 农村留守按学段(万)": "0-2岁713，3-5岁780，小学1590，初中672，高中学龄421",
+      "2000 留守儿童": "3009万",
+      "2010→2020 农村留守": "+207万(+5.2%)，而农村儿童总数-28.6%",
+      "平均年龄": "留守7.7岁，流动9.5岁"
+     },
+     "source": "国家统计局、UNICEF、UNFPA《2020年中国儿童人口状况：事实与数据》（2023年4月）",
+     "year": 2023,
+     "url": "https://www.stats.gov.cn/zs/tjwh/tjkw/tjzl/202304/P020230419425666818737.pdf",
+     "confidence": "high"
+    },
+    {
+     "metric": "2020 农村留守儿童居住/照料方式（父母双方 vs 单方外出）",
+     "values": {
+      "与父亲同住(即母亲外出)": "24.6%",
+      "与母亲同住(即父亲外出)": "29.8%",
+      "与一方父母同住合计": "54.4%",
+      "父母都不在、与祖父母同住": "27.1%",
+      "与其他成年人同住": "5.6%",
+      "单独或与其他儿童同住": "12.9%"
+     },
+     "note": "推算：父母双方都不在身边 ≈ 27.1+5.6+12.9 = 45.6%（本人加总）。城镇留守：与父27.0%/与母41.0%/祖父母16.9%/其他8.9%/单独6.1%。0-5岁农村留守中28.0%父母双方外出由祖父母隔代照料，40.4%与一方父母及祖父母同住",
+     "source": "同上，图表19",
+     "year": 2023,
+     "url": "https://www.stats.gov.cn/zs/tjwh/tjkw/tjzl/202304/P020230419425666818737.pdf",
+     "confidence": "high"
+    },
+    {
+     "metric": "农村留守儿童（民政部口径：父母双方外出，或一方外出另一方无监护能力，不满16岁）",
+     "values": {
+      "2016 摸底": "902万（89.3%由祖父母等监护；一方外出另一方无监护能力31万=3.4%；无人监护36万）",
+      "2018年8月底": "697万（较2016降22.7%；96%由(外)祖父母照料）",
+      "2020": "644万"
+     },
+     "note": "口径远窄于普查口径（排除单方外出且另一方能监护者、16-17岁），不可与6693万/4177万直接比较",
+     "source": "民政部2016年11月部际联席会议、2018年11月新闻发布会（媒体报道）；2020年644万见统计局/UNICEF报告脚注",
+     "year": 2018,
+     "url": "https://www.rmzxw.com.cn/c/2018-11-02/2207132.shtml",
+     "confidence": "medium（2020年644万为high，出自统计局报告脚注）"
+    },
+    {
+     "metric": "2010 农村留守儿童（六普推算，旧口径父母一方外出、<18岁）",
+     "values": {
+      "农村留守儿童": "6102.55万",
+      "占农村儿童": "37.7%",
+      "占全国儿童": "21.88%"
+     },
+     "note": "Zhang et al. 2014 JDE 称约6100万中近一半为父母双方外出；全国妇联报告中的双方外出比例数字未能核实",
+     "source": "全国妇联《我国农村留守儿童、城乡流动儿童状况研究报告》2013（媒体转述）",
+     "year": 2013,
+     "url": "https://www.xinhuanet.com//politics/2015-07/17/c_128028778.htm",
+     "confidence": "medium"
+    }
+   ],
+   "achievement_gap": [
+    {
+     "study": "Zhang, Behrman, Fan, Wei & Zhang 2014, Journal of Development Economics 111:181-195",
+     "data": "中国农村学生面板（期末考试成绩，10-14岁）",
+     "method": "动态面板(GMM)，同时处理个体异质性与外出内生性",
+     "effect": "父母双方外出：数学 -5.4 个百分位、语文 -5.1 个百分位（显著）；单方外出：小得多且不显著。机制：只有双方外出时课外辅导投入显著更低",
+     "sd_conversion": "若学生处于中位附近，5.4个百分位 ≈ 0.13-0.14 SD（本人按正态换算，仅供参考）",
+     "url": "https://ideas.repec.org/a/eee/deveco/v111y2014icp181-195.html",
+     "year": 2014,
+     "source": "摘要",
+     "confidence": "medium-high（数值来自摘要）"
+    },
+    {
+     "study": "Mao, Zang & Zhang 2020, IJERPH 17(18):6770",
+     "data": "CEPS 2013-14，10,532名初中生；CFPS 2010/2018",
+     "method": "学校×年级FE + IV（校内留守比例，利用随机分班）",
+     "effect": "留守（父母缺位，合并口径）：平均学业成绩 -2.67分（IV），样本SD 25.6 → 约 -0.10 SD；数学 -3.50，英语 -3.10，语文 -1.41；认知测验 -0.187（SD 3.85）≈ -0.05 SD。父母有大学学历者效应不显著；城镇留守效应大于农村",
+     "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7559575/",
+     "year": 2020,
+     "source": "全文（SD换算为本人根据文中样本SD计算）",
+     "confidence": "medium（IV有效性存疑；未区分父/母）"
+    },
+    {
+     "study": "Wang, Zheng, Li, Li, Fang, Abbey & Rozelle 2019, China Agricultural Economic Review 11(4):569-582",
+     "data": "中部某省 33,000+ 学生，2015-16 三期面板",
+     "method": "学生固定效应",
+     "effect": "父母外出对学业成绩和心理健康无总体影响，无论双方/单方外出（零效应）；唯一例外：留守女孩焦虑显著升高",
+     "url": "https://ideas.repec.org/a/eme/caerpp/caer-09-2018-0194.html",
+     "year": 2019,
+     "source": "摘要",
+     "confidence": "medium"
+    },
+    {
+     "study": "Chang, Jiang, Loyalka, Chu, Shi, Osborn & Rozelle 2019, China Economic Review 54:337-349",
+     "data": "陕西某地级市 7,495 名初中生，2012-14 三期",
+     "method": "面板（scoping review归为FE）；区分双方/单方/仅父/仅母",
+     "effect": "父母外出对数学成绩无显著影响（零效应）；单方（尤其父亲）外出时留守女孩焦虑上升",
+     "url": "https://ideas.repec.org/a/eee/chieco/v54y2019icp337-349.html",
+     "year": 2019,
+     "source": "摘要",
+     "confidence": "medium"
+    },
+    {
+     "study": "Zhou, Sylvia, Zhang, Luo, Yi, Liu, Shi, Loyalka, Chu, Medina & Rozelle 2015, Health Affairs 34(11):1964-1971",
+     "data": "10省 141,000 名儿童，27次调查(2009-2013)",
+     "method": "多元回归（非准实验）",
+     "effect": "9项健康/营养/教育指标上，留守儿童与父母均在家的儿童持平或更好；两组都普遍偏差 → 问题在“农村”而非“留守”",
+     "url": "https://research-portal.najah.edu/migrant/26428/",
+     "year": 2015,
+     "source": "摘要",
+     "confidence": "medium"
+    },
+    {
+     "study": "Bai, Zhang, Liu, Shi, Mo & Rozelle 2018, Journal of Development Studies 54(7):1154-1170",
+     "data": "西北少数民族地区 130 所农村小学 13,000+ 学生",
+     "method": "DID + PSM",
+     "effect": "父母外出对标准化英语成绩为正效应，对成绩较差学生正效应更大（摘要未给数值）",
+     "url": "https://ideas.repec.org/a/taf/jdevst/v54y2018i7p1154-1170.html",
+     "year": 2018,
+     "source": "摘要",
+     "confidence": "medium"
+    },
+    {
+     "study": "Chen, Huang, Rozelle, Shi & Zhang 2009, Comparative Economic Studies 51",
+     "data": "农村学生，外出前后对比",
+     "method": "外出前后变化（类DID）",
+     "effect": "外出对成绩无显著负面影响；父亲外出的家庭成绩反而改善",
+     "url": "https://sccei.fsi.stanford.edu/node/25910",
+     "year": 2009,
+     "source": "摘要",
+     "confidence": "medium"
+    },
+    {
+     "study": "Li, Wang & Nie 2017, China & World Economy 25(2)",
+     "data": "7,148 名农村初中生面板",
+     "method": "DID，区分六类外出类型",
+     "effect": "父母外出对初中生学业成绩有显著负面影响（摘要无数值）",
+     "url": "https://sccei.fsi.stanford.edu/reap/node/28399",
+     "year": 2017,
+     "source": "摘要",
+     "confidence": "medium"
+    },
+    {
+     "study": "Zhao, Yu, Wang & Glauben 2014, China Economic Review 31:43-54",
+     "data": "青海、宁夏 74 所农村小学 7,100+ 名4-5年级学生",
+     "method": "IV",
+     "effect": "每多一位外出父母，数学成绩约 -1.73 个百分位（数字来自2012会议版，正式版未核实）",
+     "url": "https://ideas.repec.org/a/eee/chieco/v31y2014icp43-54.html",
+     "year": 2014,
+     "source": "会议版摘要（检索转述）",
+     "confidence": "low-medium"
+    },
+    {
+     "study": "Meng & Yamauchi 2017, Demography 54(5):1677-1714",
+     "data": "RUMiC",
+     "method": "IV：父母16-25岁时老家天气冲击 → 儿童一生中父母在外的累计时长占比",
+     "effect": "累计暴露对教育和健康有“sizable”负效应，男孩最明显；用当期外出指标的研究会低估效应（摘要无数值）",
+     "url": "https://cir.nii.ac.jp/crid/1360567181521809024",
+     "year": 2017,
+     "source": "摘要",
+     "confidence": "medium"
+    },
+    {
+     "study": "Xu, Xu, Simpkins & Warschauer 2019, Journal of Child and Family Studies",
+     "data": "全国代表性样本 7,419 名青少年（CEPS）",
+     "method": "固定效应 + 倾向值加权",
+     "effect": "母亲缺位家庭与测验成绩下降、抑郁增加相关；父亲缺位很少有负面关联（摘要无数值）",
+     "url": "https://research-portal.najah.edu/migrant/31575/",
+     "year": 2019,
+     "source": "摘要",
+     "confidence": "medium"
+    },
+    {
+     "study": "Zhou, Murphy & Tao 2014, Population and Development Review 40(2):273-292",
+     "data": "安徽、江西 1,010 名儿童及监护人（横截面）",
+     "method": "PSM",
+     "effect": "据综述(arXiv 2305.04348 表4)：负面影响集中在父母双方外出的男孩；单方外出/其他组无明显负效应（原文数值未取得）",
+     "url": "https://ideas.repec.org/a/bla/popdev/v40y2014i2p273-292.html",
+     "year": 2014,
+     "source": "综述转述",
+     "confidence": "low-medium"
+    },
+    {
+     "study": "综述：A Scoping Review of Internal Migration and Left-behind Children's Wellbeing in China (arXiv 2305.04348, 2023)",
+     "data": "汇总约16项教育结果研究",
+     "method": "范围综述",
+     "effect": "多数研究显示负面，尤其父母双方外出、男孩；但用面板FE的 Wang 2019、Chang 2019 均为无影响；Bai 2018、Wen 2015 为正；母亲外出影响强于父亲",
+     "url": "https://arxiv.org/pdf/2305.04348",
+     "year": 2023,
+     "source": "全文",
+     "confidence": "medium"
+    }
+   ],
+   "attainment": [
+    {
+     "metric": "2020 普查 6-17岁在校率：农村留守 vs 全部农村儿童",
+     "values": {
+      "6-17岁": "农村留守91.0% vs 农村91.1%",
+      "12-14岁": "95.1% vs 95.2%",
+      "15-17岁(高中学龄)": "农村留守88.4% vs 农村88.0% vs 城镇94.5%"
+     },
+     "note": "报告结论：2020年农村留守儿童与全部农村儿童在校率基本无差异（2000年留守反而高5个百分点）；城乡差距体现在高中学龄（农村比城镇低6.5pp）。在校率≠普高",
+     "source": "国家统计局/UNICEF/UNFPA《2020年中国儿童人口状况：事实与数据》图表21-22",
+     "year": 2023,
+     "url": "https://www.stats.gov.cn/zs/tjwh/tjkw/tjzl/202304/P020230419425666818737.pdf",
+     "confidence": "high"
+    },
+    {
+     "study": "Mao, Zang & Zhang 2020, IJERPH（CFPS 2010→2018 部分）",
+     "method": "OLS（仅个体控制，无IV）",
+     "effect": "母亲缺位：高中毕业概率 -15.0pp，上大学 -12.2pp（p<0.05）；父亲缺位：+2.6/+2.7pp 不显著；母亲缺位时长每增1个对数单位：-6.7pp/-6.5pp",
+     "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7559575/",
+     "year": 2020,
+     "source": "全文（表格版式需核对）",
+     "confidence": "low-medium（非因果，样本1,622）"
+    },
+    {
+     "study": "Hu Feng 2012, International Journal of Educational Development 32(3):401-411",
+     "method": "全国代表性调查；分离汇款效应与缺位效应",
+     "effect": "成年家庭成员外出降低农村留守子女高中在读概率，汇款部分抵消；女孩、贫困户更明显（摘要无数值）",
+     "url": "https://bettercarenetwork.org/library/particular-threats-to-childrens-care-and-protection/children-and-migration/migration-remittances-and-children%E2%80%99s-high-school-attendance-the-case-of-rural-china",
+     "year": 2012,
+     "source": "摘要",
+     "confidence": "medium"
+    },
+    {
+     "study": "Wang Sophie Xuefei 2014, B.E. Journal of Economic Analysis & Policy 14(3):1037-1080",
+     "method": "probit、IV-probit、线性IV",
+     "effect": "父母外出降低在学率；男孩显著且较大，女孩不显著；主要来自父亲缺位（摘要无数值）",
+     "url": "https://ideas.repec.org/a/bpj/bejeap/v14y2014i3p44n9.html",
+     "year": 2014,
+     "source": "摘要",
+     "confidence": "medium"
+    },
+    {
+     "study": "Xia Tian 2023, Annals of Family Studies 48:75-89",
+     "method": "CFPS + PSM",
+     "effect": "童年留守经历对进入普高学术轨道有较强负效应（摘要无数值）",
+     "url": "https://www.jstage.jst.go.jp/article/afs/48/0/48_75/_article",
+     "year": 2023,
+     "source": "摘要",
+     "confidence": "medium"
+    },
+    {
+     "study": "Lu Yao 2012, Journal of Marriage and Family 74(2):328-341",
+     "method": "CHNS 纵向，885名儿童",
+     "effect": "父母外出没有带来预期的教育优势；兄姐外出反而有益（女孩、初中尤甚）；低龄儿童最易受父母离开冲击",
+     "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3806142",
+     "year": 2012,
+     "source": "摘要",
+     "confidence": "medium"
+    }
+   ]
+  },
+  "migrant_children": [
+   {
+    "metric": "流动儿童规模（普查口径，0-17岁）",
+    "values": {
+     "2020 流动儿童": "7109万（是2010年的2倍；占全部儿童23.9%）",
+     "城镇流动儿童": "6407万，占城镇儿童34.2%",
+     "来自农村": "79.7%",
+     "跨省流动": "20.6%（成人36.2%）；15-17岁仅13.3%",
+     "与父母双方同住": "61.8%"
+    },
+    "note": "15-17岁跨省比例骤降，报告明确说跨省流动儿童完成义务教育后在流入地读高中和高考仍面临重重困难，不得不返回户籍省份",
+    "source": "国家统计局/UNICEF/UNFPA《2020年中国儿童人口状况：事实与数据》",
+    "year": 2023,
+    "url": "https://www.stats.gov.cn/zs/tjwh/tjkw/tjzl/202304/P020230419425666818737.pdf",
+    "confidence": "high"
+   },
+   {
+    "metric": "义务教育阶段进城务工人员随迁子女在校生",
+    "values": {
+     "2024": "1308.83万（小学903.81万，初中405.02万）"
+    },
+    "source": "教育部《2024年全国教育事业发展统计公报》（中国教育在线转载）",
+    "year": 2025,
+    "url": "https://www.eol.cn/shuju/tongji/jysy/202506/t20250611_2674041.shtml",
+    "confidence": "high"
+   },
+   {
+    "metric": "随迁子女在公办学校就读或享受政府购买学位比例",
+    "values": {
+     "2020": "85.8%（全体义务教育学生约89.2%在公办）"
+    },
+    "source": "教育部官员引用数据（媒体检索转述）",
+    "year": 2021,
+    "url": "https://www.thepaper.cn/newsDetail_forward_30965649",
+    "confidence": "medium"
+   },
+   {
+    "metric": "6-17岁在校率：流动儿童 vs 城镇儿童（2020普查）",
+    "values": {
+     "6-17岁": "流动92.5% vs 城镇92.6%",
+     "15-17岁": "流动93.3% vs 城镇94.5%"
+    },
+    "note": "2000年流动儿童在校率比城镇儿童低12.5pp，2020年基本消失",
+    "source": "《2020年中国儿童人口状况：事实与数据》图表22",
+    "year": 2023,
+    "url": "https://www.stats.gov.cn/zs/tjwh/tjkw/tjzl/202304/P020230419425666818737.pdf",
+    "confidence": "high"
+   },
+   {
+    "metric": "随迁子女在流入地参加高考人数",
+    "values": {
+     "2014": "5.6万（28省开始放开）",
+     "截至2022年9月累计": "168万余人"
+    },
+    "note": "未查到近年年度人数；未查到全国“回原籍高考/中考”比例",
+    "source": "教育部2022-09-15新闻发布会（新京报）；2014年数据为人民网转述教育部",
+    "year": 2022,
+    "url": "https://www.bjnews.com.cn/detail/1663223587168494.html",
+    "confidence": "medium"
+   },
+   {
+    "metric": "地方案例：东莞随迁子女回原籍中考",
+    "values": {
+     "东莞初中毕业生": "每年约6万",
+     "回户籍地中考": "每年约2万（约1/3）",
+     "在东莞参加中考": "约4万"
+    },
+    "source": "羊城晚报2018-07-12，引东莞市教育局工作人员",
+    "year": 2018,
+    "url": "https://news.ycwb.com/2018-07/12/content_30044666.htm",
+    "confidence": "low（单城市、媒体转述）"
+   },
+   {
+    "study": "Chen Yuanyuan & Feng Shuaizhang 2013, China Economic Review 26:75-88",
+    "data": "上海，标准化测验",
+    "method": "比较能/不能进公办学校的流动儿童（处理选择）",
+    "effect": "进不了公办、只能上民办打工子弟学校的流动儿童，语文、数学显著低于公办学校的流动儿童；进入公办学校是质量关键（摘要无数值）",
+    "url": "https://iza.org/publications/dp/6853",
+    "year": 2013,
+    "source": "摘要",
+    "confidence": "medium"
+   },
+   {
+    "study": "Chen Yuanyuan & Feng Shuaizhang 2019, China Economic Review（上海公办小学2010/2012）",
+    "effect": "同一所公办学校内，流动儿童与本地儿童认知、非认知表现相当；家庭背景好的流动儿童进入更好学校 → 差距来自“进哪所学校”",
+    "url": "https://iesr.jnu.edu.cn/2019/0905/c17708a415175/page.htm",
+    "year": 2019,
+    "source": "摘要",
+    "confidence": "medium"
+   },
+   {
+    "study": "Lai, Liu, Luo, Zhang, Ma, Bai, Sharbono & Rozelle 2014, International Journal of Educational Development 37:68-77",
+    "data": "北京打工子弟学校 vs 陕西农村公办学校；另比北京公办学校流动儿童",
+    "method": "多元回归",
+    "effect": "刚到北京时打工子弟学校学生成绩高于陕西农村学生，但随后落后，归因于打工子弟学校师资差；北京公办学校的流动儿童表现更好（摘要无SD数值）",
+    "url": "https://sccei.fsi.stanford.edu/reap/node/26169",
+    "year": 2014,
+    "source": "摘要",
+    "confidence": "medium"
+   },
+   {
+    "study": "崔盛、吴秋翔 2023，《华东师范大学学报(教育科学版)》41(11):108-126",
+    "data": "CEPS 追踪，8,299人（主动教育流动560，被动流动865，非流动6,874）",
+    "method": "控制基期成绩的OLS + 多种PSM",
+    "effect": "以教育为目的的主动流动：+0.06~0.08个标准分（vs 非流动 OLS 0.070，PSM 0.076）；被动流动 vs 非流动约+0.029，不显著；正效应集中在流入直辖市/省会者，小城镇不显著",
+    "url": "https://xbjk.ecnu.edu.cn/CN/Y2023/V41/I11/108",
+    "year": 2023,
+    "source": "摘要页",
+    "confidence": "medium-high"
+   }
+  ],
+  "notes": [
+   "补习参与率口径差异大：CIEFR-HS 学科类（不含兴趣班）2017年36-38%；光明日报47.2%是学科+兴趣合并；CEPS初中生“任一科补习”48.5%（2013-15）；CFPS 2010 10-15岁25%。建模时建议以 CIEFR-HS 学科类为主线。",
+   "双减效果：参与率从约24%(2019/2021双减前)降至17%(2022)、13.5%(2023)，但参与者人均支出不降反升，高收入家庭基本不受影响（中上收入60-80%分位降幅最大），且有“转入地下”的报告（刘钧燕2023、周子焜2023，未细查）。",
+   "补习支出“占家庭收入比例”按收入分组的可靠数字没查到；CIEFR-HS 给的是占“该生家庭教育支出”比例（学科类2017 10.5%→2023 8.4%）和分位倍数（最高25%为最低25%的6倍）。检索中出现过“2017年补习支出约5600元、占家庭年支出7.2%、城镇45.2%/农村25%”的说法，归于 Lu, Zhou & Wei 2022 (IJED 94)，但该文摘要并无这些数字，未能核实，未收录。",
+   "检索中出现“2021年春季48.1%中小学生参加学科类校外培训”，来源机构不明，未收录。",
+   "补习效果：考虑选择偏差后，平均效应很小或不显著是主流结论（Sun 2020 PSM-DID ≈0；李昂然2022不显著；Zhang Yu 2013高考不显著；元分析2024校正后不显著）。正效应多为异质性：农村英语、低分生、城市中低成绩生、低质量学校学生。唯一给出较大SD的是 Zhao 2015（每1000元≈+0.15 SD小学数学，Lewbel识别，偏上限）。朴素OLS差距（0.1-0.3 SD）大部分是选择。",
+   "Guo et al. 2020 与 Zhang Yueyun 2018 的具体效应数值未拿到全文（Wiley/Sage 403）；Zhang 2018 的“0.039 SD”只出现在搜索引擎摘要中，标为low。",
+   "留守口径：普查口径（一方或双方外出半年以上、0-17岁）2020年农村留守4177万；民政部口径（双方外出或一方外出另一方无监护能力、<16岁）2018年697万、2020年644万。二者相差6倍以上，主要差在单方外出且另一方在家监护的儿童。",
+   "2020农村留守中双方都不在身边约45.6%（祖父母27.1%+其他成人5.6%+单独/与其他儿童12.9%），这是我根据统计局表格加总的，非原文直接给出。母亲外出（与父同住）24.6%，父亲外出（与母同住）29.8%。",
+   "留守学业差距的证据真分歧：负面（Zhang et al. 2014 JDE 双方外出≈-5个百分位≈0.13 SD；Mao 2020 ≈-0.10 SD；Li 2017；Meng & Yamauchi 2017累计暴露）vs 零/正（Wang 2019 学生FE 33,000人零效应；Chang 2019 零效应；Zhou 2015 Health Affairs 14万人持平或更好；Bai 2018 正；Chen 2009 无负面）。较一致的模式：单方（尤其父亲）外出≈0；双方外出或母亲外出才有负效应，量级大致0-0.15 SD；男孩更易受学业影响，女孩更易焦虑。",
+   "Zhang et al. 2014 的百分位→SD换算（≈0.13-0.14 SD）以及 Mao 2020 的SD换算是我按正态/样本SD自行计算的，不是作者报告的。",
+   "升学：2020普查显示农村留守与全体农村儿童在校率几乎无差（15-17岁88.4% vs 88.0%），城乡差（≈6.5pp）远大于留守/非留守差。但个别研究（Hu 2012、Wang 2014、Xia 2023 PSM）发现留守降低高中在读/普高轨道概率，均未拿到数值；Mao 2020 CFPS 母亲缺位 -15pp高中毕业/-12pp上大学为OLS，非因果。",
+   "随迁子女：没查到全国“回原籍中考/高考”比例。可用的间接证据：15-17岁流动儿童跨省比例仅13.3%（全体流动儿童20.6%），统计局报告明言跨省流动儿童读高中/高考不得不返回户籍省份；东莞约1/3初中毕业随迁子女回原籍中考（2018，媒体）；全国累计168万随迁子女在流入地高考（截至2022）。",
+   "流动儿童学业：差距主要来自学校分割（打工子弟学校 vs 公办），同校内与本地生无显著差异（Chen & Feng 2019）；以教育为目的主动流动到大城市 +0.06~0.08 SD（崔盛、吴秋翔2023）。未查到全国层面流动 vs 本地儿童的标准化成绩差距SD数值。",
+   "陶然、周敏慧2012《管理世界》、李云森2013《经济学季刊》等中文留守研究原文未检索到，未收录。"
+  ]
+ },
+ "exam_noise": {
+  "mock_vs_gaokao": [
+   {
+    "metric": "省统一模考（4月）与高考（6月）总分差值的标准差（推算）",
+    "value": "约43-47分（总分750；文理科分别约46.5/42.5）",
+    "sample": "福建安溪县2008届，模考与高考均参加的7,961人",
+    "year": "2008",
+    "source": "Cai, Lu, Pan & Zhong 2019, Review of Economics and Statistics 101(2)（工作论文版2016年10月，表1）",
+    "url": "http://ylu6.weebly.com/uploads/8/6/4/2/8642496/gaokao_oct2016.pdf",
+    "confidence": "medium",
+    "note": "论文本身没报这个数，是我用表1里性别差的标准误（[1.033]、[1.525]、[1.429]）和男女样本量反推的，前提是男女两组差值的方差相同。"
+   },
+   {
+    "metric": "省统一模考与高考总分的相关系数（推算）",
+    "value": "r ≈ 0.85（理科约0.85，文科约0.86）",
+    "sample": "同上 7,961人；模考总分SD 86.78，高考SD 约73-83（分性别）",
+    "year": "2008",
+    "source": "Cai, Lu, Pan & Zhong 2019, REStat（工作论文表1）",
+    "url": "http://ylu6.weebly.com/uploads/8/6/4/2/8642496/gaokao_oct2016.pdf",
+    "confidence": "medium",
+    "note": "由各卷SD和差值SD推算：r=(s1²+s2²-sd²)/(2·s1·s2)。也就是说，两次考试之间约15%的分数方差是互不共享的（含两个月的学习进步和考场发挥）。"
+   },
+   {
+    "metric": "模考到高考的性别差变化",
+    "value": "高考中男女分差比模考大0.15 SD（女生在模考领先15.8分，高考只领先2.1分）",
+    "sample": "福建安溪7,961人",
+    "year": "2008",
+    "source": "Cai, Lu, Pan & Zhong 2019, REStat",
+    "url": "http://ylu6.weebly.com/uploads/8/6/4/2/8642496/gaokao_oct2016.pdf",
+    "confidence": "high"
+   },
+   {
+    "metric": "考场当天上午失手对下午的连带（相对模考的表现）",
+    "value": "上午相对表现低1 SD → 下午相对表现低0.11 SD（男）/0.17 SD（女）",
+    "sample": "福建安溪高考考生",
+    "year": "2008",
+    "source": "Cai, Lu, Pan & Zhong 2019, REStat",
+    "url": "http://ylu6.weebly.com/uploads/8/6/4/2/8642496/gaokao_oct2016.pdf",
+    "confidence": "high",
+    "note": "可以作为“发挥失常会连锁”的参数依据。"
+   },
+   {
+    "metric": "离录取线越近，女生高考相对模考的下滑越大",
+    "value": "离参考线3分以内：女生比男生多下滑0.32 SD；6-10分：0.14 SD；11-20分：0.10 SD",
+    "sample": "福建安溪",
+    "year": "2008",
+    "source": "Cai, Lu, Pan & Zhong 2019, REStat",
+    "url": "http://ylu6.weebly.com/uploads/8/6/4/2/8642496/gaokao_oct2016.pdf",
+    "confidence": "high"
+   },
+   {
+    "metric": "高考总分分布",
+    "value": "均值518.96，SD约60.4分（满分750）",
+    "sample": "全国高考考生个体成绩，超过1,400万条",
+    "year": "2005-2011（论文样本期）",
+    "source": "Graff Zivin, Song, Tang & Zhang 2020, Journal of Environmental Economics and Management 104:102365",
+    "url": "https://gps.ucsd.edu/_files/jgz_temp-gaokao-_jeem20.pdf",
+    "confidence": "high",
+    "note": "可以用来把标准差换算成分数。注意：这是全国混合文理和各省的总体SD，省内SD会不同（Cai等的安溪样本SD约75-87分）。"
+   },
+   {
+    "metric": "模考（5次平均）与正式考试的相关",
+    "value": "r = .74 [.68, .78]；备考期知识测验与正式考试 r = .69",
+    "sample": "德国医学生，高风险国家执业考试，N=309",
+    "year": "2022",
+    "source": "Theobald, Breitwieser & Brod 2022, Psychological Science 33(12)",
+    "url": "https://www.uni-trier.de/fileadmin/fb1/prof/PSY/SUK/Theobald_et_al._-_2022_-_Test_Anxiety_Does_Not_Predict_Exam_Performance_Whe.pdf",
+    "confidence": "high",
+    "note": "非中国样本，成绩按正确率计；模考到正式考试平均变化 μd = −.01。"
+   },
+   {
+    "metric": "SAT两次考试分数“变化量”的信度",
+    "value": "约 .25（语文）/ .23（数学）",
+    "sample": "SAT五月到十一月复考者",
+    "year": "1980年代初（ERIC ED214984）",
+    "source": "ERIC ED214984（搜索摘要转述，PDF为扫描件，未直接核对）",
+    "url": "https://files.eric.ed.gov/fulltext/ED214984.pdf",
+    "confidence": "low",
+    "note": "意思是两次考试的分差大部分是测量误差，不是真实进步。"
+   },
+   {
+    "metric": "SAT总分信度与测量标准误",
+    "value": "信度 0.96-0.97；平均条件测量标准误约40分（400-1600分制）",
+    "sample": "康涅狄格州2017、2019年SAT",
+    "year": "2017/2019",
+    "source": "Connecticut SAT Test Analysis Report 2017/2019（州政府报告，搜索摘要转述）",
+    "url": "https://edsight.ct.gov/relatedreports/Connecticut%202019%20SAT%20Test%20Analysis%20Report.pdf",
+    "confidence": "medium",
+    "note": "这是同一卷内部的信度，不是隔天重测，不包含“当天状态”的波动，所以会低估考场随机性。"
+   },
+   {
+    "metric": "考试题目运气（抽到擅长的科目）",
+    "value": "会显著提高高中GPA和毕业概率（搜索摘要中没有给出具体效应量）",
+    "sample": "挪威，随机抽考科目",
+    "year": "",
+    "source": "CESifo WP 9570（挪威考试运气研究）",
+    "url": "https://www.cesifo.org/DocDL/cesifo1_wp9570.pdf",
+    "confidence": "low"
+   }
+  ],
+  "retake": [
+   {
+    "metric": "略低于二本线对复读概率的影响（断点回归）",
+    "value": "复读概率 +8个百分点（男 +11，女 +5.5；只看首次考生：男 +17，女 +9）",
+    "sample": "宁夏全部高考考生，362,592人，2002-2009/2010",
+    "year": "2024",
+    "source": "Kang, Lei, Song & Zhang 2024, Journal of Political Economy Microeconomics（VoxChina、财新香樟博客转述）",
+    "url": "https://voxchina.org/show-3-247.html",
+    "confidence": "medium-high"
+   },
+   {
+    "metric": "复读对高考成绩的因果效应（2SLS）",
+    "value": "+0.47 SD；省内相对排名 +11个百分点；男 0.42 SD，女 0.58 SD",
+    "sample": "宁夏，断点附近（带宽15分）",
+    "year": "2024",
+    "source": "Kang, Lei, Song & Zhang 2024, JPE Micro",
+    "url": "https://cec.blog.caixin.com/archives/274715",
+    "confidence": "medium-high",
+    "note": "简约式估计（在线下本身的效应）是 +0.04 SD、排名 +0.9个百分点。用全国SD约60分粗算，0.47 SD ≈ 28分，但原文分数口径要看原文。"
+   },
+   {
+    "metric": "复读对过一本线概率的影响",
+    "value": "+51到62个百分点（复读者，断点附近）",
+    "sample": "宁夏",
+    "year": "2024",
+    "source": "Kang, Lei, Song & Zhang 2024, JPE Micro（VoxChina转述）",
+    "url": "https://voxchina.org/show-3-247.html",
+    "confidence": "medium"
+   },
+   {
+    "metric": "复读生占高考报名人数比例（陕西）",
+    "value": "2005-2008年平均 25%",
+    "sample": "陕西省",
+    "year": "2005-2008",
+    "source": "田虎 2009，转引自叶锦涛 2022《社会学研究》第2期",
+    "url": "https://shxyj.ajcass.com/Admin/UploadFile/Issue/202005130001/2022/3//20220320044906WU_FILE_0.pdf",
+    "confidence": "medium"
+   },
+   {
+    "metric": "复读生占参加高考学生比例（宁夏）",
+    "value": "连续三年超过 18%",
+    "sample": "宁夏",
+    "year": "2014-2016",
+    "source": "张燕、丁延庆等 2019《全球教育展望》第7期，转引自叶锦涛 2022《社会学研究》",
+    "url": "https://shxyj.ajcass.com/Admin/UploadFile/Issue/202005130001/2022/3//20220320044906WU_FILE_0.pdf",
+    "confidence": "medium"
+   },
+   {
+    "metric": "全国复读人数（推算）",
+    "value": "2019年超过240万人（=高考报名人数 − 应届高三人数）",
+    "sample": "全国，教育部统计",
+    "year": "2019",
+    "source": "叶锦涛 2022《社会学研究》（图1）",
+    "url": "https://shxyj.ajcass.com/Admin/UploadFile/Issue/202005130001/2022/3//20220320044906WU_FILE_0.pdf",
+    "confidence": "medium",
+    "note": "作者自己说明这个口径会高估（社会考生算进去了，出国、保送的应届生没报名等）。"
+   },
+   {
+    "metric": "在校大学生中复读生占比",
+    "value": "9.42%",
+    "sample": "中国大学生追踪调查 PSCUS 2013-2017，N=29,385（复读生2,767）",
+    "year": "2013-2017",
+    "source": "叶锦涛 2022《社会学研究》",
+    "url": "https://shxyj.ajcass.com/Admin/UploadFile/Issue/202005130001/2022/3//20220320044906WU_FILE_0.pdf",
+    "confidence": "medium-high",
+    "note": "这是“已经考上大学的人里”的比例，不是考生里的比例。"
+   },
+   {
+    "metric": "复读班与应届生上线率",
+    "value": "一般县城中学复读班上线率约40%，应届高三约20%",
+    "sample": "县城中学（个案调查）",
+    "year": "2008",
+    "source": "王占军 2008，转引自叶锦涛 2022《社会学研究》",
+    "url": "https://shxyj.ajcass.com/Admin/UploadFile/Issue/202005130001/2022/3//20220320044906WU_FILE_0.pdf",
+    "confidence": "low-medium"
+   },
+   {
+    "metric": "海南往届生占实际参考人数比例",
+    "value": "5,117 / 70,069 = 7.3%",
+    "sample": "海南省 2023 年",
+    "year": "2023",
+    "source": "海南省教育厅发布，澎湃新闻 2023-07-02",
+    "url": "https://www.thepaper.cn/newsDetail_forward_23702333",
+    "confidence": "high",
+    "note": "海南对异地复读管得严，不能代表全国。"
+   },
+   {
+    "metric": "安徽往届生占报名人数比例",
+    "value": "约19.7%（往届约12.8万 / 总报名65.2万；应届40.6万，占62.3%）",
+    "sample": "安徽 2026届",
+    "year": "2026",
+    "source": "抖音视频转述及新浪转载（原文已删），未见考试院原文",
+    "url": "https://www.douyin.com/shipin/7509894353603659839",
+    "confidence": "low"
+   },
+   {
+    "metric": "复读生平均涨分",
+    "value": "40-60分（文章称是“全国抽样”，没给出处）",
+    "sample": "不明",
+    "year": "2026",
+    "source": "网易号文章",
+    "url": "https://www.163.com/dy/article/L3GFDN2E0516BMPB.html",
+    "confidence": "low",
+    "note": "来源不可靠，只能当量级参考，不建议直接用。"
+   },
+   {
+    "metric": "国外对照：智利复读的成绩提升",
+    "value": "+0.27 SD；差一点没过线使复读概率 +44%；提升不持久，净福利约为零",
+    "sample": "智利15年行政数据，断点回归",
+    "year": "2026",
+    "source": "Frisancho, Gallegos & González 2026, HCEO/IZA 工作论文",
+    "url": "https://hceconomics.uchicago.edu/node/7634",
+    "confidence": "medium-high"
+   },
+   {
+    "metric": "国外对照：希腊低分学生复读的成绩提升",
+    "value": "约 +0.6 SD（模糊断点回归）",
+    "sample": "希腊全国考试",
+    "year": "2024",
+    "source": "Journal of Public Economics 2024（DOI 10.1016/j.jpubeco.2024.105214）",
+    "url": "https://researchmgt.monash.edu/ws/files/636465548/634815479-oa.pdf",
+    "confidence": "medium",
+    "note": "2022年工作论文版是0.5 SD。"
+   },
+   {
+    "metric": "国外对照：SAT复考比例",
+    "value": "约一半SAT考生会复考",
+    "sample": "美国",
+    "year": "2020",
+    "source": "Goodman, Gurantz & Smith 2020, AEJ: Economic Policy 12(2)",
+    "url": "https://www.nber.org/papers/w24945",
+    "confidence": "high"
+   }
+  ],
+  "anxiety": [
+   {
+    "metric": "考试焦虑与学业成绩的相关（荟萃分析范围）",
+    "value": "r 在 −.13 到 −.40 之间（小到中等）",
+    "sample": "238项研究，1988-2017",
+    "year": "2018",
+    "source": "von der Embse, Jester, Roy & Post 2018, Journal of Affective Disorders 227:483-493（二手转述）",
+    "url": "https://nceed.morgan.edu/numbers-that-matter-test-bias-and-anxiety-what-does-the-research-tell-us/",
+    "confidence": "medium",
+    "note": "没拿到原文的合并 r。另有二手来源说课堂考试 r≈−0.29、标准化考试 r≈−0.26，但没核实，所以没单独列。"
+   },
+   {
+    "metric": "各荟萃分析中考试焦虑与成绩的平均相关",
+    "value": "约 −.20 到 −.30",
+    "sample": "Hembree 1988、Richardson 2012、von der Embse 2018 的综述",
+    "year": "2022",
+    "source": "Theobald, Breitwieser & Brod 2022, Psychological Science 33(12)",
+    "url": "https://www.uni-trier.de/fileadmin/fb1/prof/PSY/SUK/Theobald_et_al._-_2022_-_Test_Anxiety_Does_Not_Predict_Exam_Performance_Whe.pdf",
+    "confidence": "high"
+   },
+   {
+    "metric": "特质考试焦虑与高风险考试成绩",
+    "value": "原始相关 r = −.20；控制模考成绩后 β = −.01（不显著）",
+    "sample": "德国医学生 N=309",
+    "year": "2022",
+    "source": "Theobald et al. 2022, Psychological Science",
+    "url": "https://www.uni-trier.de/fileadmin/fb1/prof/PSY/SUK/Theobald_et_al._-_2022_-_Test_Anxiety_Does_Not_Predict_Exam_Performance_Whe.pdf",
+    "confidence": "high",
+    "note": "说明焦虑和成绩的负相关主要来自平时学得少，不是考场上卡住；焦虑高的人备考期进步更小。"
+   },
+   {
+    "metric": "考试焦虑（认知干扰）与州统考成绩",
+    "value": "量表每高1分 → 数学低0.10 SD；控制上年成绩后低0.04 SD",
+    "sample": "美国16所网络学校1,788名学生",
+    "year": "2025",
+    "source": "Beck & Kingsbury 2025, EFI Working Paper",
+    "url": "https://www.efinstitute.org/wp-content/uploads/2025/03/EFI-WP_IK_TestAnxiety.pdf",
+    "confidence": "medium"
+   },
+   {
+    "metric": "情绪稳定性（低神经质）与学业成绩",
+    "value": "r = .01（ρ = .02）；中学阶段 ρ ≈ .01",
+    "sample": "荟萃分析 k=114，N=59,554",
+    "year": "2009",
+    "source": "Poropat 2009, Psychological Bulletin 135(2):322-338（表1、表2）",
+    "url": "https://gwern.net/doc/psychology/personality/conscientiousness/2009-poropat.pdf",
+    "confidence": "high",
+    "note": "对比：尽责性 r=.19（ρ=.22），智力 r=.23。神经质对平均成绩几乎没有影响。"
+   },
+   {
+    "metric": "高中生考前焦虑上升幅度与期中考试成绩",
+    "value": "考前与平时SAS分差≥10的学生里，分差与成绩 r = −0.386",
+    "sample": "上海某高中高二，N=189",
+    "year": "2023",
+    "source": "李向敏等 2023, 中国医科大学学报 52(1):77-80",
+    "url": "https://html.rhhz.net/ZGYKDXXB/html/2023/1/20230115.htm",
+    "confidence": "medium",
+    "note": "其他分组不相关；样本小。"
+   },
+   {
+    "metric": "考前焦虑与高考总分",
+    "value": "显著负相关（摘要没给 r）",
+    "sample": "高考考生 238人",
+    "year": "2003",
+    "source": "刘惠军、郭德俊 2003, 心理发展与教育 18(2):64-68",
+    "url": "https://devpsy.bnu.edu.cn/CN/Y2003/V18/I2/64",
+    "confidence": "medium"
+   },
+   {
+    "metric": "国内考试焦虑干预对学业成绩的效果",
+    "value": "g = 0.35（干预对焦虑本身的效果更大）",
+    "sample": "国内84项随机对照研究的元分析",
+    "year": "2024",
+    "source": "修瑨 2024（中科院心理所学位论文，搜索摘要转述）",
+    "url": "https://ir.psych.ac.cn/handle/311026/49729",
+    "confidence": "low-medium"
+   }
+  ],
+  "life_events": [
+   {
+    "metric": "考前3个月内祖父母去世对升学分流考试成绩的影响",
+    "value": "−0.029 SD（考前2-3个月去世：−0.056 SD）；进入最低分流轨道的概率上升",
+    "sample": "荷兰行政登记数据，六年级 Cito 分流考试",
+    "year": "2020",
+    "source": "Stans 2020, CRC TR 224 Discussion Paper No. 206",
+    "url": "https://www.wiwi.uni-bonn.de/bgsepapers/boncrc/CRCTR224_2020_206.pdf",
+    "confidence": "high",
+    "note": "伊拉斯姆斯大学2021年的博客写的是“约0.1 SD”，和工作论文不一致，应以论文表3为准。"
+   },
+   {
+    "metric": "义务教育结束前父母去世与初三毕业成绩（兄弟姐妹对比）",
+    "value": "β = −0.06 SD（95% CI −0.10 到 −0.01）；人群对比 −0.19 SD（未调整 −0.30）",
+    "sample": "瑞典 1991-2000 年出生队列 N=908,064；兄弟姐妹样本 539,829",
+    "year": "2022",
+    "source": "Liu, Grotta, Hiyoshi, Berg & Rostila 2022, JAMA Network Open",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8994122/",
+    "confidence": "high",
+    "note": "成绩是标准化 z 分；兄弟姐妹对比更接近因果，−0.19 里大部分是家庭背景混杂。"
+   },
+   {
+    "metric": "父母离婚子女的学业成就差距",
+    "value": "约低 0.17 SD（控制研究质量后）",
+    "sample": "Amato 荟萃分析",
+    "year": "2001",
+    "source": "Amato 2001, Journal of Family Psychology（只见于媒体转述）",
+    "url": "https://www.wftv.com/news/what-research-shows/D33DRA2BB46QNPXUJRE66S2TNI/",
+    "confidence": "low",
+    "note": "另有 Vuri & Sanz de Galdeano 2007 用美国 NELS 双重差分，发现离婚对认知成绩没有显著损害（只见搜索摘要）。"
+   },
+   {
+    "metric": "考前高压事件对高考的直接效应",
+    "value": "没查到",
+    "sample": "",
+    "year": "",
+    "source": "",
+    "url": "",
+    "confidence": "",
+    "note": "没找到“高考前家人去世、父母离婚”对高考分数影响的中国实证研究。"
+   }
+  ],
+  "health": [
+   {
+    "metric": "考试期间气温升高对高考总分的影响",
+    "value": "每升高1°C：−2.91% SD（−0.34%，约−1.76分）；县内1个标准差（2°C）：−0.68%，即−5.83% SD；高分段影响更大",
+    "sample": "全国高考考生个体成绩，超过1,400万人",
+    "year": "2020",
+    "source": "Graff Zivin, Song, Tang & Zhang 2020, JEEM 104:102365",
+    "url": "https://gps.ucsd.edu/_files/jgz_temp-gaokao-_jeem20.pdf",
+    "confidence": "high"
+   },
+   {
+    "metric": "气温对过一本线概率的影响",
+    "value": "每升高1°C：−0.60个百分点（1.33% SD）",
+    "sample": "同上",
+    "year": "2020",
+    "source": "Graff Zivin et al. 2020, JEEM",
+    "url": "https://gps.ucsd.edu/_files/jgz_temp-gaokao-_jeem20.pdf",
+    "confidence": "high"
+   },
+   {
+    "metric": "考试当天PM2.5对以色列 Bagrut 考试成绩的影响",
+    "value": "PM2.5(AQI)每高1个SD：−0.93分，即−3.9% SD（学生固定效应）；只影响考试当天，男生、弱生、低SES学生受影响更大",
+    "sample": "以色列 2000-2002 年考生，每人考8-10科",
+    "year": "2016",
+    "source": "Ebenstein, Lavy & Roth 2016, AEJ: Applied（2015年12月工作论文版）",
+    "url": "https://warwick.ac.uk/fac/soc/economics/staff/vlavy/ebenstein_lavy_roth_pollution_testscores_dec2015.pdf",
+    "confidence": "high",
+    "note": "长期影响：考试期间平均PM2.5每多10个单位，挂科概率+2个百分点，拿到毕业证书概率−3个百分点；Bagrut每多1分，月收入约多1%。"
+   },
+   {
+    "metric": "考试时段越晚成绩越差（认知疲劳）",
+    "value": "每晚1小时：−0.9% SD（95% CI 0.7-1.0%）；休息20-30分钟：+1.7% SD",
+    "sample": "丹麦国家测试 2,034,564 次考试成绩，570,376名学生",
+    "year": "2016",
+    "source": "Sievertsen, Gino & Piovesan 2016, PNAS 113(10):2621-2624",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/26884183/",
+    "confidence": "high"
+   },
+   {
+    "metric": "睡眠与成绩",
+    "value": "睡眠时长、质量、规律性一起解释约25%的成绩方差；考前单晚睡眠与成绩无关",
+    "sample": "MIT 化学课学生，可穿戴设备记录，88人",
+    "year": "2019",
+    "source": "Okano, Kaczmarzyk, Dave, Gabrieli & Grossman 2019, npj Science of Learning",
+    "url": "https://dspace.mit.edu/handle/1721.1/127257",
+    "confidence": "high",
+    "note": "相关研究，不是因果。"
+   },
+   {
+    "metric": "考前一晚睡眠时长与期末考试成绩",
+    "value": "r ≈ .22-.26（自我报告）",
+    "sample": "354名学生（药学/脊椎按摩专业）",
+    "year": "",
+    "source": "Journal of Chiropractic Education 39(1)（只见搜索摘要，没核对原文）",
+    "url": "https://jce.kglmeridian.com/view/journals/ched/39/1/article-eJCE-24-5.xml",
+    "confidence": "low"
+   },
+   {
+    "metric": "考试当天生病（感冒、发烧）对成绩的影响",
+    "value": "没查到",
+    "sample": "",
+    "year": "",
+    "source": "",
+    "url": "",
+    "confidence": "",
+    "note": "没找到大样本研究，只有实验室研究和个案（如 J Clin Transl Res 的上呼吸道感染个案研究）。"
+   }
+  ],
+  "notes": [
+   "模考与高考：没查到中国某市/某校公开发表的“一模/二模与高考相关系数”。唯一能用的中国个体数据是 Cai 等（2019，福建安溪 2008 届，N≈8,000），r≈0.85 和差值 SD≈45 分都是我从论文表1反推的，论文没直接报。知网上的地方研究都没拿到全文。",
+   "考场随机部分怎么估：模考和高考 r≈0.85，说明两次考试之间不共享的方差约15%。这15%还包括两个月的真实学习进步、模考题难度不同，所以“纯考场发挥”占总方差的比例应该低于15%。德国医学生 r=.74 是用5次模考平均、换了题型的数据，口径不同。",
+   "SAT 0.96-0.97 的信度是同一卷内部的一致性，不包含隔天状态波动，不能直接当“重测信度”用。",
+   "复读：最可靠的中国因果证据是 Kang, Lei, Song & Zhang（JPE Micro 2024，宁夏），复读提高 0.47 SD，但只适用于二本线附近的考生（局部效应）。没拿到论文原文，数字来自 VoxChina 和财新香樟博客的转述。张燕等 2019《高考复读有用吗》和康乐等 2019《教育与经济》的具体数字没查到。",
+   "复读比例：教育部不公布。有据可查的是：陕西 2005-2008 年约25%，宁夏 2014-2016 年超过18%，海南 2023 年 7.3%（官方），安徽 2026 年约19.7%（只见转述）。全国“2019年超过240万”是用报名人数减应届人数推出来的，会高估。按要求，商业机构说的“2024 年复读生占40%”没有用。",
+   "复读生和应届生录取率的对比：只有王占军 2008 的县城中学个案（复读班上线率约40%，应届约20%），没找到省级统计。",
+   "考试焦虑：von der Embse 2018 的原文合并 r 没拿到（ScienceDirect、ResearchGate 都打不开），只有二手转述的 −.13 到 −.40 的范围。Hembree 1988 和 Richardson 2012 的具体 r 也没核实到。没找到专门汇总中国高中生考试焦虑与成绩相关系数的元分析。",
+   "神经质：Poropat 2009 显示情绪稳定性与学业成绩几乎不相关（r=.01）；Theobald 2022 显示控制知识水平后焦虑对考场表现没有额外影响。这两项都说明，焦虑对“当天发挥”的直接作用应该设得很小。",
+   "家庭变故：没找到高考前亲人去世或父母离婚的中国研究。国外最干净的证据是荷兰祖父母去世 −0.03 SD（考前2-3个月去世 −0.056 SD），以及瑞典父母去世的兄弟姐妹对比 −0.06 SD。Stans 研究的博客写“约0.1 SD”，和论文不一致，以论文为准。",
+   "身体状况：没找到考试当天生病的量化研究。可以参照的环境冲击（都换算成 SD）：高考气温每升1°C −2.9% SD；PM2.5 每升1个SD −3.9% SD；考试时段每晚1小时 −0.9% SD。这些都是很小的平均效应，个人层面的冲击会大得多，但没有数据。",
+   "SD 换算分数：全国高考总分 SD 约60分（Graff Zivin 2020，均值519）；省内或县内样本的 SD 约75-87分（Cai 2019 安溪）。"
+  ]
+ },
+ "game_calibration": {
+  "note": "游戏里的取值和模拟结果（2026-10-17，6000 人整局模拟）。15 岁时学识 1 个标准差约 11 点。只求大致的情形都有、方向和量级对，不做精细拟合",
+  "targets_vs_sim": {
+   "家庭背景与成绩相关 r": {
+    "data": 0.32,
+    "sim": 0.41
+   },
+   "城乡初中生成绩差（标准差）": {
+    "data": "0.37–0.41",
+    "sim": 0.55
+   },
+   "本科率优势比：父母本科及以上 vs 初中及以下": {
+    "data": "约 6（CFPS 2018，父母本科 40% 对初中 10%，不分出生队列）",
+    "sim": 3.1
+   },
+   "本科率优势比：收入最高 1/5 vs 最低 1/5": {
+    "data": "约 6.5（23.5% 对 4.5%）",
+    "sim": "家境 5 对 1 约 3.8"
+   },
+   "普高招生 ÷ 初中毕业生": {
+    "data": 0.624,
+    "sim": 0.618
+   },
+   "补习参与率": {
+    "data": "学科类 13.5%（2023，双减后）～36%（2017）",
+    "sim": "初高中阶段曾报约 20%"
+   },
+   "考场随机发挥占总差异": {
+    "data": "≤15%（模考与高考 r≈0.85）",
+    "sim": "约 11%"
+   },
+   "复读效应": {
+    "data": "+0.47 SD（二本线附近）",
+    "sim": "约 +0.45"
+   },
+   "985 / 211（不含 985）占同龄人": {
+    "data": "约 1.4% / 2.9%",
+    "sim": "1.4% / 3.4%（投档线接近中位专业组，211 名额略多，折中取值）"
+   }
+  },
+  "not_used": [
+   "考试焦虑、神经质对当天发挥：控制平时成绩后几乎为零（Theobald 2022；Poropat 2009 r=.01），不做",
+   "择校费：2012 年起各地陆续取消，游戏年代不做"
+  ],
+  "high_school_tiers_sim": "城市读普高的约一半上重点（= 中考前约 30%），县里读普高的约 13% 上县一中"
+ }
+}

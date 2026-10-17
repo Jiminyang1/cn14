@@ -18,6 +18,7 @@ import { chance, clamp, gauss, ri, rnd, wpick } from './rng';
 import { cityLoc, migrantCity, moveTo, placeInc, placeName } from './place';
 import { die, healthMonth } from './health';
 import { bodyMonth, driftMonth } from './stats';
+import { studyMonth } from './education';
 import { moneyMonth } from './finance';
 import { kinYear } from './kin';
 import { turnsYear } from './turns';
@@ -86,7 +87,8 @@ export function birth(seed, opts: { year?: number; headless?: boolean } = {}) {
   familyIncomeInit(); // 家境由父母收入决定
   persInit(); // 性格（只用第三条随机数流）
   if (S.flags.lb === 'both') shape({ n: 0.15, e: -0.05 }); // 父母都外出的留守儿童：敏感一些（方向有研究支持，幅度是估计）
-  S.st.kn = clamp(S.st.kn + (S.q - 3) * 3 + (Math.max(S.fam.mom.edu, S.fam.dad.edu) - 4) * 1.5, 10, 90); // 家境、父母学历
+  // 家境、父母学历：家庭背景与成绩的相关约 0.32（中国研究元分析；PISA 京沪苏浙约解释一成差异），父母学历的梯度比收入陡（CFPS 2018）
+  S.st.kn = clamp(S.st.kn + (S.q - 3) * 1.5 + (Math.max(S.fam.mom.edu, S.fam.dad.edu) - 4) * 2, 10, 90);
   famHouseInit();
   famWealthInit(); // 家里原有的积蓄和欠款
   log(birthText(), 'birth');
@@ -207,6 +209,7 @@ export function yearStart() {
 function endMonth(m: number) {
   focusMonth(m);
   bodyMonth(m);
+  studyMonth();
   moneyMonth(m);
   familyMonth(m);
   loveMonth(m);

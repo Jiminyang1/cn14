@@ -5,7 +5,7 @@ import type { Choice } from '../types';
 import { fpow } from '../fmath';
 import { BIG, BIRTH_TOTAL, NATION, PBY } from '../data';
 import { CAUSE } from '../mortality';
-import { EDU_LV, admit, enroll, gkAutoApps, gkCandidates, gkLines, gkRank, gkResolve, gkScore, schoolStart } from '../education';
+import { EDU_LV, HS_NAME, admit, enroll, gkAutoApps, gkCandidates, gkLines, gkRank, gkResolve, gkScore, gkShock, hsTier, schoolStart, tutorFee } from '../education';
 import { ILL, oop, reimburse } from '../health';
 import { JOBS, RAISE, RESID_PENSION_JOBS, civilTry, gig, gradJob, hire, hireInCity, isWorking, quitJob, raise, retire } from '../career';
 import { MEET_HOW, READY0, READY_K, brideAmt, loveWord, mShift, mutualP, partnerInc, partnerRows, ptJobName } from '../romance';
@@ -119,6 +119,8 @@ const CHILD: { id: string; a: [number, number]; p: number; c?: () => boolean; m?
   { id: 'kidMoney', a: [8, 13], p: 0.33, m: [1, 2] }, // 压岁钱：春节在 1 月下旬到 2 月中旬
   { id: 'kidCopy', a: [9, 13], p: 0.38, m: TERM, c: () => !!S.school },
   { id: 'kidCrush', a: [12, 14], p: 0.5, c: () => !!S.school },
+  // 补习班：「双减」后学科类校外培训的参与率约 13.5%（2023），之前约 24%–36%；城镇是农村的两倍多，收入最高的家庭五成以上（北大教育财政所）
+  { id: 'tutor', a: [12, 17], p: 0.6, c: () => (S.school === '初中' || S.school === '高中') && !S.flags.tutor && !!parentsWord() },
 ];
 const kidPick = (id: string, k: string) => { (S.flags.kid ||= {})[id] = k; };
 
@@ -233,6 +235,25 @@ export const DEC = {
       eff({ h: 1 }); return `${parentsWord() || '家里'}拗不过你，什么班都没报。周末你在楼下玩到天黑。`;
     },
   },
+  tutor: {
+    build: () => {
+      const fee = tutorFee();
+      return {
+        title: '补习班', body: `${parentsWord()}打听到一个${S.school === '高中' ? '高考' : '中考'}补习班，问你要不要去。周末和晚上都要上课。`,
+        fact: '排除家境和原来成绩的影响后，多数研究发现补习对成绩的作用很小或不显著',
+        choices: [
+          { k: 'yes', label: '去上', sub: `学识↑一点 每年约${wan(fee)}`, w: (rural() ? 0.4 : 1) * (S.q >= 5 ? 2.5 : S.q === 4 ? 1.2 : S.q === 3 ? 0.6 : 0.2), tilt: { c: 0.4 } },
+          { k: 'no', label: '不去了', sub: '', w: 2, tilt: { c: -0.2 } },
+        ],
+      };
+    },
+    apply: k => {
+      kidPick('tutor', k);
+      if (k === 'no') return '你说不用了，周末还是自己在家写作业。';
+      S.flags.tutor = calYear(); eff({ money: -tutorFee(), h: -1 });
+      return '报了补习班。每周六上午、周三晚上去，坐在一屋子同样背着书包的人中间。';
+    },
+  },
   kidSummer: {
     build: () => ({
       title: '暑假', body: `${parentsWord()}打电话来，问你暑假要不要去${bothParents() ? '他们' : S.fam.mom.alive ? '她' : '他'}打工的城市。`,
@@ -315,8 +336,8 @@ export const DEC = {
     fork: true,
     build: () => {
       const back = !!S.flags.mig && !S.flags.migBack && chance(0.6);
-      // 51 ≈ 参加中考的学生学识中位数（模拟测得）
-      const p = clamp(0.68 + (S.st.kn - 51) / 30 + (S.q - 3) * 0.05 + (rural() ? -0.06 : 0.03), 0.08, 0.97);
+      // 51 ≈ 参加中考的学生学识中位数（模拟测得）；家境、城乡都已经在学识里了。普高招生约占初中毕业生的 62%（2025）
+      const p = clamp(0.68 + (S.st.kn - 51) / 30, 0.08, 0.97);
       const pass = chance(p);
       const body = (back ? `因为户口不在${S.loc.city}，你回到老家${placeName(S.home)}参加中考。` : '') + (pass ? '中考成绩出来了，分数够上普通高中。' : '中考成绩出来了，差了一些，没够上普通高中的分数线。');
       let choices = pass ? [
@@ -335,7 +356,11 @@ export const DEC = {
       if (ctx.back) { S.flags.migBack = 1; moveTo(S.home); }
       S.edu = Math.max(S.edu, 2);
       // 9 月开学（education.ts 的 admit）
-      if (k === 'gao') { admit('高中', 3, undefined, [['学校', `${S.loc.city}的一所普通高中`]]); return { t: '考上了普通高中，九月开学。', pic: 'high' }; }
+      if (k === 'gao') {
+        const t = S.flags.hs = hsTier(), name = HS_NAME[t](S.loc.city, S.loc.kind === 'rural');
+        admit('高中', 3, undefined, [['学校', name]]);
+        return { t: t === 'normal' ? `考上了${name}，九月开学。` : `分数够上了${name}，九月开学。`, pic: 'high' };
+      }
       if (k === 'voc') { admit('职高', 3); return { t: `报了职业高中，学${pick(['数控技术', '汽车维修', '电子商务', '学前教育', '护理', '烹饪', '计算机应用'])}，九月开学。`, pic: 'voc' }; }
       if (k === 'redo') { S.flags.zkRedo = 1; S.school = '初中'; S.schoolEnd = calYear() + 1; eff({ kn: 5, h: -5 }); return '又回到初三的教室，坐在一群比你小一岁的同学中间。'; }
       S.school = null;
@@ -359,7 +384,7 @@ export const DEC = {
       choices.push({ k: 'work', label: '不读了，去工作', sub: '早点赚钱', w: score < L.zhuanke ? 3 : 0.5, tilt: { c: -0.3, r: 0.2 } });
       return {
         title: '高考', form: 'zhiyuan',
-        body: `你在${P.n}参加高考，考了${score}分（满分${L.total}），全省排名约第${pos.toLocaleString('zh-CN')}名（前${(rank * 100).toFixed(rank < 0.01 ? 2 : 1)}%）。今年${P.n}的特控线${L.special}分、本科线${L.benke}分、专科线${L.zhuanke}分。你${line}。`,
+        body: (gkShock() || '') + `你在${P.n}参加高考，考了${score}分（满分${L.total}），全省排名约第${pos.toLocaleString('zh-CN')}名（前${(rank * 100).toFixed(rank < 0.01 ? 2 : 1)}%）。今年${P.n}的特控线${L.special}分、本科线${L.benke}分、专科线${L.zhuanke}分。你${line}。`,
         fact: NATION.gaokaoFact || '2026年全国高考报名人数为1290万（教育部）',
         choices, ctx: { rank, score, cands },
       };

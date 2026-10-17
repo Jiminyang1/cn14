@@ -8,13 +8,20 @@ import { GK_DIST, GK_LINES } from './real.generated';
 import { S } from './state';
 import { addDoc, log, out } from './journal';
 import { chance, clamp, gauss, pick, rnd, wpick } from './rng';
-import { cityLoc, moveTo } from './place';
+import { cityLoc, moveTo, placeInc } from './place';
 import { eff } from './stats';
 import { fire } from './lifecycle';
-import { calMonth, calYear } from './monthly';
+import { MONTHS, calMonth, calYear } from './monthly';
+import { pz } from './personality';
+import { nowM } from './calendar';
 
 declare module './types' {
-  interface Flags { toSchool?: { s: string; y: number; end: number; loc?: Loc; doc?: [string, string][] } | null } // 考上了、等开学（见 admit）
+  interface Flags {
+    toSchool?: { s: string; y: number; end: number; loc?: Loc; doc?: [string, string][] } | null; // 考上了、等开学（见 admit）
+    hs?: 'key' | 'county1' | 'normal'; // 高中层次：城市重点、县一中、普通高中（县里的其他高中）
+    tutor?: number;                    // 在上补习班：交过补习费的最近一年
+    parDivM?: number;                  // 父母离婚在你出生后的第几个月
+  }
 }
 
 export const EDU_LV = ['没上过学', '小学', '初中', '高中', '中专/职高', '大专', '本科', '硕士'];
@@ -64,16 +71,18 @@ export const GK = {
   // 普通院校投档线在批次线之间的位置：x = (分 − 本科线)/(特控线 − 本科线)，x=0 在本科线、1 在特控线；专科 y = (分 − 专科线)/(本科线 − 专科线)。
   // 取甘肃、河南、四川、广东 2025 年各层次最低专业组投档分的中位数（research/gaokao.json school_lines_2025.position_between_lines）
   pos: { ben1: 1.0, ben1Out: 1.3, ben2: 0.6, ben2Out: 0.9, minban: 0.08, zhuanPub: 0.88, zhuanPri: 0.03 },
-  posSd: 0.15,      // 同层次学校之间的差别（x 或 y 的标准差）：甘肃的省属重点从特控线下 26 分到上 31 分
+  posSd: 0.25,      // 同层次学校之间的差别（x 或 y 的标准差）：四省省属重点最低组在 x = 0.56–1.66 之间
   // 各省分数线；没有数据的省份用 default（物理类/理科口径）
   lines: { default: { total: 750, special: 520, benke: 440, zhuanke: 200 } },
   localK: 2.0,      // 985/211 在本省的“属地招生”优势（中等人口的省份）。本省名额摊到考生头上，小省多、大省少，所以再乘 平均人口 ÷ 本省人口（至少 1）：
                     // 兰州大学在甘肃最低组 538、中位组 553 分（约前 11%），郑州大学在河南最低组 601、中位组 628（约前 2.4%）
-  cal: 1.0,        // 985/211 总体校准：属地优势、调剂、冲一冲叠加后，使录取比例对上招生人数
+  cal: 1.05,        // 985/211 总体校准：属地优势、调剂、冲一冲叠加后，使录取比例对上招生人数
   // 校内最热专业比最冷专业（= 学校投档线）高多少分（750 分制），呈倒 U 形：名校各专业都不差；省属重点的土木、给排水、护理掉得很低；
   // 二本又缩回来（research/gaokao.json majors.within_university_by_tier_2025：985/211 计算机 +20~+30，省属重点 +55~+75，二本 +20~+38，
   // 民办理工压线、会计高约 50，高职最热约 +70）。民办和高职里最热的是会计、铁路这类，计算机不突出，这里没有细分
   spread: { '985': 25, '211': 25, ben1: 65, ben2: 30, minban: 20, zhuan: 45 },
+  // 院校专业组省份：一个组里有几个专业，你报的专业所在组的投档线在学校最低线和这个专业的线之间（取中间，估计值）；组内服从调剂
+  groupK: 0.5,
   sd: 0.012,        // 学校投档线每年的波动（logistic 宽度，占满分的比例，750 分制约 9 分）：高出 20 分就很稳，低 20 分基本没戏
 };
 
@@ -114,13 +123,14 @@ export const UNIS = [
   ['合肥工业大学', '合肥', 'AH', '211', 0.035, 'eng'], ['安徽大学', '合肥', 'AH', '211', 0.04],
   ['西北大学', '西安', 'SN', '211', 0.035], ['陕西师范大学', '西安', 'SN', '211', 0.038, 'edu'],
   ['湖南师范大学', '长沙', 'HN', '211', 0.035, 'edu'], ['华南师范大学', '广州', 'GD', '211', 0.03, 'edu'],
-  ['西南大学', '重庆', 'CQ', '211', 0.035, 'edu'], ['云南大学', '昆明', 'YN', '211', 0.04],
-  ['贵州大学', '贵阳', 'GZ', '211', 0.045, 'agri'], ['广西大学', '南宁', 'GX', '211', 0.045],
+  ['西南大学', '重庆', 'CQ', '211', 0.035, 'edu'], ['云南大学', '昆明', 'YN', '211', 0.055],
+  ['贵州大学', '贵阳', 'GZ', '211', 0.055, 'agri'], ['广西大学', '南宁', 'GX', '211', 0.055],
   ['太原理工大学', '太原', 'SX', '211', 0.045, 'eng'], ['河北工业大学', '天津', 'HE', '211', 0.04, 'eng'],
-  ['内蒙古大学', '呼和浩特', 'NM', '211', 0.045], ['辽宁大学', '沈阳', 'LN', '211', 0.045],
+  ['内蒙古大学', '呼和浩特', 'NM', '211', 0.055], ['辽宁大学', '沈阳', 'LN', '211', 0.045],
   ['东北师范大学', '长春', 'JL', '211', 0.04, 'edu'], ['东北林业大学', '哈尔滨', 'HL', '211', 0.045, 'agri'],
-  ['新疆大学', '乌鲁木齐', 'XJ', '211', 0.045], ['海南大学', '海口', 'HI', '211', 0.045],
-  ['宁夏大学', '银川', 'NX', '211', 0.045], ['青海大学', '西宁', 'QH', '211', 0.045, 'med'], ['西藏大学', '拉萨', 'XZ', '211', 0.045],
+  ['新疆大学', '乌鲁木齐', 'XJ', '211', 0.055], ['海南大学', '海口', 'HI', '211', 0.055],
+  ['宁夏大学', '银川', 'NX', '211', 0.055], ['青海大学', '西宁', 'QH', '211', 0.055, 'med'], ['西藏大学', '拉萨', 'XZ', '211', 0.055],
+  // 中西部省份的 211 在外省招生的线更低（资料：贵州大学、云南大学在四川、宁夏大学在甘肃的中位组比按 0.045 算的宽 1.1–1.9 倍），取 0.055（再高 211 的名额就明显超了）
 ].map(([name, city, prov, tier, pct, attr]: any[]): Uni => ({ name, city, prov, tier, pct, attr: attr || '' }));
 
 // 专业：热门的分数要求更高（heat 小），冷门更低（heat 大）。专业线 = 投档线 + 校内分差 × hot，hot = (1.6 − heat)，农学为 0、计算机为 1
@@ -138,10 +148,49 @@ export const COLD = ['农学', '哲学', '地质', '护理', '土木工程'];
 export const gkLines = pid => GK.lines[pid] || GK.lines.default;
 export const normCdf = z => { const t = 1 / (1 + 0.2316419 * Math.abs(z)); const d = 0.3989423 * fexp(-z * z / 2); const p = d * t * (0.3193815 + t * (-0.3565638 + t * (1.781478 + t * (-1.821256 + t * 1.330274)))); return z > 0 ? 1 - p : p; };
 
-// 考生在全省考生里的位置：u = 排在你前面的比例（越小越好）
+// 学识每年的增长里重心以外的部分（在校时每月记 1/12）。15 岁时 1 个标准差约 11 点学识。依据见 research/education_strat.json
+export const STUDY = {
+  c: 0.3,         // 认真（性格「认真」的 z 分）每 +1，每年多涨 0.3：到 15 岁约差 0.25 个标准差（尽责性与成绩 r ≈ 0.19，Poropat 2009）
+  rural: -0.1,    // 在农村读小学、初中：每年少涨 0.1，九年约 0.1 个标准差（城乡初中生认知差 0.37–0.41 个标准差，约一半能用家庭背景解释，CEPS）
+  lbBoth: -0.15,  // 父母都在外打工的留守儿童：每年少涨 0.15，到 15 岁约 0.12 个标准差；只有一方外出的约为 0（Zhang 等 2014 JDE 约 −0.13；也有研究为 0）
+  hs: { key: 0.33, county1: 1, normal: 0 }, // 高中层次本身的作用（排除生源后）：城市重点三年约 +0.1 个标准差，县一中约 +0.25（甘肃贫困县 RD +0.39，湖南县不显著）
+  tutor: 0.3,     // 补习班：每年 +0.3（约 0.03 个标准差）；排除选择偏差后的研究多为 0 或不显著
+};
+// 补习费：每年 9 月交一年，约当地人均收入的 0.27（初中）、0.34（高中）（北大教育财政所 2019：参与者城镇初中 11772、高中 13628 元，农村 4167、6064 元）
+export const tutorFee = () => Math.round(placeInc() * (S.school === '高中' || S.school === '复读' ? 0.34 : 0.27));
+const IN_SCHOOL = new Set(['小学', '初中', '高中', '复读']);
+export function studyMonth() {
+  const sc = S.school;
+  if (!sc || !IN_SCHOOL.has(sc)) { if (S.flags.tutor && (sc || S.age >= 19)) S.flags.tutor = 0; return; }
+  let y = STUDY.c * pz('c');
+  if (sc === '小学' || sc === '初中') { if (S.loc.kind === 'rural') y += STUDY.rural; }
+  else y += STUDY.hs[S.flags.hs || 'normal'];
+  if (S.flags.lb === 'both' && S.age < 16) y += STUDY.lbBoth;
+  if (S.flags.tutor && sc !== '小学') {
+    y += STUDY.tutor;
+    if (calMonth() === 9 && S.flags.tutor < calYear()) { S.flags.tutor = calYear(); eff({ money: -tutorFee() }); }
+  }
+  S.st.kn = clamp(S.st.kn + y / MONTHS, 0, 100);
+}
+// 中考排名 → 高中层次：城市里前约 30% 上重点高中，县里前约 15% 上县一中（只有省会的招生计划口径：合肥省示范高中约占中考报名的 54%、四大名校约 29%；县里更少，估计）
+export const ZK = { mu: 51, sd: 11 }; // 参加中考的学生学识的均值、标准差（模拟测得）
+export function hsTier(): 'key' | 'county1' | 'normal' {
+  const top = 1 - normCdf((S.st.kn - ZK.mu) / ZK.sd + gauss(0, 0.3));
+  return S.loc.kind === 'rural' ? (top < 0.15 ? 'county1' : 'normal') : (top < 0.3 ? 'key' : 'normal');
+}
+export const HS_NAME = { key: c => `${c}的一所重点高中`, county1: () => '县里的第一中学', normal: (c, rural) => rural ? '县里的一所普通高中' : `${c}的一所普通高中` };
+// 高三那一年家里出事（父母去世、离婚）：考试少 0.05 个标准差（荷兰、瑞典登记数据：考前亲人去世 −0.03 ~ −0.06）
+export function gkShock(): string | null {
+  const now = nowM(), f = S.fam, near = m => m != null && now - m <= 12;
+  if (near(f.dad.diedM) || near(f.mom.diedM)) return '这一年家里刚办完丧事，你考得有些心神不定。';
+  if (near(S.flags.parDivM)) return '这一年爸妈离了婚，你考前好几个晚上没睡好。';
+  return null;
+}
+// 考生在全省考生里的位置：u = 排在你前面的比例（越小越好）。家境、城乡都已经在学识里了，这里不再加；
+// 随机发挥 0.35 个标准差（约占总差异的一成，模考与高考相关约 0.85）；复读 +0.25（连同复读那年涨的学识约 +0.45，复读的因果效应 +0.47，Kang 等 2024）
+export const GKR = { mu: 58.6, sd: 9.4 }; // 参加高考的学生学识的中位数、标准差（模拟测得）
 export function gkRank() {
-  // 60 ≈ 参加高考的学生学识中位数、约 8.5 为标准差（模拟测得），使排名在考生中大致均匀分布
-  const s = (S.st.kn - 60) / 8.5 + (S.q - 3) * 0.12 + (S.home.kind === 'rural' ? -0.12 : 0.08) + (S.school === '复读' ? 0.25 : 0) + gauss(0, 0.35);
+  const s = (S.st.kn - GKR.mu) / GKR.sd + (S.school === '复读' ? 0.25 : 0) + (gkShock() ? -0.05 : 0) + gauss(0, 0.35);
   return clamp(1 - normCdf(s), 0.00002, 0.995);
 }
 // 位置 → 分数：在锚点之间按 log(u) 线性插值。有一分一段表的省份直接用表（GK_DIST），其余省份用有表各省的中位形状
@@ -204,8 +253,9 @@ export function gkCandidates(rank, hp, score) {
     u.p = admitP(score, u.line, w);
     u.ml = Object.fromEntries(majorsOf(u).map(m => [m.n, Math.round(u.line + GK.spread[u.tier] * L.total / 750 * clamp(1.6 - m.heat, 0, 1))]));
   }
+  // 冲：先列最有希望的；稳、保：先列线最高的（保底也要尽量好）
   const pickN = (lo, hi, n) => {
-    const c = pool.filter(u => u.p >= lo && u.p < hi && !u.taken).sort((a, b) => b.line - a.line);
+    const c = pool.filter(u => u.p >= lo && u.p < hi && !u.taken).sort(hi <= 0.5 ? (a, b) => b.p - a.p : (a, b) => b.line - a.line);
     const got = [];
     // 本省和外省尽量都有
     for (const want of [x => x.prov !== hp, x => x.prov === hp, () => true]) {
@@ -215,38 +265,43 @@ export function gkCandidates(rank, hp, score) {
     return got;
   };
   const rush = pickN(0.08, 0.5, 3), steady = pickN(0.5, 0.9, 3), safe = pickN(0.9, 1.01, 2);
-  const tag = (arr, g) => arr.map(u => ({ name: u.name, city: u.city, prov: u.prov, tier: u.tier, attr: u.attr, line: u.line, ml: u.ml, w, p: u.p, fee: u.fee || 0, group: g }));
+  const nt = NO_TIAOJI.has(hp) ? 1 : 0;
+  const tag = (arr, g) => arr.map(u => ({ name: u.name, city: u.city, prov: u.prov, tier: u.tier, attr: u.attr, line: u.line, ml: u.ml, w, p: u.p, nt, fee: u.fee || 0, group: g }));
   return [...tag(rush, '冲'), ...tag(steady, '稳'), ...tag(safe, '保')];
 }
 export const TIER_N = { '985': '985', '211': '211', ben1: '一本', ben2: '二本', minban: '民办本科', zhuan: '专科' };
-// 被这个学校的这个专业录取的概率（不超过学校投档的概率：专业线不会低于投档线）
-export const majorP = (score, c, m) => Math.min(c.p, admitP(score, c.ml[m.n] ?? c.line, c.w));
+// 报这个学校的这个专业：所在专业组的投档线（「专业+院校」省份就是专业线）、投进这个组的概率、录到这个专业的概率
+export const groupLine = (c, m) => { const ml = c.ml[m.n] ?? c.line; return c.nt ? ml : Math.round(c.line + (ml - c.line) * GK.groupK); };
+export const groupP = (score, c, m) => admitP(score, groupLine(c, m), c.w);
+export const majorP = (score, c, m) => Math.min(groupP(score, c, m), admitP(score, c.ml[m.n] ?? c.line, c.w));
 
 // 「专业+院校」填报的省份：每个专业单独投档，没有专业调剂，也就不会因为专业没录上被退档（research/gaokao.json zhiyuan_rules）
 export const NO_TIAOJI = new Set(['ZJ', 'SD', 'HE', 'CQ', 'LN', 'GZ', 'QH']);
 
-// 平行志愿投档：按志愿顺序，第一个够得上投档线的学校投档；再看专业线够不够，没录上时服从调剂就分到冷门专业，不服从就退档。
-// 「专业+院校」省份专业线不够就看下一个志愿。同一个学校的投档线和专业线一起涨落，所以只抽一次：今年线低到够得上专业，就一定也够得上投档
+// 平行志愿投档：按志愿顺序，第一个够得上专业组投档线的志愿投档；再看专业线够不够，没录上时服从调剂就分到组里更冷的专业，不服从就退档。
+// 「专业+院校」省份专业线不够就看下一个志愿。同一个学校的各条线一起涨落，所以只抽一次：今年线低到够得上专业，就一定也够得上组
 export function gkResolve(apps, score, adjust, hp) {
+  void hp;
   for (const a of apps) {
     const m = MAJOR_LIST.find(x => x.n === a.major) || MAJOR_LIST[6];
     const v = rnd();
-    if (v >= a.c.p) continue;
+    if (v >= groupP(score, a.c, m)) continue;
     if (v < majorP(score, a.c, m)) return { ok: true, c: a.c, major: a.major };
-    if (NO_TIAOJI.has(hp)) continue;
-    if (adjust) return { ok: true, c: a.c, major: pick(COLD.filter(x => majorsOf(a.c).some(y => y.n === x))) || '农学', adjusted: true };
+    if (a.c.nt) continue;
+    const colder = majorsOf(a.c).filter(x => x.heat > m.heat).map(x => x.n);
+    if (adjust) return { ok: true, c: a.c, major: pick(colder.length ? colder : COLD.filter(x => majorsOf(a.c).some(y => y.n === x))) || '农学', adjusted: true };
     return { ok: false, rejected: a.c };
   }
   return { ok: false };
 }
-// 自动填报：冲、稳、保各选一个，专业按兴趣随机，但只挑够得着的（录取把握三成以上；都够不着就随便挑）
+// 自动填报：冲、稳、保各选一个，专业按兴趣随机，但只挑够得着的（服从调剂时看专业组、不服从看专业，把握三成以上；都够不着就随便挑）
 export function gkAutoApps(ctx) {
   const by = g => ctx.cands.filter(c => c.group === g);
-  const apps = [];
+  const apps = [], adjust = chance(0.9);
   for (const g of ['冲', '稳', '保']) {
     const list = by(g); if (!list.length) continue;
-    const c = pick(list), ms = majorsOf(c), ok = ms.filter(m => majorP(ctx.score, c, m) >= 0.3);
+    const c = pick(list), ms = majorsOf(c), ok = ms.filter(m => (adjust && !c.nt ? groupP : majorP)(ctx.score, c, m) >= 0.3);
     apps.push({ i: ctx.cands.indexOf(c), major: pick(ok.length ? ok : ms).n });
   }
-  return { apps, adjust: chance(0.9) };
+  return { apps, adjust };
 }
