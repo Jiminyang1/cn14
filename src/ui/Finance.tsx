@@ -1,5 +1,5 @@
 import { useId, useState } from 'react';
-import { S, wan, type MonthlyStatement } from '../engine';
+import { S, TIERS, wan, type MonthlyStatement } from '../engine';
 
 export const cashAmount = (value: number) => {
   const rounded = Math.round(value);
@@ -9,7 +9,9 @@ export const cashChange = (value: number) => {
   const rounded = Math.round(value);
   return (rounded > 0 ? '+' : rounded < 0 ? '−' : '') + cashAmount(Math.abs(rounded));
 };
-export const monthlySpending = (bill: MonthlyStatement) => bill.living + bill.children + bill.discretionary + (bill.savingsSpend || 0) + bill.rent + bill.mortgage + bill.debtRepaid;
+export const monthlySpending = (bill: MonthlyStatement) => bill.living + bill.rent + bill.mortgage + bill.debtRepaid;
+/** 生活档位的名字（budget.ts 的 TIERS） */
+export const tierName = (t?: number) => TIERS[t ?? 1]?.n || '';
 const movementClass = (value: number) => value < 0 ? 'neg' : value > 0 ? 'money-up' : undefined;
 
 export const statementAge = (bill: MonthlyStatement, birthYear: number, birthMonth: number) => bill.year - birthYear - Number(bill.month < birthMonth);
@@ -28,8 +30,7 @@ export function TimelineFinance({ bills, completed }: { bills: MonthlyStatement[
       <span className={movementClass(change)}>{result}</span>
     </summary>
     {open && <div className="timeline-finance-body">
-      <p className="account-note">到手收入 {wan(income)}，生活与还款 {wan(spending)}。现金变化含利息和其他往来。</p>
-      <p className="account-note">共记录 {bills.length} 个月，点开月份看明细。</p>
+      <p className="account-note">这一年到手 {wan(income)}，生活和住房花了 {wan(spending)}。点开月份看明细。</p>
       {bills.slice().reverse().map(bill => <AccountStatement key={`${bill.year}-${bill.month}`} bill={bill} />)}
     </div>}
   </details>;
@@ -37,13 +38,13 @@ export function TimelineFinance({ bills, completed }: { bills: MonthlyStatement[
 
 export function AccountStatement({ bill = S.statement }: { bill?: MonthlyStatement } = {}) {
   if (!bill) return <p className="account-note">第一个月结束后生成收支账单。</p>;
-  const entries: [string, number][] = [
-    ['期初现金', bill.opening], ['期间事件与转账（净额）', bill.events], ['月底账户转入／家庭往来', bill.transfers],
-    ['家庭到手收入', bill.income], ['基本生活', -bill.living], ['孩子日常开销', -bill.children],
-    ['房租／养老院（现金实付）', -bill.rent], ['房贷（现金实付）', -bill.mortgage],
-    ['偿还其他欠款', -bill.debtRepaid], ['可选消费', -bill.discretionary], ['动用积蓄的花销', -(bill.savingsSpend || 0)], ['存款利息', bill.depositInterest],
-    ['期末现金', bill.closing],
+  // 只留几行：收入、生活（按档位）、住房、还欠款，其余（事件、家里的往来、利息）合成「其他」；为零的不写
+  const rows: [string, number][] = [
+    ['到手收入', bill.income], [`生活开销（${tierName(bill.tier)}）`, -bill.living],
+    ['房租／养老院', -bill.rent], ['房贷', -bill.mortgage], ['还欠款', -bill.debtRepaid],
+    ['其他（事件、往来、利息）', bill.events + bill.transfers + bill.depositInterest],
   ];
+  const entries: [string, number][] = [['期初现金', bill.opening], ...rows.filter(([, v]) => Math.round(v) !== 0), ['期末现金', bill.closing]];
   const change = bill.closing - bill.opening;
   return <details className="account-statement">
     <summary>
@@ -52,7 +53,7 @@ export function AccountStatement({ bill = S.statement }: { bill?: MonthlyStateme
     </summary>
     <div className="statement-body">
       <dl>{entries.map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{cashAmount(value)}</dd></div>)}</dl>
-      {bill.incomeDetails && <div className="statement-income">
+      {bill.incomeDetails && (bill.incomeDetails.partner > 0 || bill.incomeDetails.rehire > 0 || bill.incomeDetails.aid > 0) && <div className="statement-income">
         <span>到手收入构成</span>
         <dl>
           <div><dt>本人收入／养老金及补贴</dt><dd>{cashAmount(bill.incomeDetails.personal)}</dd></div>
@@ -61,10 +62,10 @@ export function AccountStatement({ bill = S.statement }: { bill?: MonthlyStateme
           {bill.incomeDetails.aid > 0 && <div><dt>低保</dt><dd>{cashAmount(bill.incomeDetails.aid)}</dd></div>}
         </dl>
       </div>}
-      <p className="account-note">公积金另付房贷 {cashAmount(bill.mortgageHpf)}；房贷本月计息 {cashAmount(bill.mortgageInterest)}，已计入贷款余额；其他欠款新增利息 {cashAmount(bill.debtInterest)}，未从现金扣除。</p>
-      <p className="account-note">月底其他欠款 {cashAmount(bill.debt)}。</p>
+      {bill.mortgageHpf > 1 && <p className="account-note">另外公积金付了房贷 {cashAmount(bill.mortgageHpf)}。</p>}
+      {bill.debt > 1 && <p className="account-note">月底还欠着 {cashAmount(bill.debt)}。</p>}
       {bill.arrears > 1 && <p className="account-note neg">房贷累计逾期 {cashAmount(bill.arrears)}，仍包含在贷款余额中。</p>}
-      {bill.shortfall > 1 && <p className="account-note neg">基本生活或住房缺口 {cashAmount(bill.shortfall)}，已压缩生活，未付房租计入欠款。</p>}
+      {bill.shortfall > 1 && <p className="account-note neg">钱不够付必要的生活和住房，差了 {cashAmount(bill.shortfall)}，记成了欠款。</p>}
     </div>
   </details>;
 }

@@ -16,7 +16,7 @@ test('year-end reports stay brief and only appear after the year ends', () => {
   const bills: MonthlyStatement[] = [{
     year: 2055, month: 2, opening: 100000, closing: 85000,
     income: 10000, events: -20000, transfers: 0, depositInterest: 0,
-    living: 3000, children: 500, discretionary: 500, rent: 0, mortgage: 1000,
+    tier: 1, living: 4000, rent: 0, mortgage: 1000,
     mortgageInterest: 200, mortgageHpf: 0, debtRepaid: 0, debtInterest: 0,
     shortfall: 0, arrears: 0, debt: 0,
   }];

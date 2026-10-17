@@ -16,7 +16,7 @@ import { partnerLoc } from './romance';
 import { dedOf, netOf, penBase, type DedRow, type NetPay } from './tax';
 import type { Partner } from './types';
 import { changeMoney, repayDebt } from './accounts';
-import { drawRate, livingBudget, savingsDraw } from './budget';
+import { TIERS, familySize, tierCost, tierOf } from './budget';
 import { dibaoMonth, frugalEnd, frugalK, kidAdvMonth, kidSupportY, tightMonth } from './tight';
 
 declare module './types' {
@@ -26,8 +26,14 @@ declare module './types' {
     uiM?: number;   // 还能领几个月失业保险金
     uiOn?: boolean; // 这一段待业已经办了领取
     net?: number;   // 现在的年收入（到手）：这个月到手的钱 × 12（S.income 是税前）
+    tier?: number;  // 这一年的生活档位（budget.ts 的 TIERS）；经济独立以后才有
   }
 }
+// 档位变了，时间线上写一句
+const TIER_UP = ['', '日子慢慢稳了下来，不用再月月发愁。', '手头宽裕了些，周末敢下馆子了。', '日子过得宽裕了，买东西不太看价钱了。', '家里的日子富足了，钱已经不太是问题。'];
+const TIER_DOWN = ['钱不够花了，日子过得紧巴巴的。', '手头紧了些，能省则省。', '收入少了，日子没以前那么宽裕了。', '日子从富足退回了宽裕。'];
+// 必要的生活开销：档位里这一部分一定要付，钱不够就是缺口（「手头紧了」）；多出来的只从余钱里出，不借钱
+const ESSENTIAL = 0.55;
 
 // 经济独立：开始工作（或毕业/辍学后离开学校）才有自己的账户；之前钱的进出都算家里的。
 // · 父母都已经去世的：家里账上剩下的钱（遗产扣掉这些年的生活费、学费）转给你；
@@ -89,21 +95,20 @@ export function moneyMonth(m: number) {
   const hh = earned + aid;
   changeMoney(hh);
   houseMonth(m);
-  if (S.job === 'retired' && (!mate || mate.retired) && S.retirementLifestyle == null) S.retirementLifestyle = S.lifestyle;
-  const budget = livingBudget({ consumption: H.cons, income: hh, adults: mate ? 2 : 1,
-    retiredAdults: Number(S.job === 'retired') + Number(!!mate?.retired),
-    children: f.kids.filter(child => child.alive && child.age < 22).map(child => child.age), lifestyle: S.lifestyle,
-    retirementLifestyle: S.retirementLifestyle });
-  S.lifestyle = budget.lifestyle;
-  // 住养老院：费用里包了吃住，不再另扣大人的基本生活（原来两样都扣，每月多扣约一份基本生活）
+  // 生活开销（budget.ts）：每年过生日那个月定一次档，刚独立的当月就定
+  const kids = f.kids.filter(child => child.alive && child.age < 22).map(child => child.age);
+  const size = familySize(mate ? 2 : 1, kids);
+  if (S.tier == null || m === 0) {
+    const t = tierOf(hh, S.money, H.cons, size, S.tier, S.job === 'retired' && (!mate || !!mate.retired));
+    if (S.tier != null && t !== S.tier) log(t > S.tier ? TIER_UP[t] : TIER_DOWN[t], t > S.tier ? 'good' : 'bad');
+    S.tier = t;
+  }
+  // 住养老院：费用里包了吃住，不再另付生活开销。节衣缩食的（tight.ts）：欠款还清以前，必要的那部分少花一些
   const inCare = S.flags.oldLive === 'home';
-  // 节衣缩食的（tight.ts）：欠款还清以前，大人的基本生活少花一些
-  const adultBasic = inCare ? 0 : budget.living * frugalK();
-  const basic = adultBasic + budget.children;
+  const full = inCare ? 0 : tierCost(S.tier, H.cons, size);
+  const basic = Math.min(full, H.cons / MONTHS * size * ESSENTIAL) * frugalK();
   const basicPaid = Math.min(S.money, basic);
   S.money -= basicPaid;
-  const living = basic ? basicPaid * adultBasic / basic : 0;
-  const children = basicPaid - living;
   const ownHere = S.house && S.house.city === S.loc.city;
   const rentDue = inCare ? careFeeY() / MONTHS
     : !ownHere && S.loc.kind !== 'rural' && S.flags.oldLive !== 'kid' && !S.flags.grandHelp ? H.hp * 45 * 0.018 * 0.6 / MONTHS : 0;
@@ -117,16 +122,16 @@ export function moneyMonth(m: number) {
   S.debt = (S.debt || 0) + debtInterest;
   const reserve = basic + rentDue;
   const debtRepaid = repayDebt(Math.max(0, S.money - reserve));
-  const discretionary = Math.min(budget.discretionary + lateLife.cost, Math.max(0, S.money - reserve));
-  S.money -= discretionary;
-  const savingsSpend = savingsDraw(S.money, P, drawRate(S.age, S.job === 'retired'), S.money - reserve, basic + rentDue + mortgage.cash + mortgage.hpf - hh);
-  S.money -= savingsSpend;
+  // 档位里必要以外的部分，加上候鸟过冬这类晚年的开销（turns.ts）：只从余钱里出
+  const extra = Math.min(full - Math.min(full, basic) + lateLife.cost, Math.max(0, S.money - reserve));
+  S.money -= extra;
+  const living = basicPaid + extra;
   const depositInterest = S.money * (SAVE_INT_M - 1);
   S.money += depositInterest;
   const previous = S.statement;
   S.statement = { year: calYear(m), month: calMonth(m), opening, closing: S.money, events, transfers, income: hh,
     incomeDetails: { personal: net, partner: mp ? mp.net / MONTHS : 0, rehire: lateLife.income, ...(aid ? { aid } : {}) },
-    living, children, discretionary, savingsSpend, rent, mortgage: mortgage.cash, mortgageInterest: mortgage.interest,
+    tier: S.tier, living, rent, mortgage: mortgage.cash, mortgageInterest: mortgage.interest,
     mortgageHpf: mortgage.hpf, debtRepaid, depositInterest, debtInterest,
     shortfall: basic - basicPaid + rentDue - rent, arrears: mortgage.arrears, debt: S.debt };
   if (!S.headless) {
@@ -136,7 +141,7 @@ export function moneyMonth(m: number) {
     else history.push(S.statement);
   }
   const totals = S.cashflow ||= { months: 0, income: 0, spending: 0, mortgage: 0, debtRepaid: 0 };
-  totals.months++; totals.income += hh; totals.spending += living + children + discretionary + savingsSpend + rent;
+  totals.months++; totals.income += hh; totals.spending += living + rent;
   totals.mortgage += mortgage.cash; totals.debtRepaid += debtRepaid;
   S.relInc = clamp((hh * MONTHS / (f.married ? 1.6 : 1) / (P * REL_REF) - 1) * 6, -10, 10);
   if (S.money > S.stats.maxMoney) S.stats.maxMoney = S.money;

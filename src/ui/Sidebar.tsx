@@ -11,7 +11,7 @@ import { LiveScene } from './Photo';
 import { YearProgress } from './Progress';
 import { Ib } from './TipLayer';
 import { dots, sexW } from './util';
-import { cashAmount, cashChange, monthlySpending } from './Finance';
+import { cashAmount, cashChange, monthlySpending, tierName } from './Finance';
 
 const neg = (n: boolean) => n ? 'neg' : undefined;
 // 还没上小学：小学在满 6 岁以后的那个 9 月入学，6 岁生日到开学之间也还是学龄前
@@ -245,7 +245,7 @@ export function Account({ m }: { m?: string }) {
       <p className="finance-period">{bill ? `${bill.year}年${bill.month}月 · 最近一次结算` : '等待第一个月结算'}</p>
       <dl className="finance-metrics">
         <div><dt>到手收入{mate ? '（含配偶）' : ''}</dt><dd>{cashAmount(bill ? bill.income : hh / 12)}</dd></div>
-        <div><dt>生活与还款</dt><dd>{bill ? cashAmount(monthlySpending(bill)) : '—'}</dd></div>
+        <div><dt>生活与还款{bill ? `（${tierName(bill.tier)}）` : ''}</dt><dd>{bill ? cashAmount(monthlySpending(bill)) : '—'}</dd></div>
         <div><dt>现金变化</dt><dd className={change < 0 ? 'neg' : change > 0 ? 'money-up' : undefined}>{bill ? cashChange(change) : '—'}</dd></div>
       </dl>
       {loanArrears() > 1 && <p className="account-note neg">房贷已逾期 {wan(loanArrears())}，需要处理还款。</p>}

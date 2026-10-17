@@ -80,8 +80,8 @@ export interface MonthlyStatement {
   year: number; month: number; opening: number; closing: number;
   events: number; transfers: number; income: number;
   incomeDetails?: { personal: number; partner: number; rehire: number; aid?: number }; // aid：低保（tight.ts）
-  living: number; children: number; discretionary: number; rent: number;
-  savingsSpend?: number;     // 动用积蓄的花销（budget.ts 的 savingsDraw）
+  tier: number;              // 这个月的生活档位（budget.ts 的 TIERS）
+  living: number; rent: number; // 生活开销（按档位）、房租或养老院
   mortgage: number; mortgageInterest: number; mortgageHpf: number;
   debtRepaid: number; depositInterest: number; debtInterest: number;
   shortfall: number; arrears: number; debt: number;
@@ -139,8 +139,7 @@ export interface Life {
   pen?: { y: number; r: number; s: number };       // 职工养老保险缴费记录（finance.ts 的 penMonth）
   // 钱：经济独立以前算在家里
   indep: boolean; indepAt?: number; money: number;
-  debt?: number; lifestyle?: number; parentLifestyle?: number;
-  retirementLifestyle?: number; parentRetirementLifestyle?: number;
+  debt?: number; parentTier?: number;              // 父母家这一年的生活档位（budget.ts）
   statement?: MonthlyStatement;
   statements?: MonthlyStatement[];
   cashflow?: { months: number; income: number; spending: number; mortgage: number; debtRepaid: number };

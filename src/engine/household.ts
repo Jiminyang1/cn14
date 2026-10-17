@@ -9,7 +9,7 @@ import { parentIncome, parentRetired } from './parents';
 import { placeCons, placeHp, placeInc } from './place';
 import { wan } from './format';
 import { sibsAlive } from './family';
-import { drawRate, livingBudget, savingsDraw } from './budget';
+import { familySize, tierCost, tierOf } from './budget';
 import { changeMoney } from './accounts';
 
 declare module './types' {
@@ -45,22 +45,17 @@ export function familyMoneyMonth(m: number) {
   const ill = (mom && f.mom.ill ? 1 : 0) + (dad && f.dad.ill ? 1 : 0);
   const children = f.sibs.filter(child => child.alive && child.age < 18).map(child => child.age);
   if (S.indep === false && S.age < 18) children.push(S.age);
-  if (!working && S.parentRetirementLifestyle == null) S.parentRetirementLifestyle = S.parentLifestyle;
-  const budget = livingBudget({ consumption: placeCons(S.home), income: inc,
-    adults: Number(mom) + Number(dad),
-    retiredAdults: Number(mom && parentRetired(f.mom, false)) + Number(dad && parentRetired(f.dad, true)),
-    children, lifestyle: S.parentLifestyle, retirementLifestyle: S.parentRetirementLifestyle });
-  S.parentLifestyle = budget.lifestyle;
+  // 生活开销按档位（budget.ts，和你自己同一套）：每年你过生日那个月定一次档
+  const cons = placeCons(S.home), size = familySize(Number(mom) + Number(dad), children);
+  if (S.parentTier == null || m === 0) S.parentTier = tierOf(inc, S.famMoney, cons, size, S.parentTier, !working);
+  const full = tierCost(S.parentTier, cons, size), basic = Math.min(full, cons / MONTHS * size * 0.55);
   const rent = S.famHouse?.type === 'rent' ? placeHp(S.home) * 45 * 0.018 * 0.6 / MONTHS : 0;
-  const essential = budget.living + budget.children + rent + placeCons(S.home) * 0.3 * ill / MONTHS;
+  const essential = basic + rent + cons * 0.3 * ill / MONTHS;
   S.famMoney += inc - essential;
   if (S.indep === false && S.school && m === monthOfCal(9)) payTuition();
   if (S.famDebt > 0) famDebtMonth(inc, working, mortgage);
-  const optional = Math.min(budget.discretionary, Math.max(0, S.famMoney - essential));
-  S.famMoney -= optional;
-  // 父母也会动用积蓄（和你自己一样，budget.ts 的 savingsDraw）：按年纪大的那一位算，都退休以后按退休的档
-  const elder = Math.max(mom ? f.mom.age : 0, dad ? f.dad.age : 0);
-  S.famMoney -= savingsDraw(S.famMoney, placeInc(S.home), drawRate(elder, !working), S.famMoney - essential, essential - inc);
+  // 档位里必要以外的部分：只从余钱里出
+  S.famMoney -= Math.min(full - basic, Math.max(0, S.famMoney - essential));
   // 父母都不上班以后，存款花光了，由已经工作的子女补贴生活费（还在世的兄弟姐妹一起分摊）；父母还在上班时，欠款由他们自己慢慢还
   // supportY 记的是贴补了几年（每个年龄年记一次）
   if (S.indep && S.famMoney < 0 && !working) {
