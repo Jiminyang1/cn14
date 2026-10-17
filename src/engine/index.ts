@@ -33,5 +33,6 @@ export * from './story';
 export * from './actions';
 export * from './plans';
 export * from './plans/style';
+export * from './plans/health';
 export * from './data';
 export type * from './types';
