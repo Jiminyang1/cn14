@@ -10,7 +10,8 @@ import { MONTHS, calMonth, calYear, perMonth } from './monthly';
 
 declare module './types' {
   // am：确诊在第几个月（年龄 × 12 + 月份，下同）；mo：开始治疗以后过了几个月
-  interface Illness { am?: number; mo?: number }
+  // early：定期体检时发现得早（plans/health.ts），治疗中的死亡率乘 ILL_EARLY
+  interface Illness { am?: number; mo?: number; early?: number }
   interface Death { month?: number }                // 离世是公历几月（year 是公历哪一年）
 }
 /** 这一生的第几个月：年龄 × 12 + 这一年的第几个月 */
@@ -42,10 +43,14 @@ export const oop = (k, where) => Math.round(ILL[k].cost[where] * (1 - reimburse(
 export const ILL_SURVIVE_MO = 60;
 // 确诊了却一直没有开始治疗（抉择没来得及做）：约一年后离世
 export const ILL_UNTREATED_MO = 12;
+// 发现得早（定期体检开着时确诊）：治疗中的死亡率减半（估计；早期癌症的生存率远高于晚期）。
+// illHook.early 由 plans/health.ts 设上：发现得早就返回确诊时写的那句话，否则是 null
+export const ILL_EARLY = 0.5;
+export const illHook: { early?: (k: string) => string | null } = {};
 export function illMonth() {
   const il = S.flags.ill;
   il.mo++;
-  const p = (ILL[il.k] || ILL.cancer).die[il.treat] * (S.rural && il.k === 'cancer' ? 1.15 : 1);
+  const p = (ILL[il.k] || ILL.cancer).die[il.treat] * (S.rural && il.k === 'cancer' ? 1.15 : 1) * (il.early ? ILL_EARLY : 1);
   if (il.mo > MONTHS && il.treat !== 'none') eff({ money: -oop(il.k, il.treat) * 0.3 / MONTHS });
   if (chance(perMonth(p))) { die(il.k); return true; }
   if (il.mo >= ILL_SURVIVE_MO && il.treat !== 'none') { S.flags.ill = null; S.flags.survivor = 1; log('复查结果一直稳定。医生说，可以算是挺过来了。', 'good'); eff({ h: 8 }); }
@@ -81,9 +86,10 @@ export function healthMonth(m: number): boolean {
   if (chance(perMonth(deathProb()))) {
     const k = pickCause();
     if (MAJOR.includes(k) && a >= 35 && chance(0.55)) {
-      S.flags.ill = { k, at: a, am: lifeMonth(m), mo: 0 };
+      const early = illHook.early?.(k) || null;
+      S.flags.ill = early ? { k, at: a, am: lifeMonth(m), mo: 0, early: 1 } : { k, at: a, am: lifeMonth(m), mo: 0 };
       addDoc('ill', '诊断书', [['诊断', CAUSE[k]], ['日期', `${calYear(m)}年${calMonth(m)}月`]]);
-      log(DIAG[k], 'bad');
+      log(early || DIAG[k], 'bad');
       return false;
     }
     die(k); return true;
