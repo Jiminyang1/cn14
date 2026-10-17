@@ -44,10 +44,12 @@ export const mShift = () => S.flags.mShift != null ? S.flags.mShift : (S.flags.m
 export const bianzhi = (jk: string | null | undefined) => !!(jk && JOBS[jk] && JOBS[jk].stable);
 // 你拿得出手的条件：有编制、有房（介绍人会主动上门）
 const myCondOK = () => S.age >= 25 && (bianzhi(S.job) || !!S.house);
+// 说了「想找个人」（抉择 single）的两年里，家里和朋友多介绍
+const looking = () => S.flags.look != null && nowM() < S.flags.look;
 // 怎么认识的：读书时多在学校；二十六七以后相亲越来越多，有编制、有房的更多
 export function meetHow() {
   if (S.school && S.age < 25 && chance(0.7)) return 'school';
-  if (S.age >= 26 && chance(Math.min(0.7, (S.age - 24) * 0.1 + (myCondOK() ? 0.15 : 0)))) return 'blind';
+  if (S.age >= 26 && chance(Math.min(0.8, (S.age - 24) * 0.1 + (myCondOK() ? 0.15 : 0) + (looking() ? 0.3 : 0)))) return 'blind';
   return wpick({ friends: 3, work: isWorking() ? 3 : 0, wedding: S.age >= 24 ? 1.5 : 0.3, hobby: 1, app: 2 });
 }
 // 单身的人这个月会不会遇见一个人：MEET_P 是一年的，换算成每月。外向的人遇见的多一些（每个标准差约 ×1.28）。
@@ -56,15 +58,17 @@ export function meetHow() {
 export const LOVE_FOCUS_K = 0.8, FRIEND_MEET_K = 0.2;
 const MEET_T = { e: 0.25 };
 declare module './types' {
-  interface Flags { lastMeet?: number; coupled?: number } // 上一个人是出生后第几个月遇见的（或者那段感情是哪个月结束的）；上个月还有没有对象
+  interface Flags { lastMeet?: number; coupled?: number; look?: number; noWed?: number; soloAt?: number } // look：说了想找个人，到哪个月为止多介绍；noWed：不打算结婚了；soloAt：几岁时决定的 // 上一个人是出生后第几个月遇见的（或者那段感情是哪个月结束的）；上个月还有没有对象
 }
 function meetMonth(m: number) {
   if (S.age < 18 || S.age > 60 || !single()) return;
   const love = loveNow();
   // 说过「现在不想谈恋爱」的，这段时间里不再认识新的人；改回「恋爱」重心就是又想谈了
   if (S.flags.noLove != null) { if (love || nowM() >= S.flags.noLove) S.flags.noLove = undefined; else return; }
+  // 不打算结婚的不再遇见人；改回「恋爱」重心就是又想谈了
+  if (S.flags.noWed) { if (love) S.flags.noWed = undefined; else return; }
   if (S.flags.lastMeet != null && nowM() - S.flags.lastMeet < (love ? MEET_GAP_LOVE : MEET_GAP)) return;
-  const p = MEET_P(S.age) * MEET_K * (S.sex === 'F' ? MEET_KF : 1) * (1 + LOVE_FOCUS_K * slotW('love') + FRIEND_MEET_K * slotW('friends')) * (myCondOK() ? 1.25 : 1) * tiltW(MEET_T);
+  const p = MEET_P(S.age) * MEET_K * (S.sex === 'F' ? MEET_KF : 1) * (1 + LOVE_FOCUS_K * slotW('love') + FRIEND_MEET_K * slotW('friends')) * (myCondOK() ? 1.25 : 1) * (looking() ? 1.6 : 1) * tiltW(MEET_T);
   if (!chance(perMonth(Math.min(0.95, p)))) return;
   S.flags.lastMeet = nowM();
   const how = meetHow();

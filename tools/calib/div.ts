@@ -3,26 +3,23 @@
 // 用无界面的人生（抉择自动做掉）
 // @ts-nocheck —— 统计用的一次性脚本，不做类型检查
 import * as E from './lib';
-import { EVENTS, birth, runHeadlessYear } from './lib';
+import { birth, runHeadlessYear } from './lib';
 const N = +process.argv[3] || 4000;
 let n16 = 0, par16 = 0, bully16 = 0, n60 = 0, div60 = 0, divN = 0, marPY = 0;
 const dur = {}, age = {};
 const bump = (o, k) => { o[k] = (o[k] || 0) + 1; };
-for (const e of EVENTS) {
-  if (e.id !== 'divorce') continue;
-  const run = e.run;
-  e.run = () => {
-    const L = E.S, d = L.age - L.fam.partner.marriedAt;
-    divN++; bump(dur, d < 2 ? '0–1年' : d < 8 ? '2–7年' : d < 15 ? '8–14年' : d < 25 ? '15–24年' : '25年以上'); bump(age, L.age < 60 ? `${Math.floor(L.age / 10) * 10}多岁` : '60岁以后');
-    return run();
-  };
-}
 for (let i = 0; i < N; i++) {
   birth(7000 + i * 13, { headless: true });
   const L = E.S;
   for (let g = 0; L.phase === 'life' && g < 130; g++) {
     if (L.fam.married && L.fam.partner && L.fam.partner.alive) marPY++;
+    // 离婚现在有两条路（抉择 split、Ta 提离婚），看 flags.divorced 有没有变
+    const prev = L.flags.divorced, mAt = L.fam.partner?.marriedAt;
     runHeadlessYear();
+    if (L.flags.divorced != null && L.flags.divorced !== prev && mAt != null) {
+      const d = L.flags.divorced - mAt; divN++;
+      bump(dur, d < 2 ? '0–1年' : d < 8 ? '2–7年' : d < 15 ? '8–14年' : d < 25 ? '15–24年' : '25年以上'); bump(age, L.flags.divorced < 60 ? `${Math.floor(L.flags.divorced / 10) * 10}多岁` : '60岁以后');
+    }
     if (L.phase !== 'life') break;
     if (L.age === 16) { n16++; if (L.flags.parDiv) par16++; if (L.done.bully != null) bully16++; }
     if (L.age === 60) { n60++; if (L.flags.divorced) div60++; }

@@ -66,7 +66,7 @@ export const domK = (dom: string) => 1 + DOM_K * domW(dom);
 
 // ===== 自动分配 =====
 // 按处境：上学的多学习、上班的多工作，年轻单身的多恋爱，结了婚的多陪家人，上了年纪的多养身体
-const autoW = (k: string) => ({ study: S.school ? 3 : 1, play: 2, friends: 1.5, sport: 1, work: 3, love: S.age < 32 ? 2 : 0.5, family: S.fam.married ? 2.5 : 1, hobby: 1, rest: S.age > 50 ? 2.5 : 0.8 })[k] || 1;
+const autoW = (k: string) => ({ study: S.school ? 3 : 1, play: 2, friends: 1.5, sport: 1, work: 3, love: S.flags.noWed ? 0 : S.age < 32 ? 2 : 0.5, family: S.fam.married ? 2.5 : 1, hobby: 1, rest: S.age > 50 ? 2.5 : 0.8 })[k] ?? 1;
 // 第二格放和第一格一样的，权重再乘 SAME_W（多数人会分开放）
 const SAME_W = 0.5;
 export function autoFocus(not: string | null = null) {

@@ -21,6 +21,7 @@ declare module '../types' {
   interface Flags {
     hunt?: { at: number; job: string; same?: number; home?: number } | null; // 正在找工作：出生后第几个月上岗、找到的是什么工作
     toWork?: number;   // 中考后不读了、还不满 16 岁：在家待到 16 岁再出去打工（见 huntMonth）
+    singleAsk?: number; // 「一个人过？」问过几次（30 岁、40 岁各一次）
     nyHome?: string;   // 回谁家过年：mine 你家、theirs 对方家、turn 轮着、apart 各回各家（抉择 newyear）
     babyAsk?: { n: number; a: number }; // 上一次问你要不要孩子：当时有几个孩子、几岁（抉择 baby 的 quiet）
     houseAsk?: number; // 上一次问你买不买房是几岁（抉择 house 的 quiet）
@@ -29,9 +30,9 @@ declare module '../types' {
 import { chance, clamp, gauss, pick, ri, wpick } from '../rng';
 import { eff } from '../stats';
 import { bothParents, carer, parentsWord } from '../parents';
-import { rural } from './events';
+import { divorce, rural } from './events';
 import { ECHO_DEC, meetCrush } from './echoes';
-import { domK } from '../focus';
+import { autoFocus, domK, setSlot } from '../focus';
 import { wan } from '../format';
 import { careFeeY, oldIncomeY, uiMonths } from '../finance';
 // 晚年住养老院的抉择：积蓄要撑多少年才和收入够付的一样愿意去（80 岁左右的余寿约 9 年，估计）
@@ -149,6 +150,8 @@ export function monthDecisions() {
   // 对方是外省的：结婚后头一个春节，回谁家过年
   const pt = f.married && f.partner && f.partner.alive ? f.partner : null;
   if (pt && pt.home !== S.home.p && S.age - pt.marriedAt <= 2 && [1, 2].includes(calMonth()) && once('newyear')) d.push('newyear');
+  // 婚姻出了问题（events.ts 的 marCrisis）：苗头出来三个月，问你怎么办
+  if (pt && pt.crisis != null && pt.stay == null && nowM() - pt.crisis >= 3) d.push('split');
   if (S.flags.heirDue && !S.flags.inherited) d.push('heritage');
   if (S.indep && S.inheritedHomes?.length && monthsSince('inheritedhome') >= 12 &&
     (S.inheritedHomes.some(home => !home.reviewed) || liquidBalance() < 0 || loanArrears() > 0)) d.push('inheritedhome');
@@ -197,6 +200,9 @@ export function yearDecisions() {
   const a = S.age, d = [];
   // 谈了一两年，每年谈一次结婚的事（弹出时再查一遍：这期间可能分手、换了人）
   if (marryOK()) d.push('marry');
+  // 三十岁、四十岁还没结过婚、身边也没人：问一次以后怎么打算（不打算结婚的不再问）
+  const n = S.flags.singleAsk || 0, never = !S.fam.partner && S.flags.divorced == null && S.flags.widowed == null;
+  if (never && !S.fam.dating && !S.cand && S.flags.noWed == null && (a >= 30 && n < 1 || a >= 40 && n < 2)) d.push('single');
   if (isWorking() && gapOK('layofflist', 4) && listDue()) d.push('layofflist');
   if (a >= 18 && demolDue()) d.push('demolish');
   return d;
@@ -759,6 +765,65 @@ export const DEC = {
       if (k === 'theirs') { p.love = clamp((p.love ?? 63) + 4, 0, 100); eff({ h: -3 }); return `去了${p.name}家过年。除夕夜你躲到阳台上，给爸妈打了个视频电话。`; }
       if (k === 'apart') { p.love = clamp((p.love ?? 63) - 4, 0, 100); eff({ h: -1 }); return '各回各家过年。零点的时候，你们在电话里互相说了声新年快乐。'; }
       return '说好一年一家，今年先回了一边。';
+    },
+  },
+
+  // 婚姻亮红灯（events.ts 的 marCrisis 之后三个月）。原来离婚是一个随机事件，现在先有苗头，再由你定
+  split: {
+    fork: true,
+    build: () => {
+      const p = S.fam.partner; if (!p || !p.alive || p.crisis == null) return null;
+      const yrs = S.age - p.marriedAt, kids = kidsAlive().filter(k => k.age < 18).length;
+      return {
+        title: '婚姻亮了红灯', body: `你和${p.name}结婚${yrs ? yrs + '年' : '不到一年'}了。${kids ? `孩子${kids > 1 ? '们' : ''}还小，` : ''}这几个月，两个人都知道出了问题，谁也没先开口。`,
+        card: [['结婚', `${yrs}年`], ['孩子', kids ? `${kids}个还没成年` : '没有未成年的孩子'], ['感情', loveWord(p.love ?? 63)]],
+        choices: [
+          { k: 'talk', label: '好好谈一次', sub: '也许能回到从前，也许谈不拢', w: 1 + p.fit * 2, tilt: { a: 0.4, c: 0.2 } },
+          { k: 'stay', label: kids ? '为了孩子，先这么过着' : '就这么过着', sub: `${p.name}可能会先提离婚`, w: kids ? 2 : 1, tilt: { c: 0.3, n: 0.2 } },
+          { k: 'divorce', label: '离婚', sub: `存款分走一部分${S.house?.pt ? `，房子归${p.name}` : ''}`, w: 0.8 + ((p.love ?? 63) < 40 ? 1 : 0), tilt: { a: -0.3, r: 0.3 } },
+        ],
+      };
+    },
+    apply: k => {
+      const p = S.fam.partner;
+      if (k === 'divorce') return divorce(p);
+      if (k === 'stay') { p.stay = nowM(); return null; }
+      // 谈得开的可能：合得来、感情还在的大一些（估计）。谈不拢就只能先这么过着
+      if (chance(clamp(0.25 + 0.5 * p.fit + ((p.love ?? 63) - 50) / 200, 0.1, 0.8))) {
+        p.crisis = undefined; p.love = clamp((p.love ?? 63) + 15, 0, 100); eff({ h: 4 });
+        return { t: `你们找了个晚上，把这些年憋着的话都说了。${p.name}哭了，你也是。`, k: 'good' };
+      }
+      p.stay = nowM(); p.love = clamp((p.love ?? 63) - 5, 0, 100); eff({ h: -3 });
+      return { t: '谈到后来又吵了起来。日子还得过，只是两个人都没再提。', k: 'bad' };
+    },
+  },
+
+  // 一个人过？三十岁、四十岁各问一次（yearDecisions）。不打算结婚是一条正经的路：不再相亲、家里慢慢不催了；
+  // 想谈了，把时间放在恋爱上就行（romance.ts 的 meetMonth）
+  single: {
+    fork: true,
+    build: () => {
+      if (S.fam.dating || S.fam.married || S.cand) return null;
+      const a = S.age, mom = S.fam.mom.alive ? '妈妈' : S.fam.dad.alive ? '爸爸' : null;
+      return {
+        title: '一个人过？',
+        body: (a >= 40 ? '四十岁了。同学的孩子都上初中了。' : `${a}岁了，身边的朋友差不多都结了婚。`) + (mom ? `过年回家，${mom}又问起有没有对象。` : '爸妈都不在了，也没人再催。'),
+        choices: [
+          { k: 'look', label: '想找个人，去相亲', sub: '接下来两年，家里和朋友会多给你介绍', w: 2, tilt: { e: 0.4 } },
+          { k: 'easy', label: '不着急，遇到了再说', sub: '', w: 2, tilt: { c: -0.2 } },
+          { k: 'solo', label: '不打算结婚了', sub: '不再相亲，家里慢慢也不催了；哪天想谈了，把时间放在恋爱上', w: (a >= 40 ? 3 : 1.5) * (S.sex === 'M' ? 1.5 : 1), tilt: { e: -0.4, r: 0.2 } }, // 自动抉择的权重：45 岁从没结过婚的大致对上普查（男约 4%、女约 1%）
+        ],
+      };
+    },
+    apply: k => {
+      S.flags.singleAsk = (S.flags.singleAsk || 0) + 1;
+      if (k === 'look') { S.flags.look = nowM() + 24; return '你托朋友、托家里帮忙留意。'; }
+      if (k === 'easy') return null;
+      S.flags.noWed = 1; S.flags.soloAt ??= S.age; eff({ h: 2 });
+      // 恋爱那一格换成别的：不然下个月就算「又想谈了」（以后自己再选恋爱，才是又想谈了）
+      (S.slots || []).forEach((x, i) => { if (x === 'love') { setSlot(i, autoFocus(S.slots.find((y, j) => j !== i) ?? null)); S.slotPin[i] = false; } });
+      const mom = S.fam.mom.alive ? '妈妈' : S.fam.dad.alive ? '爸爸' : null;
+      return mom ? `你跟${mom}说，你不打算结婚了。${mom}没说话，过了好一会儿才说：“那你自己好好的。”` : '你想好了，以后就一个人过。';
     },
   },
 

@@ -301,6 +301,7 @@ const FRAG: Record<string, DayItem> = {
   jobless: { ok: () => S.job === 'seeking' && S.age >= 18, text: () => say('投出去的简历大多没有回音。', [apart(), '白天在家投简历，晚上不太敢接家里的电话。'], [!apart() && !!famW(), `白天在家投简历。吃饭的时候${famW()}不问，你也不说。`], '去面试，等了两个小时，聊了十分钟。') },
   // 感情与家
   singleLife: { ok: () => single() && S.age >= 23 && S.age < 50, text: () => say('周末一个人去看了场电影，散场时外面下雨了。', '朋友结婚，你坐在“单身桌”。', '学会了做几个菜，一个人吃也要好好吃。', '深夜刷到老同学晒娃的照片，点了个赞。') },
+  soloLife: { ok: () => !!S.flags.noWed && S.age >= 33, text: () => say('一个人去了趟云南，没跟团，走到哪儿算哪儿。', '给自己买了一份商业养老保险，填受益人那一栏时想了很久。', [S.fam.sibs.some(b => b.alive), '侄子侄女来拜年，你包的红包最厚。'], '周末在家做了三个菜，开了瓶酒，一个人吃得挺好。', [S.age >= 45, '体检报告出来，你一个人去拿，一个人看，一个人去复查。']) },
   dating: { ok: () => !!S.fam.dating, text: () => say(`和${S.fam.dating.name}看完电影，在路边吃了一碗面。`, `${S.fam.dating.name}送了你一个小礼物，你一直放在包里。`, `和${S.fam.dating.name}为了周末去哪儿吵了几句，晚上又和好了。`) },
   marriedLife: { ok: () => married() && S.age < 65, text: () => say(`你和${S.fam.partner.name}为了谁洗碗吵了一架，第二天谁都不记得了。`, `结婚纪念日，${S.fam.partner.name}记得，你忘了。`, [unit() && ptUnit(), `晚饭后和${S.fam.partner.name}在小区里走了几圈，说了说各自单位的事。`], [ptWorks(), `${S.fam.partner.name}加班到很晚，你留了一盏灯。`]) },
   baby: { ok: () => kidsAlive().some(k => k.age < 3), text: () => { const us = married() ? '你们' : '你'; return say(`孩子半夜哭醒好几次，${us}${married() ? '轮流' : '一次次'}抱着在屋里走。`, '孩子会叫“爸爸”“妈妈”了，全家人高兴了一整天。', `孩子发烧，${us}在儿童医院的走廊里坐了一夜。`); } },

@@ -61,7 +61,8 @@ export function meetCrush() {
 const pal = () => S.ppl?.pal?.alive ? S.ppl.pal : null;
 const married = () => S.fam.married && !!S.fam.partner && S.fam.partner.alive;
 const justMarried = () => married() && S.age - S.fam.partner.marriedAt <= 1;
-const alone = () => !S.fam.married && !S.fam.dating && !S.cand && (S.flags.divorced != null || S.flags.widowed != null);
+// 一个人：离了婚、丧偶的，或者三十五岁以后一直没结婚的
+const alone = () => !S.fam.married && !S.fam.dating && !S.cand && (S.flags.divorced != null || S.flags.widowed != null || S.age >= 35 && !S.fam.partner);
 /** 把一个抉择排在稍后（同一个月里）：回响事件引出的岔路口 */
 function soon(id: string) {
   const at = Math.min(S.t + 0.01, 0.999);
@@ -151,6 +152,19 @@ export const ECHO_EVENTS: any[] = [
     p.name = c.name; p.sur = c.name.slice(0, 1); p.fit = clamp(p.fit + 0.2, 0.05, 0.95);
     S.cand = p; soon('romance');
     return { t: `${c.name}也是一个人。你们加了微信，从当年的班主任聊到各自的这些年，一直聊到半夜。`, k: 'good' };
+  } },
+
+  // ---- 不打算结婚（抉择 single） ----
+  // 家里终于不催了
+  { id: 'soloMom', a: [34, 80], once: 1, w: 4, c: () => !!S.flags.noWed && S.flags.soloAt != null && S.age - S.flags.soloAt >= 3 && (S.fam.mom.alive || S.fam.dad.alive), run: () => {
+    const who = S.fam.mom.alive ? '妈妈' : '爸爸';
+    eff({ h: 3 });
+    return { t: `有一年过年，${who}没再提结婚的事。临走时往你包里塞了两罐自己做的辣酱，说：“你自己过得好就行。”`, k: 'good' };
+  } },
+  // 老了以后：几个一个人过的老朋友搭伙
+  { id: 'soloOld', a: [60, 82], once: 1, w: 4, c: () => !!S.flags.noWed, run: () => {
+    eff({ h: 3, so: 2 });
+    return { t: '和几个同样一个人过的老同学搭起了伙，每周轮流做东吃一顿饭。说好了，以后住同一家养老院。', k: 'good' };
   } },
 
   // ---- 小时候被欺负的那个同学 ----

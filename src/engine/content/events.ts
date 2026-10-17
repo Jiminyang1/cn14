@@ -70,7 +70,9 @@ const newJob = () => { const j = S.jobs[S.jobs.length - 1]; return !!j && j.age 
 const PROMO_T = { civil: '提了一级，工资涨了一点。', teacher: '评上了高一级的职称，工资涨了一些。', doctor: '评上了高一级的职称，工资涨了一些。', nurse: '评上了主管护师，工资涨了一些。', factory: '当上了班组长，工资涨了一些。', skilled: '考下了高一级的技能证书，当上了班组长。' };
 
 // ===== 离婚 =====
-// 你自己的离婚是状态事件：每个月按风险判定（年风险最多约 3%，每月取 1/12，和 perMonth 差不到 2%）。
+// 你自己的婚姻：每个月按风险判定会不会出问题（marCrisis），出了问题先有苗头，三个月后问你（抉择 split）：谈开了就过去了，
+// 凑合着过的风险翻倍、再出事就是 Ta 提离婚，选离婚就离。有一部分人谈开了、凑合下去了，所以 DIV_BASE 是「出问题」的基准，
+// 比原来直接离婚的 0.0095 高：0.024 时活到 60 岁离过婚的约 8%（和原来差不多）。
 // 年风险 = DIV_BASE × 婚龄曲线 × 婚姻质量 × 60 岁以后的折减 × 省份系数 divK × 双方性格。依据和校准见 DATA.md「离婚（2026-10）」
 // · 婚龄曲线：头一年较低，婚后 2–7 年最高（CFPS 的离婚风险随婚龄呈倒 U 型），之后逐段下降，25 年以后只剩一成；
 // · 婚姻质量：结婚时合不合得来（fit，均值 0.55、标准差约 0.18）、结婚时的感情（love，均值约 63、标准差约 10；婚后不再变）、
@@ -78,13 +80,21 @@ const PROMO_T = { civil: '提了一级，工资涨了一点。', teacher: '评�
 // · 怀孕期间、孩子不满一岁时不离婚（民法典第 1082 条：这段时间男方不得提出离婚。女方提出的很少，简化成都不离）。
 // 性格：敏感的人风险高，随和、认真的低（每个标准差的风险比约 1.15 / 0.85 / 0.85，Roberts 2007、Lundberg 2012），夫妻双方各乘一次
 const DIV_T = { n: 0.14, a: -0.16, c: -0.16 };
-export const DIV_BASE = 0.0095;
+export const DIV_BASE = 0.024;
 export const DIV_DUR = (d: number) => d < 1 ? 0.5 : d < 2 ? 0.85 : d < 8 ? 1 : d < 15 ? 0.6 : d < 25 ? 0.3 : 0.1;
 const DIV_OLD = 0.3; // 60 岁以后（估计：高龄离婚很少）
 /** 有不满一岁的孩子，或者正怀着孕 */
 const babyGuard = () => { if (S.flags.preg) return true; const now = nowM(); return S.fam.kids.some(k => k.alive && now - k.bornM < 12); };
 /** 现在能不能离婚：已婚、配偶在世、没有怀孕、没有不满一岁的孩子 */
 const canDivorce = () => { const f = S.fam, p = f.partner; return f.married && !!p && p.alive && p.marriedAt != null && !babyGuard(); };
+/** 离婚：存款分走四成；配偶婚前的房归对方。返回时间线上的一条（人生大事）。why：谁提的、为什么（可以为空） */
+export function divorce(p, why = '') {
+  S.fam.married = false; S.fam.partner = null; S.flags.divorced = S.age; p.crisis = p.stay = undefined;
+  addDoc('divorce', '离婚证', [['对方', p.name]]);
+  eff({ h: -8, so: -4, money: -Math.max(0, S.money) * 0.4 });
+  const back = S.house?.pt ? (S.house = null, `房子是${p.name}婚前的，归了${p.sex === 'M' ? '他' : '她'}。你搬了出去。`) : '';
+  return { t: `${why}你和${p.name}离婚了。${back}`, k: 'bad', x: 1, f: '2023年全国离婚360.5万对，其中民政部门登记259.3万对，其余为法院判决或调解' };
+}
 /** 你这一年离婚的风险（年概率）；不能离的时候是 0 */
 export function divorceRisk() {
   if (!canDivorce()) return 0;
@@ -95,7 +105,7 @@ export function divorceRisk() {
 }
 // 父母离婚：同一条婚龄曲线（婚龄按你的年龄 + 2 估计，上面有哥哥姐姐的按最大的那个算），不看婚姻质量（没有记），按老家的省份系数。
 // 只在你 1–17 岁时判定（之后的不影响「跟着谁生活」）。家里有不满一岁的弟弟妹妹时不离（民法典第 1082 条）
-const PAR_DIV_K = 1;
+const PAR_DIV_K = 0.4; // DIV_BASE 改成「出问题」的基准以后，父母离婚按原来的 0.0095 算（0.024 × 0.4）
 function parDivRisk() {
   const f = S.fam;
   if (!bothParents() || S.flags.parDiv) return 0;
@@ -209,7 +219,7 @@ export const EVENTS = [
   { id: 'factoryLine', a: [16, 60], gap: 3, w: () => ['factory', 'migrant'].includes(S.job) ? 3 : 0, run: () => { eff({ hl: -2, money: placeInc() * 0.05 }); return vary('factoryLine', ['旺季每天上十二个小时的班，宿舍八个人一间。', '流水线换了新机器，班组里裁了三个人。你被留了下来，一个人干两个人的活。', '这个月加班多，工资条上的数字是平时的一倍半。你给家里转了一半。', '夜班上到第三个星期，白天怎么也睡不着。']); } },
   { id: 'buildSite', a: [16, 65], gap: 3, w: () => S.job === 'build' ? 3 : 0, run: () => { eff({ hl: -3 }); if (chance(0.05)) { eff({ hl: -10, money: -placeInc() * 0.3 }); return { t: '在工地上从脚手架摔下来，腿骨折了，躺了三个月。', k: 'bad' }; } return '工程结束，包工头拖了三个月才把工钱结清。'; } },
   // 催婚：过年时（1–2 月，状态事件）。在谈恋爱的、丧偶不到一年的不问；人在老家的是「走亲戚」，不是「回家」
-  { id: 'urge', a: [25, 40], gap: 2, mo: [1, 2], pm: () => URGE_PM, c: () => !S.fam.married && !S.fam.dating && !(S.flags.widowed != null && S.age - S.flags.widowed <= 1), run: () => { eff({ h: -3 }); return `${awayFromHome() ? '过年回家' : '过年走亲戚'}，七大姑八大姨轮流问：“有对象了吗？什么时候结婚？”`; } },
+  { id: 'urge', a: [25, 40], gap: 2, mo: [1, 2], pm: () => URGE_PM, c: () => !S.fam.married && !S.fam.dating && !S.flags.noWed && !(S.flags.widowed != null && S.age - S.flags.widowed <= 1), run: () => { eff({ h: -3 }); return `${awayFromHome() ? '过年回家' : '过年走亲戚'}，七大姑八大姨轮流问：“有对象了吗？什么时候结婚？”`; } },
   { id: 'dateTrip', a: [18, 50], gap: 2, w: 1.2, c: () => !!S.fam.dating, run: () => { const d = S.fam.dating; d.love = clamp(d.love + 6, 0, 100); eff({ h: 3, money: -placeInc() * 0.04 }); return { t: `和${d.name}去${pick(['厦门', '大理', '成都', '青岛', '西安', '桂林'])}玩了几天。${d.city !== S.loc.city ? '难得见一次面。' : ''}`, k: 'good' }; } },
   { id: 'dateFight', a: [18, 50], gap: 2, w: () => S.fam.dating && S.fam.dating.fit < 0.5 ? 1.5 : 0.6, c: () => !!S.fam.dating, run: () => { const d = S.fam.dating; d.love = clamp(d.love - 8, 0, 100); eff({ h: -3 }); return pick([`和${d.name}为了一件小事吵了一架，冷战了一个星期。`, `${d.name}嫌你回消息太慢，吵了一架。`, `${d.name}说你从来不考虑你们的以后。`]); } },
   // 份子钱：有单位的写同事结婚，其余写朋友
@@ -237,7 +247,15 @@ export const EVENTS = [
   { id: 'drink', a: [22, 55], gap: 4, w: () => ['sales', 'boss', 'civil'].includes(S.job) ? 2 : 0.3, run: () => { eff({ hl: -2 }); return vary('drink', ['饭局上被一轮轮敬酒，喝到吐。', '酒桌上领导说「感情深，一口闷」。你闷了，第二天头疼了一整天。', '陪客户喝到半夜，打车回家，在楼下坐了半个小时才上楼。', '体检说你有脂肪肝。你看着报告，想起这几年喝过的酒。']); } },
   { id: 'low', a: [14, 70], gap: 6, w: () => S.st.h < 40 ? 2 : 0.15, run: () => { eff({ h: -3 }); if (chance(0.15)) { eff({ h: 8 }); return { t: '有一段时间每天都很累，什么都不想做。后来你去医院看了心理科，慢慢好了一些。', f: '中国抑郁障碍患者中，一年内接受过任何治疗的不到一成（Lancet Psychiatry 2021）。全国心理援助热线：12356' }; } return { t: '有一段时间每天都很累，什么都不想做，觉得一切都没有意义。你没有告诉任何人。', k: 'bad', f: '全国心理援助热线：12356' }; } },
   // 离婚：状态事件，风险见上面的 divorceRisk（每个月取年风险的 1/12）。月初排进来、月中才发生，c 在发生时再查一次（这个月里刚怀上的不离）
-  { id: 'divorce', big: 1, a: [20, 100], pm: () => divorceRisk() / 12, c: canDivorce, run: () => { const p = S.fam.partner; S.fam.married = false; S.fam.partner = null; S.flags.divorced = S.age; addDoc('divorce', '离婚证', [['对方', p.name]]); eff({ h: -8, so: -4, money: -Math.max(0, S.money) * 0.4 }); const back = S.house?.pt ? (S.house = null, `房子是${p.name}婚前的，归了${p.sex === 'M' ? '他' : '她'}。你搬了出去。`) : ''; return { t: `你和${p.name}离婚了。${back}`, k: 'bad', f: '2023年全国离婚360.5万对，其中民政部门登记259.3万对，其余为法院判决或调解' }; } },
+  // 婚姻出问题：原来这一下就是离婚，现在是苗头（三个月后问你，抉择 split）。你选了先这么过着的，再出一次事就是 Ta 提离婚。
+  // 时机还是 divorceRisk（合不合得来、感情、幸福、婚龄、性格）；凑合着过的风险翻倍
+  { id: 'marCrisis', a: [20, 100], pm: () => divorceRisk() / 12 * (S.fam.partner?.stay != null ? 2 : 1), c: () => canDivorce() && (S.fam.partner.crisis == null || S.fam.partner.stay != null), run: () => {
+    const p = S.fam.partner;
+    if (p.stay != null) return divorce(p, `${p.name}提出了离婚。`);
+    p.crisis = nowM();
+    eff({ h: -4 });
+    return { t: pick([`你和${p.name}已经分房睡了大半年，谁也没提。`, `吵架的时候，${p.name}第一次说出了“离婚”两个字。`, '一家人吃饭，只听得见碗筷的声音。', `${p.name}越来越晚回家，问起来就说加班。`]), k: 'bad' };
+  } },
   { id: 'kidSchool', a: [28, 55], gap: 3, w: 2, c: () => kidsAlive().some(k => k.age >= 6 && k.age <= 17), run: () => { eff({ h: -2, money: -placeInc() * 0.1 }); return pick(['为了孩子上学，研究学区、排队报名，跑了好几趟。', '每天晚上辅导孩子写作业，气得血压都上来了。', '孩子的家长群一天几百条消息。']); } },
   { id: 'reunion', a: [30, 60], gap: 10, w: 1, run: () => { eff({ so: 2, h: S.relInc > 0 ? 2 : -2 }); return vary('reunion', ['同学聚会。有人开着好车来，有人没来。大家聊着聊着，就开始聊房子和孩子。', '同学聚会，当年的班长致辞，说「二十年了，大家都没怎么变」。所有人都笑了。', '同学聚会上，有人提起了已经不在的一位同学。桌上安静了一会儿，又有人举起了杯子。', '同学聚会，回了一趟母校。教学楼翻新了，你们的教室变成了实验室。']); } },
   { id: 'scam', a: [25, 90], gap: 8, w: () => S.age > 60 ? 1.5 : 0.5, c: () => S.money > 0, run: () => { const x = Math.min(S.money * 0.3, placeInc() * (S.age > 60 ? 0.5 : 0.3)); eff({ money: -x, h: -4 }); return { t: S.age > 60 ? vary('scamOld', [`听了几次“健康讲座”，买了${wan(x)}的保健品。`, `有人上门推销“磁疗床垫”，说能治腰疼。你买了一张，花了${wan(x)}。`, `一个说是“老战友的儿子”的人打来电话借钱，你转了${wan(x)}。后来才知道是骗子。`]) : vary('scam', [`接到自称“公检法”的电话，被骗走了${wan(x)}。`, `在网上碰到一个“稳赚不赔”的投资群，投进去${wan(x)}，群第二天就解散了。`, `网购退款，对方让你下载一个软件。卡里的${wan(x)}没了。`]), k: 'bad' }; } },

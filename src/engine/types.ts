@@ -59,6 +59,8 @@ export interface Partner {
   jk: string | null; job: string | null; inc: number; hpf: boolean; fit: number;
   love?: number; asks?: number; metParents?: number; marriedAt?: number; retired?: number;
   wh?: number;               // 对方家里要不要婚房：1 要、2 已经因为没房拒过一次求婚
+  crisis?: number;           // 婚姻出问题是哪个月（苗头出现，三个月后问你：抉择 split）
+  stay?: number;             // 你选了先这么过着是哪个月（再出事就是 Ta 提离婚）
   follow?: number;           // 你搬走时对方还在读书，说好毕业后来你的城市（romance.ts 的 loveMove）
   pz?: PZ;                   // 对方的性格（固定不变；关掉性格时没有）
   only?: boolean;            // 独生子女
