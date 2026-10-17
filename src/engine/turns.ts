@@ -5,7 +5,7 @@ import { S } from './state';
 import { log } from './journal';
 import { chance, clamp, gauss, pick, ri } from './rng';
 import { eff } from './stats';
-import { JOBS, hire, quitJob } from './career';
+import { JOBS, hire, quitJob, raise } from './career';
 import { wageRate } from './finance';
 import { moveTo, placeInc } from './place';
 import { MONTHS, calMonth } from './monthly';
@@ -38,11 +38,11 @@ export function layOff() {
   eff({ money: n });
   return n;
 }
-/** 找到了下家：同一行，工资大多略涨 */
+/** 找到了下家：同一行（工龄、个人系数都保留），工资大多略涨：平均 +5%，有涨有降（估计；被裁前匆忙找的下家，比主动跳槽涨得少）。
+ *  涨工资统一走 raise（career.ts）：已经比同行多涨很多的，越往上越难涨 */
 export function jumpShip() {
-  const k = S.wageK, job = S.job;
-  hire(job);
-  S.wageK = k * clamp(1 + gauss(0.05, 0.08), 0.85, 1.3);
+  hire(S.job);
+  raise(clamp(1 + gauss(0.05, 0.08), 0.85, 1.3));
 }
 
 // ===== 退休以后 =====

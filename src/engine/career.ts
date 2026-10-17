@@ -23,58 +23,98 @@ declare module './types' {
 }
 
 // ===== 职业 =====
-// m = 税前年收入 ÷ 当地城镇居民人均可支配收入（到手的钱见 tax.ts）。依据国家统计局 2025 年分行业、分岗位平均工资和农民工监测调查（research/income.json）：
-// 全国城镇人均可支配收入 5.65 万；农民工外出 5774 元/月、制造业 5126、建筑业 5880；办事人员 9.5 万；IT 业私营 12.8 万；教育 13.4 万；卫生 14.6 万；公共管理 11.9 万。
-export const JOBS = {
-  farmer: { n: '务农', m: 1.0, risk: 0, hl: -1, h: 0, blue: 1 },
-  migrant: { n: '进城务工', m: 1.25, risk: 0.04, hl: -2, h: -1, blue: 1 },
-  factory: { n: '工厂工人', m: 1.1, risk: 0.04, hl: -2, h: -1, blue: 1 },
-  build: { n: '建筑工人', m: 1.25, risk: 0.05, hl: -3, h: -1, blue: 1 },
-  rider: { n: '外卖骑手', m: 1.35, risk: 0.02, hl: -3, h: -1, blue: 1 },
-  driver: { n: '网约车司机', m: 1.3, risk: 0.02, hl: -2, h: -1, blue: 1 },
-  shop: { n: '个体户', m: 1.1, risk: 0.06, hl: -1, h: 0, v: 0.6, blue: 1 },
-  skilled: { n: '技术工人', m: 1.5, risk: 0.03, hl: -1, h: 0, blue: 1 },
-  sales: { n: '销售', m: 1.35, risk: 0.07, hl: -1, h: -1, v: 0.35, priv: 1 },
-  clerk: { n: '公司职员', m: 1.5, risk: 0.05, hl: -1, h: -1, priv: 1 },
-  tech: { n: '互联网公司程序员', m: 2.6, risk: 0.08, hl: -3, h: -2, priv: 1 },
-  engineer: { n: '工程师', m: 2.2, risk: 0.04, hl: -1, h: 0, priv: 1 },
-  teacher: { n: '教师', m: 2.1, risk: 0, hl: 0, h: 1, stable: 1 },
-  doctor: { n: '医生', m: 2.4, risk: 0, hl: -2, h: 0, stable: 1 },
-  nurse: { n: '护士', m: 1.6, risk: 0, hl: -2, h: 0, stable: 1 },
-  civil: { n: '公务员', m: 2.0, risk: 0, hl: 0, h: 1, stable: 1 },
-  boss: { n: '小老板', m: 2.4, risk: 0.09, hl: -2, h: 0, v: 0.7 },
+// m（职业系数）：这一行全国的平均税前年收入 ÷ 工资基数（place.ts 的 wageBase，全国城镇居民人均可支配收入 5.65 万附近，按城市收入的 0.7 次方变化；到手的钱见 tax.ts）。
+// 个人系数（学历比这一行一般人 ed 高低、学识、个人差异、比同行多涨的部分）和工龄系数平均下来约为 1，所以这一行的平均就是 m × 工资基数。
+// 校准（npm run calib -- money 的「按现实的大城市比例重新加权」：模拟里在六个大城市工作的人约占四成五，现实约 15%，估计）使各职业的平均对上下面的目标，
+// 出处见 DATA.md「工资」（国家统计局《2025年城镇单位就业人员年平均工资情况》、《2025年农民工监测调查报告》，research/income.json）：
+// · 公司职员：规模以上企业办事人员 94,936 元；销售：社会生产服务和生活服务人员 79,857；工厂工人：私营制造业 76,055（生产制造人员 80,739）；
+//   技术工人：约 9.5 万（生产制造人员的 1.2 倍，估计）；工程师：专业技术人员 155,491（制造业 151,997），取 15.2 万；
+// · 教师：教育业非私营 133,539；公务员：公共管理 119,465；护士：约 11.5 万、医生：约 18 万（卫生业非私营 146,266 含医生、护士、行政，两者为估计）；
+// · 程序员：约 25 万（规模以上 IT 企业专业技术人员 275,504，IT 业私营 128,166；按一半在大城市算，估计）；
+// · 进城务工：外出农民工 5,774 元/月 × 12；外卖骑手：约 6,500 元/月（美团公布的高频骑手 6,650–9,344 元，全体骑手低一些，估计）；
+//   网约车司机：约 6,000 元/月（中国新就业形态研究中心 2025 年调查 7,623 元，扣掉部分油电和车辆成本，估计）；个体户约 6.5 万、小老板约 15 万（估计）；
+// · 务农：当地农村人均可支配收入的 1 倍（估计）。建筑工人：农民工建筑业 5,880 元/月，主要是父母一代。
+// ed：这一行一般人的学历（EDU_LV 的下标，估计），学历溢价按比 ed 高还是低算（eduRel）
+export const JOBS: Record<string, { n: string; m: number; ed?: number; risk?: number; hl?: number; h?: number; v?: number; blue?: number; priv?: number; stable?: number }> = {
+  farmer: { n: '务农', m: 1.0, ed: 2, risk: 0, hl: -1, h: 0, blue: 1 },
+  migrant: { n: '进城务工', m: 1.06, ed: 2, risk: 0.04, hl: -2, h: -1, blue: 1 },
+  factory: { n: '工厂工人', m: 1.11, ed: 2, risk: 0.04, hl: -2, h: -1, blue: 1 },
+  build: { n: '建筑工人', m: 1.1, ed: 2, risk: 0.05, hl: -3, h: -1, blue: 1 },
+  rider: { n: '外卖骑手', m: 1.46, ed: 3, risk: 0.02, hl: -3, h: -1, blue: 1 },
+  driver: { n: '网约车司机', m: 1.21, ed: 2, risk: 0.02, hl: -2, h: -1, blue: 1 },
+  shop: { n: '个体户', m: 1.21, ed: 2, risk: 0.06, hl: -1, h: 0, v: 0.6, blue: 1 },
+  skilled: { n: '技术工人', m: 1.59, ed: 4, risk: 0.03, hl: -1, h: 0, blue: 1 },
+  sales: { n: '销售', m: 1.19, ed: 4, risk: 0.07, hl: -1, h: -1, v: 0.35, priv: 1 },
+  clerk: { n: '公司职员', m: 1.47, ed: 5, risk: 0.05, hl: -1, h: -1, priv: 1 },
+  tech: { n: '互联网公司程序员', m: 3.78, ed: 6, risk: 0.08, hl: -3, h: -2, priv: 1 },
+  engineer: { n: '工程师', m: 2.62, ed: 6, risk: 0.04, hl: -1, h: 0, priv: 1 },
+  teacher: { n: '教师', m: 2.16, ed: 6, risk: 0, hl: 0, h: 1, stable: 1 },
+  doctor: { n: '医生', m: 2.6, ed: 6, risk: 0, hl: -2, h: 0, stable: 1 },
+  nurse: { n: '护士', m: 1.73, ed: 5, risk: 0, hl: -2, h: 0, stable: 1 },
+  civil: { n: '公务员', m: 1.89, ed: 6, risk: 0, hl: 0, h: 1, stable: 1 },
+  boss: { n: '小老板', m: 2.5, ed: 4, risk: 0.09, hl: -2, h: 0, v: 0.7 },
   seeking: { n: '待业', m: 0 },
   student: { n: '学生', m: 0 },
   retired: { n: '退休', m: 0 },
   home: { n: '在家', m: 0 },
 };
 export const isWorking = () => !!(S.job && JOBS[S.job] && JOBS[S.job].m > 0);
-// 学历溢价：CGSS 2010–2017 估计 高中/初中 1.20、大专/高中 1.25、本科/大专 1.17；一部分已体现在职业差异里，这里只取约一半
-export const EDU_WAGE = [1, 1, 1, 1.06, 1.06, 1.12, 1.2, 1.28];
-export const eduWageK = () => EDU_WAGE[S.edu] * ({ top: 1.1, '211': 1.05 }[S.flags.tier] || 1);
-// 工龄曲线：起薪约为职业平均的 75%，前 5 年涨得快（本科毕业 3 年后月收入约比起薪高 40%，麦可思），
-// 10 年后约为平均的 1.1 倍，之后持平，50 岁以后逐年略降（中后段为估计）
-// 你本人、父母、配偶共用同一条曲线
-export const expCurve = (y: number, age: number) => { const k = y <= 5 ? 0.75 + 0.05 * y : Math.min(1.1, 1 + 0.02 * (y - 5)); return k * (age > 50 ? Math.max(0.8, 1 - 0.01 * (age - 50)) : 1); };
-export const expK = () => expCurve(S.jobY, S.age);
+// 学历溢价（同一行里）：CGSS 2010–2017 估计 高中/初中 1.20、大专/高中 1.25、本科/大专 1.17；一部分已体现在职业差异里，
+// 原来只取约一半（1.06 / 1.12 / 1.2 / 1.28）。工资对齐统计局时调大一些（估计）：麦可思 2025 届毕业半年后本科 6,435 元、高职 4,882 元，
+// 前程无忧 2025 年校招起薪 硕士 ÷ 本科约 1.58（大企业校招，偏高），原来的溢价做出来本科 ÷ 大专只有约 1.1
+export const EDU_WAGE = [1, 1, 1, 1.08, 1.08, 1.18, 1.32, 1.5];
+/** 学历溢价按「比这一行一般人的学历（JOBS 的 ed）高还是低」算：职业系数 m 是这一行的平均，学历和这一行一般人一样的人是 1。
+ *  你本人、父母、配偶共用 */
+export const eduRel = (edu: number, jk: string) => EDU_WAGE[edu] / EDU_WAGE[(JOBS[jk] && JOBS[jk].ed) ?? 2];
+export const TIER_WAGE = { top: 1.1, '211': 1.05 }; // 名校溢价（估计）
+export const eduWageK = (jk: string) => eduRel(S.edu, jk) * (TIER_WAGE[S.flags.tier] || 1);
+// 学识：入行时 kn 每高 10，工资高约 3%（估计）；KN_MID 是入行时学识的大致平均，这个水平的人是 1
+export const KN_MID = 50;
+export const knWageK = () => 1 + (S.st.kn - KN_MID) / 330;
+/** 均值为 1 的对数正态个人差异：exp(σz − σ²/2) */
+export const luckK = (sd: number) => fexp(gauss(0, sd) - sd * sd / 2);
+// 工龄曲线（同一行里干了第 y 年的人，相对这一行平均的倍数）。你本人、父母、配偶共用同一条曲线：
+// · 起薪 EXP0；前 5 年涨到 EXP5（涨得最快）；之后慢慢涨到第 EXP_PEAK_Y 年的 EXP_PEAK，然后持平，峰值是起薪的 2 倍；
+// · 体力活（JOBS 的 blue）起薪高、涨得少：离 1 的距离只有一半（EXP_BLUE），峰值约是起薪的 1.4 倍；
+// · 50 岁以后每年 −1%，最多 −15%（体力下降、不再升职、年纪大的转去轻松的岗位）。
+// 依据（DATA.md「工资」）：麦可思 2025 届本科毕业半年后月收入 6,435 元，东部本科毕业三年后比半年后高 69%（含这几年的普调，
+// 游戏里工资水平不随年份涨，扣掉每年约 4% 的普调后约 +50%）；Fang & Qiu（NBER 29523）：中国横截面收入在 35 岁前后最高，
+// 40 年工作经验约使收入涨 150%。体力活的曲线、50 岁以后的下降是估计
+export const EXP0 = 0.58, EXP5 = 0.95, EXP_PEAK = 1.16, EXP_PEAK_Y = 15, EXP_BLUE = 0.5;
+export const expCurve = (y: number, age: number, jk?: string) => {
+  let k = y <= 5 ? EXP0 + (EXP5 - EXP0) * y / 5 : Math.min(EXP_PEAK, EXP5 + (EXP_PEAK - EXP5) * (y - 5) / (EXP_PEAK_Y - 5));
+  if (jk && JOBS[jk] && JOBS[jk].blue) k = 1 + (k - 1) * EXP_BLUE;
+  return k * (age > 50 ? Math.max(0.85, 1 - 0.01 * (age - 50)) : 1);
+};
+export const expK = () => expCurve(S.jobY, S.age, S.job);
 // 还是同一行（跳槽、换城市、失业后重新找到老本行）：工龄和个人工资系数（升职加薪攒下的）都保留；换了行才从头算
 export function hire(job, L?) {
   if (L) moveTo(L);
   const same = job === (S.job === 'seeking' ? S.flags.lastJob : S.job) && JOBS[job] && JOBS[job].m > 0;
   S.job = job;
   goIndep();
-  if (!same) { S.jobY = 0; S.wageK = S.wageK0 = fexp(gauss(0, 0.2)) * (0.85 + S.st.kn / 330) * eduWageK(); }
+  if (!same) { S.jobY = 0; S.wageK = S.wageK0 = luckK(WAGE_SD) * knWageK() * eduWageK(job); }
   if (JOBS[job] && (JOBS[job].stable || JOBS[job].priv)) S.flags.empIns = 1;
   hpfStart(job);
   S.jobs.push({ job, age: S.age, city: S.loc.city });
   if (!S.headless && JOBS[job] && JOBS[job].m > 0) addDoc(job === 'civil' ? 'civil' : 'job', job === 'civil' ? '录用通知' : JOBS[job].blue ? '务工登记' : '劳动合同', [['岗位', JOBS[job].n], ['工作地', placeName()], ['起始', `${calYear()}年`]]);
 }
-// 升职加薪攒下的部分 g = wageK ÷ wageK0。工龄曲线 expCurve 是同龄人平均的收入曲线，里面已经含了一般人的升职加薪，
-// 所以 g 只表示「比同龄同行涨得多还是少」：
-// · 每年向 1 回落 WAGE_REV（估计：比别人多涨的部分约 5–6 年减半。别人也会升职、跳槽的人换了单位从头熬）；
-// · 涨工资时越接近上限 WAGE_G_MAX 涨得越少，到了上限就不再涨（估计：同一行里收入前 5% 的人约为中位数的 2 倍）。
-// 原来只往上乘（升职 ×1.15、拼工作 ×1.12、跳槽 ×1.2），50 岁时 wageK 中位数约 1.9、前 10% 超过 3.3
-export const WAGE_REV = 0.12, WAGE_G_MAX = 1.8;
+// 入行时的个人差异（对数正态的 σ，均值为 1）：同一行、同样学历的人起薪的差距（估计）
+export const WAGE_SD = 0.2;
+// 升职加薪攒下的部分 g = wageK ÷ wageK0。工龄曲线 expCurve 是同龄同行平均的收入曲线，里面已经含了一般人的升职加薪，
+// 所以 g 表示「比同龄同行涨得多还是少」，同行平均约为 1：
+// · 每年向 WAGE_G0 回落 WAGE_REV：一直没升职、没跳槽的人，慢慢落到同龄同行平均以下（平均里含了别人的升职）；
+//   比别人多涨的部分约 5–6 年减半（别人也会升职，跳槽的人换了单位从头熬）。WAGE_G0 按「22–59 岁在职者 g 的平均约为 1」校准；
+// · 涨工资时越接近上限 WAGE_G_MAX 涨得越少，到了上限就不再涨（估计：同一行里收入前 5% 的人约为中位数的 2 倍，
+//   入行时的个人差异 σ = 0.2 已经占了约 1.4 倍；原来 1.8，改成 1.6）。
+// 原来只往上乘（升职 ×1.15、拼工作 ×1.12、跳槽 ×1.2），50 岁时 wageK 中位数约 1.9、前 10% 超过 3.3；
+// 后来改成向 1 回落、上限 1.8，g 的平均仍约 1.16（工资整体偏高的原因之一）
+export const WAGE_REV = 0.12, WAGE_G0 = 0.9, WAGE_G_MAX = 1.6;
+// 各种涨工资的幅度（raise 的倍数，越接近上限实际涨得越少）。出处见 DATA.md「工资」：
+// · hop 被挖去别的公司（content/decisions.ts 的 jobhop）：1.2 → 1.12。同级跳槽涨 6%–15%（Morgan McKinley 2026 年薪酬指南，转引）；
+// · promo 升职（content/events.ts）：1.15 → 1.1；work 一年里拼工作（focus.ts）：1.12 → 1.05。没有找到可靠的调查，估计；
+// · 每年的普调（2025 年平均约 4%：前程无忧 4.1%、美世 3.8%）不单独算：游戏里的工资水平不随年份涨，工龄曲线已经是扣掉普调以后的
+export const RAISE = { promo: 1.1, work: 1.05, hop: 1.12 };
 const WAGE_REV_M = approachPerMonth(WAGE_REV);
 /** 涨工资（k > 1）或降薪（k < 1）。涨幅随 g 接近上限递减，降薪照实算。返回实际的倍数 */
 export function raise(k: number) {
@@ -82,11 +122,11 @@ export function raise(k: number) {
   const g2 = k >= 1 ? Math.min(WAGE_G_MAX, g * (1 + (k - 1) * clamp((WAGE_G_MAX - g) / (WAGE_G_MAX - 1), 0, 1))) : g * k;
   const x = g2 / g; S.wageK *= x; return x;
 }
-/** 每个在岗的月份：多涨（或少涨）的部分向 1 回落一点；直接乘 wageK 的地方（事件、抉择）超过上限的部分在这里截掉 */
+/** 每个在岗的月份：多涨（或少涨）的部分向 WAGE_G0 回落一点；超过上限的部分在这里截掉 */
 export function wageMonth() {
   const k0 = S.wageK0; if (!k0) return;
   const g = Math.min(WAGE_G_MAX, S.wageK / k0);
-  S.wageK = k0 * (g + (1 - g) * WAGE_REV_M);
+  S.wageK = k0 * (g + (WAGE_G0 - g) * WAGE_REV_M);
 }
 // 18 岁以后还待在农村、却要去城里打工时，换到城市
 export function hireInCity(job) { hire(job, S.loc.kind === 'rural' ? migrantCity() : null); }

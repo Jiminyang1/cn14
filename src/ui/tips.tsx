@@ -2,10 +2,10 @@
 // 说明在点开那一刻才计算，所以数字总是最新的。
 import type { ReactNode } from 'react';
 import {
-  DEBT_FREEZE, DEBT_SR, EDU_LV, EDU_WAGE, FAM_REPAY, FAM_SAVE, HPF_JOB, INS_FLEX, INS_RESID, JOBS, LE_TARGET, LOAN_RULES, LT, NAT_URBAN_INC, PARENT_K, PBY,
-  PEN_MIN_YEARS, PEN_YEARS, RESID_PENSION_JOBS, RET_DRAW, S, SAVE_BASE, WAGE_G_MAX, WAGE_REV, WEALTH0, WEALTH_MPC, clamp, expK, famIncome,
+  DEBT_FLOOR, DEBT_FREEZE, DEBT_SR, EDU_LV, EXP0, EXP5, EXP_BLUE, EXP_PEAK, EXP_PEAK_Y, FAM_REPAY, FAM_SAVE, HPF_JOB, INS_FLEX, INS_RESID, JOBS, LE_TARGET, LOAN_RULES, LT, NAT_URBAN_INC, PARENT_K, PBY,
+  PARENT_SD, PARTNER_SD, PEN_MIN_YEARS, PEN_YEARS, RESID_PENSION_JOBS, RET_DRAW, S, SAVE_BASE, WAGE_G0, WAGE_G_MAX, WAGE_REV, WEALTH0, WEALTH_MPC, clamp, expK, famIncome,
   hpCounty, incomeLuckNow, leOf, loanPayY, matePay, myPay, parentIncome, parentPay, parentRetired, parentWage, parentWorkLoc, partnerHpf, partnerLoc, partnerPay, peek, sibsAlive,
-  placeHp, placeInc, placeName, socAvg, uiPay, wageBase, wageRate, wan, workExpK,
+  eduRel, personK, placeHp, placeInc, placeName, socAvg, uiPay, wageBase, wageRate, wan, workExpK,
   type DedRow, type NetPay,
 } from '../engine';
 import { QW } from './util';
@@ -34,6 +34,15 @@ const YEARLY = '统计年鉴是年度数，这里除以 12';
 const baseText = (L: Parameters<typeof placeInc>[0]) => L.kind === 'rural'
   ? `${placeName(L)}农村居民人均可支配收入，每月约 ${yuan(placeInc(L) / 12)}（一年 ${wan(placeInc(L))}；${YEARLY}）`
   : `全国城镇人均每月约 ${yuan(NAT_URBAN_INC / 12)}（一年 ${wan(NAT_URBAN_INC)}）×（${placeName(L)} ÷ 全国）^0.7：${placeName(L)}城镇居民人均可支配收入一年 ${wan(placeInc(L))}，城市间工资差距比收入差距小，按 0.7 次方收拢（${YEARLY}）`;
+/** 工龄曲线的说明（career.ts 的 expCurve），y 是这一行干了第几年 */
+const expText = (y: number, jk: string) => {
+  const b = (k: number) => JOBS[jk] && JOBS[jk].blue ? 1 + (k - 1) * EXP_BLUE : k;
+  return `工作第 ${y} 年：起薪约为这一行平均的 ${pct(b(EXP0))}，前 5 年涨到 ${pct(b(EXP5))}，第 ${EXP_PEAK_Y} 年前后到 ${pct(b(EXP_PEAK))}，之后持平${JOBS[jk] && JOBS[jk].blue ? '（体力活起薪高、涨得少）' : ''}；50 岁以后每年 −1%（最多 −15%）`;
+};
+/** 学历溢价的说明：比这一行一般人的学历高还是低 */
+const eduText = (edu: number, jk: string) => `学历 ${eduRel(edu, jk).toFixed(2)}（${EDU_LV[edu]}；这一行一般是${EDU_LV[JOBS[jk].ed ?? 2]}）`;
+/** 均值为 1 的对数正态个人差异 x（σ = sd）在同龄人里约排第几百分位 */
+const rankOf = (x: number, sd: number) => Math.round(100 / (1 + Math.exp(-1.702 * (Math.log(x) + sd * sd / 2) / sd)));
 const sgn = (x: number) => (x >= 0 ? '+' : '−') + Math.abs(x).toFixed(1);
 
 // ===== 税前 → 到手 =====
@@ -130,24 +139,23 @@ export const TIPS: Record<string, (arg?: string) => Tip> = {
     const J = JOBS[p.jk];
     if (!J || !J.m) return { title: label + '的收入', big: '没有工资收入', rows: [['学历', EDU_LV[p.edu]], ['情况', p.job]] };
     const L = parentWorkLoc(p), y = Math.max(0, p.age - p.startAge);
-    const ek = EDU_WAGE[p.edu], luck = p.k / ek, pk = PARENT_K[S.rural ? 'rural' : 'urban'];
-    // 个人差异在同龄人里大约排第几（对数正态，σ = 0.65）
-    const z = Math.log(luck) / 0.65, rank = Math.round(100 / (1 + Math.exp(-1.702 * z)));
+    const luck = p.k, pk = PARENT_K[S.rural ? 'rural' : 'urban'];
+    const rank = rankOf(luck, PARENT_SD); // 个人差异在同龄人里大约排第几（对数正态，σ = PARENT_SD）
     const ded: DedRow[] = [], pay = parentPay(who as 'mom' | 'dad', ded);
     return {
       title: label + '的月收入',
-      expr: [T(yuan(wageBase(L) / 12), '工资基数（月）'), '×', T(J.m, '职业系数'), '×', T(p.k.toFixed(2), '个人系数'), '×', T(workExpK(p).toFixed(2), '工龄系数'), '×', T(pk, '父母一代')],
+      expr: [T(yuan(wageBase(L) / 12), '工资基数（月）'), '×', T(J.m, '职业系数'), '×', T(personK(p).toFixed(2), '个人系数'), '×', T(workExpK(p).toFixed(2), '工龄系数'), '×', T(pk, '父母一代')],
       result: '税前 ' + perMo(parentWage(p)),
       ...payEq(pay),
       rows: [
         ['工作', `${p.job}${L.city !== S.home.city ? '（在' + placeName(L) + '）' : ''}`],
         ['工资基数', baseText(L)],
-        ['个人系数', `学历溢价 ${ek.toFixed(2)}（${EDU_LV[p.edu]}）× 个人差异 ${luck.toFixed(2)}（同龄人里约第 ${rank} 百分位，含工时、奖金、兼职和运气）`],
-        ['工龄系数', `工作第 ${y} 年：前 5 年从 0.75 涨到 1.0，之后每年 +2%，最高 1.1；50 岁以后每年 −1%`],
+        ['个人系数', `${eduText(p.edu, p.jk)} × 个人差异 ${luck.toFixed(2)}（同龄人里约第 ${rank} 百分位，含工时、奖金、兼职和运气）`],
+        ['工龄系数', expText(y, p.jk)],
         ['父母一代', `校准系数，使出生时${S.rural ? '农村' : '城镇'}家庭人均可支配收入的中位数对上统计局 2025 年数据`],
         ...payRows(pay, p.jk, L.p, ded, 0),
       ],
-      notes: ['和你本人同一套公式。职业系数按统计局分行业平均工资（税前）折算。', '父母个人缴的公积金没有从到手里扣：它还是家里的钱，可以提取付房贷、房租。', ...TAX_NOTES],
+      notes: ['和你本人同一套公式。职业系数是这一行全国的平均（按统计局分行业、分岗位平均工资折算，税前），学历、个人差异、工龄系数平均下来约为 1。', '父母个人缴的公积金没有从到手里扣：它还是家里的钱，可以提取付房贷、房租。', ...TAX_NOTES],
       src: '父母一代的学历分布参考 2020 年人口普查（估计）；' + TAX_SRC,
     };
   },
@@ -206,19 +214,19 @@ export const TIPS: Record<string, (arg?: string) => Tip> = {
     if (!p || !p.jk) return { title: '对方的收入', big: '没有收入', notes: ['还在读书。毕业以后按学历找工作。'] };
     if (p.retired) return { title: `${p.name}的退休收入（每月）`, big: perMo(p.inc), notes: [`一年约 ${wan(p.inc)}。和你同一套规则：务农、打零工、个体户这类领城乡居民养老金，其余领职工养老金（按参加工作一直缴到退休估算）。`] };
     // 对方的收入每年更新一次（生日那个月）。这一年里搬了家，现在的数和按现在的地方算的对不上：不列算式，免得乘不出来
-    const L = partnerLoc(p), live = wageBase(L) * JOBS[p.jk].m * p.k * workExpK(p);
+    const L = partnerLoc(p), live = wageBase(L) * JOBS[p.jk].m * personK(p) * workExpK(p);
     if (Math.abs(live - p.inc) > Math.max(100, p.inc * 0.01)) return {
       title: `${p.name}的月收入`, big: perMo(p.inc),
       rows: [['工作', JOBS[p.jk].n], ['一年', wan(p.inc)], ['怎么算', '工资基数 × 职业系数 × 个人系数 × 工龄系数，每年更新一次'], ['明年', `按${placeName(L)}算，约 ${perMo(live)}`]],
     };
-    const ek = EDU_WAGE[p.edu], luck = p.k / ek, z = Math.log(luck) / 0.35, rank = Math.round(100 / (1 + Math.exp(-1.702 * z)));
+    const luck = p.k, rank = rankOf(luck, PARTNER_SD);
     const married = who !== 'dating', ded: DedRow[] = [], pay = partnerPay(p, ded), pid = married ? S.loc.p : L.p;
     return {
       title: `${p.name}的月收入`,
-      expr: [T(yuan(wageBase(L) / 12), '工资基数（月）'), '×', T(JOBS[p.jk].m, '职业系数'), '×', T(p.k.toFixed(2), '个人系数'), '×', T(workExpK(p).toFixed(2), '工龄系数')],
+      expr: [T(yuan(wageBase(L) / 12), '工资基数（月）'), '×', T(JOBS[p.jk].m, '职业系数'), '×', T(personK(p).toFixed(2), '个人系数'), '×', T(workExpK(p).toFixed(2), '工龄系数')],
       result: '税前 ' + perMo(p.inc),
       ...payEq(pay),
-      rows: [['工作', `${JOBS[p.jk].n}（在${placeName(L)}）`], ['工资基数', baseText(L)], ['个人系数', `学历溢价 ${ek.toFixed(2)}（${EDU_LV[p.edu]}）× 个人差异 ${luck.toFixed(2)}（同龄人里约第 ${rank} 百分位）`], ['工龄', `工作第 ${Math.max(0, p.age - p.startAge)} 年`],
+      rows: [['工作', `${JOBS[p.jk].n}（在${placeName(L)}）`], ['工资基数', baseText(L)], ['个人系数', `${eduText(p.edu, p.jk)} × 个人差异 ${luck.toFixed(2)}（同龄人里约第 ${rank} 百分位）`], ['工龄系数', expText(Math.max(0, p.age - p.startAge), p.jk)],
         ...payRows(pay, p.jk, pid, ded, pay.hpf && HPF_JOB[p.jk] ? HPF_JOB[p.jk][1] : 0)],
       notes: ['和你本人、父母同一套公式。对方的学历按「门当户对」抽：同一档约五成五，差一档约三成五（估计）。', married ? '结了婚：孩子的扣除夫妻各扣一半，住房的扣除由工资高的那个扣；对方个人缴的公积金也进家里的公积金账户。' : '还没结婚：只算对方自己的扣除。', ...TAX_NOTES],
       src: TAX_SRC,
@@ -277,10 +285,10 @@ export const TIPS: Record<string, (arg?: string) => Tip> = {
       ...payEq(pay),
       rows: [
         ['工资基数', baseText(S.loc)],
-        ['职业系数', `${J.n}，按统计局 2025 年分行业、分岗位平均工资（税前）`],
-        ['个人系数', `入行时 ${k0.toFixed(2)}（学识、学历（${EDU_LV[S.edu]}）、学校层次，加一点运气）× 这些年比同行多涨（或少涨）的 ${g.toFixed(2)}`],
-        ['多涨的部分', `升职、拼工作、跳槽涨的工资。工龄系数里已经含了一般人的升职加薪，所以多涨的部分每年回落约 ${Math.round(WAGE_REV * 100)}%，最多是入行时的 ${WAGE_G_MAX} 倍，越接近越难涨`],
-        ['工龄系数', `这一行干了第 ${S.jobY} 年。起薪约为平均的 75%，前 5 年涨得快，50 岁后略降`],
+        ['职业系数', `${J.n}这一行全国的平均，按统计局 2025 年分行业、分岗位平均工资（税前）折算`],
+        ['个人系数', `入行时 ${k0.toFixed(2)}（${eduText(S.edu, S.job)}、学识、学校层次，加一点运气；同行平均约为 1）× 这些年比同龄同行多涨（或少涨）的 ${g.toFixed(2)}`],
+        ['多涨的部分', `升职、拼工作、跳槽涨的工资。工龄系数是同龄同行的平均，里面已经含了一般人的升职加薪：一直不升职、不跳槽，每年向 ${WAGE_G0} 回落约 ${Math.round(WAGE_REV * 100)}%（落到同行平均以下）；最多是入行时的 ${WAGE_G_MAX} 倍，越接近越难涨`],
+        ['工龄系数', expText(S.jobY, S.job)],
         ...(J.v ? [[lk, `${biz ? '做生意的收入' : '销售的收入大头是提成，'}一年好一年坏：${mood}。多年平均正好是 1`] as [string, string]] : []),
         ...payRows(pay, S.job, S.loc.p, ded, S.hpfRate || 0),
       ],
@@ -296,7 +304,7 @@ export const TIPS: Record<string, (arg?: string) => Tip> = {
         ['上班时的开销', `收入 ×（1 − 储蓄率）+ 存款的 ${pct(WEALTH_MPC)}/年；不低于当地人均消费的九成`],
         ['储蓄率', `${pct(SAVE_BASE)} + 15% × ln（人均到手收入 ÷ 当地人均可支配收入），在 −20% 到 55% 之间`],
         ['退休以后', `收入全部花掉，再花存款的 ${pct(RET_DRAW)}/年，房租、养老院也从这里出`],
-        ['欠着钱时', `至少拿收入的 ${pct(DEBT_SR)} 还债，开销压到下限的八成；退休以后不再借钱`],
+        ['欠着钱时', `至少拿收入的 ${pct(DEBT_SR)} 还债，开销压到下限的 ${pct(DEBT_FLOOR)}；退休以后不再借钱`],
         ['房贷', '先用公积金余额还，不够再用存款'],
         ['利息', `存款约 1.5%，欠款约 4%；欠款超过当地 ${DEBT_FREEZE} 年人均收入的部分不再计息`],
       ],

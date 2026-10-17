@@ -2,7 +2,7 @@
 
 import { S } from './state';
 import { chance, clamp, wpick } from './rng';
-import { isWorking, raise } from './career';
+import { RAISE, isWorking, raise } from './career';
 import { log } from './journal';
 import { MONTHS, perMonth } from './monthly';
 
@@ -50,7 +50,7 @@ function applyOne(k: string, w: number, ok = false) {
   const f = FOCUS[k]; if (!f || !ok && !f.ok()) return;
   const x = w / MONTHS, st = S.st;
   for (const [s, v] of EFF[k]) st[s] = clamp(st[s] + v * x * (s === 'kn' && v > 0 ? 1 - st.kn / 115 : 1), 0, 100);
-  if (k === 'work' && w > 0.4 && chance(w === 1 ? RAISE_M1 : perMonth(RAISE_P * w))) { raise(1.12); log('工作上很拼，涨了工资。', 'good'); }
+  if (k === 'work' && w > 0.4 && chance(w === 1 ? RAISE_M1 : perMonth(RAISE_P * w))) { raise(RAISE.work); log('工作上很拼，涨了工资。', 'good'); }
   if (k === 'love') { S.fLove = (S.fLove || 0) + x; if (S.fLove > 0.4) S.flags.loveBoost = 1; }
 }
 // 自动抉择（或无界面）时：和原来一样，每年替你抽一个重心、整年都算在它上面。

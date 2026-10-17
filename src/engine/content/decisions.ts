@@ -7,7 +7,7 @@ import { BIG, BIRTH_TOTAL, NATION, PBY } from '../data';
 import { CAUSE } from '../mortality';
 import { EDU_LV, admit, enroll, gkAutoApps, gkCandidates, gkLines, gkRank, gkResolve, gkScore, schoolStart } from '../education';
 import { ILL, oop, reimburse } from '../health';
-import { JOBS, RESID_PENSION_JOBS, civilTry, gig, gradJob, hire, hireInCity, isWorking, quitJob, raise, retire } from '../career';
+import { JOBS, RAISE, RESID_PENSION_JOBS, civilTry, gig, gradJob, hire, hireInCity, isWorking, quitJob, raise, retire } from '../career';
 import { MEET_HOW, READY0, READY_K, brideAmt, loveWord, mShift, mutualP, partnerInc, partnerRows, ptJobName } from '../romance';
 import { S } from '../state';
 import { addDoc, log, logLater } from '../journal';
@@ -159,6 +159,9 @@ export function monthDecisions() {
   return d;
 }
 
+// 女方家里要婚房、你还没有：坚持先买房的人家的比例（估计）。原来约一半；工资对齐统计局以后，32 岁前买上房的男性少了约一成半，
+// 32 岁未婚的男性从 23.7% 升到 25.2%（2020 年普查 30–34 岁 20.6%），改成 HOUSE_FIRST 以后见 DATA.md「工资」
+export const HOUSE_FIRST = 0.4;
 // 能不能谈结婚：法定婚龄（《民法典》第1047条，男不早于22周岁、女不早于20周岁），双方都要到；谈了一两年（年纪大些的一年就谈）
 const marryOK = () => {
   const p = S.fam.dating; if (!p || S.fam.married) return false;
@@ -503,8 +506,8 @@ export const DEC = {
   jobhop: {
     build: () => {
       if (!isWorking() || SELF_EMP.has(S.job)) return null;
-      const w = S.wageK, x = raise(1.2); S.wageK = w; // 先算一下能涨多少（不消耗随机数），选了跳槽时 apply 里照样再涨一次
-      const more = x >= 1.15 ? '两成' : x >= 1.05 ? '一成左右' : '一点';
+      const w = S.wageK, x = raise(RAISE.hop); S.wageK = w; // 先算一下能涨多少（不消耗随机数），选了跳槽时 apply 里照样再涨一次
+      const more = x >= 1.1 ? '一成多' : x >= 1.06 ? '一成左右' : '一点';
       return {
         title: '跳槽？', body: `另一家公司来挖你，工资高${more}，但听说更忙。`,
         choices: [{ k: 'hop', label: '跳槽', sub: '收入↑ 健康↓', w: 2, tilt: { r: 0.3 } }, { k: 'stay', label: '留在原来的地方', sub: '', w: 3, tilt: { a: 0.2 } }, { k: 'boss', label: '干脆辞职自己干', sub: '风险很大', w: 0.4, tilt: { r: 0.5 } }],
@@ -513,8 +516,8 @@ export const DEC = {
     },
     apply: (k, c) => {
       if (k === 'stay') return null;
-      // 涨工资统一走 raise（career.ts）：涨得多的人越往上越难涨，实际涨幅可能不到两成
-      if (k === 'hop') { const w = S.wageK; hire(S.job); S.wageK = w; raise(1.2); eff({ hl: -2 }); return `跳槽到了新公司，工资涨了${c.more}。`; }
+      // 涨工资统一走 raise（career.ts）：涨得多的人越往上越难涨，实际涨幅可能不到 RAISE.hop
+      if (k === 'hop') { const w = S.wageK; hire(S.job); S.wageK = w; raise(RAISE.hop); eff({ hl: -2 }); return `跳槽到了新公司，工资涨了${c.more}。`; }
       eff({ money: -placeInc() * 1.2 }); hire(wpick({ boss: 1, shop: 1.5 })); return '辞了职，和朋友合伙做起了生意。';
     },
   },
@@ -581,7 +584,7 @@ export const DEC = {
       // 被拒也算对方问过一次（asks）。坚持过一次的人家，第二次求婚时还是没房：要么松口（不再要婚房，当场答应），要么分手。
       // 松口的可能看感情：感情一般（50）的约一半，很好（75）的约八成，冷淡（35）的约三成（估计）
       let pre = '';
-      if (ctx.wantHouse && !S.house && (p.wh === 2 || chance(0.5))) {
+      if (ctx.wantHouse && !S.house && (p.wh === 2 || chance(HOUSE_FIRST))) {
         p.asks = (p.asks || 0) + 1;
         if (p.wh !== 2) {
           p.love = clamp(p.love - 8, 0, 100); p.wh = 2; eff({ h: -4 });
