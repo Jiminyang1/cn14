@@ -23,6 +23,7 @@ import { moneyMonth } from './finance';
 import { kinYear } from './kin';
 import { turnsYear } from './turns';
 import { actsMonth, actsYear } from './actions';
+import { plansMonth, plansYear } from './plans';
 import { loveMonth } from './romance';
 import { makeName } from './names';
 import { balanceW, persInit, persWords, persYear, shape, shownOf, tiltW, whyPick } from './personality';
@@ -193,6 +194,7 @@ export function yearStart() {
   kinYear();
   turnsYear();
   actsYear();
+  plansYear();
   scheduleYearStart();
 }
 
@@ -203,6 +205,7 @@ function endMonth(m: number) {
   focusMonth(m);
   bodyMonth(m);
   studyMonth();
+  plansMonth();
   moneyMonth(m);
   familyMonth(m);
   loveMonth(m);

@@ -10,7 +10,7 @@ export const cashChange = (value: number) => {
   const rounded = Math.round(value);
   return (rounded > 0 ? '+' : rounded < 0 ? '−' : '') + cashAmount(Math.abs(rounded));
 };
-export const monthlySpending = (bill: MonthlyStatement) => bill.living + bill.rent + bill.mortgage + bill.debtRepaid;
+export const monthlySpending = (bill: MonthlyStatement) => bill.living + (bill.plans || 0) + bill.rent + bill.mortgage + bill.debtRepaid;
 /** 生活档位的名字（budget.ts 的 TIERS） */
 export const tierName = (t?: number) => TIERS[t ?? 1]?.n || '';
 const movementClass = (value: number) => value < 0 ? 'neg' : value > 0 ? 'money-up' : undefined;
@@ -48,7 +48,7 @@ export function AccountStatement({ bill = S.statement }: { bill?: MonthlyStateme
   if (!bill) return <p className="account-note">第一个月结束后生成收支账单。</p>;
   // 只留几行：收入、生活（按档位）、住房、还欠款，其余（事件、家里的往来、利息）合成「其他」；为零的不写
   const rows: [string, number][] = [
-    ['到手收入', bill.income], [`生活开销（${tierName(bill.tier)}）`, -bill.living],
+    ['到手收入', bill.income], [`生活开销（${tierName(bill.tier)}）`, -bill.living], ['持续的计划', -(bill.plans || 0)],
     ['房租／养老院', -bill.rent], ['房贷', -bill.mortgage], ['还欠款', -bill.debtRepaid],
     ['其他（事件、往来、利息）', bill.events + bill.transfers + bill.depositInterest],
   ];

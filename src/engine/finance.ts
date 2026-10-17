@@ -17,6 +17,7 @@ import { dedOf, netOf, penBase, type DedRow, type NetPay } from './tax';
 import type { Partner } from './types';
 import { changeMoney, repayDebt } from './accounts';
 import { TIERS, familySize, tierCost, tierOf } from './budget';
+import { liveTier } from './plans/style';
 import { dibaoMonth, frugalEnd, frugalK, kidAdvMonth, kidSupportY, tightMonth } from './tight';
 
 declare module './types' {
@@ -56,7 +57,9 @@ const SAVE_INT_M = fpow(1.015, 1 / MONTHS), DEBT_INT_M = fpow(1.04, 1 / MONTHS);
  *  工资按这个月月底的工作发：年中换工作、被裁员、找到工作、退休，都从那个月起按新的状态算（一个月之内不再细分） */
 export function moneyMonth(m: number) {
   const opening = S.statement?.closing ?? S.money;
-  const events = S.money - opening;
+  // 持续的计划（plans.ts）这个月花的钱在 moneyMonth 之前扣，单独记一行，不算进「其他」
+  const plans = S.planSpend || 0; S.planSpend = 0;
+  const events = S.money - opening + plans;
   const beforeFamily = S.money;
   familyMoneyMonth(m);
   if (S.indep === false && S.job && !S.school && S.age >= 15) goIndep();
@@ -105,7 +108,9 @@ export function moneyMonth(m: number) {
   }
   // 住养老院：费用里包了吃住，不再另付生活开销。节衣缩食的（tight.ts）：欠款还清以前，必要的那部分少花一些
   const inCare = S.flags.oldLive === 'home';
-  const full = inCare ? 0 : tierCost(S.tier, H.cons, size);
+  // 实际按哪一档花：自动的档位加上玩家的生活方式（plans/style.ts）
+  const live = liveTier();
+  const full = inCare ? 0 : tierCost(live, H.cons, size);
   const basic = Math.min(full, H.cons / MONTHS * size * ESSENTIAL) * frugalK();
   const basicPaid = Math.min(S.money, basic);
   S.money -= basicPaid;
@@ -131,7 +136,7 @@ export function moneyMonth(m: number) {
   const previous = S.statement;
   S.statement = { year: calYear(m), month: calMonth(m), opening, closing: S.money, events, transfers, income: hh,
     incomeDetails: { personal: net, partner: mp ? mp.net / MONTHS : 0, rehire: lateLife.income, ...(aid ? { aid } : {}) },
-    tier: S.tier, living, rent, mortgage: mortgage.cash, mortgageInterest: mortgage.interest,
+    tier: live, living, plans, rent, mortgage: mortgage.cash, mortgageInterest: mortgage.interest,
     mortgageHpf: mortgage.hpf, debtRepaid, depositInterest, debtInterest,
     shortfall: basic - basicPaid + rentDue - rent, arrears: mortgage.arrears, debt: S.debt };
   if (!S.headless) {
@@ -141,7 +146,7 @@ export function moneyMonth(m: number) {
     else history.push(S.statement);
   }
   const totals = S.cashflow ||= { months: 0, income: 0, spending: 0, mortgage: 0, debtRepaid: 0 };
-  totals.months++; totals.income += hh; totals.spending += living + rent;
+  totals.months++; totals.income += hh; totals.spending += living + rent + plans;
   totals.mortgage += mortgage.cash; totals.debtRepaid += debtRepaid;
   S.relInc = clamp((hh * MONTHS / (f.married ? 1.6 : 1) / (P * REL_REF) - 1) * 6, -10, 10);
   if (S.money > S.stats.maxMoney) S.stats.maxMoney = S.money;

@@ -20,7 +20,7 @@ function household() {
 
 function checkStatement(bill: E.MonthlyStatement) {
   const expected = bill.opening + bill.events + bill.transfers + bill.income + bill.depositInterest
-    - bill.living - bill.rent - bill.mortgage - bill.debtRepaid;
+    - bill.living - (bill.plans || 0) - bill.rent - bill.mortgage - bill.debtRepaid;
   expect(bill.closing).toBeCloseTo(expected, 6);
   expect(bill.closing).toBeGreaterThanOrEqual(0);
 }

@@ -43,3 +43,16 @@
 /* 「看账单」入口（ui/Finance.tsx 的 LedgerButton） */
 .ledger-btn { display: flex; justify-content: space-between; align-items: baseline; width: 100%; margin: 8px 0 4px; min-height: 36px; }
 .ledger-btn small { font-size: 12px; color: var(--muted); }
+
+/* 行动单里「持续的」计划（ui/Actions.tsx）：一行一个计划，几个选项点选 */
+.acts-g h4 small { margin-left: 8px; font: 12px var(--sans); color: var(--muted); font-weight: 400; }
+.acts-once { margin: 20px 0 0; padding-top: 12px; border-top: 1px solid var(--ink); font-family: var(--serif); font-size: 15px; }
+.plan-row { padding: 10px 0; border-top: 1px solid var(--line); }
+.plan-opts { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 6px; margin-top: 8px; }
+.plan-opt { display: flex; flex-direction: column; gap: 2px; padding: 8px 10px; border: 1px solid var(--rule); border-radius: 4px; background: var(--card); color: var(--ink); font: inherit; text-align: left; cursor: pointer; min-height: 44px; }
+.plan-opt:hover { border-color: var(--ink); }
+.plan-opt.on { border-color: var(--seal); background: var(--seal-soft); box-shadow: inset 3px 0 0 var(--seal); }
+.plan-opt b { font-family: var(--serif); font-size: 15px; }
+.plan-opt small { font-size: 12px; color: var(--muted); }
+.plan-opt .po-m { color: var(--ink2); }
+.plan-opt:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }

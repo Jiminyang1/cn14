@@ -61,7 +61,7 @@ export function closeYear() {
 
 // ===== 行动 =====
 // g：分在哪一栏（家人 / 生活）；max：一年最多几次；gap：隔几年才能再做；cost：要花多少（一次）；ok：现在能不能做；run：做了以后（返回时间线上的一句）
-export interface Act { n: string; g: 'kin' | 'life'; d: () => string; max: number; gap?: number; cost: () => number; ok: () => boolean; run: () => string }
+export interface Act { n: string; g: 'kin' | 'life' | 'health' | 'money' | 'study'; d: () => string; max: number; gap?: number; cost: () => number; ok: () => boolean; run: () => string }
 const inc = () => placeInc();
 /** 路费：离老家越远越贵（同省便宜，跨省贵），按当地收入算（估计） */
 const tripCost = () => Math.round(inc() * (S.loc.p === S.home.p ? 0.01 : 0.03) / 100) * 100;
@@ -116,7 +116,7 @@ export const ACTS: Record<string, Act> = {
     run: () => { eff({ h: 5 }); return vary('actReno', ['把房子重新装修了一遍。搬回去的那天，你在客厅里站了很久。', '装修拖了三个月，吵了好几架，住进去以后都觉得值。']); },
   },
   course: {
-    n: '报班考证', g: 'life', max: 1, gap: 5, d: () => '周末上课，明年考证，考下来能涨工资',
+    n: '报班考证', g: 'study', max: 1, gap: 5, d: () => '周末上课，明年考证，考下来能涨工资',
     cost: () => Math.round(inc() * 0.3 / 1e3) * 1e3, ok: () => isWorking() && S.age <= 50 && !!JOBS[S.job]?.m && !S.flags.cert,
     run: () => {
       // 考不考得过看学识（估计）：学识 50 约六成，70 约八成
@@ -126,7 +126,9 @@ export const ACTS: Record<string, Act> = {
     },
   },
 };
-export const ACT_KEYS = Object.keys(ACTS);
+/** 模块注册自己的一次性行动（plans/*.ts 的健康、理财……） */
+export function defineAct(k: string, A: Act) { ACTS[k] = A; }
+const actKeys = () => Object.keys(ACTS);
 
 // ===== 能不能做 =====
 const used = (k: string) => S.actN && S.actN.a === S.age ? S.actN.n[k] || 0 : 0;
@@ -138,7 +140,7 @@ export function actState(k: string) {
   return { ok: !why, why, left: Math.max(0, left), cost };
 }
 /** 现在能做的行动（界面只列出能做的和「今年做过了」「钱不够」的，完全不相干的不列） */
-export const actsShown = () => ACT_KEYS.filter(k => ACTS[k].ok());
+export const actsShown = () => actKeys().filter(k => ACTS[k].ok());
 
 /** 做一件（玩家的输入、自动的人生都走这里）。做不了就什么都不做 */
 export function doAct(k: string) {

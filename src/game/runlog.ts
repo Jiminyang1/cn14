@@ -7,6 +7,7 @@ export type Input = { a: number; t: number } & (
   | { type: 'decide'; id: string; k: string }
   | { type: 'slot'; i: number; k: string | null } // 改第 i 格（focus.ts 的 setSlot）
   | { type: 'act'; k: string } // 做一件行动（actions.ts 的 doAct）
+  | { type: 'plan'; k: string; v: string } // 改一个持续的计划（plans.ts 的 setPlan）
   | { type: 'auto'; on: boolean }
 );
 /** 不影响模拟结果、只用来排查的事件 */

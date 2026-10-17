@@ -3,11 +3,14 @@
 // 分两栏：家人（回家看看、给爸妈钱、给孩子钱、旅行）、生活（买车、装修、报班考证）。每项写清做什么、花多少、今年还能做几次；
 // 做不了的写原因。做完一件，下面写出时间线上记下的那句话
 import { useEffect, useState } from 'react';
-import { ACTS, S, actState, actsShown, closeWord, parClose, wan, anyParent } from '../engine';
+import { ACTS, PLANS, S, actState, actsShown, closeWord, parClose, planOf, plansShown, wan, anyParent } from '../engine';
 import { game } from '../game/controller';
 import './actions.css';
 
-const GROUPS = [['kin', '家人'], ['life', '生活']] as const;
+const GROUPS = [['kin', '家人'], ['life', '生活'], ['health', '健康'], ['money', '理财'], ['study', '学习']] as const;
+const STAT_N: Record<string, string> = { h: '幸福', hl: '健康', kn: '学识', so: '人际' };
+/** 一年对体检与鉴定的影响，写成「健康↑ 幸福↓」 */
+const fx = (e?: Record<string, number>) => e ? Object.entries(e).filter(([, v]) => v).map(([k, v]) => STAT_N[k] + (v > 0 ? '↑' : '↓')).join(' ') : '';
 
 /** 抉择单收起来以后，浮在页面上的「等待抉择」：游戏停着，点它回去选 */
 export function PendingFloat() {
@@ -52,6 +55,26 @@ function ActionsSheet({ onClose }: { onClose: () => void }) {
           <button type="button" className="ds-x" aria-label="关上" title="关上，游戏保持暂停" onClick={close}>×</button>
           <div className="ds-h"><span className="k">行动</span><h3>这一年做点什么</h3><span className="meta">手头 {wan(S.money)}</span></div>
           {anyParent() && <p className="acts-note">和{S.fam.mom.alive && S.fam.dad.alive ? '爸妈' : S.fam.mom.alive ? '妈妈' : '爸爸'}：{closeWord(parClose())}。常回家、给钱，会越来越亲；不管不问，几年就疏远了。</p>}
+          {plansShown().length > 0 && <div className="acts-g plans">
+            <h4>持续的<small>设好以后每个月自动生效，直到你改掉</small></h4>
+            {plansShown().map(k => {
+              const P = PLANS[k], cur = planOf(k);
+              return <div key={k} className="plan-row">
+                <div className="act-t"><b>{P.n}</b><small>{P.d()}</small></div>
+                <div className="plan-opts" role="radiogroup" aria-label={P.n}>
+                  {P.opts.map(o => {
+                    const m = o.monthly?.() || 0, e = fx(o.e);
+                    return <button key={o.k} type="button" role="radio" aria-checked={cur === o.k} className={'plan-opt' + (cur === o.k ? ' on' : '')} onClick={() => { if (cur !== o.k) { const n0 = S.log.length; game.plan(k, o.k); setSaid(S.log.length > n0 ? S.log[0].t : null); setDone(d => d + 1); } }}>
+                      <b>{o.label}</b>
+                      {o.sub && <small>{o.sub()}</small>}
+                      {(m > 0 || e) && <small className="po-m">{m > 0 ? `每月约${wan(m)}` : ''}{m > 0 && e ? ' · ' : ''}{e}</small>}
+                    </button>;
+                  })}
+                </div>
+              </div>;
+            })}
+          </div>}
+          {keys.length > 0 && <h4 className="acts-once">一次性的</h4>}
           {GROUPS.map(([g, title]) => {
             const ks = keys.filter(k => ACTS[k].g === g);
             if (!ks.length) return null;
