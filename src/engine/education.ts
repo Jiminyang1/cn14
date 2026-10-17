@@ -1,10 +1,10 @@
 // 学历、高考与填报志愿：成绩 → 全省排名 → 冲/稳/保院校 → 选专业、是否服从调剂 → 平行志愿投档 → 录取 / 调剂 / 退档 / 滑档。
 // 参数集中在 GK；各省分数线来自 real.generated.ts。
 
-import { fexp, flog, fpow } from './fmath';
+import { fexp, flog } from './fmath';
 import type { Loc, Uni } from './types';
 import { BIG, PBY, PROVS } from './data';
-import { GK_LINES } from './real.generated';
+import { GK_DIST, GK_LINES } from './real.generated';
 import { S } from './state';
 import { addDoc, log, out } from './journal';
 import { chance, clamp, gauss, pick, rnd, wpick } from './rng';
@@ -59,18 +59,25 @@ export const TIER_K = { top: 0.3, '211': 0.18, ben1: 0.1, ben: 0.05, zhuan: 0.02
 export const tierK = () => TIER_K[S.flags.tier] || 0.05;
 export const MAJORS = ['计算机', '会计', '临床医学', '护理', '机械工程', '汉语言文学', '英语', '电子商务', '土木工程', '法学', '师范教育', '金融'];
 export const GK = {
-  // 各分数线大约对应“全省前百分之几”的考生（待核实的占位值）
-  share: { special: 0.2, benke: 0.68, zhuanke: 0.97 },
+  // 没有一分一段表的省份：特控线、本科线大约对应全省前百分之几（有表的 11 省物理类中位数：特控 26%–42%、本科 64%–81%，见 research/gaokao.json score_dist_2026）
+  share: { special: 0.36, benke: 0.72 },
+  // 普通院校投档线在批次线之间的位置：x = (分 − 本科线)/(特控线 − 本科线)，x=0 在本科线、1 在特控线；专科 y = (分 − 专科线)/(本科线 − 专科线)。
+  // 取甘肃、河南、四川、广东 2025 年各层次最低专业组投档分的中位数（research/gaokao.json school_lines_2025.position_between_lines）
+  pos: { ben1: 1.0, ben1Out: 1.3, ben2: 0.6, ben2Out: 0.9, minban: 0.08, zhuanPub: 0.88, zhuanPri: 0.03 },
+  posSd: 0.15,      // 同层次学校之间的差别（x 或 y 的标准差）：甘肃的省属重点从特控线下 26 分到上 31 分
   // 各省分数线；没有数据的省份用 default（物理类/理科口径）
   lines: { default: { total: 750, special: 520, benke: 440, zhuanke: 200 } },
-  localK: 2.0,      // 985/211 在本省的“属地招生”优势
-  cal: 0.76,        // 985/211 总体校准：属地优势、调剂、冲一冲叠加后，使录取比例对上招生人数
-  heatK: 0.6,       // 专业线 = 学校投档线的排名 × heat^heatK：热门专业要排得更靠前（名校里只高几分）
-  heatPts: 0.04,    // 但最多高出 满分 × heatPts × (1 - heat) / 0.4（750 分制计算机最多高 30 分）：专科段分数扎堆，只按排名算会高出上百分
+  localK: 2.0,      // 985/211 在本省的“属地招生”优势（中等人口的省份）。本省名额摊到考生头上，小省多、大省少，所以再乘 平均人口 ÷ 本省人口（至少 1）：
+                    // 兰州大学在甘肃最低组 538、中位组 553 分（约前 11%），郑州大学在河南最低组 601、中位组 628（约前 2.4%）
+  cal: 1.0,        // 985/211 总体校准：属地优势、调剂、冲一冲叠加后，使录取比例对上招生人数
+  // 校内最热专业比最冷专业（= 学校投档线）高多少分（750 分制），呈倒 U 形：名校各专业都不差；省属重点的土木、给排水、护理掉得很低；
+  // 二本又缩回来（research/gaokao.json majors.within_university_by_tier_2025：985/211 计算机 +20~+30，省属重点 +55~+75，二本 +20~+38，
+  // 民办理工压线、会计高约 50，高职最热约 +70）。民办和高职里最热的是会计、铁路这类，计算机不突出，这里没有细分
+  spread: { '985': 25, '211': 25, ben1: 65, ben2: 30, minban: 20, zhuan: 45 },
   sd: 0.012,        // 学校投档线每年的波动（logistic 宽度，占满分的比例，750 分制约 9 分）：高出 20 分就很稳，低 20 分基本没戏
 };
 
-// 2026 年各省分数线（real.js 里的 GK_LINES）
+// 2026 年各省分数线和一分一段表（real.generated.ts 里的 GK_LINES、GK_DIST）
 Object.assign(GK.lines, GK_LINES);
 
 // 985 与部分 211 院校（名称、城市、省份）。pct 越小越难考；属性：med 医科强、edu 师范、agri 农林、eng 工科。
@@ -116,7 +123,8 @@ export const UNIS = [
   ['宁夏大学', '银川', 'NX', '211', 0.045], ['青海大学', '西宁', 'QH', '211', 0.045, 'med'], ['西藏大学', '拉萨', 'XZ', '211', 0.045],
 ].map(([name, city, prov, tier, pct, attr]: any[]): Uni => ({ name, city, prov, tier, pct, attr: attr || '' }));
 
-// 专业：热门的分数要求更高（heat < 1），冷门更低（heat > 1）
+// 专业：热门的分数要求更高（heat 小），冷门更低（heat 大）。专业线 = 投档线 + 校内分差 × hot，hot = (1.6 − heat)，农学为 0、计算机为 1
+// 临床医学在顶尖校已经降温（浙大、山大的临床低于计算机），在医学院仍是最热的一档
 export const MAJOR_LIST = [
   { n: '计算机', heat: 0.6 }, { n: '电子信息', heat: 0.65 }, { n: '临床医学', heat: 0.6, need: 'med' },
   { n: '金融', heat: 0.75 }, { n: '法学', heat: 0.85 }, { n: '会计', heat: 0.9 },
@@ -136,10 +144,15 @@ export function gkRank() {
   const s = (S.st.kn - 60) / 8.5 + (S.q - 3) * 0.12 + (S.home.kind === 'rural' ? -0.12 : 0.08) + (S.school === '复读' ? 0.25 : 0) + gauss(0, 0.35);
   return clamp(1 - normCdf(s), 0.00002, 0.995);
 }
-// 位置 → 分数：在几个锚点之间按 log(u) 线性插值
+// 位置 → 分数：在锚点之间按 log(u) 线性插值。有一分一段表的省份直接用表（GK_DIST），其余省份用有表各省的中位形状
 export function gkScore(u, pid) {
-  const L = gkLines(pid), T = L.total;
-  const pts = [[0.00002, T * 0.95], [0.002, T * 0.9], [0.03, (T * 0.9 + L.special) / 2], [GK.share.special, L.special], [GK.share.benke, L.benke], [GK.share.zhuanke, L.zhuanke], [0.995, Math.min(L.zhuanke, T * 0.2)]];
+  const L = gkLines(pid), T = L.total, D = GK_DIST[pid], sh = GK.share;
+  let pts = D ? D.map(([sc, f]) => [f, sc])
+    // 高分段各省差不多：680 分约前 0.1%、650 约 0.9%、620 约 3.5%（750 分制，有表各省的中位数）
+    : [[0.001, T * 0.907], [0.009, T * 0.867], [0.035, T * 0.827], [sh.special, L.special], [sh.benke, L.benke], [1 - (1 - sh.benke) * 0.2, (L.benke + L.zhuanke) / 2], [0.993, L.zhuanke]];
+  pts = [[0.00002, Math.max(T * 0.95, pts[0][1] + 10)], ...pts];
+  if (pts[pts.length - 1][1] > L.zhuanke) pts.push([0.999, L.zhuanke]);
+  pts = pts.reduce((a, p) => !a.length || (p[0] > a[a.length - 1][0] && p[1] < a[a.length - 1][1]) ? [...a, p] : a, []); // 只留严格单调的点
   const x = flog(u);
   for (let i = 1; i < pts.length; i++) {
     const [u0, s0] = pts[i - 1], [u1, s1] = pts[i];
@@ -148,29 +161,35 @@ export function gkScore(u, pid) {
   return Math.round(pts[pts.length - 1][1]);
 }
 
-// 普通院校（不列具体校名，避免编造）：按城市和层次生成。
-// 投档线直接按本省的批次线定位（u = 本省考生排在前百分之几才够得上）：批次线本身就反映了各省的招生名额，
-// 所以一本在特控线附近、二本在本科线和特控线之间、民办本科贴着本科线、高职在专科线和本科线之间，外省的同层次学校比本省的高一些
+// 普通院校（不列具体校名，避免编造）：按城市和层次生成。投档线直接按本省批次线定位（见 GK.pos），每所学校上下有些差别：
+// 一本在特控线附近、二本在本科线和特控线之间偏下、民办本科贴着本科线、公办高职接近本科线、民办高职贴着专科线；
+// 外省的同层次学校在本省招得少，线高一截（外省二本和本省一本差不多）
 export function genericUnis(hp) {
-  const P = PBY[hp], out: Uni[] = [], sh = GK.share;
-  const mid = (lo, hi, a) => fexp(flog(lo) * (1 - a) + flog(hi) * a); // 两条线之间按排名的对数插值：a=0 在 lo 线上，a=1 在 hi 线上
-  const cap = P.cities[0], other = P.cities[1] || cap;
-  out.push({ name: `${cap}的一所省属重点大学`, city: cap, prov: hp, tier: 'ben1', u: sh.special * 0.85, attr: '' });
-  out.push({ name: `${other}的一所普通本科院校`, city: other, prov: hp, tier: 'ben2', u: mid(sh.benke, sh.special, 0.45), attr: '' });
-  out.push({ name: `${cap}的一所民办本科`, city: cap, prov: hp, tier: 'minban', u: sh.benke * 0.95, attr: '', fee: 1 });
-  out.push({ name: `${cap}的一所公办高职`, city: cap, prov: hp, tier: 'zhuan', u: mid(sh.zhuanke, sh.benke, 0.5), attr: '' });
-  out.push({ name: `${other}的一所民办高职`, city: other, prov: hp, tier: 'zhuan', u: sh.zhuanke, attr: '', fee: 1 });
-  // 外省的同层次院校：在本省招得少，线高一些
-  const fp = wpick(PROVS.filter(p => p.id !== hp).map(p => [p, p.b])), fc = fp.cities[0]; // 按人口加权，大省的学校更常见
-  out.push({ name: `${fp.n}${fc}的一所省属重点大学`, city: fc, prov: fp.id, tier: 'ben1', u: sh.special * 0.6, attr: '' });
-  out.push({ name: `${fp.n}${fc}的一所普通本科院校`, city: fc, prov: fp.id, tier: 'ben2', u: mid(sh.benke, sh.special, 0.7), attr: '' });
+  const P = PBY[hp], L = gkLines(hp), out: Uni[] = [], G = GK.pos;
+  const ben = x => Math.round(L.benke + (L.special - L.benke) * Math.max(0, x + gauss(0, GK.posSd)));
+  const zhuan = y => Math.round(L.zhuanke + (L.benke - L.zhuanke) * clamp(y + gauss(0, GK.posSd), 0, 1.1));
+  const C = P.cities, cap = C[0], c2 = C[1] || cap, c3 = C[2] || c2;
+  // 本省：两所省属重点（多在省会）、两所普通本科、一所民办本科、一所公办高职、一所民办高职
+  out.push({ name: `${cap}的一所省属重点大学`, city: cap, prov: hp, tier: 'ben1', line: ben(G.ben1), attr: '' });
+  out.push({ name: `${cap}的另一所省属重点大学`, city: cap, prov: hp, tier: 'ben1', line: ben(G.ben1), attr: '' });
+  out.push({ name: `${c2}的一所普通本科院校`, city: c2, prov: hp, tier: 'ben2', line: ben(G.ben2), attr: '' });
+  out.push({ name: `${c3}的一所普通本科院校`, city: c3, prov: hp, tier: 'ben2', line: ben(G.ben2), attr: '' });
+  out.push({ name: `${cap}的一所民办本科`, city: cap, prov: hp, tier: 'minban', line: ben(G.minban), attr: '', fee: 1 });
+  out.push({ name: `${cap}的一所公办高职`, city: cap, prov: hp, tier: 'zhuan', line: zhuan(G.zhuanPub), attr: '' });
+  out.push({ name: `${c2}的一所民办高职`, city: c2, prov: hp, tier: 'zhuan', line: zhuan(G.zhuanPri), attr: '', fee: 1 });
+  // 外省：各两所省属重点、普通本科，按人口加权挑省份（大省的学校更常见）
+  const far = () => { const fp = wpick(PROVS.filter(p => p.id !== hp).map(p => [p, p.b])); return [fp, fp.cities[0]]; };
+  for (const [tier, x, kind] of [['ben1', G.ben1Out, '省属重点大学'], ['ben1', G.ben1Out, '省属重点大学'], ['ben2', G.ben2Out, '普通本科院校'], ['ben2', G.ben2Out, '普通本科院校']] as const) {
+    const [fp, fc] = far();
+    if (!out.some(u => u.prov === fp.id && u.tier === tier)) out.push({ name: `${fp.n}${fc}的一所${kind}`, city: fc, prov: fp.id, tier, line: ben(x), attr: '' });
+  }
   return out;
 }
-// 某校在本省的投档线（排名口径）。985/211 按全国名额换算：考虑属地优势和各省招生名额差异（ek）
+const MEAN_B = PROVS.reduce((t, p) => t + p.b, 0) / PROVS.length;
+// 985/211 在本省的投档线（排名口径）：按全国名额换算，考虑属地优势和各省招生名额差异（ek）
 export function uniThreshold(u, hp) {
-  if (u.u != null) return u.u;
   let t = u.pct * GK.cal * (PBY[hp].ek || 1);
-  if (u.prov === hp) t *= GK.localK;
+  if (u.prov === hp) t *= Math.max(1, GK.localK * MEAN_B / PBY[hp].b);
   return Math.min(0.99, t);
 }
 // 录取概率：分数线每年有波动，离投档线越近越没把握。按分差算（宽度见 GK.sd）
@@ -181,15 +200,12 @@ export function gkCandidates(rank, hp, score) {
   const L = gkLines(hp), w = L.total * GK.sd;
   const pool = UNIS.map(u => ({ ...u })).concat(genericUnis(hp)).filter(u => score >= L.benke || u.tier === 'zhuan');
   for (const u of pool) {
-    u.thr = uniThreshold(u, hp); u.line = gkScore(u.thr, hp); u.p = admitP(score, u.line, w);
-    // 专业线：热门的要排得更靠前；冷门的就是学校投档线
-    u.ml = Object.fromEntries(majorsOf(u).map(m => {
-      const h = Math.min(1, m.heat);
-      return [m.n, Math.min(gkScore(u.thr * fpow(h, GK.heatK), hp), Math.round(u.line + L.total * GK.heatPts * (1 - h) / 0.4))];
-    }));
+    if (u.line == null) u.line = gkScore(uniThreshold(u, hp), hp);
+    u.p = admitP(score, u.line, w);
+    u.ml = Object.fromEntries(majorsOf(u).map(m => [m.n, Math.round(u.line + GK.spread[u.tier] * L.total / 750 * clamp(1.6 - m.heat, 0, 1))]));
   }
   const pickN = (lo, hi, n) => {
-    const c = pool.filter(u => u.p >= lo && u.p < hi && !u.taken).sort((a, b) => a.thr - b.thr);
+    const c = pool.filter(u => u.p >= lo && u.p < hi && !u.taken).sort((a, b) => b.line - a.line);
     const got = [];
     // 本省和外省尽量都有
     for (const want of [x => x.prov !== hp, x => x.prov === hp, () => true]) {
@@ -199,34 +215,38 @@ export function gkCandidates(rank, hp, score) {
     return got;
   };
   const rush = pickN(0.08, 0.5, 3), steady = pickN(0.5, 0.9, 3), safe = pickN(0.9, 1.01, 2);
-  const tag = (arr, g) => arr.map(u => ({ name: u.name, city: u.city, prov: u.prov, tier: u.tier, attr: u.attr, thr: u.thr, line: u.line, ml: u.ml, w, p: u.p, fee: u.fee || 0, group: g }));
+  const tag = (arr, g) => arr.map(u => ({ name: u.name, city: u.city, prov: u.prov, tier: u.tier, attr: u.attr, line: u.line, ml: u.ml, w, p: u.p, fee: u.fee || 0, group: g }));
   return [...tag(rush, '冲'), ...tag(steady, '稳'), ...tag(safe, '保')];
 }
 export const TIER_N = { '985': '985', '211': '211', ben1: '一本', ben2: '二本', minban: '民办本科', zhuan: '专科' };
 // 被这个学校的这个专业录取的概率（不超过学校投档的概率：专业线不会低于投档线）
 export const majorP = (score, c, m) => Math.min(c.p, admitP(score, c.ml[m.n] ?? c.line, c.w));
 
+// 「专业+院校」填报的省份：每个专业单独投档，没有专业调剂，也就不会因为专业没录上被退档（research/gaokao.json zhiyuan_rules）
+export const NO_TIAOJI = new Set(['ZJ', 'SD', 'HE', 'CQ', 'LN', 'GZ', 'QH']);
+
 // 平行志愿投档：按志愿顺序，第一个够得上投档线的学校投档；再看专业线够不够，没录上时服从调剂就分到冷门专业，不服从就退档。
-// 同一个学校的投档线和专业线一起涨落，所以只抽一次：今年线低到够得上专业，就一定也够得上投档
-export function gkResolve(apps, score, adjust) {
+// 「专业+院校」省份专业线不够就看下一个志愿。同一个学校的投档线和专业线一起涨落，所以只抽一次：今年线低到够得上专业，就一定也够得上投档
+export function gkResolve(apps, score, adjust, hp) {
   for (const a of apps) {
     const m = MAJOR_LIST.find(x => x.n === a.major) || MAJOR_LIST[6];
     const v = rnd();
     if (v >= a.c.p) continue;
     if (v < majorP(score, a.c, m)) return { ok: true, c: a.c, major: a.major };
+    if (NO_TIAOJI.has(hp)) continue;
     if (adjust) return { ok: true, c: a.c, major: pick(COLD.filter(x => majorsOf(a.c).some(y => y.n === x))) || '农学', adjusted: true };
     return { ok: false, rejected: a.c };
   }
   return { ok: false };
 }
-// 自动填报：冲、稳、保各选一个，专业按兴趣随机
+// 自动填报：冲、稳、保各选一个，专业按兴趣随机，但只挑够得着的（录取把握三成以上；都够不着就随便挑）
 export function gkAutoApps(ctx) {
   const by = g => ctx.cands.filter(c => c.group === g);
   const apps = [];
   for (const g of ['冲', '稳', '保']) {
     const list = by(g); if (!list.length) continue;
-    const c = pick(list), ms = majorsOf(c);
-    apps.push({ i: ctx.cands.indexOf(c), major: pick(ms).n });
+    const c = pick(list), ms = majorsOf(c), ok = ms.filter(m => majorP(ctx.score, c, m) >= 0.3);
+    apps.push({ i: ctx.cands.indexOf(c), major: pick(ok.length ? ok : ms).n });
   }
   return { apps, adjust: chance(0.9) };
 }

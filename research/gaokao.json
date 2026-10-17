@@ -267,7 +267,7 @@
    "physics": {
     "special": 510,
     "benke": 443,
-    "zhuanke": null
+    "zhuanke": 200
    },
    "history": {
     "special": 542,
@@ -279,7 +279,8 @@
     "https://www.chinanews.com/edu/2026/06-24/10646101.shtml"
    ],
    "confidence": "high",
-   "note_lines": "physics/history keys = 物理类/历史类 (XJ/XZ: 理科/文科)"
+   "note_lines": "physics/history keys = 物理类/历史类 (XJ/XZ: 理科/文科)",
+   "physics_fill_note": "zhuanke 2026-10-17 由该省一分一段表补全，见 score_dist_2026.HE"
   },
   "JS": {
    "model": "3+1+2",
@@ -445,9 +446,9 @@
    "model": "3+1+2",
    "total": 750,
    "physics": {
-    "special": null,
+    "special": 514,
     "benke": 451,
-    "zhuanke": null
+    "zhuanke": 200
    },
    "history": {
     "special": null,
@@ -460,7 +461,8 @@
     "https://www.chinanews.com/edu/2026/06-24/10646101.shtml"
    ],
    "confidence": "high",
-   "note_lines": "physics/history keys = 物理类/历史类 (XJ/XZ: 理科/文科)"
+   "note_lines": "physics/history keys = 物理类/历史类 (XJ/XZ: 理科/文科)",
+   "physics_fill_note": "special、zhuanke 2026-10-17 由该省一分一段表补全，见 score_dist_2026.AH"
   },
   "JL": {
    "model": "3+1+2",
@@ -488,7 +490,7 @@
    "physics": {
     "special": 494,
     "benke": 393,
-    "zhuanke": null
+    "zhuanke": 200
    },
    "history": {
     "special": 503,
@@ -500,7 +502,8 @@
     "https://www.chinanews.com/edu/2026/06-24/10646101.shtml"
    ],
    "confidence": "high",
-   "note_lines": "physics/history keys = 物理类/历史类 (XJ/XZ: 理科/文科)"
+   "note_lines": "physics/history keys = 物理类/历史类 (XJ/XZ: 理科/文科)",
+   "physics_fill_note": "zhuanke 2026-10-17 由该省一分一段表补全，见 score_dist_2026.GZ"
   },
   "JX": {
    "model": "3+1+2",
@@ -528,7 +531,7 @@
    "physics": {
     "special": 481,
     "benke": 400,
-    "zhuanke": null
+    "zhuanke": 200
    },
    "history": {
     "special": 494,
@@ -540,7 +543,8 @@
     "https://www.chinanews.com/edu/2026/06-24/10646101.shtml"
    ],
    "confidence": "high",
-   "note_lines": "physics/history keys = 物理类/历史类 (XJ/XZ: 理科/文科)"
+   "note_lines": "physics/history keys = 物理类/历史类 (XJ/XZ: 理科/文科)",
+   "physics_fill_note": "zhuanke 2026-10-17 由该省一分一段表补全，见 score_dist_2026.HN"
   },
   "YN": {
    "model": "3+1+2",
@@ -778,7 +782,7 @@
    "physics": {
     "special": 519,
     "benke": 435,
-    "zhuanke": null
+    "zhuanke": 150
    },
    "history": {
     "special": 525,
@@ -790,7 +794,8 @@
     "https://www.chinanews.com/edu/2026/06-24/10646101.shtml"
    ],
    "confidence": "high",
-   "note_lines": "physics/history keys = 物理类/历史类 (XJ/XZ: 理科/文科)"
+   "note_lines": "physics/history keys = 物理类/历史类 (XJ/XZ: 理科/文科)",
+   "physics_fill_note": "zhuanke 2026-10-17 由该省一分一段表补全，见 score_dist_2026.SC"
   }
  },
  "registrants_2025": {
@@ -1809,6 +1814,1261 @@
     "https://www.yzwb.net/news/jy/202606/t20260623_365240.html"
    ],
    "confidence": "high (mechanism)"
+  },
+  "within_university_by_tier_2025": {
+   "note": "2025 年各层次学校内专业分差：河北物理类投档最低分、山东投档位次（分数按一分一段表换算，已用三条报道核对）、浙江分专业投档分。数据转载自大学生必备网，统一 medium。学校最低分取普通专业，不含中外合作、异地校区、专项。2026-10-17 补充。",
+   "examples": [
+    {
+     "school": "浙江大学",
+     "tier": "985",
+     "subtier": "顶尖985",
+     "province": "ZJ",
+     "year": 2025,
+     "track": "浙江综合（3+3，不分物理/历史）",
+     "lines": {
+      "special": 592,
+      "benke": 490
+     },
+     "school_min": [
+      658,
+      7462
+     ],
+     "hottest": {
+      "major": "工科试验班(信息)（含计算机）",
+      "score": 681,
+      "rank": null,
+      "also": [
+       {
+        "major": "人工智能",
+        "score": 689
+       },
+       {
+        "major": "工科试验班(EE类)",
+        "score": 689
+       },
+       {
+        "major": "工科试验班(竺可桢学院图灵班，精英班)",
+        "score": 695,
+        "rank": 202
+       },
+       {
+        "major": "临床医学(5+3一体化，浙大医学院)",
+        "score": 682,
+        "rank": 1245
+       }
+      ]
+     },
+     "coldest": {
+      "major": "应用生物科学(农学，含新农科实验班)",
+      "score": 658,
+      "rank": 7462,
+      "also": [
+       {
+        "major": "工科试验班(智慧城市与建筑工程)（土木建筑类）",
+        "score": 659
+       },
+       {
+        "major": "预防医学(医学院)",
+        "score": 658
+       }
+      ]
+     },
+     "spread_points": 23,
+     "rank_ratio": null,
+     "spread_notes": "信息类比最低高23分；AI/EE高31分；图灵班高37分、位次差约37倍（7462/202）。681分的位次未查到。",
+     "source": "分专业分数：大学生必备网转载浙江省 2025 普通类第一段平行投档分数线表；学校最低658/位次7462、图灵班695/202、临床5+3 682/1245：杭州网 2025-07-22 报道",
+     "url": "https://www.dxsbb.com/news/149123.html ; https://hznews.hangzhou.com.cn/kejiao/content/2025-07/22/content_9043873.htm",
+     "confidence": "medium（分数为商业网站转载；最低分/位次与杭州网一致）"
+    },
+    {
+     "school": "山东大学（参考，用户已有）",
+     "tier": "985",
+     "province": "SD",
+     "year": 2025,
+     "track": "山东综合（不分物理/历史）",
+     "lines": {
+      "special": 521,
+      "benke": 441,
+      "zhuanke": 150
+     },
+     "school_min": [
+      617,
+      14388
+     ],
+     "hottest": {
+      "major": "计算机科学与技术",
+      "score": 642,
+      "rank": 5196,
+      "also": [
+       {
+        "major": "临床医学(齐鲁医学堂创新实验班)",
+        "score": 658,
+        "rank": 2146
+       },
+       {
+        "major": "临床医学(五年制)",
+        "score": 631,
+        "rank": 8598
+       }
+      ]
+     },
+     "coldest": {
+      "major": "预防医学",
+      "score": 617,
+      "rank": 14388
+     },
+     "spread_points": 25,
+     "rank_ratio": 2.77,
+     "source": "大学生必备网转载 山东省教育招生考试院《2025年普通类常规批第1次志愿投档情况表》（只有位次）；分数由 2025 山东一分一段表（全体）按位次反推；最低专业预防医学14388、齐鲁临床2146(658分)见大众新闻/青岛日报",
+     "url": "https://www.dxsbb.com/news/149125.html ; https://m.dzplus.dzng.com/share/general/0/NEWS2570950NWICEQUIBHWVN",
+     "confidence": "medium（反推分与报道的658分、用户已知的617分一致）"
+    },
+    {
+     "school": "重庆大学",
+     "tier": "985",
+     "subtier": "中等985",
+     "province": "HB",
+     "year": 2025,
+     "track": "物理科目组合",
+     "lines": {
+      "special": 499,
+      "benke": 459,
+      "zhuanke": 200
+     },
+     "school_min": [
+      625,
+      null
+     ],
+     "hottest": {
+      "major": "工科试验班(计算机与智能软件)",
+      "score": 646,
+      "rank": null,
+      "also": [
+       {
+        "major": "计算机科学与技术(拔尖计划)",
+        "score": 649
+       },
+       {
+        "major": "电气工程及其自动化",
+        "score": 648
+       },
+       {
+        "major": "临床医学(五年制)",
+        "score": 636
+       }
+      ]
+     },
+     "coldest": {
+      "major": "人文科学试验班(法学新闻类)（物理类招生）",
+      "score": 625,
+      "rank": null,
+      "also": [
+       {
+        "major": "工科试验班(医工交叉与环化健康)",
+        "score": 627
+       },
+       {
+        "major": "物理学(中外合作办学)",
+        "score": 621
+       }
+      ]
+     },
+     "spread_points": 21,
+     "rank_ratio": null,
+     "spread_notes": "不含中外合作；算上中外合作最低621，差25分。",
+     "source": "大学生必备网转载 河北省教育考试院 2025 本科批平行志愿投档情况（物理科目组合），只有投档最低分，无位次",
+     "url": "https://www.dxsbb.com/news/149128.html",
+     "confidence": "medium"
+    },
+    {
+     "school": "东北大学(沈阳)",
+     "tier": "985",
+     "subtier": "中等985",
+     "province": "HB",
+     "year": 2025,
+     "track": "物理科目组合",
+     "lines": {
+      "special": 499,
+      "benke": 459,
+      "zhuanke": 200
+     },
+     "school_min": [
+      617,
+      null
+     ],
+     "hottest": {
+      "major": "计算机科学与技术",
+      "score": 644,
+      "rank": null,
+      "also": [
+       {
+        "major": "人工智能(未来技术学院)",
+        "score": 647
+       },
+       {
+        "major": "电子信息类",
+        "score": 643
+       },
+       {
+        "major": "计算机类",
+        "score": 641
+       }
+      ]
+     },
+     "coldest": {
+      "major": "建筑类",
+      "score": 617,
+      "rank": null,
+      "also": [
+       {
+        "major": "经济管理试验班",
+        "score": 621
+       },
+       {
+        "major": "材料类",
+        "score": 628
+       },
+       {
+        "major": "中外合作(单列代号0313)生物医学工程",
+        "score": 602
+       }
+      ]
+     },
+     "spread_points": 27,
+     "rank_ratio": null,
+     "source": "大学生必备网转载 河北省教育考试院 2025 本科批平行志愿投档情况（物理科目组合），只有投档最低分，无位次",
+     "url": "https://www.dxsbb.com/news/149128.html",
+     "confidence": "medium"
+    },
+    {
+     "school": "中国海洋大学",
+     "tier": "985",
+     "subtier": "中等985（省内）",
+     "province": "SD",
+     "year": 2025,
+     "track": "山东综合",
+     "lines": {
+      "special": 521,
+      "benke": 441,
+      "zhuanke": 150
+     },
+     "school_min": [
+      602,
+      23070
+     ],
+     "hottest": {
+      "major": "计算机类",
+      "score": 623,
+      "rank": 11694,
+      "also": [
+       {
+        "major": "智能科学与技术(AI拔尖人才实验班)",
+        "score": 630,
+        "rank": 8950
+       },
+       {
+        "major": "法学",
+        "score": 629,
+        "rank": 9385
+       },
+       {
+        "major": "电子信息类",
+        "score": 620,
+        "rank": 12895
+       }
+      ]
+     },
+     "coldest": {
+      "major": "环境工程",
+      "score": 602,
+      "rank": 23070,
+      "also": [
+       {
+        "major": "土木工程",
+        "score": null,
+        "rank": 22164
+       },
+       {
+        "major": "食品科学与工程(中外合作办学)",
+        "score": 585,
+        "rank": 37171
+       }
+      ]
+     },
+     "spread_points": 21,
+     "rank_ratio": 1.97,
+     "spread_notes": "不含中外合作；算上中外合作最低约582分(位次39839)。",
+     "source": "大学生必备网转载 山东省教育招生考试院《2025年普通类常规批第1次志愿投档情况表》（只有位次）；分数由 2025 山东一分一段表（全体）按位次反推",
+     "url": "https://www.dxsbb.com/news/149125.html",
+     "confidence": "medium"
+    },
+    {
+     "school": "中国石油大学(华东)",
+     "tier": "211",
+     "province": "SD",
+     "year": 2025,
+     "track": "山东综合",
+     "lines": {
+      "special": 521,
+      "benke": 441,
+      "zhuanke": 150
+     },
+     "school_min": [
+      593,
+      30031
+     ],
+     "hottest": {
+      "major": "计算机科学与技术",
+      "score": 613,
+      "rank": 16473,
+      "also": [
+       {
+        "major": "石油工程(菁英班)",
+        "score": 619,
+        "rank": 13216
+       },
+       {
+        "major": "法学",
+        "score": 615,
+        "rank": 15283
+       },
+       {
+        "major": "电子信息工程",
+        "score": 612,
+        "rank": 17326
+       }
+      ]
+     },
+     "coldest": {
+      "major": "管理科学与工程类",
+      "score": 593,
+      "rank": 30031,
+      "also": [
+       {
+        "major": "建筑环境与能源应用工程",
+        "score": 595,
+        "rank": 28560
+       },
+       {
+        "major": "化工与制药类(智能化工)",
+        "score": null,
+        "rank": 28205
+       }
+      ]
+     },
+     "spread_points": 20,
+     "rank_ratio": 1.82,
+     "source": "大学生必备网转载 山东省教育招生考试院《2025年普通类常规批第1次志愿投档情况表》（只有位次）；分数由 2025 山东一分一段表（全体）按位次反推",
+     "url": "https://www.dxsbb.com/news/149125.html",
+     "confidence": "medium"
+    },
+    {
+     "school": "河北工业大学(天津本部)",
+     "tier": "211",
+     "province": "HB",
+     "year": 2025,
+     "track": "物理科目组合",
+     "lines": {
+      "special": 499,
+      "benke": 459,
+      "zhuanke": 200
+     },
+     "school_min": [
+      588,
+      null
+     ],
+     "hottest": {
+      "major": "计算机科学与技术",
+      "score": 621,
+      "rank": null,
+      "also": [
+       {
+        "major": "电气工程及其自动化(卓越工程师班)",
+        "score": 630
+       },
+       {
+        "major": "电子信息工程",
+        "score": 626
+       },
+       {
+        "major": "电气工程及其自动化",
+        "score": 624
+       }
+      ]
+     },
+     "coldest": {
+      "major": "建筑学",
+      "score": 588,
+      "rank": null,
+      "also": [
+       {
+        "major": "土木工程(卓越工程师班)",
+        "score": 589
+       },
+       {
+        "major": "给排水科学与工程",
+        "score": 590
+       },
+       {
+        "major": "应用物理学(中外合作办学)",
+        "score": 571
+       },
+       {
+        "major": "芬兰校区 能源与动力工程",
+        "score": 554
+       }
+      ]
+     },
+     "spread_points": 33,
+     "rank_ratio": null,
+     "spread_notes": "不含中外合作/芬兰校区/地方专项。本省211，招生量大。",
+     "source": "大学生必备网转载 河北省教育考试院 2025 本科批平行志愿投档情况（物理科目组合），只有投档最低分，无位次",
+     "url": "https://www.dxsbb.com/news/149128.html",
+     "confidence": "medium"
+    },
+    {
+     "school": "北京邮电大学",
+     "tier": "211",
+     "subtier": "行业强211（全信息类）",
+     "province": "HB",
+     "year": 2025,
+     "track": "物理科目组合",
+     "lines": {
+      "special": 499,
+      "benke": 459,
+      "zhuanke": 200
+     },
+     "school_min": [
+      649,
+      null
+     ],
+     "hottest": {
+      "major": "计算机类",
+      "score": 654,
+      "rank": null,
+      "also": [
+       {
+        "major": "计算机类(元班)",
+        "score": 664
+       },
+       {
+        "major": "电子信息类(元班)",
+        "score": 661
+       }
+      ]
+     },
+     "coldest": {
+      "major": "人工智能(大类招生)",
+      "score": 649,
+      "rank": null,
+      "also": [
+       {
+        "major": "智能医学工程(中外合作办学)",
+        "score": 616
+       }
+      ]
+     },
+     "spread_points": 5,
+     "rank_ratio": null,
+     "spread_notes": "全校几乎都是 IT 专业，校内分差极小；反例：分差大小取决于学校有没有冷门专业。",
+     "source": "大学生必备网转载 河北省教育考试院 2025 本科批平行志愿投档情况（物理科目组合），只有投档最低分，无位次",
+     "url": "https://www.dxsbb.com/news/149128.html",
+     "confidence": "medium"
+    },
+    {
+     "school": "河北大学",
+     "tier": "ben1",
+     "subtier": "省属重点（双一流）",
+     "province": "HB",
+     "year": 2025,
+     "track": "物理科目组合",
+     "lines": {
+      "special": 499,
+      "benke": 459,
+      "zhuanke": 200
+     },
+     "school_min": [
+      545,
+      null
+     ],
+     "hottest": {
+      "major": "计算机科学与技术",
+      "score": 599,
+      "rank": null,
+      "also": [
+       {
+        "major": "电气工程及其自动化",
+        "score": 598
+       },
+       {
+        "major": "口腔医学",
+        "score": 597
+       },
+       {
+        "major": "法学",
+        "score": 597
+       },
+       {
+        "major": "临床医学",
+        "score": 583
+       }
+      ]
+     },
+     "coldest": {
+      "major": "护理学",
+      "score": 545,
+      "rank": null,
+      "also": [
+       {
+        "major": "预防医学",
+        "score": 548
+       },
+       {
+        "major": "俄语",
+        "score": 549
+       },
+       {
+        "major": "旅游管理",
+        "score": 549
+       },
+       {
+        "major": "土木工程",
+        "score": 551
+       },
+       {
+        "major": "历史学类",
+        "score": 552
+       },
+       {
+        "major": "哲学",
+        "score": 563
+       },
+       {
+        "major": "广播电视学(中外合作办学)",
+        "score": 506
+       }
+      ]
+     },
+     "spread_points": 54,
+     "rank_ratio": null,
+     "spread_notes": "不含中外合作/国际本科/地方专项。",
+     "source": "大学生必备网转载 河北省教育考试院 2025 本科批平行志愿投档情况（物理科目组合），只有投档最低分，无位次",
+     "url": "https://www.dxsbb.com/news/149128.html",
+     "confidence": "medium"
+    },
+    {
+     "school": "山东科技大学",
+     "tier": "ben1",
+     "subtier": "省属重点",
+     "province": "SD",
+     "year": 2025,
+     "track": "山东综合",
+     "lines": {
+      "special": 521,
+      "benke": 441,
+      "zhuanke": 150
+     },
+     "school_min": [
+      519,
+      142086
+     ],
+     "hottest": {
+      "major": "计算机科学与技术",
+      "score": 592,
+      "rank": 30835,
+      "also": [
+       {
+        "major": "计算机科学与技术(图灵班)",
+        "score": 599,
+        "rank": 25653
+       },
+       {
+        "major": "电气工程及其自动化",
+        "score": 591,
+        "rank": 31456
+       }
+      ]
+     },
+     "coldest": {
+      "major": "土木工程（青岛主校区）",
+      "score": 519,
+      "rank": 142086,
+      "also": [
+       {
+        "major": "防灾减灾科学与工程(泰安校区)",
+        "score": 506,
+        "rank": 171158
+       },
+       {
+        "major": "工程管理(泰安校区)",
+        "score": 511,
+        "rank": 160475
+       }
+      ]
+     },
+     "spread_points": 73,
+     "rank_ratio": 4.61,
+     "spread_notes": "青岛主校区；含泰安校区最低506分，差86分，位次差5.6倍。",
+     "source": "大学生必备网转载 山东省教育招生考试院《2025年普通类常规批第1次志愿投档情况表》（只有位次）；分数由 2025 山东一分一段表（全体）按位次反推",
+     "url": "https://www.dxsbb.com/news/149125.html",
+     "confidence": "medium"
+    },
+    {
+     "school": "济南大学",
+     "tier": "ben1",
+     "subtier": "省属重点",
+     "province": "SD",
+     "year": 2025,
+     "track": "山东综合",
+     "lines": {
+      "special": 521,
+      "benke": 441,
+      "zhuanke": 150
+     },
+     "school_min": [
+      506,
+      171409
+     ],
+     "hottest": {
+      "major": "计算机科学与技术",
+      "score": 572,
+      "rank": 50880,
+      "also": [
+       {
+        "major": "计算机科学与技术(图灵班)",
+        "score": 589,
+        "rank": 33300
+       },
+       {
+        "major": "法学",
+        "score": 574,
+        "rank": 48938
+       }
+      ]
+     },
+     "coldest": {
+      "major": "给排水科学与工程",
+      "score": 506,
+      "rank": 171409,
+      "also": [
+       {
+        "major": "土木工程",
+        "score": 512,
+        "rank": 157056
+       },
+       {
+        "major": "环境工程(中外合作办学)",
+        "score": 479,
+        "rank": 237661
+       }
+      ]
+     },
+     "spread_points": 66,
+     "rank_ratio": 3.37,
+     "spread_notes": "不含中外合作/地方专项。",
+     "source": "大学生必备网转载 山东省教育招生考试院《2025年普通类常规批第1次志愿投档情况表》（只有位次）；分数由 2025 山东一分一段表（全体）按位次反推",
+     "url": "https://www.dxsbb.com/news/149125.html",
+     "confidence": "medium"
+    },
+    {
+     "school": "杭州电子科技大学",
+     "tier": "ben1",
+     "subtier": "省属重点（IT特色）",
+     "province": "ZJ",
+     "year": 2025,
+     "track": "浙江综合",
+     "lines": {
+      "special": 592,
+      "benke": 490
+     },
+     "school_min": [
+      617,
+      34717
+     ],
+     "hottest": {
+      "major": "计算机科学与技术",
+      "score": 634,
+      "rank": null,
+      "also": [
+       {
+        "major": "计算机科学与技术(卓越学院)",
+        "score": 646
+       },
+       {
+        "major": "集成电路设计与集成系统",
+        "score": 633,
+        "rank": 21378
+       }
+      ]
+     },
+     "coldest": {
+      "major": "统计学 / 工商管理",
+      "score": 617,
+      "rank": 34717
+     },
+     "spread_points": 17,
+     "rank_ratio": null,
+     "spread_notes": "IT特色校，冷门专业少，分差小。",
+     "source": "大学生必备网转载浙江 2025 一段投档线；最低分617/位次34717、集成电路位次见杭州网 2025-07-23",
+     "url": "https://www.dxsbb.com/news/149123.html ; https://hznews.hangzhou.com.cn/kejiao/content/2025-07/23/content_9044616.htm",
+     "confidence": "medium"
+    },
+    {
+     "school": "北华航天工业学院",
+     "tier": "ben2",
+     "subtier": "省属普通本科（行业特色）",
+     "province": "HB",
+     "year": 2025,
+     "track": "物理科目组合",
+     "lines": {
+      "special": 499,
+      "benke": 459,
+      "zhuanke": 200
+     },
+     "school_min": [
+      523,
+      null
+     ],
+     "hottest": {
+      "major": "计算机科学与技术",
+      "score": 561,
+      "rank": null,
+      "also": [
+       {
+        "major": "电子信息工程",
+        "score": 561
+       },
+       {
+        "major": "电气工程与智能控制",
+        "score": 560
+       },
+       {
+        "major": "会计学",
+        "score": 559
+       }
+      ]
+     },
+     "coldest": {
+      "major": "土木工程",
+      "score": 523,
+      "rank": null,
+      "also": [
+       {
+        "major": "工程造价",
+        "score": 524
+       },
+       {
+        "major": "道路桥梁与渡河工程",
+        "score": 525
+       }
+      ]
+     },
+     "spread_points": 38,
+     "rank_ratio": null,
+     "spread_notes": "页面缺代号01–08（可能是历史类）。",
+     "source": "大学生必备网转载 河北省教育考试院 2025 本科批平行志愿投档情况（物理科目组合），只有投档最低分，无位次",
+     "url": "https://www.dxsbb.com/news/149128.html",
+     "confidence": "medium"
+    },
+    {
+     "school": "邯郸学院",
+     "tier": "ben2",
+     "province": "HB",
+     "year": 2025,
+     "track": "物理科目组合",
+     "lines": {
+      "special": 499,
+      "benke": 459,
+      "zhuanke": 200
+     },
+     "school_min": [
+      506,
+      null
+     ],
+     "hottest": {
+      "major": "计算机科学与技术",
+      "score": 537,
+      "rank": null,
+      "also": [
+       {
+        "major": "财务管理",
+        "score": 535
+       },
+       {
+        "major": "英语",
+        "score": 533
+       },
+       {
+        "major": "电气工程及其自动化",
+        "score": 532
+       }
+      ]
+     },
+     "coldest": {
+      "major": "日语 / 生物技术",
+      "score": 506,
+      "rank": null,
+      "also": [
+       {
+        "major": "应用心理学",
+        "score": 508
+       },
+       {
+        "major": "食品科学与工程",
+        "score": 509
+       },
+       {
+        "major": "化学工程与工艺(中外合作办学)",
+        "score": 461
+       }
+      ]
+     },
+     "spread_points": 31,
+     "rank_ratio": null,
+     "source": "大学生必备网转载 河北省教育考试院 2025 本科批平行志愿投档情况（物理科目组合），只有投档最低分，无位次",
+     "url": "https://www.dxsbb.com/news/149128.html",
+     "confidence": "medium"
+    },
+    {
+     "school": "保定学院",
+     "tier": "ben2",
+     "province": "HB",
+     "year": 2025,
+     "track": "物理科目组合",
+     "lines": {
+      "special": 499,
+      "benke": 459,
+      "zhuanke": 200
+     },
+     "school_min": [
+      513,
+      null
+     ],
+     "hottest": {
+      "major": "计算机科学与技术",
+      "score": 539,
+      "rank": null,
+      "also": [
+       {
+        "major": "英语",
+        "score": 544
+       },
+       {
+        "major": "知识产权",
+        "score": 540
+       }
+      ]
+     },
+     "coldest": {
+      "major": "科学教育",
+      "score": 513,
+      "rank": null,
+      "also": [
+       {
+        "major": "物理学",
+        "score": 515
+       },
+       {
+        "major": "电信工程及管理",
+        "score": 515
+       }
+      ]
+     },
+     "spread_points": 26,
+     "rank_ratio": null,
+     "spread_notes": "页面缺代号01–19；物理类里英语、知识产权反而比计算机高。",
+     "source": "大学生必备网转载 河北省教育考试院 2025 本科批平行志愿投档情况（物理科目组合），只有投档最低分，无位次",
+     "url": "https://www.dxsbb.com/news/149128.html",
+     "confidence": "medium"
+    },
+    {
+     "school": "菏泽学院",
+     "tier": "ben2",
+     "province": "SD",
+     "year": 2025,
+     "track": "山东综合",
+     "lines": {
+      "special": 521,
+      "benke": 441,
+      "zhuanke": 150
+     },
+     "school_min": [
+      466,
+      270562
+     ],
+     "hottest": {
+      "major": "计算机科学与技术",
+      "score": 486,
+      "rank": 220305,
+      "also": [
+       {
+        "major": "汉语言文学(师范类)（全校最热，不限选科）",
+        "score": 522,
+        "rank": 136102
+       },
+       {
+        "major": "知识产权",
+        "score": 521,
+        "rank": 137133
+       },
+       {
+        "major": "电气工程及其自动化（理工类最热）",
+        "score": 495,
+        "rank": 197696
+       }
+      ]
+     },
+     "coldest": {
+      "major": "土木工程",
+      "score": 466,
+      "rank": 270562,
+      "also": [
+       {
+        "major": "园艺",
+        "score": null,
+        "rank": 270168
+       },
+       {
+        "major": "物理学(中外合作办学)(师范类)",
+        "score": 456,
+        "rank": 296372
+       }
+      ]
+     },
+     "spread_points": 20,
+     "rank_ratio": 1.23,
+     "spread_notes": "计算机只比最低高20分；全校最热的是文科/师范类（汉语言文学比最低高56分）。",
+     "source": "大学生必备网转载 山东省教育招生考试院《2025年普通类常规批第1次志愿投档情况表》（只有位次）；分数由 2025 山东一分一段表（全体）按位次反推",
+     "url": "https://www.dxsbb.com/news/149125.html",
+     "confidence": "medium"
+    },
+    {
+     "school": "德州学院",
+     "tier": "ben2",
+     "province": "SD",
+     "year": 2025,
+     "track": "山东综合",
+     "lines": {
+      "special": 521,
+      "benke": 441,
+      "zhuanke": 150
+     },
+     "school_min": [
+      467,
+      267460
+     ],
+     "hottest": {
+      "major": "计算机科学与技术",
+      "score": 488,
+      "rank": 214696,
+      "also": [
+       {
+        "major": "法学（全校最热）",
+        "score": 537,
+        "rank": 105823
+       },
+       {
+        "major": "知识产权",
+        "score": 529,
+        "rank": 120585
+       },
+       {
+        "major": "会计学",
+        "score": 524,
+        "rank": 131763
+       },
+       {
+        "major": "护理学",
+        "score": 517,
+        "rank": 145970
+       },
+       {
+        "major": "电子信息工程",
+        "score": 484,
+        "rank": 225591
+       }
+      ]
+     },
+     "coldest": {
+      "major": "生物科学(师范类)",
+      "score": 467,
+      "rank": 267460,
+      "also": [
+       {
+        "major": "环境工程",
+        "score": null,
+        "rank": 266366
+       },
+       {
+        "major": "生物技术(中外合作办学)",
+        "score": 449,
+        "rank": 312621
+       }
+      ]
+     },
+     "spread_points": 21,
+     "rank_ratio": 1.25,
+     "spread_notes": "山东地方本科里护理学(517)比计算机(488)高约29分。",
+     "source": "大学生必备网转载 山东省教育招生考试院《2025年普通类常规批第1次志愿投档情况表》（只有位次）；分数由 2025 山东一分一段表（全体）按位次反推",
+     "url": "https://www.dxsbb.com/news/149125.html",
+     "confidence": "medium"
+    },
+    {
+     "school": "承德医学院",
+     "tier": "ben2",
+     "subtier": "省属医学院",
+     "province": "HB",
+     "year": 2025,
+     "track": "物理科目组合",
+     "lines": {
+      "special": 499,
+      "benke": 459,
+      "zhuanke": 200
+     },
+     "school_min": [
+      520,
+      null
+     ],
+     "hottest": {
+      "major": "口腔医学",
+      "score": 581,
+      "rank": null,
+      "also": [
+       {
+        "major": "临床医学",
+        "score": 568
+       },
+       {
+        "major": "麻醉学",
+        "score": 564
+       },
+       {
+        "major": "医学影像学",
+        "score": 560
+       }
+      ]
+     },
+     "coldest": {
+      "major": "应用生物科学",
+      "score": 520,
+      "rank": null,
+      "also": [
+       {
+        "major": "助产学",
+        "score": 523
+       },
+       {
+        "major": "护理学",
+        "score": 531
+       }
+      ]
+     },
+     "spread_points": 61,
+     "rank_ratio": null,
+     "spread_notes": "临床医学比最低高48分；没有计算机专业。",
+     "source": "大学生必备网转载 河北省教育考试院 2025 本科批平行志愿投档情况（物理科目组合），只有投档最低分，无位次",
+     "url": "https://www.dxsbb.com/news/149128.html",
+     "confidence": "medium"
+    },
+    {
+     "school": "青岛城市学院",
+     "tier": "minban",
+     "province": "SD",
+     "year": 2025,
+     "track": "山东综合（常规批，录取分）",
+     "lines": {
+      "special": 521,
+      "benke": 441,
+      "zhuanke": 150
+     },
+     "school_min": [
+      441,
+      null
+     ],
+     "hottest": {
+      "major": "计算机科学与技术",
+      "score": 446,
+      "rank": null,
+      "also": [
+       {
+        "major": "审计学（全校最热）",
+        "score": 492
+       },
+       {
+        "major": "会计学",
+        "score": 489
+       },
+       {
+        "major": "财务管理",
+        "score": 488
+       }
+      ]
+     },
+     "coldest": {
+      "major": "软件工程/人工智能/网络工程/土木工程/工程造价等十余个专业",
+      "score": 441,
+      "rank": null
+     },
+     "spread_points": 5,
+     "rank_ratio": null,
+     "spread_notes": "录取最低分（不是投档分），很可能含第2次志愿。约一半理工专业压线441（本科线）录取，即没招满；文科/财经类在470–492。计算机比本科线只高5分。",
+     "source": "大学生必备网《2025青岛城市学院录取分数线》（学校公布的分专业录取最低/最高分）",
+     "url": "https://www.dxsbb.com/news/32983.html",
+     "confidence": "medium-low"
+    },
+    {
+     "school": "日照职业技术学院",
+     "tier": "zhuan",
+     "subtier": "公办高职（省优质校）",
+     "province": "SD",
+     "year": 2025,
+     "track": "山东综合（常规批第2次志愿，专科）",
+     "lines": {
+      "special": 521,
+      "benke": 441,
+      "zhuanke": 150
+     },
+     "school_min": [
+      395,
+      433913
+     ],
+     "hottest": {
+      "major": "大数据与会计",
+      "score": 465,
+      "rank": 274248,
+      "also": [
+       {
+        "major": "电气自动化技术",
+        "score": 456,
+        "rank": 296992
+       },
+       {
+        "major": "软件技术",
+        "score": 444,
+        "rank": 324262
+       },
+       {
+        "major": "学前教育(师范类)",
+        "score": 439,
+        "rank": 337375
+       }
+      ]
+     },
+     "coldest": {
+      "major": "研学旅行管理与服务",
+      "score": 395,
+      "rank": 433913,
+      "also": [
+       {
+        "major": "工程造价",
+        "score": 395,
+        "rank": 432693
+       },
+       {
+        "major": "智慧城市管理技术",
+        "score": null,
+        "rank": 429593
+       }
+      ]
+     },
+     "spread_points": 70,
+     "rank_ratio": 1.58,
+     "spread_notes": "不含专项计划、3+2、企业订单班。软件技术比最低高49分；没有护理专业。3+2贯通（衔接本科）位次186160，比普通专业高得多。",
+     "source": "大学生必备网转载 2025 山东常规批第2次投档情况表（专科）；分数按一分一段反推",
+     "url": "https://www.dxsbb.com/news/149126.html",
+     "confidence": "medium"
+    },
+    {
+     "school": "山东职业学院",
+     "tier": "zhuan",
+     "subtier": "公办高职（铁路特色，专科头部）",
+     "province": "SD",
+     "year": 2025,
+     "track": "山东综合（常规批第2次志愿，专科）",
+     "lines": {
+      "special": 521,
+      "benke": 441,
+      "zhuanke": 150
+     },
+     "school_min": [
+      440,
+      335109
+     ],
+     "hottest": {
+      "major": "铁道交通运营管理",
+      "score": 510,
+      "rank": 161707,
+      "also": [
+       {
+        "major": "计算机网络技术",
+        "score": 463,
+        "rank": 278120
+       },
+       {
+        "major": "软件技术",
+        "score": 450,
+        "rank": 310743
+       }
+      ]
+     },
+     "coldest": {
+      "major": "增材制造技术",
+      "score": 440,
+      "rank": 335109
+     },
+     "spread_points": 70,
+     "rank_ratio": 2.07,
+     "spread_notes": "计算机网络技术只比最低高23分；最热的是铁路订单类（就业导向）。32个普通专业里31个超过一段线441。",
+     "source": "大学生必备网转载第2次投档表；510/440分已由大众新闻报道核对",
+     "url": "https://www.dxsbb.com/news/149126.html ; https://m.dzplus.dzng.com/share/general/0/NEWS2597794LROUBEYTQMHHO",
+     "confidence": "medium"
+    }
+   ],
+   "summary": {
+    "985": "计算机/电子信息比学校最低（不含中外合作）高约20–30分：浙大+23（AI/EE +31）、山大+25、东北大学+27、海大+21、重大+21；位次差约2–3倍（海大2.0、山大2.8）。各校的精英班（图灵班、拔尖班）还能再高5–15分。",
+    "211": "高约20–33分：石大(华东)+20（位次1.8倍）、河北工大+33；全校都是IT专业的（北邮）只有约5分。",
+    "ben1": "省属重点校内分差最大：高约55–75分（河北大学+54；山科大+73，位次4.6倍；济南大学+66，位次3.4倍），因为土木、给排水、环境、护理之类掉到很低；IT特色校（杭电）只有+17。",
+    "ben2": "普通本科：计算机比最低高约20–38分（邯郸+31、保定+26、北华航天+38；山东的菏泽+20、德州+21，位次差约1.2–1.3倍）。山东地方本科里计算机不是最热，法学、汉语言师范、会计、护理比它高30–50分。",
+    "minban": "民办本科（只有1所、录取分口径）：大量理工专业压在本科线录取，计算机只比线高5分；会计/审计比线高约50分。冷热的差别主要体现在“压线不满”和“能挑人”。",
+    "zhuan": "公办高职校内分差约70分，但最热的不是计算机，而是会计、铁路、电气这类就业好的专业；软件/计算机网络比最低高约25–50分；学前教育在中间偏下。"
+   },
+   "tiaoji": {
+    "zhuanye_yuanxiao_provinces": "河北、辽宁、浙江、山东、重庆、贵州实行“专业(类)+学校”平行志愿：一个志愿就是一个专业，按专业单独投档，没有专业调剂，所以不存在“不服从调剂被退档”。（来源：大学生必备网 146785，第三方）",
+    "tuidang_in_zyyx": "这些省份的退档主要来自体检或单科限制：山东 2026 报道说部分考生“因填报了不符合高校要求的志愿被退档，例如色盲色弱、身高受限等”（中国教育在线 eol.cn 2026-07-22）。山东常规批分几次投档：被退档的考生和第1次没被录取的考生走第2次志愿（第2次主要是专科和本科余额）。",
+    "yuanxiao_zhuanyezu_provinces": "院校专业组省份：在组内调剂，不服从调剂且所报专业都录满就退档，退档后只能走征集志愿或下一批次。常见做法是按105%投档，学校留约1%计划给服从调剂的考生（第三方科普，非官方统计）。2025年厦大、中大、华工、北邮、北交等宣传“零调剂/零退档”；山东大学提出在可自定义专业组的省份“专业全满足”。",
+    "statistics": "没查到可靠的“服从调剂比例”或“被调剂比例”统计（省考试院和高校都没公开系统数据），不要在游戏里引用具体百分比。",
+    "urls": [
+     "https://www.dxsbb.com/news/146785.html",
+     "https://www.eol.cn/shandong/sdgd/202607/t20260722_2758540.shtml",
+     "https://cbgc.scol.com.cn/news/7809522",
+     "https://m.thepaper.cn/newsDetail_forward_31219369"
+    ]
+   },
+   "clinical": {
+    "top_985": "已降温，排在计算机/电子之后或持平：浙大临床5+3 682分(位次1245)，和工科试验班(信息)681持平，低于AI/EE 689；报道称浙大医学院各专业分数和位次“明显下滑”，临床5+3位次比上年低369名。山大临床五年制631分(位次8598)，低于计算机642(5196)；齐鲁医学堂实验班658分(2146)仍是全校最高，但位次比2024年的1702低。重庆大学在河北的临床636，低于计算机646–649，也低于多数工科试验班。",
+    "provincial_medical": "在省属和普通医学院仍是校内最热的一档（通常只排在口腔医学之后）：承德医学院临床568、口腔581，最低520，护理531；长治医学院临床558，低于影像学571、口腔577；河北大学临床583，低于计算机599和口腔597。山东：青岛大学临床5+3位次10096（约627分），是全校最高（上年7931，也在下滑）；山东第一医科大学临床位次50851（约572分），同校计算机128772（约525分）；滨州医学院临床89107（约546分），济宁医学院108500（约535分）。",
+    "trend": "2025年浙江报道说临床类分数线下降、“今年是工科年”；大众新闻说山东临床“仍受热捧”（复旦八年制位次288）。整体看：顶尖校临床在降温，排到计算机/EE之后；地方医学院里临床仍明显高于同校护理和非医专业（高出约30–50分）。",
+    "nursing": "护理在综合类本科里通常垫底（河北大学护理545为全校最低）；在山东地方本科里因为不限选科，反而较热（德州学院护理517，高于计算机488）。",
+    "urls": [
+     "https://hznews.hangzhou.com.cn/kejiao/content/2025-07/22/content_9043873.htm",
+     "https://hznews.hangzhou.com.cn/kejiao/content/2025-07/23/content_9044616.htm",
+     "https://m.dzplus.dzng.com/share/general/0/NEWS2570950NWICEQUIBHWVN",
+     "https://www.dxsbb.com/news/149128.html",
+     "https://www.dxsbb.com/news/149125.html"
+    ]
+   },
+   "notes": [
+    "山东位次来自投档表；分数是用 2025 山东一分一段表（全体，https://www.dxsbb.com/news/148825.html）按“cum(s+1) < 位次 ≤ cum(s)”反推的。用三处报道核对过：山大齐鲁临床2146→658、长沙民政殡葬159005→512、增材制造335109→440，全部一致。",
+    "山东、浙江是3+3综合改革省份，不分物理/历史类。法学、汉语言、会计、护理等不限选科的专业会吸走高分的历史/政治考生，所以在山东地方本科里它们比计算机热得多。要纯物理类口径，以河北的例子为准。",
+    "河北数据只有投档最低分，没找到 2025 河北物理类一分一档的文本版（只有图片），所以河北例子的位次留空。河北物理类线：本科459，特殊类型499（新京报、大学生必备网）。",
+    "大学生必备网的河北页面被截断（只到拼音H开头的院校、且只看到公办），燕山大学、兰州理工、河南理工、郑州轻工业、天水师范、衡水学院、河北民办本科都没取到。zizzs.com 无法连接。",
+    "school_min 一律用“普通专业最低”，不含中外合作、异地校区、地方/高校专项、国际本科、订单班；这些往往还要再低10–40分，具体数值放在 coldest.also 里。",
+    "民办本科只找到青岛城市学院，而且是学校公布的录取最低/最高分，不是投档表，可能含第2次志愿，可信度偏低。没找到纯物理类省份的民办分专业数据。",
+    "专科用的是山东第2次志愿投档（山东专科主要在第2次）。日照职业技术学院没有护理专业；山东专科的护理数据（如山东医学高等专科学校护理位次202747/264172）出现在第3次投档，口径不同，没有采用。",
+    "浙江省的681分、689分等对应的位次没查到（官方分数段表是图片）。",
+    "dxsbb 149126 页面里青岛城市学院的第2次投档位次（如工程管理364972≈427分）低于本科线441，和学校公布的录取分对不上，可能是转录或口径问题，没有采用。",
+    "“专业+院校”省份没有调剂；“服从调剂比例”没有可靠统计。"
+   ]
   }
  },
  "slip_and_retake": {
@@ -1907,6 +3167,5261 @@
   "Province-level 985/211 shares are from a ~2020-data securities report (2021) plus scattered later estimates; no recent full 31-province table.",
   "No 专业调剂 rate data; no 滑档 statistics; no reliable 复读生 share.",
   "University cities are from memory (province from Wikipedia); 双一流 status from memory.",
-  "Models for NM, XJ, HL, YN, SN, QH, XZ, SX in 2026 inferred from memory (XJ/XZ shown as old 文理 because the 2026 summary still lists 文科/理科)."
- ]
+  "Models for NM, XJ, HL, YN, SN, QH, XZ, SX in 2026 inferred from memory (XJ/XZ shown as old 文理 because the 2026 summary still lists 文科/理科).",
+  "2026-10-17：一分一段表补了 12 省（江苏无总数）；院校投档线只有甘肃、河南、四川、广东 2025 年；外省民办本科、山东院校线未查到。"
+ ],
+ "score_dist_2026": {
+  "note": "各省 2026 年一分一段表（物理类；北京、浙江、山东为 3+3 不分科）：各分数点的累计人数。分母取表末行累计（实际参加普通类夏季统考、进了分段表的人），不是报名人数。derived 为累计 ÷ 表末行。2026-10-17 补充。",
+  "GS": {
+   "year": 2026,
+   "track": "physics",
+   "total": {
+    "value": 118200,
+    "basis": "一分一段表末行累计（转载表止于159分；官方表可能继续向下至0分，真实物理类总数≥118200）。全省高考报名21.87万（含历史类、单招等，非物理类统考人数）"
+   },
+   "lines": {
+    "special": [
+     477,
+     41347
+    ],
+    "benke": [
+     367,
+     95355
+    ],
+    "zhuanke": [
+     180,
+     118170
+    ]
+   },
+   "cum": {
+    "680": 46,
+    "650": 775,
+    "620": 3048,
+    "600": 5646,
+    "550": 15892,
+    "500": 31992,
+    "450": 53680,
+    "400": 79716,
+    "350": 101687,
+    "300": 113496,
+    "250": 117276,
+    "200": 118100
+   },
+   "extra": {
+    "681及以上": 38,
+    "580": 9100,
+    "480": 40095
+   },
+   "source": "甘肃省教育考试院2026年物理类分段表（6月25日公布），经商业升学网站转载：新高考网hfplg（逐分表）、高考100（批次线位次与若干分数点）、6617（批次线位次）；三处数据一致",
+   "url": [
+    "https://www.hfplg.com/yfyd/3v73250831.html",
+    "https://m.gk100.com/read_7231673.htm",
+    "https://www.gk100.com/read_85528462.htm",
+    "https://www.6617.com/p_4207908551.html"
+   ],
+   "confidence": "medium",
+   "derived": {
+    "special_share": 0.3498,
+    "benke_share": 0.8067,
+    "zhuanke_share": 0.9997,
+    "cum_share": {
+     "680": 0.0004,
+     "650": 0.0066,
+     "620": 0.0258,
+     "600": 0.0478,
+     "550": 0.1345,
+     "500": 0.2707,
+     "450": 0.4541,
+     "400": 0.6744,
+     "350": 0.8603,
+     "300": 0.9602,
+     "250": 0.9922,
+     "200": 0.9992
+    },
+    "_note": "derived = 累计人数 / total.value；total 若为截断表末行，则比例略偏高"
+   }
+  },
+  "HA": {
+   "year": 2026,
+   "track": "physics",
+   "total": {
+    "value": 565735,
+    "basis": "一分一段表末行累计（官方表止于100分）"
+   },
+   "lines": {
+    "special": [
+     513,
+     165386
+    ],
+    "benke": [
+     419,
+     359972
+    ],
+    "zhuanke": [
+     179,
+     564925
+    ]
+   },
+   "cum": {
+    "700": 48,
+    "680": 650,
+    "650": 5166,
+    "620": 17665,
+    "600": 32622,
+    "550": 96853,
+    "500": 191837,
+    "450": 297262,
+    "400": 394902,
+    "350": 469029,
+    "300": 518280,
+    "250": 551069,
+    "200": 563923
+   },
+   "extra": {
+    "706(最高)": 14
+   },
+   "source": "河南省教育考试院《2026年河南省普通高招分数段统计表(物理类)》，经新高考网hfplg转录为逐分表；本科线上线人数359972与新浪/河南日报报道的官方口径一致",
+   "url": [
+    "https://www.hfplg.com/luqu/3v73111917.html",
+    "https://finance.sina.com.cn/jjxw/2026-06-25/doc-inieqnch2619892.shtml",
+    "https://www.haeea.cn/a/202606/43717_14a087d2.shtml"
+   ],
+   "confidence": "high",
+   "derived": {
+    "special_share": 0.2923,
+    "benke_share": 0.6363,
+    "zhuanke_share": 0.9986,
+    "cum_share": {
+     "700": 0.0001,
+     "680": 0.0011,
+     "650": 0.0091,
+     "620": 0.0312,
+     "600": 0.0577,
+     "550": 0.1712,
+     "500": 0.3391,
+     "450": 0.5254,
+     "400": 0.698,
+     "350": 0.8291,
+     "300": 0.9161,
+     "250": 0.9741,
+     "200": 0.9968
+    },
+    "_note": "derived = 累计人数 / total.value；total 若为截断表末行，则比例略偏高"
+   }
+  },
+  "GD": {
+   "year": 2026,
+   "track": "physics",
+   "total": {
+    "value": 433366,
+    "basis": "一分一段表末行累计（官方表止于100分；含本科层次加分列）"
+   },
+   "lines": {
+    "special": [
+     539,
+     111604
+    ],
+    "benke": [
+     425,
+     303919
+    ],
+    "zhuanke": [
+     200,
+     431362
+    ]
+   },
+   "cum": {
+    "680": 390,
+    "650": 4041,
+    "620": 15967,
+    "600": 30891,
+    "550": 93426,
+    "500": 181455,
+    "450": 267122,
+    "400": 334500,
+    "350": 378821,
+    "300": 407474,
+    "250": 425106,
+    "200": 431360
+   },
+   "extra": {
+    "699(含以上)": 20,
+    "zhuanke_note": "专科线累计取“含专科加分”列 431362；本科层次加分列在200分为431360"
+   },
+   "source": "广东省教育考试院《广东省2026年高考普通类（物理）分数段统计表（含本、专科层次加分）》官方PDF（已直接解析）；新高考网转录数值完全一致",
+   "url": [
+    "https://eea.gd.gov.cn/ptgk/content/post_4916165.html",
+    "https://eea.gd.gov.cn/attachment/0/618/618126/4916165.pdf",
+    "https://www.hfplg.com/luqu/3u73128397.html"
+   ],
+   "confidence": "high",
+   "derived": {
+    "special_share": 0.2575,
+    "benke_share": 0.7013,
+    "zhuanke_share": 0.9954,
+    "cum_share": {
+     "680": 0.0009,
+     "650": 0.0093,
+     "620": 0.0368,
+     "600": 0.0713,
+     "550": 0.2156,
+     "500": 0.4187,
+     "450": 0.6164,
+     "400": 0.7719,
+     "350": 0.8741,
+     "300": 0.9403,
+     "250": 0.9809,
+     "200": 0.9954
+    },
+    "_note": "derived = 累计人数 / total.value；total 若为截断表末行，则比例略偏高"
+   }
+  },
+  "SD": {
+   "year": 2026,
+   "track": "combined_3+3",
+   "total": {
+    "value": 708817,
+    "basis": "一分一段表末行累计（表止于150分二段线；山东不分物理/历史，为夏季高考文化成绩全体）"
+   },
+   "lines": {
+    "special": [
+     525,
+     146675
+    ],
+    "benke": [
+     442,
+     355637
+    ],
+    "zhuanke": [
+     150,
+     708817
+    ]
+   },
+   "cum": {
+    "690": 198,
+    "680": 637,
+    "650": 5027,
+    "620": 16628,
+    "600": 30192,
+    "550": 95234,
+    "500": 207249,
+    "450": 335901,
+    "400": 452241,
+    "350": 553107,
+    "300": 631748,
+    "250": 683141,
+    "200": 704030
+   },
+   "extra": {
+    "698(最高)": 49,
+    "benke_note": "山东“本科”为一段线442，“专科”为二段线150"
+   },
+   "source": "山东省教育招生考试院《2026年夏季高考文化成绩一分一段表》，经新高考网hfplg转录",
+   "url": [
+    "https://www.hfplg.com/luqu/b373123587.html",
+    "https://www.sdzk.cn/NewsInfo.aspx?NewsID=7258&BCID=20&CID=1204"
+   ],
+   "confidence": "medium",
+   "derived": {
+    "special_share": 0.2069,
+    "benke_share": 0.5017,
+    "zhuanke_share": 1.0,
+    "cum_share": {
+     "690": 0.0003,
+     "680": 0.0009,
+     "650": 0.0071,
+     "620": 0.0235,
+     "600": 0.0426,
+     "550": 0.1344,
+     "500": 0.2924,
+     "450": 0.4739,
+     "400": 0.638,
+     "350": 0.7803,
+     "300": 0.8913,
+     "250": 0.9638,
+     "200": 0.9932
+    },
+    "_note": "derived = 累计人数 / total.value；total 若为截断表末行，则比例略偏高"
+   }
+  },
+  "JS": {
+   "year": 2026,
+   "track": "physics",
+   "total": {
+    "value": null,
+    "basis": "无：江苏官方逐分段表只统计“符合第一阶段（本科）志愿填报条件考生”，表止于本科线456分，末行=本科线上人数，不是总人数"
+   },
+   "lines": {
+    "special": [
+     513,
+     145420
+    ],
+    "benke": [
+     456,
+     217438
+    ],
+    "zhuanke": [
+     null,
+     null
+    ]
+   },
+   "cum": {
+    "680": 464,
+    "650": 5772,
+    "620": 19962,
+    "600": 35398,
+    "550": 92062,
+    "500": 164169
+   },
+   "extra": {
+    "689(最高段)": 110,
+    "special_over_benke": 0.6688
+   },
+   "source": "江苏省教育考试院《江苏省2026年普通高考第一阶段逐分段统计表》（物理等科目类），经新高考网hfplg转录。注意：6617页面称本科线456对应185817，与表内480分已190920矛盾，不采用",
+   "url": [
+    "https://www.hfplg.com/luqu/37v3035365.html",
+    "https://www.6617.com/p_3091908782.html"
+   ],
+   "confidence": "medium",
+   "derived": {
+    "_note": "derived = 累计人数 / total.value；total 若为截断表末行，则比例略偏高"
+   }
+  },
+  "SC": {
+   "year": 2026,
+   "track": "physics",
+   "total": {
+    "value": 292426,
+    "basis": "一分一段表末行累计（官方表止于150分专科线）"
+   },
+   "lines": {
+    "special": [
+     519,
+     109476
+    ],
+    "benke": [
+     435,
+     218562
+    ],
+    "zhuanke": [
+     150,
+     292426
+    ]
+   },
+   "cum": {
+    "680": 122,
+    "650": 2211,
+    "620": 10928,
+    "600": 22303,
+    "550": 69422,
+    "500": 135867,
+    "450": 202109,
+    "400": 248041,
+    "350": 272456,
+    "300": 284545,
+    "250": 290212,
+    "200": 292149
+   },
+   "extra": {
+    "685(最高)": 66,
+    "580": 38064,
+    "480": 163497
+   },
+   "source": "四川省教育考试院《四川省2026年普通高考物理类成绩分段统计表》，经成都本地宝逐分转录 + 高考100位次摘要（两者一致）；新高考网的“2026”逐分表实为2025年数据，未采用",
+   "url": [
+    "http://cd.bendibao.com/edu/2026625/210423.shtm",
+    "https://m.gk100.com/read_14023131.htm",
+    "https://www.sohu.com/a/1041592087_350650"
+   ],
+   "confidence": "medium",
+   "derived": {
+    "special_share": 0.3744,
+    "benke_share": 0.7474,
+    "zhuanke_share": 1.0,
+    "cum_share": {
+     "680": 0.0004,
+     "650": 0.0076,
+     "620": 0.0374,
+     "600": 0.0763,
+     "550": 0.2374,
+     "500": 0.4646,
+     "450": 0.6911,
+     "400": 0.8482,
+     "350": 0.9317,
+     "300": 0.973,
+     "250": 0.9924,
+     "200": 0.9991
+    },
+    "_note": "derived = 累计人数 / total.value；total 若为截断表末行，则比例略偏高"
+   }
+  },
+  "HE": {
+   "year": 2026,
+   "track": "physics",
+   "total": {
+    "value": 350991,
+    "basis": "一分一段表末行累计（转载表止于140分）"
+   },
+   "lines": {
+    "special": [
+     510,
+     143249
+    ],
+    "benke": [
+     443,
+     237416
+    ],
+    "zhuanke": [
+     200,
+     349763
+    ]
+   },
+   "cum": {
+    "700": 36,
+    "680": 527,
+    "650": 4538,
+    "620": 16111,
+    "600": 29425,
+    "550": 83942,
+    "500": 158553,
+    "450": 228907,
+    "400": 281911,
+    "350": 315888,
+    "300": 335276,
+    "250": 345273,
+    "200": 349763
+   },
+   "extra": {
+    "701及以上": 34
+   },
+   "source": "河北省教育考试院《2026年河北省普通高校招生物理科目组合考生成绩统计表》，经新高考网hfplg与6617两家转录（数值一致）。hfplg正文把历史类线485/542误当物理线，表格本身无误",
+   "url": [
+    "https://www.hfplg.com/yfyd/37r3101351.html",
+    "https://www.6617.com/p_1975502061.html",
+    "https://www.hebeea.edu.cn/c/2026-06-24/493215.html"
+   ],
+   "confidence": "medium",
+   "derived": {
+    "special_share": 0.4081,
+    "benke_share": 0.6764,
+    "zhuanke_share": 0.9965,
+    "cum_share": {
+     "700": 0.0001,
+     "680": 0.0015,
+     "650": 0.0129,
+     "620": 0.0459,
+     "600": 0.0838,
+     "550": 0.2392,
+     "500": 0.4517,
+     "450": 0.6522,
+     "400": 0.8032,
+     "350": 0.9,
+     "300": 0.9552,
+     "250": 0.9837,
+     "200": 0.9965
+    },
+    "_note": "derived = 累计人数 / total.value；total 若为截断表末行，则比例略偏高"
+   }
+  },
+  "HN": {
+   "year": 2026,
+   "track": "physics",
+   "total": {
+    "value": 300023,
+    "basis": "一分一段表末行累计（转载表至0分）"
+   },
+   "lines": {
+    "special": [
+     481,
+     127369
+    ],
+    "benke": [
+     400,
+     221240
+    ],
+    "zhuanke": [
+     200,
+     297839
+    ]
+   },
+   "cum": {
+    "690": 111,
+    "680": 371,
+    "650": 3131,
+    "620": 10621,
+    "600": 18876,
+    "550": 52055,
+    "500": 103749,
+    "450": 166333,
+    "400": 221240,
+    "350": 258527,
+    "300": 280939,
+    "250": 293441,
+    "200": 297839
+   },
+   "extra": {
+    "695及以上": 51
+   },
+   "source": "湖南省教育考试院《湖南省2026年普通高考档分1分段统计表（物理科目组合）》，经新高考网hfplg转录；6617两篇独立文章给出相同的600/481/400分累计数",
+   "url": [
+    "https://www.hfplg.com/yfyd/3i73222443.html",
+    "https://www.6617.com/p_3574151955.html",
+    "https://www.6617.com/p_4271744303.html"
+   ],
+   "confidence": "medium",
+   "derived": {
+    "special_share": 0.4245,
+    "benke_share": 0.7374,
+    "zhuanke_share": 0.9927,
+    "cum_share": {
+     "690": 0.0004,
+     "680": 0.0012,
+     "650": 0.0104,
+     "620": 0.0354,
+     "600": 0.0629,
+     "550": 0.1735,
+     "500": 0.3458,
+     "450": 0.5544,
+     "400": 0.7374,
+     "350": 0.8617,
+     "300": 0.9364,
+     "250": 0.9781,
+     "200": 0.9927
+    },
+    "_note": "derived = 累计人数 / total.value；total 若为截断表末行，则比例略偏高"
+   }
+  },
+  "BJ": {
+   "year": 2026,
+   "track": "combined_3+3",
+   "total": {
+    "value": 71090,
+    "basis": "一分一段表末行累计（官方表最低到100-109分段；北京不分物理/历史；分数含全国性照顾加分）"
+   },
+   "lines": {
+    "special": [
+     521,
+     35691
+    ],
+    "benke": [
+     429,
+     59457
+    ],
+    "zhuanke": [
+     120,
+     71054
+    ]
+   },
+   "cum": {
+    "680": 439,
+    "650": 3031,
+    "620": 8112,
+    "600": 12682,
+    "550": 26772,
+    "500": 41980,
+    "450": 55252,
+    "400": 63817,
+    "350": 68012,
+    "300": 69946,
+    "250": 70705,
+    "200": 70902
+   },
+   "extra": {
+    "692分以上": 111,
+    "bins_note": "380分以下官方按10分一档：350→359档累计68012（即≥350），300→309档累计69946（≥300），250→259档70705（≥250），200→209档70902（≥200）；专科线120取120→129档累计71054"
+   },
+   "source": "北京教育考试院《北京市2026年高考考生分数分布》官方PDF（已直接解析）",
+   "url": [
+    "https://www.bjeea.cn/html/gkgz/tzgg/2026/0624/88238.html",
+    "https://www.bjeea.cn/uploads/soft/260625/2026年北京市高考考生分数分布.pdf"
+   ],
+   "confidence": "high",
+   "derived": {
+    "special_share": 0.5021,
+    "benke_share": 0.8364,
+    "zhuanke_share": 0.9995,
+    "cum_share": {
+     "680": 0.0062,
+     "650": 0.0426,
+     "620": 0.1141,
+     "600": 0.1784,
+     "550": 0.3766,
+     "500": 0.5905,
+     "450": 0.7772,
+     "400": 0.8977
+    },
+    "_note": "derived = 累计人数 / total.value；total 若为截断表末行，则比例略偏高"
+   }
+  },
+  "ZJ": {
+   "year": 2026,
+   "track": "combined_3+3",
+   "total": {
+    "value": 292753,
+    "basis": "一分一段表末行累计（官方表止于266分二段线；浙江不分物理/历史；未达二段者不在表内，故不是全部参考人数）"
+   },
+   "lines": {
+    "special": [
+     594,
+     61673
+    ],
+    "benke": [
+     494,
+     184816
+    ],
+    "zhuanke": [
+     266,
+     292753
+    ]
+   },
+   "cum": {
+    "680": 2031,
+    "650": 12659,
+    "620": 34105,
+    "600": 54748,
+    "550": 116091,
+    "500": 178076,
+    "450": 226167,
+    "400": 257168,
+    "350": 276439,
+    "300": 286638
+   },
+   "extra": {
+    "693↑": 392,
+    "benke_note": "浙江“本科”为一段线494，“专科”为二段线266"
+   },
+   "source": "浙江省教育考试院《浙江省2026年普通高校招生成绩分数段表（总分）》官方PDF（已直接解析，多栏排版经程序重排并校验累计数单调、相邻差=人数）",
+   "url": [
+    "https://www.zjzs.net/art/2026/6/26/art_45_12452.html"
+   ],
+   "confidence": "high",
+   "derived": {
+    "special_share": 0.2107,
+    "benke_share": 0.6313,
+    "zhuanke_share": 1.0,
+    "cum_share": {
+     "680": 0.0069,
+     "650": 0.0432,
+     "620": 0.1165,
+     "600": 0.187,
+     "550": 0.3965,
+     "500": 0.6083,
+     "450": 0.7726,
+     "400": 0.8784,
+     "350": 0.9443,
+     "300": 0.9791
+    },
+    "_note": "derived = 累计人数 / total.value；total 若为截断表末行，则比例略偏高"
+   }
+  },
+  "GZ": {
+   "year": 2026,
+   "track": "physics",
+   "total": {
+    "value": 214466,
+    "basis": "一分一段表末行累计（转载表至0分）"
+   },
+   "lines": {
+    "special": [
+     494,
+     66184
+    ],
+    "benke": [
+     393,
+     158893
+    ],
+    "zhuanke": [
+     200,
+     212055
+    ]
+   },
+   "cum": {
+    "690": 59,
+    "680": 177,
+    "650": 1654,
+    "620": 6338,
+    "600": 11440,
+    "550": 31012,
+    "500": 61624,
+    "450": 105222,
+    "400": 152997,
+    "350": 186974,
+    "300": 203767,
+    "250": 210411,
+    "200": 212055
+   },
+   "extra": {
+    "691(最高)": 53
+   },
+   "source": "贵州省招生考试院《贵州省2026年高考普通类分数段统计表(首选物理类)》，经新高考网hfplg转录（同页2025年对照数据不同，确认非旧表）",
+   "url": [
+    "https://www.hfplg.com/luqu/37z3131893.html",
+    "https://zsksy.guizhou.gov.cn/zlxz/202606/t20260625_90556851.html"
+   ],
+   "confidence": "medium",
+   "derived": {
+    "special_share": 0.3086,
+    "benke_share": 0.7409,
+    "zhuanke_share": 0.9888,
+    "cum_share": {
+     "690": 0.0003,
+     "680": 0.0008,
+     "650": 0.0077,
+     "620": 0.0296,
+     "600": 0.0533,
+     "550": 0.1446,
+     "500": 0.2873,
+     "450": 0.4906,
+     "400": 0.7134,
+     "350": 0.8718,
+     "300": 0.9501,
+     "250": 0.9811,
+     "200": 0.9888
+    },
+    "_note": "derived = 累计人数 / total.value；total 若为截断表末行，则比例略偏高"
+   }
+  },
+  "AH": {
+   "year": 2026,
+   "track": "physics",
+   "total": {
+    "value": 285137,
+    "basis": "一分一段表末行累计（转载表止于201分，专科线200以下未列）"
+   },
+   "lines": {
+    "special": [
+     514,
+     117852
+    ],
+    "benke": [
+     451,
+     197058
+    ],
+    "zhuanke": [
+     200,
+     null
+    ]
+   },
+   "cum": {
+    "700": 69,
+    "680": 918,
+    "650": 6190,
+    "620": 17788,
+    "600": 29273,
+    "550": 73146,
+    "500": 136697,
+    "450": 198107,
+    "400": 239022,
+    "350": 262404,
+    "300": 275283,
+    "250": 282532
+   },
+   "extra": {
+    "705及以上": 18
+   },
+   "source": "安徽省教育招生考试院2026年物理类分段统计表，经新高考网hfplg转录；本科线451→197058另由高考100独立给出",
+   "url": [
+    "https://www.hfplg.com/yfyd/p373227943.html",
+    "https://www.gk100.com/read_31856773.htm"
+   ],
+   "confidence": "medium",
+   "derived": {
+    "special_share": 0.4133,
+    "benke_share": 0.6911,
+    "cum_share": {
+     "700": 0.0002,
+     "680": 0.0032,
+     "650": 0.0217,
+     "620": 0.0624,
+     "600": 0.1027,
+     "550": 0.2565,
+     "500": 0.4794,
+     "450": 0.6948,
+     "400": 0.8383,
+     "350": 0.9203,
+     "300": 0.9654,
+     "250": 0.9909
+    },
+    "_note": "derived = 累计人数 / total.value；total 若为截断表末行，则比例略偏高"
+   }
+  },
+  "history": {
+   "GS": {
+    "year": 2026,
+    "track": "history",
+    "total": {
+     "value": 49558,
+     "basis": "一分一段表末行累计（含0分行1105人）"
+    },
+    "lines": {
+     "special": [
+      508,
+      8306
+     ],
+     "benke": [
+      405,
+      25199
+     ],
+     "zhuanke": [
+      160,
+      48149
+     ]
+    },
+    "cum": {
+     "650": 98,
+     "620": 534,
+     "600": 1123,
+     "550": 4031,
+     "500": 9333,
+     "450": 17240,
+     "400": 26125,
+     "350": 35787,
+     "300": 43487,
+     "250": 47020,
+     "200": 47961
+    },
+    "derived": {
+     "special_share": 0.1676,
+     "benke_share": 0.5085,
+     "zhuanke_share": 0.9716,
+     "share_excl_zero_row": {
+      "base": 48453,
+      "special": 0.1714,
+      "benke": 0.5201
+     }
+    },
+    "source": "甘肃省教育考试院2026年历史类分段表，经6617逐分转录（含0分行），高考100摘要一致",
+    "url": [
+     "https://www.6617.com/p_4207908551.html",
+     "https://m.gk100.com/read_7231673.htm"
+    ],
+    "confidence": "medium"
+   },
+   "GD": {
+    "year": 2026,
+    "track": "history",
+    "total": {
+     "value": 294878,
+     "basis": "一分一段表末行累计（官方表止于100分）"
+    },
+    "lines": {
+     "special": [
+      546,
+      22391
+     ],
+     "benke": [
+      440,
+      114692
+     ],
+     "zhuanke": [
+      200,
+      292048
+     ]
+    },
+    "cum": {
+     "650": 101,
+     "620": 1065,
+     "600": 3367,
+     "550": 20227,
+     "500": 55042,
+     "450": 103819,
+     "400": 159005,
+     "350": 212000,
+     "300": 256223,
+     "250": 283192,
+     "200": 292048
+    },
+    "derived": {
+     "special_share": 0.0759,
+     "benke_share": 0.3889,
+     "zhuanke_share": 0.9904
+    },
+    "source": "广东省教育考试院2026年普通类（历史）分数段统计表官方PDF（已直接解析）",
+    "url": [
+     "https://eea.gd.gov.cn/attachment/0/618/618107/4916165.pdf"
+    ],
+    "confidence": "high"
+   }
+  },
+  "notes": [
+   "所有 2026 数据均为 2026-06-24~26 各省公布的一分一段表；derived 字段为本人计算：累计人数 / total.value。",
+   "total 均取“一分一段表末行累计”，不是报名人数。多数省份的表在某个低分处截断（GD/HA 100分、SC 150、SD/ZJ 二段线、HE 140、AH 201、GS 转载止于159），截断以下人数很少（通常<0.5%），但会让比例略偏高。JS 表止于本科线，无法求总数和比例分母。",
+   "报名人数≠统考人数：如甘肃2026报名21.87万，但物理类表≥11.82万 + 历史类4.96万 ≈ 16.8万，差额主要是单招/职教高考/春季等不参加夏季统考或不进普通类表的考生。不要用报名人数当分母。",
+   "“特控线”过线比例并不等于“一本率”：特控线用于强基、专项、军警等资格，各省划法差异大（湖南481、贵州494 分别约 42%、31% 物理考生过线；广东539 仅 26%；北京521 约 50%）。",
+   "北京、浙江、山东为 3+3 不分物理/历史，track=combined_3+3；山东、浙江“本科线”取一段线，专科取二段线。",
+   "置信度：high = 直接解析了官方 PDF（GD、BJ、ZJ）或转载数与官方媒体口径吻合（HA 本科上线人数 359972 与新浪/河南日报一致）；medium = 商业升学网站（新高考网 hfplg、高考100、6617、成都本地宝）转录的官方表，已尽量用两家来源或往年对照交叉核对。",
+   "已发现的转载错误：新高考网“2026四川物理类”逐分表其实是2025年数据（本科线438），已改用成都本地宝+高考100；6617 对江苏本科线位次（185817）自相矛盾，不采用；新高考网河北页正文把历史类线当物理线，但表格数值与 6617 一致。",
+   "各省官方站点（甘肃 ganseea.cn、河南 haeea.cn 等）有 JS 反爬，无法直接抓取；甘肃物理类表最底部若干分（<159）及0分行未取得，故甘肃 total 为下界。",
+   "未取得：江苏总人数与专科线人数；安徽 200 分（专科线）累计；山东/浙江未入表的低分考生数；各省历史类除甘肃、广东外未查。"
+  ]
+ },
+ "school_lines_2025": {
+  "note": "2025 年物理类各层次院校在甘肃、河南、四川、广东的普通类最低专业组投档分，来自掌上高考（gaokao.cn）数据接口，统一 medium；只抽查了郑州大学一条与校方数据一致。2026-10-17 补充。",
+  "GS": {
+   "province": "甘肃",
+   "year": 2025,
+   "track": "physics",
+   "lines": {
+    "special": 475,
+    "benke": 374,
+    "zhuanke": 180
+   },
+   "line_ranks": {
+    "special": 39656,
+    "benke": 93788,
+    "zhuanke": 120677
+   },
+   "line_source": "甘肃省教育考试院公布，中国甘肃网转载 https://gansu.gscn.com.cn/system/2025/06/26/013344625.shtml",
+   "schools": [
+    {
+     "name": "兰州大学",
+     "tier": "985_local",
+     "nature": "公办",
+     "city": "兰州市",
+     "batch": "本科批C段",
+     "min_score": 538,
+     "rank": 15378,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（033）（首选物理，再选化学）；该校普通类共4个组，最高组（031） 578分（位次6392），组间中位数553",
+     "median_group_score": 553.0,
+     "max_group_score": 578,
+     "gap_vs_special": 63,
+     "gap_vs_benke": 164,
+     "gap_vs_zhuanke": 358,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/97/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "兰州理工大学",
+     "tier": "ben1_local",
+     "nature": "公办",
+     "city": "兰州市",
+     "batch": "本科批C段",
+     "min_score": 482,
+     "rank": 36344,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（005）（首选物理，再选不限）；该校普通类共5个组，最高组（008） 529分（位次18086），组间中位数512",
+     "median_group_score": 512,
+     "max_group_score": 529,
+     "gap_vs_special": 7,
+     "gap_vs_benke": 108,
+     "gap_vs_zhuanke": 302,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/483/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "西北师范大学",
+     "tier": "ben1_local",
+     "nature": "公办",
+     "city": "兰州市",
+     "batch": "本科批C段",
+     "min_score": 480,
+     "rank": 37267,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（108）（首选物理，再选不限）；该校普通类共5个组，最高组（111） 539分（位次15054），组间中位数510",
+     "median_group_score": 510,
+     "max_group_score": 539,
+     "gap_vs_special": 5,
+     "gap_vs_benke": 106,
+     "gap_vs_zhuanke": 300,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/495/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "兰州交通大学",
+     "tier": "ben1_local",
+     "nature": "公办",
+     "city": "兰州市",
+     "batch": "本科批C段",
+     "min_score": 506,
+     "rank": 26228,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（006）（首选物理，再选不限）；该校普通类共2个组，最高组（009） 560分（位次9859），组间中位数533",
+     "median_group_score": 533.0,
+     "max_group_score": 560,
+     "gap_vs_special": 31,
+     "gap_vs_benke": 132,
+     "gap_vs_zhuanke": 326,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/488/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "甘肃农业大学",
+     "tier": "ben1_local",
+     "nature": "公办",
+     "city": "兰州市",
+     "batch": "本科批C段",
+     "min_score": 455,
+     "rank": 49857,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（012）（首选物理，再选不限）；该校普通类共3个组，最高组（014） 468分（位次43097），组间中位数465",
+     "median_group_score": 465,
+     "max_group_score": 468,
+     "gap_vs_special": -20,
+     "gap_vs_benke": 81,
+     "gap_vs_zhuanke": 275,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/492/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "兰州财经大学",
+     "tier": "ben1_local",
+     "nature": "公办",
+     "city": "兰州市",
+     "batch": "本科批C段",
+     "min_score": 449,
+     "rank": 53075,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（017）（首选物理，再选不限）；该校普通类共5个组，最高组（020） 467分（位次43570），组间中位数450",
+     "median_group_score": 450,
+     "max_group_score": 467,
+     "gap_vs_special": -26,
+     "gap_vs_benke": 75,
+     "gap_vs_zhuanke": 269,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/500/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "甘肃中医药大学",
+     "tier": "ben1_local",
+     "nature": "公办",
+     "city": "兰州市",
+     "batch": "本科批C段",
+     "min_score": 468,
+     "rank": 43097,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（053）（首选物理，再选化学）；该校普通类共6个组，最高组（050） 555分（位次10965），组间中位数481.5",
+     "median_group_score": 481.5,
+     "max_group_score": 555,
+     "gap_vs_special": -7,
+     "gap_vs_benke": 94,
+     "gap_vs_zhuanke": 288,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/498/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "天水师范大学",
+     "tier": "ben2_local",
+     "nature": "公办",
+     "city": "天水市",
+     "batch": "本科批C段",
+     "min_score": 438,
+     "rank": 59171,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（029）（首选物理，再选化学）；该校普通类共7个组，最高组（033） 469分（位次42562），组间中位数445",
+     "median_group_score": 445,
+     "max_group_score": 469,
+     "gap_vs_special": -37,
+     "gap_vs_benke": 64,
+     "gap_vs_zhuanke": 258,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/1095/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "陇东学院",
+     "tier": "ben2_local",
+     "nature": "公办",
+     "city": "庆阳市",
+     "batch": "本科批C段",
+     "min_score": 414,
+     "rank": 72726,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（009）（首选物理，再选不限）；该校普通类共6个组，最高组（008） 431分（位次63079），组间中位数422.5",
+     "median_group_score": 422.5,
+     "max_group_score": 431,
+     "gap_vs_special": -61,
+     "gap_vs_benke": 40,
+     "gap_vs_zhuanke": 234,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/1094/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "河西学院",
+     "tier": "ben2_local",
+     "nature": "公办",
+     "city": "张掖市",
+     "batch": "本科批C段",
+     "min_score": 421,
+     "rank": 68815,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（033）（首选物理，再选不限）；该校普通类共3个组，最高组（038） 449分（位次53075），组间中位数423",
+     "median_group_score": 423,
+     "max_group_score": 449,
+     "gap_vs_special": -54,
+     "gap_vs_benke": 47,
+     "gap_vs_zhuanke": 241,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/502/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "兰州城市学院",
+     "tier": "ben2_local",
+     "nature": "公办",
+     "city": "兰州市",
+     "batch": "本科批C段",
+     "min_score": 423,
+     "rank": 67637,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（023）（首选物理，再选不限）；该校普通类共5个组，最高组（025） 443分（位次56413），组间中位数427",
+     "median_group_score": 427,
+     "max_group_score": 443,
+     "gap_vs_special": -52,
+     "gap_vs_benke": 49,
+     "gap_vs_zhuanke": 243,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/1269/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "甘肃政法大学",
+     "tier": "ben2_local",
+     "nature": "公办",
+     "city": "兰州市",
+     "batch": "本科批C段",
+     "min_score": 464,
+     "rank": 45138,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（016）（首选物理，再选不限）；该校普通类共4个组，最高组（019） 480分（位次37267），组间中位数475.5",
+     "median_group_score": 475.5,
+     "max_group_score": 480,
+     "gap_vs_special": -11,
+     "gap_vs_benke": 90,
+     "gap_vs_zhuanke": 284,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/501/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "兰州文理学院",
+     "tier": "ben2_local",
+     "nature": "公办",
+     "city": "兰州市",
+     "batch": "本科批C段",
+     "min_score": 423,
+     "rank": 67637,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（021）（首选物理，再选不限）；该校普通类共4个组，最高组（018） 426分（位次65882），组间中位数425.5",
+     "median_group_score": 425.5,
+     "max_group_score": 426,
+     "gap_vs_special": -52,
+     "gap_vs_benke": 49,
+     "gap_vs_zhuanke": 243,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/1711/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "兰州工业学院",
+     "tier": "ben2_local",
+     "nature": "公办",
+     "city": "兰州市",
+     "batch": "本科批C段",
+     "min_score": 427,
+     "rank": 65345,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（005）（首选物理，再选不限）；该校普通类共3个组，最高组（008） 452分（位次51458），组间中位数441",
+     "median_group_score": 441,
+     "max_group_score": 452,
+     "gap_vs_special": -48,
+     "gap_vs_benke": 53,
+     "gap_vs_zhuanke": 247,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/1707/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "兰州石化职业技术大学（职业本科）",
+     "tier": "ben2_local",
+     "nature": "公办",
+     "city": "兰州市",
+     "batch": "本科批C段",
+     "min_score": 423,
+     "rank": 67637,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（010）（首选物理，再选不限）；该校普通类共2个组，最高组（011） 425分（位次66451），组间中位数424",
+     "median_group_score": 424.0,
+     "max_group_score": 425,
+     "gap_vs_special": -52,
+     "gap_vs_benke": 49,
+     "gap_vs_zhuanke": 243,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/1710/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "甘肃林业职业技术大学（职业本科）",
+     "tier": "ben2_local",
+     "nature": "公办",
+     "city": "天水市",
+     "batch": "本科批C段",
+     "min_score": 414,
+     "rank": 72726,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（012）（首选物理，再选不限）；该校普通类共1个组，最高组（012） 414分（位次72726），组间中位数414",
+     "median_group_score": 414,
+     "max_group_score": 414,
+     "gap_vs_special": -61,
+     "gap_vs_benke": 40,
+     "gap_vs_zhuanke": 234,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/1716/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "甘肃工业职业技术大学（职业本科）",
+     "tier": "ben2_local",
+     "nature": "公办",
+     "city": "天水市",
+     "batch": "本科批C段",
+     "min_score": 414,
+     "rank": 72726,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（101）（首选物理，再选不限）；该校普通类共1个组，最高组（101） 414分（位次72726），组间中位数414",
+     "median_group_score": 414,
+     "max_group_score": 414,
+     "gap_vs_special": -61,
+     "gap_vs_benke": 40,
+     "gap_vs_zhuanke": 234,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/1717/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "兰州资源环境职业技术大学（职业本科）",
+     "tier": "ben2_local",
+     "nature": "公办",
+     "city": "兰州市",
+     "batch": "本科批C段",
+     "min_score": 417,
+     "rank": 71049,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（003）（首选物理，再选不限）；该校普通类共1个组，最高组（003） 417分（位次71049），组间中位数417",
+     "median_group_score": 417,
+     "max_group_score": 417,
+     "gap_vs_special": -58,
+     "gap_vs_benke": 43,
+     "gap_vs_zhuanke": 237,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/1720/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "兰州博文科技学院",
+     "tier": "minban_local",
+     "nature": "民办",
+     "city": "兰州市",
+     "batch": "本科批C段",
+     "min_score": 374,
+     "rank": 93788,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（002）（首选物理，再选不限）；该校普通类共3个组，最高组（004） 374分（位次93788），组间中位数374",
+     "median_group_score": 374,
+     "max_group_score": 374,
+     "gap_vs_special": -101,
+     "gap_vs_benke": 0,
+     "gap_vs_zhuanke": 194,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/1559/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "兰州信息科技学院",
+     "tier": "minban_local",
+     "nature": "民办",
+     "city": "兰州市",
+     "batch": "本科批C段",
+     "min_score": 374,
+     "rank": 93788,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（002）（首选物理，再选不限）；该校普通类共2个组，最高组（004） 374分（位次93788），组间中位数374",
+     "median_group_score": 374.0,
+     "max_group_score": 374,
+     "gap_vs_special": -101,
+     "gap_vs_benke": 0,
+     "gap_vs_zhuanke": 194,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/2361/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "兰州工商学院",
+     "tier": "minban_local",
+     "nature": "民办",
+     "city": "兰州市",
+     "batch": "本科批C段",
+     "min_score": 354,
+     "rank": 102160,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（004）（首选物理，再选不限）；该校普通类共2个组，最高组（005） 354分（位次102160），组间中位数354",
+     "median_group_score": 354.0,
+     "max_group_score": 354,
+     "gap_vs_special": -121,
+     "gap_vs_benke": -20,
+     "gap_vs_zhuanke": 174,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/2360/provinceline",
+     "confidence": "low"
+    },
+    {
+     "name": "兰州职业技术学院",
+     "tier": "zhuan_public_local",
+     "nature": "公办",
+     "city": "兰州市",
+     "batch": "专科批F段",
+     "min_score": 353,
+     "rank": 102510,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（004）（首选物理，再选不限）；该校普通类共1个组，最高组（004） 353分（位次102510），组间中位数353",
+     "median_group_score": 353,
+     "max_group_score": 353,
+     "gap_vs_special": -122,
+     "gap_vs_benke": -21,
+     "gap_vs_zhuanke": 173,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/1714/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "甘肃建筑职业技术学院",
+     "tier": "zhuan_public_local",
+     "nature": "公办",
+     "city": "兰州市",
+     "batch": "专科批F段",
+     "min_score": 287,
+     "rank": 117278,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（004）（首选物理，再选不限）；该校普通类共1个组，最高组（004） 287分（位次117278），组间中位数287",
+     "median_group_score": 287,
+     "max_group_score": 287,
+     "gap_vs_special": -188,
+     "gap_vs_benke": -87,
+     "gap_vs_zhuanke": 107,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/1712/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "甘肃交通职业技术学院",
+     "tier": "zhuan_public_local",
+     "nature": "公办",
+     "city": "兰州市",
+     "batch": "专科批F段",
+     "min_score": 371,
+     "rank": 95164,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（004）（首选物理，再选不限）；该校普通类共1个组，最高组（004） 371分（位次95164），组间中位数371",
+     "median_group_score": 371,
+     "max_group_score": 371,
+     "gap_vs_special": -104,
+     "gap_vs_benke": -3,
+     "gap_vs_zhuanke": 191,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/1719/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "兰州航空职业技术学院",
+     "tier": "zhuan_public_local",
+     "nature": "公办",
+     "city": "兰州市",
+     "batch": "专科批F段",
+     "min_score": 348,
+     "rank": 104311,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（004）（首选物理，再选不限）；该校普通类共1个组，最高组（004） 348分（位次104311），组间中位数348",
+     "median_group_score": 348,
+     "max_group_score": 348,
+     "gap_vs_special": -127,
+     "gap_vs_benke": -26,
+     "gap_vs_zhuanke": 168,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/3600/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "兰州现代职业学院",
+     "tier": "zhuan_public_local",
+     "nature": "公办",
+     "city": "兰州市",
+     "batch": "专科批F段",
+     "min_score": 299,
+     "rank": 115871,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（004）（首选物理，再选不限）；该校普通类共1个组，最高组（004） 299分（位次115871），组间中位数299",
+     "median_group_score": 299,
+     "max_group_score": 299,
+     "gap_vs_special": -176,
+     "gap_vs_benke": -75,
+     "gap_vs_zhuanke": 119,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/3289/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "甘肃卫生职业学院",
+     "tier": "zhuan_public_local",
+     "nature": "公办",
+     "city": "兰州市",
+     "batch": "专科批F段",
+     "min_score": 371,
+     "rank": 95164,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（033）（首选物理，再选不限）；该校普通类共1个组，最高组（033） 371分（位次95164），组间中位数371",
+     "median_group_score": 371,
+     "max_group_score": 371,
+     "gap_vs_special": -104,
+     "gap_vs_benke": -3,
+     "gap_vs_zhuanke": 191,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/3154/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "兰州石化职业技术大学",
+     "tier": "zhuan_public_local",
+     "nature": "公办",
+     "city": "兰州市",
+     "batch": "专科批F段",
+     "min_score": 394,
+     "rank": 83835,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（031）（首选物理，再选不限）；该校普通类共1个组，最高组（031） 394分（位次83835），组间中位数394",
+     "median_group_score": 394,
+     "max_group_score": 394,
+     "gap_vs_special": -81,
+     "gap_vs_benke": 20,
+     "gap_vs_zhuanke": 214,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/1710/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "兰州资源环境职业技术大学",
+     "tier": "zhuan_public_local",
+     "nature": "公办",
+     "city": "兰州市",
+     "batch": "专科批F段",
+     "min_score": 388,
+     "rank": 86922,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（025）（首选物理，再选不限）；该校普通类共1个组，最高组（025） 388分（位次86922），组间中位数388",
+     "median_group_score": 388,
+     "max_group_score": 388,
+     "gap_vs_special": -87,
+     "gap_vs_benke": 14,
+     "gap_vs_zhuanke": 208,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/1720/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "甘肃林业职业技术大学",
+     "tier": "zhuan_public_local",
+     "nature": "公办",
+     "city": "天水市",
+     "batch": "专科批F段",
+     "min_score": 325,
+     "rank": 111013,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（026）（首选物理，再选不限）；该校普通类共1个组，最高组（026） 325分（位次111013），组间中位数325",
+     "median_group_score": 325,
+     "max_group_score": 325,
+     "gap_vs_special": -150,
+     "gap_vs_benke": -49,
+     "gap_vs_zhuanke": 145,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/1716/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "甘肃工业职业技术大学",
+     "tier": "zhuan_public_local",
+     "nature": "公办",
+     "city": "天水市",
+     "batch": "专科批F段",
+     "min_score": 302,
+     "rank": 115413,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（005）（首选物理，再选不限）；该校普通类共2个组，最高组（204） 339分（位次107255），组间中位数320.5",
+     "median_group_score": 320.5,
+     "max_group_score": 339,
+     "gap_vs_special": -173,
+     "gap_vs_benke": -72,
+     "gap_vs_zhuanke": 122,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/1717/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "兰州外语职业学院",
+     "tier": "zhuan_private_local",
+     "nature": "民办",
+     "city": "兰州市",
+     "batch": "专科批F段",
+     "min_score": 188,
+     "rank": 120663,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（004）（首选物理，再选不限）；该校普通类共1个组，最高组（004） 188分（位次120663），组间中位数188",
+     "median_group_score": 188,
+     "max_group_score": 188,
+     "gap_vs_special": -287,
+     "gap_vs_benke": -186,
+     "gap_vs_zhuanke": 8,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/1588/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "兰州科技职业学院",
+     "tier": "zhuan_private_local",
+     "nature": "民办",
+     "city": "兰州市",
+     "batch": "专科批F段",
+     "min_score": 204,
+     "rank": 120596,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（004）（首选物理，再选不限）；该校普通类共1个组，最高组（004） 204分（位次120596），组间中位数204",
+     "median_group_score": 204,
+     "max_group_score": 204,
+     "gap_vs_special": -271,
+     "gap_vs_benke": -170,
+     "gap_vs_zhuanke": 24,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/3155/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "西安交通大学",
+     "tier": "985_out",
+     "nature": "公办",
+     "city": "西安市",
+     "batch": "本科批C段",
+     "min_score": 608,
+     "rank": 2554,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（010）（首选物理，再选化学）；该校普通类共3个组，最高组（009） 640分（位次531），组间中位数619",
+     "median_group_score": 619,
+     "max_group_score": 640,
+     "gap_vs_special": 133,
+     "gap_vs_benke": 234,
+     "gap_vs_zhuanke": 428,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/330/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "四川大学",
+     "tier": "985_out",
+     "nature": "公办",
+     "city": "成都市",
+     "batch": "本科批C段",
+     "min_score": 571,
+     "rank": 7626,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（015）（首选物理，再选化学）；该校普通类共6个组，最高组（014） 642分（位次464），组间中位数593.5",
+     "median_group_score": 593.5,
+     "max_group_score": 642,
+     "gap_vs_special": 96,
+     "gap_vs_benke": 197,
+     "gap_vs_zhuanke": 391,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/99/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "西北大学",
+     "tier": "211_out",
+     "nature": "公办",
+     "city": "西安市",
+     "batch": "本科批C段",
+     "min_score": 549,
+     "rank": 12400,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（008）（首选物理，再选地理）；该校普通类共4个组，最高组（006） 589分（位次4731），组间中位数558",
+     "median_group_score": 558.0,
+     "max_group_score": 589,
+     "gap_vs_special": 74,
+     "gap_vs_benke": 175,
+     "gap_vs_zhuanke": 369,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/37/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "长安大学",
+     "tier": "211_out",
+     "nature": "公办",
+     "city": "西安市",
+     "batch": "本科批C段",
+     "min_score": 545,
+     "rank": 13354,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（006）（首选物理，再选化学）；该校普通类共3个组，最高组（005） 551分（位次11915），组间中位数549",
+     "median_group_score": 549,
+     "max_group_score": 551,
+     "gap_vs_special": 70,
+     "gap_vs_benke": 171,
+     "gap_vs_zhuanke": 365,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/36/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "宁夏大学",
+     "tier": "211_out",
+     "nature": "公办",
+     "city": "银川市",
+     "batch": "本科批C段",
+     "min_score": 484,
+     "rank": 35445,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（013）（首选物理，再选地理）；该校普通类共8个组，最高组（008） 543分（位次13909），组间中位数523",
+     "median_group_score": 523.0,
+     "max_group_score": 543,
+     "gap_vs_special": 9,
+     "gap_vs_benke": 110,
+     "gap_vs_zhuanke": 304,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/544/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "西安建筑科技大学",
+     "tier": "ben1_out",
+     "nature": "公办",
+     "city": "西安市",
+     "batch": "本科批C段",
+     "min_score": 381,
+     "rank": 90463,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（008）（首选物理，再选化学）；该校普通类共2个组，最高组（007） 514分（位次23242），组间中位数447.5",
+     "median_group_score": 447.5,
+     "max_group_score": 514,
+     "gap_vs_special": -94,
+     "gap_vs_benke": 7,
+     "gap_vs_zhuanke": 201,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/351/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "陕西科技大学",
+     "tier": "ben1_out",
+     "nature": "公办",
+     "city": "西安市",
+     "batch": "本科批C段",
+     "min_score": 505,
+     "rank": 26616,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（011）（首选物理，再选化学）；该校普通类共11个组，最高组（006） 557分（位次10559），组间中位数535",
+     "median_group_score": 535,
+     "max_group_score": 557,
+     "gap_vs_special": 30,
+     "gap_vs_benke": 131,
+     "gap_vs_zhuanke": 325,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/357/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "西安理工大学",
+     "tier": "ben1_out",
+     "nature": "公办",
+     "city": "西安市",
+     "batch": "本科批C段",
+     "min_score": 538,
+     "rank": 15378,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（002）（首选物理，再选不限）；该校普通类共2个组，最高组（003） 552分（位次11675），组间中位数545",
+     "median_group_score": 545.0,
+     "max_group_score": 552,
+     "gap_vs_special": 63,
+     "gap_vs_benke": 164,
+     "gap_vs_zhuanke": 358,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/349/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "青岛科技大学",
+     "tier": "ben1_out",
+     "nature": "公办",
+     "city": "青岛市",
+     "batch": "本科批C段",
+     "min_score": 514,
+     "rank": 23242,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（004）（首选物理，再选化学）；该校普通类共1个组，最高组（004） 514分（位次23242），组间中位数514",
+     "median_group_score": 514,
+     "max_group_score": 514,
+     "gap_vs_special": 39,
+     "gap_vs_benke": 140,
+     "gap_vs_zhuanke": 334,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/507/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "浙江工业大学",
+     "tier": "ben1_out",
+     "nature": "公办",
+     "city": "杭州市",
+     "batch": "本科批C段",
+     "min_score": 534,
+     "rank": 16472,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（001）（首选物理，再选不限）；该校普通类共3个组，最高组（003） 561分（位次9623），组间中位数546",
+     "median_group_score": 546,
+     "max_group_score": 561,
+     "gap_vs_special": 59,
+     "gap_vs_benke": 160,
+     "gap_vs_zhuanke": 354,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/242/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "江苏大学",
+     "tier": "ben1_out",
+     "nature": "公办",
+     "city": "镇江市",
+     "batch": "本科批C段",
+     "min_score": 408,
+     "rank": 76099,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（003）（首选物理，再选化学）；该校普通类共2个组，最高组（002） 526分（位次19010），组间中位数467",
+     "median_group_score": 467.0,
+     "max_group_score": 526,
+     "gap_vs_special": -67,
+     "gap_vs_benke": 34,
+     "gap_vs_zhuanke": 228,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/170/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "南京工业大学",
+     "tier": "ben1_out",
+     "nature": "公办",
+     "city": "南京市",
+     "batch": "本科批C段",
+     "min_score": 516,
+     "rank": 22513,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（004）（首选物理，再选不限）；该校普通类共2个组，最高组（005） 517分（位次22153），组间中位数516.5",
+     "median_group_score": 516.5,
+     "max_group_score": 517,
+     "gap_vs_special": 41,
+     "gap_vs_benke": 142,
+     "gap_vs_zhuanke": 336,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/171/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "扬州大学",
+     "tier": "ben1_out",
+     "nature": "公办",
+     "city": "扬州市",
+     "batch": "本科批C段",
+     "min_score": 484,
+     "rank": 35445,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（007）（首选物理，再选化学）；该校普通类共4个组，最高组（009） 551分（位次11915），组间中位数526.5",
+     "median_group_score": 526.5,
+     "max_group_score": 551,
+     "gap_vs_special": 9,
+     "gap_vs_benke": 110,
+     "gap_vs_zhuanke": 304,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/173/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "山东科技大学",
+     "tier": "ben1_out",
+     "nature": "公办",
+     "city": "青岛市",
+     "batch": "本科批C段",
+     "min_score": 480,
+     "rank": 37267,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（001）（首选物理，再选不限）；该校普通类共4个组，最高组（004） 512分（位次23940），组间中位数499.5",
+     "median_group_score": 499.5,
+     "max_group_score": 512,
+     "gap_vs_special": 5,
+     "gap_vs_benke": 106,
+     "gap_vs_zhuanke": 300,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/537/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "西安石油大学",
+     "tier": "ben1_out",
+     "nature": "公办",
+     "city": "西安市",
+     "batch": "本科批C段",
+     "min_score": 519,
+     "rank": 21428,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（002）（首选物理，再选不限）；该校普通类共4个组，最高组（003） 542分（位次14212），组间中位数527.5",
+     "median_group_score": 527.5,
+     "max_group_score": 542,
+     "gap_vs_special": 44,
+     "gap_vs_benke": 145,
+     "gap_vs_zhuanke": 339,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/354/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "宁夏师范大学",
+     "tier": "ben2_out",
+     "nature": "公办",
+     "city": "固原市",
+     "batch": "本科批C段",
+     "min_score": 463,
+     "rank": 45654,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（007）（首选物理，再选化学）；该校普通类共3个组，最高组（005） 472分（位次41085），组间中位数469",
+     "median_group_score": 469,
+     "max_group_score": 472,
+     "gap_vs_special": -12,
+     "gap_vs_benke": 89,
+     "gap_vs_zhuanke": 283,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/1241/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "北方民族大学",
+     "tier": "ben2_out",
+     "nature": "公办",
+     "city": "银川市",
+     "batch": "本科批C段",
+     "min_score": 456,
+     "rank": 49288,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（003）（首选物理，再选不限）；该校普通类共3个组，最高组（006） 478分（位次38211），组间中位数475",
+     "median_group_score": 475,
+     "max_group_score": 478,
+     "gap_vs_special": -19,
+     "gap_vs_benke": 82,
+     "gap_vs_zhuanke": 276,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/545/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "陕西理工大学",
+     "tier": "ben2_out",
+     "nature": "公办",
+     "city": "汉中市",
+     "batch": "本科批C段",
+     "min_score": 499,
+     "rank": 29036,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（003）（首选物理，再选不限）；该校普通类共3个组，最高组（004） 514分（位次23242），组间中位数512",
+     "median_group_score": 512,
+     "max_group_score": 514,
+     "gap_vs_special": 24,
+     "gap_vs_benke": 125,
+     "gap_vs_zhuanke": 319,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/371/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "延安大学",
+     "tier": "ben2_out",
+     "nature": "公办",
+     "city": "延安市",
+     "batch": "本科批C段",
+     "min_score": 491,
+     "rank": 32386,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（004）（首选物理，再选化学、生物(2科必选)）；该校普通类共2个组，最高组（003） 492分（位次31985），组间中位数491.5",
+     "median_group_score": 491.5,
+     "max_group_score": 492,
+     "gap_vs_special": 16,
+     "gap_vs_benke": 117,
+     "gap_vs_zhuanke": 311,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/336/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "聊城大学",
+     "tier": "ben2_out",
+     "nature": "公办",
+     "city": "聊城市",
+     "batch": "本科批C段",
+     "min_score": 486,
+     "rank": 34567,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（002）（首选物理，再选化学）；该校普通类共1个组，最高组（002） 486分（位次34567），组间中位数486",
+     "median_group_score": 486,
+     "max_group_score": 486,
+     "gap_vs_special": 11,
+     "gap_vs_benke": 112,
+     "gap_vs_zhuanke": 306,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/494/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "鲁东大学",
+     "tier": "ben2_out",
+     "nature": "公办",
+     "city": "烟台市",
+     "batch": "本科批C段",
+     "min_score": 478,
+     "rank": 38211,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（004）（首选物理，再选化学）；该校普通类共2个组，最高组（003） 483分（位次35900），组间中位数480.5",
+     "median_group_score": 480.5,
+     "max_group_score": 483,
+     "gap_vs_special": 3,
+     "gap_vs_benke": 104,
+     "gap_vs_zhuanke": 298,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/555/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "临沂大学",
+     "tier": "ben2_out",
+     "nature": "公办",
+     "city": "临沂市",
+     "batch": "本科批C段",
+     "min_score": 483,
+     "rank": 35900,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（002）（首选物理，再选化学）；该校普通类共1个组，最高组（002） 483分（位次35900），组间中位数483",
+     "median_group_score": 483,
+     "max_group_score": 483,
+     "gap_vs_special": 8,
+     "gap_vs_benke": 109,
+     "gap_vs_zhuanke": 303,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/496/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "盐城工学院",
+     "tier": "ben2_out",
+     "nature": "公办",
+     "city": "盐城市",
+     "batch": "本科批C段",
+     "min_score": 469,
+     "rank": 42562,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（001）（首选物理，再选化学）；该校普通类共1个组，最高组（001） 469分（位次42562），组间中位数469",
+     "median_group_score": 469,
+     "max_group_score": 469,
+     "gap_vs_special": -6,
+     "gap_vs_benke": 95,
+     "gap_vs_zhuanke": 289,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/154/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "嘉兴大学",
+     "tier": "ben2_out",
+     "nature": "公办",
+     "city": "嘉兴市",
+     "batch": "本科批C段",
+     "min_score": 495,
+     "rank": 30723,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（001）（首选物理，再选化学）；该校普通类共1个组，最高组（001） 495分（位次30723），组间中位数495",
+     "median_group_score": 495,
+     "max_group_score": 495,
+     "gap_vs_special": 20,
+     "gap_vs_benke": 121,
+     "gap_vs_zhuanke": 315,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/244/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "湖州师范大学",
+     "tier": "ben2_out",
+     "nature": "公办",
+     "city": "湖州市",
+     "batch": "本科批C段",
+     "min_score": 455,
+     "rank": 49857,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（002）（首选物理，再选不限）；该校普通类共2个组，最高组（003） 463分（位次45654），组间中位数459",
+     "median_group_score": 459.0,
+     "max_group_score": 463,
+     "gap_vs_special": -20,
+     "gap_vs_benke": 81,
+     "gap_vs_zhuanke": 275,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/253/provinceline",
+     "confidence": "medium"
+    }
+   ]
+  },
+  "HA": {
+   "province": "河南",
+   "year": 2025,
+   "track": "physics",
+   "lines": {
+    "special": 535,
+    "benke": 427,
+    "zhuanke": 185
+   },
+   "line_ranks": {
+    "special": 143976,
+    "benke": 348358,
+    "zhuanke": 553621
+   },
+   "line_source": "河南省教育考试院公布，大学生必备网/中新网等转载 https://www.dxsbb.com/news/148768.html ; https://www.chinanews.com.cn/edu/2025/06-25/10437571.shtml",
+   "schools": [
+    {
+     "name": "郑州大学",
+     "tier": "211_local",
+     "nature": "公办",
+     "city": "郑州市",
+     "batch": "本科批",
+     "min_score": 601,
+     "rank": 44843,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（103）（首选物理，再选不限）；该校普通类共4个组，最高组（101） 645分（位次10445），组间中位数628.5",
+     "median_group_score": 628.5,
+     "max_group_score": 645,
+     "gap_vs_special": 66,
+     "gap_vs_benke": 174,
+     "gap_vs_zhuanke": 416,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/62/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "河南大学",
+     "tier": "ben1_local",
+     "nature": "公办",
+     "city": "郑州市",
+     "batch": "本科批",
+     "min_score": 572,
+     "rank": 82802,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（901）（首选物理，再选生物）；该校普通类共8个组，最高组（103） 627分（位次20939），组间中位数605",
+     "median_group_score": 605.0,
+     "max_group_score": 627,
+     "gap_vs_special": 37,
+     "gap_vs_benke": 145,
+     "gap_vs_zhuanke": 387,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/459/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "河南理工大学",
+     "tier": "ben1_local",
+     "nature": "公办",
+     "city": "焦作市",
+     "batch": "本科批",
+     "min_score": 528,
+     "rank": 156750,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（105）（首选物理，再选不限）；该校普通类共8个组，最高组（101） 586分（位次63025），组间中位数542",
+     "median_group_score": 542.0,
+     "max_group_score": 586,
+     "gap_vs_special": -7,
+     "gap_vs_benke": 101,
+     "gap_vs_zhuanke": 343,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/463/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "河南科技大学",
+     "tier": "ben1_local",
+     "nature": "公办",
+     "city": "洛阳市",
+     "batch": "本科批",
+     "min_score": 518,
+     "rank": 175267,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（105）（首选物理，再选化学）；该校普通类共12个组，最高组（103） 599分（位次47010），组间中位数539.5",
+     "median_group_score": 539.5,
+     "max_group_score": 599,
+     "gap_vs_special": -17,
+     "gap_vs_benke": 91,
+     "gap_vs_zhuanke": 333,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/460/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "河南师范大学",
+     "tier": "ben1_local",
+     "nature": "公办",
+     "city": "新乡市",
+     "batch": "本科批",
+     "min_score": 492,
+     "rank": 225208,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（901）（首选物理，再选化学）；该校普通类共7个组，最高组（106） 567分（位次90232），组间中位数554",
+     "median_group_score": 554,
+     "max_group_score": 567,
+     "gap_vs_special": -43,
+     "gap_vs_benke": 65,
+     "gap_vs_zhuanke": 307,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/833/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "河南农业大学",
+     "tier": "ben1_local",
+     "nature": "公办",
+     "city": "郑州市",
+     "batch": "本科批",
+     "min_score": 487,
+     "rank": 234918,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（108）（首选物理，再选化学、生物(2科必选)）；该校普通类共7个组，最高组（101） 566分（位次91732），组间中位数522",
+     "median_group_score": 522,
+     "max_group_score": 566,
+     "gap_vs_special": -48,
+     "gap_vs_benke": 60,
+     "gap_vs_zhuanke": 302,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/462/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "河南工业大学",
+     "tier": "ben1_local",
+     "nature": "公办",
+     "city": "郑州市",
+     "batch": "本科批",
+     "min_score": 545,
+     "rank": 126477,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（101）（首选物理，再选不限）；该校普通类共4个组，最高组（103） 590分（位次57947），组间中位数573",
+     "median_group_score": 573.0,
+     "max_group_score": 590,
+     "gap_vs_special": 10,
+     "gap_vs_benke": 118,
+     "gap_vs_zhuanke": 360,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/466/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "郑州轻工业大学",
+     "tier": "ben1_local",
+     "nature": "公办",
+     "city": "郑州市",
+     "batch": "本科批",
+     "min_score": 546,
+     "rank": 124772,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（123）（首选物理，再选化学）；该校普通类共23个组，最高组（101） 596分（位次50521），组间中位数567",
+     "median_group_score": 567,
+     "max_group_score": 596,
+     "gap_vs_special": 11,
+     "gap_vs_benke": 119,
+     "gap_vs_zhuanke": 361,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/458/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "华北水利水电大学",
+     "tier": "ben1_local",
+     "nature": "公办",
+     "city": "郑州市",
+     "batch": "本科批",
+     "min_score": 490,
+     "rank": 229094,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（109）（首选物理，再选化学）；该校普通类共19个组，最高组（101） 614分（位次31705），组间中位数574",
+     "median_group_score": 574,
+     "max_group_score": 614,
+     "gap_vs_special": -45,
+     "gap_vs_benke": 63,
+     "gap_vs_zhuanke": 305,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/464/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "河南财经政法大学",
+     "tier": "ben1_local",
+     "nature": "公办",
+     "city": "郑州市",
+     "batch": "本科批",
+     "min_score": 568,
+     "rank": 88775,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（102）（首选物理，再选化学）；该校普通类共2个组，最高组（101） 569分（位次87297），组间中位数568.5",
+     "median_group_score": 568.5,
+     "max_group_score": 569,
+     "gap_vs_special": 33,
+     "gap_vs_benke": 141,
+     "gap_vs_zhuanke": 383,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/490/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "信阳师范大学",
+     "tier": "ben2_local",
+     "nature": "公办",
+     "city": "信阳市",
+     "batch": "本科批",
+     "min_score": 520,
+     "rank": 171586,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（103）（首选物理，再选化学）；该校普通类共8个组，最高组（102） 555分（位次109314），组间中位数521.5",
+     "median_group_score": 521.5,
+     "max_group_score": 555,
+     "gap_vs_special": -15,
+     "gap_vs_benke": 93,
+     "gap_vs_zhuanke": 335,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/876/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "南阳师范学院",
+     "tier": "ben2_local",
+     "nature": "公办",
+     "city": "南阳市",
+     "batch": "本科批",
+     "min_score": 489,
+     "rank": 231000,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（501）（首选物理，再选不限）；该校普通类共8个组，最高组（103） 527分（位次158564），组间中位数504",
+     "median_group_score": 504.0,
+     "max_group_score": 527,
+     "gap_vs_special": -46,
+     "gap_vs_benke": 62,
+     "gap_vs_zhuanke": 304,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/487/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "商丘师范学院",
+     "tier": "ben2_local",
+     "nature": "公办",
+     "city": "商丘市",
+     "batch": "本科批",
+     "min_score": 485,
+     "rank": 238824,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（901）（首选物理，再选化学）；该校普通类共9个组，最高组（102） 509分（位次192194），组间中位数497",
+     "median_group_score": 497,
+     "max_group_score": 509,
+     "gap_vs_special": -50,
+     "gap_vs_benke": 58,
+     "gap_vs_zhuanke": 300,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/489/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "周口师范学院",
+     "tier": "ben2_local",
+     "nature": "公办",
+     "city": "周口市",
+     "batch": "本科批",
+     "min_score": 483,
+     "rank": 242790,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（902）（首选物理，再选化学）；该校普通类共5个组，最高组（105） 504分（位次201911），组间中位数496",
+     "median_group_score": 496,
+     "max_group_score": 504,
+     "gap_vs_special": -52,
+     "gap_vs_benke": 56,
+     "gap_vs_zhuanke": 298,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/485/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "安阳工学院",
+     "tier": "ben2_local",
+     "nature": "公办",
+     "city": "安阳市",
+     "batch": "本科批",
+     "min_score": 494,
+     "rank": 221305,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（103）（首选物理，再选不限）；该校普通类共3个组，最高组（101） 521分（位次169654），组间中位数508",
+     "median_group_score": 508,
+     "max_group_score": 521,
+     "gap_vs_special": -41,
+     "gap_vs_benke": 67,
+     "gap_vs_zhuanke": 309,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/834/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "洛阳理工学院",
+     "tier": "ben2_local",
+     "nature": "公办",
+     "city": "洛阳市",
+     "batch": "本科批",
+     "min_score": 522,
+     "rank": 167752,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（103）（首选物理，再选化学）；该校普通类共4个组，最高组（102） 552分（位次114348），组间中位数536",
+     "median_group_score": 536.0,
+     "max_group_score": 552,
+     "gap_vs_special": -13,
+     "gap_vs_benke": 95,
+     "gap_vs_zhuanke": 337,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/1178/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "许昌学院",
+     "tier": "ben2_local",
+     "nature": "公办",
+     "city": "许昌市",
+     "batch": "本科批",
+     "min_score": 488,
+     "rank": 232985,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（502）（首选物理，再选不限）；该校普通类共5个组，最高组（106） 519分（位次173388），组间中位数506",
+     "median_group_score": 506,
+     "max_group_score": 519,
+     "gap_vs_special": -47,
+     "gap_vs_benke": 61,
+     "gap_vs_zhuanke": 303,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/493/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "新乡学院",
+     "tier": "ben2_local",
+     "nature": "公办",
+     "city": "新乡市",
+     "batch": "本科批",
+     "min_score": 488,
+     "rank": 232985,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（103）（首选物理，再选不限）；该校普通类共3个组，最高组（101） 510分（位次190228），组间中位数490",
+     "median_group_score": 490,
+     "max_group_score": 510,
+     "gap_vs_special": -47,
+     "gap_vs_benke": 61,
+     "gap_vs_zhuanke": 303,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/1919/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "黄淮学院",
+     "tier": "ben2_local",
+     "nature": "公办",
+     "city": "驻马店市",
+     "batch": "本科批",
+     "min_score": 484,
+     "rank": 240777,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（108）（首选物理，再选生物）；该校普通类共5个组，最高组（105） 530分（位次153170），组间中位数507",
+     "median_group_score": 507,
+     "max_group_score": 530,
+     "gap_vs_special": -51,
+     "gap_vs_benke": 57,
+     "gap_vs_zhuanke": 299,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/884/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "河南工程学院",
+     "tier": "ben2_local",
+     "nature": "公办",
+     "city": "郑州市",
+     "batch": "本科批",
+     "min_score": 506,
+     "rank": 197957,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（108）（首选物理，再选化学）；该校普通类共7个组，最高组（105） 557分（位次106110），组间中位数517",
+     "median_group_score": 517,
+     "max_group_score": 557,
+     "gap_vs_special": -29,
+     "gap_vs_benke": 79,
+     "gap_vs_zhuanke": 321,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/1323/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "郑州科技学院",
+     "tier": "minban_local",
+     "nature": "民办",
+     "city": "郑州市",
+     "batch": "本科批",
+     "min_score": 457,
+     "rank": 293430,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（102）（首选物理，再选不限）；该校普通类共2个组，最高组（103） 460分（位次287531），组间中位数458.5",
+     "median_group_score": 458.5,
+     "max_group_score": 460,
+     "gap_vs_special": -78,
+     "gap_vs_benke": 30,
+     "gap_vs_zhuanke": 272,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/2452/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "黄河科技学院",
+     "tier": "minban_local",
+     "nature": "民办",
+     "city": "郑州市",
+     "batch": "本科批",
+     "min_score": 455,
+     "rank": 297074,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（502）（首选物理，再选不限）；该校普通类共3个组，最高组（103） 477分（位次254511），组间中位数472",
+     "median_group_score": 472,
+     "max_group_score": 477,
+     "gap_vs_special": -80,
+     "gap_vs_benke": 28,
+     "gap_vs_zhuanke": 270,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/469/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "郑州西亚斯学院",
+     "tier": "minban_local",
+     "nature": "民办",
+     "city": "郑州市",
+     "batch": "本科批",
+     "min_score": 451,
+     "rank": 304565,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（102）（首选物理，再选不限）；该校普通类共2个组，最高组（101） 455分（位次297074），组间中位数453",
+     "median_group_score": 453.0,
+     "max_group_score": 455,
+     "gap_vs_special": -84,
+     "gap_vs_benke": 24,
+     "gap_vs_zhuanke": 266,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/3423/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "商丘学院",
+     "tier": "minban_local",
+     "nature": "民办",
+     "city": "商丘市",
+     "batch": "本科批",
+     "min_score": 435,
+     "rank": 334050,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（103）（首选物理，再选不限）；该校普通类共3个组，最高组（101） 440分（位次324967），组间中位数439",
+     "median_group_score": 439,
+     "max_group_score": 440,
+     "gap_vs_special": -100,
+     "gap_vs_benke": 8,
+     "gap_vs_zhuanke": 250,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/2842/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "郑州工商学院",
+     "tier": "minban_local",
+     "nature": "民办",
+     "city": "郑州市",
+     "batch": "本科批",
+     "min_score": 442,
+     "rank": 321305,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（104）（首选物理，再选不限）；该校普通类共5个组，最高组（105） 472分（位次264203），组间中位数454",
+     "median_group_score": 454,
+     "max_group_score": 472,
+     "gap_vs_special": -93,
+     "gap_vs_benke": 15,
+     "gap_vs_zhuanke": 257,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/1148/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "郑州商学院",
+     "tier": "minban_local",
+     "nature": "民办",
+     "city": "郑州市",
+     "batch": "本科批",
+     "min_score": 430,
+     "rank": 342982,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（102）（首选物理，再选不限）；该校普通类共4个组，最高组（104） 486分（位次236802），组间中位数452.5",
+     "median_group_score": 452.5,
+     "max_group_score": 486,
+     "gap_vs_special": -105,
+     "gap_vs_benke": 3,
+     "gap_vs_zhuanke": 245,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/2451/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "河南职业技术学院",
+     "tier": "zhuan_public_local",
+     "nature": "公办",
+     "city": "郑州市",
+     "batch": "专科批",
+     "min_score": 405,
+     "rank": 385445,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（104）（首选物理，再选不限）；该校普通类共2个组，最高组（102） 423分（位次355229），组间中位数414",
+     "median_group_score": 414.0,
+     "max_group_score": 423,
+     "gap_vs_special": -130,
+     "gap_vs_benke": -22,
+     "gap_vs_zhuanke": 220,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/1050/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "郑州铁路职业技术大学",
+     "tier": "zhuan_public_local",
+     "nature": "公办",
+     "city": "郑州市",
+     "batch": "专科批",
+     "min_score": 425,
+     "rank": 351863,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（101）（首选物理，再选不限）；该校普通类共2个组，最高组（102） 467分（位次274053），组间中位数446",
+     "median_group_score": 446.0,
+     "max_group_score": 467,
+     "gap_vs_special": -110,
+     "gap_vs_benke": -2,
+     "gap_vs_zhuanke": 240,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/1156/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "河南工业职业技术大学",
+     "tier": "zhuan_public_local",
+     "nature": "公办",
+     "city": "南阳市",
+     "batch": "专科批",
+     "min_score": 379,
+     "rank": 424961,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（102）（首选物理，再选不限）；该校普通类共3个组，最高组（101） 407分（位次382317），组间中位数382",
+     "median_group_score": 382,
+     "max_group_score": 407,
+     "gap_vs_special": -156,
+     "gap_vs_benke": -48,
+     "gap_vs_zhuanke": 194,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/1547/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "河南经贸职业学院",
+     "tier": "zhuan_public_local",
+     "nature": "公办",
+     "city": "郑州市",
+     "batch": "专科批",
+     "min_score": 416,
+     "rank": 367404,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（102）（首选物理，再选不限）；该校普通类共2个组，最高组（103） 422分（位次356994），组间中位数419",
+     "median_group_score": 419.0,
+     "max_group_score": 422,
+     "gap_vs_special": -119,
+     "gap_vs_benke": -11,
+     "gap_vs_zhuanke": 231,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/1936/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "河南交通职业技术学院",
+     "tier": "zhuan_public_local",
+     "nature": "公办",
+     "city": "郑州市",
+     "batch": "专科批",
+     "min_score": 360,
+     "rank": 450338,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（103）（首选物理，再选不限）；该校普通类共3个组，最高组（102） 412分（位次374084），组间中位数403",
+     "median_group_score": 403,
+     "max_group_score": 412,
+     "gap_vs_special": -175,
+     "gap_vs_benke": -67,
+     "gap_vs_zhuanke": 175,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/1937/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "开封大学",
+     "tier": "zhuan_public_local",
+     "nature": "公办",
+     "city": "开封市",
+     "batch": "专科批",
+     "min_score": 406,
+     "rank": 383881,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（101）（首选物理，再选不限）；该校普通类共1个组，最高组（101） 406分（位次383881），组间中位数406",
+     "median_group_score": 406,
+     "max_group_score": 406,
+     "gap_vs_special": -129,
+     "gap_vs_benke": -21,
+     "gap_vs_zhuanke": 221,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/1520/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "郑州职业技术学院",
+     "tier": "zhuan_public_local",
+     "nature": "公办",
+     "city": "郑州市",
+     "batch": "专科批",
+     "min_score": 378,
+     "rank": 426362,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（101）（首选物理，再选不限）；该校普通类共1个组，最高组（101） 378分（位次426362），组间中位数378",
+     "median_group_score": 378,
+     "max_group_score": 378,
+     "gap_vs_special": -157,
+     "gap_vs_benke": -49,
+     "gap_vs_zhuanke": 193,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/1939/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "郑州信息工程职业学院",
+     "tier": "zhuan_private_local",
+     "nature": "民办",
+     "city": "郑州市",
+     "batch": "专科批",
+     "min_score": 185,
+     "rank": 553621,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（101）（首选物理，再选不限）；该校普通类共1个组，最高组（101） 185分（位次553621），组间中位数185",
+     "median_group_score": 185,
+     "max_group_score": 185,
+     "gap_vs_special": -350,
+     "gap_vs_benke": -242,
+     "gap_vs_zhuanke": 0,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/2677/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "郑州城市职业学院",
+     "tier": "zhuan_private_local",
+     "nature": "民办",
+     "city": "郑州市",
+     "batch": "专科批",
+     "min_score": 193,
+     "rank": 553147,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（101）（首选物理，再选不限）；该校普通类共1个组，最高组（101） 193分（位次553147），组间中位数193",
+     "median_group_score": 193,
+     "max_group_score": 193,
+     "gap_vs_special": -342,
+     "gap_vs_benke": -234,
+     "gap_vs_zhuanke": 8,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/2454/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "郑州电子信息职业技术学院",
+     "tier": "zhuan_private_local",
+     "nature": "民办",
+     "city": "郑州市",
+     "batch": "专科批",
+     "min_score": 163,
+     "rank": 554386,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（102）（首选物理，再选不限）；该校普通类共1个组，最高组（102） 163分（位次554386），组间中位数163",
+     "median_group_score": 163,
+     "max_group_score": 163,
+     "gap_vs_special": -372,
+     "gap_vs_benke": -264,
+     "gap_vs_zhuanke": -22,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/1150/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "郑州理工职业学院",
+     "tier": "zhuan_private_local",
+     "nature": "民办",
+     "city": "郑州市",
+     "batch": "专科批",
+     "min_score": 188,
+     "rank": 553471,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（101）（首选物理，再选不限）；该校普通类共1个组，最高组（101） 188分（位次553471），组间中位数188",
+     "median_group_score": 188,
+     "max_group_score": 188,
+     "gap_vs_special": -347,
+     "gap_vs_benke": -239,
+     "gap_vs_zhuanke": 3,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/2676/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "四川大学",
+     "tier": "985_out",
+     "nature": "公办",
+     "city": "成都市",
+     "batch": "本科批",
+     "min_score": 617,
+     "rank": 28989,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（105）（首选物理，再选化学）；该校普通类共5个组，最高组（104） 675分（位次1763），组间中位数661",
+     "median_group_score": 661,
+     "max_group_score": 675,
+     "gap_vs_special": 82,
+     "gap_vs_benke": 190,
+     "gap_vs_zhuanke": 432,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/99/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "西安交通大学",
+     "tier": "985_out",
+     "nature": "公办",
+     "city": "西安市",
+     "batch": "本科批",
+     "min_score": 630,
+     "rank": 18923,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（905）（首选物理，再选化学）；该校普通类共5个组，最高组（102） 675分（位次1763），组间中位数659",
+     "median_group_score": 659,
+     "max_group_score": 675,
+     "gap_vs_special": 95,
+     "gap_vs_benke": 203,
+     "gap_vs_zhuanke": 445,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/330/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "武汉科技大学",
+     "tier": "ben1_out",
+     "nature": "公办",
+     "city": "武汉市",
+     "batch": "本科批",
+     "min_score": 596,
+     "rank": 50521,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（104）（首选物理，再选不限）；该校普通类共2个组，最高组（103） 608分（位次37473），组间中位数602",
+     "median_group_score": 602.0,
+     "max_group_score": 608,
+     "gap_vs_special": 61,
+     "gap_vs_benke": 169,
+     "gap_vs_zhuanke": 411,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/1007/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "湖北大学",
+     "tier": "ben1_out",
+     "nature": "公办",
+     "city": "武汉市",
+     "batch": "本科批",
+     "min_score": 584,
+     "rank": 65709,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（104）（首选物理，再选不限）；该校普通类共4个组，最高组（106） 603分（位次42712），组间中位数597",
+     "median_group_score": 597.0,
+     "max_group_score": 603,
+     "gap_vs_special": 49,
+     "gap_vs_benke": 157,
+     "gap_vs_zhuanke": 399,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/425/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "山东科技大学",
+     "tier": "ben1_out",
+     "nature": "公办",
+     "city": "青岛市",
+     "batch": "本科批",
+     "min_score": 589,
+     "rank": 59240,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（102）（首选物理，再选化学）；该校普通类共1个组，最高组（102） 589分（位次59240），组间中位数589",
+     "median_group_score": 589,
+     "max_group_score": 589,
+     "gap_vs_special": 54,
+     "gap_vs_benke": 162,
+     "gap_vs_zhuanke": 404,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/537/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "河北大学",
+     "tier": "ben1_out",
+     "nature": "公办",
+     "city": "保定市",
+     "batch": "本科批",
+     "min_score": 568,
+     "rank": 88775,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（101）（首选物理，再选不限）；该校普通类共3个组，最高组（104） 595分（位次51684），组间中位数582",
+     "median_group_score": 582,
+     "max_group_score": 595,
+     "gap_vs_special": 33,
+     "gap_vs_benke": 141,
+     "gap_vs_zhuanke": 383,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/54/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "西安石油大学",
+     "tier": "ben1_out",
+     "nature": "公办",
+     "city": "西安市",
+     "batch": "本科批",
+     "min_score": 588,
+     "rank": 60488,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（107）（首选物理，再选不限）；该校普通类共4个组，最高组（104） 601分（位次44843），组间中位数593",
+     "median_group_score": 593.0,
+     "max_group_score": 601,
+     "gap_vs_special": 53,
+     "gap_vs_benke": 161,
+     "gap_vs_zhuanke": 403,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/354/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "湖北文理学院",
+     "tier": "ben2_out",
+     "nature": "公办",
+     "city": "襄阳市",
+     "batch": "本科批",
+     "min_score": 505,
+     "rank": 199910,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（102）（首选物理，再选不限）；该校普通类共3个组，最高组（101） 540分（位次135096），组间中位数528",
+     "median_group_score": 528,
+     "max_group_score": 540,
+     "gap_vs_special": -30,
+     "gap_vs_benke": 78,
+     "gap_vs_zhuanke": 320,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/461/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "安徽工程大学",
+     "tier": "ben2_out",
+     "nature": "公办",
+     "city": "芜湖市",
+     "batch": "本科批",
+     "min_score": 542,
+     "rank": 131568,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（101）（首选物理，再选化学）；该校普通类共2个组，最高组（102） 544分（位次128153），组间中位数543",
+     "median_group_score": 543.0,
+     "max_group_score": 544,
+     "gap_vs_special": 7,
+     "gap_vs_benke": 115,
+     "gap_vs_zhuanke": 357,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/316/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "盐城工学院",
+     "tier": "ben2_out",
+     "nature": "公办",
+     "city": "盐城市",
+     "batch": "本科批",
+     "min_score": 526,
+     "rank": 160378,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（102）（首选物理，再选不限）；该校普通类共2个组，最高组（101） 533分（位次147701），组间中位数529.5",
+     "median_group_score": 529.5,
+     "max_group_score": 533,
+     "gap_vs_special": -9,
+     "gap_vs_benke": 99,
+     "gap_vs_zhuanke": 341,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/154/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "临沂大学",
+     "tier": "ben2_out",
+     "nature": "公办",
+     "city": "临沂市",
+     "batch": "本科批",
+     "min_score": 552,
+     "rank": 114348,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（102）（首选物理，再选化学）；该校普通类共1个组，最高组（102） 552分（位次114348），组间中位数552",
+     "median_group_score": 552,
+     "max_group_score": 552,
+     "gap_vs_special": 17,
+     "gap_vs_benke": 125,
+     "gap_vs_zhuanke": 367,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/496/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "嘉兴大学",
+     "tier": "ben2_out",
+     "nature": "公办",
+     "city": "嘉兴市",
+     "batch": "本科批",
+     "min_score": 543,
+     "rank": 129826,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（104）（首选物理，再选生物）；该校普通类共3个组，最高组（103） 566分（位次91732），组间中位数552",
+     "median_group_score": 552,
+     "max_group_score": 566,
+     "gap_vs_special": 8,
+     "gap_vs_benke": 116,
+     "gap_vs_zhuanke": 358,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/244/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "鲁东大学",
+     "tier": "ben2_out",
+     "nature": "公办",
+     "city": "烟台市",
+     "batch": "本科批",
+     "min_score": 548,
+     "rank": 121209,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（103）（首选物理，再选化学）；该校普通类共1个组，最高组（103） 548分（位次121209），组间中位数548",
+     "median_group_score": 548,
+     "max_group_score": 548,
+     "gap_vs_special": 13,
+     "gap_vs_benke": 121,
+     "gap_vs_zhuanke": 363,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/555/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "聊城大学",
+     "tier": "ben2_out",
+     "nature": "公办",
+     "city": "聊城市",
+     "batch": "本科批",
+     "min_score": 513,
+     "rank": 184632,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（103）（首选物理，再选生物）；该校普通类共2个组，最高组（102） 546分（位次124772），组间中位数529.5",
+     "median_group_score": 529.5,
+     "max_group_score": 546,
+     "gap_vs_special": -22,
+     "gap_vs_benke": 86,
+     "gap_vs_zhuanke": 328,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/494/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "陕西理工大学",
+     "tier": "ben2_out",
+     "nature": "公办",
+     "city": "汉中市",
+     "batch": "本科批",
+     "min_score": 503,
+     "rank": 203899,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（102）（首选物理，再选不限）；该校普通类共3个组，最高组（104） 559分（位次102928），组间中位数551",
+     "median_group_score": 551,
+     "max_group_score": 559,
+     "gap_vs_special": -32,
+     "gap_vs_benke": 76,
+     "gap_vs_zhuanke": 318,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/371/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "延安大学",
+     "tier": "ben2_out",
+     "nature": "公办",
+     "city": "延安市",
+     "batch": "本科批",
+     "min_score": 553,
+     "rank": 112668,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（113）（首选物理，再选化学）；该校普通类共3个组，最高组（114） 567分（位次90232），组间中位数555",
+     "median_group_score": 555,
+     "max_group_score": 567,
+     "gap_vs_special": 18,
+     "gap_vs_benke": 126,
+     "gap_vs_zhuanke": 368,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/336/provinceline",
+     "confidence": "medium"
+    }
+   ]
+  },
+  "SC": {
+   "province": "四川",
+   "year": 2025,
+   "track": "physics",
+   "lines": {
+    "special": 518,
+    "benke": 438,
+    "zhuanke": 150
+   },
+   "line_ranks": {
+    "special": 103351,
+    "benke": 207063,
+    "zhuanke": 284789
+   },
+   "line_source": "四川省教育考试院公布，新京报/中新网转载 https://m.bjnews.com.cn/detail/1750835043129840.html ; https://www.chinanews.com.cn/edu/2025/06-25/10437571.shtml",
+   "schools": [
+    {
+     "name": "四川大学",
+     "tier": "985_local",
+     "nature": "公办",
+     "city": "成都市",
+     "batch": "本科批B段",
+     "min_score": 601,
+     "rank": 22824,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（108）（首选物理，再选化学）；该校普通类共8个组，最高组（103） 667分（位次1083），组间中位数634.5",
+     "median_group_score": 634.5,
+     "max_group_score": 667,
+     "gap_vs_special": 83,
+     "gap_vs_benke": 163,
+     "gap_vs_zhuanke": 451,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/99/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "电子科技大学",
+     "tier": "985_local",
+     "nature": "公办",
+     "city": "成都市",
+     "batch": "本科批B段",
+     "min_score": 653,
+     "rank": 2851,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（103）（首选物理，再选化学）；该校普通类共3个组，最高组（101） 668分（位次994），组间中位数657",
+     "median_group_score": 657,
+     "max_group_score": 668,
+     "gap_vs_special": 135,
+     "gap_vs_benke": 215,
+     "gap_vs_zhuanke": 503,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/661/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "西南交通大学",
+     "tier": "211_local",
+     "nature": "公办",
+     "city": "成都市",
+     "batch": "本科批B段",
+     "min_score": 603,
+     "rank": 21662,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（103）（首选物理，再选化学）；该校普通类共3个组，最高组（102） 612分（位次16680），组间中位数608",
+     "median_group_score": 608,
+     "max_group_score": 612,
+     "gap_vs_special": 85,
+     "gap_vs_benke": 165,
+     "gap_vs_zhuanke": 453,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/51/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "西南财经大学",
+     "tier": "211_local",
+     "nature": "公办",
+     "city": "成都市",
+     "batch": "本科批B段",
+     "min_score": 605,
+     "rank": 20484,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（103）（首选物理，再选不限）；该校普通类共4个组，最高组（101） 630分（位次8961），组间中位数610",
+     "median_group_score": 610.0,
+     "max_group_score": 630,
+     "gap_vs_special": 87,
+     "gap_vs_benke": 167,
+     "gap_vs_zhuanke": 455,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/101/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "四川农业大学",
+     "tier": "211_local",
+     "nature": "公办",
+     "city": "成都市",
+     "batch": "本科批B段",
+     "min_score": 560,
+     "rank": 55395,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（103）（首选物理，再选不限）；该校普通类共4个组，最高组（102） 569分（位次46766），组间中位数564.5",
+     "median_group_score": 564.5,
+     "max_group_score": 569,
+     "gap_vs_special": 42,
+     "gap_vs_benke": 122,
+     "gap_vs_zhuanke": 410,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/100/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "成都理工大学",
+     "tier": "ben1_local",
+     "nature": "公办",
+     "city": "成都市",
+     "batch": "本科批B段",
+     "min_score": 535,
+     "rank": 82339,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（102）（首选物理，再选不限）；该校普通类共12个组，最高组（107） 606分（位次19899），组间中位数579",
+     "median_group_score": 579.0,
+     "max_group_score": 606,
+     "gap_vs_special": 17,
+     "gap_vs_benke": 97,
+     "gap_vs_zhuanke": 385,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/232/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "西南石油大学",
+     "tier": "ben1_local",
+     "nature": "公办",
+     "city": "成都市",
+     "batch": "本科批B段",
+     "min_score": 571,
+     "rank": 45003,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（105）（首选物理，再选不限）；该校普通类共7个组，最高组（101） 598分（位次24744），组间中位数581",
+     "median_group_score": 581,
+     "max_group_score": 598,
+     "gap_vs_special": 53,
+     "gap_vs_benke": 133,
+     "gap_vs_zhuanke": 421,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/268/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "四川师范大学",
+     "tier": "ben1_local",
+     "nature": "公办",
+     "city": "成都市",
+     "batch": "本科批B段",
+     "min_score": 514,
+     "rank": 108557,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（101）（首选物理，再选不限）；该校普通类共9个组，最高组（106） 563分（位次52443），组间中位数535",
+     "median_group_score": 535,
+     "max_group_score": 563,
+     "gap_vs_special": -4,
+     "gap_vs_benke": 76,
+     "gap_vs_zhuanke": 364,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/265/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "西华大学",
+     "tier": "ben1_local",
+     "nature": "公办",
+     "city": "成都市",
+     "batch": "本科批B段",
+     "min_score": 501,
+     "rank": 125937,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（101）（首选物理，再选不限）；该校普通类共12个组，最高组（108） 590分（位次30107），组间中位数543.5",
+     "median_group_score": 543.5,
+     "max_group_score": 590,
+     "gap_vs_special": -17,
+     "gap_vs_benke": 63,
+     "gap_vs_zhuanke": 351,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/245/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "成都信息工程大学",
+     "tier": "ben1_local",
+     "nature": "公办",
+     "city": "成都市",
+     "batch": "本科批B段",
+     "min_score": 540,
+     "rank": 76490,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（108）（首选物理，再选化学）；该校普通类共10个组，最高组（111） 606分（位次19899），组间中位数563.5",
+     "median_group_score": 563.5,
+     "max_group_score": 606,
+     "gap_vs_special": 22,
+     "gap_vs_benke": 102,
+     "gap_vs_zhuanke": 390,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/270/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "西南科技大学",
+     "tier": "ben1_local",
+     "nature": "公办",
+     "city": "绵阳市",
+     "batch": "本科批B段",
+     "min_score": 483,
+     "rank": 150538,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（101）（首选物理，再选不限）；该校普通类共6个组，最高组（105） 558分（位次57388），组间中位数537",
+     "median_group_score": 537.0,
+     "max_group_score": 558,
+     "gap_vs_special": -35,
+     "gap_vs_benke": 45,
+     "gap_vs_zhuanke": 333,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/263/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "成都中医药大学",
+     "tier": "ben1_local",
+     "nature": "公办",
+     "city": "成都市",
+     "batch": "本科批B段",
+     "min_score": 512,
+     "rank": 111117,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（109）（首选物理，再选化学）；该校普通类共8个组，最高组（101） 610分（位次17774），组间中位数549",
+     "median_group_score": 549.0,
+     "max_group_score": 610,
+     "gap_vs_special": -6,
+     "gap_vs_benke": 74,
+     "gap_vs_zhuanke": 362,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/264/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "西南医科大学",
+     "tier": "ben1_local",
+     "nature": "公办",
+     "city": "泸州市",
+     "batch": "本科批B段",
+     "min_score": 504,
+     "rank": 121845,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（113）（首选物理，再选不限）；该校普通类共13个组，最高组（101） 624分（位次11304），组间中位数530",
+     "median_group_score": 530,
+     "max_group_score": 624,
+     "gap_vs_special": -14,
+     "gap_vs_benke": 66,
+     "gap_vs_zhuanke": 354,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/274/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "绵阳师范学院",
+     "tier": "ben2_local",
+     "nature": "公办",
+     "city": "绵阳市",
+     "batch": "本科批B段",
+     "min_score": 490,
+     "rank": 140851,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（104）（首选物理，再选不限）；该校普通类共7个组，最高组（103） 520分（位次100805），组间中位数501",
+     "median_group_score": 501,
+     "max_group_score": 520,
+     "gap_vs_special": -28,
+     "gap_vs_benke": 52,
+     "gap_vs_zhuanke": 340,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/1082/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "宜宾学院",
+     "tier": "ben2_local",
+     "nature": "公办",
+     "city": "宜宾市",
+     "batch": "本科批B段",
+     "min_score": 494,
+     "rank": 135473,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（103）（首选物理，再选不限）；该校普通类共13个组，最高组（108） 528分（位次90690），组间中位数506",
+     "median_group_score": 506,
+     "max_group_score": 528,
+     "gap_vs_special": -24,
+     "gap_vs_benke": 56,
+     "gap_vs_zhuanke": 344,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/1084/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "乐山师范学院",
+     "tier": "ben2_local",
+     "nature": "公办",
+     "city": "乐山市",
+     "batch": "本科批B段",
+     "min_score": 489,
+     "rank": 142200,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（102）（首选物理，再选不限）；该校普通类共8个组，最高组（105） 506分（位次119161），组间中位数495",
+     "median_group_score": 495.0,
+     "max_group_score": 506,
+     "gap_vs_special": -29,
+     "gap_vs_benke": 51,
+     "gap_vs_zhuanke": 339,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/1085/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "内江师范学院",
+     "tier": "ben2_local",
+     "nature": "公办",
+     "city": "内江市",
+     "batch": "本科批B段",
+     "min_score": 497,
+     "rank": 131341,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（507）（首选物理，再选不限）；该校普通类共7个组，最高组（505） 523分（位次97005），组间中位数511",
+     "median_group_score": 511,
+     "max_group_score": 523,
+     "gap_vs_special": -21,
+     "gap_vs_benke": 59,
+     "gap_vs_zhuanke": 347,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/1083/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "四川轻化工大学",
+     "tier": "ben2_local",
+     "nature": "公办",
+     "city": "自贡市",
+     "batch": "本科批B段",
+     "min_score": 504,
+     "rank": 121845,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（205）（首选物理，再选不限）；该校普通类共8个组，最高组（101） 552分（位次63535），组间中位数535",
+     "median_group_score": 535.0,
+     "max_group_score": 552,
+     "gap_vs_special": -14,
+     "gap_vs_benke": 66,
+     "gap_vs_zhuanke": 354,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/273/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "西昌学院",
+     "tier": "ben2_local",
+     "nature": "公办",
+     "city": "凉山彝族自治州",
+     "batch": "本科批B段",
+     "min_score": 490,
+     "rank": 140851,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（103）（首选物理，再选不限）；该校普通类共8个组，最高组（104） 509分（位次115134），组间中位数496.5",
+     "median_group_score": 496.5,
+     "max_group_score": 509,
+     "gap_vs_special": -28,
+     "gap_vs_benke": 52,
+     "gap_vs_zhuanke": 340,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/929/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "成都大学",
+     "tier": "ben2_local",
+     "nature": "公办",
+     "city": "成都市",
+     "batch": "本科批B段",
+     "min_score": 526,
+     "rank": 93220,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（103）（首选物理，再选不限）；该校普通类共11个组，最高组（106） 581分（位次36672），组间中位数546",
+     "median_group_score": 546,
+     "max_group_score": 581,
+     "gap_vs_special": 8,
+     "gap_vs_benke": 88,
+     "gap_vs_zhuanke": 376,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/2491/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "四川文理学院",
+     "tier": "ben2_local",
+     "nature": "公办",
+     "city": "达州市",
+     "batch": "本科批B段",
+     "min_score": 494,
+     "rank": 135473,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（104）（首选物理，再选不限）；该校普通类共7个组，最高组（106） 512分（位次111117），组间中位数498",
+     "median_group_score": 498,
+     "max_group_score": 512,
+     "gap_vs_special": -24,
+     "gap_vs_benke": 56,
+     "gap_vs_zhuanke": 344,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/798/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "攀枝花学院",
+     "tier": "ben2_local",
+     "nature": "公办",
+     "city": "攀枝花市",
+     "batch": "本科批B段",
+     "min_score": 495,
+     "rank": 134050,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（202）（首选物理，再选不限）；该校普通类共4个组，最高组（201） 544分（位次71973），组间中位数504.5",
+     "median_group_score": 504.5,
+     "max_group_score": 544,
+     "gap_vs_special": -23,
+     "gap_vs_benke": 57,
+     "gap_vs_zhuanke": 345,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/932/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "成都工业学院",
+     "tier": "ben2_local",
+     "nature": "公办",
+     "city": "成都市",
+     "batch": "本科批B段",
+     "min_score": 511,
+     "rank": 112408,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（105）（首选物理，再选不限）；该校普通类共5个组，最高组（101） 538分（位次78802），组间中位数524",
+     "median_group_score": 524,
+     "max_group_score": 538,
+     "gap_vs_special": -7,
+     "gap_vs_benke": 73,
+     "gap_vs_zhuanke": 361,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/769/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "四川传媒学院",
+     "tier": "minban_local",
+     "nature": "民办",
+     "city": "成都市",
+     "batch": "本科批B段",
+     "min_score": 438,
+     "rank": 207063,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（102）（首选物理，再选不限）；该校普通类共3个组，最高组（101） 460分（位次181284），组间中位数453",
+     "median_group_score": 453,
+     "max_group_score": 460,
+     "gap_vs_special": -80,
+     "gap_vs_benke": 0,
+     "gap_vs_zhuanke": 288,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/2494/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "成都锦城学院",
+     "tier": "minban_local",
+     "nature": "民办",
+     "city": "成都市",
+     "batch": "本科批B段",
+     "min_score": 480,
+     "rank": 154721,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（103）（首选物理，再选不限）；该校普通类共5个组，最高组（101） 514分（位次108557），组间中位数485",
+     "median_group_score": 485,
+     "max_group_score": 514,
+     "gap_vs_special": -38,
+     "gap_vs_benke": 42,
+     "gap_vs_zhuanke": 330,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/2498/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "四川工商学院",
+     "tier": "minban_local",
+     "nature": "民办",
+     "city": "成都市",
+     "batch": "本科批B段",
+     "min_score": 438,
+     "rank": 207063,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（101）（首选物理，再选不限）；该校普通类共2个组，最高组（102） 438分（位次207063），组间中位数438",
+     "median_group_score": 438.0,
+     "max_group_score": 438,
+     "gap_vs_special": -80,
+     "gap_vs_benke": 0,
+     "gap_vs_zhuanke": 288,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/1395/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "成都东软学院",
+     "tier": "minban_local",
+     "nature": "民办",
+     "city": "成都市",
+     "batch": "本科批B段",
+     "min_score": 444,
+     "rank": 200565,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（101）（首选物理，再选不限）；该校普通类共3个组，最高组（102） 482分（位次151883），组间中位数453",
+     "median_group_score": 453,
+     "max_group_score": 482,
+     "gap_vs_special": -74,
+     "gap_vs_benke": 6,
+     "gap_vs_zhuanke": 294,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/770/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "西南交通大学希望学院",
+     "tier": "minban_local",
+     "nature": "民办",
+     "city": "成都市",
+     "batch": "本科批B段",
+     "min_score": 438,
+     "rank": 207063,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（101）（首选物理，再选不限）；该校普通类共5个组，最高组（105） 476分（位次160168），组间中位数446",
+     "median_group_score": 446,
+     "max_group_score": 476,
+     "gap_vs_special": -80,
+     "gap_vs_benke": 0,
+     "gap_vs_zhuanke": 288,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/2503/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "成都文理学院",
+     "tier": "minban_local",
+     "nature": "民办",
+     "city": "成都市",
+     "batch": "本科批B段",
+     "min_score": 438,
+     "rank": 207063,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（103）（首选物理，再选不限）；该校普通类共6个组，最高组（105） 474分（位次162900），组间中位数465",
+     "median_group_score": 465.0,
+     "max_group_score": 474,
+     "gap_vs_special": -80,
+     "gap_vs_benke": 0,
+     "gap_vs_zhuanke": 288,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/2496/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "四川建筑职业技术大学",
+     "tier": "zhuan_public_local",
+     "nature": "公办",
+     "city": "德阳市",
+     "batch": "专科批",
+     "min_score": 380,
+     "rank": 252815,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（101）（首选物理，再选不限）；该校普通类共1个组，最高组（101） 380分（位次252815），组间中位数380",
+     "median_group_score": 380,
+     "max_group_score": 380,
+     "gap_vs_special": -138,
+     "gap_vs_benke": -58,
+     "gap_vs_zhuanke": 230,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/793/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "成都航空职业技术大学",
+     "tier": "zhuan_public_local",
+     "nature": "公办",
+     "city": "成都市",
+     "batch": "专科批",
+     "min_score": 426,
+     "rank": 219255,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（104）（首选物理，再选不限）；该校普通类共4个组，最高组（101） 471分（位次166963），组间中位数443.5",
+     "median_group_score": 443.5,
+     "max_group_score": 471,
+     "gap_vs_special": -92,
+     "gap_vs_benke": -12,
+     "gap_vs_zhuanke": 276,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/771/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "四川交通职业技术大学",
+     "tier": "zhuan_public_local",
+     "nature": "公办",
+     "city": "成都市",
+     "batch": "专科批",
+     "min_score": 474,
+     "rank": 162900,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（102）（首选物理，再选不限）；该校普通类共2个组，最高组（101） 483分（位次150538），组间中位数478.5",
+     "median_group_score": 478.5,
+     "max_group_score": 483,
+     "gap_vs_special": -44,
+     "gap_vs_benke": 36,
+     "gap_vs_zhuanke": 324,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/800/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "四川职业技术学院",
+     "tier": "zhuan_public_local",
+     "nature": "公办",
+     "city": "遂宁市",
+     "batch": "专科批",
+     "min_score": 397,
+     "rank": 242786,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（103）（首选物理，再选不限）；该校普通类共5个组，最高组（101） 439分（位次206006），组间中位数428",
+     "median_group_score": 428,
+     "max_group_score": 439,
+     "gap_vs_special": -121,
+     "gap_vs_benke": -41,
+     "gap_vs_zhuanke": 247,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/789/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "四川工程职业技术大学",
+     "tier": "zhuan_public_local",
+     "nature": "公办",
+     "city": "德阳市",
+     "batch": "专科批",
+     "min_score": 458,
+     "rank": 183842,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（101）（首选物理，再选不限）；该校普通类共3个组，最高组（102） 464分（位次176107），组间中位数462",
+     "median_group_score": 462,
+     "max_group_score": 464,
+     "gap_vs_special": -60,
+     "gap_vs_benke": 20,
+     "gap_vs_zhuanke": 308,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/795/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "成都职业技术学院",
+     "tier": "zhuan_public_local",
+     "nature": "公办",
+     "city": "成都市",
+     "batch": "专科批",
+     "min_score": 416,
+     "rank": 228336,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（103）（首选物理，再选不限）；该校普通类共3个组，最高组（102） 460分（位次181284），组间中位数454",
+     "median_group_score": 454,
+     "max_group_score": 460,
+     "gap_vs_special": -102,
+     "gap_vs_benke": -22,
+     "gap_vs_zhuanke": 266,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/774/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "四川水利职业技术学院",
+     "tier": "zhuan_public_local",
+     "nature": "公办",
+     "city": "成都市",
+     "batch": "专科批",
+     "min_score": 422,
+     "rank": 222969,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（101）（首选物理，再选不限）；该校普通类共1个组，最高组（101） 422分（位次222969），组间中位数422",
+     "median_group_score": 422,
+     "max_group_score": 422,
+     "gap_vs_special": -96,
+     "gap_vs_benke": -16,
+     "gap_vs_zhuanke": 272,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/802/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "四川华新现代职业学院",
+     "tier": "zhuan_public_local",
+     "nature": "公办",
+     "city": "成都市",
+     "batch": "专科批",
+     "min_score": 150,
+     "rank": 284789,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（101）（首选物理，再选不限）；该校普通类共1个组，最高组（101） 150分（位次284789），组间中位数150",
+     "median_group_score": 150,
+     "max_group_score": 150,
+     "gap_vs_special": -368,
+     "gap_vs_benke": -288,
+     "gap_vs_zhuanke": 0,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/2091/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "四川城市职业学院",
+     "tier": "zhuan_private_local",
+     "nature": "民办",
+     "city": "成都市",
+     "batch": "专科批",
+     "min_score": 150,
+     "rank": 284789,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（101）（首选物理，再选不限）；该校普通类共1个组，最高组（101） 150分（位次284789），组间中位数150",
+     "median_group_score": 150,
+     "max_group_score": 150,
+     "gap_vs_special": -368,
+     "gap_vs_benke": -288,
+     "gap_vs_zhuanke": 0,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/2505/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "四川科技职业学院",
+     "tier": "zhuan_private_local",
+     "nature": "民办",
+     "city": "眉山市",
+     "batch": "专科批",
+     "min_score": 150,
+     "rank": 284789,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（101）（首选物理，再选不限）；该校普通类共1个组，最高组（101） 150分（位次284789），组间中位数150",
+     "median_group_score": 150,
+     "max_group_score": 150,
+     "gap_vs_special": -368,
+     "gap_vs_benke": -288,
+     "gap_vs_zhuanke": 0,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/2090/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "四川长江职业学院",
+     "tier": "zhuan_private_local",
+     "nature": "民办",
+     "city": "成都市",
+     "batch": "专科批",
+     "min_score": 150,
+     "rank": 284789,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（101）（首选物理，再选不限）；该校普通类共1个组，最高组（101） 150分（位次284789），组间中位数150",
+     "median_group_score": 150,
+     "max_group_score": 150,
+     "gap_vs_special": -368,
+     "gap_vs_benke": -288,
+     "gap_vs_zhuanke": 0,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/2868/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "四川托普信息技术职业学院",
+     "tier": "zhuan_private_local",
+     "nature": "民办",
+     "city": "成都市",
+     "batch": "专科批",
+     "min_score": 150,
+     "rank": 284789,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（101）（首选物理，再选不限）；该校普通类共1个组，最高组（101） 150分（位次284789），组间中位数150",
+     "median_group_score": 150,
+     "max_group_score": 150,
+     "gap_vs_special": -368,
+     "gap_vs_benke": -288,
+     "gap_vs_zhuanke": 0,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/788/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "西安交通大学",
+     "tier": "985_out",
+     "nature": "公办",
+     "city": "西安市",
+     "batch": "本科批B段",
+     "min_score": 610,
+     "rank": 17774,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（105）（首选物理，再选化学）；该校普通类共6个组，最高组（102） 663分（位次1500），组间中位数647",
+     "median_group_score": 647.0,
+     "max_group_score": 663,
+     "gap_vs_special": 92,
+     "gap_vs_benke": 172,
+     "gap_vs_zhuanke": 460,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/330/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "贵州大学",
+     "tier": "211_out",
+     "nature": "公办",
+     "city": "贵阳市",
+     "batch": "本科批B段",
+     "min_score": 549,
+     "rank": 66644,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（101）（首选物理，再选不限）；该校普通类共6个组，最高组（108） 613分（位次16212），组间中位数591",
+     "median_group_score": 591.0,
+     "max_group_score": 613,
+     "gap_vs_special": 31,
+     "gap_vs_benke": 111,
+     "gap_vs_zhuanke": 399,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/935/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "云南大学",
+     "tier": "211_out",
+     "nature": "公办",
+     "city": "昆明市",
+     "batch": "本科批B段",
+     "min_score": 572,
+     "rank": 43245,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（101）（首选物理，再选不限）；该校普通类共5个组，最高组（105） 607分（位次18805），组间中位数588",
+     "median_group_score": 588,
+     "max_group_score": 607,
+     "gap_vs_special": 54,
+     "gap_vs_benke": 134,
+     "gap_vs_zhuanke": 422,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/35/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "重庆交通大学",
+     "tier": "ben1_out",
+     "nature": "公办",
+     "city": "重庆市",
+     "batch": "本科批B段",
+     "min_score": 544,
+     "rank": 71973,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（101）（首选物理，再选不限）；该校普通类共3个组，最高组（103） 559分（位次56423），组间中位数557",
+     "median_group_score": 557,
+     "max_group_score": 559,
+     "gap_vs_special": 26,
+     "gap_vs_benke": 106,
+     "gap_vs_zhuanke": 394,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/1018/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "重庆邮电大学",
+     "tier": "ben1_out",
+     "nature": "公办",
+     "city": "重庆市",
+     "batch": "本科批B段",
+     "min_score": 591,
+     "rank": 29415,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（102）（首选物理，再选不限）；该校普通类共4个组，最高组（101） 607分（位次19363），组间中位数599",
+     "median_group_score": 599.0,
+     "max_group_score": 607,
+     "gap_vs_special": 73,
+     "gap_vs_benke": 153,
+     "gap_vs_zhuanke": 441,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/184/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "长沙理工大学",
+     "tier": "ben1_out",
+     "nature": "公办",
+     "city": "长沙市",
+     "batch": "本科批B段",
+     "min_score": 553,
+     "rank": 62454,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（101）（首选物理，再选不限）；该校普通类共2个组，最高组（102） 581分（位次36672），组间中位数567",
+     "median_group_score": 567.0,
+     "max_group_score": 581,
+     "gap_vs_special": 35,
+     "gap_vs_benke": 115,
+     "gap_vs_zhuanke": 403,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/389/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "重庆理工大学",
+     "tier": "ben1_out",
+     "nature": "公办",
+     "city": "重庆市",
+     "batch": "本科批B段",
+     "min_score": 537,
+     "rank": 79949,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（101）（首选物理，再选不限）；该校普通类共4个组，最高组（102） 570分（位次45869），组间中位数555",
+     "median_group_score": 555.0,
+     "max_group_score": 570,
+     "gap_vs_special": 19,
+     "gap_vs_benke": 99,
+     "gap_vs_zhuanke": 387,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/187/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "重庆师范大学",
+     "tier": "ben1_out",
+     "nature": "公办",
+     "city": "重庆市",
+     "batch": "本科批B段",
+     "min_score": 522,
+     "rank": 98269,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（102）（首选物理，再选不限）；该校普通类共7个组，最高组（101） 571分（位次45003），组间中位数547",
+     "median_group_score": 547,
+     "max_group_score": 571,
+     "gap_vs_special": 4,
+     "gap_vs_benke": 84,
+     "gap_vs_zhuanke": 372,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/179/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "昆明理工大学",
+     "tier": "ben1_out",
+     "nature": "公办",
+     "city": "昆明市",
+     "batch": "本科批B段",
+     "min_score": 502,
+     "rank": 124544,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（101）（首选物理，再选不限）；该校普通类共4个组，最高组（103） 585分（位次33728），组间中位数531.5",
+     "median_group_score": 531.5,
+     "max_group_score": 585,
+     "gap_vs_special": -16,
+     "gap_vs_benke": 64,
+     "gap_vs_zhuanke": 352,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/342/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "桂林电子科技大学",
+     "tier": "ben1_out",
+     "nature": "公办",
+     "city": "桂林市",
+     "batch": "本科批B段",
+     "min_score": 551,
+     "rank": 64577,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（101）（首选物理，再选不限）；该校普通类共2个组，最高组（102） 585分（位次33728），组间中位数568",
+     "median_group_score": 568.0,
+     "max_group_score": 585,
+     "gap_vs_special": 33,
+     "gap_vs_benke": 113,
+     "gap_vs_zhuanke": 401,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/532/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "华东交通大学",
+     "tier": "ben1_out",
+     "nature": "公办",
+     "city": "南昌市",
+     "batch": "本科批B段",
+     "min_score": 544,
+     "rank": 71973,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（101）（首选物理，再选不限）；该校普通类共3个组，最高组（104） 585分（位次33728），组间中位数569",
+     "median_group_score": 569,
+     "max_group_score": 585,
+     "gap_vs_special": 26,
+     "gap_vs_benke": 106,
+     "gap_vs_zhuanke": 394,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/157/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "湘潭大学",
+     "tier": "ben1_out",
+     "nature": "公办",
+     "city": "湘潭市",
+     "batch": "本科批B段",
+     "min_score": 574,
+     "rank": 42395,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（101）（首选物理，再选不限）；该校普通类共2个组，最高组（102） 581分（位次36672），组间中位数577.5",
+     "median_group_score": 577.5,
+     "max_group_score": 581,
+     "gap_vs_special": 56,
+     "gap_vs_benke": 136,
+     "gap_vs_zhuanke": 424,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/385/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "西安石油大学",
+     "tier": "ben1_out",
+     "nature": "公办",
+     "city": "西安市",
+     "batch": "本科批B段",
+     "min_score": 561,
+     "rank": 54387,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（103）（首选物理，再选化学）；该校普通类共4个组，最高组（104） 581分（位次36672），组间中位数566.5",
+     "median_group_score": 566.5,
+     "max_group_score": 581,
+     "gap_vs_special": 43,
+     "gap_vs_benke": 123,
+     "gap_vs_zhuanke": 411,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/354/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "重庆三峡科技大学",
+     "tier": "ben2_out",
+     "nature": "公办",
+     "city": "重庆市",
+     "batch": "本科批B段",
+     "min_score": 514,
+     "rank": 108557,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（101）（首选物理，再选不限）；该校普通类共3个组，最高组（103） 533分（位次84680），组间中位数527",
+     "median_group_score": 527,
+     "max_group_score": 533,
+     "gap_vs_special": -4,
+     "gap_vs_benke": 76,
+     "gap_vs_zhuanke": 364,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/198/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "贵州师范大学",
+     "tier": "ben2_out",
+     "nature": "公办",
+     "city": "贵阳市",
+     "batch": "本科批B段",
+     "min_score": 496,
+     "rank": 132669,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（103）（首选物理，再选不限）；该校普通类共8个组，最高组（107） 546分（位次69786），组间中位数521.5",
+     "median_group_score": 521.5,
+     "max_group_score": 546,
+     "gap_vs_special": -22,
+     "gap_vs_benke": 58,
+     "gap_vs_zhuanke": 346,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/514/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "江西理工大学",
+     "tier": "ben2_out",
+     "nature": "公办",
+     "city": "赣州市",
+     "batch": "本科批B段",
+     "min_score": 461,
+     "rank": 180008,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（101）（首选物理，再选不限）；该校普通类共3个组，最高组（103） 551分（位次64577），组间中位数536",
+     "median_group_score": 536,
+     "max_group_score": 551,
+     "gap_vs_special": -57,
+     "gap_vs_benke": 23,
+     "gap_vs_zhuanke": 311,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/165/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "陕西理工大学",
+     "tier": "ben2_out",
+     "nature": "公办",
+     "city": "汉中市",
+     "batch": "本科批B段",
+     "min_score": 508,
+     "rank": 116541,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（101）（首选物理，再选不限）；该校普通类共2个组，最高组（102） 538分（位次78802），组间中位数523",
+     "median_group_score": 523.0,
+     "max_group_score": 538,
+     "gap_vs_special": -10,
+     "gap_vs_benke": 70,
+     "gap_vs_zhuanke": 358,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/371/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "盐城工学院",
+     "tier": "ben2_out",
+     "nature": "公办",
+     "city": "盐城市",
+     "batch": "本科批B段",
+     "min_score": 501,
+     "rank": 125937,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（101）（首选物理，再选不限）；该校普通类共2个组，最高组（102） 517分（位次104651），组间中位数509",
+     "median_group_score": 509.0,
+     "max_group_score": 517,
+     "gap_vs_special": -17,
+     "gap_vs_benke": 63,
+     "gap_vs_zhuanke": 351,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/154/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "临沂大学",
+     "tier": "ben2_out",
+     "nature": "公办",
+     "city": "临沂市",
+     "batch": "本科批B段",
+     "min_score": 524,
+     "rank": 95738,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（101）（首选物理，再选化学）；该校普通类共1个组，最高组（101） 524分（位次95738），组间中位数524",
+     "median_group_score": 524,
+     "max_group_score": 524,
+     "gap_vs_special": 6,
+     "gap_vs_benke": 86,
+     "gap_vs_zhuanke": 374,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/496/provinceline",
+     "confidence": "medium"
+    }
+   ]
+  },
+  "GD": {
+   "province": "广东",
+   "year": 2025,
+   "track": "physics",
+   "lines": {
+    "special": 534,
+    "benke": 436,
+    "zhuanke": 200
+   },
+   "line_ranks": {
+    "special": null,
+    "benke": null,
+    "zhuanke": 437350
+   },
+   "line_source": "广东省招生委员会公布，澎湃新闻/中新网转载 https://m.thepaper.cn/newsDetail_forward_31040386 ; https://www.chinanews.com.cn/edu/2025/06-25/10437571.shtml",
+   "schools": [
+    {
+     "name": "中山大学",
+     "tier": "985_local",
+     "nature": "公办",
+     "city": "广州市",
+     "batch": "本科批",
+     "min_score": 628,
+     "rank": 10616,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（219）（首选物理，再选化学）；该校普通类共8个组，最高组（216） 651分（位次3575），组间中位数636",
+     "median_group_score": 636.0,
+     "max_group_score": 651,
+     "gap_vs_special": 94,
+     "gap_vs_benke": 192,
+     "gap_vs_zhuanke": 428,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/104/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "华南理工大学",
+     "tier": "985_local",
+     "nature": "公办",
+     "city": "广州市",
+     "batch": "本科批",
+     "min_score": 622,
+     "rank": 12953,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（215）（首选物理，再选化学）；该校普通类共5个组，最高组（212） 640分（位次6278），组间中位数625",
+     "median_group_score": 625,
+     "max_group_score": 640,
+     "gap_vs_special": 88,
+     "gap_vs_benke": 186,
+     "gap_vs_zhuanke": 422,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/105/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "华南师范大学",
+     "tier": "211_local",
+     "nature": "公办",
+     "city": "广州市",
+     "batch": "本科批",
+     "min_score": 570,
+     "rank": 54775,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（243）（首选物理，再选不限）；该校普通类共24个组，最高组（219） 621分（位次13782），组间中位数600.5",
+     "median_group_score": 600.5,
+     "max_group_score": 621,
+     "gap_vs_special": 36,
+     "gap_vs_benke": 134,
+     "gap_vs_zhuanke": 370,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/98/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "广东工业大学",
+     "tier": "ben1_local",
+     "nature": "公办",
+     "city": "广州市",
+     "batch": "本科批",
+     "min_score": 559,
+     "rank": 69261,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（228）（首选物理，再选化学）；该校普通类共24个组，最高组（206） 604分（位次23808），组间中位数575.5",
+     "median_group_score": 575.5,
+     "max_group_score": 604,
+     "gap_vs_special": 25,
+     "gap_vs_benke": 123,
+     "gap_vs_zhuanke": 359,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/286/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "深圳大学",
+     "tier": "ben1_local",
+     "nature": "公办",
+     "city": "深圳市",
+     "batch": "本科批",
+     "min_score": 594,
+     "rank": 31703,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（242）（首选物理，再选化学）；该校普通类共22个组，最高组（233） 625分（位次11801），组间中位数604.5",
+     "median_group_score": 604.5,
+     "max_group_score": 625,
+     "gap_vs_special": 60,
+     "gap_vs_benke": 158,
+     "gap_vs_zhuanke": 394,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/284/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "广州大学",
+     "tier": "ben1_local",
+     "nature": "公办",
+     "city": "广州市",
+     "batch": "本科批",
+     "min_score": 555,
+     "rank": 74228,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（214）（首选物理，再选不限）；该校普通类共15个组，最高组（204） 579分（位次45324），组间中位数566",
+     "median_group_score": 566,
+     "max_group_score": 579,
+     "gap_vs_special": 21,
+     "gap_vs_benke": 119,
+     "gap_vs_zhuanke": 355,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/293/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "汕头大学",
+     "tier": "ben1_local",
+     "nature": "公办",
+     "city": "汕头市",
+     "batch": "本科批",
+     "min_score": 552,
+     "rank": 78313,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（204）（首选物理，再选不限）；该校普通类共4个组，最高组（205） 559分（位次69279），组间中位数554.5",
+     "median_group_score": 554.5,
+     "max_group_score": 559,
+     "gap_vs_special": 18,
+     "gap_vs_benke": 116,
+     "gap_vs_zhuanke": 352,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/283/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "佛山大学",
+     "tier": "ben1_local",
+     "nature": "公办",
+     "city": "佛山市",
+     "batch": "本科批",
+     "min_score": 542,
+     "rank": 93053,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（209）（首选物理，再选化学）；该校普通类共13个组，最高组（208） 563分（位次63250），组间中位数550",
+     "median_group_score": 550,
+     "max_group_score": 563,
+     "gap_vs_special": 8,
+     "gap_vs_benke": 106,
+     "gap_vs_zhuanke": 342,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/306/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "东莞理工学院",
+     "tier": "ben1_local",
+     "nature": "公办",
+     "city": "东莞市",
+     "batch": "本科批",
+     "min_score": 526,
+     "rank": 119185,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（205）（首选物理，再选不限）；该校普通类共6个组，最高组（201） 563分（位次63807），组间中位数545",
+     "median_group_score": 545.0,
+     "max_group_score": 563,
+     "gap_vs_special": -8,
+     "gap_vs_benke": 90,
+     "gap_vs_zhuanke": 326,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/291/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "嘉应学院",
+     "tier": "ben2_local",
+     "nature": "公办",
+     "city": "梅州市",
+     "batch": "本科批",
+     "min_score": 494,
+     "rank": 175550,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（216）（首选物理，再选不限）；该校普通类共18个组，最高组（208） 537分（位次101254），组间中位数499",
+     "median_group_score": 499.0,
+     "max_group_score": 537,
+     "gap_vs_special": -40,
+     "gap_vs_benke": 58,
+     "gap_vs_zhuanke": 294,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/301/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "韶关学院",
+     "tier": "ben2_local",
+     "nature": "公办",
+     "city": "韶关市",
+     "batch": "本科批",
+     "min_score": 494,
+     "rank": 175047,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（228）（首选物理，再选化学）；该校普通类共25个组，最高组（226） 535分（位次103733），组间中位数503",
+     "median_group_score": 503,
+     "max_group_score": 535,
+     "gap_vs_special": -40,
+     "gap_vs_benke": 58,
+     "gap_vs_zhuanke": 294,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/298/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "岭南师范学院",
+     "tier": "ben2_local",
+     "nature": "公办",
+     "city": "湛江市",
+     "batch": "本科批",
+     "min_score": 497,
+     "rank": 170600,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（218）（首选物理，再选不限）；该校普通类共19个组，最高组（207） 530分（位次112655），组间中位数505",
+     "median_group_score": 505,
+     "max_group_score": 530,
+     "gap_vs_special": -37,
+     "gap_vs_benke": 61,
+     "gap_vs_zhuanke": 297,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/299/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "五邑大学",
+     "tier": "ben2_local",
+     "nature": "公办",
+     "city": "江门市",
+     "batch": "本科批",
+     "min_score": 503,
+     "rank": 159190,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（202）（首选物理，再选化学）；该校普通类共9个组，最高组（207） 537分（位次100217），组间中位数519",
+     "median_group_score": 519,
+     "max_group_score": 537,
+     "gap_vs_special": -31,
+     "gap_vs_benke": 67,
+     "gap_vs_zhuanke": 303,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/285/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "肇庆学院",
+     "tier": "ben2_local",
+     "nature": "公办",
+     "city": "肇庆市",
+     "batch": "本科批",
+     "min_score": 498,
+     "rank": 167654,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（217）（首选物理，再选不限）；该校普通类共15个组，最高组（228） 524分（位次122894），组间中位数508",
+     "median_group_score": 508,
+     "max_group_score": 524,
+     "gap_vs_special": -36,
+     "gap_vs_benke": 62,
+     "gap_vs_zhuanke": 298,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/961/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "广东石油化工学院",
+     "tier": "ben2_local",
+     "nature": "公办",
+     "city": "茂名市",
+     "batch": "本科批",
+     "min_score": 499,
+     "rank": 166883,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（208）（首选物理，再选不限）；该校普通类共8个组，最高组（206） 513分（位次142049），组间中位数505.5",
+     "median_group_score": 505.5,
+     "max_group_score": 513,
+     "gap_vs_special": -35,
+     "gap_vs_benke": 63,
+     "gap_vs_zhuanke": 299,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/292/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "惠州学院",
+     "tier": "ben2_local",
+     "nature": "公办",
+     "city": "惠州市",
+     "batch": "本科批",
+     "min_score": 504,
+     "rank": 157922,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（234）（首选物理，再选不限）；该校普通类共22个组，最高组（226） 543分（位次91006），组间中位数522",
+     "median_group_score": 522.0,
+     "max_group_score": 543,
+     "gap_vs_special": -30,
+     "gap_vs_benke": 68,
+     "gap_vs_zhuanke": 304,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/300/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "广州城市理工学院",
+     "tier": "minban_local",
+     "nature": "民办",
+     "city": "广州市",
+     "batch": "本科批",
+     "min_score": 487,
+     "rank": 188081,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（203）（首选物理，再选不限）；该校普通类共3个组，最高组（201） 494分（位次176527），组间中位数487",
+     "median_group_score": 487,
+     "max_group_score": 494,
+     "gap_vs_special": -47,
+     "gap_vs_benke": 51,
+     "gap_vs_zhuanke": 287,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/2059/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "广东白云学院",
+     "tier": "minban_local",
+     "nature": "民办",
+     "city": "广州市",
+     "batch": "本科批",
+     "min_score": 444,
+     "rank": 263134,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（205）（首选物理，再选化学）；该校普通类共12个组，最高组（208） 477分（位次206914），组间中位数466",
+     "median_group_score": 466.0,
+     "max_group_score": 477,
+     "gap_vs_special": -90,
+     "gap_vs_benke": 8,
+     "gap_vs_zhuanke": 244,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/966/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "东莞城市学院",
+     "tier": "minban_local",
+     "nature": "民办",
+     "city": "东莞市",
+     "batch": "本科批",
+     "min_score": 436,
+     "rank": 276512,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（216）（首选物理，再选不限）；该校普通类共5个组，最高组（214） 456分（位次243743），组间中位数445",
+     "median_group_score": 445,
+     "max_group_score": 456,
+     "gap_vs_special": -98,
+     "gap_vs_benke": 0,
+     "gap_vs_zhuanke": 236,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/2483/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "广州南方学院",
+     "tier": "minban_local",
+     "nature": "民办",
+     "city": "广州市",
+     "batch": "本科批",
+     "min_score": 463,
+     "rank": 230851,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（211）（首选物理，再选化学）；该校普通类共5个组，最高组（210） 479分（位次202472），组间中位数473",
+     "median_group_score": 473,
+     "max_group_score": 479,
+     "gap_vs_special": -71,
+     "gap_vs_benke": 27,
+     "gap_vs_zhuanke": 263,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/1096/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "广东东软学院",
+     "tier": "minban_local",
+     "nature": "民办",
+     "city": "佛山市",
+     "batch": "本科批",
+     "min_score": 455,
+     "rank": 245732,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（217）（首选物理，再选不限）；该校普通类共17个组，最高组（204） 485分（位次192931），组间中位数472",
+     "median_group_score": 472,
+     "max_group_score": 485,
+     "gap_vs_special": -79,
+     "gap_vs_benke": 19,
+     "gap_vs_zhuanke": 255,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/643/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "广州理工学院",
+     "tier": "minban_local",
+     "nature": "民办",
+     "city": "广州市",
+     "batch": "本科批",
+     "min_score": 446,
+     "rank": 259886,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（201）（首选物理，再选化学）；该校普通类共2个组，最高组（202） 450分（位次253100），组间中位数448",
+     "median_group_score": 448.0,
+     "max_group_score": 450,
+     "gap_vs_special": -88,
+     "gap_vs_benke": 10,
+     "gap_vs_zhuanke": 246,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/2058/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "深圳职业技术大学",
+     "tier": "zhuan_public_local",
+     "nature": "公办",
+     "city": "深圳市",
+     "batch": "专科批",
+     "min_score": 433,
+     "rank": 280203,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（547）（首选物理，再选不限）；该校普通类共14个组，最高组（531） 495分（位次174460），组间中位数481.5",
+     "median_group_score": 481.5,
+     "max_group_score": 495,
+     "gap_vs_special": -101,
+     "gap_vs_benke": -3,
+     "gap_vs_zhuanke": 233,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/646/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "广东交通职业技术学院",
+     "tier": "zhuan_public_local",
+     "nature": "公办",
+     "city": "广州市",
+     "batch": "专科批",
+     "min_score": 361,
+     "rank": 364401,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（510）（首选物理，再选不限）；该校普通类共3个组，最高组（508） 426分（位次290483），组间中位数405",
+     "median_group_score": 405,
+     "max_group_score": 426,
+     "gap_vs_special": -173,
+     "gap_vs_benke": -75,
+     "gap_vs_zhuanke": 161,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/617/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "广东水利电力职业技术学院",
+     "tier": "zhuan_public_local",
+     "nature": "公办",
+     "city": "广州市",
+     "batch": "专科批",
+     "min_score": 379,
+     "rank": 347811,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（506）（首选物理，再选不限）；该校普通类共9个组，最高组（505） 446分（位次260494），组间中位数425",
+     "median_group_score": 425,
+     "max_group_score": 446,
+     "gap_vs_special": -155,
+     "gap_vs_benke": -57,
+     "gap_vs_zhuanke": 179,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/620/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "广东理工职业学院",
+     "tier": "zhuan_public_local",
+     "nature": "公办",
+     "city": "广州市",
+     "batch": "专科批",
+     "min_score": 392,
+     "rank": 333853,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（507）（首选物理，再选不限）；该校普通类共8个组，最高组（506） 432分（位次281354），组间中位数409.5",
+     "median_group_score": 409.5,
+     "max_group_score": 432,
+     "gap_vs_special": -142,
+     "gap_vs_benke": -44,
+     "gap_vs_zhuanke": 192,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/992/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "广东轻工职业技术大学",
+     "tier": "zhuan_public_local",
+     "nature": "公办",
+     "city": "广州市",
+     "batch": "专科批",
+     "min_score": 438,
+     "rank": 273398,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（504）（首选物理，再选不限）；该校普通类共12个组，最高组（501） 480分（位次200491），组间中位数461.5",
+     "median_group_score": 461.5,
+     "max_group_score": 480,
+     "gap_vs_special": -96,
+     "gap_vs_benke": 2,
+     "gap_vs_zhuanke": 238,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/2048/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "广东科贸职业学院",
+     "tier": "zhuan_public_local",
+     "nature": "公办",
+     "city": "清远市",
+     "batch": "专科批",
+     "min_score": 402,
+     "rank": 322335,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（501）（首选物理，再选不限）；该校普通类共1个组，最高组（501） 402分（位次322335），组间中位数402",
+     "median_group_score": 402,
+     "max_group_score": 402,
+     "gap_vs_special": -132,
+     "gap_vs_benke": -34,
+     "gap_vs_zhuanke": 202,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/2051/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "广州华商职业学院",
+     "tier": "zhuan_private_local",
+     "nature": "民办",
+     "city": "广州市",
+     "batch": "专科批",
+     "min_score": 202,
+     "rank": 437173,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（504）（首选物理，再选不限）；该校普通类共2个组，最高组（503） 293分（位次410855），组间中位数247.5",
+     "median_group_score": 247.5,
+     "max_group_score": 293,
+     "gap_vs_special": -332,
+     "gap_vs_benke": -234,
+     "gap_vs_zhuanke": 2,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/2681/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "广州涉外经济职业技术学院",
+     "tier": "zhuan_private_local",
+     "nature": "民办",
+     "city": "广州市",
+     "batch": "专科批",
+     "min_score": 206,
+     "rank": 436808,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（520）（首选物理，再选不限）；该校普通类共6个组，最高组（506） 339分（位次381834），组间中位数306",
+     "median_group_score": 306.0,
+     "max_group_score": 339,
+     "gap_vs_special": -328,
+     "gap_vs_benke": -230,
+     "gap_vs_zhuanke": 6,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/1001/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "广州南洋理工职业学院",
+     "tier": "zhuan_private_local",
+     "nature": "民办",
+     "city": "广州市",
+     "batch": "专科批",
+     "min_score": 206,
+     "rank": 436785,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（508）（首选物理，再选不限）；该校普通类共3个组，最高组（505） 302分（位次406376），组间中位数265",
+     "median_group_score": 265,
+     "max_group_score": 302,
+     "gap_vs_special": -328,
+     "gap_vs_benke": -230,
+     "gap_vs_zhuanke": 6,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/636/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "广东碧桂园职业学院",
+     "tier": "zhuan_private_local",
+     "nature": "民办",
+     "city": "清远市",
+     "batch": "专科批",
+     "min_score": 200,
+     "rank": 437350,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（505）（首选物理，再选不限）；该校普通类共3个组，最高组（506） 212分（位次436216），组间中位数204",
+     "median_group_score": 204,
+     "max_group_score": 212,
+     "gap_vs_special": -334,
+     "gap_vs_benke": -236,
+     "gap_vs_zhuanke": 0,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/3238/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "广东岭南职业技术学院",
+     "tier": "zhuan_private_local",
+     "nature": "民办",
+     "city": "广州市",
+     "batch": "专科批",
+     "min_score": 263,
+     "rank": 424467,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（510）（首选物理，再选不限）；该校普通类共2个组，最高组（509） 287分（位次413716），组间中位数275",
+     "median_group_score": 275.0,
+     "max_group_score": 287,
+     "gap_vs_special": -271,
+     "gap_vs_benke": -173,
+     "gap_vs_zhuanke": 63,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/995/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "广州科技职业技术大学",
+     "tier": "zhuan_private_local",
+     "nature": "民办",
+     "city": "广州市",
+     "batch": "专科批",
+     "min_score": 380,
+     "rank": 346792,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（502）（首选物理，再选不限）；该校普通类共1个组，最高组（502） 380分（位次346792），组间中位数380",
+     "median_group_score": 380,
+     "max_group_score": 380,
+     "gap_vs_special": -154,
+     "gap_vs_benke": -56,
+     "gap_vs_zhuanke": 180,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/1000/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "重庆交通大学",
+     "tier": "ben1_out",
+     "nature": "公办",
+     "city": "重庆市",
+     "batch": "本科批",
+     "min_score": 534,
+     "rank": 104850,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（208）（首选物理，再选不限）；该校普通类共2个组，最高组（209） 542分（位次92945），组间中位数538",
+     "median_group_score": 538.0,
+     "max_group_score": 542,
+     "gap_vs_special": 0,
+     "gap_vs_benke": 98,
+     "gap_vs_zhuanke": 334,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/1018/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "长沙理工大学",
+     "tier": "ben1_out",
+     "nature": "公办",
+     "city": "长沙市",
+     "batch": "本科批",
+     "min_score": 550,
+     "rank": 81145,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（216）（首选物理，再选不限）；该校普通类共7个组，最高组（224） 580分（位次44074），组间中位数553",
+     "median_group_score": 553,
+     "max_group_score": 580,
+     "gap_vs_special": 16,
+     "gap_vs_benke": 114,
+     "gap_vs_zhuanke": 350,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/389/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "西安石油大学",
+     "tier": "ben1_out",
+     "nature": "公办",
+     "city": "西安市",
+     "batch": "本科批",
+     "min_score": 538,
+     "rank": 98609,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（207）（首选物理，再选化学）；该校普通类共2个组，最高组（208） 548分（位次84301），组间中位数543",
+     "median_group_score": 543.0,
+     "max_group_score": 548,
+     "gap_vs_special": 4,
+     "gap_vs_benke": 102,
+     "gap_vs_zhuanke": 338,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/354/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "江西理工大学",
+     "tier": "ben1_out",
+     "nature": "公办",
+     "city": "赣州市",
+     "batch": "本科批",
+     "min_score": 528,
+     "rank": 115081,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（216）（首选物理，再选不限）；该校普通类共4个组，最高组（217） 558分（位次69800），组间中位数544",
+     "median_group_score": 544.0,
+     "max_group_score": 558,
+     "gap_vs_special": -6,
+     "gap_vs_benke": 92,
+     "gap_vs_zhuanke": 328,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/165/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "盐城工学院",
+     "tier": "ben2_out",
+     "nature": "公办",
+     "city": "盐城市",
+     "batch": "本科批",
+     "min_score": 506,
+     "rank": 154462,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（204）（首选物理，再选化学）；该校普通类共2个组，最高组（203） 538分（位次99626），组间中位数522",
+     "median_group_score": 522.0,
+     "max_group_score": 538,
+     "gap_vs_special": -28,
+     "gap_vs_benke": 70,
+     "gap_vs_zhuanke": 306,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/154/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "临沂大学",
+     "tier": "ben2_out",
+     "nature": "公办",
+     "city": "临沂市",
+     "batch": "本科批",
+     "min_score": 515,
+     "rank": 137293,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（208）（首选物理，再选化学）；该校普通类共2个组，最高组（210） 516分（位次136054），组间中位数515.5",
+     "median_group_score": 515.5,
+     "max_group_score": 516,
+     "gap_vs_special": -19,
+     "gap_vs_benke": 79,
+     "gap_vs_zhuanke": 315,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/496/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "陕西理工大学",
+     "tier": "ben2_out",
+     "nature": "公办",
+     "city": "汉中市",
+     "batch": "本科批",
+     "min_score": 505,
+     "rank": 156329,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（209）（首选物理，再选不限）；该校普通类共3个组，最高组（210） 541分（位次94951），组间中位数530",
+     "median_group_score": 530,
+     "max_group_score": 541,
+     "gap_vs_special": -29,
+     "gap_vs_benke": 69,
+     "gap_vs_zhuanke": 305,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/371/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "湖北文理学院",
+     "tier": "ben2_out",
+     "nature": "公办",
+     "city": "襄阳市",
+     "batch": "本科批",
+     "min_score": 496,
+     "rank": 171876,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（207）（首选物理，再选化学）；该校普通类共2个组，最高组（206） 510分（位次147014），组间中位数503",
+     "median_group_score": 503.0,
+     "max_group_score": 510,
+     "gap_vs_special": -38,
+     "gap_vs_benke": 60,
+     "gap_vs_zhuanke": 296,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/461/provinceline",
+     "confidence": "medium"
+    },
+    {
+     "name": "安徽工程大学",
+     "tier": "ben2_out",
+     "nature": "公办",
+     "city": "芜湖市",
+     "batch": "本科批",
+     "min_score": 520,
+     "rank": 129093,
+     "basis": "院校专业组最低投档分：普通类最低的专业组（204）（首选物理，再选化学）；该校普通类共2个组，最高组（205） 522分（位次125784），组间中位数521",
+     "median_group_score": 521.0,
+     "max_group_score": 522,
+     "gap_vs_special": -14,
+     "gap_vs_benke": 84,
+     "gap_vs_zhuanke": 320,
+     "gap_note": "gap 为 derived（分数减同年同类批次线）",
+     "source": "掌上高考（gaokao.cn，中国教育在线）各省分数线接口，字段 min/min_section",
+     "url": "https://www.gaokao.cn/school/316/provinceline",
+     "confidence": "medium"
+    }
+   ]
+  },
+  "summary_by_tier": {
+   "985_local": "本省985最低普通类组：特控线+63（兰大）~+135；本科线+163~+215（derived）。兰大在甘肃最低组538=特控+63",
+   "211_local": "本省211最低组：特控线+36~+87；本科线+122~+174（derived）",
+   "ben1_local": "本省省属重点最低组：约特控线-35~+35（多数-25~+30），即本科线+45~+145；同校最高组常再高40~90分（derived）。甘肃六所：本科线+75~+132，特控线-26~+31",
+   "ben2_local": "本省普通公办本科最低组：本科线+40~+95（多数+50~+90），即特控线-60~-10（derived）。甘肃：本科线+40~+90",
+   "minban_local": "本省民办本科：多数压本科线投档（+0~+10），少数热门民办+30~+50（derived）。甘肃三所全部=本科线374（兰州工商学院数据354低于线，存疑）",
+   "zhuan_public_local": "本省公办高职：专科线+107~+325，大省/好高职更高；实质上分数落在本科线附近或略低（甘肃287~394，本科线374）（derived）",
+   "zhuan_private_local": "本省民办高职：基本压专科线投档（-22~+24），个别民办职业大学可高达+180（derived）",
+   "985_out": "外省985在本省最低组：特控线+82~+133；本科线+172~+234（derived）",
+   "211_out": "外省211最低组：特控线+9~+74（derived）",
+   "ben1_out": "外省省属重点最低组：特控线-16~+73，多数+5~+60（derived）；在甘肃普遍比本省同档高（兰理工最低482 vs 陕科大505、西安理工538、浙工大534）",
+   "ben2_out": "外省普通本科最低组：本科线+23~+126，约特控线-57~+24（derived）；在甘肃明显高于本省普通本科（外省+81~+125 vs 本省+40~+90），因外省院校在甘肃计划少",
+   "detail_by_province": {
+    "985_local": "甘肃: 最低组比本科线 +164~+164、比特控线 +63~+63（中位组比特控线 +78~+78），n=1；四川: 最低组比本科线 +163~+215、比特控线 +83~+135（中位组比特控线 +116.5~+139），n=2；广东: 最低组比本科线 +186~+192、比特控线 +88~+94（中位组比特控线 +91~+102），n=2（derived）",
+    "ben1_local": "甘肃: 最低组比本科线 +75~+132、比特控线 -26~+31（中位组比特控线 -25~+58），n=6；河南: 最低组比本科线 +60~+145、比特控线 -48~+37（中位组比特控线 -13~+70），n=9；四川: 最低组比本科线 +45~+133、比特控线 -35~+53（中位组比特控线 +12~+63），n=8；广东: 最低组比本科线 +90~+158、比特控线 -8~+60（中位组比特控线 +11~+70.5），n=6（derived）",
+    "ben2_local": "甘肃: 最低组比本科线 +40~+90、比特控线 -61~-11（中位组比特控线 -61~+0.5），n=11；河南: 最低组比本科线 +56~+95、比特控线 -52~-13（中位组比特控线 -45~+1），n=10；四川: 最低组比本科线 +51~+88、比特控线 -29~+8（中位组比特控线 -23~+28），n=10；广东: 最低组比本科线 +58~+68、比特控线 -40~-30（中位组比特控线 -35~-12），n=7（derived）",
+    "minban_local": "甘肃: 最低组比本科线 +0~+0、比特控线 -101~-101（中位组比特控线 -101~-101），n=2；河南: 最低组比本科线 +3~+30、比特控线 -105~-78（中位组比特控线 -96~-63），n=6；四川: 最低组比本科线 +0~+42、比特控线 -80~-38（中位组比特控线 -80~-33），n=6；广东: 最低组比本科线 +0~+51、比特控线 -98~-47（中位组比特控线 -89~-47），n=6（derived）",
+    "zhuan_public_local": "甘肃: 最低组比专科线 +107~+214（中位组 +107~+214），n=10；河南: 最低组比专科线 +175~+240（中位组 +193~+261），n=7；四川: 最低组比专科线 +230~+324（中位组 +230~+328.5），n=7；广东: 最低组比专科线 +161~+238（中位组 +202~+281.5），n=6（derived）",
+    "zhuan_private_local": "甘肃: 最低组比专科线 +8~+24（中位组 +8~+24），n=2；河南: 最低组比专科线 -22~+8（中位组 -22~+8），n=4；四川: 最低组比专科线 +0~+0（中位组 +0~+0），n=4；广东: 最低组比专科线 +0~+180（中位组 +4~+180），n=6（derived）",
+    "985_out": "甘肃: 最低组比本科线 +197~+234、比特控线 +96~+133（中位组比特控线 +118.5~+144），n=2；河南: 最低组比本科线 +190~+203、比特控线 +82~+95（中位组比特控线 +124~+126），n=2；四川: 最低组比本科线 +172~+172、比特控线 +92~+92（中位组比特控线 +129~+129），n=1（derived）",
+    "211_out": "甘肃: 最低组比本科线 +110~+175、比特控线 +9~+74（中位组比特控线 +48~+83），n=3；四川: 最低组比本科线 +111~+134、比特控线 +31~+54（中位组比特控线 +70~+73），n=2（derived）",
+    "ben1_out": "甘肃: 最低组比本科线 +106~+164、比特控线 +5~+63（中位组比特控线 +24.5~+71），n=10；河南: 最低组比本科线 +141~+169、比特控线 +33~+61（中位组比特控线 +47~+67），n=5；四川: 最低组比本科线 +64~+153、比特控线 -16~+73（中位组比特控线 +13.5~+81），n=10；广东: 最低组比本科线 +92~+114、比特控线 -6~+16（中位组比特控线 +4~+19），n=4（derived）",
+    "ben2_out": "甘肃: 最低组比本科线 +81~+125、比特控线 -20~+24（中位组比特控线 -16~+37），n=10；河南: 最低组比本科线 +76~+126、比特控线 -32~+18（中位组比特控线 -7~+20），n=9；四川: 最低组比本科线 +23~+86、比特控线 -57~+6（中位组比特控线 -9~+18），n=6；广东: 最低组比本科线 +60~+84、比特控线 -38~-14（中位组比特控线 -31~-4），n=5（derived）",
+    "211_local": "河南: 最低组比本科线 +174~+174、比特控线 +66~+66（中位组比特控线 +93.5~+93.5），n=1；四川: 最低组比本科线 +122~+167、比特控线 +42~+87（中位组比特控线 +46.5~+92），n=3；广东: 最低组比本科线 +134~+134、比特控线 +36~+36（中位组比特控线 +66.5~+66.5），n=1（derived）"
+   }
+  },
+  "position_between_lines": {
+   "note": "derived（本人计算）：各层次普通类最低组投档分的中位数在批次线之间的位置。x = (分 − 本科线)/(特控线 − 本科线)，x=0 在本科线、x=1 在特控线；专科用 y = (分 − 专科线)/(本科线 − 专科线)。排除了标 low 的数据",
+   "985_local": {
+    "GS": {
+     "x_median": 1.62,
+     "n": 1
+    },
+    "SC": {
+     "x_median": 2.36,
+     "n": 2
+    },
+    "GD": {
+     "x_median": 1.93,
+     "n": 2
+    }
+   },
+   "ben1_local": {
+    "GS": {
+     "x_median": 0.99,
+     "n": 6
+    },
+    "HA": {
+     "x_median": 0.94,
+     "n": 9
+    },
+    "SC": {
+     "x_median": 0.94,
+     "n": 8
+    },
+    "GD": {
+     "x_median": 1.2,
+     "n": 6
+    }
+   },
+   "ben2_local": {
+    "GS": {
+     "x_median": 0.49,
+     "n": 11
+    },
+    "HA": {
+     "x_median": 0.57,
+     "n": 10
+    },
+    "SC": {
+     "x_median": 0.71,
+     "n": 10
+    },
+    "GD": {
+     "x_median": 0.63,
+     "n": 7
+    }
+   },
+   "minban_local": {
+    "GS": {
+     "x_median": 0.0,
+     "n": 2
+    },
+    "HA": {
+     "x_median": 0.18,
+     "n": 6
+    },
+    "SC": {
+     "x_median": 0.0,
+     "n": 6
+    },
+    "GD": {
+     "x_median": 0.15,
+     "n": 6
+    }
+   },
+   "zhuan_public_local": {
+    "GS": {
+     "y_median": 0.88,
+     "n": 10
+    },
+    "HA": {
+     "y_median": 0.91,
+     "n": 7
+    },
+    "SC": {
+     "y_median": 0.93,
+     "n": 8
+    },
+    "GD": {
+     "y_median": 0.83,
+     "n": 6
+    }
+   },
+   "zhuan_private_local": {
+    "GS": {
+     "y_median": 0.08,
+     "n": 2
+    },
+    "HA": {
+     "y_median": 0.01,
+     "n": 4
+    },
+    "SC": {
+     "y_median": 0.0,
+     "n": 4
+    },
+    "GD": {
+     "y_median": 0.03,
+     "n": 6
+    }
+   },
+   "985_out": {
+    "GS": {
+     "x_median": 2.13,
+     "n": 2
+    },
+    "HA": {
+     "x_median": 1.82,
+     "n": 2
+    },
+    "SC": {
+     "x_median": 2.15,
+     "n": 1
+    }
+   },
+   "211_out": {
+    "GS": {
+     "x_median": 1.69,
+     "n": 3
+    },
+    "SC": {
+     "x_median": 1.53,
+     "n": 2
+    }
+   },
+   "ben1_out": {
+    "GS": {
+     "x_median": 1.34,
+     "n": 10
+    },
+    "HA": {
+     "x_median": 1.49,
+     "n": 5
+    },
+    "SC": {
+     "x_median": 1.37,
+     "n": 10
+    },
+    "GD": {
+     "x_median": 1.02,
+     "n": 4
+    }
+   },
+   "ben2_out": {
+    "GS": {
+     "x_median": 1.05,
+     "n": 10
+    },
+    "HA": {
+     "x_median": 1.06,
+     "n": 9
+    },
+    "SC": {
+     "x_median": 0.83,
+     "n": 6
+    },
+    "GD": {
+     "x_median": 0.71,
+     "n": 5
+    }
+   },
+   "211_local": {
+    "HA": {
+     "x_median": 1.61,
+     "n": 1
+    },
+    "SC": {
+     "x_median": 2.06,
+     "n": 3
+    },
+    "GD": {
+     "x_median": 1.37,
+     "n": 1
+    }
+   }
+  },
+  "notes": [
+   "数据年份：全部为2025年物理类普通类本科批/专科批（甘肃本科批C段、专科批F段；四川本科批B段）。2026年数据未采集。",
+   "学校分数来源：掌上高考（gaokao.cn，中国教育在线）各省分数线接口 api.zjzw.cn uri=apidata/api/gk/score/province，字段 min=专业组最低投档分、min_section=最低位次、proscore=批次线。属商业平台转载，统一标 medium。",
+   "抽查：郑州大学河南2025物理类最低录取593分、位次54059（中华网转述校方公布），与该接口中郑大（105）护理类组593/54059完全一致。",
+   "甘肃省教育考试院官网（ganseea.cn）对本环境返回412/空白，无法直接取官方投档表；gaokao.cn 网页也返回403，只能用其数据接口。",
+   "min_score 取该校普通类（zslx=普通类）中最低的那个院校专业组，不含国家/地方/高校专项、民族班、预科、中外合作（单列时）、护理类、公费师范/免费医学生、提前批。all_groups 列出该校所有普通类组分数。注意：河南9xx/5xx组、四川2xx组等可能是校区/中外合作/特殊专业组，但接口仍标普通类，已照收。",
+   "统计剔除：甘肃-西安建筑科技大学（008）381分、甘肃-江苏大学（003）408分为显著离群小组（同校另一组514/526），summary统计用同校次低组；甘肃-兰州工商学院354分低于本科线374，疑为征集志愿或数据错误，标low并不入统计；四川-四川华新现代职业学院接口标公办但分数=专科线，性质存疑不入统计。",
+   "批次线：甘肃 特殊类型475/本科374/专科180（官方，中国甘肃网转载）；河南 特殊类型535/本科427/专科185（专科线仅见大学生必备网一处）；四川 特殊类型518/本科438/专科150；广东 特殊类型534/本科436/专科200。新高考省份不再划一本线，表中 special=特殊类型招生控制线（俗称特控线，定位约等于原一本线）。",
+   "批次线位次（derived，取自接口中恰好等于该分数的院校位次）：甘肃475≈39656、374≈93788、180≈120677；河南535≈143976、427≈348358、185≈553621；四川518≈103351、438≈207063、150≈284789；广东436约27.6万、200≈437350（广东同分位次接口返回多个值，未填）。",
+   "职业本科（兰州石化/兰州资源环境/甘肃林业/甘肃工业职业技术大学等）的本科组归入 ben2_local 并在名称注明，专科组归入 zhuan_public_local。甘肃职业本科本科组414~423，与陇东学院/兰州文理学院等普通本科最低组相当。",
+   "高职公办分数离专科线很远（+100~+300）是因为专科线极低（150~200）；对游戏更有意义的是公办高职投档分≈本科线-90~+50（甘肃287~394，河南360~425，四川380~483，广东361~446），即本科线附近。",
+   "外省院校在某省计划很少，最低组波动大（1~2个组、几人），单校数据可信度低于本省院校，应看区间不看点值。",
+   "未覆盖：山东（未采集）；外省民办本科（宁夏理工学院在甘肃只有联合培养组，未入表）。"
+  ],
+  "ek_derived": {
+   "note": "derived（本人推算）：游戏里 985/211 在某省的投档线 = 全国名额比例 × 校准系数 × 该省系数 ek（×本省优势）。用河南、四川校准后（河南 ek 0.68 来自国金证券 985 录取率），模型给出的外省 985 线与这两省的中位组投档分相差不到 10 分；甘肃则普遍偏严 40–70 分（西安交大模型约 652 对实际中位组 619、四川大学 644 对 594、西北大学 607 对 558），换成甘肃一分一段表上的比例约差 3–5 倍。取 3.0。可能原因：甘肃考生少、国家专项等计划倾斜。依据只有 6 所学校、商业网站数据，可信度中低",
+   "GS": {
+    "value": 3.0,
+    "confidence": "low-medium"
+   }
+  }
+ }
 }

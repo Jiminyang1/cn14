@@ -364,7 +364,7 @@ export const DEC = {
       if (k === 'work') { S.school = null; hireInCity(wpick({ factory: 2, migrant: 2, rider: 1, sales: 1.5, shop: 0.5 })); return `没有再读书，去了${S.loc.city}，做了${JOBS[S.job].n}。`; }
       const sel = k === 'apply' ? gkAutoApps(ctx) : JSON.parse(k.slice(6));
       const apps = sel.apps.map(a => ({ c: ctx.cands[a.i], major: a.major }));
-      const r = gkResolve(apps, ctx.score, sel.adjust);
+      const r = gkResolve(apps, ctx.score, sel.adjust, S.home.p);
       if (r.ok) return enroll(r.c, r.major, r.adjusted);
       S.flags.slip = { score: ctx.score };
       S.queue.unshift({ at: S.t, type: 'dec', id: 'slip' });

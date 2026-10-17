@@ -1,6 +1,6 @@
 // 弹窗：抉择单（含高考填报志愿）与自述。选定后在那一行盖一个「已定」章，再结算。
 import { useEffect, useRef, useState, type ReactNode } from 'react';
-import { S, TIER_N, calMonth, calYear, majorP, majorsOf, type Decision, type Pending } from '../engine';
+import { NO_TIAOJI, S, TIER_N, calMonth, calYear, majorP, majorsOf, type Decision, type Pending } from '../engine';
 import { game } from '../game/controller';
 import { Photo, decScene } from './Photo';
 import { fileNo } from './util';
@@ -115,13 +115,13 @@ function Zhiyuan({ P, photo }: { P: Extract<Pending, { type: 'dec' }>; photo: Re
       );
     })}</div>;
   };
-  const rest = d.choices.filter(x => x.k !== 'apply');
+  const rest = d.choices.filter(x => x.k !== 'apply'), noTj = NO_TIAOJI.has(S.home.p);
   return <>
     <Head k="志愿" title={d.title} photo={photo}><p>{d.body}</p>{d.fact && <p className="fact"><b>附注</b>{d.fact}</p>}</Head>
     {c.cands.length ? <>
-      <p className="note-line" style={{ marginTop: 16 }}>按顺序勾选最多 3 个志愿（平行志愿：分数优先，按你填的顺序投档）。每个学校选一个专业。热门专业要求更高。</p>
+      <p className="note-line" style={{ marginTop: 16 }}>按顺序勾选最多 3 个志愿（平行志愿：分数优先，按你填的顺序投档）。每个学校选一个专业，热门专业要求更高。{noTj ? '本省按专业投档，没有调剂：这个专业的分数不够，就看下一个志愿。' : ''}</p>
       <div className="zy">{group('冲')}{group('稳')}{group('保')}</div>
-      <label className="chk" style={{ marginTop: 10 }}><input type="checkbox" checked={adjust} onChange={e => setAdjust(e.target.checked)} /> 服从专业调剂（不服从的话，专业没录上会被退档）</label>
+      {!noTj && <label className="chk" style={{ marginTop: 10 }}><input type="checkbox" checked={adjust} onChange={e => setAdjust(e.target.checked)} /> 服从专业调剂（不服从的话，专业没录上会被退档）</label>}
     </> : <p style={{ marginTop: 12 }}>你的分数够不上任何学校。</p>}
     <div className="ds-ask"><b>请选择一项</b><span>点一下即盖章生效</span></div>
     <div className="choices">

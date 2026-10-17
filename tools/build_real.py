@@ -152,10 +152,24 @@ for pid, v in gk['lines_2026'].items():
     lines[pid] = {'total': T, 'special': L.get('special') or round(L['benke'] * 1.2),
                   'benke': L['benke'], 'zhuanke': L.get('zhuanke') or round(180 * T / 750)}
 out['GK_LINES'] = lines
+# 各省 2026 年一分一段表（物理类或 3+3 不分科）：[分数, 排在这个分数及以上的比例]，从高分到低分。分母是表末行累计（实际参加统考的人）
+dist = {}
+for pid, v in gk.get('score_dist_2026', {}).items():
+    if not isinstance(v, dict) or not (v.get('total') or {}).get('value'): continue
+    tot, pts = v['total']['value'], {}
+    for k, c in {**v.get('cum', {}), **v.get('extra', {})}.items():
+        if k.isdigit() and c: pts[int(k)] = c
+    for sc, c in v.get('lines', {}).values():
+        if sc and c: pts[sc] = c
+    dist[pid] = [[sc, round(pts[sc] / tot, 5)] for sc in sorted(pts, reverse=True)]
+out['GK_DIST'] = dist
 EK = {'TJ': 5.9, 'SH': 5.3, 'BJ': 4.3, 'JL': 3.1, 'QH': 3.1, 'AH': 1.1, 'HA': 1.1}
 for row in gk['tiers'].get('share_by_province', []):
     if row.get('province') == 'GD' and row.get('985_pct'): EK['GD'] = row['985_pct']
 out['GK_EK'] = {k: round(v / 1.62, 2) for k, v in EK.items()}  # 相对全国平均 1.62%
+# 没有录取率数据、但能从院校投档线反推的省份（research/gaokao.json school_lines_2025.ek_derived）
+for k, v in gk.get('school_lines_2025', {}).get('ek_derived', {}).items():
+    if isinstance(v, dict) and v.get('value'): out['GK_EK'][k] = v['value']
 
 # ---- 地级市：常住人口、城乡收入、房价（约 90 个城市；research/cities_*.json） ----
 city = {}
