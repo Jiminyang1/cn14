@@ -15,8 +15,9 @@ export const YEAR_SEC = 60;
 export const yearSecOf = (_L: Life) => YEAR_SEC;
 // 活到这个人的预期寿命大约要几分钟（出生登记表上显示）
 const lifeMinOf = (L: Life) => Math.round(leOf(L.born, L.sex, L.rural) * YEAR_SEC / 60);
-export const SPEEDS = [1, 2, 4, 8, 16];
-export type FF = false | 'big' | 'dec';
+export const SPEEDS = [1, 4, 16];
+// 快进：到下一件人生大事为止（遇到抉择本来就会停）
+export type FF = false | 'big';
 // 人生大事（journal.ts 的 major）：「下一件大事」停在这里；正常速度下画面在这里停一会儿，让人看清楚（只是界面停，不影响模拟）
 const MAJOR_HOLD = 2200; // 毫秒
 let holdUntil = 0;
@@ -56,7 +57,7 @@ export const game = {
   pref: { len: 75 },       // 活到平均寿命大约几分钟（出生时按这个人的预期寿命算，出生登记表上显示）
   speed: 1,
   paused: false,
-  ff: false as FF,     // 快进：到下一件大事 / 到下一个抉择
+  ff: false as FF,     // 快进：到下一件人生大事
   yearSec: 45,         // 一年对应多少秒（出生时按平均寿命算）
   ended: false,        // 已经进入结局流程
   get run() { return run; },
@@ -82,7 +83,7 @@ export const game = {
     setS(sv.life);
     run = sv.run;
     lastRs = S.rs;
-    this.speed = sv.ui.speed; this.yearSec = yearSecOf(S);
+    this.speed = SPEEDS.includes(sv.ui.speed) ? sv.ui.speed : 1; this.yearSec = yearSecOf(S);
     event('resume', { version: VERSION });
     this.startLife();
   },
@@ -93,7 +94,7 @@ export const game = {
     this.paused = !this.paused; event(this.paused ? 'pause' : 'play'); emit();
   },
   setSpeed(v: number) { this.speed = v; event('speed', { v }); emit(); },
-  fastForward(to: 'big' | 'dec') { this.ff = to; this.paused = false; event('ff', { to }); emit(); },
+  fastForward() { this.ff = 'big'; this.paused = false; event('ff', { to: 'big' }); emit(); },
   setAuto(on: boolean) { input({ ...here(), type: 'auto', on }); emit(); },
   // 抉择单「先看看再定」：只是把弹窗收起来（抉择没定，模拟本来就停着），记下收起的是哪一张；新的抉择照常弹出
   hidden: null as string | null,
