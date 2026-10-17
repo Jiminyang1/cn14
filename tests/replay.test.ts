@@ -1,4 +1,4 @@
-// 重放必须和原局完全一致：模拟一个随机操作的玩家（随机步长推进、改重心、开关自动抉择、手动或自动选、中途刷新读档），
+// 重放必须和原局完全一致：模拟一个随机操作的玩家（随机步长推进、改格子、做行动、开关自动抉择、手动或自动选、中途刷新读档），
 // 只记下输入，再从种子重放，最终状态必须逐字节相同。
 import { expect, test } from 'vitest';
 import * as E from '../src/engine';
@@ -33,6 +33,7 @@ function play(seed: number) {
       input({ ...here, type: 'decide', id: P.id, k });
     } else if (P) input({ ...here, type: 'reflect', text: '' });
     else if (r() < 0.04 && E.slotN() && E.focusList().length) { const l = E.focusList(); input({ ...here, type: 'slot', i: Math.floor(r() * E.slotN()), k: l[Math.floor(r() * l.length)] }); }
+    else if (r() < 0.02 && E.actsShown().length) { const l = E.actsShown(); input({ ...here, type: 'act', k: l[Math.floor(r() * l.length)] }); }
     else if (r() < 0.01) input({ ...here, type: 'auto', on: !L.auto });
     else if (r() < 0.005) reload();
     else E.tick(0.001 + r() * 0.3);

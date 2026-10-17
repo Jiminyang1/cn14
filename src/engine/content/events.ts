@@ -228,9 +228,10 @@ export const EVENTS = [
   { id: 'promo', a: [25, 58], gap: 4, w: () => unitJob() ? 1.8 : 0, c: () => unitJob() && !newJob() && S.done.layoff !== S.age, run: () => { raise(RAISE.promo); eff({ h: 4 }); return { t: PROMO_T[S.job] || '升职加薪了。', k: 'good' }; } },
   // 炒股：在单位上班的跟着同事，其余跟着朋友、老同事
   { id: 'stock', a: [25, 65], gap: 5, w: 1, c: () => S.money > placeInc() * 0.5, run: () => { const g = gauss(-0.05, 0.25), x = S.money * 0.3 * g, who = unitJob() ? '同事' : isWorking() ? '朋友' : '老同事'; eff({ money: x, h: g > 0 ? 2 : -3 }); return g > 0 ? `跟着${who}买了股票，赚了${wan(x)}。` : `跟着${who}买了股票，亏了${wan(-x)}。`; } },
-  { id: 'car', a: [25, 55], once: 1, w: 1.5, c: () => S.money > placeInc() * 1.2, run: () => { eff({ money: -placeInc() * 1.0, h: 3 }); return `买了一辆${chance(0.6) ? '新能源车' : '二手车'}，${awayFromHome() ? '过年终于可以自己开车回家了' : '周末终于可以开车出去转转了'}。`; } },
+  // 买车是玩家自己的行动了（actions.ts）；自动的人生在 autoActs 里替你买
   // 旅游：按月份写是哪个假期
-  { id: 'travel', a: [20, 75], gap: 4, w: 1, c: () => S.money > 0, run: () => { eff({ h: 3, money: -placeInc() * 0.08 }); const go = `${HOLIDAY[calMonth()]}去${pick(['西安', '三亚', '大理', '重庆', '青岛', '张家界', '哈尔滨', '桂林', '敦煌', '厦门'])}`;
+  // 旅行：玩家自己在「行动」里安排；开着自动抉择（和无界面的人生）时才自己发生
+  { id: 'travel', a: [20, 75], gap: 4, w: 1, c: () => S.money > 0 && (S.headless || !!S.auto), run: () => { eff({ h: 3, money: -placeInc() * 0.08 }); const go = `${HOLIDAY[calMonth()]}去${pick(['西安', '三亚', '大理', '重庆', '青岛', '张家界', '哈尔滨', '桂林', '敦煌', '厦门'])}`;
     return vary('travel', [`${go}旅游，景区人山人海，看人比看风景多。`, `${go}玩了几天。拍了几百张照片，回来以后一张也没再看过。`, `${go}。在一家小馆子里吃到了这辈子吃过最好吃的一碗面，后来再也没找到那家店。`, `${go}，赶上下雨，在酒店里躺了两天。倒也挺好。`, `${go}，${S.fam.married ? '和另一半' : '一个人'}看了一场日出。`]); } },
   // 春运回家：1–2 月（状态事件），在外省、父母还有人在、没有跟你住在一起
   { id: 'springHome', a: [18, 60], gap: 3, mo: [1, 2], pm: () => SPRING_PM, c: () => S.loc.p !== S.home.p && !S.flags.parWithMe && anyParent(), run: () => { eff({ h: 2, so: 2 }); return `春运抢票抢了三天，坐了${ri(6, 30)}个小时的车回家过年。`; } },

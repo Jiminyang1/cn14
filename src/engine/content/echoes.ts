@@ -15,6 +15,7 @@ import { makePartner } from '../romance';
 import { hire, isWorking, quitJob } from '../career';
 import { farFromParents } from '../place';
 import { bothParents, parentsWord } from '../parents';
+import { grownClose } from '../actions';
 
 /** 一个反复出现的人。close：和你的亲疏（0–100）；fate：这个人这一生大概会怎么走 */
 export interface Pal {
@@ -62,9 +63,10 @@ const pal = () => S.ppl?.pal?.alive ? S.ppl.pal : null;
 const married = () => S.fam.married && !!S.fam.partner && S.fam.partner.alive;
 const justMarried = () => married() && S.age - S.fam.partner.marriedAt <= 1;
 const alone = () => !S.fam.married && !S.fam.dating && !S.cand && (S.flags.divorced != null || S.flags.widowed != null);
-/** 把一个抉择排在稍后（同一个月里）：回响事件引出的岔路口 */
+/** 把一个抉择排在稍后：回响事件引出的岔路口。快到年底的就排在当下（不能排到现在之前：原来封顶 0.999，
+ *  一年最后一刻发生的事会把抉择排进过去，真实游玩时马上弹出、重放时却停在它前面，重放对不上） */
 function soon(id: string) {
-  const at = Math.min(S.t + 0.01, 0.999);
+  const at = S.t + 0.005 <= 0.999 ? S.t + 0.005 : S.t;
   let i = S.queue.length; while (i > 0 && S.queue[i - 1].at > at) i--;
   S.queue.splice(i, 0, { at, type: 'dec', id });
 }
@@ -202,6 +204,10 @@ export const ECHO_EVENTS: any[] = [
   { id: 'fyNoFriends', a: [60, 90], once: 1, w: 3, c: () => S.fy && fy('friends') < 8 && fy('work') >= 20, run: () => {
     eff({ h: -4, so: -3 }); return '退休以后，手机安静了下来。你翻遍通讯录，找不到一个能约出去喝茶的人。';
   } },
+
+  // ---- 和孩子的亲疏（actions.ts）：老了以后看得出来 ----
+  { id: 'kidsNear', a: [62, 90], once: 1, w: 5, c: () => (grownClose() ?? 0) >= 75, run: () => { eff({ h: 6, so: 4 }); return { t: '孩子们每个周末都回来，冰箱永远是满的。邻居说你有福气，你嘴上说「他们烦人」，心里高兴。', k: 'good' }; } },
+  { id: 'kidsFar', a: [62, 90], once: 1, w: 5, c: () => { const c = grownClose(); return c != null && c < 35; }, run: () => { eff({ h: -6, so: -3 }); return '孩子一年只回来一次，待两天就走。走的那天你送到楼下，转身回来，屋里比原来还空。'; } },
 
   // ---- 当年没选的那条路 ----
   { id: 'echoFork', a: [45, 80], once: 1, w: 3, c: () => !!S.forks?.some(f => f.a >= 15 && f.a <= 40 && f.alt.length), run: () => {

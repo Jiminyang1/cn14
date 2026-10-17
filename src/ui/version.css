@@ -1,0 +1,4 @@
+/* 版本标记（ui/Version.tsx）：手机上页头太挤，页头里的那个先藏起来；首页、结局页右上角的照常显示 */
+@media (max-width: 560px) {
+  .lhead .ver-tag { display: none !important; }
+}

@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import {
   AX, AX_NAME, CAUSE, EDU_LV, FAM_HOUSE_N, JOBS, PBY, S, axWord, calMonth, calYear, leOf, partnerPay, partnerTrait, persWords, placeName, shownZ, statusLabel,
-  loanBal, loanArrears, loanPayY, loveWord, parentIncome, parentRetired, parentWorkLoc, awayFromHome, ptJobName, Q_WORD, wan, wanM, monthlyPay, inheritedValue, netWorth,
+  loanBal, loanArrears, loanPayY, loveWord, parentIncome, parentRetired, closeWord, parClose, kidClose, parentWorkLoc, awayFromHome, ptJobName, Q_WORD, wan, wanM, monthlyPay, inheritedValue, netWorth,
   type Companion, type Doc, type Partner,
 } from '../engine';
 import { game } from '../game/controller';
@@ -97,7 +97,7 @@ function ParentRow({ who, label }: { who: 'mom' | 'dad'; label: string }) {
   const p = S.fam[who], male = who === 'dad';
   if (!p.alive) return <Row k={label} v={'已去世 · 享年' + p.age + '岁'} cls="gone" />;
   const ret = parentRetired(p, male);
-  return <Row k={label} v={<>{p.age}岁 · {ret ? '退休了' : p.job}<small>{parentWhere(p, ret)}</small></>} />;
+  return <Row k={label} v={<>{p.age}岁 · {ret ? '退休了' : p.job}<small>{parentWhere(p, ret)}{S.age >= 18 && S.indep ? ' · ' + closeWord(parClose()) : ''}</small></>} />;
 }
 // 发小在哪：各奔东西（echoes.ts 的 palApart）以前是你的同学，之后才看得出去了哪里
 const palWhere = (p: NonNullable<NonNullable<typeof S.ppl>['pal']>) => S.done.palApart == null ? (S.age < 19 ? '你的同学' : '在' + S.home.city) : p.fate === 'abroad' ? '在国外' : p.city ? '在' + p.city : '在老家';
@@ -123,7 +123,7 @@ export function FamilyRows() {
       </details> : <span className="v">{pt.name} · 已去世</span>}
     </div>}
     {!f.married && !!S.flags.divorced && <Row k="婚姻" v="离异" />}
-    {f.kids.map((k, i) => <Row key={'k' + i} k={k.sex === 'M' ? '儿子' : '女儿'} cls={k.alive ? undefined : 'gone'} v={k.name + ' · ' + (k.alive ? k.age + '岁' + (k.path ? ' · ' + k.path.replace(/^考上了/, '') : '') : '已离世')} />)}
+    {f.kids.map((k, i) => <Row key={'k' + i} k={k.sex === 'M' ? '儿子' : '女儿'} cls={k.alive ? undefined : 'gone'} v={k.alive ? <>{k.name} · {k.age}岁{k.path ? ' · ' + k.path.replace(/^考上了/, '') : ''}{k.age >= 12 && <small>{closeWord(kidClose(k))}</small>}</> : k.name + ' · 已离世'} />)}
     {S.flags.grandkids > 0 && <Row k="孙辈" v={S.flags.grandkids + '人'} />}
     {pal && <Row k="发小" cls={pal.alive ? undefined : 'gone'} v={pal.alive ? <>{pal.name} · 认识{S.age - pal.at}年<small>{palWhere(pal)} · {CLOSE(pal.close)}</small></> : pal.name + ' · 已去世'} />}
   </>;

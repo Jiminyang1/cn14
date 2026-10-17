@@ -30,5 +30,6 @@ export * from './content/decisions';
 export * from './content/daily';
 export * from './content/echoes';
 export * from './story';
+export * from './actions';
 export * from './data';
 export type * from './types';

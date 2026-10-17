@@ -1,6 +1,6 @@
 // 重放：用同样的种子和同样的输入，重新跑出一模一样的一生。
 // applyInput 是真实游玩（controller.ts）和重放共用的唯一入口，保证两边做的事完全相同。
-import { S, autoPick, log, newLife, resolveDec, setSlot, tickTo, type Life } from '../engine';
+import { S, autoPick, doAct, log, newLife, resolveDec, setSlot, tickTo, type Life } from '../engine';
 import type { Input, RunLog } from './runlog';
 
 export class ReplayError extends Error {}
@@ -24,6 +24,7 @@ export function applyInput(inp: Input, replaying = false) {
     if (inp.text) { S.notes.push({ a: S.age, q: P.q, t: inp.text }); log(`你写下：“${inp.text}”`, 'note'); }
     S.pending = null;
   } else if (inp.type === 'slot') setSlot(inp.i, inp.k);
+  else if (inp.type === 'act') doAct(inp.k);
   else S.auto = inp.on;
   // 输入可能在当前进度上排了新的事件（比如滑档后的下一个抉择）：马上处理，这样它和下一条输入的先后是确定的
   tickTo(S.t);

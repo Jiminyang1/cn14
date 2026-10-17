@@ -22,6 +22,7 @@ import { studyMonth } from './education';
 import { moneyMonth } from './finance';
 import { kinYear } from './kin';
 import { turnsYear } from './turns';
+import { actsMonth, actsYear } from './actions';
 import { loveMonth } from './romance';
 import { makeName } from './names';
 import { balanceW, persInit, persWords, persYear, shape, shownOf, tiltW, whyPick } from './personality';
@@ -200,6 +201,7 @@ export function yearStart() {
   sibYearStart();
   kinYear();
   turnsYear();
+  actsYear();
   scheduleYearStart();
 }
 
@@ -213,6 +215,7 @@ function endMonth(m: number) {
   moneyMonth(m);
   familyMonth(m);
   loveMonth(m);
+  actsMonth();
   if (S.phase !== 'life') return;
   driftMonth(m);
   if (m === MONTHS - 1) S.years.push({ a: S.age, h: Math.round(S.st.h), hl: Math.round(S.st.hl), m: Math.round(S.money), s: statusLabel() });

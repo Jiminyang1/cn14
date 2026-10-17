@@ -6,6 +6,7 @@ export type Input = { a: number; t: number } & (
   | { type: 'draw'; id: string; k: string }   // 弹窗为自动抉择抽了一次签（消耗随机数），k 是抽中的选项
   | { type: 'decide'; id: string; k: string }
   | { type: 'slot'; i: number; k: string | null } // 改第 i 格（focus.ts 的 setSlot）
+  | { type: 'act'; k: string } // 做一件行动（actions.ts 的 doAct）
   | { type: 'auto'; on: boolean }
   | { type: 'reflect'; text: string }
 );
