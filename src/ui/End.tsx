@@ -1,6 +1,6 @@
 // 档案封存：这一生的履历、证件、自述，以及同一秒建档的人走完的一生。
 import { useState } from 'react';
-import { CAUSE, EDU_LV, LT, PBY, S, deathText, mainJob, placeName, wan } from '../engine';
+import { CAUSE, EDU_LV, LT, PBY, S, deathText, mainJob, persWords, placeName, shownZ, wan } from '../engine';
 import { game } from '../game/controller';
 import { Cell } from './BirthCert';
 import { RunId } from './RunId';
@@ -18,7 +18,7 @@ export function End() {
       <div className="folder sealed">
         <div className="folder-tab">人生档案 · <span className="mono">No. {fileNo(S)}</span></div>
         <div className="folder-body">
-          <p className="eyebrow">{S.birthYear}年{S.birthMonth}月 — {d.year}年 · 享年{d.age}岁</p>
+          <p className="eyebrow">{S.birthYear}年{S.birthMonth}月 — {d.year}年{d.month ? d.month + '月' : ''} · 享年{d.age}岁</p>
           <div className="end-h">{S.name}</div>
           <p className="end-cause">{deathText(d.cause)}</p>
           <p>同一年在{p.n}出生的{S.sex === 'M' ? '男孩' : '女孩'}里，大约 {Math.round(longer * 100)}% 会活得比{he}更久。</p>
@@ -34,6 +34,7 @@ export function End() {
           <Cell k="生活过的城市" v={S.places.join('、')} wide />
           <Cell k="婚姻" v={S.fam.partner ? (S.fam.partner.alive ? '已婚' : '丧偶') : S.flags.divorced ? '离异' : '未婚'} />
           <Cell k="孩子" v={kids.length ? kids.length + '个' : '没有'} /><Cell k="房子" v={S.house ? S.house.city : '没有'} />
+          {S.pers && <Cell k="性格" v={persWords(shownZ(), 3).join('、') || '平和'} wide />}
           <Cell k="存款最多的时候" v={wan(S.stats.maxMoney)} /><Cell k="离开时的存款" v={wan(S.money)} /><Cell k="退休金" v={S.pension ? wan(S.pension) + '/年' : '—'} />
         </div>
       </div>

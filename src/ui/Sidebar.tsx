@@ -1,7 +1,7 @@
 // 一生页面的侧栏：体检表与账户、家庭状况、证件夹、一生曲线、同一秒建档的人。
 import { useEffect, useState } from 'react';
 import {
-  CAUSE, EDU_LV, FAM_HOUSE_N, JOBS, PBY, S, leOf, loanBal, loanPayY, loveWord, parentIncome, parentRetired, parentsPerCap, ptJobName, wan,
+  AX, AX_NAME, CAUSE, EDU_LV, FAM_HOUSE_N, JOBS, PBY, S, axWord, leOf, partnerTrait, shownZ, loanBal, loanPayY, loveWord, parentIncome, parentRetired, parentsPerCap, ptJobName, wan,
   type Companion, type Doc,
 } from '../engine';
 import { Ib } from './TipLayer';
@@ -13,6 +13,24 @@ function Bar({ n, v, c }: { n: string; v: number; c: string }) {
   return <div className="vt"><span>{n}</span><i><u style={{ '--v': v + '%', '--c': `var(${c})` } as React.CSSProperties} /></i><b>{Math.round(v)}</b></div>;
 }
 
+// 性格：五条刻度，两头是词，不显示数字；离中间超过半个标准差的那一头加重。三岁以前还看不出来
+function Personality() {
+  if (!S.pers) return null;
+  if (S.age < 3) return <><h5 className="acct-h">性格</h5><p className="hint" style={{ marginTop: 2 }}>还小，看不出来。</p></>;
+  const z = shownZ();
+  return <>
+    <h5 className="acct-h">性格 <span className="muted small">会随经历和年纪慢慢变</span></h5>
+    {AX.map(x => {
+      const v = Math.max(-2.4, Math.min(2.4, z[x])), w = axWord(x, v);
+      return <div key={x} className="pt" title={w || '居中'}>
+        <span className={v <= -0.5 ? 'on' : ''}>{AX_NAME[x][1]}</span>
+        <i><u style={{ '--v': (50 + v * 20) + '%' } as React.CSSProperties} /></i>
+        <span className={v >= 0.5 ? 'on' : ''}>{AX_NAME[x][0]}</span>
+      </div>;
+    })}
+  </>;
+}
+
 // 体检表；经济独立以前，钱的情况看「家庭状况」，开始工作（或离开学校）以后显示个人账户
 export function Vitals() {
   const st = S.st;
@@ -20,6 +38,7 @@ export function Vitals() {
     <div className="sheet">
       <h4 className="sheet-title">体检表 <span className="muted small">0–100</span></h4>
       <Bar n="健康" v={st.hl} c="--hl" /><Bar n="幸福" v={st.h} c="--h" /><Bar n="学识" v={st.kn} c="--kn" /><Bar n="人际" v={st.so} c="--so" />
+      <Personality />
       {S.indep === false ? <>
         <h5 className="acct-h">本人</h5>
         <p className="hint" style={{ marginTop: 2 }}>{S.school ? '在读' + S.school : S.age < 6 ? '学龄前' : '还没有工作'}，花销由家里负担，家里的收入和存款见「家庭状况」。开始工作以后才有自己的账户。</p>
@@ -84,7 +103,7 @@ function LoveCard() {
   return (
     <div className="sheet">
       <h4 className="sheet-title">恋爱中 <span className="muted small">{yrs ? '在一起' + yrs + '年' : '刚在一起'}{ldr ? ' · 异地' : ''}</span></h4>
-      <div className="fams"><div className="fr"><span>{d.sex === 'M' ? '男朋友' : '女朋友'}</span><b>{d.name} · {d.age}岁 · {d.trait}</b></div></div>
+      <div className="fams"><div className="fr"><span>{d.sex === 'M' ? '男朋友' : '女朋友'}</span><b>{d.name} · {d.age}岁 · {partnerTrait(d)}</b></div></div>
       <div className="acct">
         <div><span>学历</span><b>{d.jk ? EDU_LV[d.edu] : EDU_LV[d.edu] + '在读'}</b></div>
         <div><span>职业</span><b>{ptJobName(d)}{ldr ? '（在' + d.city + '）' : ''}</b></div>
@@ -129,7 +148,7 @@ export function FamilyCards() {
 }
 
 // ===== 证件 =====
-const DOC_SEAL: Record<string, string> = { birth: '登记', admit: '录取', grad: '毕业', school: '学籍', job: '合同', civil: '录用', marry: '婚姻', divorce: '登记', house: '不动产', kid: '出生', ill: '医院', retire: '退休' };
+const DOC_SEAL: Record<string, string> = { birth: '登记', admit: '录取', grad: '毕业', school: '学籍', job: '合同', civil: '录用', marry: '婚姻', divorce: '登记', house: '不动产', kid: '出生', ill: '医院', retire: '退休', report: '学校' };
 export function DocCard({ d, open, onClick }: { d: Doc; open: boolean; onClick?: () => void }) {
   return (
     <div className={`doc ${d.k}${open ? ' open' : ''}`} onClick={onClick}>
@@ -184,6 +203,6 @@ function compNow(c: Companion, age: number) {
 export function Companions() {
   return <div>{S.comps.map((c, i) => {
     const s = compNow(c, S.age);
-    return <div key={i} className={'comp' + (s.dead ? ' dead' : '')}><b>{c.name}</b> <span className="muted">{c.place} · {sexW(c.sex)}</span><span className="st">{s.t}</span></div>;
+    return <div key={i} className={'comp' + (s.dead ? ' dead' : '')}><b>{c.name}</b> <span className="muted">{c.place} · {sexW(c.sex)}{c.pw && c.pw.length ? ' · ' + c.pw.join('、') : ''}</span><span className="st">{s.t}</span></div>;
   })}</div>;
 }

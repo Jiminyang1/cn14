@@ -1,0 +1,30 @@
+{
+ "errs": 0,
+ "urban/other": {
+  "n": 676,
+  "negNetWorthAtBirth": "25%",
+  "payoffAge_p25": 3,
+  "median": 5,
+  "p75": 8,
+  "p90": 13,
+  "notPaidBy60": "2%"
+ },
+ "rural/other": {
+  "n": 529,
+  "negNetWorthAtBirth": "9%",
+  "payoffAge_p25": 7,
+  "median": 11,
+  "p75": 18,
+  "p90": 26,
+  "notPaidBy60": "11%"
+ },
+ "urban/mort": {
+  "n": 492,
+  "negNetWorthAtBirth": "10%",
+  "payoffAge_p25": 13,
+  "median": 17,
+  "p75": 21,
+  "p90": 24,
+  "notPaidBy60": "2%"
+ }
+}

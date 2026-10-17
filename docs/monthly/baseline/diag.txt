@@ -1,0 +1,47 @@
+{
+ "18-21": {
+  "unmarriedPY": 11809,
+  "datingShare": "19%",
+  "meetsPerSingleYear": "0.55",
+  "goRate": "68%",
+  "acceptRate": "71%",
+  "marryDecPerDatingYear": "0.24",
+  "marry": "wait:338 yes:141 no:66"
+ },
+ "22-25": {
+  "unmarriedPY": 10246,
+  "datingShare": "42%",
+  "meetsPerSingleYear": "0.82",
+  "goRate": "67%",
+  "acceptRate": "72%",
+  "marryDecPerDatingYear": "0.72",
+  "marry": "wait:1889 yes:875 no:311"
+ },
+ "26-29": {
+  "unmarriedPY": 6932,
+  "datingShare": "52%",
+  "meetsPerSingleYear": "0.83",
+  "goRate": "67%",
+  "acceptRate": "77%",
+  "marryDecPerDatingYear": "0.85",
+  "marry": "wait:1647 yes:1142 no:277"
+ },
+ "30-34": {
+  "unmarriedPY": 4193,
+  "datingShare": "44%",
+  "meetsPerSingleYear": "0.71",
+  "goRate": "68%",
+  "acceptRate": "79%",
+  "marryDecPerDatingYear": "1.00",
+  "marry": "wait:715 yes:1002 no:137"
+ },
+ "35-44": {
+  "unmarriedPY": 2846,
+  "datingShare": "23%",
+  "meetsPerSingleYear": "0.36",
+  "goRate": "67%",
+  "acceptRate": "84%",
+  "marryDecPerDatingYear": "1.00",
+  "marry": "yes:503 wait:121 no:31"
+ }
+}

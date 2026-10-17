@@ -7,10 +7,16 @@ import { addDoc, log, logLater } from './journal';
 import { wan } from './format';
 import { chance, clamp, gauss, wpick } from './rng';
 import { eff } from './stats';
-import { accrueWage, goIndep } from './finance';
+import { goIndep } from './finance';
 import { cityLoc, homeCity, migrantCity, moveTo, placeInc, placeName } from './place';
 import { hpfStart } from './housing';
 import { tierK } from './education';
+import { calYear } from './monthly';
+import { nowM } from './calendar';
+
+declare module './types' {
+  interface Flags { civilAt?: number } // 最近一次考公务员是出生后第几个月（考试一年一次，见 content/decisions.ts 的 civilretry）
+}
 
 // ===== 职业 =====
 // m = 年收入 ÷ 当地城镇居民人均可支配收入。依据国家统计局 2025 年分行业、分岗位平均工资和农民工监测调查（research/income.json）：
@@ -49,7 +55,6 @@ export const expCurve = (y: number, age: number) => { const k = y <= 5 ? 0.75 + 
 export const expK = () => expCurve(S.jobY, S.age);
 // 还是同一行（跳槽、换城市、失业后重新找到老本行）：工龄和个人工资系数（升职加薪攒下的）都保留；换了行才从头算
 export function hire(job, L?) {
-  accrueWage(); // 旧工作这一年干到现在的工资
   if (L) moveTo(L);
   const same = job === (S.job === 'seeking' ? S.flags.lastJob : S.job) && JOBS[job] && JOBS[job].m > 0;
   S.job = job;
@@ -58,7 +63,7 @@ export function hire(job, L?) {
   if (JOBS[job] && (JOBS[job].stable || JOBS[job].priv)) S.flags.empIns = 1;
   hpfStart(job);
   S.jobs.push({ job, age: S.age, city: S.loc.city });
-  if (!S.headless && JOBS[job] && JOBS[job].m > 0) addDoc(job === 'civil' ? 'civil' : 'job', job === 'civil' ? '录用通知' : JOBS[job].blue ? '务工登记' : '劳动合同', [['岗位', JOBS[job].n], ['工作地', placeName()], ['起始', `${S.birthYear + S.age}年`]]);
+  if (!S.headless && JOBS[job] && JOBS[job].m > 0) addDoc(job === 'civil' ? 'civil' : 'job', job === 'civil' ? '录用通知' : JOBS[job].blue ? '务工登记' : '劳动合同', [['岗位', JOBS[job].n], ['工作地', placeName()], ['起始', `${calYear()}年`]]);
 }
 // 18 岁以后还待在农村、却要去城里打工时，换到城市
 export function hireInCity(job) { hire(job, S.loc.kind === 'rural' ? migrantCity() : null); }
@@ -77,14 +82,14 @@ export function retire() {
   const farm = S.job === 'farmer';
   if (!farm) addDoc('retire', '退休证', [['原岗位', JOBS[S.job] ? JOBS[S.job].n : ''], ['退休年龄', S.age + '岁']]);
   const last = S.income || placeInc();
-  // 养老金看的是一辈子的缴费记录，不是退休前最后那份工作（finance.ts 的 penYear 每年记一笔）：
+  // 养老金看的是一辈子的缴费记录，不是退休前最后那份工作（finance.ts 的 penMonth 每月记一笔）：
   // 职工养老保险交满 15 年才能按月领职工养老金，否则只能领城乡居民养老金。
   // 职工养老金：按退休所在省份的实际人均水平（统计年鉴 24-26 / 24-27，2024 年），再按在职时的平均工资（相对当地水平）
   // 和缴费年数上下浮动（基础养老金大致和缴费年数成正比）；机关事业单位为主的略高。
   // PEN_YEARS 取 37（模拟里缴费年数中位数 34）：使职工养老金平均约为所在省人均的 1.04 倍，和改动前一样
   const pv = PBY[S.loc.p];
   const penE = pv.penE || 45903, penR = pv.penR || RESID_PENSION;
-  const P = S.pen || penFromJobs(last, pv);
+  const P = S.pen || { y: 0, r: 0, s: 0 }; // 一个月都没交过职工养老保险
   const emp = P.y >= PEN_MIN_YEARS;
   S.pension = !emp ? penR + (S.job === 'shop' ? last * 0.1 : 0)
     : penE * clamp(P.r / P.y / 2.5, 0.6, 1.8) * clamp(P.y / PEN_YEARS, 0.45, 1.25) * (P.s * 2 >= P.y ? 1.2 : 1);
@@ -98,12 +103,6 @@ export function retire() {
 }
 export const PEN_MIN_YEARS = 15;
 export const PEN_YEARS = 37;
-// 旧存档没有缴费记录：按工作经历估算年数，工资按最后一年的收入
-function penFromJobs(last, pv) {
-  let y = 0, s = 0;
-  S.jobs.forEach((j, i) => { const n = (S.jobs[i + 1] ? S.jobs[i + 1].age : S.age) - j.age; if (!RESID_PENSION_JOBS.has(j.job) && JOBS[j.job] && JOBS[j.job].m > 0) { y += n; if (JOBS[j.job].stable) s += n; } });
-  return { y, r: y * last / (pv.incU || pv.inc), s };
-}
 // 干得最久的那份工作
 export function mainJob(L) {
   let best = null, span = -1;
@@ -125,12 +124,12 @@ export function gradJob(big) {
 }
 // 离开工作（被裁员、公司倒闭、没考上……）：先结清旧工作这一年干到现在的工资；公积金账户封存（余额还在，照样计息）
 export function quitJob() {
-  accrueWage();
   if (isWorking()) S.flags.lastJob = S.job;
   S.job = 'seeking';
   if (S.hpfOn) { S.hpfOn = false; if (S.hpf > 0) logLater(`公积金账户封存了，余额${wan(S.hpf)}还在，照样计息；找到交公积金的工作后接着缴。`); }
 }
 export function civilTry() {
+  S.flags.civilAt = nowM();
   const p = clamp(0.07 + (S.st.kn - 60) / 120 + (S.edu >= 6 ? 0.05 : 0) + (S.edu >= 7 ? 0.05 : 0) + tierK() * 0.3, 0.03, 0.4);
   if (chance(p)) { hire('civil', homeCity()); S.flags.civilRetry = 0; eff({ h: 6 }); return { t: `考上了！在${S.loc.city}当了公务员。家里人逢人就说。`, k: 'good', f: '2026年度国考过审371.8万人，约98人竞争一个岗位' }; }
   quitJob(); S.flags.civilRetry = 1; eff({ h: -4 }); return { t: '没考上。进面试的名单上没有你的名字。', k: 'bad' };

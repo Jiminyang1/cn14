@@ -5,14 +5,16 @@ import { useSyncExternalStore } from 'react';
 import { CAUSE, S, autoPick, leOf, newLife, placeName, setS, tick, type Life, type Pending } from '../engine';
 import { sink } from './devsink';
 import { applyInput } from './replay';
-import { newRun, pushEvent, runId, type Input, type RunLog } from './runlog';
+import { newRun, pushEvent, type Input, type RunLog } from './runlog';
 import { clearSave, keepRun, loadPast, loadSave, savePast, writeSave } from './storage';
 
 export type Screen = 'home' | 'birth' | 'life' | 'end';
-// 节奏：1× 时活到出生地的平均寿命约 1 小时（不算做抉择的时间），一年的秒数按平均寿命换算，中国在 42–52 秒之间、平均 46 秒。
+// 节奏：1× 时一年 60 秒，各地一样（活到平均寿命约 70–85 分钟，不算做抉择的时间）。
 // 小时候也不自动加快；想快就用倍速和快进
-export const LIFE_MIN = 60;
-export const yearSecOf = (L: Life) => LIFE_MIN * 60 / leOf(L.born, L.sex, L.rural);
+export const YEAR_SEC = 60;
+export const yearSecOf = (_L: Life) => YEAR_SEC;
+// 活到这个人的预期寿命大约要几分钟（出生登记表上显示）
+const lifeMinOf = (L: Life) => Math.round(leOf(L.born, L.sex, L.rural) * YEAR_SEC / 60);
 export const SPEEDS = [1, 2, 4, 8, 16];
 export type FF = false | 'big' | 'dec';
 // 「下一件大事」：遇到这些类型的记录就停（日常、里程碑不算）
@@ -50,7 +52,7 @@ const here = () => ({ a: S.age, t: S.t });
 
 export const game = {
   screen: 'home' as Screen,
-  pref: { len: LIFE_MIN }, // 活到平均寿命大约几分钟（出生登记表上显示）
+  pref: { len: 75 },       // 活到平均寿命大约几分钟（出生时按这个人的预期寿命算，出生登记表上显示）
   speed: 1,
   paused: false,
   ff: false as FF,     // 快进：到下一件大事 / 到下一个抉择
@@ -60,11 +62,11 @@ export const game = {
 
   bornNow() {
     const old = loadSave(); // 没跑完的上一局要被覆盖了：先留一份
-    if (old && old.run && old.life.phase === 'life') keepRun({ run: { ...old.run, events: [...old.run.events, { at: new Date().toISOString(), type: 'abandoned' }] }, life: old.life });
+    if (old && old.life.phase === 'life') keepRun({ run: { ...old.run, events: [...old.run.events, { at: new Date().toISOString(), type: 'abandoned' }] }, life: old.life });
     const seed = (Date.now() ^ Math.floor(Math.random() * 2 ** 31)) | 0;
     run = newRun(seed, VERSION);
     engine('newLife', () => newLife(seed));
-    this.yearSec = yearSecOf(S);
+    this.yearSec = yearSecOf(S); this.pref = { len: lifeMinOf(S) };
     this.speed = 1; S.auto = false;
     event('start', { yearSec: this.yearSec, ua: navigator.userAgent });
     this.show('birth');
@@ -77,9 +79,9 @@ export const game = {
   resume() {
     const sv = loadSave(); if (!sv) return;
     setS(sv.life);
-    run = sv.run || newRun(sv.life.seed, VERSION, { id: runId(sv.life.seed), incomplete: true });
+    run = sv.run;
     lastRs = S.rs;
-    this.speed = SPEEDS.includes(sv.ui.speed) ? sv.ui.speed : SPEEDS[SPEEDS.length - 1]; this.yearSec = yearSecOf(S); // 旧存档里的一年长度不再沿用
+    this.speed = sv.ui.speed; this.yearSec = yearSecOf(S);
     event('resume', { version: VERSION });
     this.startLife();
   },
@@ -119,7 +121,7 @@ export const game = {
 
   save() {
     if (!S || S.headless || !run) return;
-    if (S.phase === 'life') writeSave(S, { speed: this.speed, yearSec: this.yearSec }, run);
+    if (S.phase === 'life') writeSave(S, { speed: this.speed }, run);
     sink.snapshot(run, S);
   },
   show(s: Screen) { this.screen = s; window.scrollTo(0, 0); emit(); },

@@ -42,3 +42,14 @@ export function rnd2() {
 }
 export const pick2 = <T>(a: T[]): T => a[Math.floor(rnd2() * a.length)];
 export const chance2 = (p: number) => rnd2() < p;
+
+// ===== 第三条随机数流：只给「性格」用（personality.ts） =====
+// 性格的天生部分、每年的起伏都从这里抽：加不加性格，主流的随机数序列都不变
+export function rnd3(L = S) {
+  if (L.rs3 == null) L.rs3 = (L.seed ^ 0x2f6b8c1d) | 0;
+  let t = (L.rs3 = (L.rs3 + 0x6D2B79F5) | 0);
+  t = Math.imul(t ^ (t >>> 15), t | 1);
+  t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+  return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+}
+export function gauss3(L = S) { const u = 1 - rnd3(L), v = rnd3(L); return Math.sqrt(-2 * flog(u)) * fcos(2 * Math.PI * v); }

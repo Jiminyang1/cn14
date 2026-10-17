@@ -42,7 +42,7 @@ function checkYear(L, st) {
   if (working && L.age < 15) flag('15岁以前在工作', L, L.job);
   if (working && L.age >= 75) flag('75岁以后还在工作', L, L.job);
   if (L.job === 'retired' && !L.pension) flag('退休了但没有养老金', L);
-  if (L.school && L.schoolEnd != null && L.schoolEnd < L.age) flag('上学过了毕业年龄还没毕业', L, `${L.school} end ${L.schoolEnd}`);
+  if (L.school && L.schoolEnd != null && L.schoolEnd < L.birthYear + L.age - 1) flag('上学过了毕业年份还没毕业', L, `${L.school} end ${L.schoolEnd}`); // schoolEnd：毕业那年的公历年份（calendar.ts）
   if (L.school && L.age > 32) flag('32岁以后还在上学', L, L.school);
   if (L.job === 'seeking') { st.seekY++; if (st.seekY === 4) flag('连续4年以上待业', L, `civilRetry ${L.flags.civilRetry}`); } else st.seekY = 0;
   if (L.age >= 40 && !L.job && !L.school) flag('40岁以后没有任何职业状态', L);

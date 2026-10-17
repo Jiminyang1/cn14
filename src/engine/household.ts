@@ -1,11 +1,18 @@
-// 父母家里的账：每年的结余、还欠款、供孩子上学、父母去世后的遗产。
+// 父母家里的账：每月的结余、还欠款、供孩子上学、父母去世后的遗产。
 
-import { LOAN_RULES, annualPay } from './housing';
+import { fpow } from './fmath';
+import { LOAN_RULES } from './housing';
+import { MONTHS, monthOfCal } from './monthly';
 import { S } from './state';
 import { log } from './journal';
 import { parentIncome, parentRetired } from './parents';
 import { placeCons } from './place';
 import { wan } from './format';
+
+declare module './types' {
+  interface Life { famDebtM?: number }      // 父母的房贷还剩几个月（famDebtMonth）
+  interface Flags { supportA?: number }     // 上一次贴补父母生活费是几岁那年（supportY 每年只记一次）
+}
 
 // 家庭每年的结余：家庭人均可支配收入 × 3 口人 × 储蓄率（按家境），减去孩子上学的开销
 // 家庭净储蓄率（扣掉盖房、人情、看病等大额开销后，估计）；2024 年农村居民（收入−消费）÷收入约 17%，城镇约 34%
@@ -14,21 +21,25 @@ export const FAM_SAVE = [0.02, 0.04, 0.06, 0.1, 0.15];
 // 参考：2024 年（收入 − 消费）÷ 收入，农村约 17%，城镇约 34%。欠得越多、家里越穷，还得越久。
 export const FAM_REPAY = { rural: [0.06, 0.1, 0.14, 0.18, 0.25], urban: [0.1, 0.16, 0.22, 0.28, 0.35] };
 export const SCHOOL_COST = { 高中: 3000, 职高: 2000, 复读: 6000, 大专: 18000, 本科: 20000, 硕士: 22000 };
-export function familyMoneyYear() {
-  const f = S.fam, alive = ['mom', 'dad'].filter(k => f[k].alive);
-  if (!alive.length) { inherit(); return; }
-  // 收入：在职按职业分摊的工资，退休后是养老金
-  const inc = alive.reduce((t, k) => t + parentIncome(k), 0);
-  const working = alive.some(k => !parentRetired(f[k], k === 'dad'));
+// 年利率换算成每月：存款约 1.5%；欠款大多是房贷或向亲戚借的，平均按约 2% 计（估计）
+const SAVE_INT_M = fpow(1.015, 1 / MONTHS), DEBT_INT_M = fpow(1.02, 1 / MONTHS);
+// 每月：父母的收入、结余、还欠款、子女补贴，都按一个月的量（一年的 1/12）记。
+// 学费在开学那个月（公历 9 月）一次交一学年的，和实际交学费的时间一样；那个月家里拿不出钱，就办助学贷款
+export function familyMoneyMonth(m: number) {
+  const f = S.fam, mom = f.mom.alive, dad = f.dad.alive;
+  if (!mom && !dad) { inherit(); return; }
+  // 收入：在职按职业分摊的工资，退休后是养老金（parentIncome 对已去世的人是 0）
+  const inc = (parentIncome('mom') + parentIncome('dad')) / MONTHS;
+  const working = (mom && !parentRetired(f.mom, false)) || (dad && !parentRetired(f.dad, true));
   // 开销：还有人在上班时，按家境的净储蓄率存钱；都退休以后，按当地消费水平的七成算老人的生活费（估计），再加看病
-  const home = { ...S.home, kind: S.home.kind };
   const mortgage = S.famDebtWhy === '房贷';
-  // 还在还其他欠款的年份，家里省下的钱先拿去还债，不再往存款里放
-  let net = working ? (S.famDebt > 0 && !mortgage ? 0 : inc * FAM_SAVE[S.q - 1]) : inc - placeCons(home) * 0.7 * alive.length;
-  for (const k of alive) if (f[k].ill) net -= placeCons(home) * 0.3;
+  const ill = (mom && f.mom.ill ? 1 : 0) + (dad && f.dad.ill ? 1 : 0);
+  // 还在还其他欠款的时候，家里省下的钱先拿去还债，不再往存款里放
+  let net = working ? (S.famDebt > 0 && !mortgage ? 0 : inc * FAM_SAVE[S.q - 1]) : inc - placeCons(S.home) * 0.7 * ((mom ? 1 : 0) + (dad ? 1 : 0)) / MONTHS;
+  if (ill) net -= placeCons(S.home) * 0.3 * ill / MONTHS;
   S.famMoney += net;
-  if (S.famDebt > 0) famDebtYear(inc, working, mortgage);
-  if (S.indep === false && S.school) {
+  if (S.famDebt > 0) famDebtMonth(inc, working, mortgage);
+  if (S.indep === false && S.school && m === monthOfCal(9)) {
     const fee = (SCHOOL_COST[S.school] || 0) * (S.flags.uni && S.flags.uni.tier === 'minban' && S.school === '本科' ? 2.2 : 1);
     S.famMoney -= fee;
     if (S.famMoney < 0 && ['大专', '本科', '硕士'].includes(S.school) && !S.flags.stuLoan) {
@@ -37,36 +48,40 @@ export function familyMoneyYear() {
     }
   }
   // 父母都不上班以后，存款花光了，由已经工作的子女补贴生活费（兄弟姐妹一起分摊）；父母还在上班时，欠款由他们自己慢慢还
+  // supportY 记的是贴补了几年（每个年龄年记一次）
   if (S.indep && S.famMoney < 0 && !working) {
     const share = -S.famMoney / (1 + f.sibs.length);
-    S.money -= share; S.famMoney = 0; S.flags.supportY = (S.flags.supportY || 0) + 1;
+    S.money -= share; S.famMoney = 0;
     S.stats.support = (S.stats.support || 0) + share;
-    if (S.flags.supportY === 1) log(S.flags.parWithMe ? `父母的积蓄花完了，养老金不够用。他们跟你住在一起，生活开销由你来出，今年多花了${wan(share)}。` : `父母的积蓄花完了，养老金不够用。你开始每年给他们寄生活费，今年寄了${wan(share)}。`, 'ev', '2024 年城乡居民养老金人均每年约 2,950 元，城镇职工约 4.6 万元（中国统计年鉴 24-26、24-27）');
+    if (S.flags.supportA !== S.age) {
+      S.flags.supportA = S.age; S.flags.supportY = (S.flags.supportY || 0) + 1;
+      if (S.flags.supportY === 1) log(S.flags.parWithMe ? `父母的积蓄花完了，养老金不够用。他们跟你住在一起，生活开销由你来出，这个月多花了${wan(share)}。` : `父母的积蓄花完了，养老金不够用。你开始每个月给他们寄生活费，这个月寄了${wan(share)}。`, 'ev', '2024 年城乡居民养老金人均每年约 2,950 元，城镇职工约 4.6 万元（中国统计年鉴 24-26、24-27）');
+    }
   }
-  // 存款年利息约 1.5%；欠款大多是房贷或向亲戚借的，平均按约 2% 计（估计）
-  S.famMoney *= S.famMoney > 0 ? 1.015 : 1.02;
+  S.famMoney *= S.famMoney > 0 ? SAVE_INT_M : DEBT_INT_M;
 }
-// 父母还欠款：
-// · 房贷：按商贷利率等额本息，每月从工资里扣（家里照常存钱）；父母都退休后从存款里扣
-// · 其他借款：用家里每年省下的钱还（见 FAM_REPAY），不计利息；父母都退休后，有存款就先拿存款还清
-export function famDebtYear(inc, working, mortgage) {
+// 父母还欠款（每月一期；inc 是这个月的收入）：
+// · 房贷：按商贷利率等额本息，每月从工资里扣（家里照常存钱）；父母都退休后从存款里扣。还剩几个月记在 famDebtM，famDebtYears 跟着取整（界面显示用）
+// · 其他借款：用家里每月省下的钱还（见 FAM_REPAY），不计利息；父母都退休后，有存款就先拿存款还清
+export function famDebtMonth(inc, working, mortgage) {
   const before = S.famDebt;
   let pay;
   if (mortgage) {
-    const r = LOAN_RULES.comRate, n = Math.max(1, S.famDebtYears || 1);
-    pay = Math.min(S.famDebt * (1 + r), annualPay(S.famDebt, r, n));
-    S.famDebt = S.famDebt * (1 + r) - pay; S.famDebtYears = n - 1;
+    if (S.famDebtM == null) S.famDebtM = Math.max(1, S.famDebtYears || 1) * MONTHS;
+    const r = LOAN_RULES.comRate / MONTHS, n = Math.max(1, S.famDebtM), owe = S.famDebt * (1 + r);
+    pay = n > 1 ? Math.min(owe, S.famDebt * r / (1 - fpow(1 + r, -n))) : owe;
+    S.famDebt = owe - pay; S.famDebtM = n - 1; S.famDebtYears = Math.ceil(S.famDebtM / MONTHS);
     if (!working) S.famMoney -= pay;
   } else if (working) {
     pay = Math.min(S.famDebt, inc * FAM_REPAY[S.rural ? 'rural' : 'urban'][S.q - 1]);
     S.famDebt -= pay;
-    S.famDebtYears = pay > 0 ? Math.ceil(S.famDebt / pay) : 99;
+    S.famDebtYears = pay > 0 ? Math.ceil(S.famDebt / (pay * MONTHS)) : 99;
   } else {
     pay = Math.min(S.famDebt, Math.max(0, S.famMoney));
     S.famDebt -= pay; S.famMoney -= pay; S.famDebtYears = S.famDebt > 0 ? 99 : 0;
   }
   if (S.famDebt < 100) {
-    S.famDebt = 0; S.famDebtYears = 0;
+    S.famDebt = 0; S.famDebtYears = 0; S.famDebtM = 0;
     if (S.famDebt0 >= 1e4) log(famDebtPaidText(), 'ev');
   }
   return before - S.famDebt;

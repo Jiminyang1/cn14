@@ -17,7 +17,6 @@ export interface RunLog {
   seed: number;
   version: string;      // 代码版本（git commit，有未提交的改动时带 -dirty）
   startedAt: string;
-  incomplete?: boolean; // 重构前的旧存档：没有输入记录，不能重放
   inputs: Input[];
   events: RunEvent[];
 }
@@ -31,8 +30,8 @@ export function runId(seed: number, d = new Date()) {
 }
 export const seedOfRunId = (id: string) => parseInt(id.split('-').pop(), 36) | 0;
 
-export function newRun(seed: number, version: string, opts: Partial<RunLog> = {}): RunLog {
-  return { id: runId(seed), seed, version, startedAt: new Date().toISOString(), inputs: [], events: [], ...opts };
+export function newRun(seed: number, version: string): RunLog {
+  return { id: runId(seed), seed, version, startedAt: new Date().toISOString(), inputs: [], events: [] };
 }
 
 export function pushEvent(run: RunLog, ev: { type: string; [k: string]: unknown }): RunEvent {

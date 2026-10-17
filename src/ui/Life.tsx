@@ -1,6 +1,6 @@
 // 一生：顶部的姓名和年龄、本年度计划、时间线、侧栏、底部播放条。
 import { memo, useLayoutEffect, useRef, useState } from 'react';
-import { EDU_LV, FOCUS, S, carer, focusList, placeName, statusLabel, type LogEntry } from '../engine';
+import { EDU_LV, FOCUS, S, calMonth, calYear, carer, focusList, persWords, placeName, shownZ, statusLabel, type LogEntry } from '../engine';
 import { SPEEDS, game } from '../game/controller';
 import './day.css';
 import { Modal } from './Modal';
@@ -13,16 +13,17 @@ import { fileNo, sexW } from './util';
 function Header() {
   const status = statusLabel();
   const study = S.school ? '在读' + S.school : S.age < 6 ? '学龄前' : EDU_LV[S.edu];
+  const pw = S.pers && S.age >= 3 ? persWords(shownZ(), 2) : [];
   return (
     <header className="lhead">
       <div className="who">
         <div className="who-1">
           <b>{S.name}</b>
-          <span className="small muted">{sexW(S.sex)} · {S.eth} · 现居{placeName(S.loc)} · {study}{status && !S.school && S.age >= 16 ? ' · ' + status.split(' · ')[0] : ''}</span>
+          <span className="small muted">{sexW(S.sex)} · {S.eth} · 现居{placeName(S.loc)} · {study}{status && !S.school && S.age >= 16 ? ' · ' + status.split(' · ')[0] : ''}{pw.length ? ' · ' + pw.join('、') : ''}</span>
         </div>
         <div className="who-2"><span className="mono small muted">档案号 {fileNo(S)}</span><RunId /></div>
       </div>
-      <div className="agebig"><b>{S.age}</b><span>岁</span><small>{S.birthYear + S.age}年 · 1年≈{Math.round(game.yearSec)}秒</small></div>
+      <div className="agebig"><b>{S.age}</b><span>岁</span><small>{calYear()}年{calMonth()}月 · 1年≈{Math.round(game.yearSec)}秒</small></div>
     </header>
   );
 }
@@ -39,12 +40,12 @@ function FocusPlan() {
   return (
     <div className="sheet plan">
       <div className="plan-row">
-        <b className="plan-h" title="这一年主要把时间花在哪里。随时可改，年底按时间比例结算">今年的重心</b>
+        <b className="plan-h" title="这一年主要把时间花在哪里。随时可改，每个月按花在各项上的时间结算">今年的重心</b>
         <div className="plan-chips" role="radiogroup" aria-label="今年的重心">
           {l.map(k => <button key={k} role="radio" aria-checked={S.focus === k} className={S.focus === k ? 'on' : ''} title={FOCUS[k].d} onClick={() => game.setFocus(k)}>{FOCUS[k].n}</button>)}
         </div>
       </div>
-      <p className="plan-d">{cur ? cur.d + '。' : '选一项。'}随时可改，年底按时间比例结算。</p>
+      <p className="plan-d">{cur ? cur.d + '。' : '选一项。'}随时可改，每个月按花在各项上的时间结算。</p>
     </div>
   );
 }

@@ -24,8 +24,12 @@ export interface Nation { births: number; deaths: number; year: number; srb: num
 export interface Loc { p: string; city: string; kind: 'big' | 'capital' | 'city' | 'rural' }
 
 /** 抉择里的一个选项。w 是自动抉择时的权重，off 表示不可选 */
-export interface Choice { k: string; label: string; sub?: string; w?: number; off?: boolean }
-export interface Decision { title: string; body: string; fact?: string; form?: string; card?: [string, string][]; choices: Choice[]; ctx?: any }
+/** 性格的五条轴（personality.ts）：外向 e、敏感 n、认真 c、随和 a、敢闯 r */
+export type Ax = 'e' | 'n' | 'c' | 'a' | 'r';
+export type PZ = Record<Ax, number>;
+/** 抉择里的一个选项。w 是自动抉择时的权重，tilt 是性格对这个权重的影响（每个标准差，见 personality.ts 的 tiltW），off 表示不可选 */
+export interface Choice { k: string; label: string; sub?: string; w?: number; tilt?: Partial<PZ>; off?: boolean }
+export interface Decision { title: string; body: string; fact?: string; form?: string; card?: [string, string][]; choices: Choice[]; ctx?: any; why?: { k: string; t: string } } // why：自动抉择时性格起了明显作用，记下理由
 
 /** 院校（gaokao.ts） */
 export interface Uni { name: string; city: string; prov: string; tier: string; pct: number; attr: string; fee?: number; thr?: number; p?: number; taken?: number; group?: string }
@@ -53,6 +57,7 @@ export interface Partner {
   jk: string | null; job: string | null; inc: number; hpf: boolean; fit: number;
   love?: number; asks?: number; metParents?: number; marriedAt?: number; retired?: number;
   wh?: number;               // 对方家里要不要婚房：1 要、2 已经因为没房拒过一次求婚
+  pz?: PZ;                   // 对方的性格（固定不变；关掉性格时没有）
 }
 export interface Family {
   mom: Parent; dad: Parent; sibs: Sibling[]; kids: Kid[];
@@ -69,14 +74,19 @@ export interface Loan { kind: 'com' | 'hpf'; bal: number; rate: number; years: n
 export interface House { city: string; p: string; v: number; paid: number; at: number }
 export interface FamHouse { type: 'self' | 'own' | 'rent' | 'gone'; v: number; where?: string }
 export interface Death { age: number; cause: string; year: number }
-export interface Illness { k: string; at: number; treat?: 'big' | 'local' | 'none'; y?: number }
+export interface Illness { k: string; at: number; treat?: 'big' | 'local' | 'none' }
 export interface Companion {
   name: string; sex: Sex; eth: string; born: string; place: string; rural: boolean; q: number;
   death: Death; edu: number; job: string; married: boolean; kids: number; places: string[]; tr: string[];
+  pw?: string[];             // 性格的词
 }
+
+/** 性格：天生 g、经历 k、起伏 u，z 是三者合起来（同龄同性别里的相对位置，平均 0），见 personality.ts */
+export interface Pers { g: PZ; k: PZ; u: PZ; z: PZ }
 
 /** 一生里零散的标记（多数只在少数事件里用到） */
 export interface Flags {
+  kid?: Record<string, string>; // 童年小抉择选了什么（content/decisions.ts 的 CHILD）
   solo?: boolean;            // 一辈子不结婚
   nextSib?: number | null;   // 弟弟妹妹会在你几岁时出生
   lb?: 'both' | 'one';       // 留守：父母都外出 / 一方外出
@@ -97,20 +107,20 @@ export interface Flags {
 }
 
 export interface Life {
-  v: number; seed: number; rs: number; rs2?: number; // 存档版本、种子、主随机数状态、日常用的第二条随机数流（rng.ts）
+  seed: number; rs: number; rs2?: number; rs3?: number; // 种子、主随机数状态、日常用的第二条随机数流、性格用的第三条（rng.ts）
   age: number; t: number;                           // 年龄；这一年过了多少（0–1）
   birthYear: number; birthMonth: number;
   name: string; surname: string; sex: Sex; eth: string;
   born: string; rural: boolean; order: number; q: number; // 出生省份、农村户籍、第几个孩子、家境（1–5）
   loc: Loc; home: Loc; places: string[];
   st: Stats4; flags: Flags;
+  pers?: Pers;                                     // 性格（personality.ts）
   fam: Family; cand?: Partner | null;               // 认识了、还没决定的人
   // 学业与工作
   school: string | null; schoolEnd: number | null; edu: number;
   job: string | null; jobY: number; wageK: number; jobs: { job: string; age: number; city: string }[];
   income: number; relInc?: number; pension?: number;
-  wageAcc?: number; wageT0?: number; hpfAcc?: number; // 这一年里已经结算的工资、最后这份工作从哪个进度开始算、个人已缴的公积金（finance.ts 的 accrueWage）
-  pen?: { y: number; r: number; s: number };       // 职工养老保险缴费记录（finance.ts 的 penYear）
+  pen?: { y: number; r: number; s: number };       // 职工养老保险缴费记录（finance.ts 的 penMonth）
   // 钱：经济独立以前算在家里
   indep: boolean; indepAt?: number; money: number;
   famMoney: number; famDebt: number; famDebt0: number; famDebtWhy?: string; famDebtYears: number;
@@ -119,6 +129,7 @@ export interface Life {
   hpf?: number; hpfOn?: boolean; hpfY?: number; hpfRate?: number;
   // 调度
   phase: 'life' | 'end'; queue: QueueItem[]; pending: Pending | null; headless: boolean;
+  month: number;                                   // 这一年的第几个月（0 = 生日那个月），见 monthly.ts
   done: Record<string, number>; recent: string[]; focus: string | null; fT: Record<string, number>; fStart?: number; // 每年的重心：当前重心、各重心累计的时间、当前重心从哪个进度开始
   // 记录
   log: LogEntry[]; years: YearRow[]; docs?: Doc[]; notes: { a: number; q: string; t: string }[];

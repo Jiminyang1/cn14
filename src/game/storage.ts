@@ -15,23 +15,15 @@ function del(k: string) {
 }
 
 // ===== 存档 =====
-// 格式 2：{ format: 2, life, ui, run }（run 是这一局的日志，和人生同时保存，所以总是对得上）。格式 1（重构前）直接把整个人生对象存在根上，界面状态也混在里面。
-export interface UiPrefs { speed: number; yearSec: number }
-export interface Save { life: Life; ui: UiPrefs; run?: RunLog }
-const SAVE_FORMAT = 2;
-const UI_FIELDS = ['speed', 'yearSec', 'paused', 'ff', 'dirty'];
+// { format, life, ui, run }（run 是这一局的日志，和人生同时保存，所以总是对得上）。
+// 不做旧存档的兼容：人生对象的结构变了就把 SAVE_FORMAT 加一，格式不同的存档直接当作没有
+export interface UiPrefs { speed: number }
+export interface Save { life: Life; ui: UiPrefs; run: RunLog }
+const SAVE_FORMAT = 3; // 3：加了性格（2026-10-16）
 
 export function loadSave(): Save | null {
   const raw = get<any>(SAVE_KEY);
-  if (!raw) return null;
-  if (raw.format === SAVE_FORMAT) return raw;
-  if (raw.phase) { // 格式 1
-    const ui = { speed: raw.speed || 1, yearSec: raw.yearSec || 18.75 };
-    const life = { ...raw };
-    for (const k of UI_FIELDS) delete life[k];
-    return { life, ui };
-  }
-  return null;
+  return raw && raw.format === SAVE_FORMAT ? raw : null;
 }
 export const writeSave = (life: Life, ui: UiPrefs, run: RunLog) => set(SAVE_KEY, { format: SAVE_FORMAT, life, ui, run });
 export const clearSave = () => del(SAVE_KEY);

@@ -1,0 +1,1 @@
+{"everBought":"91%","medianBuyAge":33,"loanMix":{"com":"79%","hpf":"12%","com+hpf":"7%","cash":"2%"},"hpfCoverageAt30":"41%","medianHpfBalanceAt30":72968,"prepayEvents":"155.9%","arrearsHold":"4.5%","distressSale":"4.3%","foreclosure":"1.0%"}

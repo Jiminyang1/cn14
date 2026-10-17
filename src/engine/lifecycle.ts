@@ -1,31 +1,34 @@
 // 一生的推进：出生、每年的安排（事件、抉择、里程碑）、逐步推进、年初年末的结算，以及同一秒出生的同伴。
 import type { Life } from './types';
 
-import { CAUSE, DIAG, deathProb, milestone, pickCause } from './mortality';
+import { CAUSE, milestone } from './mortality';
 import { CROSS_PROV, LABOR_OUT, NATION, PROVS, REGION_OF } from './data';
-import { DEC, dueDecisions } from './content/decisions';
-import { fireDaily, planDaily } from './content/daily';
-import { EVENTS, EVMAP } from './content/events';
-import { FOCUS, applyFocus, autoFocus, focusList } from './focus';
+import { DEC } from './content/decisions';
+import { fireDaily } from './content/daily';
+import { EVMAP } from './content/events';
+import { focusMonth } from './focus';
 import { JOBS, isWorking, mainJob, retire, retireAge } from './career';
 import { S, setS } from './state';
-import { SIB, UR, boyOf, family, newSib, olderSibSexes, planNextSib } from './family';
+import { SIB, UR, boyOf, familyMonth, kidsYearStart, olderSibSexes, planNextSib, sibYearStart } from './family';
 import { addDoc, log, out } from './journal';
-import { carer, famHouseInit, famWealthInit, familyIncomeInit, makeParent, setParentJob } from './parents';
+import { MONTHS, monthStart } from './monthly';
+import { planMonth, planYearSchedule, scheduleYearStart } from './schedule';
+import { famHouseInit, famWealthInit, familyIncomeInit, makeParent, setParentJob } from './parents';
 import { chance, clamp, gauss, ri, rnd, wpick } from './rng';
 import { cityLoc, migrantCity, moveTo, placeInc, placeName } from './place';
-import { die, illYear } from './health';
-import { drift, eff } from './stats';
-import { finances } from './finance';
+import { die, healthMonth } from './health';
+import { bodyMonth, driftMonth } from './stats';
+import { moneyMonth } from './finance';
 import { kinYear } from './kin';
 import { turnsYear } from './turns';
-import { loveQueue, loveYear } from './romance';
+import { loveMonth } from './romance';
 import { makeName } from './names';
+import { persInit, persWords, persYear, shape, shownZ, tiltW, whyOf } from './personality';
 
 // ===== 出生 =====
 export function birth(seed, opts: { year?: number; headless?: boolean } = {}) {
   setS(<Life>{
-    v: 1, seed, rs: seed | 0, age: 0, t: 0, birthYear: opts.year || 2026, birthMonth: 1,
+    seed, rs: seed | 0, age: 0, t: 0, birthYear: opts.year || 2026, birthMonth: 1,
     st: {}, flags: {}, done: {}, recent: [], log: [], years: [], queue: [], fT: {}, notes: [], places: [], jobs: [],
     stats: { maxMoney: 0 }, phase: 'life', money: 0, income: 0, job: null, jobY: 0, wageK: 1,
     school: null, schoolEnd: null, edu: 0, house: null, focus: null, pending: null, headless: !!opts.headless,
@@ -81,6 +84,8 @@ export function birth(seed, opts: { year?: number; headless?: boolean } = {}) {
     so: clamp(gauss(55, 7), 25, 85),
   };
   familyIncomeInit(); // 家境由父母收入决定
+  persInit(); // 性格（只用第三条随机数流）
+  if (S.flags.lb === 'both') shape({ n: 0.15, e: -0.05 }); // 父母都外出的留守儿童：敏感一些（方向有研究支持，幅度是估计）
   S.st.kn = clamp(S.st.kn + (S.q - 3) * 3 + (Math.max(S.fam.mom.edu, S.fam.dad.edu) - 4) * 1.5, 10, 90); // 家境、父母学历
   famHouseInit();
   famWealthInit(); // 家里原有的积蓄和欠款
@@ -109,52 +114,34 @@ export const REFLECT = {
 export function planYear() {
   yearStart();
   if (S.phase !== 'life') return;
-  S.queue = []; S.fT = {}; S.fStart = 0;
-  const n = S.age < 6 ? 2 : 3, used = new Set();
-  for (let i = 0; i < n; i++) {
-    const id = chooseEvent(used);
-    if (id) { used.add(id); S.queue.push({ at: 0.1 + (i + rnd() * 0.8) / n * 0.8, type: 'ev', id }); }
-  }
-  dueDecisions().slice(0, 2).forEach((id, i) => S.queue.push({ at: 0.3 + i * 0.3 + rnd() * 0.1, type: 'dec', id }));
-  loveQueue();
-  if (MILESTONES.includes(S.age)) S.queue.push({ at: 0.02, type: 'ms' });
-  if (ENABLE_REFLECT && !S.headless && REFLECT[S.age]) S.queue.push({ at: 0.92, type: 'ref' });
-  planDaily(); // 日常：只用第二条随机数流，不影响上面这些
-  S.queue.sort((a, b) => a.at - b.at);
-  if (S.focus && !(FOCUS[S.focus] && FOCUS[S.focus].ok())) S.focus = null;
-  if (!S.focus && focusList().length) S.focus = autoFocus();
+  S.month = 0;
+  planYearSchedule();
+  planMonth(0);
 }
-// 「平静的一段时间」：给低权重事件一个参照，避免总有事情发生
-export const QUIET_W = a => a < 18 ? 1.5 : 5;
-export function chooseEvent(used) {
-  const w: [string | null, number][] = [[null, QUIET_W(S.age)]];
-  for (const ev of EVENTS) {
-    if (S.age < ev.a[0] || S.age > ev.a[1] || used.has(ev.id)) continue;
-    if (ev.once && S.done[ev.id] != null) continue;
-    if (ev.gap && S.done[ev.id] != null && S.age - S.done[ev.id] < ev.gap) continue;
-    if (ev.c && !ev.c()) continue;
-    let wt = typeof ev.w === 'function' ? ev.w() : (ev.w == null ? 1 : ev.w);
-    if (S.recent.includes(ev.id)) wt *= 0.1;
-    if (wt > 0) w.push([ev.id, wt]);
-  }
-  return wpick(w);
-}
-
 // ===== 推进 =====
 // 推进 dtYears 年（一年 = 1）。遇到需要玩家决定的抉择就停下。
 export const tick = (dtYears: number) => tickTo(Math.min(S.t + dtYears, 1));
-// 推进到这一年的进度 t（0–1）。结果只取决于在哪些时刻做了什么（抉择、改重心），与每一步走多远（帧率、倍速）无关，所以可以精确重放
+// 推进到这一年的进度 t（0–1）。结果只取决于在哪些时刻做了什么（抉择、改重心），与每一步走多远（帧率、倍速）无关，所以可以精确重放。
+// 按月推进：每跨过一个月的边界，先触发这个月里排到的事，再做这个月的结算（endMonth）；第 12 个月结算完就是一年的结束
 export function tickTo(t: number) {
   if (!S || S.phase !== 'life' || S.pending) return;
-  const nt = Math.min(t, 1);
-  while (S.queue.length && S.queue[0].at <= nt) {
-    const e = S.queue.shift();
-    S.t = e.at;
-    fire(e);
-    if (S.pending || S.phase !== 'life') return;
+  const target = Math.min(t, 1);
+  for (;;) {
+    const m = S.month, end = monthStart(m + 1), upto = Math.min(target, end);
+    while (S.queue.length && S.queue[0].at <= upto) {
+      const e = S.queue.shift();
+      S.t = e.at;
+      fire(e);
+      if (S.pending || S.phase !== 'life') return;
+    }
+    if (target < end) { S.t = Math.max(S.t, target); return; }
+    S.t = end;
+    endMonth(m);
+    if (S.phase !== 'life') return;
+    if (m === MONTHS - 1) { endYear(); return; }
+    S.month = m + 1;
+    planMonth(S.month);
   }
-  S.t = Math.max(S.t, nt);
-  if (S.t >= 1) endYear();
 }
 export function fire(e) {
   if (e.type === 'ev') {
@@ -175,70 +162,55 @@ export function openDec(id) {
   if (S.headless) { resolveDec(id, d, autoPick(d)); return; }
   S.pending = { type: 'dec', id, d };
 }
-export function autoPick(d) { return wpick(d.choices.filter(c => !c.off).map(c => [c.k, c.w == null ? 1 : c.w])); }
+// 自动抉择：按选项的权重抽，权重再乘上性格的倾向（tilt）。性格把选中的那一项抬高了不少时，记下理由（resolveDec 写在记录下面）
+export function autoPick(d) {
+  const cs = d.choices.filter(c => !c.off), w0 = cs.map(c => c.w == null ? 1 : c.w), w = cs.map((c, i) => w0[i] * tiltW(c.tilt));
+  const k = wpick(cs.map((c, i) => [c.k, w[i]]));
+  if (S.pers) {
+    const i = cs.findIndex(c => c.k === k), s0 = w0.reduce((a, b) => a + Math.max(0, b), 0), s1 = w.reduce((a, b) => a + Math.max(0, b), 0);
+    const t = i >= 0 && s1 > 0 && w0[i] > 0 ? whyOf(cs[i].tilt, (w[i] / s1) / (w0[i] / s0)) : null;
+    d.why = t ? { k, t } : undefined;
+  }
+  return k;
+}
 export function resolveDec(id, d, k) {
   const c = d.choices.find(x => x.k === k) || { label: k.startsWith('apply:') ? '填报志愿：' + JSON.parse(k.slice(6)).apps.map(a => d.ctx.cands[a.i].name).join('、') : k };
   S.pending = null;
-  log(`${d.title} —— ${c.label}`, 'choice');
+  log(`${d.title} —— ${c.label}`, 'choice', d.why && d.why.k === k ? d.why.t : null);
   out(DEC[id].apply(k, d.ctx || {}));
 }
-export function runHeadlessYear() {
-  // 和 tickTo 一样记下每件事发生在这一年的什么时候（年中换工作、裁员按时间折算工资要用）
-  while (S.phase === 'life' && S.queue.length) { const e = S.queue.shift(); S.t = Math.max(S.t, e.at); fire(e); }
-  if (S.phase === 'life') { S.t = 1; endYear(); }
-}
+// 无界面的人生（同伴、校准）一次跑完一年：和有界面时一样按月推进、记下每件事发生在什么时候，只是抉择会被自动做掉
+export function runHeadlessYear() { tickTo(1); }
 
-// ===== 年初：入学、退休、孩子长大 =====
+// ===== 生日那个月：一年的开始 =====
+// 顺序和原来的「年初」一样：弟弟妹妹出生 → 家里的大事 → 返聘、候鸟 → 入学、退休 → 孩子长大
 export function yearStart() {
-  const a = S.age, f = S.fam;
-  if (S.flags.nextSib === a && f.mom.alive) newSib();
+  sibYearStart();
   kinYear();
   turnsYear();
-  if (a === 3) {
-    if (chance(S.loc.kind === 'rural' ? 0.85 : 0.96)) log(S.loc.kind === 'rural' ? '上了镇上的幼儿园，每天坐校车来回。' : '上幼儿园了。第一天你抱着门框哭，第二天就交到了朋友。', 'ev', null, 'kinder');
-    else log(`没有上幼儿园，每天跟着${carer()}在家附近转。`, 'ev');
-  }
-  if (a === 6) { S.school = '小学'; S.schoolEnd = 12; log(S.loc.kind === 'rural' ? '背上新书包，走半个小时的山路去村里的小学。' : '上小学了。开学第一天，门口挤满了拍照的家长。', 'ev', null, 'primary'); }
-  if (a === 12 && S.school === '小学') { S.school = '初中'; S.schoolEnd = 15; S.edu = 1; log(S.loc.kind === 'rural' ? '小学毕业，去镇上读初中。' : '小学毕业，上了初中。', 'ev', null, 'middle'); }
-  // 到了退休年龄还在待业的，也直接退休（按原来那一行的退休年龄），不再找工作
-  if ((isWorking() || S.job === 'seeking') && a >= retireAge()) retire();
-  for (const k of f.kids) {
-    if (!k.alive) continue;
-    k.age = a - k.bornAt;
-    if (k.age === 6) log(`${k.name}上小学了。`, 'ev');
-    if (k.age === 18) {
-      const t = wpick([['考上了一所不错的本科', 0.25 + S.q * 0.06 + (S.edu >= 6 ? 0.2 : 0)], ['考上了大专', 0.5], ['没有继续读书，出去工作了', 0.25 - S.q * 0.03]]);
-      k.path = t; log(`${k.name}参加了高考，${t}。`, 'ev');
-    }
-    if (k.age >= 23 && k.age <= 38 && !k.married && !k.wed && chance(0.11)) k.wed = 1; // 今年要结婚：先由抉择 kidhome 定家里出多少钱
-    if (k.married && (k.gk || 0) < 2 && k.age <= 42 && chance(0.12)) { k.gk = (k.gk || 0) + 1; S.flags.grandkids = (S.flags.grandkids || 0) + 1; log(`你当上了${S.sex === 'M' ? '爷爷' : '奶奶'}（或${S.sex === 'M' ? '外公' : '外婆'}）。${k.name}的孩子出生了。`, 'good'); eff({ h: 6, so: 4 }); }
-  }
+  scheduleYearStart();
+  kidsYearStart();
 }
 
 // ===== 年末结算 =====
-export function endYear() {
-  const a = S.age, st = S.st;
-  applyFocus();
-  if (a >= 68 && st.kn > 25) st.kn -= 0.3;
-  if (isWorking()) { const J = JOBS[S.job]; st.hl = clamp(st.hl + (J.hl || 0) * 0.5, 0, 100); st.h = clamp(st.h + (J.h || 0) * 0.5, 0, 100); }
-  finances();
-  family();
-  loveYear();
+// 每个月月底的结算，各领域的钩子都在自己的文件里。顺序很重要（和原来的年末结算一致）：
+// 重心 → 身体 → 钱 → 家人 → 恋爱 → 健康幸福的变化 → 记一笔一生曲线 → 生病和死亡
+function endMonth(m: number) {
+  focusMonth(m);
+  bodyMonth(m);
+  moneyMonth(m);
+  familyMonth(m);
+  loveMonth(m);
   if (S.phase !== 'life') return;
-  drift();
-  S.years.push({ a, h: Math.round(st.h), hl: Math.round(st.hl), m: Math.round(S.money), s: statusLabel() });
-  // 大病治疗期间：大病本身的风险之外，其他死因照常存在（否则高龄时确诊反而更安全）
-  if (S.flags.ill && S.flags.ill.treat) { if (illYear()) return; if (chance(deathProb())) { die(pickCause()); return; } }
-  else if (!S.flags.ill && chance(deathProb())) {
-    const k = pickCause();
-    if (['cancer', 'heart', 'stroke', 'liver', 'resp'].includes(k) && a >= 35 && chance(0.55)) {
-      S.flags.ill = { k, at: a };
-      addDoc('ill', '诊断书', [['诊断', CAUSE[k]], ['日期', `${S.birthYear + a}年`]]);
-      log(DIAG[k], 'bad');
-    } else { die(k); return; }
-  } else if (S.flags.ill && !S.flags.ill.treat && a > S.flags.ill.at + 1) { die(S.flags.ill.k); return; }
+  driftMonth(m);
+  if (m === MONTHS - 1) S.years.push({ a: S.age, h: Math.round(S.st.h), hl: Math.round(S.st.hl), m: Math.round(S.money), s: statusLabel() });
+  healthMonth(m);
+}
+// 第 12 个月结算完：长一岁，排下一年
+export function endYear() {
   S.age++; S.t = 0;
   if (S.age >= 110) { die('old'); return; }
+  persYear();
   planYear();
 }
 export function statusLabel() {
@@ -267,6 +239,7 @@ function summarizeCompanion(c, tr) {
   return {
     name: c.name, sex: c.sex, eth: c.eth, born: c.born, place: placeName(c.home), rural: c.rural, q: c.q,
     death: c.death, edu: c.edu, job: mainJob(c), married: c.fam.married || c.flags.widowed != null, kids: c.fam.kids.length, places: c.places, tr,
+    pw: c.pers ? persWords(shownZ(c), 2) : undefined,
   };
 }
 export function newLife(seed) {

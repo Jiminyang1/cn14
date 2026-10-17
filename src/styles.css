@@ -207,6 +207,14 @@ table.cmp th { font-weight: 500; font-family: var(--form); color: var(--muted); 
 .vt i { height: 7px; background: var(--line); overflow: hidden; }
 .vt i u { display: block; height: 100%; background: var(--c); width: var(--v); transition: width .4s; }
 .vt b { text-align: right; font-family: var(--mono); font-weight: 500; }
+/* 性格刻度：中间一道细线，人在哪个位置画一个小竖块 */
+.pt { display: grid; grid-template-columns: 2.6em 1fr 2.6em; gap: 8px; align-items: center; font-size: 12px; margin: 4px 0; }
+.pt span { font-family: var(--form); color: var(--muted); }
+.pt span:last-child { text-align: right; }
+.pt span.on { color: var(--ink); font-weight: 700; }
+.pt i { position: relative; height: 5px; background: var(--line); }
+.pt i::before { content: ''; position: absolute; left: 50%; top: -2px; bottom: -2px; width: 1px; background: var(--rule); }
+.pt i u { position: absolute; top: -3px; width: 5px; height: 11px; background: var(--ink); left: calc(var(--v) - 2.5px); transition: left .6s; }
 .acct-h { font-family: var(--form); font-weight: 400; font-size: 13px; color: var(--muted); margin: 12px 0 0; }
 .acct { display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid var(--line); margin-top: 10px; }
 .acct > div { padding: 6px 8px 4px 0; border-bottom: 1px solid var(--line); }

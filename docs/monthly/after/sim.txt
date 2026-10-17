@@ -1,0 +1,19 @@
+{
+ "n": 40000,
+ "errs": 0,
+ "meanM": "75.3",
+ "meanF": "81.0",
+ "meanDeathAge": "77.9",
+ "u5": "6.0‰",
+ "edu": "大专 37.1%, 本科 28.4%, 中专/职高 15.2%, 高中 8.4%, 初中 5.5%, 硕士 4.5%, 没上过学 0.9%, 小学 0.1%",
+ "tier": "ben 22.1%, zhuan 20.2%, ben1 7.0%, 211 2.5%, top 1.4%",
+ "cause": "heart 22.1%, cancer 20.6%, stroke 17.7%, dementia 9.5%, resp 9.3%, other 5.9%, accident 2.8%, pneumonia 2.3%, diabetes 2.3%, traffic 2.0%, kidney 1.9%, suicide 1.2%, liver 1.0%, leukemia 0.5%, drown 0.5%, congenital 0.2%, perinatal 0.2%, maternal 0.0%",
+ "job": "公司职员 26.2%, 销售 20.1%, 工厂工人 11.9%, 个体户 8.0%, 务农 6.3%, 进城务工 4.6%, 教师 4.5%, 工程师 3.9%, 技术工人 3.8%, 护士 3.3%, 公务员 3.1%, (none) 1.2%, 外卖骑手 1.1%, 网约车司机 0.9%, 互联网公司程序员 0.6%, 小老板 0.4%, 医生 0.2%",
+ "everMarried": "95%",
+ "married40": "96% of survivors",
+ "kidsPer": "1.11",
+ "house": "88%",
+ "leftBehind": "8.3%",
+ "migrantKid": "4.3%",
+ "livedBigCity": "59%"
+}

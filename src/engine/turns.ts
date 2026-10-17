@@ -1,5 +1,5 @@
 // 工作和晚年的两个关口：裁员名单、退休以后。
-// 抉择本身（标题、选项）在 content/decisions.ts 的 layofflist / retireplan，这里是规则和之后每年的后续。
+// 抉择本身（标题、选项）在 content/decisions.ts 的 layofflist / retireplan，这里是规则和之后每年、每月的后续。
 // 出处见 DATA.md「裁员」「退休以后」。
 import { S } from './state';
 import { log } from './journal';
@@ -8,6 +8,7 @@ import { eff } from './stats';
 import { JOBS, hire, quitJob } from './career';
 import { wageRate } from './finance';
 import { moveTo, placeInc } from './place';
+import { MONTHS, calMonth } from './monthly';
 
 // ===== 裁员名单 =====
 // 私企岗位（销售、职员、程序员、工程师）的裁员，不再是突然落下的随机事件，而是先听说“名单上可能有你”，再决定怎么应对。
@@ -45,7 +46,7 @@ export function jumpShip() {
 }
 
 // ===== 退休以后 =====
-// 刚退休那一年，选一种过法。返聘和候鸟会持续几年，每年在 turnsYear 里结算
+// 刚退休那一年，选一种过法。返聘和候鸟会持续几年：每年生日在 turnsYear 里判定还继续不继续，钱每月在 turnsMonth 里结算
 export const lastJob = () => { const j = S.jobs[S.jobs.length - 1]; return j ? j.job : null; };
 const REHIRE: Record<string, string> = {
   teacher: '被学校返聘，继续带两个班', doctor: '被医院返聘，每周坐诊三天', nurse: '去社区诊所帮忙，量血压、打针',
@@ -63,14 +64,24 @@ export const SNOWBIRD = { years: [5, 10] as [number, number], cost: 0.3 };    //
 export function startSnowbird() { S.flags.snowbird = S.age + ri(...SNOWBIRD.years); }
 export function goHomeOld() { moveTo(S.home); }
 
+// 生日那个月：这一年还接着返聘、还去不去南方过冬（年度判定，身体和心情的影响也按年记）。钱按月在 turnsMonth 里结算
 export function turnsYear() {
   const a = S.age, F = S.flags;
   if (F.rehire) {
-    if (a < F.rehire.until && S.st.hl > 30) eff({ money: F.rehire.inc, hl: -0.5 });
+    if (a < F.rehire.until && S.st.hl > 30) eff({ hl: -0.5 });
     else { log(`不再上班了。${a >= F.rehire.until ? '单位那边说，年纪到了，该歇歇了。' : '身体吃不消，辞了。'}`); F.rehire = null; }
   }
   if (F.snowbird) {
-    if (a < F.snowbird && S.st.hl > 35 && S.money > 0) eff({ money: -placeInc() * SNOWBIRD.cost, h: 1, hl: 0.5 });
+    if (a < F.snowbird && S.st.hl > 35 && S.money > 0) eff({ h: 1, hl: 0.5 });
     else { log('年纪大了，跑不动了，不再去南方过冬。'); F.snowbird = null; }
   }
+}
+// 候鸟在南方住的月份（公历 11 月到第二年 2 月），一年的开销摊在这几个月里
+const WINTER = [11, 12, 1, 2];
+// 每个月月底（finance.ts 的 moneyMonth 调用）：返聘的工资每月发 1/12（从选了返聘的下个月起，不再等到下一个生日）；候鸟的房租、路费在冬天的几个月里付。
+// 和原来一样直接进出存款，不算进储蓄率模型的收入
+export function turnsMonth(m: number) {
+  const F = S.flags;
+  if (F.rehire) S.money += F.rehire.inc / MONTHS;
+  if (F.snowbird && WINTER.includes(calMonth(m))) S.money -= placeInc() * SNOWBIRD.cost / WINTER.length;
 }

@@ -1,0 +1,1 @@
+{"urbanMedian":50592,"ruralMedian":20619,"urbanQ":"12% 24% 23% 23% 19%","ruralQ":"11% 24% 22% 28% 16%"}

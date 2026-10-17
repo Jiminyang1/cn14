@@ -16,9 +16,13 @@ import { kidsAlive } from '../family';
 import { single, soloK } from '../romance';
 import { wan } from '../format';
 import { sibToWed, sibWed } from '../kin';
+import { shape, tiltW } from '../personality';
 
 export const rural = () => S.loc.kind === 'rural';
 export const dz = t => PBY[S.loc.p].dz.includes(t);
+
+// 离婚：敏感的人风险高，随和、认真的低（每个标准差的风险比约 1.15 / 0.85 / 0.85，Roberts 2007、Lundberg 2012），夫妻双方各乘一次
+const DIV_T = { n: 0.14, a: -0.16, c: -0.16 };
 
 export const EVENTS = [
   // ---------- 0–5 岁 ----------
@@ -31,6 +35,19 @@ export const EVENTS = [
   { id: 'lbCall', a: [1, 15], gap: 2, w: () => S.flags.lb ? 4 : 0, run: () => { eff({ h: -2, so: -1 }); return { t: S.flags.lb === 'both' ? `每个星期天晚上，和在外打工的爸妈视频。信号不好，画面总是卡住。${S.age < 5 ? '你不太认得屏幕里的人。' : '说着说着就不知道该说什么了。'}` : '在外打工的爸爸每周打来一次电话，问的总是“听不听话”“考了多少分”。', f: '2024年义务教育阶段有农村留守儿童858万、进城务工人员随迁子女1309万（中国统计年鉴2025）' }; } },
   { id: 'lbSpring', a: [2, 15], gap: 2, w: () => S.flags.lb ? 3 : 0, run: () => { eff({ h: 3 }); return S.flags.lb === 'both' ? '过年了，爸妈从外地回来，给你带了新衣服。正月初八他们又走了，你追着车跑了很远。' : '过年时一家人终于聚齐了。初六那天，爸爸又背上行李去了车站。'; } },
 
+  // 童年（2026-10 补充）：让 0–5 岁每年也有几件事。效果都很小，多数只动幸福、人际
+  { id: 'zhuazhou', a: [1, 1], once: 1, w: () => rural() ? 3 : 2, run: () => { const g = pick([['一支笔', '以后是读书的料'], ['一把算盘', '以后会算账'], ['一个手机', '以后离不开手机'], ['一张钞票', '以后能挣钱'], ['一把勺子', '以后是个吃货']]); eff({ h: 1, so: 1 }); return `周岁抓周，你一把抓住了${g[0]}。大人们笑着说：「${g[1]}。」`; } },
+  { id: 'bump', a: [1, 5], once: 1, w: 1.5, run: () => { eff({ hl: -1, h: -1 }); return pick(['从床上滚下来，额头磕在床头柜上，缝了两针。', '在楼梯上摔了一跤，膝盖上留了个疤。', '学走路的时候撞到桌角，额头肿了一个大包。']); } },
+  { id: 'picky', a: [2, 5], once: 1, w: 1, run: () => { eff({ hl: -1 }); return `开始挑食，青菜一口不吃。${carer()}追着你喂饭，一顿饭要喂一个小时。`; } },
+  { id: 'lostToy', a: [2, 5], once: 1, w: 1, run: () => { eff({ h: -1 }); return pick(['心爱的小熊玩偶弄丢了，你哭了一下午。', '最喜欢的小汽车被别的小朋友拿走了，你哭着回了家。']); } },
+  { id: 'redFlower', a: [3, 5], once: 1, w: 2, c: () => !rural() || chance(0.7), run: () => { eff({ h: 1, so: 1 }); return '在幼儿园得了一朵小红花。回家的路上，你一直举着给每个人看。'; } },
+  { id: 'kgSick', a: [3, 5], gap: 2, w: 1.5, run: () => { eff({ hl: -1, h: -1 }); return pick(['幼儿园里流行手足口病，班上停课了一个星期，你也被传上了。', '上了幼儿园以后，三天两头感冒，药就没断过。']); } },
+  { id: 'kgCry', a: [3, 4], once: 1, w: 1.5, c: () => !rural(), run: () => { eff({ so: 1 }); return '在幼儿园和小朋友抢玩具，被老师罚坐了五分钟。'; } },
+  { id: 'zoo', a: [3, 7], once: 1, w: () => rural() ? 0.3 : 1.5, run: () => { eff({ h: 1 }); return pick(['第一次去动物园，看见了大熊猫，它一直在睡觉。', '去海洋馆看了海豚表演，被溅了一身水。']); } },
+  { id: 'chicks', a: [2, 7], once: 1, w: () => rural() ? 2 : 0, run: () => { eff({ h: 1 }); return '家里孵了一窝小鸡，你每天蹲在旁边看，给每一只都起了名字。'; } },
+  { id: 'grandStory', a: [2, 7], gap: 3, w: () => S.flags.lb || rural() ? 1.5 : 0.8, run: () => { eff({ so: 1, h: 1 }); return `每天晚上，${S.flags.lb === 'both' ? S.flags.carer : chance(0.5) ? '奶奶' : '外婆'}给你讲以前的事。很多年以后，你还记得其中几个。`; } },
+  { id: 'cartoon', a: [3, 7], once: 1, w: 1.5, run: () => { eff({ h: 1 }); return `迷上了一部动画片《${pick(['熊出没', '小猪佩奇', '汪汪队立大功', '喜羊羊与灰太狼'])}》，天天要看，看完一集又一集。`; } },
+  { id: 'sibSquabble', a: [3, 12], gap: 2, w: () => S.fam.sibs.length ? 1.5 : 0, run: () => { const s = pick(S.fam.sibs); eff({ h: -1, so: 1 }); return `和${s.rel}为了${pick(['一块蛋糕', '遥控器', '谁坐窗边', '一个玩具'])}吵起来，最后两个人都挨了骂。`; } },
   // ---------- 6–14 岁 ----------
   { id: 'redscarf', a: [7, 8], once: 1, w: 2, c: () => !!S.school, run: () => { eff({ h: 1, so: 1 }); return '戴上了红领巾，入了少先队。'; } },
   { id: 'homework', a: [6, 14], gap: 2, w: () => rural() ? 1 : 3, c: () => !!S.school, run: () => { eff({ kn: 2, h: -2 }); return '家长群里，老师又@了你妈妈。那天的作业写到晚上十点。'; } },
@@ -38,7 +55,7 @@ export const EVENTS = [
   { id: 'classes', a: [7, 15], gap: 2, w: () => !rural() && S.q >= 3 ? 2.5 : 0, run: () => { eff({ kn: 3, h: -3, money: 0 }); return `周末被报了好几个班：${pick(['书法和编程', '英语和奥数', '钢琴和游泳', '画画和跆拳道'])}，比上学还累。`; } },
   { id: 'olympiad', a: [9, 14], once: 1, w: () => S.st.kn > 62 ? 2 : 0, run: () => { eff({ kn: 2, h: 4 }); return { t: '数学竞赛拿了奖。奖状被贴在家里最显眼的那面墙上。', k: 'good' }; } },
   { id: 'bestie', a: [6, 14], once: 1, w: 2, run: () => { eff({ so: 6, h: 3 }); return '交到了一个最好的朋友，你们约好以后考同一所高中。'; } },
-  { id: 'bully', a: [7, 15], once: 1, w: () => S.st.so < 45 ? 2 : 0.7, run: () => { eff({ h: -6, so: -3 }); return { t: '在学校被几个同学欺负，你没敢告诉家里。', k: 'bad' }; } },
+  { id: 'bully', a: [7, 15], once: 1, w: () => S.st.so < 45 ? 2 : 0.7, run: () => { eff({ h: -6, so: -3 }); shape({ n: 0.1, e: -0.05 }); return { t: '在学校被几个同学欺负，你没敢告诉家里。', k: 'bad' }; } },
   { id: 'cadre', a: [7, 14], once: 1, w: () => S.st.kn > 55 ? 2 : 0.8, run: () => { eff({ so: 2, h: 2 }); return `当上了${pick(['班长', '学习委员', '数学课代表', '体育委员'])}。`; } },
   { id: 'phone', a: [10, 14], once: 1, w: 2, run: () => { eff({ h: 2, kn: -1 }); return '有了自己的第一部手机，是爸妈换下来的旧手机。'; } },
   { id: 'game', a: [10, 17], once: 1, w: 2, run: () => { eff({ h: 3, kn: -2 }); return { t: `迷上了一款手游。可是防沉迷规定，你只能在周五到周日晚上八点到九点玩。`, f: '2021年起，网络游戏企业只能在周五、周六、周日和法定节假日20时至21时向未成年人提供1小时服务' }; } },
@@ -50,6 +67,16 @@ export const EVENTS = [
   { id: 'boarding', a: [12, 14], once: 1, w: () => rural() ? 3 : 0, c: () => !!S.school, run: () => { eff({ so: 2, h: -1 }); return '去镇上读初中，开始住校。每周回家一次，带一罐家里腌的咸菜。'; } },
   { id: 'peTest', a: [14, 14], once: 1, w: 2, c: () => S.school === '初中', run: () => { eff({ hl: 2 }); return '为了体育中考，每天放学练跳绳和立定跳远。'; } },
 
+  // 童年（2026-10 补充）：小学、初中
+  { id: 'sportsDay', a: [7, 13], gap: 3, w: 1.2, c: () => !!S.school, run: () => { eff({ h: 1, hl: 1 }); return pick(['运动会上跑了第三名，领到一个印着「奖」字的笔记本。', '运动会接力赛，你跑最后一棒，被人追上了。全班都没怪你，你还是哭了。', '拔河比赛你们班赢了，手心磨出了水泡。']); } },
+  { id: 'chickenpox', a: [5, 10], once: 1, w: 1, run: () => { eff({ hl: -1, h: -1 }); return '出了水痘，脸上身上都是，痒得睡不着，在家休息了两个星期。'; } },
+  { id: 'essay', a: [7, 13], once: 1, w: () => S.st.kn > 50 ? 1.5 : 0.6, c: () => !!S.school, run: () => { eff({ h: 1, kn: 1 }); return '作文被老师当成范文在班上念了。你低着头，耳朵都红了。'; } },
+  { id: 'pet', a: [6, 13], once: 1, w: 1, run: () => { eff({ h: 1 }); return rural() ? '家里的狗生了一窝小狗，你挑了最小的一只，天天带着它满村跑。' : pick(['软磨硬泡了半年，爸妈终于同意养一只小猫。', '从学校门口买了两只小乌龟，养在脸盆里。']); } },
+  { id: 'firstTrain', a: [6, 14], once: 1, w: () => S.flags.lb || S.flags.mig ? 2 : 1, run: () => { eff({ h: 1 }); return S.flags.lb ? '暑假第一次坐火车，去爸妈打工的城市。你趴在窗边看了一路。' : '第一次坐高铁，窗外的房子一闪就过去了。'; } },
+  { id: 'fightKid', a: [8, 14], once: 1, w: () => S.sex === 'M' ? 1.2 : 0.4, run: () => { eff({ h: -2, so: -1 }); return '在学校和同学打了一架，被叫了家长。回家的路上，爸妈一句话都没说。'; } },
+  { id: 'campSummer', a: [9, 14], once: 1, w: () => !rural() && S.q >= 4 ? 1.5 : 0, run: () => { eff({ so: 1, h: 1 }); return '暑假去了一个星期的夏令营，认识了几个外地的朋友，回来以后还通了一阵子信。'; } },
+  { id: 'keyKid', a: [7, 12], once: 1, w: () => !rural() && !S.flags.lb ? 1.2 : 0, run: () => { eff({ so: 1 }); return '脖子上挂着家里的钥匙，放学自己回家，写完作业等爸妈下班。'; } },
+  { id: 'newYearShow', a: [6, 12], once: 1, w: 1, c: () => !!S.school, run: () => { eff({ so: 1, h: 1 }); return '元旦晚会上和同学一起表演了节目，脸上被老师涂了两团红胭脂。'; } },
   // ---------- 15–18 岁 ----------
   { id: 'jxun', a: [15, 15], once: 1, w: 3, c: () => S.school === '高中' || S.school === '职高', run: () => { eff({ hl: 1, so: 2 }); return '开学先是一周军训，晒脱了一层皮。'; } },
   { id: 'crush', a: [13, 17], once: 1, w: 2, run: () => { eff({ h: 3 }); return '喜欢上了班里的一个同学。传的小纸条被班主任没收了。'; } },
@@ -91,7 +118,7 @@ export const EVENTS = [
   { id: 'quitSmoke', a: [30, 75], once: 1, w: 0.8, c: () => !!S.flags.smoke, run: () => { S.flags.smoke = 0; eff({ hl: 3 }); return { t: '戒烟了。试了好几次，这次终于成功。', k: 'good' }; } },
   { id: 'drink', a: [22, 55], gap: 4, w: () => ['sales', 'boss', 'civil'].includes(S.job) ? 2 : 0.3, run: () => { eff({ hl: -2 }); return '饭局上被一轮轮敬酒，喝到吐。'; } },
   { id: 'low', a: [14, 70], gap: 6, w: () => S.st.h < 40 ? 2 : 0.15, run: () => { eff({ h: -3 }); if (chance(0.15)) { eff({ h: 8 }); return { t: '有一段时间每天都很累，什么都不想做。后来你去医院看了心理科，慢慢好了一些。', f: '中国抑郁障碍患者中，一年内接受过任何治疗的不到一成（Lancet Psychiatry 2021）。全国心理援助热线：12356' }; } return { t: '有一段时间每天都很累，什么都不想做，觉得一切都没有意义。你没有告诉任何人。', k: 'bad', f: '全国心理援助热线：12356' }; } },
-  { id: 'divorce', a: [25, 70], gap: 5, w: () => (S.st.h < 45 ? 0.12 : 0.02) * (PBY[S.loc.p].divK || 1), c: () => S.fam.married && S.fam.partner && S.fam.partner.alive, run: () => { const p = S.fam.partner; S.fam.married = false; S.fam.partner = null; S.flags.divorced = 1; addDoc('divorce', '离婚证', [['对方', p.name]]); eff({ h: -8, so: -4, money: -Math.max(0, S.money) * 0.4 }); return { t: `你和${p.name}离婚了。`, k: 'bad', f: '2023年全国离婚360.5万对，其中民政部门登记259.3万对，其余为法院判决或调解' }; } },
+  { id: 'divorce', a: [25, 70], gap: 5, w: () => (S.st.h < 45 ? 0.12 : 0.02) * (PBY[S.loc.p].divK || 1) * tiltW(DIV_T) * tiltW(DIV_T, S.fam.partner && S.fam.partner.pz || null), c: () => S.fam.married && S.fam.partner && S.fam.partner.alive, run: () => { const p = S.fam.partner; S.fam.married = false; S.fam.partner = null; S.flags.divorced = 1; addDoc('divorce', '离婚证', [['对方', p.name]]); eff({ h: -8, so: -4, money: -Math.max(0, S.money) * 0.4 }); return { t: `你和${p.name}离婚了。`, k: 'bad', f: '2023年全国离婚360.5万对，其中民政部门登记259.3万对，其余为法院判决或调解' }; } },
   { id: 'kidSchool', a: [28, 55], gap: 3, w: 2, c: () => kidsAlive().some(k => k.age >= 6 && k.age <= 17), run: () => { eff({ h: -2, money: -placeInc() * 0.1 }); return pick(['为了孩子上学，研究学区、排队报名，跑了好几趟。', '每天晚上辅导孩子写作业，气得血压都上来了。', '孩子的家长群一天几百条消息。']); } },
   { id: 'reunion', a: [30, 60], gap: 10, w: 1, run: () => { eff({ so: 2, h: S.relInc > 0 ? 2 : -2 }); return '同学聚会。有人开着好车来，有人没来。大家聊着聊着，就开始聊房子和孩子。'; } },
   { id: 'scam', a: [25, 90], gap: 8, w: () => S.age > 60 ? 1.5 : 0.5, c: () => S.money > 0, run: () => { const x = Math.min(S.money * 0.3, placeInc() * (S.age > 60 ? 0.5 : 0.3)); eff({ money: -x, h: -4 }); return { t: S.age > 60 ? `听了几次“健康讲座”，买了${wan(x)}的保健品。` : `接到自称“公检法”的电话，被骗走了${wan(x)}。`, k: 'bad' }; } },
