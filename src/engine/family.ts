@@ -135,6 +135,7 @@ function parentGone(who: 'dad' | 'mom') {
     else if (F.lbWho === who) { F.lb = undefined; F.lbWho = undefined; } // 外出的那一方走了：在家的那一方本来就在你身边，不再算留守
     else if (!F.carer) F.carer = who === 'mom' ? '奶奶' : '外婆';        // 在家带你的那一方走了、外出的还在外面：交给老人带（估计多是同住的爷爷奶奶）
   }
+  if (F.parDiv && F.parDivWith === who) F.parDivWith = other; // 父母离婚后跟着的那一位走了：跟另一位
   if (!f.mom.alive && !f.dad.alive) F.parWithMe = undefined;
 }
 function familyDeaths() {
