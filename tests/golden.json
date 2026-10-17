@@ -1,67 +1,67 @@
 {
  "headless": {
   "1000": {
-   "h": "0392eae2c65a2838",
+   "h": "b1a9a26493c41ebd",
    "name": "王天佑",
    "born": "SX",
-   "age": 83,
-   "cause": "heart",
+   "age": 69,
+   "cause": "stroke",
    "edu": 5,
-   "money": 27222
+   "money": 241575
   },
   "8919": {
-   "h": "21096c02a78ae162",
+   "h": "a04fefea6a9fe792",
    "name": "李承泽",
    "born": "GX",
-   "age": 60,
-   "cause": "heart",
+   "age": 81,
+   "cause": "resp",
    "edu": 5,
-   "money": 44578
+   "money": 9310
   },
   "16838": {
-   "h": "8cb79841dab5794c",
+   "h": "0b2c4e67f1cf6de8",
    "name": "李晨阳",
    "born": "GZ",
    "age": 74,
    "cause": "cancer",
    "edu": 5,
-   "money": 15810221
+   "money": 8929988
   },
   "24757": {
-   "h": "e445dbd8735f5dcc",
+   "h": "6f1cbe09162e0a6d",
    "name": "赵宇航",
    "born": "HN",
-   "age": 94,
-   "cause": "dementia",
+   "age": 86,
+   "cause": "heart",
    "edu": 4,
-   "money": 2543
+   "money": 331857
   },
   "32676": {
-   "h": "6c8ce6ab97676e84",
+   "h": "5d0dc5c1cf4c5ef3",
    "name": "李博",
    "born": "GX",
    "age": 72,
    "cause": "stroke",
    "edu": 5,
-   "money": 339602
+   "money": 443019
   },
   "40595": {
-   "h": "1103cd8d59cd4dfe",
+   "h": "20236fb6223d55c5",
    "name": "王安琪",
    "born": "YN",
-   "age": 81,
-   "cause": "cancer",
+   "age": 88,
+   "cause": "heart",
    "edu": 4,
-   "money": 424120
+   "money": 1029461
   },
   "48514": {
-   "h": "cf8b38dd7e2ccddb",
+   "h": "2980ba1f09593fe5",
    "name": "刘可馨",
    "born": "GD",
    "age": 92,
    "cause": "dementia",
    "edu": 5,
-   "money": 401206
+   "money": 686319
   },
   "56433": {
    "h": "2ff44fbbe2bc4217",
@@ -73,40 +73,40 @@
    "money": 64503
   },
   "64352": {
-   "h": "78aa58b99cdef4e9",
+   "h": "4b604cdcbc33c6ef",
    "name": "刘磊",
    "born": "AH",
-   "age": 82,
+   "age": 69,
    "cause": "resp",
    "edu": 7,
-   "money": 61199
+   "money": 99494
   },
   "72271": {
-   "h": "127ac20f9c01e009",
+   "h": "903791e1f6309cc1",
    "name": "周静",
    "born": "HA",
-   "age": 66,
-   "cause": "stroke",
+   "age": 95,
+   "cause": "other",
    "edu": 5,
-   "money": 485355
+   "money": 148299
   },
   "80190": {
-   "h": "8af9d10593cf9470",
+   "h": "94d76d9e6affc348",
    "name": "陈可馨",
    "born": "GZ",
-   "age": 83,
-   "cause": "other",
+   "age": 80,
+   "cause": "cancer",
    "edu": 2,
-   "money": 12034
+   "money": 36263
   },
   "88109": {
-   "h": "3e61834105a28193",
+   "h": "e2c00d07c95ca9a5",
    "name": "杨思远",
    "born": "GD",
-   "age": 94,
+   "age": 92,
    "cause": "stroke",
    "edu": 7,
-   "money": 1003
+   "money": 225133
   },
   "96028": {
    "h": "5e2b73108e0d0d87",
@@ -118,481 +118,481 @@
    "money": 0
   },
   "103947": {
-   "h": "7640f5c251ef87cf",
+   "h": "5d9f9b2d419cb195",
    "name": "刘天佑",
    "born": "GD",
-   "age": 73,
-   "cause": "accident",
+   "age": 86,
+   "cause": "heart",
    "edu": 7,
-   "money": 125333
+   "money": 566590
   },
   "111866": {
-   "h": "3df064d9b7b7b1fd",
+   "h": "f4e9193a1397cec6",
    "name": "高宇轩",
    "born": "NX",
-   "age": 83,
-   "cause": "stroke",
+   "age": 72,
+   "cause": "resp",
    "edu": 6,
-   "money": 636158
+   "money": 905253
   },
   "119785": {
-   "h": "5f04168c6d858d44",
+   "h": "67e2ee29c6775003",
    "name": "黄佳怡",
    "born": "GZ",
-   "age": 86,
-   "cause": "cancer",
+   "age": 88,
+   "cause": "heart",
    "edu": 2,
    "money": 0
   },
   "127704": {
-   "h": "d1ae543e278e9f36",
+   "h": "9630e351fb9e8e0f",
    "name": "张奕辰",
    "born": "AH",
    "age": 99,
    "cause": "stroke",
    "edu": 5,
-   "money": 525638
+   "money": 827275
   },
   "135623": {
-   "h": "8c90bac400cdc79b",
+   "h": "c1e1fa902571ec5b",
    "name": "高欣怡",
    "born": "FJ",
-   "age": 90,
+   "age": 88,
    "cause": "heart",
    "edu": 5,
-   "money": 891203
+   "money": 664814
   },
   "143542": {
-   "h": "1673d4b131e95c4d",
+   "h": "569551b8e082f54c",
    "name": "张承泽",
    "born": "JS",
-   "age": 76,
+   "age": 77,
    "cause": "cancer",
    "edu": 6,
-   "money": 2116151
+   "money": 1012219
   },
   "151461": {
-   "h": "bf530fc1a6644573",
+   "h": "3bff98c9a9044c8b",
    "name": "杨静",
    "born": "AH",
    "age": 98,
    "cause": "suicide",
    "edu": 2,
-   "money": 437174
+   "money": 535689
   },
   "159380": {
-   "h": "ed584b8bf3377879",
+   "h": "bd8177dc48596ac0",
    "name": "陈家豪",
    "born": "HA",
-   "age": 63,
-   "cause": "other",
+   "age": 84,
+   "cause": "stroke",
    "edu": 5,
-   "money": 111522
+   "money": 54212
   },
   "167299": {
-   "h": "fe799cc4f56b4895",
+   "h": "9d1e2d6269c62c8b",
    "name": "吴天佑",
    "born": "HL",
    "age": 78,
    "cause": "stroke",
    "edu": 6,
-   "money": 966040
+   "money": 877163
   },
   "175218": {
-   "h": "1380cb2937acb6bf",
+   "h": "f91e777aa783561a",
    "name": "刘子萱",
    "born": "HA",
-   "age": 91,
-   "cause": "heart",
+   "age": 99,
+   "cause": "stroke",
    "edu": 4,
-   "money": 360008
+   "money": 667186
   },
   "183137": {
-   "h": "502ed75bd3821f30",
+   "h": "8742c001ad1d4428",
    "name": "郭家豪",
    "born": "SC",
    "age": 67,
    "cause": "stroke",
    "edu": 5,
-   "money": 1566550
+   "money": 1034535
   },
   "191056": {
-   "h": "624c403f67d09872",
+   "h": "cbbb00aaf5852afd",
    "name": "周子豪",
    "born": "ZJ",
-   "age": 91,
-   "cause": "cancer",
+   "age": 98,
+   "cause": "resp",
    "edu": 7,
-   "money": 180530
+   "money": 444300
   },
   "198975": {
-   "h": "9956b1a4056b6cf1",
+   "h": "ada06ef096180ec2",
    "name": "张思琪",
    "born": "HA",
-   "age": 86,
-   "cause": "stroke",
+   "age": 99,
+   "cause": "resp",
    "edu": 6,
-   "money": 713932
+   "money": 3248371
   },
   "206894": {
-   "h": "b8236c8c3be6778c",
+   "h": "d5b739b861617677",
    "name": "周博",
    "born": "SX",
    "age": 68,
    "cause": "cancer",
    "edu": 5,
-   "money": 474164
+   "money": 658660
   },
   "214813": {
-   "h": "90aca828d4ca43ed",
+   "h": "a92b024a7129fac3",
    "name": "何佳怡",
    "born": "SD",
-   "age": 88,
-   "cause": "stroke",
+   "age": 98,
+   "cause": "kidney",
    "edu": 3,
-   "money": 0
+   "money": 39198
   },
   "222732": {
-   "h": "7936b2cc6af7c786",
+   "h": "7a939ba99e126406",
    "name": "吴一诺",
    "born": "HE",
    "age": 82,
    "cause": "cancer",
    "edu": 6,
-   "money": 302993
+   "money": 762825
   },
   "230651": {
-   "h": "12605fb552766aca",
+   "h": "ba68673a7c8ab569",
    "name": "李一鸣",
    "born": "HA",
    "age": 89,
    "cause": "cancer",
    "edu": 5,
-   "money": 4064325
+   "money": 4785543
   },
   "238570": {
-   "h": "dfde66a16691fdda",
+   "h": "c15256298c0caa27",
    "name": "邓皓轩",
    "born": "ZJ",
    "age": 87,
    "cause": "resp",
    "edu": 5,
-   "money": 11811986
+   "money": 7740643
   },
   "246489": {
-   "h": "c21a50651528510b",
+   "h": "0c07c62ed1eb0d79",
    "name": "王星辰",
    "born": "GD",
-   "age": 82,
+   "age": 85,
    "cause": "dementia",
    "edu": 7,
-   "money": 85033
+   "money": 477670
   },
   "254408": {
-   "h": "39412bc4cc8e09d6",
+   "h": "bae39080d3626920",
    "name": "韩浩然",
    "born": "HE",
-   "age": 60,
+   "age": 63,
    "cause": "resp",
    "edu": 4,
-   "money": 403574
+   "money": 399079
   },
   "262327": {
-   "h": "b95b28e2e4a08dfb",
+   "h": "699f9b9f80e3a831",
    "name": "李睿泽",
    "born": "GD",
-   "age": 86,
-   "cause": "heart",
+   "age": 90,
+   "cause": "other",
    "edu": 5,
-   "money": 99693
+   "money": 88190
   },
   "270246": {
-   "h": "c8cae527bf842d99",
+   "h": "0c60a7bde3bea564",
    "name": "王若汐",
    "born": "YN",
    "age": 99,
    "cause": "diabetes",
    "edu": 5,
-   "money": 724177
+   "money": 734039
   },
   "278165": {
-   "h": "dc7ddfa3e1c46393",
+   "h": "4aa8c17bc1c2084e",
    "name": "吴依诺",
    "born": "GD",
    "age": 79,
    "cause": "heart",
    "edu": 4,
-   "money": 730464
+   "money": 613004
   },
   "286084": {
-   "h": "20eef79262f0264c",
+   "h": "23a34c6fba846fe5",
    "name": "何浩宇",
    "born": "JS",
-   "age": 75,
-   "cause": "cancer",
+   "age": 84,
+   "cause": "pneumonia",
    "edu": 5,
-   "money": 2204931
+   "money": 2684092
   },
   "294003": {
-   "h": "e14408df4d43b8bc",
+   "h": "51541fb8aed4d3e8",
    "name": "许雨桐",
    "born": "CQ",
-   "age": 100,
-   "cause": "heart",
+   "age": 78,
+   "cause": "stroke",
    "edu": 5,
-   "money": 583
+   "money": 93674
   },
   "301922": {
-   "h": "789a09e8ae55a370",
+   "h": "548685ae91be7281",
    "name": "王一诺",
    "born": "AH",
-   "age": 98,
-   "cause": "resp",
+   "age": 94,
+   "cause": "heart",
    "edu": 6,
-   "money": 139242
+   "money": 467957
   },
   "309841": {
-   "h": "dfdf6d0fb4685f3e",
+   "h": "1459e37839e2eeba",
    "name": "王浩然",
    "born": "GD",
-   "age": 89,
-   "cause": "other",
+   "age": 83,
+   "cause": "resp",
    "edu": 4,
-   "money": 282927
+   "money": 0
   },
   "317760": {
-   "h": "30874ca94f2c2abd",
+   "h": "e219f2b212191dec",
    "name": "王子墨",
    "born": "HN",
    "age": 86,
    "cause": "other",
    "edu": 3,
-   "money": 264682
+   "money": 586086
   },
   "325679": {
-   "h": "fdba40429836baf6",
+   "h": "ac4aa4fb49c337cc",
    "name": "孙皓轩",
    "born": "HA",
-   "age": 84,
-   "cause": "accident",
+   "age": 85,
+   "cause": "resp",
    "edu": 5,
-   "money": 347432
+   "money": 268011
   },
   "333598": {
-   "h": "a69aca1aefabec56",
+   "h": "fe01e736b0338391",
    "name": "林佳怡",
    "born": "HE",
-   "age": 87,
-   "cause": "heart",
+   "age": 83,
+   "cause": "dementia",
    "edu": 5,
-   "money": 5372876
+   "money": 11808220
   },
   "341517": {
-   "h": "ae25acc1e3339c7e",
+   "h": "eea650092f37d48c",
    "name": "吴子墨",
    "born": "CQ",
    "age": 77,
    "cause": "stroke",
    "edu": 4,
-   "money": 202620
+   "money": 462515
   },
   "349436": {
-   "h": "ce1e2daf7c75f000",
+   "h": "6a3327f052b3eaa1",
    "name": "洛桑",
    "born": "XZ",
-   "age": 84,
-   "cause": "cancer",
+   "age": 93,
+   "cause": "dementia",
    "edu": 3,
-   "money": 302534
+   "money": 21568
   },
   "357355": {
-   "h": "0aacb75dcc2ce8b2",
+   "h": "2ec99fac3b863b0e",
    "name": "周一鸣",
    "born": "HI",
-   "age": 88,
-   "cause": "resp",
+   "age": 80,
+   "cause": "heart",
    "edu": 6,
-   "money": 334277
+   "money": 688248
   },
   "365274": {
-   "h": "adee32cc6d8d0475",
+   "h": "39da3ab9babc9e47",
    "name": "赵子萱",
    "born": "GS",
-   "age": 89,
-   "cause": "heart",
+   "age": 78,
+   "cause": "resp",
    "edu": 4,
-   "money": 2006
+   "money": 1065
   },
   "373193": {
-   "h": "522415c408e87793",
+   "h": "0c8d4acd5ea7060d",
    "name": "陈雅",
    "born": "GS",
-   "age": 76,
-   "cause": "diabetes",
+   "age": 82,
+   "cause": "stroke",
    "edu": 4,
-   "money": 4588806
+   "money": 1441894
   },
   "381112": {
-   "h": "ddca4788e77e0c6a",
+   "h": "74d60ff17165d88c",
    "name": "刘语桐",
    "born": "GD",
    "age": 89,
-   "cause": "cancer",
+   "cause": "pneumonia",
    "edu": 3,
-   "money": 1221
+   "money": 977
   },
   "389031": {
-   "h": "0bfdf2eca9ccf591",
+   "h": "8256650040ee28cb",
    "name": "黄俊杰",
    "born": "CQ",
-   "age": 97,
-   "cause": "resp",
+   "age": 95,
+   "cause": "cancer",
    "edu": 7,
-   "money": 1739914
+   "money": 1908551
   },
   "396950": {
-   "h": "f0a1fc991382cdac",
+   "h": "f759df9bc4cd3651",
    "name": "刘语汐",
    "born": "GZ",
    "age": 94,
    "cause": "resp",
    "edu": 6,
-   "money": 368229
+   "money": 389696
   },
   "404869": {
-   "h": "144f997aa60f9347",
+   "h": "e279ccdce58dfaac",
    "name": "吴宇航",
    "born": "SC",
    "age": 94,
    "cause": "resp",
    "edu": 6,
-   "money": 1213495
+   "money": 1479166
   },
   "412788": {
-   "h": "b02278e4bb531cbd",
+   "h": "d24e0bd366998b8a",
    "name": "陈知夏",
    "born": "FJ",
-   "age": 76,
-   "cause": "heart",
+   "age": 88,
+   "cause": "cancer",
    "edu": 4,
-   "money": 1146127
+   "money": 1864992
   },
   "420707": {
-   "h": "eb9b7687e5e04c37",
+   "h": "e85e8524f2b82aaa",
    "name": "王艺涵",
    "born": "SC",
    "age": 79,
    "cause": "heart",
    "edu": 5,
-   "money": 1172251
+   "money": 1462199
   },
   "428626": {
-   "h": "c2eaa1fd71b77a80",
+   "h": "4f5de50779a2d6d7",
    "name": "谢若凡",
    "born": "SD",
    "age": 93,
    "cause": "heart",
    "edu": 5,
-   "money": 130003
+   "money": 144796
   },
   "436545": {
-   "h": "f308a3b8281e8279",
+   "h": "a81b6c1d93217a07",
    "name": "马依诺",
    "born": "HA",
-   "age": 73,
+   "age": 83,
    "cause": "heart",
    "edu": 5,
-   "money": 16216
+   "money": 26810
   },
   "444464": {
-   "h": "d13f6ecfe3d0e197",
+   "h": "740c885c51268ecb",
    "name": "李梓涵",
    "born": "HB",
-   "age": 65,
-   "cause": "dementia",
+   "age": 88,
+   "cause": "stroke",
    "edu": 2,
-   "money": 1607632
+   "money": 2574881
   },
   "452383": {
-   "h": "036ed394b2d2e848",
+   "h": "17e35c198bb8ae43",
    "name": "林若凡",
    "born": "ZJ",
-   "age": 82,
-   "cause": "kidney",
+   "age": 79,
+   "cause": "stroke",
    "edu": 4,
-   "money": 3821
+   "money": 6123
   },
   "460302": {
-   "h": "21f7a31b107ba84a",
+   "h": "28f7b794b8591944",
    "name": "李雅",
    "born": "SC",
-   "age": 76,
-   "cause": "diabetes",
+   "age": 96,
+   "cause": "stroke",
    "edu": 4,
-   "money": 42255
+   "money": 103553
   },
   "468221": {
-   "h": "fb771583881124c3",
+   "h": "91bada1fc037d07a",
    "name": "张子豪",
    "born": "HL",
-   "age": 96,
-   "cause": "cancer",
+   "age": 99,
+   "cause": "resp",
    "edu": 5,
-   "money": 327787
+   "money": 381024
   },
   "476140": {
-   "h": "98c2858bcd23dd48",
+   "h": "b82b8425a2a35dae",
    "name": "李博",
    "born": "HL",
    "age": 64,
    "cause": "other",
    "edu": 4,
-   "money": 387627
+   "money": 295159
   },
   "484059": {
-   "h": "9dd6ac5d1e2284e2",
+   "h": "c7f1273a0fed73c7",
    "name": "高依诺",
    "born": "SN",
-   "age": 84,
-   "cause": "resp",
+   "age": 67,
+   "cause": "kidney",
    "edu": 5,
-   "money": 57787
+   "money": 155880
   },
   "491978": {
-   "h": "ef2b218e84da54bc",
+   "h": "dd26561c6e8125a2",
    "name": "杨芷若",
    "born": "YN",
-   "age": 43,
-   "cause": "other",
+   "age": 91,
+   "cause": "heart",
    "edu": 5,
-   "money": 258973
+   "money": 325529
   },
   "499897": {
-   "h": "53c29309830c3b12",
+   "h": "3d39d6405207c34e",
    "name": "朱依诺",
    "born": "HA",
    "age": 89,
    "cause": "heart",
    "edu": 7,
-   "money": 267784
+   "money": 334438
   },
   "507816": {
-   "h": "ca596a95de12f22c",
+   "h": "5488dbdeb279ffc2",
    "name": "王诗涵",
    "born": "HB",
-   "age": 30,
-   "cause": "accident",
+   "age": 89,
+   "cause": "resp",
    "edu": 6,
-   "money": 81999
+   "money": 1248469
   },
   "515735": {
-   "h": "36a1cb3ccc4d7753",
+   "h": "4d08aa0fb390d038",
    "name": "高晨阳",
    "born": "CQ",
-   "age": 82,
-   "cause": "heart",
+   "age": 65,
+   "cause": "cancer",
    "edu": 7,
-   "money": 2274534
+   "money": 1586124
   },
   "523654": {
    "h": "c998a1ae2e94284d",
@@ -604,202 +604,202 @@
    "money": 0
   },
   "531573": {
-   "h": "6b559bbee15697dd",
+   "h": "aebeec43a1178b62",
    "name": "李天佑",
    "born": "CQ",
    "age": 74,
    "cause": "cancer",
    "edu": 6,
-   "money": 1535461
+   "money": 1095829
   },
   "539492": {
-   "h": "5e766e7b9a35bd8f",
+   "h": "ea41c321b5651715",
    "name": "李博",
    "born": "GZ",
-   "age": 57,
-   "cause": "traffic",
+   "age": 74,
+   "cause": "stroke",
    "edu": 2,
-   "money": 174285
+   "money": 51457
   },
   "547411": {
-   "h": "e1951b79ada407a6",
+   "h": "4130e62542b647a3",
    "name": "陈佳怡",
    "born": "ZJ",
-   "age": 62,
-   "cause": "dementia",
-   "edu": 5,
-   "money": 2017904
-  },
-  "555330": {
-   "h": "b8b69652c487536d",
-   "name": "梁若凡",
-   "born": "HN",
-   "age": 95,
-   "cause": "stroke",
-   "edu": 6,
-   "money": 692448
-  },
-  "563249": {
-   "h": "eedf96c70cc502c3",
-   "name": "刘佳怡",
-   "born": "HA",
-   "age": 96,
+   "age": 94,
    "cause": "resp",
    "edu": 5,
-   "money": 134396
+   "money": 743024
+  },
+  "555330": {
+   "h": "e0e4fad39fb606e3",
+   "name": "梁若凡",
+   "born": "HN",
+   "age": 89,
+   "cause": "stroke",
+   "edu": 6,
+   "money": 311055
+  },
+  "563249": {
+   "h": "5fc876b156b86208",
+   "name": "刘佳怡",
+   "born": "HA",
+   "age": 83,
+   "cause": "heart",
+   "edu": 5,
+   "money": 505972
   },
   "571168": {
-   "h": "c9b37c4ee7379720",
+   "h": "522cb34850e9873a",
    "name": "王奕辰",
    "born": "JS",
-   "age": 92,
-   "cause": "cancer",
+   "age": 94,
+   "cause": "heart",
    "edu": 4,
-   "money": 4388
+   "money": 567796
   },
   "579087": {
-   "h": "2418de7ff6275a75",
+   "h": "a429d04e5d0f70a4",
    "name": "郭静",
    "born": "GX",
    "age": 79,
    "cause": "kidney",
    "edu": 7,
-   "money": 621070
+   "money": 707633
   },
   "587006": {
-   "h": "f06ac9eaa986021d",
+   "h": "651655ce8147c6bd",
    "name": "李梓睿",
    "born": "NX",
-   "age": 78,
-   "cause": "cancer",
+   "age": 71,
+   "cause": "dementia",
    "edu": 2,
-   "money": 1513
+   "money": 134906
   },
   "594925": {
-   "h": "bdfd356bdfd45d46",
+   "h": "39a19aea3f0d97f0",
    "name": "李博",
    "born": "HA",
-   "age": 64,
-   "cause": "other",
+   "age": 55,
+   "cause": "heart",
    "edu": 2,
-   "money": 302778
+   "money": 107594
   },
   "602844": {
-   "h": "20aa57c910aeda87",
+   "h": "60c8554c82a231a9",
    "name": "王梓睿",
    "born": "GZ",
-   "age": 79,
-   "cause": "cancer",
+   "age": 66,
+   "cause": "suicide",
    "edu": 5,
-   "money": 57869
+   "money": 133005
   },
   "610763": {
-   "h": "6b3579fba5f3aa50",
+   "h": "2972945f1cf7e633",
    "name": "李可馨",
    "born": "SD",
    "age": 76,
    "cause": "heart",
    "edu": 2,
-   "money": 390688
+   "money": 259248
   },
   "618682": {
-   "h": "d4b48c77b36ecf0a",
+   "h": "62c17c217d668554",
    "name": "孙诗涵",
    "born": "GX",
-   "age": 99,
-   "cause": "dementia",
+   "age": 65,
+   "cause": "suicide",
    "edu": 5,
-   "money": 67270
+   "money": 131808
   },
   "626601": {
-   "h": "0d0e76a07fead8f7",
+   "h": "1717ddb7b32c5aa0",
    "name": "王承泽",
    "born": "JS",
-   "age": 96,
+   "age": 76,
    "cause": "dementia",
    "edu": 5,
-   "money": 198592
+   "money": 432741
   },
   "634520": {
-   "h": "6a3078610b6fc6f5",
+   "h": "6b35fa66a2b360fa",
    "name": "刘皓轩",
    "born": "YN",
-   "age": 73,
-   "cause": "dementia",
+   "age": 64,
+   "cause": "cancer",
    "edu": 2,
-   "money": 265384
+   "money": 135655
   },
   "642439": {
-   "h": "58ef33d3292a16ed",
+   "h": "0c0ec7f982991307",
    "name": "陈思远",
    "born": "SD",
    "age": 93,
    "cause": "cancer",
    "edu": 5,
-   "money": 314618
+   "money": 292534
   },
   "650358": {
-   "h": "401519a1f279b456",
+   "h": "97823c864283258a",
    "name": "梁承泽",
    "born": "SD",
-   "age": 95,
-   "cause": "diabetes",
+   "age": 58,
+   "cause": "other",
    "edu": 5,
-   "money": 233341
+   "money": 160153
   },
   "658277": {
-   "h": "6a7b5af282e74313",
+   "h": "c7076d58fca91322",
    "name": "刘睿泽",
    "born": "GD",
    "age": 86,
    "cause": "dementia",
    "edu": 6,
-   "money": 1355880
+   "money": 1550132
   },
   "666196": {
-   "h": "a6c5c009f21162cc",
+   "h": "dcab85d208159be2",
    "name": "吴悦",
    "born": "HN",
    "age": 94,
    "cause": "stroke",
    "edu": 5,
-   "money": 2534222
+   "money": 2101128
   },
   "674115": {
-   "h": "919f894751e8866f",
+   "h": "ee3f8102bbc7783d",
    "name": "周沐宸",
    "born": "SN",
-   "age": 75,
-   "cause": "heart",
+   "age": 68,
+   "cause": "other",
    "edu": 5,
-   "money": 456005
+   "money": 692643
   },
   "682034": {
-   "h": "13d19bdc024435be",
+   "h": "6d21a673b2e509ec",
    "name": "王鑫",
    "born": "ZJ",
-   "age": 94,
-   "cause": "heart",
-   "edu": 5,
-   "money": 837824
-  },
-  "689953": {
-   "h": "a6e3a96af486a340",
-   "name": "陈沐宸",
-   "born": "XJ",
-   "age": 78,
+   "age": 61,
    "cause": "cancer",
    "edu": 5,
-   "money": 680274
+   "money": 432765
+  },
+  "689953": {
+   "h": "ddc2d66f70c1a051",
+   "name": "陈沐宸",
+   "born": "XJ",
+   "age": 56,
+   "cause": "cancer",
+   "edu": 5,
+   "money": 296549
   },
   "697872": {
-   "h": "bc11b09278682087",
+   "h": "7d7937d15088a627",
    "name": "张俊杰",
    "born": "SN",
-   "age": 96,
-   "cause": "dementia",
+   "age": 95,
+   "cause": "stroke",
    "edu": 6,
-   "money": 1015582
+   "money": 572436
   },
   "705791": {
    "h": "3cb77bbaadc5c03f",
@@ -811,697 +811,697 @@
    "money": 4634
   },
   "713710": {
-   "h": "3e7242378a75323c",
+   "h": "c1a1a779f0a897cf",
    "name": "李佳怡",
    "born": "SC",
    "age": 89,
-   "cause": "heart",
+   "cause": "stroke",
    "edu": 3,
-   "money": 0
+   "money": 428003
   },
   "721629": {
-   "h": "fc3326dd52fb62f7",
+   "h": "7eb72be0ec9beb24",
    "name": "王梓睿",
    "born": "GD",
-   "age": 92,
-   "cause": "stroke",
+   "age": 91,
+   "cause": "resp",
    "edu": 6,
-   "money": 441229
+   "money": 542747
   },
   "729548": {
-   "h": "268bd625a7ae4152",
+   "h": "32dbfc2fc3ef6bb3",
    "name": "杨可馨",
    "born": "GD",
-   "age": 80,
-   "cause": "accident",
+   "age": 90,
+   "cause": "pneumonia",
    "edu": 4,
-   "money": 229799
+   "money": 297137
   },
   "737467": {
-   "h": "a0c0b2a5482c43bc",
+   "h": "d2fa0f6acbc3001d",
    "name": "刘梓涵",
    "born": "SD",
-   "age": 95,
+   "age": 90,
    "cause": "resp",
    "edu": 7,
-   "money": 265935
+   "money": 223492
   },
   "745386": {
-   "h": "67c6a95a9b35698e",
+   "h": "a1c85e39f28f2232",
    "name": "黄宇航",
    "born": "NM",
-   "age": 76,
-   "cause": "stroke",
+   "age": 77,
+   "cause": "resp",
    "edu": 7,
-   "money": 583083
+   "money": 765615
   },
   "753305": {
-   "h": "0725cc02f0d7be86",
+   "h": "bef96b9f4e7f92b2",
    "name": "李俊杰",
    "born": "SD",
-   "age": 67,
+   "age": 64,
    "cause": "heart",
    "edu": 5,
-   "money": 535889
+   "money": 431022
   },
   "761224": {
-   "h": "42826076c44886d8",
+   "h": "d73b2f1d916a6410",
    "name": "王雨桐",
    "born": "HN",
-   "age": 60,
-   "cause": "resp",
+   "age": 95,
+   "cause": "heart",
    "edu": 2,
-   "money": 382477
+   "money": 2107
   },
   "769143": {
-   "h": "895569258606c199",
+   "h": "ace023c0d2403c5a",
    "name": "王语桐",
    "born": "JX",
-   "age": 95,
-   "cause": "leukemia",
+   "age": 85,
+   "cause": "kidney",
    "edu": 6,
-   "money": 1503839
+   "money": 1757721
   },
   "777062": {
-   "h": "ff6d5bf5c3df314c",
+   "h": "304ef24896ea941b",
    "name": "王锦程",
    "born": "SN",
-   "age": 74,
-   "cause": "cancer",
+   "age": 85,
+   "cause": "accident",
    "edu": 6,
-   "money": 2483156
+   "money": 1699792
   },
   "784981": {
-   "h": "87f8490c5f0c6449",
+   "h": "e1df723e47f25c5f",
    "name": "马苡沫",
    "born": "SN",
    "age": 89,
    "cause": "heart",
    "edu": 5,
-   "money": 725877
+   "money": 551636
   },
   "792900": {
-   "h": "84600e456b4baa30",
+   "h": "3bda9b1b202292d0",
    "name": "王欣怡",
    "born": "GX",
    "age": 93,
    "cause": "other",
    "edu": 5,
-   "money": 461321
+   "money": 406016
   },
   "800819": {
-   "h": "195d4b074d263ff1",
+   "h": "bfabe00f1d019108",
    "name": "刘苡沫",
    "born": "SD",
    "age": 83,
    "cause": "heart",
    "edu": 2,
-   "money": 0
+   "money": 29718
   },
   "808738": {
-   "h": "1dec119e14a290bc",
+   "h": "b422d2db5b13e658",
    "name": "冯静",
    "born": "FJ",
-   "age": 66,
-   "cause": "cancer",
+   "age": 86,
+   "cause": "dementia",
    "edu": 6,
-   "money": 124623
+   "money": 109442
   },
   "816657": {
-   "h": "173cd5526f963276",
+   "h": "9c9ddc56b517246f",
    "name": "陈子墨",
    "born": "HN",
    "age": 92,
-   "cause": "heart",
+   "cause": "resp",
    "edu": 6,
-   "money": 826103
+   "money": 734034
   },
   "824576": {
-   "h": "535f2d2d15c784ae",
+   "h": "b7ffabdaf5001f4e",
    "name": "陈浩宇",
    "born": "HN",
-   "age": 95,
-   "cause": "cancer",
+   "age": 60,
+   "cause": "liver",
    "edu": 5,
-   "money": 114409
+   "money": 218145
   },
   "832495": {
-   "h": "c74da05ae2438ea8",
+   "h": "ca7264641f51f5fd",
    "name": "王雅",
    "born": "SD",
    "age": 100,
    "cause": "heart",
    "edu": 5,
-   "money": 18905101
+   "money": 24118467
   },
   "840414": {
-   "h": "f3903034f99496f4",
+   "h": "33daec1493073fb2",
    "name": "高艺涵",
    "born": "GD",
-   "age": 95,
+   "age": 87,
    "cause": "heart",
    "edu": 4,
-   "money": 78066
+   "money": 118283
   },
   "848333": {
-   "h": "88fe6aac25df832d",
+   "h": "814843cc06a50023",
    "name": "王雨萱",
    "born": "HA",
-   "age": 92,
-   "cause": "heart",
-   "edu": 4,
-   "money": 69539
-  },
-  "856252": {
-   "h": "55c23776ba09fb68",
-   "name": "吴明哲",
-   "born": "SD",
-   "age": 97,
+   "age": 75,
    "cause": "dementia",
    "edu": 4,
-   "money": 632629
+   "money": 86204
+  },
+  "856252": {
+   "h": "317ec53d535617d8",
+   "name": "吴明哲",
+   "born": "SD",
+   "age": 81,
+   "cause": "liver",
+   "edu": 4,
+   "money": 171673
   },
   "864171": {
-   "h": "6d6d365e620588ea",
+   "h": "e0fb16115f0d7616",
    "name": "王承泽",
    "born": "FJ",
-   "age": 90,
-   "cause": "cancer",
-   "edu": 6,
-   "money": 3371
-  },
-  "872090": {
-   "h": "67f40d32f88f7c29",
-   "name": "胡天佑",
-   "born": "SX",
-   "age": 66,
-   "cause": "resp",
-   "edu": 5,
-   "money": 2299126
-  },
-  "880009": {
-   "h": "92808dd2dd38d916",
-   "name": "冯雨萱",
-   "born": "JX",
    "age": 84,
-   "cause": "heart",
-   "edu": 5,
-   "money": 703872
-  },
-  "887928": {
-   "h": "b10cdb7d08af0a77",
-   "name": "张诗涵",
-   "born": "SD",
-   "age": 91,
-   "cause": "other",
-   "edu": 6,
-   "money": 116884
-  },
-  "895847": {
-   "h": "88d067ac2fb5d952",
-   "name": "阿卜杜拉·吐尔逊",
-   "born": "XJ",
-   "age": 84,
-   "cause": "other",
-   "edu": 5,
-   "money": 36834
-  },
-  "903766": {
-   "h": "f847d3e04c050495",
-   "name": "陈子豪",
-   "born": "HE",
-   "age": 92,
    "cause": "stroke",
    "edu": 6,
-   "money": 9493677
+   "money": 233501
+  },
+  "872090": {
+   "h": "cb018220669b6113",
+   "name": "胡天佑",
+   "born": "SX",
+   "age": 76,
+   "cause": "cancer",
+   "edu": 5,
+   "money": 2008297
+  },
+  "880009": {
+   "h": "62729d028e19f443",
+   "name": "冯雨萱",
+   "born": "JX",
+   "age": 93,
+   "cause": "resp",
+   "edu": 5,
+   "money": 437226
+  },
+  "887928": {
+   "h": "6a2b35cb76f4ef52",
+   "name": "张诗涵",
+   "born": "SD",
+   "age": 42,
+   "cause": "heart",
+   "edu": 6,
+   "money": 164087
+  },
+  "895847": {
+   "h": "a82bf11bdf02d650",
+   "name": "阿卜杜拉·吐尔逊",
+   "born": "XJ",
+   "age": 85,
+   "cause": "cancer",
+   "edu": 5,
+   "money": 191089
+  },
+  "903766": {
+   "h": "73f20dd1af2d9e0f",
+   "name": "陈子豪",
+   "born": "HE",
+   "age": 95,
+   "cause": "stroke",
+   "edu": 6,
+   "money": 9762150
   },
   "911685": {
-   "h": "9faa9ca462339080",
+   "h": "6ad21d9bd7d75139",
    "name": "李雨桐",
    "born": "SN",
    "age": 66,
    "cause": "accident",
    "edu": 5,
-   "money": 5257255
+   "money": 3542431
   },
   "919604": {
-   "h": "8b93e9b1786c4f54",
+   "h": "0bb8c260cfca761a",
    "name": "孙沐宸",
    "born": "SD",
-   "age": 56,
-   "cause": "heart",
+   "age": 78,
+   "cause": "stroke",
    "edu": 7,
-   "money": 942486
+   "money": 1327865
   },
   "927523": {
-   "h": "eefd38ec2f57396f",
+   "h": "680b72ac0c612da5",
    "name": "周若凡",
    "born": "HE",
-   "age": 87,
-   "cause": "cancer",
+   "age": 82,
+   "cause": "dementia",
    "edu": 5,
-   "money": 2480638
+   "money": 2165719
   },
   "935442": {
-   "h": "7e0baa5c64803e3f",
+   "h": "b89a2522bfbc1708",
    "name": "王子墨",
    "born": "HN",
    "age": 90,
    "cause": "dementia",
    "edu": 5,
-   "money": 740956
+   "money": 1204777
   },
   "943361": {
-   "h": "95ac5ad4eab234f0",
+   "h": "dfa7d4d22cea6c89",
    "name": "黄宇航",
    "born": "SD",
-   "age": 81,
-   "cause": "stroke",
+   "age": 66,
+   "cause": "heart",
    "edu": 6,
-   "money": 96403
+   "money": 1723247
   },
   "951280": {
-   "h": "088ac7481c904020",
+   "h": "cd34ed18d5be95a5",
    "name": "艾力·买买提",
    "born": "XJ",
    "age": 75,
    "cause": "cancer",
    "edu": 6,
-   "money": 2931935
+   "money": 2135382
   },
   "959199": {
-   "h": "406bc5fa1e71a9d2",
+   "h": "66f79eb03d103fa3",
    "name": "吴睿泽",
    "born": "HA",
-   "age": 77,
-   "cause": "stroke",
+   "age": 52,
+   "cause": "diabetes",
    "edu": 6,
-   "money": 504859
+   "money": 181708
   },
   "967118": {
-   "h": "5cdc54356a260ad8",
+   "h": "5d3c469e18d79a95",
    "name": "林思琪",
    "born": "FJ",
-   "age": 96,
-   "cause": "heart",
+   "age": 72,
+   "cause": "stroke",
    "edu": 5,
-   "money": 330155
+   "money": 432736
   },
   "975037": {
-   "h": "bad9d3a5428ec2d8",
+   "h": "e57a49acbfce6f21",
    "name": "徐思远",
    "born": "BJ",
-   "age": 101,
-   "cause": "stroke",
+   "age": 84,
+   "cause": "heart",
    "edu": 4,
-   "money": 78611
+   "money": 52297
   },
   "982956": {
-   "h": "ba16243bda2f3e39",
+   "h": "14ddad61398916a2",
    "name": "陈知夏",
    "born": "LN",
-   "age": 45,
-   "cause": "cancer",
+   "age": 82,
+   "cause": "dementia",
    "edu": 4,
-   "money": 473307
+   "money": 279022
   },
   "990875": {
-   "h": "5924de1665f2c31c",
+   "h": "54dfb5a93f7df18c",
    "name": "张思琪",
    "born": "SX",
+   "age": 65,
+   "cause": "kidney",
+   "edu": 5,
+   "money": 600602
+  },
+  "998794": {
+   "h": "bb206033486d86de",
+   "name": "张苡沫",
+   "born": "ZJ",
    "age": 96,
    "cause": "stroke",
    "edu": 5,
-   "money": 551376
-  },
-  "998794": {
-   "h": "95046abd30259d52",
-   "name": "张苡沫",
-   "born": "ZJ",
-   "age": 90,
-   "cause": "heart",
-   "edu": 5,
-   "money": 920939
+   "money": 1882964
   },
   "1006713": {
-   "h": "096d3b6f90ec673f",
+   "h": "224598dbf1ad3f73",
    "name": "谢雨桐",
    "born": "FJ",
    "age": 83,
    "cause": "resp",
    "edu": 5,
-   "money": 187714
+   "money": 253153
   },
   "1014632": {
-   "h": "afe761502197f05a",
+   "h": "2d966148ab9ce38c",
    "name": "赵磊",
    "born": "HA",
-   "age": 91,
-   "cause": "resp",
+   "age": 84,
+   "cause": "cancer",
    "edu": 5,
-   "money": 75031
+   "money": 276864
   },
   "1022551": {
-   "h": "4aaebfc94047de1b",
+   "h": "3a7f04426121d0bd",
    "name": "杨静",
    "born": "SD",
    "age": 70,
    "cause": "leukemia",
    "edu": 5,
-   "money": 497674
+   "money": 789328
   },
   "1030470": {
-   "h": "3a3affc9406d5434",
+   "h": "7e5aebfb125935ef",
    "name": "林皓轩",
    "born": "SX",
    "age": 59,
    "cause": "stroke",
    "edu": 5,
-   "money": 469515
+   "money": 267097
   },
   "1038389": {
-   "h": "c293cc5b029161d9",
+   "h": "8d8a5e6c61310494",
    "name": "李浩宇",
    "born": "GD",
    "age": 52,
    "cause": "kidney",
    "edu": 5,
-   "money": 1749936
+   "money": 1478382
   },
   "1046308": {
-   "h": "ed2e952260d3d940",
+   "h": "cc2c746bf9c2be59",
    "name": "朱语桐",
    "born": "AH",
    "age": 100,
    "cause": "heart",
    "edu": 4,
-   "money": 150690
+   "money": 454071
   },
   "1054227": {
-   "h": "6c55caa471769240",
+   "h": "a26a9655be8a5876",
    "name": "王沐宸",
    "born": "GZ",
    "age": 99,
    "cause": "resp",
    "edu": 6,
-   "money": 589542
+   "money": 1037337
   },
   "1062146": {
-   "h": "3ac4ec92fbbf2339",
+   "h": "bfaf5046fe55acd7",
    "name": "郭艺涵",
    "born": "HN",
-   "age": 81,
-   "cause": "heart",
+   "age": 72,
+   "cause": "stroke",
    "edu": 5,
-   "money": 343437
+   "money": 761440
   },
   "1070065": {
-   "h": "2e3101b37c86f1ea",
+   "h": "4e67eb7abba994b2",
    "name": "张雨桐",
    "born": "XJ",
-   "age": 38,
-   "cause": "cancer",
+   "age": 75,
+   "cause": "other",
    "edu": 6,
-   "money": 287405
+   "money": 1321200
   },
   "1077984": {
-   "h": "f25f803692887f8e",
+   "h": "025151da08077762",
    "name": "刘梓睿",
    "born": "FJ",
    "age": 75,
    "cause": "cancer",
    "edu": 7,
-   "money": 1152850
+   "money": 1750878
   },
   "1085903": {
-   "h": "115a915345115ad1",
+   "h": "d06c4a6f0bfc1f02",
    "name": "吴雨萱",
    "born": "SC",
    "age": 68,
    "cause": "suicide",
    "edu": 5,
-   "money": 463015
+   "money": 385538
   },
   "1093822": {
-   "h": "d92a9eb007993ead",
+   "h": "fa94641cd5a38ff6",
    "name": "吴浩宇",
    "born": "HN",
    "age": 70,
-   "cause": "resp",
+   "cause": "heart",
    "edu": 7,
-   "money": 1491752
+   "money": 851854
   },
   "1101741": {
-   "h": "09ff5e29de3cf798",
+   "h": "9ac5e27c9f86bae9",
    "name": "罗雨桐",
    "born": "SH",
-   "age": 77,
-   "cause": "stroke",
+   "age": 61,
+   "cause": "dementia",
    "edu": 2,
-   "money": 1658080
+   "money": 3784769
   },
   "1109660": {
-   "h": "43c2c460e8a83cc9",
+   "h": "704a27fb30ff6ea8",
    "name": "刘雨萱",
    "born": "GD",
-   "age": 94,
-   "cause": "heart",
+   "age": 95,
+   "cause": "kidney",
    "edu": 4,
-   "money": 90344
+   "money": 65839
   },
   "1117579": {
-   "h": "65695f6c8ecd1a57",
+   "h": "a231b657b8f8e3cd",
    "name": "李语桐",
    "born": "GD",
-   "age": 93,
-   "cause": "dementia",
+   "age": 71,
+   "cause": "diabetes",
    "edu": 7,
-   "money": 860080
+   "money": 1554443
   },
   "1125498": {
-   "h": "62b93b4220523690",
+   "h": "bf711d710ce0ecc5",
    "name": "王佳怡",
    "born": "CQ",
    "age": 83,
-   "cause": "cancer",
+   "cause": "other",
    "edu": 4,
-   "money": 313707
+   "money": 429309
   },
   "1133417": {
-   "h": "db48d518f602b609",
+   "h": "95362c2cfd3345d6",
    "name": "杨浩宇",
    "born": "HA",
-   "age": 62,
+   "age": 61,
    "cause": "cancer",
    "edu": 6,
-   "money": 584979
+   "money": 286657
   },
   "1141336": {
-   "h": "06664a68ca8ceadf",
+   "h": "d5799553034b5aa4",
    "name": "郑安琪",
    "born": "SN",
-   "age": 87,
+   "age": 94,
    "cause": "stroke",
    "edu": 6,
-   "money": 292076
+   "money": 707280
   },
   "1149255": {
-   "h": "d975fbe55c0ff5a7",
+   "h": "0b038819a8f37616",
    "name": "张锦程",
    "born": "QH",
-   "age": 85,
-   "cause": "heart",
+   "age": 67,
+   "cause": "resp",
    "edu": 5,
-   "money": 2398903
+   "money": 998556
   },
   "1157174": {
-   "h": "4e6f1df62060a2bd",
+   "h": "f0d8c6fc3ff1f644",
    "name": "邓锦程",
    "born": "ZJ",
-   "age": 100,
+   "age": 59,
    "cause": "stroke",
    "edu": 3,
-   "money": 381735
+   "money": 1287115
   },
   "1165093": {
-   "h": "7a3daabda2d38e6f",
+   "h": "dfc70fdf7a1f993f",
    "name": "刘磊",
    "born": "HB",
-   "age": 95,
+   "age": 92,
    "cause": "stroke",
    "edu": 5,
-   "money": 291971
+   "money": 235789
   },
   "1173012": {
-   "h": "9cd33205ab09bff2",
+   "h": "50b28708c253c6b8",
    "name": "郑悦",
    "born": "HE",
    "age": 76,
    "cause": "cancer",
    "edu": 4,
-   "money": 52021
+   "money": 36268
   },
   "1180931": {
-   "h": "6c3939881841fdfa",
+   "h": "c3acd5d1c3b34e95",
    "name": "黄诗涵",
    "born": "ZJ",
-   "age": 100,
-   "cause": "resp",
+   "age": 73,
+   "cause": "cancer",
    "edu": 6,
-   "money": 339811
+   "money": 986241
   },
   "1188850": {
-   "h": "c549248c19f54c20",
+   "h": "68cdff7eb696e6ae",
    "name": "林若凡",
    "born": "SD",
-   "age": 95,
-   "cause": "heart",
+   "age": 100,
+   "cause": "other",
    "edu": 6,
-   "money": 2452352
+   "money": 3910166
   },
   "1196769": {
-   "h": "9043d6adea29590b",
+   "h": "2609599bc4b46820",
    "name": "多吉",
    "born": "QH",
    "age": 67,
    "cause": "resp",
    "edu": 6,
-   "money": 9928674
+   "money": 9803035
   },
   "1204688": {
-   "h": "a6361e1de453081b",
+   "h": "529b0ff64c34ba63",
    "name": "冯承泽",
    "born": "SC",
    "age": 85,
    "cause": "heart",
    "edu": 6,
-   "money": 355019
+   "money": 780202
   },
   "1212607": {
-   "h": "8dcb1cf9b560af07",
+   "h": "d41cefc0e3887864",
    "name": "陈承泽",
    "born": "SD",
-   "age": 79,
-   "cause": "cancer",
+   "age": 80,
+   "cause": "heart",
    "edu": 6,
-   "money": 457096
+   "money": 824335
   },
   "1220526": {
-   "h": "e1d0b5b2bf2eedd4",
+   "h": "f978cd81f074a57f",
    "name": "马磊",
    "born": "SC",
-   "age": 86,
-   "cause": "resp",
-   "edu": 5,
-   "money": 149717
-  },
-  "1228445": {
-   "h": "919d2549d0eb0961",
-   "name": "王若凡",
-   "born": "JL",
-   "age": 90,
+   "age": 84,
    "cause": "heart",
    "edu": 5,
-   "money": 888065
+   "money": 74890
   },
-  "1236364": {
-   "h": "22ce3ef072e4a6aa",
-   "name": "周芷若",
-   "born": "GD",
-   "age": 80,
+  "1228445": {
+   "h": "4191bd698e1c178e",
+   "name": "王若凡",
+   "born": "JL",
+   "age": 47,
    "cause": "cancer",
    "edu": 5,
-   "money": 781346
+   "money": 261546
+  },
+  "1236364": {
+   "h": "f433b1c6dc153044",
+   "name": "周芷若",
+   "born": "GD",
+   "age": 100,
+   "cause": "kidney",
+   "edu": 5,
+   "money": 1650100
   },
   "1244283": {
-   "h": "a5f458de3dfe4d9d",
+   "h": "dc331d3961e86326",
    "name": "胡梦瑶",
    "born": "JS",
    "age": 88,
-   "cause": "resp",
+   "cause": "stroke",
    "edu": 6,
-   "money": 4261444
+   "money": 2050739
   },
   "1252202": {
-   "h": "92ed30f731a613cc",
+   "h": "04487d01fecb630f",
    "name": "马芷若",
    "born": "JX",
-   "age": 69,
-   "cause": "heart",
+   "age": 86,
+   "cause": "stroke",
    "edu": 5,
-   "money": 1585981
+   "money": 2043470
   },
   "1260121": {
-   "h": "a1ecfbe79529710b",
+   "h": "af867a03b2815aa6",
    "name": "周承泽",
    "born": "GD",
    "age": 78,
    "cause": "accident",
    "edu": 7,
-   "money": 15211513
+   "money": 9536889
   },
   "1268040": {
-   "h": "8bf889a789df5c65",
+   "h": "7bb29e94b0b2c787",
    "name": "李梦瑶",
    "born": "SC",
    "age": 97,
    "cause": "pneumonia",
    "edu": 4,
-   "money": 371266
+   "money": 413676
   },
   "1275959": {
-   "h": "d96694a9a225954c",
+   "h": "de47c6e47c85dfb7",
    "name": "唐星辰",
    "born": "HE",
    "age": 94,
    "cause": "dementia",
    "edu": 2,
-   "money": 365280
+   "money": 225056
   },
   "1283878": {
-   "h": "15e7c0c352f9935c",
+   "h": "7d2fa6b2e2ebd3aa",
    "name": "黄一鸣",
    "born": "SD",
-   "age": 62,
+   "age": 60,
    "cause": "cancer",
    "edu": 2,
-   "money": 19874550
+   "money": 11334104
   },
   "1291797": {
-   "h": "79beb84d3869512c",
+   "h": "69608252f4935075",
    "name": "王子豪",
    "born": "AH",
    "age": 93,
    "cause": "resp",
    "edu": 6,
-   "money": 420624
+   "money": 426814
   },
   "1299716": {
-   "h": "eb1eb62b51ba82ec",
+   "h": "873187a9c051b837",
    "name": "朱晨阳",
    "born": "JL",
-   "age": 97,
-   "cause": "resp",
+   "age": 84,
+   "cause": "cancer",
    "edu": 6,
-   "money": 731873
+   "money": 1404834
   },
   "1307635": {
-   "h": "3e36f1505e5712f7",
+   "h": "6c0d6c5d694e4149",
    "name": "孙可馨",
    "born": "JX",
+   "age": 86,
+   "cause": "heart",
+   "edu": 5,
+   "money": 52993
+  },
+  "1315554": {
+   "h": "82dd488788ffe9dd",
+   "name": "刘欣怡",
+   "born": "BJ",
    "age": 89,
    "cause": "heart",
    "edu": 5,
-   "money": 44383
-  },
-  "1315554": {
-   "h": "e626e9bbc3d145f6",
-   "name": "刘欣怡",
-   "born": "BJ",
-   "age": 96,
-   "cause": "heart",
-   "edu": 5,
-   "money": 143795
+   "money": 200258
   },
   "1323473": {
    "h": "cfd52dbbbca541a2",
@@ -1513,297 +1513,297 @@
    "money": 12235
   },
   "1331392": {
-   "h": "1eb263944b49baa7",
+   "h": "5cfd82f19054d157",
    "name": "何苡沫",
    "born": "ZJ",
-   "age": 69,
-   "cause": "cancer",
+   "age": 84,
+   "cause": "dementia",
    "edu": 5,
-   "money": 2154796
+   "money": 1341216
   },
   "1339311": {
-   "h": "d79b76dee4969062",
+   "h": "c87b77a358d911a8",
    "name": "谢雨萱",
    "born": "GZ",
-   "age": 96,
+   "age": 93,
    "cause": "heart",
    "edu": 5,
-   "money": 29350
+   "money": 174990
   },
   "1347230": {
-   "h": "28ae978b0b53d0ea",
+   "h": "14c770e905b812d4",
    "name": "李知夏",
    "born": "LN",
    "age": 69,
    "cause": "cancer",
    "edu": 5,
-   "money": 4110033
+   "money": 2751075
   },
   "1355149": {
-   "h": "804e0ea8dd8c20b5",
+   "h": "de81d8abb9b8b63b",
    "name": "张雅",
    "born": "HA",
-   "age": 94,
+   "age": 75,
    "cause": "heart",
    "edu": 4,
-   "money": 2560
+   "money": 0
   },
   "1363068": {
-   "h": "67ce578234a3f906",
+   "h": "d4ea9a5ee4307056",
    "name": "李睿泽",
    "born": "GX",
-   "age": 88,
-   "cause": "pneumonia",
+   "age": 91,
+   "cause": "resp",
    "edu": 5,
-   "money": 7431525
+   "money": 1547707
   },
   "1370987": {
-   "h": "0a3930cecd473001",
+   "h": "b41203c5ef77b5a1",
    "name": "李浩然",
    "born": "GZ",
-   "age": 75,
-   "cause": "stroke",
+   "age": 80,
+   "cause": "cancer",
    "edu": 6,
-   "money": 882769
+   "money": 226658
   },
   "1378906": {
-   "h": "870f2bbfea507607",
+   "h": "6a93cb8668952518",
    "name": "刘艺涵",
    "born": "GZ",
    "age": 86,
    "cause": "heart",
    "edu": 5,
-   "money": 1418473
+   "money": 1521825
   },
   "1386825": {
-   "h": "7374dd4461d564fa",
+   "h": "152bd814263b149a",
    "name": "李奕辰",
    "born": "JL",
-   "age": 78,
-   "cause": "cancer",
+   "age": 88,
+   "cause": "heart",
    "edu": 6,
-   "money": 1929072
+   "money": 2279822
   },
   "1394744": {
-   "h": "d302b087e4799235",
+   "h": "5670fb328a68d296",
    "name": "张宇航",
    "born": "JL",
-   "age": 83,
-   "cause": "heart",
+   "age": 88,
+   "cause": "pneumonia",
    "edu": 7,
-   "money": 700856
+   "money": 1125981
   },
   "1402663": {
-   "h": "7f9046cf09c55fd9",
+   "h": "9c6d079ea71c7108",
    "name": "张若凡",
    "born": "ZJ",
-   "age": 78,
-   "cause": "other",
+   "age": 79,
+   "cause": "cancer",
    "edu": 4,
-   "money": 90277
+   "money": 613313
   },
   "1410582": {
-   "h": "2d8e40a2ee982f59",
+   "h": "b014f5929fa13de8",
    "name": "李一诺",
    "born": "JS",
-   "age": 92,
-   "cause": "heart",
+   "age": 98,
+   "cause": "stroke",
    "edu": 5,
-   "money": 963
+   "money": 313045
   },
   "1418501": {
-   "h": "ad2469f33c2df643",
+   "h": "3e37290682aeb3e9",
    "name": "胡语桐",
    "born": "SC",
-   "age": 98,
-   "cause": "heart",
+   "age": 89,
+   "cause": "dementia",
    "edu": 6,
-   "money": 270004
+   "money": 747013
   },
   "1426420": {
-   "h": "126d335cd82da4d4",
+   "h": "68d00b01fe7ac2e2",
    "name": "杨欣怡",
    "born": "HL",
    "age": 95,
    "cause": "heart",
    "edu": 5,
-   "money": 532816
+   "money": 882059
   },
   "1434339": {
-   "h": "cf82f5d381b56230",
+   "h": "baaaefae166ca47d",
    "name": "李雨萱",
    "born": "JS",
-   "age": 95,
+   "age": 77,
    "cause": "stroke",
    "edu": 5,
-   "money": 2526
+   "money": 111674
   },
   "1442258": {
-   "h": "0427c6d77ffd5c48",
+   "h": "47fa47c3c17a2cd1",
    "name": "刘睿泽",
    "born": "LN",
-   "age": 84,
-   "cause": "pneumonia",
+   "age": 83,
+   "cause": "resp",
    "edu": 7,
-   "money": 79612
+   "money": 89175
   },
   "1450177": {
-   "h": "d0d789bd5655ff44",
+   "h": "d6aa3a79c5cb15ed",
    "name": "刘若汐",
    "born": "SD",
    "age": 96,
-   "cause": "heart",
+   "cause": "resp",
    "edu": 6,
-   "money": 1362693
+   "money": 1214280
   },
   "1458096": {
-   "h": "d8070ba78573de9e",
+   "h": "4c5f81a9590c8262",
    "name": "赵天佑",
    "born": "GD",
    "age": 65,
    "cause": "cancer",
    "edu": 6,
-   "money": 1005000
+   "money": 493422
   },
   "1466015": {
-   "h": "6f410da3f0cfa4b1",
+   "h": "a73e0b0449af60fc",
    "name": "刘嘉懿",
    "born": "JS",
-   "age": 98,
-   "cause": "heart",
+   "age": 60,
+   "cause": "cancer",
    "edu": 6,
-   "money": 3942907
+   "money": 582848
   },
   "1473934": {
-   "h": "cac9a3bb581e4042",
+   "h": "7b4b602c45221983",
    "name": "王语汐",
    "born": "JS",
-   "age": 78,
-   "cause": "diabetes",
-   "edu": 5,
-   "money": 69719
-  },
-  "1481853": {
-   "h": "ecdecf0d01c6aeee",
-   "name": "郭佳怡",
-   "born": "GZ",
-   "age": 99,
-   "cause": "resp",
-   "edu": 5,
-   "money": 22513
-  },
-  "1489772": {
-   "h": "ae06a9a7536cc480",
-   "name": "王沐宸",
-   "born": "FJ",
-   "age": 82,
+   "age": 96,
    "cause": "stroke",
    "edu": 5,
-   "money": 48191
+   "money": 81942
+  },
+  "1481853": {
+   "h": "0523e4d6fc1c5990",
+   "name": "郭佳怡",
+   "born": "GZ",
+   "age": 100,
+   "cause": "traffic",
+   "edu": 5,
+   "money": 269772
+  },
+  "1489772": {
+   "h": "dc4b01959112c97e",
+   "name": "王沐宸",
+   "born": "FJ",
+   "age": 84,
+   "cause": "stroke",
+   "edu": 5,
+   "money": 860381
   },
   "1497691": {
-   "h": "7060a20292331ccc",
+   "h": "69ddc29f9cf62577",
    "name": "麦麦提·艾山",
    "born": "XJ",
    "age": 86,
    "cause": "stroke",
    "edu": 6,
-   "money": 1907551
+   "money": 1951859
   },
   "1505610": {
-   "h": "177b19cc3e55bf9e",
+   "h": "e193d7bdd2203ac2",
    "name": "周一诺",
    "born": "SD",
    "age": 81,
    "cause": "stroke",
    "edu": 3,
-   "money": 225671
+   "money": 162419
   },
   "1513529": {
-   "h": "b0ab1e2606cab22a",
+   "h": "0e66f61e45bbf0db",
    "name": "谢静",
    "born": "HA",
-   "age": 70,
-   "cause": "stroke",
+   "age": 87,
+   "cause": "heart",
    "edu": 6,
-   "money": 993192
+   "money": 777625
   },
   "1521448": {
-   "h": "894882d42a7145af",
+   "h": "3b53fb227002280d",
    "name": "刘知夏",
    "born": "GZ",
-   "age": 78,
+   "age": 77,
    "cause": "traffic",
    "edu": 5,
-   "money": 1277696
+   "money": 724423
   },
   "1529367": {
-   "h": "7e7396f4d58f1945",
+   "h": "c9cec11aec9322ca",
    "name": "王睿泽",
    "born": "SD",
-   "age": 100,
+   "age": 86,
    "cause": "heart",
    "edu": 2,
-   "money": 29782
+   "money": 73587
   },
   "1537286": {
-   "h": "5f09c9df6d43a683",
+   "h": "c2ae88ef1a2b26f8",
    "name": "李晨阳",
    "born": "CQ",
-   "age": 86,
+   "age": 90,
    "cause": "stroke",
    "edu": 6,
-   "money": 316306
+   "money": 233465
   },
   "1545205": {
-   "h": "8af7b86481e7bce7",
+   "h": "6cc7d51fbedd251f",
    "name": "马安琪",
    "born": "GD",
-   "age": 73,
-   "cause": "heart",
+   "age": 98,
+   "cause": "dementia",
    "edu": 5,
-   "money": 1842841
+   "money": 671227
   },
   "1553124": {
-   "h": "9ec7af27e8f5c03c",
+   "h": "f1b66439ff0498ea",
    "name": "王锦程",
    "born": "GD",
    "age": 85,
    "cause": "heart",
    "edu": 6,
-   "money": 1623986
+   "money": 1697305
   },
   "1561043": {
-   "h": "01e0df28eb29d423",
+   "h": "dec47400a22a0053",
    "name": "邓依诺",
    "born": "JS",
-   "age": 94,
-   "cause": "heart",
+   "age": 79,
+   "cause": "liver",
    "edu": 5,
-   "money": 94561
+   "money": 237821
   },
   "1568962": {
-   "h": "32b4c204b904ee48",
+   "h": "dfaa80ff4a5e788d",
    "name": "孙承泽",
    "born": "SC",
-   "age": 78,
-   "cause": "cancer",
+   "age": 87,
+   "cause": "stroke",
    "edu": 6,
-   "money": 175517
+   "money": 102260
   },
   "1576881": {
-   "h": "167902aedb5a5897",
+   "h": "fef2c47a156a449a",
    "name": "李俊杰",
    "born": "GD",
    "age": 92,
    "cause": "cancer",
    "edu": 6,
-   "money": 1820451
+   "money": 1839264
   }
  },
  "main": {
   "424242": {
-   "h": "4981aad710df7d71",
+   "h": "79585d69c1bd583d",
    "name": "杨家豪",
    "born": "SD",
    "age": 93,
@@ -1812,7 +1812,7 @@
    "money": 1489597
   },
   "528971": {
-   "h": "be523b623f663a47",
+   "h": "87137347e24506a3",
    "name": "李梓睿",
    "born": "FJ",
    "age": 78,
@@ -1821,7 +1821,7 @@
    "money": 64800
   },
   "633700": {
-   "h": "fd5ef263787dc403",
+   "h": "31c9576bc715d5ed",
    "name": "赵语桐",
    "born": "AH",
    "age": 65,
@@ -1830,7 +1830,7 @@
    "money": 11642686
   },
   "738429": {
-   "h": "f0a17165bcae2c89",
+   "h": "6d79a5c32a8ab605",
    "name": "李若汐",
    "born": "JX",
    "age": 90,
@@ -1839,7 +1839,7 @@
    "money": 638514
   },
   "843158": {
-   "h": "d9ac8fd181a24e41",
+   "h": "e2e7f00e3aa91c9a",
    "name": "马明哲",
    "born": "SN",
    "age": 78,
@@ -1848,7 +1848,7 @@
    "money": 1913560
   },
   "947887": {
-   "h": "08e79ceeeebc2a9a",
+   "h": "2463a443e0b74564",
    "name": "胡浩宇",
    "born": "HA",
    "age": 69,
@@ -1857,7 +1857,7 @@
    "money": 478798
   },
   "1052616": {
-   "h": "c79f180485d3a4f6",
+   "h": "2a37658fe3882652",
    "name": "朱语汐",
    "born": "HA",
    "age": 74,
@@ -1866,7 +1866,7 @@
    "money": 680763
   },
   "1157345": {
-   "h": "c22a21bd53cd4885",
+   "h": "950d5b7cabe8c052",
    "name": "林雅",
    "born": "JX",
    "age": 84,
@@ -1875,7 +1875,7 @@
    "money": 2064548
   },
   "1262074": {
-   "h": "28658f62800383b1",
+   "h": "4e9d9fdc39d5dcac",
    "name": "何若汐",
    "born": "YN",
    "age": 81,
@@ -1884,7 +1884,7 @@
    "money": 1038
   },
   "1366803": {
-   "h": "d78ce175deb801d7",
+   "h": "fef1cf9c1ac20a77",
    "name": "张家豪",
    "born": "AH",
    "age": 43,
@@ -1893,7 +1893,7 @@
    "money": 481584
   },
   "1471532": {
-   "h": "e73b983787cceeca",
+   "h": "1f1d33e11c8633e5",
    "name": "李悦",
    "born": "HA",
    "age": 90,
@@ -1902,7 +1902,7 @@
    "money": 1007258
   },
   "1576261": {
-   "h": "008562fd615ecfb4",
+   "h": "6e96551abe3b066a",
    "name": "朱可馨",
    "born": "YN",
    "age": 80,
@@ -1911,7 +1911,7 @@
    "money": 1470211
   },
   "1680990": {
-   "h": "3c0bb48abc58fe25",
+   "h": "3056acf99c8876fd",
    "name": "高一诺",
    "born": "HE",
    "age": 82,
@@ -1920,7 +1920,7 @@
    "money": 7328147
   },
   "1785719": {
-   "h": "02abe967ff330e91",
+   "h": "df19c63faf5f242c",
    "name": "王佳怡",
    "born": "HN",
    "age": 81,
@@ -1929,7 +1929,7 @@
    "money": 1704332
   },
   "1890448": {
-   "h": "30885714ab9797e3",
+   "h": "5e887dc0151962f6",
    "name": "刘锦程",
    "born": "GX",
    "age": 72,
@@ -1938,7 +1938,7 @@
    "money": 1348711
   },
   "1995177": {
-   "h": "c6f2b5017508840d",
+   "h": "d4b3112785618ce4",
    "name": "郭子豪",
    "born": "FJ",
    "age": 85,
@@ -1947,7 +1947,7 @@
    "money": 576169
   },
   "2099906": {
-   "h": "2f121499d96a81fe",
+   "h": "5afca28f983e630f",
    "name": "何天佑",
    "born": "AH",
    "age": 65,
@@ -1956,7 +1956,7 @@
    "money": 1656227
   },
   "2204635": {
-   "h": "38d94073b232da23",
+   "h": "90017530e7227de6",
    "name": "刘奕辰",
    "born": "GX",
    "age": 82,
@@ -1965,7 +1965,7 @@
    "money": 1303673
   },
   "2309364": {
-   "h": "6d199b052c709456",
+   "h": "697faf34fe48d295",
    "name": "张诗涵",
    "born": "HA",
    "age": 97,
@@ -1974,7 +1974,7 @@
    "money": 1378720
   },
   "2414093": {
-   "h": "b141a56dc8d04dc5",
+   "h": "e013cf1c6c14eb6c",
    "name": "赵睿泽",
    "born": "SD",
    "age": 50,

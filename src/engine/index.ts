@@ -34,5 +34,6 @@ export * from './actions';
 export * from './plans';
 export * from './plans/style';
 export * from './plans/health';
+export * from './plans/invest';
 export * from './data';
 export type * from './types';
