@@ -28,7 +28,9 @@ import { eff } from '../stats';
 import { bothParents, carer, parentsHelp, parentsWord } from '../parents';
 import { rural } from './events';
 import { wan } from '../format';
-import { uiMonths } from '../finance';
+import { careFeeY, oldIncomeY, uiMonths } from '../finance';
+// 晚年住养老院的抉择：积蓄要撑多少年才和收入够付的一样愿意去（80 岁左右的余寿约 9 年，估计）
+const CARE_YEARS = 9;
 import { borrowMoney, changeMoney, liquidBalance } from '../accounts';
 import { inKg } from '../schedule';
 import { DEMOL_K, demolDue, demolish, famPayBride, kidHomeCost, lendSib, marryKid, weddingKid } from '../kin';
@@ -780,7 +782,11 @@ export const DEC = {
   oldcare: {
     build: () => {
       const has = kidsAlive().length > 0;
-      const ch: Choice[] = [{ k: 'home', label: '去养老院', sub: `每年约${wan(placeInc() * 0.5)}`, w: 1.5 }, { k: 'self', label: '还是自己住', sub: '', w: 2, tilt: { a: -0.4 } }];
+      // 付不付得起：养老院的费用减去养老金、子女给的、老伴的收入，差的部分要靠积蓄撑。撑不到两年的不能选；
+      // 撑得越久越愿意去，撑满 CARE_YEARS 年（80 岁左右的余寿，估计）和收入够付的一样。原来不看钱，权重固定，付不起的也住进去，欠款一直累积到去世
+      const fee = careFeeY(), short = Math.max(0, fee - oldIncomeY()), years = short ? Math.max(0, liquidBalance()) / short : Infinity;
+      const careSub = `每年约${wan(fee)}${short ? `，养老金和子女给的钱每年差${wan(short)}${years < 2 ? '，积蓄撑不了两年' : ''}` : '，养老金够付'}`;
+      const ch: Choice[] = [{ k: 'home', label: '去养老院', sub: careSub, off: years < 2, w: 1.5 * clamp(years / CARE_YEARS, 0.1, 1) }, { k: 'self', label: '还是自己住', sub: '', w: 2, tilt: { a: -0.4 } }];
       if (has) ch.unshift({ k: 'kid', label: '搬去和子女一起住', sub: '', w: 3, tilt: { a: 0.3 } });
       const pt = S.fam.married && S.fam.partner && S.fam.partner.alive;
       return { title: '晚年', body: pt ? '年纪大了，老两口互相照应，也越来越吃力。' : '年纪大了，一个人生活越来越吃力。', choices: ch };

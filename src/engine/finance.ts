@@ -91,13 +91,15 @@ export function moneyMonth(m: number) {
     children: f.kids.filter(child => child.alive && child.age < 22).map(child => child.age), lifestyle: S.lifestyle,
     retirementLifestyle: S.retirementLifestyle });
   S.lifestyle = budget.lifestyle;
-  const basic = budget.living + budget.children;
+  // 住养老院：费用里包了吃住，不再另扣大人的基本生活（原来两样都扣，每月多扣约一份基本生活）
+  const inCare = S.flags.oldLive === 'home';
+  const basic = (inCare ? 0 : budget.living) + budget.children;
   const basicPaid = Math.min(S.money, basic);
   S.money -= basicPaid;
-  const living = basic ? basicPaid * budget.living / basic : 0;
+  const living = basic ? basicPaid * (inCare ? 0 : budget.living) / basic : 0;
   const children = basicPaid - living;
   const ownHere = S.house && S.house.city === S.loc.city;
-  const rentDue = S.flags.oldLive === 'home' ? P * 0.5 / MONTHS
+  const rentDue = inCare ? careFeeY() / MONTHS
     : !ownHere && S.loc.kind !== 'rural' && S.flags.oldLive !== 'kid' && !S.flags.grandHelp ? H.hp * 45 * 0.018 * 0.6 / MONTHS : 0;
   const rentHpf = rentDraw(rentDue);
   changeMoney(rentHpf); transfers += rentHpf;
@@ -213,6 +215,15 @@ function retireMonthly(cons: number) {
   let grown = 0;
   for (const k of S.fam.kids) if (k.alive && k.age >= 25) grown++;
   return ((S.pension || 0) + (grown ? cons * 0.35 * Math.min(2, grown) : 0)) / MONTHS;
+}
+// 养老院：每人每年约当地人均可支配收入的一半（估计；含吃住和日常照料，普通床位多在每月两三千元），老伴还在的两个人一起住
+export const CARE_K = 0.5;
+const careN = () => 1 + Number(!!(S.fam.married && S.fam.partner && S.fam.partner.alive));
+export const careFeeY = () => placeInc() * CARE_K * careN();
+/** 退休以后一年的到手收入：养老金、成年子女给的，加上老伴的收入（养老院的抉择用来看付不付得起） */
+export function oldIncomeY() {
+  const f = S.fam, mate = f.married && f.partner && f.partner.alive ? f.partner : null;
+  return retireMonthly(here().cons) * MONTHS + (mate ? matePay(mate, 0).net : 0);
 }
 /** 界面用：这个月的收入，税前（gross）和到手（net），不消耗随机数。上班的是工资（含销售的提成系数、个体户和小老板的生意系数），扣五险一金、个税；
  *  退休的是养老金加成年子女给的；待业的是失业保险金（都不交税）。和 moneyMonth 里记进 S.income / S.net 的同一套算法（那两个是上个月月底的 × 12），不含配偶的收入、返聘 */

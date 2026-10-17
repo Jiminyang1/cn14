@@ -24,6 +24,7 @@ import { shape, tiltW } from '../personality';
 import { calMonth, calYear } from '../monthly';
 import { nowM } from '../calendar';
 import { inKg } from '../schedule';
+import { reimburse } from '../health';
 
 declare module '../types' {
   interface Flags { parDivWith?: 'mom' | 'dad' } // 父母离婚后你跟着谁生活（判给谁）
@@ -31,6 +32,11 @@ declare module '../types' {
 
 export const rural = () => S.loc.kind === 'rural';
 export const dz = t => PBY[S.loc.p].dz.includes(t);
+
+// 住一次院自付多少：2024 年全国医院次均住院费用 9,870 元（卫健委统计公报），按医保的实际报销比例（health.ts 的 reimburse，在本地看）扣掉报销。
+// 原来是当地人均可支配收入的 0.2 倍（中位约 1 万元）、不看医保，比现实高两三倍
+export const HOSP_COST = 9870;
+const hospOop = () => Math.round(HOSP_COST * (1 - reimburse('local').r) / 100) * 100;
 
 // ===== 文字里的家人 =====
 const PW = { mom: '妈妈', dad: '爸爸' } as const;
@@ -254,7 +260,7 @@ export const EVENTS = [
   { id: 'grandcare', a: [50, 80], gap: 4, w: 2, c: () => kidsAlive().some(k => k.gk), run: () => { eff({ so: 3, hl: -1, h: 2 }); return '帮子女带孙辈，每天接送上学、做饭，比上班还忙。'; } },
   { id: 'phoneOld', a: [60, 85], once: 1, w: 1.5, run: () => { eff({ h: 2 }); return '学会了用手机视频通话和扫码付款，还加了好几个老同学群。'; } },
   { id: 'oldFriend', a: [65, 105], gap: 5, w: 2, run: () => { eff({ so: -3, h: -4 }); return '一个认识了几十年的老朋友走了。'; } },
-  { id: 'hosp', a: [65, 105], gap: 3, w: 1.5, run: () => { eff({ hl: -3, money: -placeInc() * 0.2 }); return `因为${pick(['肺炎', '摔跤骨折', '心律不齐', '白内障手术'])}住了一次院。`; } },
+  { id: 'hosp', a: [65, 105], gap: 3, w: 1.5, run: () => { eff({ hl: -3, money: -hospOop() }); return `因为${pick(['肺炎', '摔跤骨折', '心律不齐', '白内障手术'])}住了一次院。`; } },
   { id: 'pensionUp', a: [63, 105], gap: 5, w: 1, c: () => S.job === 'retired', run: () => { S.pension *= 1.05; return '养老金又涨了一点。'; } },
 ];
 // 过年的状态事件每个月（1 月、2 月）的概率

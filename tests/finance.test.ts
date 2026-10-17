@@ -127,6 +127,18 @@ test('rent shortages are owed and discretionary spending does not borrow', () =>
   checkStatement(life.statement);
 });
 
+test('a care home fee covers board instead of being charged on top of basic living', () => {
+  const bills = [undefined, 'home'].map(where => {
+    const life = household(); life.age = 82; life.job = 'retired'; life.pension = 60000; life.money = 200000;
+    life.house = null; life.flags.oldLive = where as 'home' | undefined;
+    E.moneyMonth(1); checkStatement(life.statement);
+    return life.statement;
+  });
+  expect(bills[0].living).toBeGreaterThan(0);
+  expect(bills[1].living).toBe(0);
+  expect(bills[1].rent).toBeCloseTo(E.placeInc(E.S.loc) * E.CARE_K / 12, 6);
+});
+
 test('parents pay mortgages from their actual funds while employed', () => {
   const balances = [0, 500000].map(mortgage => {
     const life = household();
