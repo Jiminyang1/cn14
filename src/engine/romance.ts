@@ -18,6 +18,12 @@ import { wan, wanM } from './format';
 import { partnerPay } from './finance';
 import { PERS, partnerPz, partnerTrait, pz, tiltW } from './personality';
 import type { PZ } from './types';
+import { loveNow } from './focus';
+import { nowM } from './calendar';
+
+declare module './types' {
+  interface Flags { noLove?: number } // 说了「现在不想谈恋爱」：到出生后第几个月（nowM）以前不再认识新的人（抉择 romance 的 later）
+}
 
 export const single = () => !S.fam.married && !S.fam.dating && !S.cand;
 export const soloK = () => S.flags.solo ? 0 : 1;
@@ -34,7 +40,10 @@ export const MEET_HOW = { friends: '朋友聚会上', work: '公司', wedding: '
 // MEET_K 1 → 1.3、MEET_KF 0.8 → 0.95：男 23.9% / 女 9.5%，初婚年龄 28.1 / 25.2
 // 审查修复全部合并以后（抉择份额修正、法定婚龄要看双方、没房被拒两次后松口或分手、离婚模型、个税）32 岁未婚回升到 男 26.2% / 女 10.0%：
 // MEET_K 1.3 → 1.6、MEET_KF 0.95 → 0.85：男 23.7% / 女 8.8%，初婚年龄 27.9 / 25.6
-export const MEET_K = 1.6, MEET_KF = 0.85, MUTUAL0 = 0.4, BREAK_K = 1.3, READY0 = 0.6, READY_K = 0.8;
+// 修 loveBoost 以后（2026-10-17）：原来某一年选过恋爱就一辈子多乘 1.5，无界面的人生自动选重心时多半挂着，校准时被算了进去；
+// 修好以后 32 岁未婚升到 男 25.6% / 女 12.2%。按女性重新校准（男性对这个系数不敏感：1.9 → 2.3 只从 25.4% 降到 24.0%，卡在婚房、对方愿不愿意上）：
+// MEET_K 1.6 → 2.1、MEET_KF 0.85 → 0.95：男 24.9% / 女 9.2%（普查 20.6% / 9.3%），初婚年龄 28.0 / 25.6
+export const MEET_K = 2.1, MEET_KF = 0.95, MUTUAL0 = 0.4, BREAK_K = 1.3, READY0 = 0.6, READY_K = 0.8;
 // 单身时每年认识一个「可能发展」的人的概率（按年龄，女性略早；估计，MEET_K 为校准系数）。认识的方式里，年纪越大、相亲越多
 export const MEET_P = a => S.sex === 'F'
   ? (a < 18 ? 0 : a < 22 ? 0.55 : a < 26 ? 0.7 : a < 30 ? 0.7 : a < 35 ? 0.55 : a < 45 ? 0.35 : 0.2)
@@ -49,11 +58,17 @@ export function meetHow() {
 // 每月都要换算的概率（认识人、分手）只有几十种取值：记下来，免得每月都算一次 fpow（结果和直接算完全相同）
 const PM = new Map<number, number>();
 const pm = (p: number) => { let v = PM.get(p); if (v === undefined) PM.set(p, v = perMonth(p)); return v; };
-// 单身的人这个月会不会认识一个「可能发展」的人：MEET_P 是一年的，换算成每月。外向的人认识人多一些（每个标准差约 ×1.28）
+// 单身的人这个月会不会认识一个「可能发展」的人：MEET_P 是一年的，换算成每月。外向的人认识人多一些（每个标准差约 ×1.28）。
+// 这个月的重心是「恋爱」的再 ×LOVE_FOCUS_K。原来还有一个 loveBoost：某一年在恋爱上花过 0.4 年以上就设上，之后再也不清，
+// 一辈子都多乘 1.5（18 岁那年自动替你选过恋爱的也算），和「重心是恋爱」叠在一起是 ×2.25，同一件事算了两次
+export const LOVE_FOCUS_K = 1.5;
 const MEET_T = { e: 0.25 };
 function meetMonth(m: number) {
   if (S.age < 18 || S.age > 60 || !single() || !soloK()) return;
-  const p = MEET_P(S.age) * MEET_K * (S.sex === 'F' ? MEET_KF : 1) * (S.focus === 'love' ? 1.5 : 1) * (S.flags.loveBoost ? 1.5 : 1) * tiltW(MEET_T);
+  const love = loveNow();
+  // 说过「现在不想谈恋爱」的，这段时间里不再认识新的人；改回「恋爱」重心就是又想谈了
+  if (S.flags.noLove != null) { if (love || nowM() >= S.flags.noLove) S.flags.noLove = undefined; else return; }
+  const p = MEET_P(S.age) * MEET_K * (S.sex === 'F' ? MEET_KF : 1) * (love ? LOVE_FOCUS_K : 1) * tiltW(MEET_T);
   if (!chance(perMonth(Math.min(0.95, p)))) return;
   S.cand = makePartner(meetHow());
   queueRomance(m);

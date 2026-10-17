@@ -108,7 +108,7 @@ export interface Flags {
   carer?: string;            // 留守时带你的人（父母都外出，或者在家的那一方去世了）
   mig?: number; migBack?: number; // 随迁子女；回老家中考
   ill?: Illness | null; survivor?: number; disabled?: number; illDebt?: number;
-  smoke?: number; parDiv?: number; divorced?: number /* 离婚时几岁 */; exes?: number; mShift?: number; loveBoost?: number;
+  smoke?: number; parDiv?: number; divorced?: number /* 离婚时几岁 */; exes?: number; mShift?: number;
   tier?: string; uni?: { name: string; city: string; prov: string; tier: string }; major?: string;
   zkRedo?: number; slip?: { score: number }; stuLoan?: number;
   civilRetry?: number; civilN?: number; lastJob?: string; empIns?: number; farmStop?: number;

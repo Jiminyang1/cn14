@@ -584,12 +584,21 @@ export const DEC = {
         choices: [
           { k: 'go', label: blind ? '继续接触' : '主动追求', sub: `对方也有意的可能：${P >= 0.65 ? '比较大' : P >= 0.4 ? '一半一半' : '不太大'}`, w: 0.6 + p.fit * 2, tilt: blind ? { e: 0.3 } : { e: 0.5, r: 0.3 } },
           { k: 'pass', label: blind ? '觉得不合适' : '只做朋友', sub: '', w: 0.7, tilt: { n: 0.3 } },
+          // 现在不想谈：一段时间里不再认识新的人（还在读书的到毕业，否则一年）；改选「恋爱」重心就是又想谈了。
+          // 原来只有追求和拒绝，拒绝了下个月照样可能再认识一个，真人玩家上大学时一年被问一两次到三次。自动抉择时很少选（估计），读书时、认真的、内向的多一些
+          { k: 'later', label: '现在不想谈恋爱', sub: S.school ? '先把书读完，毕业以前不再考虑' : '先顾好眼前的事，这一年不再考虑', w: S.school ? 0.3 : 0.15, tilt: { c: 0.3, e: -0.3 } },
         ], ctx: {},
       };
     },
     apply: k => {
       const p = S.cand; S.cand = null;
       if (k === 'pass') return null;
+      if (k === 'later') {
+        // 读书的到毕业那年的 7 月，至少一年；不读书的一年
+        const grad = S.school && S.schoolEnd ? (S.schoolEnd - calYear()) * 12 + 7 - calMonth() : 0;
+        S.flags.noLove = nowM() + Math.max(12, grad);
+        return S.school ? `你对${p.name}说，现在只想先把书读完。` : `你对${p.name}说，现在没心思谈恋爱。`;
+      }
       if (!chance(mutualP(p))) { eff({ h: -3 }); return { t: p.how === 'blind' ? `又见了两次，${p.name}说觉得你们不太合适。` : `你鼓起勇气表白，${p.name}说只想做朋友。`, k: 'bad' }; }
       p.love = clamp(55 + 25 * (p.fit - 0.5) + gauss(0, 8), 20, 90); p.asks = 0;
       S.fam.dating = p; eff({ h: 6 });

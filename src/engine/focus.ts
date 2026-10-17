@@ -9,7 +9,6 @@ import { MONTHS, perMonth } from './monthly';
 declare module './types' {
   interface Life {
     fAuto?: { k: string | null; a: number }; // 自动抉择（或无界面）时，这一年替你选的重心（a：哪一岁选的）
-    fLove?: number; // 这一年花在「恋爱」上的时间（年为单位），超过 0.4 年就更容易认识人
   }
 }
 
@@ -27,6 +26,8 @@ export const FOCUS = {
   rest: { n: '养身体', d: '好好吃饭睡觉，按时体检', e: { hl: 4, h: 1 }, ok: () => S.age >= 18 },
 };
 export const focusList = () => Object.keys(FOCUS).filter(k => FOCUS[k].ok());
+/** 这个月的重心是不是「恋爱」：玩家自己选的看 S.focus；自动抉择（或无界面）时看这一年替你抽的那一项（autoMonth 结算用的 fAuto） */
+export const loveNow = () => S.headless || S.auto ? !!S.fAuto && S.fAuto.a === S.age && S.fAuto.k === 'love' : S.focus === 'love';
 export function autoFocus() {
   const l = focusList(); if (!l.length) return null;
   const w = { study: S.school ? 3 : 1, play: 2, friends: 1.5, sport: 1, work: 3, love: S.age < 32 ? 2 : 0.5, family: S.fam.married ? 2.5 : 1, hobby: 1, rest: S.age > 50 ? 2.5 : 0.8 };
@@ -51,7 +52,6 @@ function applyOne(k: string, w: number, ok = false) {
   const x = w / MONTHS, st = S.st;
   for (const [s, v] of EFF[k]) st[s] = clamp(st[s] + v * x * (s === 'kn' && v > 0 ? 1 - st.kn / 115 : 1), 0, 100);
   if (k === 'work' && w > 0.4 && chance(w === 1 ? RAISE_M1 : perMonth(RAISE_P * w))) { raise(RAISE.work); log('工作上很拼，涨了工资。', 'good'); }
-  if (k === 'love') { S.fLove = (S.fLove || 0) + x; if (S.fLove > 0.4) S.flags.loveBoost = 1; }
 }
 // 自动抉择（或无界面）时：和原来一样，每年替你抽一个重心、整年都算在它上面。
 // 原来是年底抽一次、结算一整年；现在是这一年第一次用到时抽（多半是第 0 个月月底），之后每月结算 1/12。
@@ -80,7 +80,6 @@ export function applyFocus() {
 // ===== 每个月月底 =====
 /** 按这个月在各个重心上花的时间结算 1/12 年的效果。S.fT 只记这个月（结算完清空） */
 export function focusMonth(m: number) {
-  if (m === 0) S.fLove = 0;
   applyFocus();
   // 下一年从 t = 0 重新记（planYearSchedule 也会这样重置；这里再做一次，不依赖它）
   if (m === MONTHS - 1) S.fStart = 0;
