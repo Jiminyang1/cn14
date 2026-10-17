@@ -15,6 +15,7 @@ export * from './family';
 export * from './parents';
 export * from './household';
 export * from './finance';
+export * from './tax';
 export * from './housing';
 export * from './romance';
 export * from './education';

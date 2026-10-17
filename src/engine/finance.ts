@@ -6,12 +6,15 @@ import { PBY } from './data';
 import { S } from './state';
 import { clamp, gauss } from './rng';
 import { familyMoneyMonth } from './household';
-import { houseMonth, hpfMonth, loanMonth, plusMonth, rentDraw } from './housing';
+import { HPF_JOB, houseMonth, hpfMonth, loanMonth, plusMonth, rentDraw } from './housing';
 import { log } from './journal';
 import { NAT_URBAN_INC, placeCons, placeHp, placeInc, wageBase } from './place';
 import { wan } from './format';
 import { MONTHS } from './monthly';
 import { turnsMonth } from './turns';
+import { partnerLoc } from './romance';
+import { dedOf, netOf, penBase, type DedRow, type NetPay } from './tax';
+import type { Partner } from './types';
 
 declare module './types' {
   interface Life {
@@ -19,6 +22,7 @@ declare module './types' {
     uiY?: number;   // 失业保险缴费年数（上一次领失业保险金以后重新算）
     uiM?: number;   // 还能领几个月失业保险金
     uiOn?: boolean; // 这一段待业已经办了领取
+    net?: number;   // 现在的年收入（到手）：这个月到手的钱 × 12（S.income 是税前）
   }
 }
 
@@ -35,8 +39,10 @@ export function goIndep() {
   }
   if (S.stuDebt > 0) { S.money -= S.stuDebt; log(`开始工作时，身上还背着${wan(S.stuDebt)}的助学贷款。`, 'ev'); S.stuDebt = 0; }
 }
-// 储蓄率模型的参数（见 moneyMonth）。SAVE_BASE：收入正好是当地人均水平的人存下的比例
-export const SAVE_BASE = 0.2;
+// 储蓄率模型的参数（见 moneyMonth）。SAVE_BASE：收入正好是当地人均水平的人存下的比例。
+// 收入改成扣掉五险一金、个税以后的到手（tax.ts）以后，0.2 → 0.24：使在职者按公式算出的储蓄率（按家庭到手收入加权）仍约 32%，和全国居民储蓄率一致
+// （公式里比的是当地人均可支配收入，原来代入的是只扣了公积金的税前工资；npm run calib -- money）
+export const SAVE_BASE = 0.24;
 // 财富效应：在职时，存款多的家庭花得也多，每年多花存款的 WEALTH_MPC（估计；发达国家的研究多在 2%–5%，中国家庭偏低）。
 // 存款利息照样进账，所以存款本身每年净减约 1.5 个百分点，免得一辈子只进不出
 export const WEALTH_MPC = 0.06;
@@ -58,29 +64,30 @@ export function moneyMonth(m: number) {
   if (S.indep === false && S.job && !S.school && S.age >= 15) goIndep();
   if (S.indep === false || S.age < 15) return;
   const J = JOBS[S.job], H = here(), working = !!(J && J.m > 0);
-  let inc = 0, hpfOwn = 0;
+  const f = S.fam, mate = f.married && f.partner && f.partner.alive ? f.partner : null;
+  // 工资是税前的：先算这个月的税前工资（折成一年），扣掉五险、公积金个人部分和个税（tax.ts），到手的钱进存款，公积金进公积金账户
+  let gross = 0, net = 0, hpfOwn = 0, myW = 0;
   if (working) {
     wageMonth(); // 比同龄同行多涨的工资慢慢回落（career.ts）
-    const w = H.wb * J.m * S.wageK * expK() * incomeLuck(J.v) / MONTHS; // 即 wageRate() × 收入运气
-    inc += w; penMonth(w);
-    if (S.hpfOn) hpfOwn = w * S.hpfRate;
+    myW = H.wb * J.m * S.wageK * expK() * incomeLuck(J.v); // 一年的税前工资，即 wageRate() × 收入运气
+    const pay = myPay(myW, mate);
+    gross += myW / MONTHS; net += pay.net / MONTHS; hpfOwn = pay.hpf / MONTHS;
+    penMonth(penBase(myW, S.job, S.loc.p) / MONTHS);
     if (J.stable || J.priv) S.uiY = plusMonth(S.uiY); // 有单位的工作交失业保险（和 career.ts 的 hire 设 empIns 的条件一样）
     if (m === MONTHS - 1) S.jobY++; // 工龄按年记：这一年最后一个月还在上班就加一年
   }
-  inc += uiMonth();
-  const f = S.fam;
+  const ui = uiMonth(); // 失业保险金免个税
+  gross += ui; net += ui;
   if (S.job === 'retired') {
-    inc += (S.pension || 0) / MONTHS;
-    // 子女赡养：成年子女每人每年给一些（按当地消费水平估计）
-    let grown = 0;
-    for (const k of f.kids) if (k.alive && k.age >= 25) grown++;
-    if (grown) inc += H.cons * 0.35 * Math.min(2, grown) / MONTHS;
+    const x = retireMonthly(H.cons); // 养老金免个税，子女给的钱也不交税
+    gross += x; net += x;
   }
-  S.income = Math.round(inc * MONTHS); // 现在的年收入（这个月的收入 × 12）
-  const P = H.inc, mate = f.married && f.partner && f.partner.alive ? f.partner : null;
-  let hh = inc;
-  if (mate) hh += mate.inc / MONTHS;
-  hh -= hpfMonth(hpfOwn, working); // 个人缴的公积金（你和配偶的）从工资里扣
+  S.income = Math.round(gross * MONTHS); // 现在的年收入（税前，这个月 × 12）
+  S.net = Math.round(net * MONTHS);      // 到手
+  const P = H.inc, mp = mate ? matePay(mate, myW) : null;
+  let hh = net;
+  hpfMonth(hpfOwn, working, mp ? mp.hpf / MONTHS : 0); // 你和配偶个人缴的公积金（已经从到手里扣掉了），单位再缴同样多
+  if (mp) hh += mp.net / MONTHS;
   // 房贷先算：背着房贷的家庭会压缩日常开销（但不低于当地最低生活水平）
   const mort = loanMonth();
   houseMonth(m);
@@ -163,23 +170,50 @@ export function incomeLuckNow(v = (JOBS[S.job] || {} as any).v) {
   return v && S.incLuck && S.incLuck.a === S.age ? fexp(v * S.incLuck.z - v * v / 2) : 1;
 }
 // 职工养老保险的缴费记录：交了几年（y）、每年工资相对当地城镇人均可支配收入的倍数之和（r）、其中在机关事业单位的年数（s）。
-// 只交城乡居民养老保险的职业（务农、打零工、个体户……）不算。每个月在岗记一个月（w 是这个月的工资）：y、s 加 1/12 年，r 加这个月工资折成一整年后的倍数 × 1/12，所以 r ÷ y 仍是平均倍数
+// 只交城乡居民养老保险的职业（务农、打零工、个体户……）不算。每个月在岗记一个月（w 是这个月的缴费基数：本人工资限在社平工资的 60%–300%，
+// 小老板按灵活就业 60% 档，见 tax.ts 的 penBase）：y、s 加 1/12 年，r 加这个月缴费基数折成一整年后的倍数 × 1/12，所以 r ÷ y 仍是平均倍数
 export function penMonth(w: number) {
   if (RESID_PENSION_JOBS.has(S.job)) return;
   const pv = PBY[S.loc.p], P = S.pen || (S.pen = { y: 0, r: 0, s: 0 });
   P.y = plusMonth(P.y); P.r += w / (pv.incU || pv.inc); if (JOBS[S.job].stable) P.s = plusMonth(P.s);
 }
-/** 界面用：这个月实际到手的钱（不消耗随机数）。上班的是工资（含销售的提成系数、个体户和小老板的生意系数）；退休的是养老金加成年子女给的；
- *  待业的是失业保险金。和 moneyMonth 里记进 S.income 的同一套算法（S.income 是上个月月底的 × 12），不含配偶的收入、返聘 */
-export function monthlyIncome() {
-  const J = JOBS[S.job];
-  if (J && J.m) return wageRate() * incomeLuckNow(J.v) / MONTHS;
-  if (S.job === 'retired') {
-    let grown = 0;
-    for (const k of S.fam.kids) if (k.alive && k.age >= 25) grown++;
-    return ((S.pension || 0) + (grown ? here().cons * 0.35 * Math.min(2, grown) : 0)) / MONTHS;
-  }
-  return S.job === 'seeking' && S.flags.empIns && (S.uiOn ? S.uiM > 0 : uiMonths() > 0) ? uiPay() / MONTHS : 0;
+// 退休以后每月的收入：养老金，加上成年子女每人每年给的一些（按当地消费水平估计）
+function retireMonthly(cons: number) {
+  let grown = 0;
+  for (const k of S.fam.kids) if (k.alive && k.age >= 25) grown++;
+  return ((S.pension || 0) + (grown ? cons * 0.35 * Math.min(2, grown) : 0)) / MONTHS;
 }
-// 当前工作的年薪（不含个体户、销售的年度波动）
+/** 界面用：这个月的收入，税前（gross）和到手（net），不消耗随机数。上班的是工资（含销售的提成系数、个体户和小老板的生意系数），扣五险一金、个税；
+ *  退休的是养老金加成年子女给的；待业的是失业保险金（都不交税）。和 moneyMonth 里记进 S.income / S.net 的同一套算法（那两个是上个月月底的 × 12），不含配偶的收入、返聘 */
+export function monthlyPay(): { gross: number; net: number } {
+  const J = JOBS[S.job];
+  if (J && J.m) { const p = myPay(); return { gross: p.gross / MONTHS, net: p.net / MONTHS }; }
+  const x = S.job === 'retired' ? retireMonthly(here().cons)
+    : S.job === 'seeking' && S.flags.empIns && (S.uiOn ? S.uiM > 0 : uiMonths() > 0) ? uiPay() / MONTHS : 0;
+  return { gross: x, net: x };
+}
+/** 这个月到手的钱（侧栏「月收入」） */
+export const monthlyIncome = () => monthlyPay().net;
+// 当前工作的年薪（税前，不含个体户、销售的年度波动）
 export const wageRate = () => { const J = JOBS[S.job]; return J && J.m ? wageBase() * J.m * S.wageK * expK() : 0; };
+/** 夫妻俩谁的税前工资高（配偶退休、没有工作时是 0） */
+const mateGross = (mate: Partner | null) => mate && !mate.retired && mate.jk ? mate.inc : 0;
+const marriedMate = () => S.fam.married && S.fam.partner && S.fam.partner.alive ? S.fam.partner : null;
+/** 你的工资明细（一年）：w 是税前年薪（默认是现在的工资 × 这一年的收入运气）。夫妻都有工资时孩子的扣除各扣一半，住房的扣除由工资高的那个扣 */
+export function myPay(w = wageRate() * incomeLuckNow(), mate: Partner | null = marriedMate(), rows?: DedRow[]): NetPay {
+  const mg = mateGross(mate);
+  return netOf(w, { jk: S.job, p: S.loc.p, hpf: S.hpfOn ? S.hpfRate : 0, ded: dedOf(null, true, mg > 0 && w > 0, w >= mg, rows) });
+}
+/** 配偶的收入明细（一年）：在职按税前工资扣五险一金、个税；退休以后的养老金免税。myW 是你的税前年薪 */
+export function matePay(p: Partner, myW: number, rows?: DedRow[]): NetPay {
+  const g = mateGross(p);
+  if (!g) return netOf(p.inc || 0, { jk: 'retired', p: S.loc.p });
+  return netOf(g, { jk: p.jk, p: S.loc.p, hpf: p.hpf && HPF_JOB[p.jk] ? HPF_JOB[p.jk][1] : 0, ded: dedOf(p, true, myW > 0, g > myW, rows) });
+}
+/** 对方的收入明细（界面显示「税前 X，到手 Y」用）：配偶同 matePay；恋爱对象只算对方自己的扣除（孩子、住房不算），在对方工作的省份参保 */
+export function partnerPay(p: Partner, rows?: DedRow[]): NetPay {
+  const f = S.fam;
+  if (p === f.partner && f.married) return matePay(p, wageRate() * incomeLuckNow(), rows);
+  if (!p.jk || p.retired) return netOf(p.inc || 0, { jk: 'retired', p: S.loc.p });
+  return netOf(p.inc, { jk: p.jk, p: partnerLoc(p).p, hpf: p.hpf && HPF_JOB[p.jk] ? HPF_JOB[p.jk][1] : 0, ded: dedOf(p, false, false, false, rows) });
+}

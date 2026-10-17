@@ -16,6 +16,7 @@ import { makeName } from './names';
 import { pickParentJob, wageOf } from './parents';
 import { rural } from './content/events';
 import { wan, wanM } from './format';
+import { partnerPay } from './finance';
 import { PERS, partnerPz, partnerTrait, pz, tiltW } from './personality';
 import type { PZ } from './types';
 
@@ -108,7 +109,7 @@ export const partnerLoc = p => {
   const pid = PBY[S.loc.p].cities.includes(p.city) ? S.loc.p : PROV_OF.get(p.city);
   return pid ? cityLoc(pid, p.city) : cityLoc(p.home, PBY[p.home].cities[0]);
 };
-export const partnerInc = p => Math.round(wageOf(p, partnerLoc(p)));
+export const partnerInc = p => Math.round(wageOf(p, partnerLoc(p))); // 税前；到手见 finance.ts 的 partnerPay
 export const ptJobName = p => p.jk ? JOBS[p.jk].n : `${EDU_LV[p.edu]}在读`;
 export const loveWord = v => v >= 75 ? '很好' : v >= 58 ? '不错' : v >= 42 ? '一般' : '有点冷淡';
 // 对方愿不愿意：合不合得来，加上你的人际、工作和房子（婚恋市场上，男方的房子和收入更被看重，估计）
@@ -121,7 +122,7 @@ export function mutualP(p) {
   return clamp(x, 0.05, 0.92);
 }
 export function partnerRows(p, opts: { love?: boolean } = {}) {
-  const r = [['年龄', `${p.age}岁`], ['学历', p.jk ? EDU_LV[p.edu] : `${EDU_LV[p.edu]}在读`], ['职业', p.jk ? JOBS[p.jk].n : '还在读书'], ['月收入', p.inc ? wanM(p.inc) : '没有收入'],
+  const r = [['年龄', `${p.age}岁`], ['学历', p.jk ? EDU_LV[p.edu] : `${EDU_LV[p.edu]}在读`], ['职业', p.jk ? JOBS[p.jk].n : '还在读书'], ['月收入', p.inc ? (p.jk && !p.retired ? `到手${wanM(partnerPay(p).net)}（税前${wanM(p.inc)}）` : wanM(p.inc)) : '没有收入'],
     ['家乡', `${PBY[p.home].n}${p.rural ? '农村' : '城里'}`], ['家境', '●'.repeat(p.q) + '○'.repeat(5 - p.q)], ['性格', partnerTrait(p)]];
   if (opts.love) r.push(['在一起', `${S.age - p.metAt}年`], ['感情', loveWord(p.love)]);
   return r;

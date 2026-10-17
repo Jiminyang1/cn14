@@ -11,7 +11,7 @@ import { isWorking, retireAge } from './career';
 import { parentsHelp } from './parents';
 import { wan } from './format';
 import { MONTHS } from './monthly';
-import { wageRate } from './finance';
+import { matePay, myPay, wageRate } from './finance';
 
 declare module './types' {
   interface Loan { mo?: number }   // 还剩几个月（loanMonth）
@@ -92,8 +92,12 @@ export function hpfCap(L, couple) {
   return multi ? (c.kids ? base + c.kids : base * (c.kidsK || 1)) : base;
 }
 export const partnerHpf = () => !!(S.fam.married && S.fam.partner && S.fam.partner.alive && S.fam.partner.hpf);
-// 买房审核看的家庭年收入：你在上班时按工资（wageRate，不含个体户、销售这一年的收入运气，免得在运气特别好的一年批下还不起的贷款），否则按现在的收入（养老金、失业保险金）
-export const hhIncome = () => (isWorking() ? wageRate() : S.income) + (S.fam.married && S.fam.partner && S.fam.partner.alive ? S.fam.partner.inc : 0);
+// 买房审核看的家庭年收入（到手：银行看的是实际到手的钱、工资流水）：你在上班时按工资（wageRate，不含个体户、销售这一年的收入运气，
+// 免得在运气特别好的一年批下还不起的贷款）扣掉五险一金、个税，否则按现在的收入（养老金、失业保险金），加上配偶到手的钱
+export const hhIncome = () => {
+  const mine = isWorking() ? myPay(wageRate()) : null, mate = S.fam.married && S.fam.partner && S.fam.partner.alive ? S.fam.partner : null;
+  return (mine ? mine.net : S.net || 0) + (mate ? matePay(mate, mine ? mine.gross : 0).net : 0);
+};
 
 // 给一套房算出几种贷款方案
 export function loanPlans(price, L) {
@@ -146,21 +150,15 @@ export function buyHouse(price, L, plan) {
 export const plusMonth = (y = 0) => Math.round((y + 1 / MONTHS) * MONTHS) / MONTHS;
 // 公积金账户的年利率换算成每月
 const HPF_DEP_M = fpow(1 + LOAN_RULES.hpfDeposit, 1 / MONTHS);
-// 配偶的公积金缴存比例（估计，取常见的 7%）
-const PARTNER_HPF_RATE = 0.07;
-// own：这个月个人缴的部分（这个月月底在缴公积金的单位上班才有，见 finance.ts），单位再缴同样多。
-// 配偶的公积金也记在家庭账户里：配偶没退休、单位交公积金时，个人和单位各缴一份。返回这个月个人缴的部分（你和配偶的），从家庭收入里扣
-export function hpfMonth(own = 0, working = isWorking()) {
+// own：这个月你个人缴的部分（这个月月底在缴公积金的单位上班才有），mate：配偶个人缴的部分（配偶没退休、单位交公积金时才有，比例按配偶的职业，见 HPF_JOB）。
+// 两份都已经从到手的工资里扣掉了（finance.ts 的 myPay / matePay），这里只记进家庭的公积金账户，单位再缴同样多
+export function hpfMonth(own = 0, working = isWorking(), mate = 0) {
   if (S.hpf) S.hpf *= HPF_DEP_M;
-  let dep = own * 2;
   if (own > 0 && S.hpfOn) S.hpfY = plusMonth(S.hpfY);
   if (!working && S.job !== 'student') S.hpfOn = false;
-  const mateOn = partnerHpf() && !S.fam.partner.retired;
-  if (mateOn) { const o = S.fam.partner.inc * PARTNER_HPF_RATE / MONTHS; dep += o * 2; own += o; }
-  S.hpf = (S.hpf || 0) + dep;
+  S.hpf = (S.hpf || 0) + (own + mate) * 2;
   // 你已经退休（退休时已销户提取，见 career.ts 的 retire）、配偶也不再缴了：配偶账户里的钱同样提取出来，转进存款
-  if (S.job === 'retired' && !mateOn && S.hpf > 0) { S.money += S.hpf; S.hpf = 0; }
-  return own;
+  if (S.job === 'retired' && !(mate > 0) && S.hpf > 0) { S.money += S.hpf; S.hpf = 0; }
 }
 // 还房贷（每月一期，等额本息，月利率 = 年利率 ÷ 12，和 annualPay 一样）：先用公积金余额（还贷提取），不够的从存款里出。返回从存款里付的钱。
 // l.mo 是还剩几个月；l.years 跟着取整（界面显示「还剩几年」、提前还款时重算月供用）。

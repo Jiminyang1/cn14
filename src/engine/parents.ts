@@ -11,6 +11,11 @@ import { S } from './state';
 import { chance, gauss, pick, ri, rnd, wpick } from './rng';
 import { cityLoc, hpCounty, migrantCity, placeHp, placeName, wageBase } from './place';
 import { rural } from './content/events';
+import { netOf, parentDed, type DedRow, type NetPay } from './tax';
+
+declare module './types' {
+  interface Life { famPCParts?: [number, number, number] } // 出生时算家境用的：父亲到手、母亲到手、同住老人的收入（界面显示用）
+}
 
 // 带你的人：父母都在外打工时是老人（出生时定好）；一方外出时是在家的那一方；不留守时是妈妈。
 // 该带你的那一方已经去世（或者父母都不在了），退回另一方，再退回爷爷奶奶、外公外婆
@@ -34,13 +39,22 @@ export const parentsWord = () => bothParents() ? '爸妈' : momAlive() ? '妈妈
 // ===== 父母的家：收入、养老金、住房 =====
 // 退休年龄和你本人、配偶用同一条规则（career.ts 的 retireAgeOf）
 export const parentRetired = (p, male) => p.age >= retireAgeOf(male ? 'M' : 'F', p.jk);
-// 父母的年收入：在职按工资公式（js/parents.js 的 parentWage），退休后领所在省的养老金人均水平
+// 父母的年收入（到手）：在职按工资公式算出税前工资，再扣五险、个税（tax.ts）；退休后领所在省的养老金人均水平（养老金免个税）
 export function parentIncome(who) {
   const p = S.fam[who], male = who === 'dad';
   if (!p.alive) return 0;
   const hp = PBY[S.home.p];
   if (parentRetired(p, male)) return RESID_PENSION_JOBS.has(p.jk) ? (hp.penR || 2950) : (hp.penE || 45903);
-  return parentWage(p) * PARENT_DISP;
+  return parentPay(who).net;
+}
+/** 父亲或母亲在职时的工资明细（一年）：税前 → 五险 → 个税 → 到手。
+ *  父母没有单独的公积金账户：个人缴的公积金仍是家里的钱（可以提取付房贷、房租），这里不从到手里扣。
+ *  专项附加扣除见 tax.ts 的 parentDed：父母都有工资时孩子的扣除各扣一半，住房的扣除由爸爸扣（爸爸没有工资时由妈妈扣） */
+export function parentPay(who: 'mom' | 'dad', rows?: DedRow[]): NetPay {
+  const f = S.fam, p = f[who], male = who === 'dad', o = male ? f.mom : f.dad;
+  const g = parentWage(p);
+  const oj = JOBS[o.jk], ow = !!(o.alive && oj && oj.m && !parentRetired(o, !male)); // 另一方在不在拿工资（wageOf 大于 0 的条件）
+  return netOf(g, { jk: p.jk, p: parentWorkLoc(p).p, ded: g > 0 ? parentDed(p, ow, male || !ow, rows) : 0 });
 }
 // 家里的房子（出生时决定）：城镇按家境决定是否有自有住房，农村是自建房；随迁家庭在城里租房，老家有自建房
 export function famHouseInit() {
@@ -90,9 +104,8 @@ export const PEDU = {
   urban: { 1: 0.02, 2: 0.22, 3: 0.14, 4: 0.12, 5: 0.22, 6: 0.24, 7: 0.04 },
 };
 // 校准系数：使出生时城镇、农村家庭人均可支配收入的中位数对上统计局 2025 年数据（城镇 51,115 元、农村 20,711 元）。
-// 农村母亲外出务工的少了（MOM_OUT），农村 0.715 → 0.76，中位数 20,676 元
-export const PARENT_K = { urban: 1.08, rural: 0.76 };
-export const PARENT_DISP = 0.9; // 工资 → 可支配收入（扣个税、社保，估计）
+// 农村母亲外出务工的少了（MOM_OUT），农村 0.715 → 0.76；改用真实的五险和个税（原来一律 × 0.9）以后，城镇 1.08 → 1.10、农村 0.76 → 0.73（npm run calib -- par：中位数 51,295 / 20,750）
+export const PARENT_K = { urban: 1.10, rural: 0.73 };
 
 export function pickParentEdu(rural, pid) {
   const base = PEDU[rural ? 'rural' : 'urban'], hi = (PBY[pid].eduHi || EDU_NAT) / EDU_NAT;
@@ -146,7 +159,7 @@ export function wageOf(p, L, K = 1) {
   return wageBase(L) * J.m * p.k * workExpK(p) * K;
 }
 export const parentWage = p => wageOf(p, parentWorkLoc(p), PARENT_K[S.rural ? 'rural' : 'urban']);
-// 家境：父母税后收入 ÷ 家庭人口，落在城镇或农村收入五等份的哪一档（档与档之间取相邻两组平均数的几何中点）
+// 家境：父母到手的收入 ÷ 家庭人口，落在城镇或农村收入五等份的哪一档（档与档之间取相邻两组平均数的几何中点）
 export function quintOf(pc, rural) {
   const Q = QUINT[rural ? 'rural' : 'urban'];
   let q = 1;
@@ -159,6 +172,8 @@ export function familyIncomeInit() {
   f.gp = chance(S.rural ? 0.7 : 0.2) ? 2 : 0;
   S.famSize = 3 + f.sibs.length + f.gp;
   const gpInc = f.gp ? f.gp * (S.rural ? (PBY[S.home.p].penR || 2950) * 1.5 : (PBY[S.home.p].penE || 45903) * 0.6) : 0;
-  S.famPC = ((parentWage(f.dad) + parentWage(f.mom)) * PARENT_DISP + gpInc) / S.famSize;
+  const dad = parentPay('dad').net, mom = parentPay('mom').net;
+  S.famPCParts = [dad, mom, gpInc];
+  S.famPC = (dad + mom + gpInc) / S.famSize;
   S.q = quintOf(S.famPC, S.rural);
 }
