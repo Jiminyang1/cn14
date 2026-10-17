@@ -604,7 +604,8 @@ table.cmp th { font-weight: 500; font-family: var(--serif); color: var(--muted);
 
 /* 家里的钱（ui/Sidebar.tsx 的 Econ）：家境、一句话、细账 */
 .fam-econ { margin-top: 10px; }
-.fam-q { display: flex; align-items: baseline; gap: 8px; font-size: 13px; color: var(--muted); }
+.fam-q { display: inline-flex; align-items: baseline; gap: 6px; font-size: 13px; color: var(--muted); font-weight: 400; }
 .fam-q b { font-family: var(--serif); font-size: 15px; color: var(--ink); }
 .fam-line { margin: 6px 0 8px; font-size: 13.5px; line-height: 1.7; color: var(--ink2); }
-.fam-h { margin: 16px 0 0; font-size: 13px; color: var(--muted); font-weight: 500; }
+.fam-h { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; margin: 16px 0 4px; padding-top: 10px; border-top: 1px solid var(--line); font-family: var(--serif); font-size: 14px; color: var(--ink); font-weight: 700; }
+.fam-econ.finance-fold { margin-top: 14px; }
