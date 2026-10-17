@@ -31,7 +31,7 @@ definePlan('gym', {
   ok: () => !!S.indep && S.age >= 18 && S.age <= 75,
   opts: [
     { k: 'none', label: '不去' },
-    { k: 'gym', label: '办张健身卡，常去', sub: () => `每个月约${perMo(0.05)}元`, monthly: () => perMo(0.05), e: { hl: 1.5, h: 1 } },
+    { k: 'gym', label: '办张健身卡，常去', sub: () => '一周去两三次', monthly: () => perMo(0.05), e: { hl: 1.5, h: 1 } },
   ],
   def: () => autoLife() && pz('c') > 0.5 && easy(0.5) ? 'gym' : 'none',
   say: k => k === 'gym'
@@ -47,7 +47,7 @@ definePlan('checkup', {
   ok: () => !!S.indep && S.age >= 18,
   opts: [
     { k: 'none', label: '不查' },
-    { k: 'yearly', label: '每年全面体检', sub: () => `一年约${perMo(0.03) * 12}元，大病能早发现`, monthly: () => perMo(0.03) },
+    { k: 'yearly', label: '每年全面体检', sub: () => '大病能早发现', monthly: () => perMo(0.03) },
   ],
   def: () => autoLife() && S.age >= 40 && pz('c') > 0 && easy(1) ? 'yearly' : 'none',
   say: k => k === 'yearly' ? '决定以后每年做一次全面体检。' : '体检不再年年做了。',
