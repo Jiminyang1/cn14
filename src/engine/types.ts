@@ -119,6 +119,7 @@ export interface Life {
   hpf?: number; hpfOn?: boolean; hpfY?: number; hpfRate?: number;
   // 调度
   phase: 'life' | 'end'; queue: QueueItem[]; pending: Pending | null; headless: boolean;
+  month: number;                                   // 这一年的第几个月（0 = 生日那个月），见 monthly.ts
   done: Record<string, number>; recent: string[]; focus: string | null; fT: Record<string, number>; fStart?: number; // 每年的重心：当前重心、各重心累计的时间、当前重心从哪个进度开始
   // 记录
   log: LogEntry[]; years: YearRow[]; docs?: Doc[]; notes: { a: number; q: string; t: string }[];

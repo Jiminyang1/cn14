@@ -2,7 +2,7 @@
 // 引擎直接修改当前人生对象 S，所以 React 组件通过 useGame() 订阅一个版本号，版本号变了就重新读 S。
 // 会影响模拟结果的操作（抉择、改重心、开关自动抉择）一律先记进局日志，再通过 applyInput 生效，这样每一局都能精确重放。
 import { useSyncExternalStore } from 'react';
-import { CAUSE, S, autoPick, leOf, newLife, placeName, setS, tick, type Life, type Pending } from '../engine';
+import { CAUSE, S, autoPick, leOf, migrateLife, newLife, placeName, setS, tick, type Life, type Pending } from '../engine';
 import { sink } from './devsink';
 import { applyInput } from './replay';
 import { newRun, pushEvent, runId, type Input, type RunLog } from './runlog';
@@ -77,6 +77,7 @@ export const game = {
   resume() {
     const sv = loadSave(); if (!sv) return;
     setS(sv.life);
+    migrateLife(S); // 按年推进时期的存档没有月份
     run = sv.run || newRun(sv.life.seed, VERSION, { id: runId(sv.life.seed), incomplete: true });
     lastRs = S.rs;
     this.speed = SPEEDS.includes(sv.ui.speed) ? sv.ui.speed : SPEEDS[SPEEDS.length - 1]; this.yearSec = yearSecOf(S); // 旧存档里的一年长度不再沿用

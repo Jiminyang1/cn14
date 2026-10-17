@@ -4,7 +4,8 @@ import type { Kid, Sex } from './types';
 import { JOBS, retireAgeOf } from './career';
 import { S } from './state';
 import { addDoc, log } from './journal';
-import { chance, gauss } from './rng';
+import { chance, gauss, wpick } from './rng';
+import { MONTHS } from './monthly';
 import { eff } from './stats';
 import { leOf, lifeTable, parentQ } from './mortality';
 import { makeName } from './names';
@@ -109,3 +110,34 @@ export function canBaby() {
   return wifeAge >= 22 && wifeAge <= 42 && kidsAlive().length < 3;
 }
 export const babyP = () => [0.3, 0.09, 0.02][Math.min(2, kidsAlive().length)];
+
+// ===== 生日那个月 =====
+/** 弟弟妹妹出生（出生时就定好了在你几岁时出生） */
+export function sibYearStart() {
+  if (S.flags.nextSib === S.age && S.fam.mom.alive) newSib();
+}
+/** 你的孩子长大：上学、高考、结婚、生孩子 */
+export function kidsYearStart() {
+  const a = S.age, f = S.fam;
+  for (const k of f.kids) {
+    if (!k.alive) continue;
+    k.age = a - k.bornAt;
+    if (k.age === 6) log(`${k.name}上小学了。`, 'ev');
+    if (k.age === 18) {
+      const t = wpick([['考上了一所不错的本科', 0.25 + S.q * 0.06 + (S.edu >= 6 ? 0.2 : 0)], ['考上了大专', 0.5], ['没有继续读书，出去工作了', 0.25 - S.q * 0.03]]);
+      k.path = t; log(`${k.name}参加了高考，${t}。`, 'ev');
+    }
+    if (k.age >= 23 && k.age <= 38 && !k.married && !k.wed && chance(0.11)) k.wed = 1; // 今年要结婚：先由抉择 kidhome 定家里出多少钱
+    if (k.married && (k.gk || 0) < 2 && k.age <= 42 && chance(0.12)) { k.gk = (k.gk || 0) + 1; S.flags.grandkids = (S.flags.grandkids || 0) + 1; log(`你当上了${S.sex === 'M' ? '爷爷' : '奶奶'}（或${S.sex === 'M' ? '外公' : '外婆'}）。${k.name}的孩子出生了。`, 'good'); eff({ h: 6, so: 4 }); }
+  }
+}
+
+// ===== 每个月月底 =====
+/** 家人：父母、兄弟姐妹、配偶、孩子的衰老、生病、去世。兼容模式：一年做一次，在第 12 个月 */
+export function familyMonth(m: number) {
+  if (m === MONTHS - 1) family();
+}
+/** 决定要孩子以后：兼容模式马上出生（以后改成怀孕约十个月） */
+export function conceive() {
+  return haveKid();
+}

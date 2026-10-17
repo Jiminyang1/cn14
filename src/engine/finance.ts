@@ -10,6 +10,7 @@ import { houseYear, hpfYear, loanYear, rentDraw } from './housing';
 import { log } from './journal';
 import { placeCons, placeHp, placeInc, wageBase } from './place';
 import { wan } from './format';
+import { MONTHS } from './monthly';
 
 // 经济独立：开始工作（或毕业/辍学后离开学校）才有自己的账户；之前钱的进出都算家里的
 export function goIndep() {
@@ -90,4 +91,10 @@ export function accrueWage() {
   S.wageAcc = (S.wageAcc || 0) + w;
   if (S.hpfOn) S.hpfAcc = (S.hpfAcc || 0) + w * S.hpfRate;
   penYear(w, dt);
+}
+
+// ===== 每个月月底 =====
+/** 钱：你自己和父母家的收支、房贷、公积金。兼容模式：一年结算一次，在第 12 个月 */
+export function moneyMonth(m: number) {
+  if (m === MONTHS - 1) finances();
 }

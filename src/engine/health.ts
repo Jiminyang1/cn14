@@ -1,11 +1,12 @@
 // 大病：治疗、医保报销、存活，以及死亡。
 
-import { CAUSE } from './mortality';
+import { CAUSE, DIAG, deathProb, pickCause } from './mortality';
 import { JOBS } from './career';
 import { S } from './state';
 import { chance } from './rng';
 import { eff } from './stats';
-import { log } from './journal';
+import { addDoc, log } from './journal';
+import { MONTHS } from './monthly';
 
 // ===== 大病：存活、费用、医保（来源见 research/health.json） =====
 // 每年死亡概率按 5 年生存率换算：癌症全国 43.7%（城市 46.7%、农村 33.6%，国家癌症中心 2019–2021）；
@@ -48,4 +49,26 @@ export function deathText(k) {
   if (k === 'suicide') return `${a}岁那年，你在长久的痛苦里结束了自己的生命。`;
   if (k === 'old') return `${a}岁，你在睡梦中安静地走了。`;
   return `${a}岁，你因为${CAUSE[k]}离开了这个世界。`;
+}
+
+// ===== 每个月月底 =====
+/** 生病和死亡：在治疗中的按治疗结果算；没生病的按生命表判定会不会出事（大病先确诊、给一次治疗的机会）；
+ *  确诊了却没开始治疗的，一年多以后离世。返回这个月是否离世。兼容模式：一年判定一次，在第 12 个月 */
+export function healthMonth(m: number): boolean {
+  if (m !== MONTHS - 1) return false;
+  const a = S.age;
+  // 大病治疗期间：大病本身的风险之外，其他死因照常存在（否则高龄时确诊反而更安全）
+  if (S.flags.ill && S.flags.ill.treat) { if (illYear()) return true; if (chance(deathProb())) { die(pickCause()); return true; } return false; }
+  if (!S.flags.ill && chance(deathProb())) {
+    const k = pickCause();
+    if (['cancer', 'heart', 'stroke', 'liver', 'resp'].includes(k) && a >= 35 && chance(0.55)) {
+      S.flags.ill = { k, at: a };
+      addDoc('ill', '诊断书', [['诊断', CAUSE[k]], ['日期', `${S.birthYear + a}年`]]);
+      log(DIAG[k], 'bad');
+      return false;
+    }
+    die(k); return true;
+  }
+  if (S.flags.ill && !S.flags.ill.treat && a > S.flags.ill.at + 1) { die(S.flags.ill.k); return true; }
+  return false;
 }

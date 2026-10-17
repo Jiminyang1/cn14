@@ -1,0 +1,1 @@
+{"urban":{"savingsMedian":45700,"debtShare":"44%","debtToIncomeMedian":"1.22"},"rural":{"savingsMedian":8600,"debtShare":"39%","debtToIncomeMedian":"1.51"}}

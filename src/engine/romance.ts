@@ -7,6 +7,7 @@ import { EDU_WAGE, JOBS, isWorking } from './career';
 import { HPF_JOB } from './housing';
 import { PBY, PROVS } from './data';
 import { S } from './state';
+import { MONTHS } from './monthly';
 import { chance, clamp, gauss, pick, rnd, wpick } from './rng';
 import { cityLoc, placeInc } from './place';
 import { eff } from './stats';
@@ -127,3 +128,9 @@ export function loveMove() {
 }
 // 彩礼：各省调查/报道的区间（见 DATA.md，可信度多为中低）；没有数据的省份用农村调查均值 3.86 万
 export const brideAmt = pid => { const b = PBY[pid].bride; return b ? Math.round((b[0] + (b[1] - b[0]) * rnd()) / 1e3) * 1e3 : 38600; };
+
+// ===== 每个月月底 =====
+/** 恋爱中的感情变化、分手。兼容模式：一年一次，在第 12 个月 */
+export function loveMonth(m: number) {
+  if (m === MONTHS - 1) loveYear();
+}

@@ -4,6 +4,7 @@ import { S } from './state';
 import { chance, clamp, wpick } from './rng';
 import { isWorking } from './career';
 import { log } from './journal';
+import { MONTHS } from './monthly';
 
 // ===== 每年的重心 =====
 export const FOCUS = {
@@ -42,4 +43,10 @@ export function applyFocus() {
     if (k === 'work' && w > 0.4 && chance(0.22 * w)) { S.wageK *= 1.12; log('工作上很拼，这一年涨了工资。', 'good'); }
     if (k === 'love' && w > 0.4) S.flags.loveBoost = 1;
   }
+}
+
+// ===== 每个月月底 =====
+/** 按这一年在各个重心上花的时间结算。兼容模式：一年一次，在第 12 个月（年底） */
+export function focusMonth(m: number) {
+  if (m === MONTHS - 1) applyFocus();
 }

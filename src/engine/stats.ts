@@ -3,6 +3,8 @@
 import { S } from './state';
 import { clamp } from './rng';
 import { placeInc } from './place';
+import { JOBS, isWorking } from './career';
+import { MONTHS } from './monthly';
 
 export function eff(o) {
   for (const k in o) {
@@ -26,3 +28,16 @@ export function drift() {
   st.so = clamp(st.so + (soT - st.so) * 0.12, 0, 100);
 }
 export const hlExp = a => clamp(90 - Math.max(0, a - 22) * 0.8, 15, 90);
+
+// ===== 每个月月底 =====
+/** 身体：上了年纪学识慢慢下降，工作对健康和幸福的影响。兼容模式：一年一次，在第 12 个月 */
+export function bodyMonth(m: number) {
+  if (m !== MONTHS - 1) return;
+  const st = S.st;
+  if (S.age >= 68 && st.kn > 25) st.kn -= 0.3;
+  if (isWorking()) { const J = JOBS[S.job]; st.hl = clamp(st.hl + (J.hl || 0) * 0.5, 0, 100); st.h = clamp(st.h + (J.h || 0) * 0.5, 0, 100); }
+}
+/** 健康、幸福、人际向各自的目标值靠拢。兼容模式：一年一次，在第 12 个月 */
+export function driftMonth(m: number) {
+  if (m === MONTHS - 1) drift();
+}

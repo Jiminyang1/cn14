@@ -1,0 +1,1 @@
+{"errs":0,"exesBy45":"1.16","relationshipsBeforeMarriage":"1.95","firstDatingAge":"22.29","spouseSameEdu":"63%","spouseAgeGap_wifeYounger":"-1.78","medianSpouseInc":120807,"medianOwnInc":163229}

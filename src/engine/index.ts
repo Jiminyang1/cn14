@@ -18,6 +18,8 @@ export * from './housing';
 export * from './romance';
 export * from './education';
 export * from './lifecycle';
+export * from './monthly';
+export * from './schedule';
 export * from './content/events';
 export * from './content/decisions';
 export * from './content/daily';
