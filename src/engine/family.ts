@@ -4,7 +4,7 @@ import type { Kid, Partner, Sex, Sibling } from './types';
 import { JOBS, PEN_MIN_YEARS, PEN_YEARS, RESID_PENSION, RESID_PENSION_JOBS, retireAgeOf } from './career';
 import { PBY } from './data';
 import { S } from './state';
-import { addDoc, log } from './journal';
+import { addDoc, log, major } from './journal';
 import { chance, clamp, gauss, wpick } from './rng';
 import { MONTHS, calMonth, perMonth } from './monthly';
 import { nowM } from './calendar';
@@ -79,7 +79,7 @@ export const sibsAlive = () => S.fam.sibs.filter(s => s.alive);
 function sibMonth(s: Sibling) {
   if (!chance(qMonth(kinLT('sib', s.sex), s.age))) return;
   s.alive = false; s.diedAt = S.age;
-  log(s.age < 18 ? `${s.rel}走了，才${s.age}岁。` : `${s.rel}去世了，享年${s.age}岁。`, 'loss');
+  major(s.age < 18 ? `${s.rel}走了，才${s.age}岁。` : `${s.rel}去世了，享年${s.age}岁。`, 'loss');
   eff({ h: S.age < 18 || s.age < 60 ? -8 : -5, so: -2 });
 }
 // ===== 家人的变化 =====
@@ -121,7 +121,7 @@ function parentMonth(p, male: boolean) {
   const T = kinLT('par', male ? 'M' : 'F'), x = p.age + 1;
   if (chance(p.ill ? perMonth(Math.min(1, T.q[Math.min(119, x)] * 2)) : qMonth(T, x))) {
     p.alive = false; p.diedAt = S.age; p.diedM = nowM();
-    log(`${male ? '爸爸' : '妈妈'}去世了，享年${p.age}岁。${S.age < 18 ? '你还没有长大。' : ''}`, 'loss');
+    major(`${male ? '爸爸' : '妈妈'}去世了，享年${p.age}岁。${S.age < 18 ? '你还没有长大。' : ''}`, 'loss');
     eff({ h: S.age < 18 ? -14 : -9, so: -3 });
     parentGone(male ? 'dad' : 'mom');
   } else if (x >= 62 && !p.ill && chance(PAR_ILL_M)) p.ill = 1;
@@ -145,7 +145,7 @@ function familyDeaths() {
   const pt = f.partner;
   if (pt && pt.alive && f.married && chance(qMonth(kinLT('pt', pt.sex), pt.age + 1))) {
     // 丧偶：不再算已婚，以后还可以再认识人（f.partner 留着，界面显示「丧偶」，再婚时被替换）
-    pt.alive = false; f.married = false; S.flags.widowed = S.age; log(`${pt.name}去世了，享年${pt.age}岁。你们一起走过了${S.age - pt.marriedAt}年。`, 'loss'); eff({ h: -15, so: -6 });
+    pt.alive = false; f.married = false; S.flags.widowed = S.age; major(`${pt.name}去世了，享年${pt.age}岁。你们一起走过了${S.age - pt.marriedAt}年。`, 'loss'); eff({ h: -15, so: -6 });
     if (S.sex === 'M' && S.flags.preg) S.flags.preg = null; // 怀着孩子的是她
   }
   for (const s of f.sibs) if (s.alive) sibMonth(s);
@@ -259,5 +259,5 @@ function babyBorn(pg: { pa: string; sur: string }) {
   // 配偶在怀孕期间去世（只会是你怀着孩子），或者离了婚
   const widow = same ? !pt.alive : S.flags.widowed != null && S.age - S.flags.widowed <= 1;
   const tail = same && pt.alive ? '' : widow ? '孩子的爸爸没能等到这一天。' : `这时你和${pg.pa}已经分开了。`;
-  log(`${kid.name}出生了，是个${kid.sex === 'M' ? '男孩' : '女孩'}。${tail}`, 'good');
+  major(`${kid.name}出生了，是个${kid.sex === 'M' ? '男孩' : '女孩'}。${tail}`, 'good');
 }

@@ -19,7 +19,7 @@ function del(k: string) {
 // 不做旧存档的兼容：人生对象的结构变了就把 SAVE_FORMAT 加一，格式不同的存档直接当作没有
 export interface UiPrefs { speed: number }
 export interface Save { life: Life; ui: UiPrefs; run: RunLog }
-const SAVE_FORMAT = 8;
+const SAVE_FORMAT = 9;
 
 export function loadSave(): Save | null {
   const raw = get<any>(SAVE_KEY);
@@ -34,7 +34,7 @@ export const loadPref = (): Pref => Object.assign({ len: 25 }, get<Pref>(PREF_KE
 export const savePref = (p: Pref) => set(PREF_KEY, p);
 
 // ===== 过过的人生 =====
-export interface PastLife { name: string; place: string; y0: number; y1: number; age: number; cause: string; words?: string }
+export interface PastLife { name: string; place: string; y0: number; y1: number; age: number; cause: string; words?: string; tags?: string[]; line?: string } // tags：这一生的人生标签（story.ts）；line：一句话说这是什么样的一生
 export const loadPast = (): PastLife[] => get<PastLife[]>(PAST_KEY) || [];
 export const savePast = (past: PastLife[]) => set(PAST_KEY, past.slice(0, 30));
 

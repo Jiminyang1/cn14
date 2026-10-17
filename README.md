@@ -2,6 +2,8 @@
 
 随机出生在中国的某个角落，过完只有一次的一生。纯前端（React + TypeScript + Vite），构建产物是静态文件，可以直接部署到 Vercel 或 Cloudflare Pages。
 
+**开发参照见 [AGENTS.md](AGENTS.md)**：游戏好玩优先，现实数据是参照、不要求拟合；写内容的规矩（轻重、不重复、抉择、回响）也在那里。
+
 ## 开发
 
 ```
@@ -31,7 +33,8 @@ npm run replay -- <局ID>   # 重放某一局（见下面「排查问题」）
   - `place.ts` / `career.ts` / `education.ts` 地点与收入、职业、高考志愿
   - `family.ts` / `parents.ts` / `romance.ts` 兄弟姐妹与孩子、父母、恋爱婚姻
   - `accounts.ts` / `budget.ts` 现金与欠款、家庭生活预算；`household.ts` / `finance.ts` / `housing.ts` 父母家的账、自己的账、公积金与房贷（规则见 [财务模型](docs/finance.md)）
-  - `content/events.ts` 随机事件 `EVENTS`；`content/decisions.ts` 抉择 `DEC`；`content/daily.ts` 日常（年节、生活片段、状态节点）
+  - `content/events.ts` 随机事件 `EVENTS`；`content/decisions.ts` 抉择 `DEC`；`content/daily.ts` 日常（年节、生活片段、状态节点）；`content/echoes.ts` 回响（发小、初恋、童年选择后来的回声）
+  - `story.ts` 回看这一生：小传、人生标签、人生大事、岔路口（结局页用）
   - `data.ts` 省份等估计值；`real.generated.ts` 由 `tools/build_real.py` 从 `research/*.json` 生成（见 DATA.md）
 - `src/game/`：推进循环、速度、存档（localStorage，带格式版本，格式不兼容时需重新开始）、局日志与重放
 - `src/ui/`：React 组件（首页、出生登记表、一生、弹窗、结局、「怎么算的」卡片）
@@ -46,6 +49,8 @@ npm run replay -- <局ID>   # 重放某一局（见下面「排查问题」）
 ```ts
 { id: 'xxx', a: [最小年龄, 最大年龄], w: 权重, c: () => 条件, once: 1, run: () => { eff({ h: 2 }); return '发生了什么'; } }
 ```
+
+人生大事加 `big: 1`（时间线上突出显示、结局回顾里列出来）；会反复发生的事用 `vary(id, [几种说法])` 换着说。抉择是一生的岔路口的加 `fork: true`；会反复弹的抉择加 `quiet`，不值得问的那几次顺其自然。详见 [AGENTS.md](AGENTS.md)。
 
 有意修改了模拟规则、结果本来就该变时：确认改动无误后运行 `UPDATE_GOLDEN=1 npm test` 重新生成 `tests/golden.json`，并在提交说明里写清楚为什么变。
 

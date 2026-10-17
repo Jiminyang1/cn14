@@ -149,17 +149,21 @@ export function fire(e) {
     if (!ev || (ev.c && !ev.c())) return;
     S.done[ev.id] = S.age;
     S.recent = [ev.id, ...S.recent].slice(0, 8);
-    out(ev.run());
+    out(ev.run(), 'ev', !!ev.big);
   } else if (e.type === 'dec') openDec(e.id);
   else if (e.type === 'ms') milestone();
   else if (e.type === 'ref' && ENABLE_REFLECT) S.pending = { type: 'ref', q: REFLECT[S.age] };
   else if (e.type === 'day') fireDaily(e.id);
 }
+// quiet：这一次不值得停下来问玩家（又认识了一个人、又一年要不要结婚……），顺其自然地定下，时间线上只写结果（见 AGENTS.md「抉择」）。
+// 返回 true 按自动抉择抽；返回一个选项的 k 就选它（维持现状，比如「再处处看」「暂时不要」：大事不能不问玩家就替 Ta 定了）
 export function openDec(id) {
   const D = DEC[id]; if (!D) return;
   const d = D.build(); if (!d) return;
   S.done['dec_' + id] = S.age;
   if (S.headless) { resolveDec(id, d, autoPick(d)); return; }
+  const q = D.quiet && D.quiet(d);
+  if (q) { resolveDec(id, d, typeof q === 'string' ? q : autoPick(d), true); return; }
   S.pending = { type: 'dec', id, d };
 }
 // 自动抉择：按选项的权重抽，权重再乘上性格的倾向（tilt）。性格把选中的那一项抬高了不少时，记下理由（resolveDec 写在记录下面）
@@ -174,11 +178,15 @@ export function autoPick(d) {
   }
   return k;
 }
-export function resolveDec(id, d, k) {
+// fork：一生里的岔路口。记下选了哪条、没选的有哪几条，结局回顾里列出来；结果记成人生大事
+export function resolveDec(id, d, k, quiet = false) {
   const c = d.choices.find(x => x.k === k) || { label: k.startsWith('apply:') ? '填报志愿：' + JSON.parse(k.slice(6)).apps.map(a => d.ctx.cands[a.i].name).join('、') : k };
   S.pending = null;
-  log(`${d.title} —— ${c.label}`, 'choice', d.why && d.why.k === k ? d.why.t : null);
-  out(DEC[id].apply(k, d.ctx || {}));
+  if (!quiet) log(`${d.title} —— ${c.label}`, 'choice', d.why && d.why.k === k ? d.why.t : null);
+  const fork = !!DEC[id].fork;
+  const r = DEC[id].apply(k, d.ctx || {});
+  if (fork && !S.headless) (S.forks ||= []).push({ a: S.age, id, title: d.title, pick: c.label, alt: d.choices.filter(x => x.k !== k && !x.off).map(x => x.label), res: r ? (typeof r === 'string' ? r : r.t) : null });
+  out(r, 'ev', fork);
 }
 // 无界面的人生（同伴、校准）一次跑完一年：和有界面时一样按月推进、记下每件事发生在什么时候，只是抉择会被自动做掉
 export function runHeadlessYear() { tickTo(1); }

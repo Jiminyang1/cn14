@@ -76,8 +76,8 @@ const flush = () => S.money > 50e4;
 const broke = () => S.indep && (S.debt || 0) > S.money;
 const city = () => S.loc.city;
 
-/** 从满足条件的几句里挑一句：[条件, 文字] 或直接文字。12 年内写过的句子不再选；都写过了就这次不写 */
-const REPEAT_GAP = 12;
+/** 从满足条件的几句里挑一句：[条件, 文字] 或直接文字。25 年内写过的句子不再选；都写过了就这次不写（日常是底色，宁少勿重复） */
+const REPEAT_GAP = 25;
 // 判断重复时忽略数字（岁数、年份），否则「53岁生日……」和「54岁生日……」会被当成两句话
 const key = (s: string) => { const t = s.replace(/\d+/g, "#"); let h = 0x811c9dc5; for (let i = 0; i < t.length; i++) { h ^= t.charCodeAt(i); h = Math.imul(h, 16777619); } return '~' + (h >>> 0).toString(36); };
 function say(...xs: (string | [unknown, string])[]): string | null {
@@ -360,14 +360,14 @@ const fresh = (id: string, gap: number) => lastAt(id) == null || S.age - lastAt(
 export function planDaily() {
   if (!DAILY.on || S.headless) return;
   const add = (id: string, at: number) => S.queue.push({ at: Math.min(0.995, at), type: 'day', id });
-  // 春节每年都有；再挑一个别的节日
-  if (SPRING.ok()) add('spring', atMonth(chance2(0.6) ? 2 : 1));
+  // 日常是底色：一年两三条就够（AGENTS.md「轻重」）。春节大多数年份写一笔，别的节日一半的年份写一个
+  if (SPRING.ok() && chance2(0.7)) add('spring', atMonth(chance2(0.6) ? 2 : 1));
   const hs = HOLIDAYS.filter(h => h.ok() && fresh(h.id, 2));
-  if (hs.length && chance2(0.75)) { const h = pick2(hs); add(h.id, atMonth(pick2(h.m))); }
+  if (hs.length && chance2(0.45)) { const h = pick2(hs); add(h.id, atMonth(pick2(h.m))); }
   if (BIRTHDAY.ok() && chance2(0.35)) add('birthday', rnd2() * 0.04);
-  // 生活片段：小孩一条，其他两条；同一类至少隔几年才再出现
+  // 生活片段：一条，一半的年份再多一条；同一类至少隔几年才再出现
   const frags = Object.keys(FRAG).filter(id => FRAG[id].ok() && fresh(id, 3));
-  for (let i = 0, n = S.age < 6 ? 1 : 2; i < n && frags.length; i++) add(frags.splice(Math.floor(rnd2() * frags.length), 1)[0], 0.05 + rnd2() * 0.9);
+  for (let i = 0, n = S.age < 6 || !chance2(0.5) ? 1 : 2; i < n && frags.length; i++) add(frags.splice(Math.floor(rnd2() * frags.length), 1)[0], 0.05 + rnd2() * 0.9);
   for (const id in MARKS) if (lastAt(id) == null && MARKS[id].ok()) add(id, 0.05 + rnd2() * 0.9);
 }
 

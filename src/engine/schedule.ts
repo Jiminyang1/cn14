@@ -4,7 +4,7 @@
 import type { QueueItem } from './types';
 import { S } from './state';
 import { chance, ri, rnd, wpick } from './rng';
-import { log } from './journal';
+import { log, major } from './journal';
 import { EVENTS } from './content/events';
 import { huntMonth, monthDecisions, schoolDecision, yearDecisions } from './content/decisions';
 import { planDaily } from './content/daily';
@@ -129,7 +129,7 @@ function schoolMonth(m: number) {
     }
     if (!S.school && S.edu === 0 && S.age <= 8 && cy >= entryYear()) {
       S.school = '小学'; S.schoolEnd = cy + 6;
-      log(rural ? '背上新书包，走半个小时的山路去村里的小学。' : '上小学了。开学第一天，门口挤满了拍照的家长。', 'ev', null, 'primary');
+      major(rural ? '背上新书包，走半个小时的山路去村里的小学。' : '上小学了。开学第一天，门口挤满了拍照的家长。', 'ev', 'primary');
     } else if (S.school === '小学' && cy >= S.schoolEnd) {
       S.school = '初中'; S.schoolEnd = cy + 3; S.edu = 1;
       log(rural ? '小学毕业，去镇上读初中。' : '小学毕业，上了初中。', 'ev', null, 'middle');

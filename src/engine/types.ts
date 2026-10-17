@@ -108,7 +108,7 @@ export interface Flags {
   carer?: string;            // 留守时带你的人（父母都外出，或者在家的那一方去世了）
   mig?: number; migBack?: number; // 随迁子女；回老家中考
   ill?: Illness | null; survivor?: number; disabled?: number; illDebt?: number;
-  smoke?: number; parDiv?: number; divorced?: number; exes?: number; mShift?: number; loveBoost?: number;
+  smoke?: number; parDiv?: number; divorced?: number /* 离婚时几岁 */; exes?: number; mShift?: number; loveBoost?: number;
   tier?: string; uni?: { name: string; city: string; prov: string; tier: string }; major?: string;
   zkRedo?: number; slip?: { score: number }; stuLoan?: number;
   civilRetry?: number; civilN?: number; lastJob?: string; empIns?: number; farmStop?: number;
@@ -159,4 +159,7 @@ export interface Life {
   death?: Death; comps?: Companion[];
   dayDone?: Record<string, number>;                // 日常条目上次出现的年龄（content/daily.ts）
   auto?: boolean;                                   // 自动抉择（也决定每年的重心）
+  forks?: Fork[];                                   // 走过的岔路口（抉择的 fork，结局回顾用；无界面的人生不记）
 }
+/** 一个岔路口：几岁、哪个抉择、选了什么、没选的那几条、结果 */
+export interface Fork { a: number; id: string; title: string; pick: string; alt: string[]; res: string | null }

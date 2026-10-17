@@ -50,7 +50,7 @@ function Header() {
         <button className="ctl mono spd1" type="button" aria-label={`速度 ${game.speed} 倍，点一下换成 ${nextSpeed} 倍`} onClick={() => game.setSpeed(nextSpeed)}>{game.speed}×</button>
         <label className="chk"><input type="checkbox" checked={!!S.auto} onChange={e => game.setAuto(e.target.checked)} /> 自动抉择</label>
         <button className={'ctl' + (game.ff === 'dec' ? ' on' : '')} type="button" title="快进，直到要你做决定" onClick={() => game.fastForward('dec')}>下一个抉择</button>
-        <button className={'ctl primary' + (game.ff === 'big' ? ' on' : '')} type="button" title="快进，直到发生一件大事（日常不算）" onClick={() => game.fastForward('big')}>下一件大事</button>
+        <button className={'ctl primary' + (game.ff === 'big' ? ' on' : '')} type="button" title="快进，直到下一件人生大事：升学、结婚、生子、亲人离世……" onClick={() => game.fastForward('big')}>下一件大事</button>
       </div>
       <Menu />
     </header>
@@ -86,7 +86,7 @@ function FocusPlan() {
 // 记录一旦写下就不再变，所以按对象缓存；只有之后新出现的记录才淡入
 // 人生的几个关口（上幼儿园、上小学……）配一张像素小照片：当年的会动，往年的不动
 const Entry = memo(({ e, anim, live }: { e: LogEntry; anim: boolean; live: boolean }) => {
-  const kind = e.pic ? 'big' : e.k;
+  const kind = (e.pic ? 'big' : e.k) + (e.x ? ' major' : '');
   // 抉择写成「标题 —— 选项」：标题前盖一个「定」
   const dec = e.k === 'choice' ? e.t.split(' —— ') : null;
   return (

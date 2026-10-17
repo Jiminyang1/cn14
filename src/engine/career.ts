@@ -3,7 +3,7 @@
 import { fexp } from './fmath';
 import { PBY } from './data';
 import { S } from './state';
-import { addDoc, log, logLater } from './journal';
+import { addDoc, log, logLater, major } from './journal';
 import { wan } from './format';
 import { chance, clamp, gauss, wpick } from './rng';
 import { eff } from './stats';
@@ -164,9 +164,9 @@ export function retire() {
   const hpfLog = () => { if (hpfOut >= 100) log(`办了公积金销户提取，账户里的${wan(hpfOut)}转进了存款。`, 'ev'); };
   if (S.house && S.house.city !== S.loc.city) { moveTo(cityLoc(S.house.p, S.house.city)); log(`退休了，不用再待在${S.jobs[S.jobs.length - 1].city}。搬回了自己在${S.house.city}的房子。`, 'ev'); }
   const short = P.y > 0 && !emp ? `职工养老保险只交了${Math.round(P.y)}年，不满15年，领不了职工养老金。` : '';
-  if (farm) { log(`年纪大了，地种不动了，交给了亲戚。${short}往后靠每月一点城乡居民养老金和积蓄过日子。`, 'ev'); hpfLog(); return; }
+  if (farm) { major(`年纪大了，地种不动了，交给了亲戚。${short}往后靠每月一点城乡居民养老金和积蓄过日子。`, 'ev'); hpfLog(); return; }
   const avgW = emp ? P.r / P.y * (pv.incU || pv.inc) : 0;
-  log(!emp ? `到了退休的年纪。${short || '只交了城乡居民养老保险，'}每月领到的养老金不多，日常还得靠积蓄和孩子。` : `退休了。职工养老保险交了${Math.round(P.y)}年，每月有一份养老金，大约是在职时平均工资的${Math.round(S.pension / avgW * 100)}%。`, 'ev',
+  major(!emp ? `到了退休的年纪。${short || '只交了城乡居民养老保险，'}每月领到的养老金不多，日常还得靠积蓄和孩子。` : `退休了。职工养老保险交了${Math.round(P.y)}年，每月有一份养老金，大约是在职时平均工资的${Math.round(S.pension / avgW * 100)}%。`, 'ev', null,
     '2025年起，法定退休年龄逐步延迟：男性从60岁延到63岁，女性从50/55岁延到55/58岁；职工养老保险最低缴费年限从2030年起由15年逐步提高到20年');
   hpfLog();
 }

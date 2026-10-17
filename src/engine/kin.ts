@@ -51,11 +51,11 @@ export function demolish(k: string) {
     S.famHouse = { ...H, v: Math.round(H.v * DEMOL_K.swap[ur()] / 1e3) * 1e3 };
     S.flags.demolSwap = S.age + DEMOL_K.swapWait;
     eff({ h: 2 });
-    return { t: `${old}拆迁了。${parentsWord() || '家里'}选了产权调换：等安置房建好，换一套新楼房。这几年先在外面租房住，按月领临时安置费。`, k: 'good' as const };
+    return { x: 1, t: `${old}拆迁了。${parentsWord() || '家里'}选了产权调换：等安置房建好，换一套新楼房。这几年先在外面租房住，按月领临时安置费。`, k: 'good' as const };
   }
   const { total, mine } = demolCash(1);
   eff({ h: 4 });
-  return { t: `${old}拆迁了，选了货币补偿，一共拿到约${wan(total)}。${parentsWord() || '家里'}在附近买了一套小一点的房子${mine ? `，还给你们兄弟姐妹每人分了约${wan(mine)}` : '，剩下的钱存了起来'}。`, k: 'good' as const };
+  return { x: 1, t: `${old}拆迁了，选了货币补偿，一共拿到约${wan(total)}。${parentsWord() || '家里'}在附近买了一套小一点的房子${mine ? `，还给你们兄弟姐妹每人分了约${wan(mine)}` : '，剩下的钱存了起来'}。`, k: 'good' as const };
 }
 
 // ===== 给孩子办婚事 =====

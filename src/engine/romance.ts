@@ -23,7 +23,7 @@ export const single = () => !S.fam.married && !S.fam.dating && !S.cand;
 export const soloK = () => S.flags.solo ? 0 : 1;
 export const myEdu = () => Math.max(S.edu || 0, S.school && SCHOOL_EDU[S.school] ? SCHOOL_EDU[S.school] : 0, 2);
 export const TRAITS = ['温和', '直爽', '内向', '爱玩', '顾家', '上进', '慢热', '幽默', '细心', '要强'];
-export const MEET_HOW = { friends: '朋友聚会上', work: '公司', wedding: '同学婚礼上', hobby: '一个兴趣小组里', app: '社交软件上', school: '学校里', blind: '亲戚介绍' };
+export const MEET_HOW = { friends: '朋友聚会上', work: '公司', wedding: '同学婚礼上', hobby: '一个兴趣小组里', app: '社交软件上', school: '学校里', blind: '亲戚介绍', reunion: '同学聚会上' };
 // 认识新的人有多频繁（校准系数，使初婚年龄、不婚比例对上 2020 年普查）
 // 按月判定以后（2026-10）：被拒、分手以后下个月就可能再认识人，不用等到下一年，一年里认识的人比原来多。
 // 男性保持 MEET_K = 1，32 岁未婚从 36% 降到 23%（普查 20.6%）；女性同样的系数会降到 6.5%（普查 9.3%），所以女性另乘 MEET_KF = 0.8，回到 9.4%

@@ -2,7 +2,7 @@
 // 引擎直接修改当前人生对象 S，所以 React 组件通过 useGame() 订阅一个版本号，版本号变了就重新读 S。
 // 会影响模拟结果的操作（抉择、改重心、开关自动抉择）一律先记进局日志，再通过 applyInput 生效，这样每一局都能精确重放。
 import { useSyncExternalStore } from 'react';
-import { CAUSE, S, autoPick, leOf, newLife, placeName, setS, tick, type Life, type Pending } from '../engine';
+import { CAUSE, S, autoPick, leOf, lifeLine, lifeTags, newLife, placeName, setS, tick, type Life, type Pending } from '../engine';
 import { sink } from './devsink';
 import { applyInput } from './replay';
 import { newRun, pushEvent, type Input, type RunLog } from './runlog';
@@ -17,8 +17,9 @@ export const yearSecOf = (_L: Life) => YEAR_SEC;
 const lifeMinOf = (L: Life) => Math.round(leOf(L.born, L.sex, L.rural) * YEAR_SEC / 60);
 export const SPEEDS = [1, 2, 4, 8, 16];
 export type FF = false | 'big' | 'dec';
-// 「下一件大事」：遇到这些类型的记录就停（日常、里程碑不算）
-const BIG_KINDS = new Set(['ev', 'good', 'bad', 'loss', 'choice', 'death']);
+// 人生大事（journal.ts 的 major）：「下一件大事」停在这里；正常速度下画面在这里停一会儿，让人看清楚（只是界面停，不影响模拟）
+const MAJOR_HOLD = 2200; // 毫秒
+let holdUntil = 0;
 const RENDER_MS = 120;   // 推进中界面最多每 120 毫秒刷新一次
 const END_DELAY = 1500;  // 离世后停留在时间线上的时间
 export const VERSION = typeof __APP_VERSION__ === 'string' ? __APP_VERSION__ : 'dev';
@@ -133,7 +134,7 @@ export const game = {
     clearSave();
     keepRun({ run, life: S });
     sink.snapshot(run, S);
-    savePast([{ name: S.name, place: placeName(S.home), y0: S.birthYear, y1: d.year, age: d.age, cause: CAUSE[d.cause] }, ...loadPast()]);
+    savePast([{ name: S.name, place: placeName(S.home), y0: S.birthYear, y1: d.year, age: d.age, cause: CAUSE[d.cause], tags: lifeTags(S).map(t => t.k), line: lifeLine(S) }, ...loadPast()]);
     setTimeout(() => this.show('end'), END_DELAY);
   },
   /** 结局页：最后想说的话 */
@@ -164,11 +165,13 @@ let last = 0;
 function loop(ts: number) {
   const dt = Math.min(0.25, last ? (ts - last) / 1000 : 0);
   last = ts;
-  if (game.screen === 'life' && S && S.phase === 'life' && !game.paused && !S.pending) {
+  if (game.screen === 'life' && S && S.phase === 'life' && !game.paused && !S.pending && ts >= holdUntil) {
     const sp = game.speed * (game.ff ? 40 : 1);
     const age0 = S.age, n0 = S.log.length, statement0 = S.statement;
     engine('tick', () => tick(dt * sp / game.yearSec));
-    if (game.ff === 'big' && S.log.slice(0, S.log.length - n0).some(e => BIG_KINDS.has(e.k))) { game.ff = false; emit(); }
+    const majorNow = S.log.slice(0, S.log.length - n0).some(e => e.x);
+    if (majorNow && game.ff === 'big') { game.ff = false; emit(); }
+    if (majorNow && !game.ff && game.speed <= 4) holdUntil = ts + MAJOR_HOLD;
     if (S.age !== age0 || S.statement !== statement0) game.save();
     if (S.pending) { game.ff = false; emit(); }
     else if (S.phase !== 'life') { emit(); game.finish(); } // tick 里离世了

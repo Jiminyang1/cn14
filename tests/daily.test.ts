@@ -24,6 +24,7 @@ test('daily entries do not change any life', () => {
     expect(stable(strip(a)) === stable(b), `seed ${seed}`).toBe(true);
     days += a.log.filter(e => e.k === 'day').length; years += a.age + 1;
   }
-  // 平均每年至少两条日常
-  expect(days / years).toBeGreaterThan(2);
+  // 日常是底色：平均每年一两条（太少显得空，太多就淹没了大事，见 AGENTS.md「轻重」）
+  expect(days / years).toBeGreaterThan(1.2);
+  expect(days / years).toBeLessThan(3);
 });

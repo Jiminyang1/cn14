@@ -21,12 +21,16 @@ declare module '../types' {
   interface Flags {
     hunt?: { at: number; job: string; same?: number; home?: number } | null; // 正在找工作：出生后第几个月上岗、找到的是什么工作
     toWork?: number;   // 中考后不读了、还不满 16 岁：在家待到 16 岁再出去打工（见 huntMonth）
+    romAsk?: number;   // 上一次停下来问你「心动」是几岁（抉择 romance 的 quiet）
+    babyAsk?: { n: number; a: number }; // 上一次问你要不要孩子：当时有几个孩子、几岁（抉择 baby 的 quiet）
+    houseAsk?: number; // 上一次问你买不买房是几岁（抉择 house 的 quiet）
   }
 }
 import { chance, clamp, gauss, pick, ri, wpick } from '../rng';
 import { eff } from '../stats';
 import { bothParents, carer, parentsHelp, parentsWord } from '../parents';
 import { rural } from './events';
+import { ECHO_DEC, meetCrush } from './echoes';
 import { wan } from '../format';
 import { careFeeY, oldIncomeY, uiMonths } from '../finance';
 // 晚年住养老院的抉择：积蓄要撑多少年才和收入够付的一样愿意去（80 岁左右的余寿约 9 年，估计）
@@ -295,12 +299,12 @@ export const DEC = {
   },
   kidCrush: {
     build: () => ({
-      title: '喜欢的人', body: '你发现自己总是忍不住看班里的一个同学。',
+      title: '喜欢的人', body: `你发现自己总是忍不住看班里的${meetCrush().name}。`,
       choices: [{ k: 'note', label: '递一张纸条', sub: '', w: 1, tilt: { r: 0.5, e: 0.3 } }, { k: 'secret', label: '藏在心里', sub: '', w: 3, tilt: { e: -0.3, n: 0.3 } }, { k: 'friend', label: '告诉最好的朋友', sub: '', w: 1, tilt: { e: 0.4 } }],
     }),
     apply: k => {
       kidPick('kidCrush', k);
-      if (k === 'note') { if (chance(0.4)) { shape({ r: 0.1, e: 0.1 }); eff({ h: 1 }); return '对方回了一张纸条，只有三个字：「我也是。」你把它夹在了日记本里。'; } shape({ r: 0.1, n: 0.08 }); eff({ h: -2 }); return '纸条被传到了一半，落在了班主任手里。'; }
+      if (k === 'note') { if (chance(0.4)) { S.flags.crushOk = 1; shape({ r: 0.1, e: 0.1 }); eff({ h: 1 }); return '对方回了一张纸条，只有三个字：「我也是。」你把它夹在了日记本里。'; } shape({ r: 0.1, n: 0.08 }); eff({ h: -2 }); return '纸条被传到了一半，落在了班主任手里。'; }
       if (k === 'secret') { shape({ e: -0.04, r: -0.05 }); return '你什么都没说。毕业那天，你看着那个人的背影，想了很久。'; }
       if (chance(0.5)) { shape({ n: 0.1, e: -0.05 }); eff({ h: -2 }); return '第二天，全班都知道了。'; }
       shape({ e: 0.1, a: 0.06 }); eff({ so: 1 }); return '最好的朋友帮你保守了秘密，还帮你打听到了对方喜欢什么。';
@@ -308,6 +312,7 @@ export const DEC = {
   },
 
   zhongkao: {
+    fork: true,
     build: () => {
       const back = !!S.flags.mig && !S.flags.migBack && chance(0.6);
       // 51 ≈ 参加中考的学生学识中位数（模拟测得）
@@ -341,6 +346,7 @@ export const DEC = {
   },
 
   gaokao: {
+    fork: true,
     build: () => {
       const hp = S.home.p, P = PBY[hp], L = gkLines(hp);
       const rank = gkRank(), score = gkScore(rank, hp);
@@ -373,6 +379,7 @@ export const DEC = {
   },
 
   slip: {
+    fork: true,
     build: () => {
       const L = gkLines(S.home.p), sc = (S.flags.slip || {}).score || 0;
       const ch: Choice[] = [{ k: 'redo', label: '复读一年', sub: '明年再考', w: 3, tilt: { c: 0.5 } }];
@@ -389,6 +396,7 @@ export const DEC = {
   },
 
   vocgrad: {
+    fork: true,
     build: () => ({
       title: '职高毕业', body: '三年职高读完了。', fact: '技术工人是中国制造业长期紧缺的岗位',
       choices: [{ k: 'skilled', label: '进厂当技术工人', sub: '收入稳定', w: 2, tilt: { r: -0.2 } }, { k: 'zhuan', label: '考高职，读大专', sub: '再读三年', w: 4, tilt: { c: 0.4 } }, { k: 'city', label: '去大城市打工', sub: '', w: 1.5, tilt: { r: 0.3, e: 0.2 } }],
@@ -402,6 +410,7 @@ export const DEC = {
   },
 
   graduate: {
+    fork: true,
     build: () => {
       const lv = { 大专: 5, 本科: 6, 硕士: 7 }[S.school], top = ['top', '211'].includes(S.flags.tier);
       const ch = [];
@@ -467,6 +476,7 @@ export const DEC = {
   },
 
   bigcity: {
+    fork: true,
     build: () => {
       if (!isWorking() || S.loc.kind === 'big') return null;
       const ok = bigCities(); if (!ok.length) return null;
@@ -486,6 +496,7 @@ export const DEC = {
   },
 
   crisis: {
+    fork: true,
     build: () => {
       if (!(JOBS[S.job] && JOBS[S.job].priv)) return null;
       const ch: Choice[] = [{ k: 'same', label: '找类似的工作，接受降薪', sub: '', w: 3, tilt: { c: 0.3 } }, { k: 'gig', label: '先去送外卖或开网约车', sub: '', w: 1.5, tilt: { r: 0.3 } }, { k: 'boss', label: '拿补偿金自己创业', sub: '风险很大', w: 1, tilt: { r: 0.8 } }];
@@ -510,6 +521,7 @@ export const DEC = {
   },
 
   jobhop: {
+    fork: true,
     build: () => {
       if (!isWorking() || SELF_EMP.has(S.job)) return null;
       const w = S.wageK, x = raise(RAISE.hop); S.wageK = w; // 先算一下能涨多少（不消耗随机数），选了跳槽时 apply 里照样再涨一次
@@ -530,6 +542,12 @@ export const DEC = {
 
   // 认识了一个人：要不要在一起
   romance: {
+    // 只在值得问的时候问：对方和你很投缘，或者有三年没问过你了。其余的顺其自然（自动抉择替你定）
+    quiet: () => {
+      const p = S.cand, last = S.flags.romAsk;
+      if (p && p.fit >= 0.65 || last == null || S.age - last >= 3) { S.flags.romAsk = S.age; return false; }
+      return true;
+    },
     build: () => {
       const p = S.cand; if (!p || S.fam.married || S.fam.dating) { S.cand = null; return null; }
       const P = mutualP(p), blind = p.how === 'blind';
@@ -555,11 +573,14 @@ export const DEC = {
   },
 
   marry: {
+    fork: true,
+    // 说了「再处处看」的，隔一年再问你；中间那一年顺其自然地接着处（对方家里等着婚房的照样问）
+    quiet: () => { const p = S.fam.dating; return !!p && p.asks % 2 === 1 && !(p.wh === 2) ? 'wait' : false; },
     build: () => {
       // 年初排下以后，可能已经分手、换了人：弹出时再查一遍婚龄和在一起的年数
       if (!marryOK()) return null;
       const p = S.fam.dating, yrs = S.age - p.metAt;
-      const amt = brideAmt(S.home.p);
+      const amt = S.age >= 50 ? 0 : brideAmt(S.home.p);
       // 结婚的条件：男方家里出彩礼；不少女方家里希望有婚房（估计）
       // 同一个对象只定一次（被拒以后不会突然不要了）
       if (p.wh == null) p.wh = S.sex === 'M' && chance(S.loc.kind === 'rural' ? 0.4 : 0.6) ? 1 : 0;
@@ -608,19 +629,27 @@ export const DEC = {
       // 彩礼和兄弟姐妹结婚时一样（kin.ts 的 sibWed）：娶亲的，父母在世就由家里出，不够的父母去借；父母都不在了才自己出。
       // 出嫁的，彩礼一半做陪嫁带走（进你的存款），另一半留在娘家；父母都不在了，整笔做陪嫁。酒席的钱自己出。
       // 原来男方一律自己出：48% 的男主角婚后欠着钱，其中不少父母存款超过 10 万
-      const amt = ctx.amt, par = S.fam.mom.alive || S.fam.dad.alive, pw = parentsWord() || '家里';
+      const amt = S.age >= 50 ? 0 : ctx.amt, par = S.fam.mom.alive || S.fam.dad.alive, pw = parentsWord() || '家里'; // 五十岁以后再婚：不讲彩礼、不办酒席
       let bride = '';
       if (S.sex === 'M') {
         if (par) { const b = famPayBride(amt); bride = `${pw}出了${wan(amt)}彩礼${b > 1e3 ? `，其中${wan(b)}是借的` : ''}。`; }
         else { eff({ money: -amt }); bride = `彩礼${wan(amt)}是你自己出的。`; }
       } else if (par) { eff({ money: amt * 0.5 }); S.famMoney += amt * 0.5; bride = `男方给了${wan(amt)}彩礼，一半做了你的陪嫁，另一半留在了娘家。`; }
       else { eff({ money: amt }); bride = `男方给了${wan(amt)}彩礼，都做了你的陪嫁。`; }
-      eff({ money: -placeInc() * 0.1, h: 8, so: 6 });
+      eff({ money: S.age >= 50 ? 0 : -placeInc() * 0.1, h: 8, so: 6 });
+      if (S.age >= 50) return { t: `${pre}你和${p.name}去领了证。没办酒席，两家的孩子凑在一起吃了顿饭。`, k: 'good' };
       return { t: `${pre}你和${p.name}结婚了。${bride}酒席摆了${ri(10, 40)}桌。`, k: 'good' };
     },
   },
 
   baby: {
+    fork: true,
+    // 每多一个孩子问一次；说了「暂时不要」的，过四年再问。中间顺其自然
+    quiet: () => {
+      const n = kidsAlive().length, b = S.flags.babyAsk;
+      if (!b || b.n !== n || S.age - b.a >= 4) { S.flags.babyAsk = { n, a: S.age }; return false; }
+      return 'no';
+    },
     build: () => {
       if (!S.fam.married || !S.fam.partner || !S.fam.partner.alive) return null;
       const n = kidsAlive().length, p = S.fam.partner;
@@ -639,6 +668,13 @@ export const DEC = {
   },
 
   house: {
+    fork: true,
+    // 说过「继续租房」的，八年内不再主动问（对方家里等着婚房的除外）
+    quiet: () => {
+      const last = S.flags.houseAsk, ask = !!S.fam.dating && S.fam.dating.wh === 2;
+      if (ask || last == null || S.age - last >= 8) { S.flags.houseAsk = S.age; return false; }
+      return 'rent';
+    },
     build: () => {
       if (S.house || !isWorking()) return null;
       const price = Math.round(placeHp() * 90 / 1e4) * 1e4;
@@ -717,6 +753,7 @@ export const DEC = {
   // 所以有成年子女的老人搬去同住、向子女开口都常见；在别处有自己房子的，搬回去住最省钱；符合低保条件的多会去申请；
 // 年轻人（没找到工作、刚工作、销售行情差的年份）最常见的是找父母要钱，30 岁以后少一些
   tight: {
+    fork: true,
     build: () => {
       const st = S.statement, incM = st ? st.income - (st.incomeDetails?.aid || 0) : 0, size = S.fam.married && S.fam.partner?.alive ? 2 : 1;
       const sev = clamp((S.debt || 0) / Math.max(placeInc() * 0.3, incM * 12), 0.3, 3); // 欠款相对一年收入有多重
@@ -759,6 +796,7 @@ export const DEC = {
   },
 
   parentcare: {
+    fork: true,
     build: () => {
       if (!(S.fam.mom.alive && S.fam.mom.ill === 1) && !(S.fam.dad.alive && S.fam.dad.ill === 1)) return null;
       const who = S.fam.mom.alive && S.fam.mom.ill === 1 ? 'mom' : 'dad', p = S.fam[who], wn = who === 'mom' ? '妈妈' : '爸爸';
@@ -790,6 +828,7 @@ export const DEC = {
   },
 
   illness: {
+    fork: true,
     build: () => {
       const k = S.flags.ill.k, I = ILL[k] || ILL.cancer, ins = reimburse('local').emp ? '职工医保' : '城乡居民医保';
       const sub = w => `总费用约${wan(I.cost[w])}，${ins}报销后自付约${wan(oop(k, w))}`;
@@ -829,6 +868,7 @@ export const DEC = {
   },
 
   oldcare: {
+    fork: true,
     build: () => {
       const has = kidsAlive().length > 0;
       // 付不付得起：养老院的费用减去养老金、子女给的、老伴的收入，差的部分要靠积蓄撑。撑不到两年的不能选；
@@ -849,6 +889,7 @@ export const DEC = {
 
   // ---------- 家里的大事（规则在 kin.ts） ----------
   demolish: {
+    fork: true,
     build: () => {
       if (!parentsWord()) return null; // 年初排下以后父母都走了：拆迁由继承的人处理（kin.ts）
       const H = S.famHouse, rural = S.home.kind === 'rural', u = rural ? 'rural' : 'urban';
@@ -869,6 +910,7 @@ export const DEC = {
   },
 
   kidhome: {
+    fork: true,
     build: () => {
       const kd = weddingKid(); if (!kd) return null;
       const c = kidHomeCost(kd), have = Math.max(0, S.money), son = kd.sex === 'M';
@@ -910,6 +952,7 @@ export const DEC = {
   },
 
   sibloan: {
+    fork: true,
     build: () => {
       const adults = sibsAlive().filter(s => s.age >= 22); if (!adults.length || S.money <= 0) return null;
       const s = pick(adults), why = pick(['买房凑首付', '做生意周转', '孩子要上学', '家里有人看病']);
@@ -962,6 +1005,7 @@ export const DEC = {
   },
 
   heritage: {
+    fork: true,
     build: () => {
       const H = S.famHouse, f = S.fam, rural = S.home.kind === 'rural';
       const bros = sibsAlive().filter(s => s.sex === 'M').length;
@@ -992,6 +1036,7 @@ export const DEC = {
 
   // ---------- 工作和晚年的关口（规则在 turns.ts） ----------
   layofflist: {
+    fork: true,
     build: () => {
       // 这一年已经因为「35岁」被裁过的，不再有裁员名单
       if (!(JOBS[S.job] && JOBS[S.job].priv) || doneAge('crisis') === S.age || S.done.promo === S.age) return null; // 这一年刚升过职的也不上名单
@@ -1030,6 +1075,7 @@ export const DEC = {
   },
 
   retireplan: {
+    fork: true,
     build: () => {
       const j = lastJob(), f = S.fam, rural = S.loc.kind === 'rural';
       const kidsGrown = kidsAlive().some(k => k.married || k.age >= 22), away = awayFromHome();
@@ -1057,4 +1103,6 @@ export const DEC = {
       eff({ so: 4, kn: 2, h: 3 }); return { t: `报了老年大学的${pick(['书法班', '合唱团', '摄影班', '国画班', '智能手机班'])}，每周去两次。晚上还加入了小区的广场舞队。`, f: '全国有7.6万多所老年大学和老年学校，在校学员1000多万人（中国老年大学协会，2024年）' };
     },
   },
+  // 回响引出的岔路口（发小拉你创业、找你借钱）
+  ...ECHO_DEC,
 };

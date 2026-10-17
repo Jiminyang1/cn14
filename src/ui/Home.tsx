@@ -1,6 +1,6 @@
 // 首页：人生档案的封面、此刻出生的婴儿落在哪里（附页）、已封存的档案（过过的人生）。
 import { useEffect, useMemo, useState } from 'react';
-import { BIRTH_TOTAL, NATION, PROVS } from '../engine';
+import { BIRTH_TOTAL, NATION, PROVS, TAG_N } from '../engine';
 import { game, hasSave } from '../game/controller';
 import { loadPast } from '../game/storage';
 
@@ -70,9 +70,9 @@ export function Home() {
       <div className="home-low">
         {past.length > 0 ? (
           <section className="pg past">
-            <div className="sec"><span className="no">档</span><h3>已封存的档案</h3><small>你过过的人生 · 保存在这个浏览器里</small></div>
+            <div className="sec"><span className="no">档</span><h3>已封存的档案</h3><small>你过过的人生 · 见过 {new Set(past.flatMap(p => p.tags || [])).size} / {TAG_N} 种人生标签</small></div>
             {past.slice(0, 12).map((p, i) => (
-              <div key={i} className="toc"><span className="tt">{p.name}</span><span className="muted small">{p.place}</span><span className="lead" /><span className="d">{p.y0} – {p.y1}</span><span className="age">享年{p.age}岁</span><span className="muted small">{p.cause}</span></div>
+              <div key={i} className="toc"><span className="tt">{p.name}</span><span className="muted small">{p.place}</span><span className="lead" /><span className="d">{p.y0} – {p.y1}</span><span className="age">享年{p.age}岁</span><span className="muted small">{p.line || p.cause}</span></div>
             ))}
           </section>
         ) : <div />}
