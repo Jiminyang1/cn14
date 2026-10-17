@@ -75,6 +75,15 @@ export function marryKid(k: Kid, spend: number) {
 }
 
 // ===== 兄弟姐妹 =====
+/** 儿子娶亲，家里出彩礼（兄弟结婚、你自己结婚都一样）：先用父母的存款，不够的部分父母去借，记成家里的欠款。返回其中借了多少 */
+export function famPayBride(amt: number) {
+  S.famMoney -= amt;
+  if (S.famMoney >= 0) return 0;
+  const borrowed = -S.famMoney; S.famMoney = 0;
+  if (!S.famDebt) { S.famDebt0 = 0; S.famDebtWhy = '办婚事、彩礼'; }
+  S.famDebt += borrowed; S.famDebt0 += borrowed;
+  return borrowed;
+}
 /** 兄弟姐妹结婚（随机事件 sibWed）：儿子娶亲家里出彩礼，女儿出嫁家里收彩礼 */
 export const sibToWed = () => sibsAlive().find(s => !s.married && s.age >= 24 && s.age <= 34);
 export function sibWed() {
@@ -83,13 +92,7 @@ export function sibWed() {
   eff({ h: 1, so: 1 });
   const f = '2023 年农村彩礼平均约 3.86 万元（中国农业科学院农村调查），热点地区 10–30 万元';
   if (s.sex === 'M') {
-    S.famMoney -= amt;
-    let borrowed = 0;
-    if (S.famMoney < 0) {
-      borrowed = -S.famMoney; S.famMoney = 0;
-      if (!S.famDebt) { S.famDebt0 = 0; S.famDebtWhy = '办婚事、彩礼'; }
-      S.famDebt += borrowed; S.famDebt0 += borrowed;
-    }
+    const borrowed = famPayBride(amt);
     const mine = S.indep && S.age >= 22 ? Math.round(placeInc() * 0.3 / 1e2) * 1e2 : 0;
     if (mine) eff({ money: -mine });
     return { t: `${s.rel}结婚了。家里给女方出了${wan(amt)}彩礼${borrowed > 1e3 ? `，其中${wan(borrowed)}是借的` : ''}。${mine ? `你包了${wan(mine)}的红包，回去帮着张罗了酒席。` : ''}`, f };

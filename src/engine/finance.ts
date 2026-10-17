@@ -16,7 +16,7 @@ import { partnerLoc } from './romance';
 import { dedOf, netOf, penBase, type DedRow, type NetPay } from './tax';
 import type { Partner } from './types';
 import { changeMoney, repayDebt } from './accounts';
-import { livingBudget } from './budget';
+import { drawRate, livingBudget, savingsDraw } from './budget';
 
 declare module './types' {
   interface Life {
@@ -111,12 +111,14 @@ export function moneyMonth(m: number) {
   const debtRepaid = repayDebt(Math.max(0, S.money - reserve));
   const discretionary = Math.min(budget.discretionary + lateLife.cost, Math.max(0, S.money - reserve));
   S.money -= discretionary;
+  const savingsSpend = savingsDraw(S.money, P, drawRate(S.age, S.job === 'retired'), S.money - reserve, basic + rentDue + mortgage.cash + mortgage.hpf - hh);
+  S.money -= savingsSpend;
   const depositInterest = S.money * (SAVE_INT_M - 1);
   S.money += depositInterest;
   const previous = S.statement;
   S.statement = { year: calYear(m), month: calMonth(m), opening, closing: S.money, events, transfers, income: hh,
     incomeDetails: { personal: net, partner: mp ? mp.net / MONTHS : 0, rehire: lateLife.income },
-    living, children, discretionary, rent, mortgage: mortgage.cash, mortgageInterest: mortgage.interest,
+    living, children, discretionary, savingsSpend, rent, mortgage: mortgage.cash, mortgageInterest: mortgage.interest,
     mortgageHpf: mortgage.hpf, debtRepaid, depositInterest, debtInterest,
     shortfall: basic - basicPaid + rentDue - rent, arrears: mortgage.arrears, debt: S.debt };
   if (!S.headless) {
@@ -126,7 +128,7 @@ export function moneyMonth(m: number) {
     else history.push(S.statement);
   }
   const totals = S.cashflow ||= { months: 0, income: 0, spending: 0, mortgage: 0, debtRepaid: 0 };
-  totals.months++; totals.income += hh; totals.spending += living + children + discretionary + rent;
+  totals.months++; totals.income += hh; totals.spending += living + children + discretionary + savingsSpend + rent;
   totals.mortgage += mortgage.cash; totals.debtRepaid += debtRepaid;
   S.relInc = clamp((hh * MONTHS / (f.married ? 1.6 : 1) / (P * REL_REF) - 1) * 6, -10, 10);
   if (S.money > S.stats.maxMoney) S.stats.maxMoney = S.money;

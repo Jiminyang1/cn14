@@ -9,7 +9,7 @@ export const cashChange = (value: number) => {
   const rounded = Math.round(value);
   return (rounded > 0 ? '+' : rounded < 0 ? '−' : '') + cashAmount(Math.abs(rounded));
 };
-export const monthlySpending = (bill: MonthlyStatement) => bill.living + bill.children + bill.discretionary + bill.rent + bill.mortgage + bill.debtRepaid;
+export const monthlySpending = (bill: MonthlyStatement) => bill.living + bill.children + bill.discretionary + (bill.savingsSpend || 0) + bill.rent + bill.mortgage + bill.debtRepaid;
 const movementClass = (value: number) => value < 0 ? 'neg' : value > 0 ? 'money-up' : undefined;
 
 export const statementAge = (bill: MonthlyStatement, birthYear: number, birthMonth: number) => bill.year - birthYear - Number(bill.month < birthMonth);
@@ -41,7 +41,7 @@ export function AccountStatement({ bill = S.statement }: { bill?: MonthlyStateme
     ['期初现金', bill.opening], ['期间事件与转账（净额）', bill.events], ['月底账户转入／家庭往来', bill.transfers],
     ['家庭到手收入', bill.income], ['基本生活', -bill.living], ['孩子日常开销', -bill.children],
     ['房租／养老院（现金实付）', -bill.rent], ['房贷（现金实付）', -bill.mortgage],
-    ['偿还其他欠款', -bill.debtRepaid], ['可选消费', -bill.discretionary], ['存款利息', bill.depositInterest],
+    ['偿还其他欠款', -bill.debtRepaid], ['可选消费', -bill.discretionary], ['动用积蓄的花销', -(bill.savingsSpend || 0)], ['存款利息', bill.depositInterest],
     ['期末现金', bill.closing],
   ];
   const change = bill.closing - bill.opening;

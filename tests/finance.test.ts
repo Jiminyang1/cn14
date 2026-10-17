@@ -20,19 +20,36 @@ function household() {
 
 function checkStatement(bill: E.MonthlyStatement) {
   const expected = bill.opening + bill.events + bill.transfers + bill.income + bill.depositInterest
-    - bill.living - bill.children - bill.rent - bill.mortgage - bill.debtRepaid - bill.discretionary;
+    - bill.living - bill.children - bill.rent - bill.mortgage - bill.debtRepaid - bill.discretionary - (bill.savingsSpend || 0);
   expect(bill.closing).toBeCloseTo(expected, 6);
   expect(bill.closing).toBeGreaterThanOrEqual(0);
 }
 
-test('cash balances do not set consumption', () => {
-  const spending = [100000, 1000000].map(cash => {
+test('cash balances do not set income-based consumption, only the savings draw', () => {
+  const bills = [100000, 1000000].map(cash => {
     household().money = cash;
     E.moneyMonth(1);
     checkStatement(E.S.statement);
-    return E.S.statement.living + E.S.statement.children + E.S.statement.discretionary;
+    return E.S.statement;
   });
-  expect(spending[0]).toBeCloseTo(spending[1], 8);
+  const base = (bill: E.MonthlyStatement) => bill.living + bill.children + bill.discretionary;
+  expect(base(bills[0])).toBeCloseTo(base(bills[1]), 8);
+  // 在职动用积蓄每年 2%，按发了这个月工资、付完开销以后的现金算：10 万出头，每月约 170 元
+  expect(bills[0].savingsSpend).toBeGreaterThan(100000 * E.DRAW_WORK / 12);
+  expect(bills[0].savingsSpend).toBeLessThan(110000 * E.DRAW_WORK / 12);
+  expect(bills[1].savingsSpend).toBeGreaterThan(bills[0].savingsSpend * 9);
+});
+
+test('savings draw rises with age, flattens above 20 times local income and skips when income falls short', () => {
+  const inc = 50000;
+  expect(E.savingsDraw(1e6, inc, E.drawRate(70, true), 1e9)).toBeCloseTo(1e6 * 0.03 / 12, 6);
+  expect(E.savingsDraw(1e6, inc, E.drawRate(80, true), 1e9)).toBeCloseTo(1e6 * 0.04 / 12, 6);
+  expect(E.savingsDraw(1e6, inc, E.drawRate(90, true), 1e9)).toBeCloseTo(1e6 * 0.05 / 12, 6);
+  // 超过当地人均收入 20 倍（100 万）的部分每年只花 1.5%
+  expect(E.savingsDraw(3e6, inc, 0.03, 1e9)).toBeCloseTo((1e6 * 0.03 + 2e6 * 0.015) / 12, 6);
+  // 只花留够周转金以后的现金；收入不够日常开销的，额外花的扣掉缺口
+  expect(E.savingsDraw(1e6, inc, 0.03, 1000)).toBe(1000);
+  expect(E.savingsDraw(1e6, inc, 0.03, 1e9, 1e6 * 0.03 / 12)).toBe(0);
 });
 
 test('higher pensions improve cash flow instead of being spent in full', () => {
@@ -121,7 +138,8 @@ test('parents pay mortgages from their actual funds while employed', () => {
     E.familyMoneyMonth(1);
     return life.famMoney;
   });
-  expect(balances[0] - balances[1]).toBeCloseTo(E.annualPay(500000, 0.031, 20) / 12 * fpow(1.015, 1 / 12), 5);
+  // 付掉的月供也少动用了这部分积蓄（在职每年 2%）
+  expect(balances[0] - balances[1]).toBeCloseTo(E.annualPay(500000, 0.031, 20) / 12 * (1 - E.DRAW_WORK / 12) * fpow(1.015, 1 / 12), 5);
 });
 
 test('retirement keeps established consumption habits when pension income falls', () => {

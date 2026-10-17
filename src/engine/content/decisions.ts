@@ -31,7 +31,7 @@ import { wan } from '../format';
 import { uiMonths } from '../finance';
 import { borrowMoney, changeMoney, liquidBalance } from '../accounts';
 import { inKg } from '../schedule';
-import { DEMOL_K, demolDue, demolish, kidHomeCost, lendSib, marryKid, weddingKid } from '../kin';
+import { DEMOL_K, demolDue, demolish, famPayBride, kidHomeCost, lendSib, marryKid, weddingKid } from '../kin';
 import { heirShares, inheritSplit } from '../household';
 import { KEEP, goHomeOld, jumpShip, lastJob, layOff, listDue, rehireText, severance, startRehire, startSnowbird } from '../turns';
 import { shape } from '../personality';
@@ -600,8 +600,18 @@ export const DEC = {
       S.fam.married = true; S.fam.partner = p; p.marriedAt = S.age; S.fam.dating = null; p.city = S.loc.city;
       if (p.jk) p.inc = partnerInc(p);
       addDoc('marry', '结婚证', [['持证人', S.name], ['配偶', p.name], ['配偶学历', EDU_LV[p.edu]], ['配偶职业', ptJobName(p)], ['登记日期', `${calYear()}年`]]);
-      eff({ money: (S.sex === 'M' ? -ctx.amt : ctx.amt * 0.3) - placeInc() * 0.1, h: 8, so: 6 });
-      return { t: `${pre}你和${p.name}结婚了。酒席摆了${ri(10, 40)}桌。`, k: 'good' };
+      // 彩礼和兄弟姐妹结婚时一样（kin.ts 的 sibWed）：娶亲的，父母在世就由家里出，不够的父母去借；父母都不在了才自己出。
+      // 出嫁的，彩礼一半做陪嫁带走（进你的存款），另一半留在娘家；父母都不在了，整笔做陪嫁。酒席的钱自己出。
+      // 原来男方一律自己出：48% 的男主角婚后欠着钱，其中不少父母存款超过 10 万
+      const amt = ctx.amt, par = S.fam.mom.alive || S.fam.dad.alive, pw = parentsWord() || '家里';
+      let bride = '';
+      if (S.sex === 'M') {
+        if (par) { const b = famPayBride(amt); bride = `${pw}出了${wan(amt)}彩礼${b > 1e3 ? `，其中${wan(b)}是借的` : ''}。`; }
+        else { eff({ money: -amt }); bride = `彩礼${wan(amt)}是你自己出的。`; }
+      } else if (par) { eff({ money: amt * 0.5 }); S.famMoney += amt * 0.5; bride = `男方给了${wan(amt)}彩礼，一半做了你的陪嫁，另一半留在了娘家。`; }
+      else { eff({ money: amt }); bride = `男方给了${wan(amt)}彩礼，都做了你的陪嫁。`; }
+      eff({ money: -placeInc() * 0.1, h: 8, so: 6 });
+      return { t: `${pre}你和${p.name}结婚了。${bride}酒席摆了${ri(10, 40)}桌。`, k: 'good' };
     },
   },
 

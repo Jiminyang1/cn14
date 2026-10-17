@@ -6,10 +6,10 @@ import { MONTHS, monthOfCal } from './monthly';
 import { S } from './state';
 import { log } from './journal';
 import { parentIncome, parentRetired } from './parents';
-import { placeCons, placeHp } from './place';
+import { placeCons, placeHp, placeInc } from './place';
 import { wan } from './format';
 import { sibsAlive } from './family';
-import { livingBudget } from './budget';
+import { drawRate, livingBudget, savingsDraw } from './budget';
 import { changeMoney } from './accounts';
 
 declare module './types' {
@@ -58,6 +58,9 @@ export function familyMoneyMonth(m: number) {
   if (S.famDebt > 0) famDebtMonth(inc, working, mortgage);
   const optional = Math.min(budget.discretionary, Math.max(0, S.famMoney - essential));
   S.famMoney -= optional;
+  // 父母也会动用积蓄（和你自己一样，budget.ts 的 savingsDraw）：按年纪大的那一位算，都退休以后按退休的档
+  const elder = Math.max(mom ? f.mom.age : 0, dad ? f.dad.age : 0);
+  S.famMoney -= savingsDraw(S.famMoney, placeInc(S.home), drawRate(elder, !working), S.famMoney - essential, essential - inc);
   // 父母都不上班以后，存款花光了，由已经工作的子女补贴生活费（还在世的兄弟姐妹一起分摊）；父母还在上班时，欠款由他们自己慢慢还
   // supportY 记的是贴补了几年（每个年龄年记一次）
   if (S.indep && S.famMoney < 0 && !working) {

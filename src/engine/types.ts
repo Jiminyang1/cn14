@@ -81,6 +81,7 @@ export interface MonthlyStatement {
   events: number; transfers: number; income: number;
   incomeDetails?: { personal: number; partner: number; rehire: number };
   living: number; children: number; discretionary: number; rent: number;
+  savingsSpend?: number;     // 动用积蓄的花销（budget.ts 的 savingsDraw）
   mortgage: number; mortgageInterest: number; mortgageHpf: number;
   debtRepaid: number; depositInterest: number; debtInterest: number;
   shortfall: number; arrears: number; debt: number;
