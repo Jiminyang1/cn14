@@ -12,6 +12,7 @@ import { anyParent, bothParents, carer, dadAlive as dad, momAlive as mom, parent
 import { inKg } from '../schedule';
 import { loanBal } from '../housing';
 import { MILESTONES } from '../lifecycle';
+import { planOf } from '../plans';
 
 // 开关（测试里会关掉它，验证日常不影响模拟）
 export const DAILY = { on: true };
@@ -322,7 +323,7 @@ const FRAG: Record<string, DayItem> = {
   money: { ok: () => S.indep && S.age >= 22 && S.age < 60, text: () => say(
     [broke() && working(), '月底了，信用卡账单比工资先到。'],
     [broke(), '找朋友借了点钱周转，说好下个月还。'],
-    [flush(), '你开始研究理财，看了很多文章，最后还是把钱存了定期。'],
+    [flush() && planOf('invest') === 'bank', '你开始研究理财，看了很多文章，最后还是把钱存了定期。'], // 买了理财、基金的不写这句
     [loanBal() > 0 && working(), '每个月一发工资，先把房贷还上，剩下的才是自己的。'],
     [renting(), '又到了续租的时候，你在附近看了几套房子，都差不多。'],
     '算了一下这一年的开销，钱都不知道花到哪里去了。',

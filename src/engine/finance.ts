@@ -18,6 +18,7 @@ import type { Partner } from './types';
 import { changeMoney, repayDebt } from './accounts';
 import { TIERS, familySize, tierCost, tierOf } from './budget';
 import { liveTier } from './plans/style';
+import { invBal } from './plans/invest';
 import { dibaoMonth, frugalEnd, frugalK, kidAdvMonth, kidSupportY, tightMonth } from './tight';
 
 declare module './types' {
@@ -102,7 +103,8 @@ export function moneyMonth(m: number) {
   const kids = f.kids.filter(child => child.alive && child.age < 22).map(child => child.age);
   const size = familySize(mate ? 2 : 1, kids);
   if (S.tier == null || m === 0) {
-    const t = tierOf(hh, S.money, H.cons, size, S.tier, S.job === 'retired' && (!mate || !!mate.retired));
+    // 存款也算理财和基金里的钱（plans/invest.ts）：钱挪进去不该让日子突然变紧
+    const t = tierOf(hh, S.money + invBal(), H.cons, size, S.tier, S.job === 'retired' && (!mate || !!mate.retired));
     if (S.tier != null && t !== S.tier) log(t > S.tier ? TIER_UP[t] : TIER_DOWN[t], t > S.tier ? 'good' : 'bad');
     S.tier = t;
   }

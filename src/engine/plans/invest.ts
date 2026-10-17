@@ -149,7 +149,7 @@ export function investYear(k: string) {
 function autoPick() {
   const t = liquidBalance() + invBal(), y = costM() * MONTHS, r = S.pers ? S.pers.z.r : 0;
   if (t >= y * 3 && r > 0.5) return 'fund';
-  if (t >= y * 1.5) return 'wealth';
+  if (t >= y * 2) return 'wealth'; // 原来 1.5 年开销，自动的人生近一半在买理财，偏多
   return 'bank';
 }
 
