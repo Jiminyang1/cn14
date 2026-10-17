@@ -136,7 +136,6 @@ export function End() {
         </div>}
         <div className="sheet end-sec"><h4 className="sheet-title">一生曲线</h4><Curve W={680} H={170} /></div>
         <div className="end-sec"><h4>档案里的 {(S.docs || []).length} 份证件</h4><div className="doc-gallery">{(S.docs || []).map((x, i) => <DocCard key={i} d={x} open />)}</div></div>
-        {S.notes.length > 0 && <div className="end-sec notes"><h4>自述</h4>{S.notes.map((n, i) => <p key={i}><span className="small muted">{n.a}岁 · {n.q}</span><br />{n.t}</p>)}</div>}
       </details>
       <p className="small muted" style={{ marginTop: 10 }}><RunId /></p>
     </div>

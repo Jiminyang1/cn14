@@ -11,7 +11,7 @@ import { planDaily } from './content/daily';
 import { domK, slotsYear } from './focus';
 import { carer } from './parents';
 import { isWorking, retire, retireAge } from './career';
-import { ENABLE_REFLECT, MILESTONES, REFLECT } from './lifecycle';
+import { MILESTONES } from './lifecycle';
 import { MONTHS, calMonth, calYear, monthStart, posIn } from './monthly';
 import { entryYear, nowM } from './calendar';
 import { reportCard } from './personality';
@@ -80,7 +80,6 @@ export function planYearSchedule() {
   // 每年判定一次的抉择（结婚、裁员名单、拆迁）：落在这一年随机的一个月
   for (const id of yearDecisions()) enqueue({ at: posIn(ri(0, MONTHS - 1), rnd()), type: 'dec', id });
   if (MILESTONES.includes(S.age)) enqueue({ at: 0.02, type: 'ms' });
-  if (ENABLE_REFLECT && !S.headless && REFLECT[S.age]) enqueue({ at: 0.92, type: 'ref' });
   planDaily(); // 日常：只用第二条随机数流，不影响上面这些
   S.queue.sort((a, b) => a.at - b.at);
   slotsYear();

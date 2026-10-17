@@ -31,8 +31,7 @@ function play(seed: number) {
       const ok = P.d.choices.filter(c => !c.off);
       const k = auto && r() < 0.7 ? auto : ok[Math.floor(r() * ok.length)].k;
       input({ ...here, type: 'decide', id: P.id, k });
-    } else if (P) input({ ...here, type: 'reflect', text: '' });
-    else if (r() < 0.04 && E.slotN() && E.focusList().length) { const l = E.focusList(); input({ ...here, type: 'slot', i: Math.floor(r() * E.slotN()), k: l[Math.floor(r() * l.length)] }); }
+    } else if (r() < 0.04 && E.slotN() && E.focusList().length) { const l = E.focusList(); input({ ...here, type: 'slot', i: Math.floor(r() * E.slotN()), k: l[Math.floor(r() * l.length)] }); }
     else if (r() < 0.02 && E.actsShown().length) { const l = E.actsShown(); input({ ...here, type: 'act', k: l[Math.floor(r() * l.length)] }); }
     else if (r() < 0.01) input({ ...here, type: 'auto', on: !L.auto });
     else if (r() < 0.005) reload();

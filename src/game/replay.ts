@@ -19,10 +19,6 @@ export function applyInput(inp: Input, replaying = false) {
       resolveDec(P.id, P.d, inp.k);
       S.pending = null;
     }
-  } else if (inp.type === 'reflect') {
-    if (!P || P.type !== 'ref') throw new ReplayError(`${inp.a}岁：记录里是自述，当前没有自述`);
-    if (inp.text) { S.notes.push({ a: S.age, q: P.q, t: inp.text }); log(`你写下：“${inp.text}”`, 'note'); }
-    S.pending = null;
   } else if (inp.type === 'slot') setSlot(inp.i, inp.k);
   else if (inp.type === 'act') doAct(inp.k);
   else S.auto = inp.on;

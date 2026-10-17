@@ -98,7 +98,7 @@ export const game = {
   setAuto(on: boolean) { input({ ...here(), type: 'auto', on }); emit(); },
   // 抉择单「先看看再定」：只是把弹窗收起来（抉择没定，模拟本来就停着），记下收起的是哪一张；新的抉择照常弹出
   hidden: null as string | null,
-  pendingKey() { const P = S?.pending; return P ? (P.type === 'dec' ? P.id : 'ref') + '@' + S.age + '@' + S.t : ''; },
+  pendingKey() { const P = S?.pending; return P ? P.id + '@' + S.age + '@' + S.t : ''; },
   hideDec() { this.hidden = this.pendingKey(); emit(); },
   showDec() { this.hidden = null; emit(); },
   setSlot(i: number, k: string | null) { input({ ...here(), type: 'slot', i, k }); emit(); },
@@ -118,12 +118,6 @@ export const game = {
   decide(k: string) {
     const P = S.pending; if (!P || P.type !== 'dec') return;
     input({ ...here(), type: 'decide', id: P.id, k });
-    this.afterModal();
-  },
-  /** 自述：写下的话记进这一生 */
-  reflect(text: string) {
-    const P = S.pending; if (!P || P.type !== 'ref') return;
-    input({ ...here(), type: 'reflect', text });
     this.afterModal();
   },
   afterModal() {

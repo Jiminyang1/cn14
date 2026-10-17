@@ -8,7 +8,6 @@ export type Input = { a: number; t: number } & (
   | { type: 'slot'; i: number; k: string | null } // 改第 i 格（focus.ts 的 setSlot）
   | { type: 'act'; k: string } // 做一件行动（actions.ts 的 doAct）
   | { type: 'auto'; on: boolean }
-  | { type: 'reflect'; text: string }
 );
 /** 不影响模拟结果、只用来排查的事件 */
 export interface RunEvent { at: string; a?: number; t?: number; type: string; [k: string]: unknown }
