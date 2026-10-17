@@ -53,9 +53,8 @@ export function illMonth() {
 }
 export function die(k) {
   S.phase = 'end'; S.pending = null; S.queue = [];
-  // 长到 110 岁（endYear 里）离世时已经过了生日、S.t 归零，但 S.month 还停在上一年的最后一个月
-  const m = S.t === 0 ? 0 : S.month;
-  S.death = { age: S.age, cause: k, year: calYear(m), month: calMonth(m) };
+  // 长到 110 岁（endYear 里）离世时已经过了生日，S.month 也已经归零
+  S.death = { age: S.age, cause: k, year: calYear(), month: calMonth() };
   log(deathText(k), 'death');
 }
 export function deathText(k) {

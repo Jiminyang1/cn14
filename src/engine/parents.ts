@@ -12,7 +12,16 @@ import { chance, gauss, pick, ri, rnd, wpick } from './rng';
 import { cityLoc, hpCounty, migrantCity, placeHp, placeName, wageBase } from './place';
 import { rural } from './content/events';
 
-export function carer() { return S.flags.lb === 'both' ? S.flags.carer : '妈妈'; }
+// 带你的人：父母都在外打工时是老人（出生时定好）；一方外出时是在家的那一方；不留守时是妈妈。
+// 该带你的那一方已经去世（或者父母都不在了），退回另一方，再退回爷爷奶奶、外公外婆
+export function carer() {
+  const F = S.flags, f = S.fam;
+  if (F.lb === 'both') return F.carer;
+  const home = F.lb && F.lbWho === 'mom' ? 'dad' : 'mom', other = home === 'mom' ? 'dad' : 'mom';
+  if (f[home].alive) return home === 'mom' ? '妈妈' : '爸爸';
+  if (!F.lb && f[other].alive) return other === 'mom' ? '妈妈' : '爸爸';
+  return F.carer || '奶奶';
+}
 // 父母能拿出的钱：按家境对应的城乡收入五等份组人均可支配收入（统计年鉴 6-7 / 6-12，2024）× 积蓄年数（估计）
 // ===== 父母的家：收入、养老金、住房 =====
 // 退休年龄和你本人、配偶用同一条规则（career.ts 的 retireAgeOf）
@@ -63,7 +72,7 @@ export function famWealthInit() {
 }
 export const FAM_HOUSE_N = { self: '农村自建房', own: '自有住房', rent: '租房住', gone: '已由子女继承' };
 // 父母家庭当下的人均可支配收入：父母的工资或养老金合计 ÷ 家里还靠他们生活的人数
-export const parentsPerCap = () => { const f = S.fam, n = (f.mom.alive ? 1 : 0) + (f.dad.alive ? 1 : 0) + (S.indep === false ? 1 + f.sibs.filter(x => x.age < 18).length : 0); return n ? (parentIncome('mom') + parentIncome('dad')) / n : 0; };
+export const parentsPerCap = () => { const f = S.fam, n = (f.mom.alive ? 1 : 0) + (f.dad.alive ? 1 : 0) + (S.indep === false ? 1 + f.sibs.filter(x => x.alive && x.age < 18).length : 0); return n ? (parentIncome('mom') + parentIncome('dad')) / n : 0; };
 // 出生时的家庭人均可支配收入：由父母收入算出（familyIncomeInit）
 export const famIncome = () => S.famPC != null ? S.famPC : QUINT[S.rural ? "rural" : "urban"][S.q - 1];
 // 父母能帮多少：家里实际攒下的钱，最多拿出六成
@@ -72,19 +81,25 @@ export const PEDU = {
   rural: { 1: 0.07, 2: 0.5, 3: 0.12, 4: 0.12, 5: 0.12, 6: 0.06, 7: 0.01 },
   urban: { 1: 0.02, 2: 0.22, 3: 0.14, 4: 0.12, 5: 0.22, 6: 0.24, 7: 0.04 },
 };
-// 校准系数：使出生时城镇、农村家庭人均可支配收入的中位数对上统计局 2025 年数据（城镇 51,115 元、农村 20,711 元）
-export const PARENT_K = { urban: 1.08, rural: 0.715 };
+// 校准系数：使出生时城镇、农村家庭人均可支配收入的中位数对上统计局 2025 年数据（城镇 51,115 元、农村 20,711 元）。
+// 农村母亲外出务工的少了（MOM_OUT），农村 0.715 → 0.76，中位数 20,676 元
+export const PARENT_K = { urban: 1.08, rural: 0.76 };
 export const PARENT_DISP = 0.9; // 工资 → 可支配收入（扣个税、社保，估计）
 
 export function pickParentEdu(rural, pid) {
   const base = PEDU[rural ? 'rural' : 'urban'], hi = (PBY[pid].eduHi || EDU_NAT) / EDU_NAT;
   return +wpick(Object.entries(base).map(([e, w]) => [e, +e >= 5 ? w * hi : w]));
 }
+// 农村母亲自己外出务工的权重（初中及以下、高中 / 中专）：原来和父亲一样（5、3），加上「丈夫外出、妻子跟着去」，
+// 母亲外出的比父亲还多（42% 对 29%），一方外出的留守儿童里 73% 是只有妈妈在外。2010 年普查：农村留守儿童里父母都外出 46.7%、
+// 只有父亲外出 36.4%、只有母亲外出 16.9%（段成荣等，《人口学刊》2013），即一方外出的里只有母亲的约 32%。
+// 调成 0.7、0.5 以后：一方外出里只有妈妈的 33%，父母都外出占留守的 46%；母亲外出 24%、父亲 29%（npm run calib -- par）
+export const MOM_OUT = [0.7, 0.5];
 export function pickParentJob(edu, rural, female) {
   if (female && chance(rural ? 0.18 : 0.12)) return 'home';
   if (rural) {
-    if (edu <= 2) return wpick({ migrant: 5, farmer: 3, build: female ? 0.3 : 2, factory: 1.5, shop: 1, driver: female ? 0 : 0.8 });
-    if (edu <= 4) return wpick({ migrant: 3, factory: 2, skilled: 1.5, shop: 1.5, sales: 1, farmer: 1, driver: female ? 0 : 1 });
+    if (edu <= 2) return wpick({ migrant: female ? MOM_OUT[0] : 5, farmer: 3, build: female ? 0.3 : 2, factory: 1.5, shop: 1, driver: female ? 0 : 0.8 });
+    if (edu <= 4) return wpick({ migrant: female ? MOM_OUT[1] : 3, factory: 2, skilled: 1.5, shop: 1.5, sales: 1, farmer: 1, driver: female ? 0 : 1 });
     return wpick({ clerk: 3, teacher: 1.5, nurse: female ? 1.5 : 0.2, sales: 1.5, civil: 1, skilled: 1, migrant: 1 });
   }
   if (edu <= 2) return wpick({ factory: 3, rider: female ? 0.3 : 2, driver: female ? 0.2 : 1.5, shop: 2, sales: 1.5, build: female ? 0 : 1 });
