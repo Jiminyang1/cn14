@@ -601,3 +601,10 @@ table.cmp th { font-weight: 500; font-family: var(--serif); color: var(--muted);
 .end-more { margin-top: 30px; border-top: 1px solid var(--rule); padding-top: 12px; }
 .end-more > summary { cursor: pointer; font-size: 14px; color: var(--ink2); min-height: 32px; }
 .end-more > summary:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+
+/* 家里的钱（ui/Sidebar.tsx 的 Econ）：家境、一句话、细账 */
+.fam-econ { margin-top: 10px; }
+.fam-q { display: flex; align-items: baseline; gap: 8px; font-size: 13px; color: var(--muted); }
+.fam-q b { font-family: var(--serif); font-size: 15px; color: var(--ink); }
+.fam-line { margin: 6px 0 8px; font-size: 13.5px; line-height: 1.7; color: var(--ink2); }
+.fam-h { margin: 16px 0 0; font-size: 13px; color: var(--muted); font-weight: 500; }

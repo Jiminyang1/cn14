@@ -71,7 +71,7 @@ export function forksOf(L: Life): Fork[] {
 export const lifeTime = (L: Life) => Object.entries(L.fy || {}).filter(([, y]) => y >= 0.5).sort((a, b) => b[1] - a[1]).map(([k, y]) => ({ k, n: FOCUS[k]?.n || k, y }));
 
 // ===== 小传 =====
-const Q_WORD = ['', '家里很穷', '家里不宽裕', '家境普通', '家里过得不错', '家境优渥'];
+export const Q_WORD = ['', '家里很穷', '家里不宽裕', '家境普通', '家里过得不错', '家境优渥'];
 function mood(L: Life) {
   const ys = L.years.filter(y => y.a >= 18);
   if (!ys.length) return null;

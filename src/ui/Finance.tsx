@@ -107,6 +107,7 @@ export function MonthlyLedger({ m, embedded = false }: { m?: string; embedded?: 
     </details>}
   </> : <p className="account-note ledger-empty">{S.indep === false ? '经济独立后，每月月底会自动记下一笔收支。' : '第一个月结算后，这里会保留每个月的收支，之后也能回来翻看。'}</p>;
   if (embedded) return <div className="monthly-ledger">{content}</div>;
+  if (S.indep === false && !latest) return null; // 经济独立以前没有自己的账：整栏不显示
   return <section className="pg monthly-ledger" data-m={m}>
     <div className="sec"><span className="no">六</span><h3>收支账本</h3><small>按月留档</small></div>
     {content}

@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import {
   AX, AX_NAME, CAUSE, EDU_LV, FAM_HOUSE_N, JOBS, PBY, S, axWord, calMonth, calYear, leOf, partnerPay, partnerTrait, persWords, placeName, shownZ, statusLabel,
-  loanBal, loanArrears, loanPayY, loveWord, parentIncome, parentRetired, parentsPerCap, ptJobName, wan, wanM, monthlyPay, inheritedValue, netWorth,
+  loanBal, loanArrears, loanPayY, loveWord, parentIncome, parentRetired, ptJobName, Q_WORD, wan, wanM, monthlyPay, inheritedValue, netWorth,
   type Companion, type Doc, type Partner,
 } from '../engine';
 import { game } from '../game/controller';
@@ -149,29 +149,52 @@ export function Body({ m }: { m?: string }) {
 }
 
 // ===== 父母与家庭支持 =====
+// 家里的钱：家境几个点、一句话说清楚（爸妈做什么、一个月挣多少、住什么房子、存款和欠款），细账收在折叠里
+const PW = { dad: '爸爸', mom: '妈妈' } as const;
+function famLine() {
+  const f = S.fam, H = S.famHouse || { type: 'rent' as const, v: 0, where: '' };
+  const alive = (['dad', 'mom'] as const).filter(w => f[w].alive);
+  const ret = (w: 'dad' | 'mom') => parentRetired(f[w], w === 'dad');
+  const doing = (w: 'dad' | 'mom') => {
+    const p = f[w];
+    if (ret(w)) return '退休了';
+    if (p.jk === 'migrant') return `在${p.wloc?.city || '外地'}打工`;
+    if (p.jk === 'farmer') return '在家种地';
+    if (p.jk === 'home') return S.rural ? '在家种地带孩子' : '在家带孩子';
+    return '是' + p.job;
+  };
+  // 两个人一样的（都退休了、都在家种地、都在同一座城市打工）合成一句
+  const jobs = alive.length === 2 && doing('dad') === doing('mom') ? '爸妈都' + doing('dad') : alive.map(w => PW[w] + doing(w)).join('，');
+  const inc = parentIncome('mom') + parentIncome('dad');
+  const both = alive.length === 2, verb = alive.every(ret) ? '领' : '挣';
+  let t = `${jobs}，${both ? '两个人一个月一共' : '一个月'}${verb}${wan(inc / 12)}。`;
+  t += H.type === 'self' ? '家里住自己盖的房子' : H.type === 'own' ? `家里在${H.where || '本地'}有一套房子` : H.type === 'rent' ? '一家人租房住' : '家里没有自己的房子';
+  const money = S.famMoney || 0, debt = S.famDebt || 0;
+  t += money > 1000 ? `，存着${wan(money)}` : '，没什么存款';
+  t += debt > 0 ? `，还欠着${wan(debt)}。` : money < -1000 ? `，还欠着${wan(-money)}。` : '。';
+  return t;
+}
 export function Econ() {
   const f = S.fam;
   const H = S.famHouse || { type: 'rent' as const, v: 0, where: '' }, anyParent = f.mom.alive || f.dad.alive;
-  const assets = (S.famMoney || 0) + (H.v || 0) - (S.famDebt || 0);
-  // 父母的收入合成一行，各自领多少、谁已去世写在 i 里
   const alive = (['dad', 'mom'] as const).filter(w => f[w].alive), ret = (w: 'dad' | 'mom') => parentRetired(f[w], w === 'dad');
   const word = alive.every(ret) ? '养老金' : alive.every(w => !ret(w)) ? '月收入' : '收入';
+  if (!anyParent) return <div className="fam-econ"><p className="fam-line">父母都已经去世。{S.stats.inherit ? `你继承了约 ${wan(S.stats.inherit)}。` : ''}</p></div>;
   return (
-    <details className="finance-fold parent-econ">
-      <summary><span>父母与家庭支持<small>{anyParent ? S.indep === false ? '生活由家里承担' : S.flags.supportY > 0 ? '正在贴补父母生活' : '家庭后盾' : '父母都已去世'}</small></span><span className="fold-meta">{anyParent ? `家境 ${dots(S.q)}` : '继承与往来'}</span></summary>
-      <div className="finance-fold-body">
-      {anyParent ? <>
-        <Row k="家境" v={<span className="dots">{dots(S.q)}</span>} />
-        {S.indep === false && <Row k={<>人均可支配<Ib k="famPerCap" /></>} v={wanM(parentsPerCap())} />}
-        <Row k={<>父母{word}<Ib k="parentsInc" /></>} v={wanM(parentIncome('mom') + parentIncome('dad'))} />
-        <Row k={<>住房<Ib k="famHouse" /></>} v={<>{FAM_HOUSE_N[H.type]}{H.v ? ' · 约' + wan(H.v) : ''}{H.where && <small>{H.where}</small>}</>} />
-        <Row k={<>{S.famMoney < 0 && !(S.famDebt > 0) ? '欠款' : '存款'}<Ib k="famMoney" /></>} v={<b className={neg(S.famMoney < 0)}>{S.famMoney < 0 && S.famDebt > 0 ? '−' : ''}{wan(Math.abs(S.famMoney || 0))}</b>} />
-        {S.famDebt > 0 && <Row k={<>欠款<Ib k="famDebt" /></>} v={<b className="neg">{wan(S.famDebt)}</b>} />}
-        <Row k={<>净资产<Ib k="famAssets" /></>} v={<b className={neg(assets < 0)}>约{wan(assets)}</b>} />
-        {S.flags.supportY > 0 && <p className="note-line">父母的积蓄已经花完，你每年给他们寄生活费，累计约 {wan(S.stats.support || 0)}。</p>}
-      </> : <p className="note-line">父母都已经去世。{S.stats.inherit ? `你继承了约 ${wan(S.stats.inherit)}。` : ''}</p>}
-      </div>
-    </details>
+    <div className="fam-econ">
+      <div className="fam-q"><span>家境</span><span className="dots">{dots(S.q)}</span><b>{Q_WORD[S.q]}</b></div>
+      <p className="fam-line">{famLine()}</p>
+      {S.flags.supportY > 0 && <p className="fam-line">父母的积蓄已经花完，你每年给他们寄生活费，累计约 {wan(S.stats.support || 0)}。</p>}
+      <details className="finance-fold">
+        <summary><span>细账</span></summary>
+        <div className="finance-fold-body">
+          <Row k={<>父母{word}<Ib k="parentsInc" /></>} v={wanM(parentIncome('mom') + parentIncome('dad'))} />
+          <Row k={<>住房<Ib k="famHouse" /></>} v={<>{FAM_HOUSE_N[H.type]}{H.v ? ' · 约' + wan(H.v) : ''}{H.where && <small>{H.where}</small>}</>} />
+          <Row k={<>存款<Ib k="famMoney" /></>} v={<b className={neg(S.famMoney < 0)}>{S.famMoney < 0 ? '−' : ''}{wan(Math.abs(S.famMoney || 0))}</b>} />
+          {S.famDebt > 0 && <Row k={<>欠款<Ib k="famDebt" /></>} v={<b className="neg">{wan(S.famDebt)}</b>} />}
+        </div>
+      </details>
+    </div>
   );
 }
 
@@ -191,7 +214,7 @@ export function Account({ m }: { m?: string }) {
     const why = S.school ? '在读' + S.school + '，花销靠家里' : preschool() ? '还小，花销靠家里' : '还没有工作';
     return (
       <Sec no="五" title="我的经济" meta="尚未经济独立" m={m}>
-        <p className="account-note">{why}。开始自己生活后，在这里查看现金、收入和每月结余。</p>
+        <p className="account-note">{why}。开始自己生活后，这里记你自己的钱。</p>
         <Econ />
       </Sec>
     );
@@ -229,6 +252,7 @@ export function Account({ m }: { m?: string }) {
           </> : <Row k="住在" v={myHome()} />}
         </div>
       </details>
+      <h4 className="fam-h">父母家里</h4>
       <Econ />
     </Sec>
   );
