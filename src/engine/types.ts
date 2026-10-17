@@ -32,7 +32,7 @@ export interface Choice { k: string; label: string; sub?: string; w?: number; ti
 export interface Decision { title: string; body: string; fact?: string; form?: string; card?: [string, string][]; choices: Choice[]; ctx?: any; why?: { k: string; t: string } } // why：自动抉择时性格起了明显作用，记下理由
 
 /** 院校（gaokao.ts） */
-export interface Uni { name: string; city: string; prov: string; tier: string; pct: number; attr: string; fee?: number; thr?: number; p?: number; taken?: number; group?: string }
+export interface Uni { name: string; city: string; prov: string; tier: string; pct?: number; u?: number; attr: string; fee?: number; thr?: number; line?: number; ml?: Record<string, number>; w?: number; p?: number; taken?: number; group?: string }
 
 // ===== 一个人的一生 =====
 

@@ -106,10 +106,10 @@ function Zhiyuan({ P, photo }: { P: Extract<Pending, { type: 'dec' }>; photo: Re
             <input type="checkbox" checked={k >= 0} onChange={e => toggle(i, e.target.checked)} />
             <span className="zy-ord">{k >= 0 ? `第${k + 1}志愿 ` : ''}</span>
             <b>{u.name}</b> <span className="tag">{TIER_N[u.tier]}</span><br />
-            <small>{u.city} · {u.prov === S.home.p ? '本省' : '外省'}{u.fee ? ' · 学费高' : ''} · 录取把握 {Math.round(u.p * 100)}%（{pc(u.p)}）</small>
+            <small>{u.city} · {u.prov === S.home.p ? '本省' : '外省'}{u.fee ? ' · 学费高' : ''} · 投档线约 {u.line} 分 · 录取把握 {Math.round(u.p * 100)}%（{pc(u.p)}）</small>
           </label>
           <select value={majors[i]} onChange={e => setMajors(m => ({ ...m, [i]: e.target.value }))}>
-            {majorsOf(u).map(m => <option key={m.n} value={m.n}>{m.n}{m.heat < 0.8 ? '·热' : m.heat > 1.2 ? '·冷' : ''} {Math.round(majorP(c.rank, u, m) * 100)}%</option>)}
+            {majorsOf(u).map(m => <option key={m.n} value={m.n}>{m.n}{m.heat < 0.8 ? '·热' : m.heat > 1.2 ? '·冷' : ''} {Math.round(majorP(c.score, u, m) * 100)}%</option>)}
           </select>
         </div>
       );
