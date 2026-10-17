@@ -23,6 +23,7 @@ import { kinYear } from './kin';
 import { turnsYear } from './turns';
 import { loveMonth } from './romance';
 import { makeName } from './names';
+import { persInit, persWords, persYear, shape, shownZ, tiltW, whyOf } from './personality';
 
 // ===== 出生 =====
 export function birth(seed, opts: { year?: number; headless?: boolean } = {}) {
@@ -83,6 +84,8 @@ export function birth(seed, opts: { year?: number; headless?: boolean } = {}) {
     so: clamp(gauss(55, 7), 25, 85),
   };
   familyIncomeInit(); // 家境由父母收入决定
+  persInit(); // 性格（只用第三条随机数流）
+  if (S.flags.lb === 'both') shape({ n: 0.15, e: -0.05 }); // 父母都外出的留守儿童：敏感一些（方向有研究支持，幅度是估计）
   S.st.kn = clamp(S.st.kn + (S.q - 3) * 3 + (Math.max(S.fam.mom.edu, S.fam.dad.edu) - 4) * 1.5, 10, 90); // 家境、父母学历
   famHouseInit();
   famWealthInit(); // 家里原有的积蓄和欠款
@@ -159,11 +162,21 @@ export function openDec(id) {
   if (S.headless) { resolveDec(id, d, autoPick(d)); return; }
   S.pending = { type: 'dec', id, d };
 }
-export function autoPick(d) { return wpick(d.choices.filter(c => !c.off).map(c => [c.k, c.w == null ? 1 : c.w])); }
+// 自动抉择：按选项的权重抽，权重再乘上性格的倾向（tilt）。性格把选中的那一项抬高了不少时，记下理由（resolveDec 写在记录下面）
+export function autoPick(d) {
+  const cs = d.choices.filter(c => !c.off), w0 = cs.map(c => c.w == null ? 1 : c.w), w = cs.map((c, i) => w0[i] * tiltW(c.tilt));
+  const k = wpick(cs.map((c, i) => [c.k, w[i]]));
+  if (S.pers) {
+    const i = cs.findIndex(c => c.k === k), s0 = w0.reduce((a, b) => a + Math.max(0, b), 0), s1 = w.reduce((a, b) => a + Math.max(0, b), 0);
+    const t = i >= 0 && s1 > 0 && w0[i] > 0 ? whyOf(cs[i].tilt, (w[i] / s1) / (w0[i] / s0)) : null;
+    d.why = t ? { k, t } : undefined;
+  }
+  return k;
+}
 export function resolveDec(id, d, k) {
   const c = d.choices.find(x => x.k === k) || { label: k.startsWith('apply:') ? '填报志愿：' + JSON.parse(k.slice(6)).apps.map(a => d.ctx.cands[a.i].name).join('、') : k };
   S.pending = null;
-  log(`${d.title} —— ${c.label}`, 'choice');
+  log(`${d.title} —— ${c.label}`, 'choice', d.why && d.why.k === k ? d.why.t : null);
   out(DEC[id].apply(k, d.ctx || {}));
 }
 // 无界面的人生（同伴、校准）一次跑完一年：和有界面时一样按月推进、记下每件事发生在什么时候，只是抉择会被自动做掉
@@ -197,11 +210,13 @@ function endMonth(m: number) {
 export function endYear() {
   S.age++; S.t = 0;
   if (S.age >= 110) { die('old'); return; }
+  persYear();
   planYear();
 }
 // 旧存档（按年推进时期）没有月份：按这一年过了多少补上
 export function migrateLife(L: Life) {
   if (L.month == null) L.month = Math.min(MONTHS - 1, Math.floor(L.t * MONTHS));
+  if (!L.pers) persInit(L); // 加性格以前的存档：由种子补上
 }
 export function statusLabel() {
   if (S.age < 3) return '婴儿';
@@ -229,6 +244,7 @@ function summarizeCompanion(c, tr) {
   return {
     name: c.name, sex: c.sex, eth: c.eth, born: c.born, place: placeName(c.home), rural: c.rural, q: c.q,
     death: c.death, edu: c.edu, job: mainJob(c), married: c.fam.married || c.flags.widowed != null, kids: c.fam.kids.length, places: c.places, tr,
+    pw: c.pers ? persWords(shownZ(c), 2) : undefined,
   };
 }
 export function newLife(seed) {

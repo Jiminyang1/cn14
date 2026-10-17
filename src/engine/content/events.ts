@@ -16,9 +16,13 @@ import { kidsAlive } from '../family';
 import { single, soloK } from '../romance';
 import { wan } from '../format';
 import { sibToWed, sibWed } from '../kin';
+import { shape, tiltW } from '../personality';
 
 export const rural = () => S.loc.kind === 'rural';
 export const dz = t => PBY[S.loc.p].dz.includes(t);
+
+// 离婚：敏感的人风险高，随和、认真的低（每个标准差的风险比约 1.15 / 0.85 / 0.85，Roberts 2007、Lundberg 2012），夫妻双方各乘一次
+const DIV_T = { n: 0.14, a: -0.16, c: -0.16 };
 
 export const EVENTS = [
   // ---------- 0–5 岁 ----------
@@ -51,7 +55,7 @@ export const EVENTS = [
   { id: 'classes', a: [7, 15], gap: 2, w: () => !rural() && S.q >= 3 ? 2.5 : 0, run: () => { eff({ kn: 3, h: -3, money: 0 }); return `周末被报了好几个班：${pick(['书法和编程', '英语和奥数', '钢琴和游泳', '画画和跆拳道'])}，比上学还累。`; } },
   { id: 'olympiad', a: [9, 14], once: 1, w: () => S.st.kn > 62 ? 2 : 0, run: () => { eff({ kn: 2, h: 4 }); return { t: '数学竞赛拿了奖。奖状被贴在家里最显眼的那面墙上。', k: 'good' }; } },
   { id: 'bestie', a: [6, 14], once: 1, w: 2, run: () => { eff({ so: 6, h: 3 }); return '交到了一个最好的朋友，你们约好以后考同一所高中。'; } },
-  { id: 'bully', a: [7, 15], once: 1, w: () => S.st.so < 45 ? 2 : 0.7, run: () => { eff({ h: -6, so: -3 }); return { t: '在学校被几个同学欺负，你没敢告诉家里。', k: 'bad' }; } },
+  { id: 'bully', a: [7, 15], once: 1, w: () => S.st.so < 45 ? 2 : 0.7, run: () => { eff({ h: -6, so: -3 }); shape({ n: 0.1, e: -0.05 }); return { t: '在学校被几个同学欺负，你没敢告诉家里。', k: 'bad' }; } },
   { id: 'cadre', a: [7, 14], once: 1, w: () => S.st.kn > 55 ? 2 : 0.8, run: () => { eff({ so: 2, h: 2 }); return `当上了${pick(['班长', '学习委员', '数学课代表', '体育委员'])}。`; } },
   { id: 'phone', a: [10, 14], once: 1, w: 2, run: () => { eff({ h: 2, kn: -1 }); return '有了自己的第一部手机，是爸妈换下来的旧手机。'; } },
   { id: 'game', a: [10, 17], once: 1, w: 2, run: () => { eff({ h: 3, kn: -2 }); return { t: `迷上了一款手游。可是防沉迷规定，你只能在周五到周日晚上八点到九点玩。`, f: '2021年起，网络游戏企业只能在周五、周六、周日和法定节假日20时至21时向未成年人提供1小时服务' }; } },
@@ -114,7 +118,7 @@ export const EVENTS = [
   { id: 'quitSmoke', a: [30, 75], once: 1, w: 0.8, c: () => !!S.flags.smoke, run: () => { S.flags.smoke = 0; eff({ hl: 3 }); return { t: '戒烟了。试了好几次，这次终于成功。', k: 'good' }; } },
   { id: 'drink', a: [22, 55], gap: 4, w: () => ['sales', 'boss', 'civil'].includes(S.job) ? 2 : 0.3, run: () => { eff({ hl: -2 }); return '饭局上被一轮轮敬酒，喝到吐。'; } },
   { id: 'low', a: [14, 70], gap: 6, w: () => S.st.h < 40 ? 2 : 0.15, run: () => { eff({ h: -3 }); if (chance(0.15)) { eff({ h: 8 }); return { t: '有一段时间每天都很累，什么都不想做。后来你去医院看了心理科，慢慢好了一些。', f: '中国抑郁障碍患者中，一年内接受过任何治疗的不到一成（Lancet Psychiatry 2021）。全国心理援助热线：12356' }; } return { t: '有一段时间每天都很累，什么都不想做，觉得一切都没有意义。你没有告诉任何人。', k: 'bad', f: '全国心理援助热线：12356' }; } },
-  { id: 'divorce', a: [25, 70], gap: 5, w: () => (S.st.h < 45 ? 0.12 : 0.02) * (PBY[S.loc.p].divK || 1), c: () => S.fam.married && S.fam.partner && S.fam.partner.alive, run: () => { const p = S.fam.partner; S.fam.married = false; S.fam.partner = null; S.flags.divorced = 1; addDoc('divorce', '离婚证', [['对方', p.name]]); eff({ h: -8, so: -4, money: -Math.max(0, S.money) * 0.4 }); return { t: `你和${p.name}离婚了。`, k: 'bad', f: '2023年全国离婚360.5万对，其中民政部门登记259.3万对，其余为法院判决或调解' }; } },
+  { id: 'divorce', a: [25, 70], gap: 5, w: () => (S.st.h < 45 ? 0.12 : 0.02) * (PBY[S.loc.p].divK || 1) * tiltW(DIV_T) * tiltW(DIV_T, S.fam.partner && S.fam.partner.pz || null), c: () => S.fam.married && S.fam.partner && S.fam.partner.alive, run: () => { const p = S.fam.partner; S.fam.married = false; S.fam.partner = null; S.flags.divorced = 1; addDoc('divorce', '离婚证', [['对方', p.name]]); eff({ h: -8, so: -4, money: -Math.max(0, S.money) * 0.4 }); return { t: `你和${p.name}离婚了。`, k: 'bad', f: '2023年全国离婚360.5万对，其中民政部门登记259.3万对，其余为法院判决或调解' }; } },
   { id: 'kidSchool', a: [28, 55], gap: 3, w: 2, c: () => kidsAlive().some(k => k.age >= 6 && k.age <= 17), run: () => { eff({ h: -2, money: -placeInc() * 0.1 }); return pick(['为了孩子上学，研究学区、排队报名，跑了好几趟。', '每天晚上辅导孩子写作业，气得血压都上来了。', '孩子的家长群一天几百条消息。']); } },
   { id: 'reunion', a: [30, 60], gap: 10, w: 1, run: () => { eff({ so: 2, h: S.relInc > 0 ? 2 : -2 }); return '同学聚会。有人开着好车来，有人没来。大家聊着聊着，就开始聊房子和孩子。'; } },
   { id: 'scam', a: [25, 90], gap: 8, w: () => S.age > 60 ? 1.5 : 0.5, c: () => S.money > 0, run: () => { const x = Math.min(S.money * 0.3, placeInc() * (S.age > 60 ? 0.5 : 0.3)); eff({ money: -x, h: -4 }); return { t: S.age > 60 ? `听了几次“健康讲座”，买了${wan(x)}的保健品。` : `接到自称“公检法”的电话，被骗走了${wan(x)}。`, k: 'bad' }; } },

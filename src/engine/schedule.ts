@@ -14,6 +14,7 @@ import { isWorking, retire, retireAge } from './career';
 import { ENABLE_REFLECT, MILESTONES, REFLECT } from './lifecycle';
 import { MONTHS, calMonth, calYear, monthStart, posIn } from './monthly';
 import { entryYear, fixSchoolEnd, nowM } from './calendar';
+import { reportCard } from './personality';
 
 declare module './types' {
   interface Life {
@@ -105,6 +106,7 @@ function schoolMonth(m: number) {
       log(rural ? '小学毕业，去镇上读初中。' : '小学毕业，上了初中。', 'ev');
     }
   }
+  if (cm === 1 && S.school === '小学' && cy === S.schoolEnd - 5) reportCard(); // 一年级上学期期末
   if (cm === 6 && S.school && S.school !== '小学' && cy >= S.schoolEnd) {
     const id = schoolDecision();
     if (!id || queued('dec', id)) return;

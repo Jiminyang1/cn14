@@ -5,6 +5,7 @@ import { clamp } from './rng';
 import { placeInc } from './place';
 import { JOBS, isWorking } from './career';
 import { MONTHS, approachPerMonth } from './monthly';
+import { pz } from './personality';
 
 export function eff(o) {
   for (const k in o) {
@@ -16,18 +17,22 @@ export function eff(o) {
 }
 // 每年向目标值靠拢的比例：健康 0.18、幸福 0.25、人际 0.12（估计），换算成每月：目标不变时一年后的结果和原来一样
 const K_HL = approachPerMonth(0.18), K_H = approachPerMonth(0.25), K_SO = approachPerMonth(0.12);
+// 性格对目标值的影响（每个标准差）：成年人幸福的标准差约 8，敏感 −2.5、外向 +1.2、认真 +0.8 约等于 β −0.3 / +0.15 / +0.1（Anglim 2020、Schimmack 2022）；
+// 外向、随和的人人际高一些；认真的人健康习惯好一些。见 docs/personality/PLAN.md
+const persH = () => -2.5 * pz('n') + 1.2 * pz('e') + 0.8 * pz('c') + 0.4 * pz('a');
+const persSo = () => 2.5 * pz('e') + 1.0 * pz('a');
 /** 健康、幸福、人际向各自的目标值靠拢一个月（目标按这个月月底的状态算） */
 export function drift() {
   const st = S.st, f = S.fam, a = S.age;
   let kids = 0; for (const k of f.kids) if (k.alive) kids++;
-  const hT = hlExp(a) + (S.q - 3) * 1.5 + (S.money < 0 && a >= 22 ? -3 : 0) + (S.flags.smoke ? -6 : 0) + (S.flags.ill ? -20 : 0);
+  const hT = hlExp(a) + (S.q - 3) * 1.5 + (S.money < 0 && a >= 22 ? -3 : 0) + (S.flags.smoke ? -6 : 0) + (S.flags.ill ? -20 : 0) + 0.8 * pz('c');
   st.hl = clamp(st.hl + (hT - st.hl) * K_HL, 1, 100);
   const rel = a < 18 ? (S.q - 3) * 2.5 : (S.relInc || 0);
   const debt = a >= 22 && S.money < 0 && S.money < -placeInc() ? 7 : 0; // 先看有没有欠款，免得每月都去算当地收入
   const hpT = 56 + rel + (f.married && f.partner && f.partner.alive ? 5 : 0) + Math.min(6, kids * 3) + (st.so - 50) * 0.25 + (st.hl - 60) * 0.15
-    - debt - (S.flags.lb && a < 16 ? 6 : 0) - (S.job === 'seeking' ? 6 : 0);
+    - debt - (S.flags.lb && a < 16 ? 6 : 0) - (S.job === 'seeking' ? 6 : 0) + persH();
   st.h = clamp(st.h + (hpT - st.h) * K_H, 0, 100);
-  const soT = 50 + (f.married ? 8 : 0) + Math.min(9, kids * 3) + (S.flags.lb && a < 16 ? -4 : 0) + (a > 75 ? -6 : 0);
+  const soT = 50 + (f.married ? 8 : 0) + Math.min(9, kids * 3) + (S.flags.lb && a < 16 ? -4 : 0) + (a > 75 ? -6 : 0) + persSo();
   st.so = clamp(st.so + (soT - st.so) * K_SO, 0, 100);
 }
 export const hlExp = a => clamp(90 - Math.max(0, a - 22) * 0.8, 15, 90);

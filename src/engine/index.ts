@@ -4,6 +4,7 @@ export * from './rng';
 export * from './format';
 export * from './journal';
 export * from './stats';
+export * from './personality';
 export * from './focus';
 export * from './mortality';
 export * from './health';
