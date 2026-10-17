@@ -5,7 +5,7 @@
 // · 一般的事件：每年 2–3 个位置，到了那个月按权重 w 抽一件。带 mo 的只在这几个公历月份可选（权重自动乘 12 ÷ 月数，一年的发生率大致不变）；
 // · 状态事件（有 pm）：不参与抽取，每个月按 pm() 的概率判定（离婚这类按风险算的、军训这类按学校日历的），不占上面的位置。mo、条件、年龄照样检查
 
-import { JOBS, hireInCity, isWorking, quitJob, raise } from '../career';
+import { JOBS, RAISE, hireInCity, isWorking, quitJob, raise } from '../career';
 import { severance } from '../turns';
 import { MAJORS } from '../education';
 import { PBY } from '../data';
@@ -215,7 +215,7 @@ export const EVENTS = [
         : { t: `公司裁员，名单上有你。按工龄拿到了${wan(comp)}的经济补偿，工资发到离职那天为止。`, k: 'bad', f: '劳动合同法：经济补偿按在本单位工作的年数，每满一年支付一个月工资；没有提前30天通知的，再多付一个月（俗称“N+1”）' };
     } },
   // 升职：有单位的工作，这个年龄年里刚入职的、被裁过的不升。涨工资统一用 raise（越接近上限涨得越少）
-  { id: 'promo', a: [25, 58], gap: 4, w: () => unitJob() ? 1.8 : 0, c: () => unitJob() && !newJob() && S.done.layoff !== S.age, run: () => { raise(1.15); eff({ h: 4 }); return { t: PROMO_T[S.job] || '升职加薪了。', k: 'good' }; } },
+  { id: 'promo', a: [25, 58], gap: 4, w: () => unitJob() ? 1.8 : 0, c: () => unitJob() && !newJob() && S.done.layoff !== S.age, run: () => { raise(RAISE.promo); eff({ h: 4 }); return { t: PROMO_T[S.job] || '升职加薪了。', k: 'good' }; } },
   // 炒股：在单位上班的跟着同事，其余跟着朋友、老同事
   { id: 'stock', a: [25, 65], gap: 5, w: 1, c: () => S.money > placeInc() * 0.5, run: () => { const g = gauss(-0.05, 0.25), x = S.money * 0.3 * g, who = unitJob() ? '同事' : isWorking() ? '朋友' : '老同事'; eff({ money: x, h: g > 0 ? 2 : -3 }); return g > 0 ? `跟着${who}买了股票，赚了${wan(x)}。` : `跟着${who}买了股票，亏了${wan(-x)}。`; } },
   { id: 'car', a: [25, 55], once: 1, w: 1.5, c: () => S.money > placeInc() * 1.2, run: () => { eff({ money: -placeInc() * 1.0, h: 3 }); return `买了一辆${chance(0.6) ? '新能源车' : '二手车'}，${awayFromHome() ? '过年终于可以自己开车回家了' : '周末终于可以开车出去转转了'}。`; } },

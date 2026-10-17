@@ -1,9 +1,8 @@
 // 恋爱与婚姻：认识人、在一起、分手、结婚。
 // 对象和你本人、父母用同一套「学历 → 职业 → 工资」逻辑生成（parents.ts），只是学历、年龄、家乡和你相关。
 
-import { fexp } from './fmath';
 import { EDU_LV, SCHOOL_EDU } from './education';
-import { EDU_WAGE, JOBS, isWorking } from './career';
+import { JOBS, isWorking, luckK } from './career';
 import { HPF_JOB } from './housing';
 import { PBY, PROVS } from './data';
 import { S } from './state';
@@ -84,7 +83,7 @@ export function makePartner(how) {
   const p: any = {
     name: nm.full, sur: nm.sur, sex, age, edu, home, rural, alive: true, metAt: S.age, how, city: S.loc.city,
     startAge: edu >= 7 ? 25 : edu >= 6 ? 22 : edu >= 5 ? 21 : edu >= 3 ? 18 : 16,
-    k: fexp(gauss(0, 0.35)) * EDU_WAGE[edu], // 个人系数：学历溢价 × 个人差异
+    k: luckK(PARTNER_SD), // 个人差异（均值为 1）；学历溢价按对方做的那一行算（parents.ts 的 personK）
     q: clamp(Math.round(3 + (edu - 4.5) * 0.45 + gauss(0, 1.1)), 1, 5), // 对方家境（估计）
     trait: PERS.on && S.pers ? '' : pick(TRAITS), // 有性格时由对方的性格派生（partnerTrait），下面那一次 rnd() 代替这里的 pick
   };
@@ -111,15 +110,20 @@ export const partnerLoc = p => {
   const pid = PBY[S.loc.p].cities.includes(p.city) ? S.loc.p : PROV_OF.get(p.city);
   return pid ? cityLoc(pid, p.city) : cityLoc(p.home, PBY[p.home].cities[0]);
 };
+// 对方的个人差异（对数正态的 σ，均值为 1；估计）
+export const PARTNER_SD = 0.35;
 export const partnerInc = p => Math.round(wageOf(p, partnerLoc(p))); // 税前；到手见 finance.ts 的 partnerPay
 export const ptJobName = p => p.jk ? JOBS[p.jk].n : `${EDU_LV[p.edu]}在读`;
 export const loveWord = v => v >= 75 ? '很好' : v >= 58 ? '不错' : v >= 42 ? '一般' : '有点冷淡';
+// 「收入高」：税前年收入超过当地人均可支配收入的 RICH_K 倍。原来是 1.3 倍（24–34 岁未婚在职男性约 68% 满足）；
+// 工资对齐统计局以后同样 1.3 倍只有 44%，改成 1.0 倍（69%），保持原来的比例
+export const RICH_K = 1.0;
 // 对方愿不愿意：合不合得来，加上你的人际、工作和房子（婚恋市场上，男方的房子和收入更被看重，估计）
 export function mutualP(p) {
   let x = MUTUAL0 + 0.5 * p.fit + (S.st.so - 55) / 100 + (p.how === 'blind' ? 0.08 : 0) + 0.04 * pz('e');
   const male = S.sex === 'M';
   if (S.house) x += male ? 0.08 : 0.03;
-  if (S.income > placeInc() * 1.3) x += male ? 0.06 : 0.03;
+  if (S.income > placeInc() * RICH_K) x += male ? 0.06 : 0.03;
   if (S.job === 'seeking') x -= male ? 0.12 : 0.06;
   return clamp(x, 0.05, 0.92);
 }

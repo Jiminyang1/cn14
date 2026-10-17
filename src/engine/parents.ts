@@ -4,7 +4,7 @@
 
 import { fexp } from './fmath';
 import { EDU_NAT, QUINT } from './real.generated';
-import { EDU_WAGE, JOBS, RESID_PENSION_JOBS, expCurve, retireAgeOf } from './career';
+import { JOBS, RESID_PENSION_JOBS, eduRel, expCurve, luckK, retireAgeOf } from './career';
 import { FAM_REPAY } from './household';
 import { PBY } from './data';
 import { S } from './state';
@@ -104,8 +104,11 @@ export const PEDU = {
   urban: { 1: 0.02, 2: 0.22, 3: 0.14, 4: 0.12, 5: 0.22, 6: 0.24, 7: 0.04 },
 };
 // 校准系数：使出生时城镇、农村家庭人均可支配收入的中位数对上统计局 2025 年数据（城镇 51,115 元、农村 20,711 元）。
-// 农村母亲外出务工的少了（MOM_OUT），农村 0.715 → 0.76；改用真实的五险和个税（原来一律 × 0.9）以后，城镇 1.08 → 1.10、农村 0.76 → 0.73（npm run calib -- par：中位数 51,295 / 20,750）
-export const PARENT_K = { urban: 1.10, rural: 0.73 };
+// 农村母亲外出务工的少了（MOM_OUT），农村 0.715 → 0.76；改用真实的五险和个税（原来一律 × 0.9）以后，城镇 1.08 → 1.10、农村 0.76 → 0.73。
+// 工资对齐统计局以后（个人系数、工龄系数的平均从约 1.4 降到约 1，DATA.md「工资」），城镇 1.10 → 1.47、农村 0.73 → 1.0（npm run calib -- par：中位数 51,025 / 20,790）。
+// 大于 1 的部分代表父母工资以外的收入：城镇居民可支配收入里工资性收入约占六成，其余是经营、财产（房租、利息）和转移收入（同住老人的养老金另算），
+// 父母一代兼职、奖金、工时长的也在里面
+export const PARENT_K = { urban: 1.47, rural: 1.0 };
 
 export function pickParentEdu(rural, pid) {
   const base = PEDU[rural ? 'rural' : 'urban'], hi = (PBY[pid].eduHi || EDU_NAT) / EDU_NAT;
@@ -134,8 +137,8 @@ export function makeParent(sex, age, rural, pid) {
   const edu = pickParentEdu(rural, pid);
   const p: any = { sex, age, edu, alive: true, startAge: edu >= 7 ? 25 : edu >= 6 ? 22 : edu >= 5 ? 21 : edu >= 3 ? 18 : 16 };
   setParentJob(p, pickParentJob(edu, rural, sex === 'F'));
-  // 个人系数：学历溢价（与你本人同一张表）× 个人差异；父母一代的差异放大一些，包含工时、奖金、兼职等（估计）
-  p.k = fexp(gauss(0, 0.65)) * EDU_WAGE[edu];
+  // 个人差异（均值为 1）：父母一代的差异放大一些，包含工时、奖金、兼职等（估计）。学历溢价按做的那一行算（wageOf 里的 eduRel）
+  p.k = luckK(PARENT_SD);
   return p;
 }
 // 父母在哪里挣钱：外出务工在打工城市（省会、沿海大城市为主）；农村家庭里有单位工作的，在本地级市的城区；其余在家里所在地
@@ -150,13 +153,16 @@ export function parentWorkLoc(p) {
   if (S.rural && p.jk !== 'farmer' && p.jk !== 'home') return p.wloc || (p.wloc = cityLoc(S.home.p, S.home.city));
   return S.home;
 }
-// 工龄系数：前 5 年从 0.75 涨到 1.0，之后每年 +2%，最高 1.1；50 岁以后每年 −1%（和你本人相同）
-export const workExpK = p => expCurve(Math.max(0, p.age - p.startAge), p.age);
+export const PARENT_SD = 0.65;
+// 工龄系数：和你本人同一条曲线（career.ts 的 expCurve），按参加工作以来的年数算
+export const workExpK = p => expCurve(Math.max(0, p.age - p.startAge), p.age, p.jk);
+/** 父母、对象的个人系数：学历溢价（比这一行一般人的学历高还是低，和你本人同一张表）× 个人差异 */
+export const personK = p => (p.jk && JOBS[p.jk] && JOBS[p.jk].m ? eduRel(p.edu, p.jk) : 1) * p.k;
 // 一个人在职时的年收入：工资基数 × 职业系数 × 个人系数 × 工龄系数 × 校准系数（父母、对象和你本人用同一套公式）
 export function wageOf(p, L, K = 1) {
   const J = JOBS[p.jk];
   if (!J || !J.m || !p.alive) return 0;
-  return wageBase(L) * J.m * p.k * workExpK(p) * K;
+  return wageBase(L) * J.m * personK(p) * workExpK(p) * K;
 }
 export const parentWage = p => wageOf(p, parentWorkLoc(p), PARENT_K[S.rural ? 'rural' : 'urban']);
 // 家境：父母到手的收入 ÷ 家庭人口，落在城镇或农村收入五等份的哪一档（档与档之间取相邻两组平均数的几何中点）

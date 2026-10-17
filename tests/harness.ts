@@ -11,7 +11,7 @@ const stable = (v: any): string => {
   return JSON.stringify(v) ?? 'null';
 };
 const hash = (o: any) => createHash('sha256').update(stable(o)).digest('hex').slice(0, 16);
-const brief = (L: any) => ({ name: L.name, born: L.born, age: L.age, cause: L.death && L.death.cause, edu: L.edu, money: Math.round(L.money) });
+const brief = (L: any) => ({ name: L.name, born: L.born, age: L.age, cause: L.death && L.death.cause, edu: L.edu, money: Math.round(L.money) || 0 }); // || 0：-0 写进 JSON 会变成 0，比较时对不上
 
 // api: { birth, runHeadlessYear, newLife, tick, resolveDec, autoPick, getS }
 export function runAll(api: any) {
