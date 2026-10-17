@@ -96,7 +96,32 @@ export const TIPS: Record<string, (arg?: string) => Tip> = {
       title: S.indep === false ? '家庭人均可支配收入（每月）' : '父母收入合计（每月）',
       expr: S.indep === false ? ['(', T(yuan(a / 12), '父亲'), '+', T(yuan(b / 12), '母亲'), ')', '÷', T(n + ' 人', '靠他们生活的人')] : [T(yuan(a / 12), '父亲'), '+', T(yuan(b / 12), '母亲')],
       result: moYr(S.indep === false ? (n ? (a + b) / n : 0) : a + b),
-      notes: ['可支配收入就是到手的钱：工资扣掉五险和个税，养老金不交税。', '父母各自的收入在他们那一行的 i 里有算法。'],
+      notes: ['可支配收入就是到手的钱：工资扣掉五险和个税，养老金不交税。', '父母各自的收入见下一行「父母收入」的 i。'],
+    };
+  },
+  // 父母的收入合在一行：都退休了叫「父母养老金」，都在上班叫「父母月收入」，一个退休一个上班叫「父母收入」；各自的情况写在这里
+  parentsInc() {
+    const f = S.fam, both = ['dad', 'mom'] as const, label = { dad: '父亲', mom: '母亲' };
+    const alive = both.filter(w => f[w].alive), ret = (w: 'dad' | 'mom') => parentRetired(f[w], w === 'dad');
+    const word = alive.every(ret) ? '养老金' : alive.every(w => !ret(w)) ? '月收入' : '收入';
+    const tot = alive.reduce((t, w) => t + parentIncome(w), 0);
+    const res = (w: 'dad' | 'mom') => RESID_PENSION_JOBS.has(f[w].jk);
+    const desc = (w: 'dad' | 'mom') => {
+      const p = f[w], v = parentIncome(w);
+      if (!p.alive) return `已去世（享年${p.age}岁），没有收入`;
+      if (ret(w)) return `养老金 ${perMo(v)}：${res(w) ? '城乡居民基本养老金' : '城镇职工基本养老金'}，退休前是${p.job}`;
+      return v ? `月收入 ${perMo(v)}（到手）：${p.job}` : `没有收入：${p.job}`;
+    };
+    const notes: string[] = [];
+    if (alive.some(ret)) notes.push(`养老金按${PBY[S.home.p].n} 2024 年人均水平算（${YEARLY}），不交税。`);
+    if (alive.some(w => ret(w) && res(w))) notes.push('务农、打工、个体户、在家带孩子的，多数只参加了城乡居民养老保险，领得很少。');
+    if (alive.some(w => !ret(w) && parentIncome(w) > 0)) notes.push('上班的收入是到手的钱：工资扣掉五险和个税。');
+    return {
+      title: `父母${word}（每月）`,
+      ...(alive.length === 2 ? { expr: [T(yuan(parentIncome('dad') / 12), '父亲'), '+', T(yuan(parentIncome('mom') / 12), '母亲')], result: moYr(tot) } : { big: perMo(tot) }),
+      rows: both.map(w => [label[w], desc(w)] as [string, string]),
+      notes,
+      src: alive.some(ret) ? '中国统计年鉴 2025 表 24-26、24-27（基金支出 ÷ 领取人数）' : undefined,
     };
   },
   parentInc(who) {
