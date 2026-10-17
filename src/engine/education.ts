@@ -2,16 +2,20 @@
 // 参数集中在 GK；各省分数线来自 real.generated.ts。
 
 import { fexp, flog } from './fmath';
-import type { Uni } from './types';
+import type { Loc, Uni } from './types';
 import { BIG, PBY, PROVS } from './data';
 import { GK_LINES } from './real.generated';
 import { S } from './state';
-import { addDoc, out } from './journal';
+import { addDoc, log, out } from './journal';
 import { chance, clamp, gauss, pick, wpick } from './rng';
 import { cityLoc, moveTo } from './place';
 import { eff } from './stats';
 import { fire } from './lifecycle';
-import { calYear } from './monthly';
+import { calMonth, calYear } from './monthly';
+
+declare module './types' {
+  interface Flags { toSchool?: { s: string; y: number; end: number; loc?: Loc; doc?: [string, string][] } | null } // 考上了、等开学（见 admit）
+}
 
 export const EDU_LV = ['没上过学', '小学', '初中', '高中', '中专/职高', '大专', '本科', '硕士'];
 // ===== 恋爱对象 =====
@@ -20,12 +24,29 @@ export const EDU_LV = ['没上过学', '小学', '初中', '高中', '中专/职
 // · 年龄：男方平均大 2 岁左右（2020 年普查平均初婚年龄男 29.4、女 28.0 岁）
 // · 家乡：多数是同一个省的（估计）
 export const SCHOOL_EDU = { 高中: 3, 职高: 4, 复读: 3, 大专: 5, 本科: 6, 硕士: 7 };
-// 被录取：搬去读书的城市，记下学校层次和专业
+// ===== 考上了，等 9 月开学 =====
+// 中考、高考、考研、考高职在 6–7 月出结果，开学在公历 9 月。出结果时只记下要去哪里读（S.flags.toSchool），这个暑假 S.school 是空的
+// （已经毕业、还没入学）；到了开学那个月（schoolStart）才换成新的学校、搬去学校所在的城市、发学籍卡。学费也在开学那个月交（household.ts）
+/** 考上了：years 年后毕业；loc 是要搬去的城市（不搬家的不填）；doc 是开学时发的学籍卡（「入学」那一行开学时补上） */
+export function admit(school: string, years: number, loc?: Loc, doc?: [string, string][]) {
+  const y = calMonth() < 9 ? calYear() : calYear() + 1; // 哪一年 9 月开学（9 月以后才定下来的，等到第二年）
+  S.school = null;
+  S.flags.toSchool = { s: school, y, end: y + years, loc, doc };
+}
+/** 每个月开始时（schedule.ts 的 planMonth → content/decisions.ts 的 huntMonth）：到了开学的时候就入学 */
+export function schoolStart() {
+  const T = S.flags.toSchool; if (!T) return;
+  const cy = calYear(); if (cy < T.y || (cy === T.y && calMonth() < 9)) return;
+  S.flags.toSchool = null;
+  if (T.loc && T.loc.city !== S.loc.city) { log(`开学了，去${T.loc.city}报到。`, 'ev'); moveTo(T.loc); }
+  S.school = T.s; S.schoolEnd = T.end;
+  if (T.doc) addDoc('school', '学籍卡', [...T.doc, ['入学', `${T.y}年`]]);
+}
+// 被录取：发录取通知书，记下学校层次和专业；9 月开学时搬去读书的城市（admit）
 export function enroll(c, major, adjusted) {
   addDoc('admit', '录取通知书', [['学校', c.name], ['专业', major + (adjusted ? '（调剂）' : '')], ['层次', TIER_N[c.tier] || '']]);
-  const L = BIG[c.city] ? cityLoc(BIG[c.city].p, c.city) : PBY[c.prov].cities.includes(c.city) ? cityLoc(c.prov, c.city) : { p: c.prov, city: c.city, kind: 'city' };
-  moveTo(L);
-  S.school = c.tier === 'zhuan' ? '大专' : '本科'; S.schoolEnd = calYear() + (c.tier === 'zhuan' ? 3 : 4);
+  const L = BIG[c.city] ? cityLoc(BIG[c.city].p, c.city) : PBY[c.prov].cities.includes(c.city) ? cityLoc(c.prov, c.city) : { p: c.prov, city: c.city, kind: 'city' } as Loc;
+  admit(c.tier === 'zhuan' ? '大专' : '本科', c.tier === 'zhuan' ? 3 : 4, L);
   S.flags.tier = { '985': 'top', '211': '211', ben1: 'ben1', ben2: 'ben', minban: 'ben', zhuan: 'zhuan' }[c.tier];
   S.flags.uni = { name: c.name, city: c.city, prov: c.prov, tier: c.tier };
   S.flags.major = major;
