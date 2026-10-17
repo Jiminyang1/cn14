@@ -11,6 +11,12 @@ import { accrueWage, goIndep } from './finance';
 import { cityLoc, homeCity, migrantCity, moveTo, placeInc, placeName } from './place';
 import { hpfStart } from './housing';
 import { tierK } from './education';
+import { calYear } from './monthly';
+import { nowM } from './calendar';
+
+declare module './types' {
+  interface Flags { civilAt?: number } // 最近一次考公务员是出生后第几个月（考试一年一次，见 content/decisions.ts 的 civilretry）
+}
 
 // ===== 职业 =====
 // m = 年收入 ÷ 当地城镇居民人均可支配收入。依据国家统计局 2025 年分行业、分岗位平均工资和农民工监测调查（research/income.json）：
@@ -58,7 +64,7 @@ export function hire(job, L?) {
   if (JOBS[job] && (JOBS[job].stable || JOBS[job].priv)) S.flags.empIns = 1;
   hpfStart(job);
   S.jobs.push({ job, age: S.age, city: S.loc.city });
-  if (!S.headless && JOBS[job] && JOBS[job].m > 0) addDoc(job === 'civil' ? 'civil' : 'job', job === 'civil' ? '录用通知' : JOBS[job].blue ? '务工登记' : '劳动合同', [['岗位', JOBS[job].n], ['工作地', placeName()], ['起始', `${S.birthYear + S.age}年`]]);
+  if (!S.headless && JOBS[job] && JOBS[job].m > 0) addDoc(job === 'civil' ? 'civil' : 'job', job === 'civil' ? '录用通知' : JOBS[job].blue ? '务工登记' : '劳动合同', [['岗位', JOBS[job].n], ['工作地', placeName()], ['起始', `${calYear()}年`]]);
 }
 // 18 岁以后还待在农村、却要去城里打工时，换到城市
 export function hireInCity(job) { hire(job, S.loc.kind === 'rural' ? migrantCity() : null); }
@@ -131,6 +137,7 @@ export function quitJob() {
   if (S.hpfOn) { S.hpfOn = false; if (S.hpf > 0) logLater(`公积金账户封存了，余额${wan(S.hpf)}还在，照样计息；找到交公积金的工作后接着缴。`); }
 }
 export function civilTry() {
+  S.flags.civilAt = nowM();
   const p = clamp(0.07 + (S.st.kn - 60) / 120 + (S.edu >= 6 ? 0.05 : 0) + (S.edu >= 7 ? 0.05 : 0) + tierK() * 0.3, 0.03, 0.4);
   if (chance(p)) { hire('civil', homeCity()); S.flags.civilRetry = 0; eff({ h: 6 }); return { t: `考上了！在${S.loc.city}当了公务员。家里人逢人就说。`, k: 'good', f: '2026年度国考过审371.8万人，约98人竞争一个岗位' }; }
   quitJob(); S.flags.civilRetry = 1; eff({ h: -4 }); return { t: '没考上。进面试的名单上没有你的名字。', k: 'bad' };
