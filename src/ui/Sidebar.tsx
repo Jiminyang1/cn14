@@ -6,7 +6,7 @@ import {
   loanBal, loanArrears, loanPayY, loveWord, parentIncome, parentRetired, closeWord, parClose, kidClose, parentWorkLoc, awayFromHome, ptJobName, Q_WORD, wan, wanM, monthlyPay, inheritedValue, netWorth,
   type Companion, type Doc, type Partner,
 } from '../engine';
-import { game } from '../game/controller';
+import { ageK, game } from '../game/controller';
 import { LiveScene } from './Photo';
 import { YearProgress } from './Progress';
 import { Ib } from './TipLayer';
@@ -68,7 +68,7 @@ export function Basic() {
         <span className="k">现状</span><span className="wide">{nowWord()}</span>
       </div>
       <YearProgress className="yprog" title="这一岁过了多少" />
-      <div className="yline"><span>{calYear()}年{m}月 · {SEASON(m)}</span><span className="mono">1年≈{Math.round(game.yearSec)}秒</span></div>
+      <div className="yline"><span>{calYear()}年{m}月 · {SEASON(m)}</span><span className="mono">1年≈{Math.round(game.yearSec / ageK(S.age))}秒</span></div>
       <div className="fam-sub">
         <div className="sub-h">家庭成员<small>{famMeta()}</small></div>
         <FamilyRows />

@@ -73,7 +73,7 @@ function FocusPlan() {
   if (!l.length || !n) return (
     <section className="pg plan">
       <div className="sec"><span className="no">三</span><h3>本年度时间安排</h3></div>
-      <p className="plan-d" style={{ margin: 0 }}>还是个孩子，正由{carer()}带着长大。六岁起可以安排每一年把时间放在哪里；这段时间可以用 8× 快进。</p>
+      <p className="plan-d" style={{ margin: 0 }}>还是个孩子，正由{carer()}带着长大。六岁起可以安排每一年把时间放在哪里；这几年会自动走快一些。</p>
     </section>
   );
   const at = open != null && open < n ? open : null;

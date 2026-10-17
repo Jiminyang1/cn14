@@ -9,12 +9,14 @@ import { newRun, pushEvent, type Input, type RunLog } from './runlog';
 import { clearSave, keepRun, loadPast, loadSave, savePast, writeSave } from './storage';
 
 export type Screen = 'home' | 'birth' | 'life' | 'end';
-// 节奏：1× 时一年 60 秒，各地一样（活到平均寿命约 70–85 分钟，不算做抉择的时间）。
-// 小时候也不自动加快；想快就用倍速和快进
-export const YEAR_SEC = 60;
+// 节奏：1× 时一年 40 秒；6 岁以前事情少，自动快一倍（KID_K）。活到平均寿命约 50 分钟，不算做抉择的时间。
+// 原来一年 60 秒、小时候不加快，一生要 80 分钟左右，孩子阶段尤其空
+export const YEAR_SEC = 40, KID_AGE = 6, KID_K = 2;
 export const yearSecOf = (_L: Life) => YEAR_SEC;
+/** 这个年纪的时间倍数（小时候自动快一倍） */
+export const ageK = (a: number) => a < KID_AGE ? KID_K : 1;
 // 活到这个人的预期寿命大约要几分钟（出生登记表上显示）
-const lifeMinOf = (L: Life) => Math.round(leOf(L.born, L.sex, L.rural) * YEAR_SEC / 60);
+const lifeMinOf = (L: Life) => Math.round((Math.min(KID_AGE, 99) / KID_K + Math.max(0, leOf(L.born, L.sex, L.rural) - KID_AGE)) * YEAR_SEC / 60);
 export const SPEEDS = [1, 4, 16];
 // 快进：到下一件人生大事为止（遇到抉择本来就会停）
 export type FF = false | 'big';
@@ -171,7 +173,7 @@ function loop(ts: number) {
   const dt = Math.min(0.25, last ? (ts - last) / 1000 : 0);
   last = ts;
   if (game.screen === 'life' && S && S.phase === 'life' && !game.paused && !S.pending && ts >= holdUntil) {
-    const sp = game.speed * (game.ff ? 40 : 1);
+    const sp = game.speed * (game.ff ? 40 : 1) * ageK(S.age);
     const age0 = S.age, n0 = S.log.length, statement0 = S.statement;
     engine('tick', () => tick(dt * sp / game.yearSec));
     const majorNow = S.log.slice(0, S.log.length - n0).some(e => e.x);
