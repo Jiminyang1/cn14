@@ -11,7 +11,9 @@
     "test": "vitest run",
     "calib": "tsx tools/calib/run.ts",
     "replay": "tsx tools/replay.ts",
-    "data": "python3 -I tools/build_real.py"
+    "data": "python3 -I tools/build_real.py",
+    "pixel": "tsx tools/pixel.ts",
+    "pixelize": "tsx tools/pixelize.ts"
   },
   "dependencies": {
     "react": "^19.3.1",

@@ -381,3 +381,6 @@ table.cmp th { font-weight: 500; font-family: var(--form); color: var(--muted); 
 .pix-strip canvas { display: block; width: 100%; image-rendering: pixelated; }
 .pix-strip small { font: 11px var(--mono); color: var(--muted); }
 @media (max-width: 760px) { .pix-row-body { grid-template-columns: 1fr; } }
+/* 人生纪录里的小照片 */
+.tl .pix-log { width: min(100%, 220px); margin: 6px 0 4px; padding: 4px; transform: rotate(-1deg); }
+.tl:nth-child(even) .pix-log { transform: rotate(1deg); }

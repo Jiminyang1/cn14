@@ -31,7 +31,7 @@ export function enroll(c, major, adjusted) {
   if (c.fee) eff({ h: -2 });
   const away = c.prov === S.home.p ? '留在本省读书' : `离开${PBY[S.home.p].n}，去${PBY[c.prov].n}读书`;
   const fire = S.home.kind === 'rural' && (c.tier === '985' || c.tier === '211') ? '村里有人放了鞭炮。' : '';
-  return { t: `被${c.name}录取，专业是${major}${adjusted ? '（服从调剂分过来的）' : ''}。${away}${c.fee ? '，民办学校一年学费两三万' : ''}。${fire}`, k: adjusted || c.fee ? 'ev' : 'good' };
+  return { t: `被${c.name}录取，专业是${major}${adjusted ? '（服从调剂分过来的）' : ''}。${away}${c.fee ? '，民办学校一年学费两三万' : ''}。${fire}`, k: adjusted || c.fee ? 'ev' : 'good', pic: 'uni' };
 }
 export const TIER_K = { top: 0.3, '211': 0.18, ben1: 0.1, ben: 0.05, zhuan: 0.02 };
 export const tierK = () => TIER_K[S.flags.tier] || 0.05;

@@ -60,7 +60,7 @@ export interface Family {
   gp?: number;               // 同住的祖父母人数
 }
 
-export interface LogEntry { a: number; t: string; k: string; f: string | null }
+export interface LogEntry { a: number; t: string; k: string; f: string | null; pic?: string } // pic：配一张像素插画（ui/pixel/scenes.ts 的场景名）
 export interface Doc { k: string; title: string; a: number; y: number; rows: [string, string][] }
 export interface YearRow { a: number; h: number; hl: number; m: number; s: string }
 export interface QueueItem { at: number; type: 'ev' | 'dec' | 'ms' | 'ref' | 'day'; id?: string }

@@ -195,11 +195,11 @@ export function yearStart() {
   kinYear();
   turnsYear();
   if (a === 3) {
-    if (chance(S.loc.kind === 'rural' ? 0.85 : 0.96)) log(S.loc.kind === 'rural' ? '上了镇上的幼儿园，每天坐校车来回。' : '上幼儿园了。第一天你抱着门框哭，第二天就交到了朋友。', 'ev');
+    if (chance(S.loc.kind === 'rural' ? 0.85 : 0.96)) log(S.loc.kind === 'rural' ? '上了镇上的幼儿园，每天坐校车来回。' : '上幼儿园了。第一天你抱着门框哭，第二天就交到了朋友。', 'ev', null, 'kinder');
     else log(`没有上幼儿园，每天跟着${carer()}在家附近转。`, 'ev');
   }
-  if (a === 6) { S.school = '小学'; S.schoolEnd = 12; log(S.loc.kind === 'rural' ? '背上新书包，走半个小时的山路去村里的小学。' : '上小学了。开学第一天，门口挤满了拍照的家长。', 'ev'); }
-  if (a === 12 && S.school === '小学') { S.school = '初中'; S.schoolEnd = 15; S.edu = 1; log(S.loc.kind === 'rural' ? '小学毕业，去镇上读初中。' : '小学毕业，上了初中。', 'ev'); }
+  if (a === 6) { S.school = '小学'; S.schoolEnd = 12; log(S.loc.kind === 'rural' ? '背上新书包，走半个小时的山路去村里的小学。' : '上小学了。开学第一天，门口挤满了拍照的家长。', 'ev', null, 'primary'); }
+  if (a === 12 && S.school === '小学') { S.school = '初中'; S.schoolEnd = 15; S.edu = 1; log(S.loc.kind === 'rural' ? '小学毕业，去镇上读初中。' : '小学毕业，上了初中。', 'ev', null, 'middle'); }
   // 到了退休年龄还在待业的，也直接退休（按原来那一行的退休年龄），不再找工作
   if ((isWorking() || S.job === 'seeking') && a >= retireAge()) retire();
   for (const k of f.kids) {

@@ -74,8 +74,8 @@ export const DEC = {
     apply: (k, ctx) => {
       if (ctx.back) { S.flags.migBack = 1; moveTo(S.home); }
       S.edu = Math.max(S.edu, 2);
-      if (k === 'gao') { S.school = '高中'; S.schoolEnd = S.age + 3; addDoc('school', '学籍卡', [['学校', `${S.loc.city}的一所普通高中`], ['入学', `${S.birthYear + S.age}年`]]); return '开始读高中了。'; }
-      if (k === 'voc') { S.school = '职高'; S.schoolEnd = S.age + 3; return `进了职业高中，学的是${pick(['数控技术', '汽车维修', '电子商务', '学前教育', '护理', '烹饪', '计算机应用'])}。`; }
+      if (k === 'gao') { S.school = '高中'; S.schoolEnd = S.age + 3; addDoc('school', '学籍卡', [['学校', `${S.loc.city}的一所普通高中`], ['入学', `${S.birthYear + S.age}年`]]); return { t: '开始读高中了。', pic: 'high' }; }
+      if (k === 'voc') { S.school = '职高'; S.schoolEnd = S.age + 3; return { t: `进了职业高中，学的是${pick(['数控技术', '汽车维修', '电子商务', '学前教育', '护理', '烹饪', '计算机应用'])}。`, pic: 'voc' }; }
       if (k === 'redo') { S.flags.zkRedo = 1; S.school = '初中'; S.schoolEnd = S.age + 1; eff({ kn: 5, h: -5 }); return '又回到初三的教室，坐在一群比你小一岁的同学中间。'; }
       S.school = null; hire(chance(0.6) ? 'factory' : 'migrant', migrantCity()); eff({ h: -3 });
       return `收拾行李去了${S.loc.city}，进了一家工厂。你是车间里年纪最小的。`;
@@ -162,7 +162,7 @@ export const DEC = {
       if (k === 'kaoyan') {
         // 考研总体录取率约 27%–32%（2024–2025）；名校有推免名额，成功率高得多
         const base = { top: 0.75, '211': 0.6, ben1: 0.38, ben: 0.3, zhuan: 0.15 }[S.flags.tier] || 0.3;
-        if (chance(clamp(base + (S.st.kn - 62) / 50, 0.08, 0.92))) { S.school = '硕士'; S.schoolEnd = S.age + 3; return { t: base >= 0.6 && chance(0.5) ? '拿到了保研名额，免试读研。' : '考上了研究生。', k: 'good' }; }
+        if (chance(clamp(base + (S.st.kn - 62) / 50, 0.08, 0.92))) { S.school = '硕士'; S.schoolEnd = S.age + 3; return { t: base >= 0.6 && chance(0.5) ? '拿到了保研名额，免试读研。' : '考上了研究生。', k: 'good', pic: 'master' }; }
         quitJob(); return { t: '考研差了几分，没上线。先找工作吧。', k: 'bad', f: '2026年考研报名343万人，2025年硕士招生123.7万人' };
       }
       if (k === 'civil') return civilTry();

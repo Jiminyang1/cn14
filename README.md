@@ -40,6 +40,34 @@ npm run replay -- <局ID>   # 重放某一局（见下面「排查问题」）
 
 有意修改了模拟规则、结果本来就该变时：确认改动无误后运行 `UPDATE_GOLDEN=1 npm test` 重新生成 `tests/golden.json`，并在提交说明里写清楚为什么变。
 
+## 画一张像素插画
+
+插画都是代码画的（`src/ui/pixel/`），96×54 像素，每 250ms 一拍：
+
+- `pix.ts`：画布、人物（成人、小孩，可以呼吸、眨眼、走路、举手、歪头、打瞌睡）、调色板 `C`、笔画块 `scrawl`（图里不画真的汉字，横幅、黑板上的“字”都用它）
+- `kit.ts`：拼场景的素材：天空、房间、窗、云、树、横幅、彩带、桌凳、热气、旗，`WEAR` 衣服配色，`stand()` 站位，`hold.*` 拿在手上的东西
+- 年龄段：`personAt(p, sex, age, x, feet, look)` 按年龄画婴儿、学步、小孩、青少年、成人、老人（80 岁以后拄拐）
+- 季节（游戏以月为单位，所以只有季节，没有早晚）：`seasonOf(月)`；`tree(…, season)` 换叶子，`weather()` 飘花瓣、落叶、下雪，`snowCap()` 积雪，`seasonGrade()` 整体色调
+- `world.ts`：实时面板的雏形，`yard`（家门口，按城乡、季节、家里人的年龄画）和 `ages`（同一个人从婴儿到老）
+- `scenes.ts` / `school.ts`：各个场景；`SCENES` 里登记，`Photo.tsx` 的 `DEC_SCENE` 决定哪个抉择配哪张，人生纪录里的条目用 `log(…, pic)` 配图
+
+人物函数返回这一拍的身体点位（头、手、胸口），道具挂在点位上会跟着人一起动：
+
+```ts
+const me = person(p, o.sex, 36, stand(42), dress(WEAR.suit, WEAR.old), { t, ph: 5 });
+hold.flowers(p, me); hold.card(p, me.handR);
+```
+
+不用开浏览器就能看图：
+
+```
+npm run pixel -- newyear --frames 0-11          # 画成 logs/pixel/sheet.png
+npm run pixel -- --save base                    # 改素材之前记下所有画面的指纹
+npm run pixel -- --compare base                 # 改完对比，列出变了的画面
+```
+
+开发服务器上打开 `/?pixel` 能看所有插画会动的样子，可以切深浅色。
+
 ## 排查问题：每一局都有日志，可以精确重放
 
 每一局出生时生成一个**局 ID**（如 `20261016-1716-hp93of`，最后一段是种子），显示在一生页面左上角和结局页，点一下复制。

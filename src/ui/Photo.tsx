@@ -23,6 +23,9 @@ export const ALT: Record<SceneId, string> = {
   grad: '毕业典礼', train: '高铁站台', layoff: '雨里抱着纸箱走出写字楼', nursery: '夜里的婴儿床', ward: '病房', oldage: '午后的摇椅',
   demolish: '老房子墙上的“拆”字和挖掘机', kidhome: '售楼处的沙盘前', sibloan: '夜里的饭桌', heritage: '堂屋里的遗像和香',
   layofflist: '会议室里，HR 手上的名单', retire: '“光荣退休”欢送会',
+  kinder: '幼儿园第一天，抱着门框哭', primary: '开学第一天', middle: '周一升旗', high: '晚自习，黑板上的高考倒计时',
+  voc: '职高车间里的车床', uni: '大学新生报到', master: '深夜的实验室', newyear: '年夜饭，窗外放烟花',
+  ages: '同一个人从婴儿到老', yard: '家门口，随季节变化',
 };
 
 /** 每 TICK_MS 加一；不动或者系统要求减少动效时一直是 0 */
@@ -51,6 +54,16 @@ function stamp(id: SceneId) {
   const m = id === 'birth' ? S.birthMonth : id === 'gaokao' ? 6 : 1 + Math.floor(hash(S.seed, y) * 12);
   const d = id === 'gaokao' ? 7 : 1 + Math.floor(hash(S.seed + m, y) * 28);
   return `’${String(y % 100).padStart(2, '0')} ${m} ${d}`;
+}
+
+/** 人生纪录里配的小照片。只有当年的那几张会动，往年的停在第一拍 */
+export function LogPic({ id, live }: { id: string; live: boolean }) {
+  if (!(id in SCENES)) return null; // 旧存档或改过名的场景
+  return (
+    <figure className="pix-photo pix-log">
+      <PixCanvas id={id as SceneId} ctx={{ rural: S.rural, sex: S.sex, seed: S.seed }} t={live ? undefined : 0} />
+    </figure>
+  );
 }
 
 export function Photo({ id, sex }: { id: SceneId; sex?: 'M' | 'F' }) {

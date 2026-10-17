@@ -5,6 +5,9 @@ import { SCENES, type SceneCtx, type SceneId } from './pixel/scenes';
 
 const VARIANTS: Partial<Record<SceneId, [string, SceneCtx][]>> = {
   birth: [['城市', { rural: false, seed: 3 }], ['农村', { rural: true, seed: 3 }]],
+  kinder: [['城市 · 男', { sex: 'M' }], ['农村 · 女', { sex: 'F', rural: true }]],
+  primary: [['城市 · 女', { sex: 'F' }], ['农村 · 男', { sex: 'M', rural: true }]],
+  yard: (['spring', 'summer', 'autumn', 'winter'] as const).flatMap(season => [[`农村 · ${season} · 8岁`, { rural: true, season, age: 8, sex: 'F' }], [`城市 · ${season} · 30岁`, { season, age: 30, sex: 'M' }]] as [string, SceneCtx][]),
 };
 const FRAMES = Array.from({ length: 8 }, (_, i) => i * 2);
 

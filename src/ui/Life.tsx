@@ -4,6 +4,7 @@ import { EDU_LV, FOCUS, S, carer, focusList, placeName, statusLabel, type LogEnt
 import { SPEEDS, game } from '../game/controller';
 import './day.css';
 import { Modal } from './Modal';
+import { LogPic } from './Photo';
 import { YearProgress } from './Progress';
 import { RunId } from './RunId';
 import { Companions, Curve, Docs, FamilyCards, Vitals } from './Sidebar';
@@ -51,9 +52,11 @@ function FocusPlan() {
 // 人生纪录：放在一张单独滚动的卡片里，按年分组，最新的在上面，每一年的标题在滚动时吸顶。
 // 记录一旦写下就不再变，所以按对象缓存
 // 只有之后新出现的记录才淡入；打开页面、读档时已有的几百条直接显示
-const Entry = memo(({ e, anim }: { e: LogEntry; anim: boolean }) => (
+// 人生的几个关口（上幼儿园、上小学……）配一张像素小照片：当年的会动，往年的不动
+const Entry = memo(({ e, anim, live }: { e: LogEntry; anim: boolean; live: boolean }) => (
   <div className={`tl ${e.k}${anim ? ' new' : ''}`}>
     <p>{e.t}{e.f && <span className="f">{e.f}</span>}</p>
+    {e.pic && <LogPic id={e.pic} live={live} />}
   </div>
 ));
 // 一年的记录。往年的记录不会再变，所以只在条数、是不是当年变了的时候才重绘：
@@ -65,7 +68,7 @@ const YearGroup = memo(({ a, items, current, initial }: { a: number; items: Year
       <b>{a}岁</b><small>{S.birthYear + a}年</small>
       {current && <YearProgress className="yr-prog" title="这一年过了多少" />}
     </div>
-    <div className="timeline">{items.map(([e, k]) => <Entry key={k} e={e} anim={k > initial} />)}</div>
+    <div className="timeline">{items.map(([e, k]) => <Entry key={k} e={e} anim={k > initial} live={current} />)}</div>
   </div>
 ), (p, q) => p.a === q.a && p.current === q.current && p.initial === q.initial && p.items.length === q.items.length);
 

@@ -25,6 +25,20 @@ export class Pix {
       }
     });
   }
+  /** 整张图换个色调（黄昏、夜里）：每种颜色只算一次；keep 里的颜色（灯、亮着的窗）保持原样 */
+  grade(fn: (rgb: [number, number, number]) => [number, number, number], keep: Set<string> = new Set()) {
+    const memo = new Map<string, string>();
+    this.d = this.d.map(c => {
+      if (!c || keep.has(c)) return c;
+      let v = memo.get(c);
+      if (!v) {
+        const [r, g, b] = fn([parseInt(c.slice(1, 3), 16), parseInt(c.slice(3, 5), 16), parseInt(c.slice(5, 7), 16)]);
+        v = '#' + [r, g, b].map(n => Math.max(0, Math.min(255, Math.round(n))).toString(16).padStart(2, '0')).join('');
+        memo.set(c, v);
+      }
+      return v;
+    });
+  }
   draw(cv: HTMLCanvasElement) {
     cv.width = this.w; cv.height = this.h;
     const g = cv.getContext('2d');
@@ -112,7 +126,7 @@ const back = (rows: string[]) => rows.map((r, j) => j < 7 ? r.replace(/[se]/g, '
 /** 长裙：腿换成裙摆 */
 const long = (rows: string[]) => rows.map((r, j) => j >= 18 && j <= 20 ? '.cccccCCC.' : r);
 /** 坐着：正面看，腿短一截（前面通常有椅面挡着），共 20 行 */
-const sit = (rows: string[], leg: string) => [...rows.slice(0, 16), leg, leg, leg, '..kk..kk..'];
+const sit = (rows: string[], leg: string, upto = 16) => [...rows.slice(0, upto), leg, leg, leg, '..kk..kk..'];
 
 export interface Pose {
   back?: boolean; sit?: boolean; long?: boolean;
@@ -129,13 +143,19 @@ export const bob = (o: Pose) => o.t == null ? 0 : o.walk ? tick(o) % 2 : (tick(o
 
 const setc = (r: string, i: number, c: string) => r.slice(0, i) + c + r.slice(i + 1);
 /** hand：手在第几行（男 14、女 12），这一行以上算上半身 */
-function figure(p: Pix, base: string[], hand: number, x: number, y: number, look: Look, o: Pose) {
-  let rows = o.back ? back(base) : base;
+/** 画完一个人以后，这一拍他身上几个点在哪：手里拿的东西、头上戴的东西挂在这些点上，呼吸、举手、点头都会跟着动 */
+export interface Pt { x: number; y: number }
+export interface Body { head: Pt; eyes: Pt; handL: Pt; handR: Pt; chest: Pt; feet: number; w: number }
+/** shape：眼睛在第几行、头有几行（小孩的头更靠上） */
+function figure(p: Pix, base: string[], hand: number, x: number, y: number, look: Look, o: Pose, shape = { eye: 4, head: 7 }): Body {
+  let rows = o.back ? base.map((r, j) => j < shape.head ? r.replace(/[se]/g, 'h') : r) : base;
+  const w = base[0].length;
   const t = tick(o);
-  if (o.arms) for (const col of o.arms === 'both' ? [0, 9] : [o.arms === 'L' ? 0 : 9]) {
-    rows = rows.map((r, j) => j >= 9 && j <= hand ? setc(r, col, '.') : j >= 4 && j <= 8 ? setc(r, col, col ? 'C' : 'c') : j === 3 ? setc(r, col, 's') : r);
+  if (o.arms) for (const col of o.arms === 'both' ? [0, w - 1] : [o.arms === 'L' ? 0 : w - 1]) {
+    const sh = shape.head + 1; // 肩膀那一行
+    rows = rows.map((r, j) => j > sh && j <= hand ? setc(r, col, '.') : j >= sh - 4 && j <= sh ? setc(r, col, col ? 'C' : 'c') : j === sh - 5 ? setc(r, col, 's') : r);
   }
-  if (o.t != null && !o.back && t % 13 === 0) rows = rows.map((r, j) => j === 4 ? r.replace(/e/g, 'S') : r);
+  if (o.t != null && !o.back && t % 13 === 0) rows = rows.map((r, j) => j === shape.eye ? r.replace(/e/g, 'S') : r);
   if (o.walk) {
     const n = rows.length, up = t % 2 ? [6, 7] : [2, 3];
     rows = rows.map((r, j) => j === n - 2 ? up.reduce((s, i) => setc(s, i, 'k'), r) : j === n - 1 ? up.reduce((s, i) => setc(s, i, '.'), r) : r);
@@ -144,21 +164,94 @@ function figure(p: Pix, base: string[], hand: number, x: number, y: number, look
   // 先画下半身，再画（可能往下沉了一格的）上半身盖在上面
   for (const upper of [false, true]) rows.forEach((r, j) => {
     if ((j <= hand) !== upper) return;
-    const ox = j <= 7 ? o.lean || 0 : 0, oy = upper ? dy + (j <= 7 ? o.nod || 0 : 0) : 0;
+    const ox = j <= shape.head ? o.lean || 0 : 0, oy = upper ? dy + (j <= shape.head ? o.nod || 0 : 0) : 0;
     for (let i = 0; i < r.length; i++) if (P[r[i]]) p.px(x + i + ox, y + j + oy, P[r[i]]);
   });
+  const up = (side: 'L' | 'R') => o.arms === 'both' || o.arms === side;
+  const hy = y + hand + dy, ry = y + shape.head + 1 - 5 + dy, hx = Math.floor(w / 2) - 1;
+  const lean = o.lean || 0, nod = o.nod || 0;
+  return {
+    head: { x: x + hx + lean, y: y + dy + nod }, eyes: { x: x + hx + lean, y: y + shape.eye + dy + nod },
+    handL: { x, y: up('L') ? ry : hy }, handR: { x: x + w - 1, y: up('R') ? ry : hy },
+    chest: { x: x + hx, y: y + shape.head + 3 + dy }, feet: y + rows.length - 1, w,
+  };
 }
-export function man(p: Pix, x: number, y: number, o: Look, opt: Pose = {}) {
-  figure(p, opt.sit ? sit(MAN, '..pp..PP..') : MAN, 14, x, y, o, opt);
+export function man(p: Pix, x: number, y: number, o: Look, opt: Pose = {}): Body {
+  return figure(p, opt.sit ? sit(MAN, '..pp..PP..') : MAN, 14, x, y, o, opt);
 }
-export function woman(p: Pix, x: number, y: number, o: Look, opt: Pose = {}) {
+export function woman(p: Pix, x: number, y: number, o: Look, opt: Pose = {}): Body {
   let r = WOMAN;
   if (opt.long) r = long(r);
   if (opt.sit) r = sit(r, opt.long ? '..ccccCC..' : '..ss..SS..');
-  figure(p, r, 12, x, y, o, opt);
+  return figure(p, r, 12, x, y, o, opt);
 }
+// ===== 小孩：8×14 =====
+const BOY = [
+  '..hhhh..',
+  '.hhhhhh.',
+  '.hssssh.',
+  '.sesses.',
+  '.ssssss.',
+  '..ssss..',
+  '.cccccC.',
+  'ccccccCC',
+  'ccccccCC',
+  's.cccC.s',
+  '..ppPP..',
+  '..pp.PP.',
+  '..pp.PP.',
+  '..kk.kk.',
+];
+const GIRL = BOY.map((r, j) => j >= 1 && j <= 4 ? 'h' + r.slice(1, 7) + 'h' : j === 10 || j === 11 ? '.ccccCC.' : r).map((r, j) => j === 12 ? '..ss.SS.' : r);
+/** 一个小孩；girl 时扎两个小辫、穿裙子 */
+export function child(p: Pix, x: number, y: number, o: Look, opt: Pose & { girl?: boolean } = {}): Body {
+  return figure(p, opt.girl ? GIRL : BOY, 9, x, y, o, opt, { eye: 3, head: 5 });
+}
+
+// ===== 各个年龄段：从成人的模板删几行得到，画风一致 =====
+const drop = (rows: string[], js: number[]) => rows.filter((_, j) => !js.includes(j));
+// 青少年：躯干、腿各短两行（10×18）
+const TEEN_M = drop(MAN, [10, 12, 17, 19]), TEEN_F = drop(WOMAN, [10, 14, 16, 19]);
+// 老人：没有脖子（头缩在肩膀里，看着有点驼背），腿短一行（10×20）
+const OLD_M = drop(MAN, [7, 19]), OLD_F = drop(WOMAN, [7, 19]);
+// 学步的小孩（7×10）
+const TODDLER = [
+  '.hhhhh.',
+  'hhssshh',
+  'ssesess',
+  '.sssss.',
+  '.ccccC.',
+  'cccccCC',
+  's.ccC.s',
+  '.ppppp.',
+  '.pp.pp.',
+  '.kk.kk.',
+];
+export type Stage = 'baby' | 'toddler' | 'child' | 'teen' | 'adult' | 'old';
+export const stageOf = (age: number): Stage => age < 1 ? 'baby' : age < 4 ? 'toddler' : age < 12 ? 'child' : age < 18 ? 'teen' : age < 65 ? 'adult' : 'old';
+/** 每个年龄段的身高（行数），站位用：y = feet − 身高 + 1 */
+export const HEIGHT: Record<Stage, number> = { baby: 6, toddler: 10, child: 14, teen: 18, adult: 22, old: 20 };
+/** 按年龄画一个人：婴儿是襁褓，学步、小孩、青少年、成人、老人（80 岁以后拄拐）。feet 是脚踩的那一行 */
+export function personAt(p: Pix, sex: 'M' | 'F' | undefined, age: number, x: number, feet: number, look: Look, opt: Pose = {}): Body {
+  const st = stageOf(age), y = feet - HEIGHT[st] + 1, F = sex === 'F';
+  if (st === 'baby') {
+    baby(p, x, y, F ? C.pinkLt : '#c3d8da', F ? C.pink : '#9fb7cc');
+    const c = { x: x + 2, y: y + 1 };
+    return { head: c, eyes: c, handL: { x, y: y + 3 }, handR: { x: x + 5, y: y + 3 }, chest: { x: x + 2, y: y + 3 }, feet, w: 6 };
+  }
+  if (st === 'toddler') return figure(p, TODDLER, 6, x, y, look, opt, { eye: 2, head: 3 });
+  if (st === 'child') return child(p, x, y, look, { ...opt, girl: F });
+  if (st === 'teen') return figure(p, opt.sit ? sit(F ? TEEN_F : TEEN_M, F ? '..ss..SS..' : '..pp..PP..', 14) : F ? TEEN_F : TEEN_M, F ? 11 : 12, x, y, look, opt);
+  if (st === 'adult') return F ? woman(p, x, y, look, opt) : man(p, x, y, look, opt);
+  const L = { ...look, hair: look.hair || (age >= 80 ? '#e4e0d8' : C.hairGray) };
+  const rows = F ? OLD_F : OLD_M, hand = F ? 11 : 13;
+  const b = figure(p, opt.sit ? sit(rows, F ? '..ss..SS..' : '..pp..PP..', hand + 2) : rows, hand, x, y, L, opt, { eye: 4, head: 6 });
+  if (age >= 80 && !opt.sit && opt.arms !== 'R' && opt.arms !== 'both') { p.rect(b.handR.x + 1, b.handR.y, 1, feet - b.handR.y + 1, C.wood); p.px(b.handR.x, b.handR.y, C.wood); } // 拐杖
+  return b;
+}
+
 /** 按性别画一个人 */
-export const person = (p: Pix, sex: 'M' | 'F' | undefined, x: number, y: number, o: Look, opt: Pose = {}) =>
+export const person = (p: Pix, sex: 'M' | 'F' | undefined, x: number, y: number, o: Look, opt: Pose = {}): Body =>
   sex === 'F' ? woman(p, x, y, o, opt) : man(p, x, y, o, opt);
 
 /** 襁褓里的婴儿，6×6 */
@@ -189,19 +282,29 @@ export function line(p: Pix, x0: number, y0: number, x1: number, y1: number, c: 
   }
 }
 
-/** 写一个汉字：用浏览器字体在小画布上写出来，再按透明度取点（结果按字缓存）。没有 document 时（测试、校准脚本）不画 */
-const HANZI: Record<string, boolean[][]> = {};
-export function hanzi(p: Pix, ch: string, x: number, y: number, size: number, c: string, bold = true) {
-  const key = ch + size + (bold ? 'b' : '');
-  if (!HANZI[key]) {
-    if (typeof document === 'undefined') return;
-    const cv = document.createElement('canvas'); cv.width = cv.height = size;
-    const g = cv.getContext('2d', { willReadFrequently: true }); if (!g) return;
-    g.font = `${bold ? 'bold ' : ''}${size}px "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif`;
-    g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillStyle = '#000';
-    g.fillText(ch, size / 2, size / 2 + 0.5);
-    const d = g.getImageData(0, 0, size, size).data;
-    HANZI[key] = Array.from({ length: size }, (_, j) => Array.from({ length: size }, (_, i) => d[(j * size + i) * 4 + 3] > 120));
+/** 远看像字的笔画块（横幅、黑板、墙上的字都用它，不画真的汉字）：每个字横两三笔、竖一两笔，
+ *  同样的 seed 每次画出来一样。n 个字，每个 size×size，字距 gap；bold 时笔画两格粗 */
+export function scrawl(p: Pix, x: number, y: number, n: number, size: number, c: string, seed = 1, o: { gap?: number; bold?: boolean } = {}) {
+  const gap = o.gap ?? 2, th = o.bold ? 2 : 1, cl = (v: number) => Math.max(0, Math.min(size - th, v));
+  for (let k = 0; k < n; k++) {
+    const x0 = x + k * (size + gap), r = (i: number) => hash(seed * 31 + k, i);
+    const span = (i: number): [number, number] => { const a = Math.floor(r(i) * size * 0.35), b = size - Math.floor(r(i + 1) * size * 0.35); return [a, Math.max(a + 3, b)]; };
+    const hs = 2 + (r(0) < 0.5 ? 1 : 0), vs = 1 + (r(1) < 0.6 ? 1 : 0);
+    for (let j = 0; j < hs; j++) { const row = cl(Math.round((j + 0.5) * size / hs + (r(10 + j) - 0.5) * 2)); const [a, b] = span(20 + j * 2); p.rect(x0 + a, y + row, b - a, th, c); }
+    for (let j = 0; j < vs; j++) { const col = cl(Math.round((j + 0.5) * size / vs + (r(40 + j) - 0.5) * 3)); const [a, b] = span(50 + j * 2); p.rect(x0 + col, y + a, th, b - a, c); }
+    // 有的字再加一撇或一点，免得每个字都长得像“井”
+    if (r(60) < 0.55) { const sx = cl(Math.floor(size * (0.3 + r(61) * 0.5))), len = Math.floor(size * 0.4); for (let d = 0; d < len; d++) p.rect(x0 + cl(sx - d), y + cl(Math.floor(size * 0.5) + d), th, 1, c); }
+    if (r(62) < 0.45) p.rect(x0 + cl(Math.floor(size * (0.2 + r(63) * 0.6))), y, th, 2, c);
   }
-  HANZI[key].forEach((row, j) => row.forEach((on, i) => { if (on) p.px(x + i, y + j, c); }));
 }
+
+/** 3×5 的小数字，用来写倒计时之类 */
+const DIGITS = ['111101101101111', '010110010010111', '111001111100111', '111001111001111', '101101111001001', '111100111001111', '111100111101111', '111001001001001', '111101111101111', '111101111001111'];
+export function digits(p: Pix, n: number | string, x: number, y: number, c: string) {
+  String(n).split('').forEach((d, k) => { const g = DIGITS[+d]; if (g) for (let i = 0; i < 15; i++) if (g[i] === '1') p.px(x + k * 4 + (i % 3), y + Math.floor(i / 3), c); });
+}
+
+/** 实心圆 */
+export const disc = (p: Pix, cx: number, cy: number, r: number, c: string) => {
+  for (let y = -r; y <= r; y++) for (let x = -r; x <= r; x++) if (x * x + y * y <= r * r + r) p.px(cx + x, cy + y, c);
+};

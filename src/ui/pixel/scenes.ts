@@ -1,15 +1,18 @@
 // 关键节点的像素插画：出生、高考、结婚、买房。每张 96×54，按需要读一点当前人生的信息（城乡、性别）。
 // t 是动画的第几拍（每拍 250ms），会动的东西各自按自己的节奏取 t。所有场景可以在开发时打开 /?pixel 一起看。
-import { C, Pix, baby, bob, glyphs, hanzi, hash, line, man, person, woman, type Pose } from './pix';
+import { C, Pix, baby, bob, child, disc, glyphs, hash, line, man, person, scrawl, woman, type Pose } from './pix';
+import { SCHOOL_SCENES } from './school';
+import { WORLD_SCENES } from './world';
+import type { Season } from './kit';
+import { WEAR, banner, cake, confetti, dress, hold, room, stand, steam, stool, streamer, table, win } from './kit';
 
 export const W = 96, H = 54;
 export type SceneId = 'birth' | 'gaokao' | 'wedding' | 'house' | 'date' | 'grad' | 'train' | 'layoff' | 'nursery' | 'ward' | 'oldage'
-  | 'demolish' | 'kidhome' | 'sibloan' | 'heritage' | 'layofflist' | 'retire';
-export interface SceneCtx { rural?: boolean; sex?: 'M' | 'F'; seed?: number }
+  | 'demolish' | 'kidhome' | 'sibloan' | 'heritage' | 'layofflist' | 'retire'
+  | 'newyear' | 'kinder' | 'primary' | 'middle' | 'high' | 'voc' | 'uni' | 'master'
+  | 'ages' | 'yard'; // 这两张在 world.ts：实时面板的雏形 // 后面这几张在 school.ts，配在人生纪录里
+export interface SceneCtx { rural?: boolean; sex?: 'M' | 'F'; seed?: number; season?: Season; age?: number }
 
-const disc = (p: Pix, cx: number, cy: number, r: number, c: string) => {
-  for (let y = -r; y <= r; y++) for (let x = -r; x <= r; x++) if (x * x + y * y <= r * r + r) p.px(cx + x, cy + y, c);
-};
 
 // ---------- 出生：产科病房 ----------
 function birth(o: SceneCtx, t: number) {
@@ -469,7 +472,7 @@ function demolishScene(o: SceneCtx, t: number) {
   for (const x of [7, 38]) { p.rect(x, 21, 7, 8, '#3e3832'); p.rect(x, 21, 7, 1, C.grayLt); p.px(x + 2, 23, '#6a7884'); }
   p.rect(18, 20, 17, 17, '#e9e3d6');
   for (let a = 0; a < 64; a++) { const x = Math.round(26 + 7 * Math.cos(a / 64 * 2 * Math.PI)), y = Math.round(28 + 7 * Math.sin(a / 64 * 2 * Math.PI)); p.rect(x, y, 1, 1, C.red); }
-  hanzi(p, '拆', 21, 23, 11, C.red);
+  scrawl(p, 22, 24, 1, 9, C.red, 3, { bold: true }); // 圈里一个大字（不画真的汉字）
   // 拆了一半的废墟
   for (let k = 0; k < 120; k++) { const x = 50 + Math.floor(hash(s, k) * 30), h = 9 - Math.abs(x - 64) * 0.5; const y = 44 - Math.floor(hash(s + 1, k) * Math.max(1, h)); p.px(x, y, ['#9a8f84', '#8a7f74', C.gray, '#b36a4a'][k % 4]); }
   // 地面
@@ -610,28 +613,38 @@ function layofflistScene(o: SceneCtx, t: number) {
   return p;
 }
 
-// ---------- 退休：欢送会，红横幅“光荣退休” ----------
+// ---------- 退休：欢送会，红横幅 ----------
 function retireScene(o: SceneCtx, t: number) {
-  const p = new Pix(W, H), s = o.seed || 1;
-  p.rect(0, 0, W, 42, '#efe4cc'); p.rect(0, 42, W, 12, '#d8cdb8'); for (let y = 45; y < H; y += 3) p.rect(0, y, W, 1, '#cbbfa8');
-  // 横幅
-  p.rect(18, 2, 60, 15, C.red); p.rect(18, 16, 60, 1, C.redDk);
-  '光荣退休'.split('').forEach((ch, i) => hanzi(p, ch, 22 + i * 13, 3, 13, C.gold, false)); // 13px 常规字重在这个尺寸最清楚
-  // 彩带
-  for (let x = 0; x < W; x += 2) { const y = 1 + Math.round(2 * Math.sin((x + t) / 4)); p.px(x, y, x % 6 < 2 ? C.redLt : x % 6 < 4 ? C.gold : C.blueLt); }
-  // 桌上的蛋糕
-  p.rect(66, 34, 24, 2, C.white); p.rect(67, 36, 1, 6, C.grayLt); p.rect(88, 36, 1, 6, C.grayLt);
-  p.rect(72, 29, 10, 5, '#f2cf9c'); p.rect(72, 29, 10, 1, C.white); p.rect(76, 26, 1, 3, C.redLt); p.px(76, 25 + (t % 2), C.sun);
+  const p = new Pix(W, H);
+  room(p, { wall: C.cream, floorY: 42, floor: '#d8cdb8', lines: { color: '#cbbfa8', step: 3 } });
+  banner(p, 48, 2, 4); streamer(p, 1, t);
+  table(p, 66, 34, 24); cake(p, 72, 29, t);
   // 同事们鼓掌（手一上一下）
-  const mates: [number, string, 'M' | 'F'][] = [[4, '#7fa36a', 'F'], [15, '#5a7fb0', 'M'], [58, '#a37f48', 'M'], [84, '#c0453a', 'F']];
-  mates.forEach(([x, top, sx], k) => person(p, sx, x, 22 + (k % 2), { top, topSh: top, bottom: C.grayDk }, { t, ph: k, arms: (t + k) % 2 ? 'both' : undefined }));
+  ([[4, WEAR.green, 'F'], [15, WEAR.blue, 'M'], [58, WEAR.brown, 'M'], [84, WEAR.red, 'F']] as const).forEach(([x, w, sx], k) =>
+    person(p, sx, x, stand(43 + (k % 2)), dress(w, WEAR.pants), { t, ph: k, arms: (t + k) % 2 ? 'both' : undefined }));
   // 退休的你：抱着花，手里是红色的退休证
-  const me: Pose = { t, ph: 5 }, d = bob(me);
-  person(p, o.sex, 36, 21, { top: C.suit, topSh: C.suitSh, bottom: C.suit, hair: C.hairGray }, me);
-  for (const [x, y, c] of [[38, 30, C.redLt], [39, 29, C.pink], [40, 30, C.redLt], [39, 31, C.red], [41, 29, C.gold], [38, 32, C.leaf], [40, 32, C.leaf], [39, 33, C.leaf]] as const) p.px(x, y + d, c);
-  p.rect(43, 31 + d, 4, 3, C.red); p.px(44, 32 + d, C.gold);
-  // 掉下来的彩纸
-  for (let k = 0; k < 14; k++) { const y = (Math.floor(hash(s, k) * 40) + t) % 40, x = Math.floor(hash(s + 2, k) * W); if (y > 16) p.px(x, y, k % 2 ? C.gold : C.pinkLt); }
+  const me = person(p, o.sex, 36, stand(42), dress(WEAR.suit, WEAR.old), { t, ph: 5 });
+  hold.flowers(p, me); hold.card(p, { x: me.handR.x - 2, y: me.handR.y - 1 });
+  confetti(p, o.seed || 1, t, { from: 16 });
+  return p;
+}
+
+// ---------- 年夜饭：窗外放烟花，一家人围着桌子（全部用 kit 拼的） ----------
+function newyear(o: SceneCtx, t: number) {
+  const p = new Pix(W, H);
+  room(p, { wall: '#e8d9b8', floorY: 44, floor: C.woodLt, trim: { y: 32, color: '#d6c39b', line: '#bfa77a' }, lines: { color: C.wood, step: 4 } });
+  win(p, 6, 6, 24, 18, 'night', t);
+  for (let k = 0; k < 2; k++) { const ph = (t + k * 4) % 8, cx = 12 + k * 11, cy = 11 + k * 3; if (ph < 5) for (let a = 0; a < 8; a++) p.px(Math.round(cx + Math.cos(a * Math.PI / 4) * ph), Math.round(cy + Math.sin(a * Math.PI / 4) * ph), [C.gold, C.redLt, C.pinkLt][k + (a % 2)]); }
+  // 对联、灯笼、电视里的春晚
+  for (const x of [36, 88]) { p.rect(x, 4, 4, 24, C.red); scrawl(p, x + 1, 6, 1, 2, C.gold, x, { gap: 4 }); scrawl(p, x + 1, 12, 1, 2, C.gold, x + 1); scrawl(p, x + 1, 18, 1, 2, C.gold, x + 2); }
+  p.rect(48, 6, 26, 15, C.ink); p.rect(49, 7, 24, 13, ['#c0453a', '#e0b04f', '#5a7fb0'][(t >> 2) % 3]); p.rect(58, 21, 6, 2, C.grayDk);
+  // 一家人围着桌子：爷爷奶奶、爸妈、你
+  const sit = (sex: 'M' | 'F', x: number, w: object, ph: number) => { stool(p, x, 40); return person(p, sex, x, stand(40, 'sit') + 1, dress(w as never, WEAR.pants), { sit: true, t, ph }); };
+  sit('M', 10, { ...WEAR.brown, ...WEAR.old }, 0); sit('F', 24, { ...WEAR.red, ...WEAR.old }, 2);
+  sit('M', 62, WEAR.blue, 1); sit('F', 76, WEAR.pink, 3);
+  child(p, 44, stand(43, 'child'), dress(WEAR.red, WEAR.jeans), { t, ph: 4, girl: o.sex === 'F', arms: (t >> 2) % 2 ? 'R' : undefined });
+  table(p, 16, 38, 64, { top: C.red, leg: C.wood, h: 6 });
+  for (const x of [22, 34, 52, 64]) { p.rect(x, 36, 6, 2, C.white); p.rect(x + 1, 35, 4, 1, [C.gold, C.redLt, C.greenLt, '#c98f62'][(x / 6) % 4]); steam(p, x + 3, 33, t + x); }
   return p;
 }
 
@@ -639,4 +652,5 @@ export const SCENES: Record<SceneId, (o: SceneCtx, t: number) => Pix> = {
   birth, gaokao, wedding, house, date, grad, train, layoff, nursery, ward, oldage,
   demolish: demolishScene, kidhome: kidhomeScene, sibloan: sibloanScene, heritage: heritageScene,
   layofflist: layofflistScene, retire: retireScene,
+  newyear, ...SCHOOL_SCENES, ...WORLD_SCENES,
 };
