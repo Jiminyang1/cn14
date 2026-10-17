@@ -4,6 +4,7 @@ import { End } from './ui/End';
 import { Home } from './ui/Home';
 import { Life } from './ui/Life';
 import { TipLayer } from './ui/TipLayer';
+import { VersionTag } from './ui/Version';
 
 export function App() {
   useGame();
@@ -12,6 +13,7 @@ export function App() {
     {game.screen === 'birth' && <BirthCert />}
     {game.screen === 'life' && <Life />}
     {game.screen === 'end' && <End />}
+    {game.screen !== 'life' && <VersionTag fixed />}
     <TipLayer />
   </>;
 }
