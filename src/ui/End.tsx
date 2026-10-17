@@ -1,6 +1,6 @@
 // 档案封存：这一生的履历、证件、自述，以及同一秒建档的人走完的一生。
 import { useState } from 'react';
-import { CAUSE, EDU_LV, LT, PBY, S, deathText, mainJob, persWords, placeName, shownZ, wan } from '../engine';
+import { CAUSE, EDU_LV, LT, PBY, S, deathText, mainJob, persWords, shownZ, wan, wanM } from '../engine';
 import { game } from '../game/controller';
 import { Cell } from './BirthCert';
 import { RunId } from './RunId';
@@ -13,6 +13,8 @@ export function End() {
   const longer = lt.l[Math.min(120, d.age + 1)];
   const kids = S.fam.kids, he = S.sex === 'M' ? '他' : '她';
   const leave = (then: () => void) => { game.saveLastWords(words.trim()); then(); };
+  // 出生地以出生登记表为准：随迁子女出生在父母打工的城市，不是户口所在的老家（S.home）
+  const bornAt = S.docs.find(x => x.k === 'birth').rows.find(r => r[0] === '出生地')[1];
   return (
     <div className="wrap narrow">
       <div className="folder sealed">
@@ -29,13 +31,13 @@ export function End() {
       <div className="form-doc end-sec">
         <h2 className="form-title">履历表</h2>
         <div className="ftable">
-          <Cell k="出生" v={placeName(S.home)} wide />
+          <Cell k="出生" v={bornAt} wide />
           <Cell k="家境" v={<span className="dots">{dots(S.q)}</span>} /><Cell k="学历" v={EDU_LV[S.edu]} /><Cell k="做得最久的工作" v={mainJob(S) || '—'} />
           <Cell k="生活过的城市" v={S.places.join('、')} wide />
           <Cell k="婚姻" v={S.fam.partner ? (S.fam.partner.alive ? '已婚' : '丧偶') : S.flags.divorced ? '离异' : '未婚'} />
           <Cell k="孩子" v={kids.length ? kids.length + '个' : '没有'} /><Cell k="房子" v={S.house ? S.house.city : '没有'} />
-          {S.pers && <Cell k="性格" v={persWords(shownZ(), 3).join('、') || '平和'} wide />}
-          <Cell k="存款最多的时候" v={wan(S.stats.maxMoney)} /><Cell k="离开时的存款" v={wan(S.money)} /><Cell k="退休金" v={S.pension ? wan(S.pension) + '/年' : '—'} />
+          {S.pers && S.age >= 3 && <Cell k="性格" v={persWords(shownZ(), 3).join('、') || '平和'} wide />}
+          <Cell k="存款最多的时候" v={wan(S.stats.maxMoney)} /><Cell k="离开时的存款" v={wan(S.money)} /><Cell k="退休金" v={S.pension ? wanM(S.pension) : '—'} />
         </div>
       </div>
       <div className="sheet end-sec"><h4 className="sheet-title">一生曲线</h4><Curve W={680} H={170} /></div>
@@ -46,7 +48,7 @@ export function End() {
         <table className="cmp">
           <thead><tr><th></th><th>出生</th><th>学历</th><th>工作</th><th>享年</th></tr></thead>
           <tbody>
-            <tr><td><b>{S.name}</b></td><td>{placeName(S.home)}</td><td>{EDU_LV[S.edu]}</td><td>{mainJob(S) || '—'}</td><td>{d.age}岁</td></tr>
+            <tr><td><b>{S.name}</b></td><td>{bornAt}</td><td>{EDU_LV[S.edu]}</td><td>{mainJob(S) || '—'}</td><td>{d.age}岁</td></tr>
             {S.comps.map((c, i) => <tr key={i}><td>{c.name}</td><td>{c.place}</td><td>{EDU_LV[c.edu]}</td><td>{c.job || '—'}</td><td>{c.death.age}岁 · {CAUSE[c.death.cause]}</td></tr>)}
           </tbody>
         </table>

@@ -33,6 +33,7 @@ import { CITY } from './real.generated';
 import { S } from './state';
 import { JOBS, RESID_PENSION_JOBS } from './career';
 import { NAT_URBAN_INC } from './place';
+import { sibsAlive } from './family';
 import type { Loc, Partner } from './types';
 
 // ===== 社平工资 =====
@@ -116,7 +117,8 @@ export function rentDed(L: Loc) {
   const c = CITY[L.city];
   return c && c.p === L.p && c.pop >= 500 ? 13200 : 9600;
 }
-const kidsUnder = (age0: number, kids: { bornAt: number; alive: boolean }[]) => { let n = 0; for (const k of kids) if (k.alive && age0 - k.bornAt < 22) n++; return n; };
+// 还在世、22 岁以前的孩子有几个（孩子按自己的生日长大，k.age）
+const kidsUnder = (kids: { age: number; alive: boolean }[]) => { let n = 0; for (const k of kids) if (k.alive && k.age < 22) n++; return n; };
 /** 你本人、配偶这个家的住房扣除（一年）：有房贷、买房不满 20 年的扣房贷利息；在工作的城市没有房子、自己租房的扣房租；都没有是 0 */
 export function houseDed() {
   if (S.loans && S.loans.length && S.house && S.age - S.house.at < LOAN_DED_YEARS) return LOAN_DED;
@@ -130,10 +132,11 @@ export function houseDed() {
 export function dedOf(mate: Partner | null, kids: boolean, both: boolean, house: boolean, rows?: DedRow[]) {
   const f = S.fam;
   let d = 0;
-  const n = kids ? kidsUnder(S.age, f.kids) : 0;
+  const n = kids ? kidsUnder(f.kids) : 0;
   if (n) d += add(rows, `子女教育、婴幼儿照护（${n} 个孩子${both ? '，夫妻各扣一半' : ''}）`, n * KID_DED * (both ? 0.5 : 1));
   if (!mate) {
-    if ((f.mom.alive && f.mom.age >= 60) || (f.dad.alive && f.dad.age >= 60)) d += add(rows, f.sibs.length ? `赡养老人（和兄弟姐妹 ${1 + f.sibs.length} 人分摊）` : '赡养老人（独生子女）', f.sibs.length ? Math.min(ELDER_SHARE, ELDER_DED / (1 + f.sibs.length)) : ELDER_DED);
+    const sib = sibsAlive().length; // 还在世的兄弟姐妹一起分摊
+    if ((f.mom.alive && f.mom.age >= 60) || (f.dad.alive && f.dad.age >= 60)) d += add(rows, sib ? `赡养老人（和兄弟姐妹 ${1 + sib} 人分摊）` : '赡养老人（独生子女）', sib ? Math.min(ELDER_SHARE, ELDER_DED / (1 + sib)) : ELDER_DED);
   } else if (mate.age >= 32 && mate.age < 60) {
     // 对方的父母没有单独模拟：按对方 32–59 岁之间父母满 60 岁、在世（估计），城里长大的按独生子女，农村长大的按有兄弟姐妹
     d += add(rows, '赡养老人（估计）', mate.rural ? ELDER_SHARE : ELDER_DED);
@@ -149,7 +152,7 @@ const add = (rows: DedRow[] | undefined, k: string, v: number) => { if (rows) ro
 export function parentDed(p: { age: number }, both: boolean, house: boolean, rows?: DedRow[]) {
   const f = S.fam;
   let n = S.age < 22 ? 1 : 0, d = 0;
-  for (const s of f.sibs) if (s.age < 22) n++;
+  for (const s of f.sibs) if (s.alive && s.age < 22) n++;
   if (n) d += add(rows, `子女教育、婴幼儿照护（${n} 个孩子${both ? '，夫妻各扣一半' : ''}）`, n * KID_DED * (both ? 0.5 : 1));
   if (p.age >= 33 && p.age < 60) d += add(rows, '赡养老人（估计）', S.rural ? ELDER_SHARE : ELDER_DED);
   if (house && S.famHouse) {

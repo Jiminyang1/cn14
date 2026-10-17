@@ -1,6 +1,6 @@
 // 弹窗：抉择（含高考填报志愿）与自述。选定后盖一个章，再结算。
 import { useEffect, useRef, useState } from 'react';
-import { S, TIER_N, majorP, majorsOf, type Decision, type Pending } from '../engine';
+import { S, TIER_N, calMonth, calYear, majorP, majorsOf, type Decision, type Pending } from '../engine';
 import { game } from '../game/controller';
 import { Photo, decScene } from './Photo';
 
@@ -42,7 +42,7 @@ function DecisionSheet({ P }: { P: Extract<Pending, { type: 'dec' }> }) {
   }, [P]); // eslint-disable-line react-hooks/exhaustive-deps
   const on = picked || hint;
   return <>
-    <Head d={d} kicker={`${S.birthYear + S.age}年 · ${S.age}岁 · 抉择`} />
+    <Head d={d} kicker={`${calYear()}年${calMonth()}月 · ${S.age}岁 · 抉择`} />
     <div className="choices">
       {d.choices.map(c => (
         <button key={c.k} className={on === c.k ? 'pick' : undefined} disabled={c.off} onClick={() => choose(c.k)}>
@@ -105,7 +105,7 @@ function Zhiyuan({ P }: { P: Extract<Pending, { type: 'dec' }> }) {
 function Reflect({ q }: { q: string }) {
   const [text, setText] = useState('');
   return <>
-    <p className="kicker">{S.birthYear + S.age}年 · {S.age}岁 · 自述</p><h3>{q}</h3>
+    <p className="kicker">{calYear()}年{calMonth()}月 · {S.age}岁 · 自述</p><h3>{q}</h3>
     <p className="small muted">想一想就好。愿意的话，留一行字，它会被记在这一生里。</p>
     <textarea maxLength={300} placeholder="写点什么（可以不写）" value={text} onChange={e => setText(e.target.value)} />
     <div className="apply-actions"><button className="stamp-btn" onClick={() => game.reflect(text.trim())}>继续</button></div>

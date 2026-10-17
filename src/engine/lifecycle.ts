@@ -9,7 +9,7 @@ import { EVMAP } from './content/events';
 import { focusMonth } from './focus';
 import { JOBS, isWorking, mainJob, retire, retireAge } from './career';
 import { S, setS } from './state';
-import { SIB, UR, boyOf, familyMonth, kidsYearStart, olderSibSexes, planNextSib, sibYearStart } from './family';
+import { SIB, UR, boyOf, familyMonth, olderSibSexes, planNextSib, sibYearStart } from './family';
 import { addDoc, log, out } from './journal';
 import { MONTHS, monthStart } from './monthly';
 import { planMonth, planYearSchedule, scheduleYearStart } from './schedule';
@@ -23,12 +23,12 @@ import { kinYear } from './kin';
 import { turnsYear } from './turns';
 import { loveMonth } from './romance';
 import { makeName } from './names';
-import { persInit, persWords, persYear, shape, shownZ, tiltW, whyOf } from './personality';
+import { balanceW, persInit, persWords, persYear, shape, shownOf, tiltW, whyPick } from './personality';
 
 // ===== 出生 =====
 export function birth(seed, opts: { year?: number; headless?: boolean } = {}) {
   setS(<Life>{
-    seed, rs: seed | 0, age: 0, t: 0, birthYear: opts.year || 2026, birthMonth: 1,
+    seed, rs: seed | 0, age: 0, t: 0, month: 0, birthYear: opts.year || 2026, birthMonth: 1,
     st: {}, flags: {}, done: {}, recent: [], log: [], years: [], queue: [], fT: {}, notes: [], places: [], jobs: [],
     stats: { maxMoney: 0 }, phase: 'life', money: 0, income: 0, job: null, jobY: 0, wageK: 1,
     school: null, schoolEnd: null, edu: 0, house: null, focus: null, pending: null, headless: !!opts.headless,
@@ -63,7 +63,7 @@ export function birth(seed, opts: { year?: number; headless?: boolean } = {}) {
   S.flags.solo = chance(S.sex === 'M' ? 0.045 : 0.015); // 有些人一辈子没有结婚（2020年普查45–49岁未婚：男4.4%、女1.3%）
   const sexes = olderSibSexes(S.order - 1);
   let age = span;
-  for (let i = 0; i < S.order - 1; i++) { S.fam.sibs.push({ rel: sexes[i] === 'M' ? '哥哥' : '姐姐', sex: sexes[i], age }); age -= gaps[i]; }
+  for (let i = 0; i < S.order - 1; i++) { S.fam.sibs.push({ rel: sexes[i] === 'M' ? '哥哥' : '姐姐', sex: sexes[i], age, alive: true }); age -= gaps[i]; }
   planNextSib();
 
   // 留守 / 随迁
@@ -74,8 +74,8 @@ export function birth(seed, opts: { year?: number; headless?: boolean } = {}) {
   if (dm && mm) {
     // 随迁子女里外省迁入占 47%，高于外出农民工整体的跨省比例 38.3%；按地区比例同步放大
     if (chance(0.6)) { S.flags.mig = 1; moveTo(migrantCity(chance(Math.min(0.9, CROSS_PROV[REGION_OF[p.id] || 'west'] * 0.47 / 0.383)))); }
-    else { S.flags.lb = 'both'; S.flags.carer = chance(0.7) ? '奶奶' : '外婆'; }
-  } else if ((dm || mm) && LABOR_OUT.has(p.id)) S.flags.lb = 'one';
+    else { S.flags.lb = 'both'; S.flags.lbWho = 'both'; S.flags.carer = chance(0.7) ? '奶奶' : '外婆'; }
+  } else if ((dm || mm) && LABOR_OUT.has(p.id)) { S.flags.lb = 'one'; S.flags.lbWho = dm ? 'dad' : 'mom'; }
 
   S.st = {
     hl: clamp(gauss(76, 7) - (S.rural ? 2 : 0), 30, 98),
@@ -111,10 +111,10 @@ export const REFLECT = {
   50: '如果能回到某一年重新选一次，这个人会选哪一年？你呢？',
   70: '这一生里，哪些是这个人自己选的，哪些是出生那一刻就决定了的？',
 };
+// 调用前 S.month 已经是 0（出生时、endYear 长一岁时设好），年初结算里的 calYear()、nowM() 才是生日那个月的
 export function planYear() {
   yearStart();
   if (S.phase !== 'life') return;
-  S.month = 0;
   planYearSchedule();
   planMonth(0);
 }
@@ -163,12 +163,13 @@ export function openDec(id) {
   S.pending = { type: 'dec', id, d };
 }
 // 自动抉择：按选项的权重抽，权重再乘上性格的倾向（tilt）。性格把选中的那一项抬高了不少时，记下理由（resolveDec 写在记录下面）
+// 基础权重先做份额修正（balanceW）：性格只决定谁选哪一项，人群里选各项的比例和不看性格时一样
 export function autoPick(d) {
-  const cs = d.choices.filter(c => !c.off), w0 = cs.map(c => c.w == null ? 1 : c.w), w = cs.map((c, i) => w0[i] * tiltW(c.tilt));
+  const cs = d.choices.filter(c => !c.off), ts = cs.map(c => c.tilt), w0 = cs.map(c => c.w == null ? 1 : c.w);
+  const wb = S.pers ? balanceW(w0, ts) : w0, w = cs.map((c, i) => wb[i] * tiltW(c.tilt));
   const k = wpick(cs.map((c, i) => [c.k, w[i]]));
   if (S.pers) {
-    const i = cs.findIndex(c => c.k === k), s0 = w0.reduce((a, b) => a + Math.max(0, b), 0), s1 = w.reduce((a, b) => a + Math.max(0, b), 0);
-    const t = i >= 0 && s1 > 0 && w0[i] > 0 ? whyOf(cs[i].tilt, (w[i] / s1) / (w0[i] / s0)) : null;
+    const i = cs.findIndex(c => c.k === k), t = i >= 0 && !cs[i].noWhy ? whyPick(wb, ts, i) : null;
     d.why = t ? { k, t } : undefined;
   }
   return k;
@@ -183,13 +184,13 @@ export function resolveDec(id, d, k) {
 export function runHeadlessYear() { tickTo(1); }
 
 // ===== 生日那个月：一年的开始 =====
-// 顺序和原来的「年初」一样：弟弟妹妹出生 → 家里的大事 → 返聘、候鸟 → 入学、退休 → 孩子长大
+// 顺序和原来的「年初」一样：弟弟妹妹出生 → 家里的大事 → 返聘、候鸟 → 入学、退休。
+// 你的孩子在他们自己的生日那个月长一岁（family.ts 的 familyMonth），不在这里
 export function yearStart() {
   sibYearStart();
   kinYear();
   turnsYear();
   scheduleYearStart();
-  kidsYearStart();
 }
 
 // ===== 年末结算 =====
@@ -208,7 +209,7 @@ function endMonth(m: number) {
 }
 // 第 12 个月结算完：长一岁，排下一年
 export function endYear() {
-  S.age++; S.t = 0;
+  S.age++; S.t = 0; S.month = 0;
   if (S.age >= 110) { die('old'); return; }
   persYear();
   planYear();
@@ -217,6 +218,7 @@ export function statusLabel() {
   if (S.age < 3) return '婴儿';
   if (S.age < 6) return '幼儿';
   if (S.school) return `读${S.school}`;
+  if (S.job === 'seeking' && S.flags.disabled) return '养病'; // 中风致残以后辞了职，到病退年龄以前
   if (S.job) return S.job === 'retired' ? '退休' : `${JOBS[S.job].n} · ${S.loc.city}`;
   return '';
 }
@@ -239,7 +241,7 @@ function summarizeCompanion(c, tr) {
   return {
     name: c.name, sex: c.sex, eth: c.eth, born: c.born, place: placeName(c.home), rural: c.rural, q: c.q,
     death: c.death, edu: c.edu, job: mainJob(c), married: c.fam.married || c.flags.widowed != null, kids: c.fam.kids.length, places: c.places, tr,
-    pw: c.pers ? persWords(shownZ(c), 2) : undefined,
+    pw: c.pers && c.age >= 3 ? persWords(shownOf(c.pers.z, Math.min(c.age, 40), c.sex), 2) : undefined, // 同伴旁边整个一生都显示：按成年（40 岁，或离世时）的样子
   };
 }
 export function newLife(seed) {

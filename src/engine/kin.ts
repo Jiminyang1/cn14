@@ -8,7 +8,8 @@ import { chance, ri } from './rng';
 import { eff } from './stats';
 import { brideAmt } from './romance';
 import { placeHp, placeInc } from './place';
-import { kidsAlive } from './family';
+import { kidsAlive, sibsAlive } from './family';
+import { parentsWord } from './parents';
 import { wan } from './format';
 
 // ===== 拆迁 =====
@@ -32,7 +33,7 @@ export function demolDue() {
 const ur = () => S.home.kind === 'rural' ? 'rural' : 'urban';
 function demolCash(mult: number) {
   const H = S.famHouse, total = Math.round(H.v * DEMOL_K.cash[ur()] * mult / 1e3) * 1e3;
-  const gift = S.indep ? total * DEMOL_GIFT : 0, mine = gift / (1 + S.fam.sibs.length);
+  const gift = S.indep ? total * DEMOL_GIFT : 0, mine = gift / (1 + sibsAlive().length);
   S.famHouse = { type: 'own', v: Math.round(total * DEMOL_HOUSE / 1e3) * 1e3, where: H.where };
   S.famMoney += total * (1 - DEMOL_HOUSE) - gift;
   if (mine) S.money += mine;
@@ -44,17 +45,17 @@ export function demolish(k: string) {
   S.flags.demol = S.age;
   if (k === 'hold') {
     S.flags.demolHold = S.age; eff({ h: -3 });
-    return `${old}划进了征收范围。补偿方案贴出来以后，爸妈觉得给少了，没有签字。邻居一家家搬走，墙上的“拆”字越画越多。`;
+    return `${old}划进了征收范围。补偿方案贴出来以后，${parentsWord() || '家里'}觉得给少了，没有签字。邻居一家家搬走，墙上的“拆”字越画越多。`;
   }
   if (k === 'swap') {
     S.famHouse = { ...H, v: Math.round(H.v * DEMOL_K.swap[ur()] / 1e3) * 1e3 };
     S.flags.demolSwap = S.age + DEMOL_K.swapWait;
     eff({ h: 2 });
-    return { t: `${old}拆迁了。爸妈选了产权调换：等安置房建好，换一套新楼房。这几年先在外面租房住，按月领临时安置费。`, k: 'good' as const };
+    return { t: `${old}拆迁了。${parentsWord() || '家里'}选了产权调换：等安置房建好，换一套新楼房。这几年先在外面租房住，按月领临时安置费。`, k: 'good' as const };
   }
   const { total, mine } = demolCash(1);
   eff({ h: 4 });
-  return { t: `${old}拆迁了，选了货币补偿，一共拿到约${wan(total)}。爸妈在附近买了一套小一点的房子${mine ? `，还给你们兄弟姐妹每人分了约${wan(mine)}` : '，剩下的钱存了起来'}。`, k: 'good' as const };
+  return { t: `${old}拆迁了，选了货币补偿，一共拿到约${wan(total)}。${parentsWord() || '家里'}在附近买了一套小一点的房子${mine ? `，还给你们兄弟姐妹每人分了约${wan(mine)}` : '，剩下的钱存了起来'}。`, k: 'good' as const };
 }
 
 // ===== 给孩子办婚事 =====
@@ -75,7 +76,7 @@ export function marryKid(k: Kid, spend: number) {
 
 // ===== 兄弟姐妹 =====
 /** 兄弟姐妹结婚（随机事件 sibWed）：儿子娶亲家里出彩礼，女儿出嫁家里收彩礼 */
-export const sibToWed = () => S.fam.sibs.find(s => !s.married && s.age >= 24 && s.age <= 34);
+export const sibToWed = () => sibsAlive().find(s => !s.married && s.age >= 24 && s.age <= 34);
 export function sibWed() {
   const s = sibToWed() as Sibling, amt = brideAmt(S.home.p);
   s.married = S.age;
@@ -94,8 +95,8 @@ export function sibWed() {
     return { t: `${s.rel}结婚了。家里给女方出了${wan(amt)}彩礼${borrowed > 1e3 ? `，其中${wan(borrowed)}是借的` : ''}。${mine ? `你包了${wan(mine)}的红包，回去帮着张罗了酒席。` : ''}`, f };
   }
   S.famMoney += amt * 0.5; // 收到的彩礼一半做陪嫁带走，一半留在家里（估计）
-  const bro = S.sex === 'M' || S.fam.sibs.some(x => x !== s && x.sex === 'M' && !x.married);
-  return { t: `${s.rel}出嫁了。男方给了${wan(amt)}彩礼，一半做了陪嫁，另一半${bro ? '爸妈说先存着，留给家里的儿子将来娶媳妇用' : '爸妈存了起来'}。`, f };
+  const bro = S.sex === 'M' || sibsAlive().some(x => x !== s && x.sex === 'M' && !x.married);
+  return { t: `${s.rel}出嫁了。男方给了${wan(amt)}彩礼，一半做了陪嫁，另一半${bro ? `${parentsWord() || '家里'}说先存着，留给家里的儿子将来娶媳妇用` : `${parentsWord() || '家里'}存了起来`}。`, f };
 }
 // 借给兄弟姐妹的钱会不会还、几年后还（估计）
 export const SIB_REPAY = { p: 0.6, years: [2, 6] as [number, number], forget: 8 };
@@ -115,7 +116,7 @@ export function kinYear() {
   if (a >= 1 && a < 18 && demolDue()) out(demolish(chance(0.6) ? 'cash' : 'swap'));
   if (F.demolSwap === a) {
     F.demolSwap = null;
-    log(famLiving() ? '安置房交房了。爸妈搬进了新楼，第一次住上了有电梯的房子。' : '安置房交房了，可是爸妈没能等到住进去。', famLiving() ? 'good' : 'loss');
+    log(famLiving() ? `安置房交房了。${parentsWord()}搬进了新楼，第一次住上了有电梯的房子。` : '安置房交房了，可是爸妈没能等到住进去。', famLiving() ? 'good' : 'loss');
   }
   if (F.demolHold != null && a === F.demolHold + 1) {
     F.demolHold = null;

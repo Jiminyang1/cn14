@@ -28,7 +28,7 @@ export interface Loc { p: string; city: string; kind: 'big' | 'capital' | 'city'
 export type Ax = 'e' | 'n' | 'c' | 'a' | 'r';
 export type PZ = Record<Ax, number>;
 /** 抉择里的一个选项。w 是自动抉择时的权重，tilt 是性格对这个权重的影响（每个标准差，见 personality.ts 的 tiltW），off 表示不可选 */
-export interface Choice { k: string; label: string; sub?: string; w?: number; tilt?: Partial<PZ>; off?: boolean }
+export interface Choice { k: string; label: string; sub?: string; w?: number; tilt?: Partial<PZ>; noWhy?: boolean; off?: boolean } // noWhy：自动选中时不写性格理由（读起来不对的几项）
 export interface Decision { title: string; body: string; fact?: string; form?: string; card?: [string, string][]; choices: Choice[]; ctx?: any; why?: { k: string; t: string } } // why：自动抉择时性格起了明显作用，记下理由
 
 /** 院校（gaokao.ts） */
@@ -46,10 +46,12 @@ export interface Parent {
   k: number;                 // 个人收入系数
   wloc?: Loc;                // 外出打工的城市
   ill?: number;              // 1 刚生病、2 已安排照顾
-  diedAt?: number;
+  diedAt?: number;           // 去世时你几岁
+  diedM?: number;            // 去世在你出生后的第几个月（calendar.ts 的 nowM）
 }
-export interface Sibling { rel: string; sex: Sex; age: number; married?: number }
-export interface Kid { name: string; sex: Sex; bornAt: number; age: number; alive: boolean; path?: string; married?: number; gk?: number; wed?: number } // wed=1：今年要结婚，等婚房的抉择
+export interface Sibling { rel: string; sex: Sex; age: number; alive: boolean; married?: number; diedAt?: number } // diedAt：去世时你几岁
+/** 你的孩子。bornAt：出生时你几岁；bornM：出生在你出生后的第几个月（nowM），孩子的年龄按它算、在孩子自己的生日那个月长一岁 */
+export interface Kid { name: string; sex: Sex; bornAt: number; bornM: number; age: number; alive: boolean; path?: string; married?: number; gk?: number; wed?: number } // wed=1：今年要结婚，等婚房的抉择
 /** 恋爱对象 / 配偶（romance.ts 的 makePartner） */
 export interface Partner {
   name: string; sur: string; sex: Sex; age: number; edu: number; home: string; rural: boolean; alive: boolean;
@@ -57,6 +59,7 @@ export interface Partner {
   jk: string | null; job: string | null; inc: number; hpf: boolean; fit: number;
   love?: number; asks?: number; metParents?: number; marriedAt?: number; retired?: number;
   wh?: number;               // 对方家里要不要婚房：1 要、2 已经因为没房拒过一次求婚
+  follow?: number;           // 你搬走时对方还在读书，说好毕业后来你的城市（romance.ts 的 loveMove）
   pz?: PZ;                   // 对方的性格（固定不变；关掉性格时没有）
 }
 export interface Family {
@@ -90,7 +93,8 @@ export interface Flags {
   solo?: boolean;            // 一辈子不结婚
   nextSib?: number | null;   // 弟弟妹妹会在你几岁时出生
   lb?: 'both' | 'one';       // 留守：父母都外出 / 一方外出
-  carer?: string;            // 留守时带你的人
+  lbWho?: 'dad' | 'mom' | 'both'; // 留守时外出打工的是谁（父母去世时跟着更新，见 family.ts 的 parentGone）
+  carer?: string;            // 留守时带你的人（父母都外出，或者在家的那一方去世了）
   mig?: number; migBack?: number; // 随迁子女；回老家中考
   ill?: Illness | null; survivor?: number; disabled?: number; illDebt?: number;
   smoke?: number; parDiv?: number; divorced?: number; exes?: number; mShift?: number; loveBoost?: number;
