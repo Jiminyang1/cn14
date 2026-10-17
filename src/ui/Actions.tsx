@@ -9,11 +9,13 @@ import './actions.css';
 
 const GROUPS = [['kin', '家人'], ['life', '生活']] as const;
 
-/** 页头上的「待定」：抉择单收起来以后，点它再打开 */
-export function PendingButton() {
+/** 抉择单收起来以后，浮在页面上的「等待抉择」：游戏停着，点它回去选 */
+export function PendingFloat() {
   const P = S.pending;
   if (!P || P.type !== 'dec' || game.hidden !== game.pendingKey()) return null;
-  return <button className="ctl primary pend-btn" type="button" title="这件事还没定，游戏停着" onClick={() => game.showDec()}>待定：{P.d.title.replace(/[？?]$/, '')}</button>;
+  return <button className="pend-float" type="button" onClick={() => game.showDec()}>
+    <span className="pend-k">等待抉择</span><b>{P.d.title.replace(/[？?]$/, '')}</b><small>游戏停着 · 点这里回来选</small>
+  </button>;
 }
 
 /** 页头上的按钮：经济独立以后才有 */

@@ -156,7 +156,7 @@ function Reflect({ q }: { q: string }) {
 
 export function Modal() {
   const P = S.pending;
-  if (!P || game.hidden === game.pendingKey()) return null; // 收起来了：页头上有「待定」按钮，点了再打开
+  if (!P || game.hidden === game.pendingKey()) return null; // 收起来了：页面上浮着「等待抉择」（Actions.tsx 的 PendingFloat），点了再打开
   const scene = decScene(P);
   const photo = scene ? <Photo {...scene} /> : null;
   const body = P.type === 'ref' ? <Reflect q={P.q} />
@@ -170,8 +170,8 @@ export function Modal() {
       <div className="ds" key={P.type === 'dec' ? P.id + S.age : 'ref' + S.age}>
         <span className="ftab"><b>{P.type === 'ref' ? '自述页' : '抉择单'}</b><span className="mono">No. {fileNo(S)}{P.type === 'dec' ? ` · 第 ${pad2(no)} 份` : ''}</span></span>
         <div className="ds-sheet" role="dialog" aria-modal="true" aria-labelledby="ds-title">
-          {/* 右上角的 ×：先关上看看左右的情况。抉择没定，游戏一直停着，必须回来选（页头的「待定」、或者按 ▶） */}
-          {P.type === 'dec' && !S.auto && <button type="button" className="ds-x" aria-label="先关上，稍后再选" title="先关上，看看左右的情况；这件事还得选，点页头的「待定」回来" onClick={() => game.hideDec()}>×</button>}
+          {/* 右上角的 ×：先关上看看左右的情况。抉择没定，游戏一直停着，必须回来选（页面上浮着的「等待抉择」，或者按 ▶） */}
+          {P.type === 'dec' && !S.auto && <button type="button" className="ds-x" aria-label="先关上，稍后再选" title="先关上，看看左右的情况；这件事还得选，点页面上的「等待抉择」回来" onClick={() => game.hideDec()}>×</button>}
           {body}
         </div>
       </div>

@@ -8,7 +8,7 @@ import { LogPic } from './Photo';
 import { YearProgress } from './Progress';
 import { RunId } from './RunId';
 import { VersionTag } from './Version';
-import { ActionsButton, PendingButton } from './Actions';
+import { ActionsButton, PendingFloat } from './Actions';
 import { Account, ArchiveTabs, Basic, Body, FamilySec } from './Sidebar';
 import { MonthlyLedger, TimelineFinance, statementAge } from './Finance';
 import { cnNum, fileNo } from './util';
@@ -54,7 +54,6 @@ function Header() {
         <button className={'ctl' + (game.ff === 'dec' ? ' on' : '')} type="button" title="快进，直到要你做决定" onClick={() => game.fastForward('dec')}>下一个抉择</button>
         <button className={'ctl primary' + (game.ff === 'big' ? ' on' : '')} type="button" title="快进，直到下一件人生大事：升学、结婚、生子、亲人离世……" onClick={() => game.fastForward('big')}>下一件大事</button>
       </div>
-      <PendingButton />
       <ActionsButton />
       <VersionTag />
       <Menu />
@@ -208,5 +207,6 @@ export function Life() {
       <div className="col col-r"><Account m="home" /><MonthlyLedger m="home" /><FamilySec m="home" /><ArchiveTabs mtab={mtab} /></div>
     </main>
     <Modal />
+    <PendingFloat />
   </div>;
 }

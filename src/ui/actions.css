@@ -21,11 +21,21 @@
   .act .ctl { grid-row: 1 / 3; grid-column: 2; min-height: 44px; }
 }
 
-/* 抉择单、行动单右上角的 ×（ui/Modal.tsx、ui/Actions.tsx）：关上弹窗。抉择没定，游戏一直停着，页头有「待定」按钮回来选 */
+/* 抉择单、行动单右上角的 ×（ui/Modal.tsx、ui/Actions.tsx）：关上弹窗。抉择没定，游戏一直停着，页面上浮着「等待抉择」（PendingFloat），点它回来选 */
 .ds-x { position: absolute; top: 8px; right: 8px; z-index: 1; width: 36px; height: 36px; display: grid; place-items: center; border: 0; border-radius: 4px; background: none; color: var(--muted); font-size: 24px; line-height: 1; cursor: pointer; }
 .ds-x:hover { background: var(--tint); color: var(--ink); }
 .ds-x:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
 .ds-sheet:has(> .ds-x) .ds-h { padding-right: 40px; }
-.pend-btn { max-width: 14em; overflow: hidden; text-overflow: ellipsis; animation: pend-pulse 1.6s ease-in-out infinite; }
-@keyframes pend-pulse { 50% { filter: brightness(1.15); } }
-@media (prefers-reduced-motion: reduce) { .pend-btn { animation: none; } }
+.pend-float { position: fixed; z-index: 30; left: 50%; bottom: 28px; transform: translateX(-50%); display: flex; align-items: baseline; gap: 10px; max-width: calc(100% - 32px);
+  padding: 12px 20px; border: 0; border-radius: 999px; background: var(--seal); color: #fff; box-shadow: 0 14px 34px -12px rgba(20, 14, 6, .55); cursor: pointer; font: inherit; animation: pend-pulse 1.8s ease-in-out infinite; }
+.pend-float .pend-k { font-size: 12px; font-weight: 700; letter-spacing: .1em; opacity: .85; white-space: nowrap; }
+.pend-float b { font-family: var(--serif); font-size: 17px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.pend-float small { font-size: 12px; opacity: .85; white-space: nowrap; }
+.pend-float:hover { filter: brightness(1.08); }
+.pend-float:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+@keyframes pend-pulse { 50% { box-shadow: 0 14px 34px -12px rgba(20, 14, 6, .55), 0 0 0 6px rgba(194, 59, 46, .25); } }
+@media (prefers-reduced-motion: reduce) { .pend-float { animation: none; } }
+@media (max-width: 560px) {
+  .pend-float { bottom: calc(96px + env(safe-area-inset-bottom)); padding: 12px 16px; }
+  .pend-float small { display: none; }
+}
