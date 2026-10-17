@@ -9,7 +9,6 @@ import { EVENTS } from './content/events';
 import { huntMonth, monthDecisions, schoolDecision, yearDecisions } from './content/decisions';
 import { planDaily } from './content/daily';
 import { FOCUS, autoFocus, focusList } from './focus';
-import { loveQueue } from './romance';
 import { carer } from './parents';
 import { isWorking, retire, retireAge } from './career';
 import { ENABLE_REFLECT, MILESTONES, REFLECT } from './lifecycle';
@@ -59,7 +58,6 @@ export function planYearSchedule() {
   for (let i = 0; i < n; i++) S.evAt.push(0.1 + (i + rnd() * 0.8) / n * 0.8);
   // 每年判定一次的抉择（结婚、裁员名单、拆迁）：落在这一年随机的一个月
   for (const id of yearDecisions()) enqueue({ at: posIn(ri(0, MONTHS - 1), rnd()), type: 'dec', id });
-  loveQueue();
   if (MILESTONES.includes(S.age)) enqueue({ at: 0.02, type: 'ms' });
   if (ENABLE_REFLECT && !S.headless && REFLECT[S.age]) enqueue({ at: 0.92, type: 'ref' });
   planDaily(); // 日常：只用第二条随机数流，不影响上面这些

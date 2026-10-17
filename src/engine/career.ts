@@ -7,7 +7,7 @@ import { addDoc, log, logLater } from './journal';
 import { wan } from './format';
 import { chance, clamp, gauss, wpick } from './rng';
 import { eff } from './stats';
-import { accrueWage, goIndep } from './finance';
+import { goIndep } from './finance';
 import { cityLoc, homeCity, migrantCity, moveTo, placeInc, placeName } from './place';
 import { hpfStart } from './housing';
 import { tierK } from './education';
@@ -55,7 +55,6 @@ export const expCurve = (y: number, age: number) => { const k = y <= 5 ? 0.75 + 
 export const expK = () => expCurve(S.jobY, S.age);
 // 还是同一行（跳槽、换城市、失业后重新找到老本行）：工龄和个人工资系数（升职加薪攒下的）都保留；换了行才从头算
 export function hire(job, L?) {
-  accrueWage(); // 旧工作这一年干到现在的工资
   if (L) moveTo(L);
   const same = job === (S.job === 'seeking' ? S.flags.lastJob : S.job) && JOBS[job] && JOBS[job].m > 0;
   S.job = job;
@@ -83,7 +82,7 @@ export function retire() {
   const farm = S.job === 'farmer';
   if (!farm) addDoc('retire', '退休证', [['原岗位', JOBS[S.job] ? JOBS[S.job].n : ''], ['退休年龄', S.age + '岁']]);
   const last = S.income || placeInc();
-  // 养老金看的是一辈子的缴费记录，不是退休前最后那份工作（finance.ts 的 penYear 每年记一笔）：
+  // 养老金看的是一辈子的缴费记录，不是退休前最后那份工作（finance.ts 的 penMonth 每月记一笔）：
   // 职工养老保险交满 15 年才能按月领职工养老金，否则只能领城乡居民养老金。
   // 职工养老金：按退休所在省份的实际人均水平（统计年鉴 24-26 / 24-27，2024 年），再按在职时的平均工资（相对当地水平）
   // 和缴费年数上下浮动（基础养老金大致和缴费年数成正比）；机关事业单位为主的略高。
@@ -131,7 +130,6 @@ export function gradJob(big) {
 }
 // 离开工作（被裁员、公司倒闭、没考上……）：先结清旧工作这一年干到现在的工资；公积金账户封存（余额还在，照样计息）
 export function quitJob() {
-  accrueWage();
   if (isWorking()) S.flags.lastJob = S.job;
   S.job = 'seeking';
   if (S.hpfOn) { S.hpfOn = false; if (S.hpf > 0) logLater(`公积金账户封存了，余额${wan(S.hpf)}还在，照样计息；找到交公积金的工作后接着缴。`); }

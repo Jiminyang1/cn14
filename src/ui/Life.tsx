@@ -38,12 +38,12 @@ function FocusPlan() {
   return (
     <div className="sheet plan">
       <div className="plan-row">
-        <b className="plan-h" title="这一年主要把时间花在哪里。随时可改，年底按时间比例结算">今年的重心</b>
+        <b className="plan-h" title="这一年主要把时间花在哪里。随时可改，每个月按花在各项上的时间结算">今年的重心</b>
         <div className="plan-chips" role="radiogroup" aria-label="今年的重心">
           {l.map(k => <button key={k} role="radio" aria-checked={S.focus === k} className={S.focus === k ? 'on' : ''} title={FOCUS[k].d} onClick={() => game.setFocus(k)}>{FOCUS[k].n}</button>)}
         </div>
       </div>
-      <p className="plan-d">{cur ? cur.d + '。' : '选一项。'}随时可改，年底按时间比例结算。</p>
+      <p className="plan-d">{cur ? cur.d + '。' : '选一项。'}随时可改，每个月按花在各项上的时间结算。</p>
     </div>
   );
 }

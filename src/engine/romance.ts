@@ -37,8 +37,6 @@ export function meetHow() {
   if (S.age >= 25 && chance(Math.min(0.5, (S.age - 23) * 0.06))) return 'blind';
   return wpick({ friends: 3, work: isWorking() ? 3 : 0, wedding: 1, hobby: 1, app: 2 });
 }
-// 原来每年年初判定这一年会不会认识人；现在改成每月判定（见 loveMonth），这里什么都不做。保留函数是因为 schedule.ts 还在调用它
-export function loveQueue() {}
 // 每月都要换算的概率（认识人、分手）只有几十种取值：记下来，免得每月都算一次 fpow（结果和直接算完全相同）
 const PM = new Map<number, number>();
 const pm = (p: number) => { let v = PM.get(p); if (v === undefined) PM.set(p, v = perMonth(p)); return v; };

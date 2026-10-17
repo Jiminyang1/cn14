@@ -110,6 +110,3 @@ export function penMonth(w: number) {
 }
 // 当前工作的年薪（不含个体户、销售的年度波动）
 export const wageRate = () => { const J = JOBS[S.job]; return J && J.m ? wageBase() * J.m * S.wageK * expK() : 0; };
-// 按年结算时，年中换工作、被裁员之前要先结清旧工作的工资。现在每月按月底的工作发工资，不需要了；
-// career.ts 的 hire / quitJob 还在调用，保留一个空函数，合并时可以连同调用一起删掉（types.ts 里的 wageAcc、wageT0、hpfAcc 也不再用）
-export function accrueWage() {}

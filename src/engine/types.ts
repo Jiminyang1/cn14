@@ -109,8 +109,7 @@ export interface Life {
   school: string | null; schoolEnd: number | null; edu: number;
   job: string | null; jobY: number; wageK: number; jobs: { job: string; age: number; city: string }[];
   income: number; relInc?: number; pension?: number;
-  wageAcc?: number; wageT0?: number; hpfAcc?: number; // 这一年里已经结算的工资、最后这份工作从哪个进度开始算、个人已缴的公积金（finance.ts 的 accrueWage）
-  pen?: { y: number; r: number; s: number };       // 职工养老保险缴费记录（finance.ts 的 penYear）
+  pen?: { y: number; r: number; s: number };       // 职工养老保险缴费记录（finance.ts 的 penMonth）
   // 钱：经济独立以前算在家里
   indep: boolean; indepAt?: number; money: number;
   famMoney: number; famDebt: number; famDebt0: number; famDebtWhy?: string; famDebtYears: number;
