@@ -10,7 +10,7 @@ import { RunId } from './RunId';
 import { VersionTag } from './Version';
 import { ActionsButton, PendingFloat } from './Actions';
 import { Account, ArchiveTabs, Basic, Body, FamilySec } from './Sidebar';
-import { MonthlyLedger, TimelineFinance, statementAge } from './Finance';
+import { TimelineFinance, statementAge } from './Finance';
 import { cnNum, fileNo } from './util';
 
 // ===== 页头：档案号、播放控制（▶、倍速、快进）、行动、更多（自动抉择、离开） =====
@@ -202,7 +202,7 @@ export function Life() {
       <nav className="mtabs" role="tablist">
         {MTABS.map(([k, n]) => <button key={k} type="button" role="tab" aria-selected={mtab === k} className={mtab === k ? 'on' : ''} onClick={() => setMtab(k)}>{n}</button>)}
       </nav>
-      <div className="col col-r"><Account m="home" /><MonthlyLedger m="home" /><FamilySec m="home" /><ArchiveTabs mtab={mtab} /></div>
+      <div className="col col-r"><Account m="home" /><FamilySec m="home" /><ArchiveTabs mtab={mtab} /></div>
     </main>
     <Modal />
     <PendingFloat />

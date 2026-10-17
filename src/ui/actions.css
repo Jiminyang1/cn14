@@ -39,3 +39,7 @@
   .pend-float { bottom: calc(96px + env(safe-area-inset-bottom)); padding: 12px 16px; }
   .pend-float small { display: none; }
 }
+
+/* 「看账单」入口（ui/Finance.tsx 的 LedgerButton） */
+.ledger-btn { display: flex; justify-content: space-between; align-items: baseline; width: 100%; margin: 8px 0 4px; min-height: 36px; }
+.ledger-btn small { font-size: 12px; color: var(--muted); }
