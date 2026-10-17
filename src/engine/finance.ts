@@ -7,7 +7,7 @@ import { S } from './state';
 import { clamp, gauss } from './rng';
 import { familyMoneyMonth } from './household';
 import { HPF_JOB, houseMonth, hpfMonth, loanMonth, plusMonth, rentDraw } from './housing';
-import { log } from './journal';
+import { log, noteMoney } from './journal';
 import { NAT_URBAN_INC, placeCons, placeHp, placeInc, wageBase } from './place';
 import { wan } from './format';
 import { MONTHS, calMonth, calYear } from './monthly';
@@ -43,7 +43,7 @@ export function goIndep() {
   S.indep = true; S.indepAt = S.age;
   const f = S.fam;
   if (!f.mom.alive && !f.dad.alive && S.famMoney > 0) {
-    const x = S.famMoney; changeMoney(x); S.famMoney = 0;
+    const x = S.famMoney; changeMoney(x); S.famMoney = 0; noteMoney('父母留下的钱', x);
     log(`开始自己过日子了。父母留下的钱这些年由亲戚帮着管，供你吃穿上学，剩下的${wan(x)}交到了你手里。`, 'ev');
   }
   if (S.stuDebt > 0) { S.debt = (S.debt || 0) + S.stuDebt; log(`开始工作时，身上还背着${wan(S.stuDebt)}的助学贷款。`, 'ev'); S.stuDebt = 0; }

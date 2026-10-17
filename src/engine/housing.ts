@@ -4,7 +4,7 @@
 import { fexp, fpow } from './fmath';
 import { PBY } from './data';
 import { S } from './state';
-import { addDoc, log, logLater } from './journal';
+import { addDoc, log, logLater, major, noteMoney } from './journal';
 import { chance, gauss } from './rng';
 import { cityLoc, homeCounty, hpCounty, placeHp, placeInc } from './place';
 import { isWorking, retireAge } from './career';
@@ -179,7 +179,8 @@ export function hpfMonth(own = 0, working = isWorking(), mate = 0) {
   // 你退休以后配偶还缴了好些年的，这笔钱可能有几十万：写一条记录（原来不写，存款突然多了一大块，看不出是哪来的）
   if (S.job === 'retired' && !(mate > 0) && S.hpf > 0) {
     const x = S.hpf, p = S.fam.partner; S.money += x; S.hpf = 0;
-    if (x >= 1000) log(p && p.alive && S.fam.married ? `${p.name}${p.retired ? '也退休了' : '不再缴公积金了'}，公积金账户销户，里面的${wan(x)}转进了存款。`
+    noteMoney(p && p.alive && S.fam.married ? `${p.name}提取公积金` : '提取剩下的公积金', x);
+    if (x >= 1000) (x >= 1e5 ? major : log)(p && p.alive && S.fam.married ? `${p.name}${p.retired ? '也退休了' : '不再缴公积金了'}，公积金账户销户，里面的${wan(x)}转进了存款。`
       : `公积金账户里剩下的${wan(x)}提取了出来，转进了存款。`, 'ev');
   }
 }

@@ -3,7 +3,7 @@
 import { fexp } from './fmath';
 import { PBY } from './data';
 import { S } from './state';
-import { addDoc, log, logLater, major } from './journal';
+import { addDoc, log, logLater, major, noteMoney } from './journal';
 import { wan } from './format';
 import { chance, clamp, gauss, wpick } from './rng';
 import { eff } from './stats';
@@ -160,8 +160,9 @@ export function retire() {
   S.job = 'retired'; S.hpfOn = false;
   // 退休时公积金销户提取，余额转进存款（《住房公积金管理条例》第24条：离休、退休的可以提取）。时间线上写在退休那一条后面
   const hpfOut = S.hpf > 0 ? S.hpf : 0;
-  if (hpfOut) { S.money += hpfOut; S.hpf = 0; }
-  const hpfLog = () => { if (hpfOut >= 100) log(`办了公积金销户提取，账户里的${wan(hpfOut)}转进了存款。`, 'ev'); };
+  if (hpfOut) { S.money += hpfOut; S.hpf = 0; noteMoney('退休提取公积金', hpfOut); }
+  // 几十年攒下的公积金一次提出来，常常是一大笔：记成人生大事
+  const hpfLog = () => { if (hpfOut >= 100) (hpfOut >= 1e5 ? major : log)(`办了公积金销户提取，这些年攒在账户里的${wan(hpfOut)}转进了存款。`, 'good'); };
   if (S.house && S.house.city !== S.loc.city) { moveTo(cityLoc(S.house.p, S.house.city)); log(`退休了，不用再待在${S.jobs[S.jobs.length - 1].city}。搬回了自己在${S.house.city}的房子。`, 'ev'); }
   const short = P.y > 0 && !emp ? `职工养老保险只交了${Math.round(P.y)}年，不满15年，领不了职工养老金。` : '';
   if (farm) { major(`年纪大了，地种不动了，交给了亲戚。${short}往后靠每月一点城乡居民养老金和积蓄过日子。`, 'ev'); hpfLog(); return; }

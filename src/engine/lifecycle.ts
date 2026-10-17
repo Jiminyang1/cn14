@@ -10,7 +10,7 @@ import { focusMonth } from './focus';
 import { JOBS, isWorking, mainJob, retire, retireAge } from './career';
 import { S, setS } from './state';
 import { SIB, UR, boyOf, familyMonth, olderSibSexes, planNextSib, sibYearStart } from './family';
-import { addDoc, log, out } from './journal';
+import { addDoc, log, moneyAround, moveLabel, out } from './journal';
 import { MONTHS, monthStart } from './monthly';
 import { planMonth, planYearSchedule, scheduleYearStart } from './schedule';
 import { famHouseInit, famWealthInit, familyIncomeInit, makeParent, setParentJob } from './parents';
@@ -151,7 +151,8 @@ export function fire(e) {
     if (!ev || (ev.c && !ev.c())) return;
     S.done[ev.id] = S.age;
     S.recent = [ev.id, ...S.recent].slice(0, 8);
-    out(ev.run(), 'ev', !!ev.big);
+    let r; moneyAround(() => moveLabel(r), () => { r = ev.run(); });
+    out(r, 'ev', !!ev.big);
   } else if (e.type === 'dec') openDec(e.id);
   else if (e.type === 'ms') milestone();
   else if (e.type === 'ref' && ENABLE_REFLECT) S.pending = { type: 'ref', q: REFLECT[S.age] };
@@ -186,7 +187,7 @@ export function resolveDec(id, d, k, quiet = false) {
   S.pending = null;
   if (!quiet) log(`${d.title} —— ${c.label}`, 'choice', d.why && d.why.k === k ? d.why.t : null);
   const fork = !!DEC[id].fork;
-  const r = DEC[id].apply(k, d.ctx || {});
+  const r = moneyAround(() => d.title.replace(/[？?]$/, ''), () => DEC[id].apply(k, d.ctx || {}));
   if (fork && !S.headless) (S.forks ||= []).push({ a: S.age, id, title: d.title, pick: c.label, alt: d.choices.filter(x => x.k !== k && !x.off).map(x => x.label), res: r ? (typeof r === 'string' ? r : r.t) : null });
   out(r, 'ev', fork);
 }

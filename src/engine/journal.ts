@@ -9,7 +9,10 @@ declare module './types' {
   // y、m：写下时是公历哪年哪月（和页头的「X年X月」一致）
   interface Doc { m: number }
   interface LogEntry { y: number; m: number; x?: 1 } // x：人生大事（见 major）
-  interface Life { vary?: Record<string, number> } // 反复发生的事已经用过哪几种说法（位掩码，见 vary）
+  interface Life {
+    vary?: Record<string, number>; // 反复发生的事已经用过哪几种说法（位掩码，见 vary）
+    moves?: Move[];                // 大笔进出（年终小结里写来源，见 noteMoney）
+  }
 }
 
 const curM = () => S.month;
@@ -53,3 +56,28 @@ export function vary(id: string, xs: string[]) {
   const i = pick(free); V[id] = (V[id] || 0) | (1 << i);
   return xs[i];
 }
+
+// ===== 大笔进出 =====
+// 年终小结写清楚这一年钱的大进大出是哪来的（公积金提取、继承、买房、陪嫁……），不然现金突然多了、少了一大块，看不出原因。
+// 事件和抉择发生时自动记（lifecycle.ts 的 fire、resolveDec），不经过事件的（退休提公积金、继承）在各自的地方记。无界面的人生不记
+export interface Move { a: number; y: number; m: number; t: string; x: number } // 几岁、公历年月、来源、金额（正是进、负是出）
+/** 手上的钱：现金减欠款（借钱付的也算花出去了） */
+export const netCash = () => (S.money || 0) - (S.debt || 0);
+/** 算不算大笔：一万块以上，而且超过两个月的收入 */
+const bigLine = () => Math.max(1e4, (S.net || 0) / 6);
+export function noteMoney(t: string, x: number) {
+  if (S.headless || !S.indep || Math.abs(x) < bigLine()) return;
+  const m = curM();
+  (S.moves ||= []).push({ a: S.age, y: calYear(m), m: calMonth(m), t, x: Math.round(x) });
+}
+/** 一件事前后：手上的钱变了多少，扣掉这件事里已经单独记过的，剩下的记在 t 名下 */
+export function moneyAround<T>(t: () => string, run: () => T): T {
+  const c0 = netCash(), n0 = S.moves?.length || 0;
+  const r = run();
+  let d = netCash() - c0;
+  for (const mv of (S.moves || []).slice(n0)) d -= mv.x;
+  if (Math.abs(d) >= 1) noteMoney(t(), d);
+  return r;
+}
+/** 事件的来源名：取那句话开头的一截（到第一个逗号或句号） */
+export const moveLabel = (r: any) => { const t = typeof r === 'string' ? r : r?.t || ''; const s = t.split(/[，。：]/)[0]; return s.length > 16 ? s.slice(0, 15) + '…' : s; };

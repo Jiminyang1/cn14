@@ -4,7 +4,7 @@ import { fpow } from './fmath';
 import { LOAN_RULES, annualPay } from './housing';
 import { MONTHS, monthOfCal } from './monthly';
 import { S } from './state';
-import { log } from './journal';
+import { log, noteMoney } from './journal';
 import { parentIncome, parentRetired } from './parents';
 import { placeCons, placeHp, placeInc } from './place';
 import { wan } from './format';
@@ -151,7 +151,7 @@ export function inheritSplit(houseK, quiet = false, sell = false) {
     (S.inheritedHomes ||= []).push({ city: S.home.city, p: S.home.p, v: property, share: houseK / estate.n });
   }
   if (S.indep === false) S.famMoney = cash;
-  else changeMoney(cash);
+  else { changeMoney(cash); noteMoney('继承父母的存款', cash); }
   S.stats.inherit = (S.stats.inherit || 0) + total;
   if (!quiet && total > 0) log(`父母都走了。你继承了存款${wan(cash)}${!sell && property > 0 ? `和价值约${wan(property)}的房产权益，房子还没有卖` : ''}。${S.indep === false ? '现金由亲戚代管，供你吃穿上学。' : ''}`, 'ev');
   return total;

@@ -134,7 +134,7 @@ const YearGroup = memo(({ a, items, bills, current, now, initial }: { a: number;
       <b>{cnNum(a)}岁</b><small>{yearSpan(items, bills, now)}</small>
       {current && <YearProgress className="yr-prog" title="这一年过了多少" />}
     </div>
-    <TimelineFinance bills={bills} completed={a < S.age} />
+    <TimelineFinance bills={bills} completed={a < S.age} age={a} />
     {items.map(([e, k]) => <Entry key={k} e={e} anim={k > initial} live={current} />)}
   </div>
 ), (p, q) => p.a === q.a && p.current === q.current && p.now === q.now && p.initial === q.initial && p.items.length === q.items.length

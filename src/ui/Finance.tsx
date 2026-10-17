@@ -16,9 +16,13 @@ const movementClass = (value: number) => value < 0 ? 'neg' : value > 0 ? 'money-
 
 export const statementAge = (bill: MonthlyStatement, birthYear: number, birthMonth: number) => bill.year - birthYear - Number(bill.month < birthMonth);
 
-export function TimelineFinance({ bills, completed }: { bills: MonthlyStatement[]; completed: boolean }) {
+const signedWan = (x: number) => (x > 0 ? '+' : '−') + wan(Math.abs(x));
+export function TimelineFinance({ bills, completed, age }: { bills: MonthlyStatement[]; completed: boolean; age?: number }) {
   const [open, setOpen] = useState(false);
   if (!completed || !bills.length) return null;
+  // 这一年的大笔进出（engine/journal.ts 的 noteMoney）：标题上写最大的两笔，展开后全列出来
+  const moves = age == null ? [] : (S.moves || []).filter(mv => mv.a === age);
+  const top = moves.slice().sort((p, q) => Math.abs(q.x) - Math.abs(p.x)).slice(0, 2);
   const income = bills.reduce((total, bill) => total + bill.income, 0);
   const spending = bills.reduce((total, bill) => total + monthlySpending(bill), 0);
   const change = bills.reduce((total, bill) => total + bill.closing - bill.opening, 0);
@@ -28,9 +32,11 @@ export function TimelineFinance({ bills, completed }: { bills: MonthlyStatement[
     <summary>
       <span className="timeline-finance-label">年终小结</span>
       <span className={movementClass(change)}>{result}</span>
+      {top.length > 0 && <span className="timeline-finance-big">其中{top.map(mv => `${mv.t} ${signedWan(mv.x)}`).join('，')}</span>}
     </summary>
     {open && <div className="timeline-finance-body">
       <p className="account-note">这一年到手 {wan(income)}，生活和住房花了 {wan(spending)}。点开月份看明细。</p>
+      {moves.length > 0 && <dl className="big-moves">{moves.map((mv, i) => <div key={i}><dt>{mv.m}月 · {mv.t}</dt><dd className={movementClass(mv.x)}>{signedWan(mv.x)}</dd></div>)}</dl>}
       {bills.slice().reverse().map(bill => <AccountStatement key={`${bill.year}-${bill.month}`} bill={bill} />)}
     </div>}
   </details>;
