@@ -29,7 +29,7 @@ export type Ax = 'e' | 'n' | 'c' | 'a' | 'r';
 export type PZ = Record<Ax, number>;
 /** 抉择里的一个选项。w 是自动抉择时的权重，tilt 是性格对这个权重的影响（每个标准差，见 personality.ts 的 tiltW），off 表示不可选 */
 export interface Choice { k: string; label: string; sub?: string; w?: number; tilt?: Partial<PZ>; noWhy?: boolean; off?: boolean } // noWhy：自动选中时不写性格理由（读起来不对的几项）
-export interface Decision { title: string; body: string; fact?: string; form?: string; card?: [string, string][]; choices: Choice[]; ctx?: any; why?: { k: string; t: string } } // why：自动抉择时性格起了明显作用，记下理由
+export interface Decision { title: string; body: string; fact?: string; form?: string; card?: [string, string, string?][]; choices: Choice[]; ctx?: any; why?: { k: string; t: string } } // why：自动抉择时性格起了明显作用，记下理由
 
 /** 院校（gaokao.ts） */
 export interface Uni { name: string; city: string; prov: string; tier: string; pct?: number; u?: number; attr: string; fee?: number; thr?: number; line?: number; ml?: Record<string, number>; w?: number; nt?: number; p?: number; taken?: number; group?: string }
@@ -61,6 +61,9 @@ export interface Partner {
   wh?: number;               // 对方家里要不要婚房：1 要、2 已经因为没房拒过一次求婚
   follow?: number;           // 你搬走时对方还在读书，说好毕业后来你的城市（romance.ts 的 loveMove）
   pz?: PZ;                   // 对方的性格（固定不变；关掉性格时没有）
+  only?: boolean;            // 独生子女
+  house?: boolean;           // 认识时已经有自己的房
+  par?: number;              // 你家里的态度：1 满意、0 没意见、-1 不太满意（在一起时记下，见家长时用）
 }
 export interface Family {
   mom: Parent; dad: Parent; sibs: Sibling[]; kids: Kid[];
@@ -101,7 +104,6 @@ export interface Pers { g: PZ; k: PZ; u: PZ; z: PZ }
 /** 一生里零散的标记（多数只在少数事件里用到） */
 export interface Flags {
   kid?: Record<string, string>; // 童年小抉择选了什么（content/decisions.ts 的 CHILD）
-  solo?: boolean;            // 一辈子不结婚
   nextSib?: number | null;   // 弟弟妹妹会在你几岁时出生
   lb?: 'both' | 'one';       // 留守：父母都外出 / 一方外出
   lbWho?: 'dad' | 'mom' | 'both'; // 留守时外出打工的是谁（父母去世时跟着更新，见 family.ts 的 parentGone）
@@ -131,6 +133,7 @@ export interface Life {
   st: Stats4; flags: Flags;
   pers?: Pers;                                     // 性格（personality.ts）
   fam: Family; cand?: Partner | null;               // 认识了、还没决定的人
+  cand2?: Partner | null;                           // 相亲：同时介绍的第二个人
   // 学业与工作
   school: string | null; schoolEnd: number | null; edu: number;
   job: string | null; jobY: number; wageK: number; jobs: { job: string; age: number; city: string }[];

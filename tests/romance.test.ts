@@ -5,7 +5,7 @@ import { nowM } from '../src/engine/calendar';
 function single20() {
   E.birth(4242);
   const life = E.S;
-  life.age = 20; life.auto = false; life.flags.solo = false;
+  life.age = 20; life.auto = false;
   life.fam.married = false; life.fam.dating = null; life.cand = null;
   return life;
 }

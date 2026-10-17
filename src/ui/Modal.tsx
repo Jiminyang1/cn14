@@ -35,7 +35,9 @@ function Head({ k, title, children, photo }: { k: string; title: string; childre
 function Body({ d }: { d: Decision }) {
   return <>
     <p>{d.body}</p>
-    {d.card && <div className="pcard">{d.card.map(([k, v], i) => <div key={i} className="row"><span className="k">{k}</span><span className="v">{v}</span></div>)}</div>}
+    {d.card && <div className="pcard">{d.card.map(([k, v, v2], i) => v2 == null
+      ? <div key={i} className="row"><span className="k">{k}</span><span className="v">{v}</span></div>
+      : <div key={i} className={'row r2' + (i === 0 ? ' hd' : '')}><span className="k">{k}</span><span className="v">{v}</span><span className="v">{v2}</span></div>)}</div>}
     {d.fact && <p className="fact"><b>附注</b>{d.fact}</p>}
   </>;
 }

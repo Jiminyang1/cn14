@@ -26,51 +26,52 @@ declare module './types' {
 }
 
 export const single = () => !S.fam.married && !S.fam.dating && !S.cand;
-export const soloK = () => S.flags.solo ? 0 : 1;
 export const myEdu = () => Math.max(S.edu || 0, S.school && SCHOOL_EDU[S.school] ? SCHOOL_EDU[S.school] : 0, 2);
 export const TRAITS = ['温和', '直爽', '内向', '爱玩', '顾家', '上进', '慢热', '幽默', '细心', '要强'];
 export const MEET_HOW = { friends: '朋友聚会上', work: '公司', wedding: '同学婚礼上', hobby: '一个兴趣小组里', app: '社交软件上', school: '学校里', blind: '亲戚介绍', reunion: '同学聚会上' };
-// 认识新的人有多频繁（校准系数，使初婚年龄、不婚比例对上 2020 年普查）
-// 按月判定以后（2026-10）：被拒、分手以后下个月就可能再认识人，不用等到下一年，一年里认识的人比原来多。
-// 男性保持 MEET_K = 1，32 岁未婚从 36% 降到 23%（普查 20.6%）；女性同样的系数会降到 6.5%（普查 9.3%），所以女性另乘 MEET_KF = 0.8，回到 9.4%
-// 四部分合并以后（结婚改成每年判定一次、落在随机月份）32 岁未婚回升到 男 25.7% / 女 10.4%；此时再调认识人的频率已经没用（男性 +30% 只降到 24.1%），
-// 改调 READY_K 0.6 → 0.8（年纪越大越想定下来）：男 23.9% / 女 9.4%，初婚年龄 28.1 / 25.8（普查 29.4 / 28.0，两者没法同时对上，优先对未婚比例）
-// 加性格以后（2026-10）：外向的人认识人多、内向的少；敏感的人「再处处看」多。每个人的倍数平均是 1，但「到 32 岁结没结婚」对认识人的频率是凹的，
-// 人和人不一样以后整体结婚的少了（32 岁未婚 男 22.0→28.0%、女 8.3→16.0%）。这是真实的效应（内向的人确实更可能不婚），所以调基准把总量对回普查：
-// MEET_K 1 → 1.3、MEET_KF 0.8 → 0.95：男 23.9% / 女 9.5%，初婚年龄 28.1 / 25.2
-// 审查修复全部合并以后（抉择份额修正、法定婚龄要看双方、没房被拒两次后松口或分手、离婚模型、个税）32 岁未婚回升到 男 26.2% / 女 10.0%：
-// MEET_K 1.3 → 1.6、MEET_KF 0.95 → 0.85：男 23.7% / 女 8.8%，初婚年龄 27.9 / 25.6
-// 修 loveBoost 以后（2026-10-17）：原来某一年选过恋爱就一辈子多乘 1.5，无界面的人生自动选重心时多半挂着，校准时被算了进去；
-// 修好以后 32 岁未婚升到 男 25.6% / 女 12.2%。按女性重新校准（男性对这个系数不敏感：1.9 → 2.3 只从 25.4% 降到 24.0%，卡在婚房、对方愿不愿意上）：
-// MEET_K 1.6 → 2.1、MEET_KF 0.85 → 0.95：男 24.9% / 女 9.2%（普查 20.6% / 9.3%），初婚年龄 28.0 / 25.6
-export const MEET_K = 2.1, MEET_KF = 0.95, MUTUAL0 = 0.4, BREAK_K = 1.3, READY0 = 0.6, READY_K = 0.8;
-// 单身时每年认识一个「可能发展」的人的概率（按年龄，女性略早；估计，MEET_K 为校准系数）。认识的方式里，年纪越大、相亲越多
-export const MEET_P = a => S.sex === 'F'
-  ? (a < 18 ? 0 : a < 22 ? 0.55 : a < 26 ? 0.7 : a < 30 ? 0.7 : a < 35 ? 0.55 : a < 45 ? 0.35 : 0.2)
-  : (a < 18 ? 0 : a < 22 ? 0.45 : a < 26 ? 0.65 : a < 30 ? 0.7 : a < 35 ? 0.6 : a < 45 ? 0.4 : 0.2);
+// 遇见的人：一两年一个，每个都问你（原来单身的人每个月都可能冒出一个，一年认识一个半人，一个都记不住，
+// 还要靠自动抉择替玩家挡掉大半，结果替玩家「主动追求」了一个 Ta 从没见过的人）。
+// MEET_K、MEET_KF、BREAK_K 是校准系数：无界面的人生 32 岁未婚、初婚年龄大致不离谱就行。
+// 遇见的人少了以后分手也调轻了（BREAK_K 1.3 → 0.7），不然一辈子单身的太多：32 岁未婚 男 25.9% / 女 10.0%，初婚 28.1 / 25.7
+export const MEET_K = 1.6, MEET_KF = 0.95, MUTUAL0 = 0.4, BREAK_K = 0.7, READY0 = 0.6, READY_K = 0.8;
+// 单身时一年里遇见一个人的可能（按年龄，估计）：大学、刚工作、家里催的那几年最多
+export const MEET_P = a => a < 18 ? 0 : a < 22 ? 0.5 : a < 27 ? 0.6 : a < 34 ? 0.7 : a < 45 ? 0.45 : 0.2;
+// 上一个人以后（认识、分手、离婚、丧偶）至少隔这么多个月才遇见下一个；时间放在恋爱上的短一些
+export const MEET_GAP = 10, MEET_GAP_LOVE = 5;
 // 每个人心里「该结婚的年纪」不一样（标准差约 3 岁，估计）；农村出身的一般早一些
 export const mShift = () => S.flags.mShift != null ? S.flags.mShift : (S.flags.mShift = gauss(0, 4) - (S.home.kind === 'rural' ? 1.5 : 0));
+// 编制：公务员、教师、医生、护士（职业表里的 stable）。相亲市场上最吃香的一条
+export const bianzhi = (jk: string | null | undefined) => !!(jk && JOBS[jk] && JOBS[jk].stable);
+// 你拿得出手的条件：有编制、有房（介绍人会主动上门）
+const myCondOK = () => S.age >= 25 && (bianzhi(S.job) || !!S.house);
+// 怎么认识的：读书时多在学校；二十六七以后相亲越来越多，有编制、有房的更多
 export function meetHow() {
-  if (S.school && S.age < 25 && chance(0.6)) return 'school';
-  if (S.age >= 25 && chance(Math.min(0.5, (S.age - 23) * 0.06))) return 'blind';
-  return wpick({ friends: 3, work: isWorking() ? 3 : 0, wedding: 1, hobby: 1, app: 2 });
+  if (S.school && S.age < 25 && chance(0.7)) return 'school';
+  if (S.age >= 26 && chance(Math.min(0.7, (S.age - 24) * 0.1 + (myCondOK() ? 0.15 : 0)))) return 'blind';
+  return wpick({ friends: 3, work: isWorking() ? 3 : 0, wedding: S.age >= 24 ? 1.5 : 0.3, hobby: 1, app: 2 });
 }
 // 每月都要换算的概率（认识人、分手）只有几十种取值：记下来，免得每月都算一次 fpow（结果和直接算完全相同）
 const PM = new Map<number, number>();
 const pm = (p: number) => { let v = PM.get(p); if (v === undefined) PM.set(p, v = perMonth(p)); return v; };
-// 单身的人这个月会不会认识一个「可能发展」的人：MEET_P 是一年的，换算成每月。外向的人认识人多一些（每个标准差约 ×1.28）。
-// 「恋爱」每占一格，认识人的机会多 LOVE_FOCUS_K 倍那么多（一格 ×1.8，两格都放 ×2.3）；「朋友」每格 ×1.2（朋友多了，介绍的人也多）。
-// 原来还有一个 loveBoost：某一年在恋爱上花过 0.4 年以上就一辈子多乘 1.5，同一件事算了两次，已经去掉
+// 单身的人这个月会不会遇见一个人：MEET_P 是一年的，换算成每月。外向的人遇见的多一些（每个标准差约 ×1.28）。
+// 「恋爱」每占一格，机会多 LOVE_FOCUS_K 倍那么多（一格 ×1.8，两格都放 ×2.3）；「朋友」每格 ×1.2（朋友多了，介绍的人也多）；
+// 有编制、有房的 ×1.25（介绍人主动上门）
 export const LOVE_FOCUS_K = 0.8, FRIEND_MEET_K = 0.2;
 const MEET_T = { e: 0.25 };
+declare module './types' {
+  interface Flags { lastMeet?: number; coupled?: number } // 上一个人是出生后第几个月遇见的（或者那段感情是哪个月结束的）；上个月还有没有对象
+}
 function meetMonth(m: number) {
-  if (S.age < 18 || S.age > 60 || !single() || !soloK()) return;
+  if (S.age < 18 || S.age > 60 || !single()) return;
   const love = loveNow();
   // 说过「现在不想谈恋爱」的，这段时间里不再认识新的人；改回「恋爱」重心就是又想谈了
   if (S.flags.noLove != null) { if (love || nowM() >= S.flags.noLove) S.flags.noLove = undefined; else return; }
-  const p = MEET_P(S.age) * MEET_K * (S.sex === 'F' ? MEET_KF : 1) * (1 + LOVE_FOCUS_K * slotW('love') + FRIEND_MEET_K * slotW('friends')) * tiltW(MEET_T);
+  if (S.flags.lastMeet != null && nowM() - S.flags.lastMeet < (love ? MEET_GAP_LOVE : MEET_GAP)) return;
+  const p = MEET_P(S.age) * MEET_K * (S.sex === 'F' ? MEET_KF : 1) * (1 + LOVE_FOCUS_K * slotW('love') + FRIEND_MEET_K * slotW('friends')) * (myCondOK() ? 1.25 : 1) * tiltW(MEET_T);
   if (!chance(perMonth(Math.min(0.95, p)))) return;
-  S.cand = makePartner(meetHow());
+  S.flags.lastMeet = nowM();
+  const how = meetHow();
+  if (how === 'blind') blindPair(); else S.cand = makePartner(how);
   queueRomance(m);
 }
 // 认识了，就在下个月排一个「要不要在一起」的抉择（队列按时间排序）。
@@ -91,7 +92,8 @@ export function partnerEdu() {
 export function makePartner(how) {
   const sex = S.sex === 'M' ? 'F' : 'M';
   const nm = makeName(sex, chance(0.9) ? '汉族' : S.eth);
-  const age = Math.max(18, Math.round(S.age + (sex === 'M' ? 2 : -2) + gauss(0, 2.8)));
+  let age = Math.max(18, Math.round(S.age + (sex === 'M' ? 2 : -2) + gauss(0, 2.8)));
+  if (how === 'school') age = Math.min(age, S.age + 1); // 学校里认识的也还在读书
   const home = chance(0.55) ? S.loc.p : chance(0.45) ? S.home.p : wpick(PROVS.map(x => [x.id, x.b]));
   const rural = S.loc.kind === 'rural' ? true : !chance(PBY[home].u / 100) && chance(0.6);
   const edu = how === 'school' ? Math.max(myEdu(), 5) : partnerEdu();
@@ -104,6 +106,9 @@ export function makePartner(how) {
   };
   if (!p.trait) p.pz = partnerPz(rnd());
   partnerJob(p);
+  // 是不是独生子女（城里的多，估计）；工作了几年的，家境越好越可能已经有自己的房（估计）
+  p.only = chance(p.rural ? 0.25 : 0.55);
+  p.house = !!p.jk && p.age >= 24 && chance(clamp(0.05 + 0.1 * (p.q - 1) + 0.03 * (p.age - 24), 0.05, 0.8));
   // 合不合得来：学历、年龄差得越多越难（估计）；再加一点说不清的缘分
   p.fit = clamp(0.62 - 0.1 * Math.abs(edu - myEdu()) - 0.03 * Math.abs(age - S.age) + gauss(0, 0.17), 0.05, 0.95);
   return p;
@@ -140,14 +145,75 @@ export function mutualP(p) {
   if (S.house) x += male ? 0.08 : 0.03;
   if (S.income > placeInc() * RICH_K) x += male ? 0.06 : 0.03;
   if (S.job === 'seeking') x -= male ? 0.12 : 0.06;
+  if (bianzhi(S.job)) x += 0.06;
+  x -= 0.03 * Math.max(0, p.q - S.q - 1); // 对方家里比你家好很多：门不当户不对
   return clamp(x, 0.05, 0.92);
 }
-export function partnerRows(p, opts: { love?: boolean } = {}) {
-  const r = [['年龄', `${p.age}岁`], ['学历', p.jk ? EDU_LV[p.edu] : `${EDU_LV[p.edu]}在读`], ['职业', p.jk ? JOBS[p.jk].n : '还在读书'], ['月收入', p.inc ? (p.jk && !p.retired ? `到手${wanM(partnerPay(p).net)}（税前${wanM(p.inc)}）` : wanM(p.inc)) : '没有收入'],
-    ['家乡', `${PBY[p.home].n}${p.rural ? '农村' : '城里'}`], ['家境', '●'.repeat(p.q) + '○'.repeat(5 - p.q)], ['性格', partnerTrait(p)]];
+export function partnerRows(p, opts: { love?: boolean } = {}): [string, string][] {
+  const r: [string, string][] = [['年龄', `${p.age}岁`], ['学历', p.jk ? EDU_LV[p.edu] : `${EDU_LV[p.edu]}在读`], ['职业', p.jk ? JOBS[p.jk].n + (bianzhi(p.jk) ? '（有编制）' : '') : '还在读书'],
+    ['月收入', p.inc ? (p.jk && !p.retired ? `到手${wanM(partnerPay(p).net)}（税前${wanM(p.inc)}）` : wanM(p.inc)) : '没有收入']];
+  if (p.jk && p.house != null) r.push(['房子', p.house ? '有自己的房' : '还没有']);
+  r.push(['家乡', `${PBY[p.home].n}${p.rural ? '农村' : '城里'}`], ['家境', '●'.repeat(p.q) + '○'.repeat(5 - p.q)]);
+  if (p.only != null) r.push(['家里', p.only ? '独生子女' : '有兄弟姐妹']);
+  r.push(['性格', partnerTrait(p)]);
   if (opts.love) r.push(['在一起', `${S.age - p.metAt}年`], ['感情', loveWord(p.love)]);
   return r;
 }
+export const feelWord = p => p.fit >= 0.7 ? '聊得很投缘' : p.fit >= 0.5 ? '感觉还可以' : '好像不太聊得来';
+
+// ===== 两家的看法 =====
+// 中国人谈对象，看的不只是两个人：对方家里看你的房子、编制、收入，你家里看对方的家境、工作、是哪里人。
+// 这些都写在抉择单上，不藏在骰子里。确定的，不消耗随机数（界面上也会算）
+/** 对方家里怎么看你（subj：「张三家里」或「两边家里」）。还在读书的还没到这一步 */
+export function theirView(p, subj = `${p.name}家里`): string | null {
+  if (S.school || S.age < 22) return null;
+  const jn = S.job && JOBS[S.job] ? JOBS[S.job].n : '';
+  if (bianzhi(S.job)) return `${subj}听说你是${jn}，有编制，挺满意。`;
+  if (S.job === 'seeking') return `${subj}问你在哪儿上班，你说还在找。`;
+  if (S.sex === 'M' && S.age >= 25) return S.house ? `${subj}听说你在${S.house.city}有房，挺满意。` : `${subj}托人问了两次：你有没有房。`;
+  if (p.q - S.q >= 2) return `${subj}条件好，话里话外嫌你家底薄。`;
+  if (S.income > placeInc() * RICH_K) return `听说你收入不错，${subj}没什么好挑的。`;
+  return null;
+}
+/** 你家里怎么看对方：好的、担心的各取最要紧的一条。par：1 满意、0 没意见、-1 不太满意 */
+export function famView(p): { who: string | null; good: string | null; bad: string | null; par: number } {
+  const { mom, dad } = S.fam, who = mom.alive ? '妈妈' : dad.alive ? '爸爸' : null;
+  if (!who || S.age < 22) return { who: null, good: null, bad: null, par: 0 }; // 二十出头以前，家里还不过问
+  const ta = p.sex === 'M' ? '他' : '她', gap = Math.abs(p.age - S.age);
+  const good = bianzhi(p.jk) ? '有编制，稳当' : p.house ? '自己有房，省心' : p.q - S.q === 1 ? '家里条件不错' : null;
+  let bad: string | null = null, sc = good ? 1 : 0;
+  if (!p.jk && S.age >= 24) { bad = '还没工作'; sc--; }
+  else if (S.q - p.q >= 2) { bad = '家里条件差了点'; sc--; }
+  else if (p.home !== S.home.p) { bad = S.sex === 'F' ? `${PBY[p.home].n}的？嫁那么远，以后想回趟家都难` : '外地的？以后过年回谁家'; sc--; }
+  else if (p.rural && S.home.kind !== 'rural') { bad = S.sex === 'M' ? '农村的，彩礼怕是不少' : `农村的，以后过年回${ta}家，你待得惯吗`; sc--; }
+  else if (gap >= 6) { bad = `比你${p.age > S.age ? '大' : '小'}了${gap}岁`; sc--; }
+  else if (p.q - S.q >= 2) bad = '人家条件那么好，你以后别受气'; // 高攀：担心，但不算反对
+  return { who, good, bad, par: Math.sign(sc) };
+}
+/** 「妈妈说：“……”」 */
+export function famSay(p): string | null {
+  const v = famView(p); if (!v.who) return null;
+  const t = v.good && v.bad ? `${v.good}。就是${v.bad}。` : v.good ? `${v.good}。` : v.bad ? `${v.bad}。` : `人看着挺好。`;
+  return `${v.who}说：“${t}”`;
+}
+
+// ===== 相亲：一次介绍两个 =====
+// 一个条件好、聊不太来，一个合得来、条件一般：见哪一个，是真正的取舍
+const condScore = p => p.q + (bianzhi(p.jk) ? 1.5 : 0) + (p.house ? 1 : 0);
+function blindPair() {
+  const a = makePartner('blind'), b = makePartner('blind');
+  const [hi, lo] = condScore(a) + (a.inc > b.inc ? 0.5 : 0) >= condScore(b) + (b.inc > a.inc ? 0.5 : 0) ? [a, b] : [b, a];
+  if (hi.q - lo.q < 2) { hi.q = Math.min(5, hi.q + 1); lo.q = Math.max(1, lo.q - 1); }
+  const f = (hi.fit + lo.fit) / 2;
+  hi.fit = clamp(f - 0.12, 0.05, 0.95); lo.fit = clamp(f + 0.12, 0.05, 0.95);
+  // 先后随机，免得条件好的总排在前面
+  [S.cand, S.cand2] = chance(0.5) ? [hi, lo] : [lo, hi];
+}
+/** 谁介绍的：爸妈在的是爸妈托人，不在了是亲戚或者同事 */
+export const matchmaker = () => S.fam.mom.alive ? '妈妈' : S.fam.dad.alive ? '爸爸' : isWorking() ? '同事' : '亲戚';
+/** 自动抉择（无界面的人生、你勾了自动抉择）时，条件好、家里满意的更容易选上 */
+export const pickW = p => Math.max(0.1, (0.6 + p.fit * 2 + 0.25 * (p.q - 3) + (bianzhi(p.jk) ? 0.3 : 0) + (p.house ? 0.2 : 0)) * (1 + 0.2 * famView(p).par));
+
 // 恋爱中的每一年：对象长一岁、毕业了找工作、收入更新（在第 12 个月月底，紧接着你自己长一岁）
 function partnerYear(d) {
   d.age++;
@@ -210,6 +276,10 @@ export const brideAmt = pid => { const b = PBY[pid].bride; return b ? Math.round
 // ===== 每个月月底 =====
 /** 单身的：这个月会不会认识人；恋爱中的：感情变化、见家长、分手（第 12 个月月底对象还长一岁） */
 export function loveMonth(m: number) {
+  // 刚分开（分手、离婚、丧偶）：从这个月算起，隔一段时间才会遇见下一个人
+  const has = S.fam.dating || S.fam.married ? 1 : 0;
+  if (S.flags.coupled && !has) S.flags.lastMeet = nowM();
+  S.flags.coupled = has || undefined;
   if (S.cand) {
     // 认识了还没决定（抉择排在下个月）。万一抉择不在队列里了（比如这个月被清掉），补排进下个月，免得一直卡在「还没决定」
     if (!S.queue.some(e => e.type === 'dec' && e.id === 'romance')) queueRomance(m);

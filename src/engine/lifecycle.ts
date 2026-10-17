@@ -61,7 +61,6 @@ export function birth(seed, opts: { year?: number; headless?: boolean } = {}) {
   };
   S.indep = false;
   S.famMoney = 0; // 出生后在 planYear 之前设置
-  S.flags.solo = chance(S.sex === 'M' ? 0.045 : 0.015); // 有些人一辈子没有结婚（2020年普查45–49岁未婚：男4.4%、女1.3%）
   const sexes = olderSibSexes(S.order - 1);
   let age = span;
   for (let i = 0; i < S.order - 1; i++) { S.fam.sibs.push({ rel: sexes[i] === 'M' ? '哥哥' : '姐姐', sex: sexes[i], age, alive: true }); age -= gaps[i]; }

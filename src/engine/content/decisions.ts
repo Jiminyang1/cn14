@@ -8,7 +8,7 @@ import { CAUSE } from '../mortality';
 import { EDU_LV, HS_NAME, admit, enroll, gkAutoApps, gkCandidates, gkLines, gkRank, gkResolve, gkScore, gkShock, hsTier, schoolStart, tutorFee } from '../education';
 import { ILL, oop, reimburse } from '../health';
 import { JOBS, RAISE, RESID_PENSION_JOBS, civilTry, gig, gradJob, hire, hireInCity, isWorking, quitJob, raise, retire } from '../career';
-import { MEET_HOW, READY0, READY_K, brideAmt, loveWord, mShift, mutualP, partnerInc, partnerRows, ptJobName } from '../romance';
+import { MEET_HOW, READY0, READY_K, brideAmt, famSay, famView, feelWord, loveWord, matchmaker, mShift, mutualP, partnerInc, partnerRows, pickW, ptJobName, theirView } from '../romance';
 import { S } from '../state';
 import { addDoc, log, logLater } from '../journal';
 import { annualPay, bestPlan, buyHouse, houseHelp, inlawHelp, mate, foreclose, hhIncome, hometownHouse, loanBal, loanArrears, loanPayY, loanPlans, planSub, sellHouse, sellInherited } from '../housing';
@@ -21,7 +21,6 @@ declare module '../types' {
   interface Flags {
     hunt?: { at: number; job: string; same?: number; home?: number } | null; // 正在找工作：出生后第几个月上岗、找到的是什么工作
     toWork?: number;   // 中考后不读了、还不满 16 岁：在家待到 16 岁再出去打工（见 huntMonth）
-    romAsk?: number;   // 上一次停下来问你「心动」是几岁（抉择 romance 的 quiet）
     babyAsk?: { n: number; a: number }; // 上一次问你要不要孩子：当时有几个孩子、几岁（抉择 baby 的 quiet）
     houseAsk?: number; // 上一次问你买不买房是几岁（抉择 house 的 quiet）
   }
@@ -566,42 +565,55 @@ export const DEC = {
     },
   },
 
-  // 认识了一个人：要不要在一起
+  // 遇见了一个人：要不要在一起。每次都问你（一两年才遇见一个，见 romance.ts 的 meetMonth）。
+  // 相亲时一次介绍两个（S.cand2）：一个条件好、一个合得来
   romance: {
-    // 只在值得问的时候问：对方和你很投缘，或者有三年没问过你了。其余的顺其自然（自动抉择替你定）
-    quiet: () => {
-      const p = S.cand, last = S.flags.romAsk;
-      if (p && p.fit >= 0.65 || last == null || S.age - last >= 3) { S.flags.romAsk = S.age; return false; }
-      return true;
-    },
     build: () => {
-      const p = S.cand; if (!p || S.fam.married || S.fam.dating) { S.cand = null; return null; }
-      const P = mutualP(p), blind = p.how === 'blind';
-      const feel = p.fit >= 0.7 ? '聊得很投缘' : p.fit >= 0.5 ? '感觉还可以' : '好像不太聊得来';
-      const body = blind ? `家里亲戚介绍了${p.name}。见了一面，${feel}。` : `在${MEET_HOW[p.how]}认识了${p.name}，${feel}。`;
+      const p = S.cand, q = S.cand2;
+      if (!p || S.fam.married || S.fam.dating) { S.cand = S.cand2 = null; return null; }
+      const later: Choice = { k: 'later', label: '现在不想谈恋爱', sub: S.school ? '先把书读完，毕业以前不再考虑' : '先顾好眼前的事，这一年不再考虑', w: S.school ? 0.3 : 0.15, tilt: { c: 0.3, e: -0.3 } };
+      const odds = x => { const P = mutualP(x); return `对方也有意的可能：${P >= 0.65 ? '比较大' : P >= 0.4 ? '一半一半' : '不太大'}`; };
+      const fact = '对方愿不愿意，看你们合不合得来，也看你的工作（有没有编制）、收入和房子。';
+      if (q) {
+        // 相亲：两个人并排放在一张表上
+        const A = partnerRows(p), B = partnerRows(q), lb = new Set(B.map(r => r[0]));
+        const card: [string, string, string?][] = [['', p.name, q.name], ...A.filter(r => lb.has(r[0])).map(([k, v]): [string, string, string] => [k, v, B.find(r => r[0] === k)[1]]), ['见了一面', feelWord(p), feelWord(q)]];
+        const fa = famView(p), fb = famView(q), why = v => v.good && v.bad ? `${v.good}，就是${v.bad}` : v.good || v.bad || '人看着挺好';
+        const say = fa.who ? `${fa.who}说：“${p.name}${why(fa)}；${q.name}${why(fb)}。”` : '';
+        const hi = p.q >= q.q ? p : q, tv = theirView(hi);
+        return {
+          title: '相亲', body: `${matchmaker()}托人介绍了两个人，你各见了一面。${tv || ''}${say}`, card, fact,
+          choices: [
+            { k: 'go', label: `和${p.name}接着处`, sub: odds(p), w: pickW(p), tilt: { e: 0.3 } },
+            { k: 'go2', label: `和${q.name}接着处`, sub: odds(q), w: pickW(q), tilt: { e: 0.3 } },
+            { k: 'pass', label: '两个都不合适', sub: '', w: 0.7, tilt: { n: 0.3 } },
+            later,
+          ], ctx: {},
+        };
+      }
+      const blind = p.how === 'blind';
+      const body = (blind ? `${matchmaker()}托人介绍了${p.name}。见了一面，${feelWord(p)}。` : `在${MEET_HOW[p.how]}认识了${p.name}，${feelWord(p)}。`) + (theirView(p) || '') + (famSay(p) || '');
       return {
-        title: blind ? '相亲' : '心动', body, card: partnerRows(p),
-        fact: '对方愿不愿意，看你们合不合得来，也看你的人际、工作和房子。',
+        title: blind ? '相亲' : '心动', body, card: partnerRows(p), fact,
         choices: [
-          { k: 'go', label: blind ? '继续接触' : '主动追求', sub: `对方也有意的可能：${P >= 0.65 ? '比较大' : P >= 0.4 ? '一半一半' : '不太大'}`, w: 0.6 + p.fit * 2, tilt: blind ? { e: 0.3 } : { e: 0.5, r: 0.3 } },
+          { k: 'go', label: blind ? '继续接触' : '主动追求', sub: odds(p), w: pickW(p), tilt: blind ? { e: 0.3 } : { e: 0.5, r: 0.3 } },
           { k: 'pass', label: blind ? '觉得不合适' : '只做朋友', sub: '', w: 0.7, tilt: { n: 0.3 } },
-          // 现在不想谈：一段时间里不再认识新的人（还在读书的到毕业，否则一年）；改选「恋爱」重心就是又想谈了。
-          // 原来只有追求和拒绝，拒绝了下个月照样可能再认识一个，真人玩家上大学时一年被问一两次到三次。自动抉择时很少选（估计），读书时、认真的、内向的多一些
-          { k: 'later', label: '现在不想谈恋爱', sub: S.school ? '先把书读完，毕业以前不再考虑' : '先顾好眼前的事，这一年不再考虑', w: S.school ? 0.3 : 0.15, tilt: { c: 0.3, e: -0.3 } },
+          // 现在不想谈：一段时间里不再遇见新的人（还在读书的到毕业，否则一年）；改选「恋爱」重心就是又想谈了
+          later,
         ], ctx: {},
       };
     },
     apply: k => {
-      const p = S.cand; S.cand = null;
+      const p = k === 'go2' ? S.cand2 : S.cand, first = S.cand; S.cand = S.cand2 = null;
       if (k === 'pass') return null;
       if (k === 'later') {
         // 读书的到毕业那年的 7 月，至少一年；不读书的一年
         const grad = S.school && S.schoolEnd ? (S.schoolEnd - calYear()) * 12 + 7 - calMonth() : 0;
         S.flags.noLove = nowM() + Math.max(12, grad);
-        return S.school ? `你对${p.name}说，现在只想先把书读完。` : `你对${p.name}说，现在没心思谈恋爱。`;
+        return S.school ? `你对${first.name}说，现在只想先把书读完。` : `你对${first.name}说，现在没心思谈恋爱。`;
       }
       if (!chance(mutualP(p))) { eff({ h: -3 }); return { t: p.how === 'blind' ? `又见了两次，${p.name}说觉得你们不太合适。` : `你鼓起勇气表白，${p.name}说只想做朋友。`, k: 'bad' }; }
-      p.love = clamp(55 + 25 * (p.fit - 0.5) + gauss(0, 8), 20, 90); p.asks = 0;
+      p.love = clamp(55 + 25 * (p.fit - 0.5) + gauss(0, 8), 20, 90); p.asks = 0; p.par = famView(p).par;
       S.fam.dating = p; eff({ h: 6 });
       return { t: `你和${p.name}在一起了。`, k: 'good' };
     },

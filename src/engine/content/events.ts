@@ -17,7 +17,7 @@ import { chance, clamp, gauss, pick, ri, wpick } from '../rng';
 import { fexp } from '../fmath';
 import { eff } from '../stats';
 import { kidsAlive, sibsAlive } from '../family';
-import { single, soloK } from '../romance';
+import { single } from '../romance';
 import { wan } from '../format';
 import { sibToWed, sibWed } from '../kin';
 import { shape, tiltW } from '../personality';
@@ -209,7 +209,7 @@ export const EVENTS = [
   { id: 'gigExit', a: [20, 58], gap: 2, w: () => ['rider', 'driver'].includes(S.job) && S.jobY >= 2 ? 2 : 0, run: () => { const was = JOBS[S.job].n; hireInCity(wpick({ factory: 2, sales: 2, clerk: S.edu >= 5 ? 2 : 0.5, shop: 1, skilled: S.edu === 4 ? 2 : 0.3 })); return `做了几年${was}，换成了${JOBS[S.job].n}。`; } },
   { id: 'factoryLine', a: [16, 60], gap: 3, w: () => ['factory', 'migrant'].includes(S.job) ? 3 : 0, run: () => { eff({ hl: -2, money: placeInc() * 0.05 }); return vary('factoryLine', ['旺季每天上十二个小时的班，宿舍八个人一间。', '流水线换了新机器，班组里裁了三个人。你被留了下来，一个人干两个人的活。', '这个月加班多，工资条上的数字是平时的一倍半。你给家里转了一半。', '夜班上到第三个星期，白天怎么也睡不着。']); } },
   { id: 'buildSite', a: [16, 65], gap: 3, w: () => S.job === 'build' ? 3 : 0, run: () => { eff({ hl: -3 }); if (chance(0.05)) { eff({ hl: -10, money: -placeInc() * 0.3 }); return { t: '在工地上从脚手架摔下来，腿骨折了，躺了三个月。', k: 'bad' }; } return '工程结束，包工头拖了三个月才把工钱结清。'; } },
-  { id: 'blind', a: [23, 42], gap: 1, c: single, w: () => (S.age >= 27 ? 1.5 : 0.6) * soloK(), run: () => { eff({ h: -1 }); return '被家里安排去相亲。在咖啡馆坐了一个小时，对方问的全是收入和房子。'; } },
+  { id: 'blind', a: [23, 42], gap: 1, c: single, w: () => S.age >= 27 ? 1.5 : 0.6, run: () => { eff({ h: -1 }); return '被家里安排去相亲。在咖啡馆坐了一个小时，对方问的全是收入和房子。'; } },
   // 催婚：过年时（1–2 月，状态事件）。在谈恋爱的、丧偶不到一年的不问；人在老家的是「走亲戚」，不是「回家」
   { id: 'urge', a: [25, 40], gap: 2, mo: [1, 2], pm: () => URGE_PM, c: () => !S.fam.married && !S.fam.dating && !(S.flags.widowed != null && S.age - S.flags.widowed <= 1), run: () => { eff({ h: -3 }); return `${awayFromHome() ? '过年回家' : '过年走亲戚'}，七大姑八大姨轮流问：“有对象了吗？什么时候结婚？”`; } },
   { id: 'dateTrip', a: [18, 50], gap: 2, w: 1.2, c: () => !!S.fam.dating, run: () => { const d = S.fam.dating; d.love = clamp(d.love + 6, 0, 100); eff({ h: 3, money: -placeInc() * 0.04 }); return { t: `和${d.name}去${pick(['厦门', '大理', '成都', '青岛', '西安', '桂林'])}玩了几天。${d.city !== S.loc.city ? '难得见一次面。' : ''}`, k: 'good' }; } },
