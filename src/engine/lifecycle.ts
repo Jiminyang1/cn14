@@ -28,7 +28,7 @@ import { persInit, persWords, persYear, shape, shownZ, tiltW, whyOf } from './pe
 // ===== 出生 =====
 export function birth(seed, opts: { year?: number; headless?: boolean } = {}) {
   setS(<Life>{
-    seed, rs: seed | 0, age: 0, t: 0, birthYear: opts.year || 2026, birthMonth: 1,
+    seed, rs: seed | 0, age: 0, t: 0, month: 0, birthYear: opts.year || 2026, birthMonth: 1,
     st: {}, flags: {}, done: {}, recent: [], log: [], years: [], queue: [], fT: {}, notes: [], places: [], jobs: [],
     stats: { maxMoney: 0 }, phase: 'life', money: 0, income: 0, job: null, jobY: 0, wageK: 1,
     school: null, schoolEnd: null, edu: 0, house: null, focus: null, pending: null, headless: !!opts.headless,
@@ -111,10 +111,10 @@ export const REFLECT = {
   50: '如果能回到某一年重新选一次，这个人会选哪一年？你呢？',
   70: '这一生里，哪些是这个人自己选的，哪些是出生那一刻就决定了的？',
 };
+// 调用前 S.month 已经是 0（出生时、endYear 长一岁时设好），年初结算里的 calYear()、nowM() 才是生日那个月的
 export function planYear() {
   yearStart();
   if (S.phase !== 'life') return;
-  S.month = 0;
   planYearSchedule();
   planMonth(0);
 }
@@ -208,7 +208,7 @@ function endMonth(m: number) {
 }
 // 第 12 个月结算完：长一岁，排下一年
 export function endYear() {
-  S.age++; S.t = 0;
+  S.age++; S.t = 0; S.month = 0;
   if (S.age >= 110) { die('old'); return; }
   persYear();
   planYear();
