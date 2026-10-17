@@ -93,7 +93,7 @@ function runLife(seed, dp, fp) {
   const st = { seekY: 0, decs: {}, redo: 0, retRent: 0 };
   let guard = 0;
   while (L.phase === 'life' && guard++ < 20000) {
-    if (L.t === 0 && fp) { const k = fp.find(k => E.FOCUS[k].ok()); if (k && k !== L.focus) E.setFocus(k); }
+    if (L.t === 0 && fp) { const k = fp.find(k => E.FOCUS[k].ok()); for (let i = 0; k && i < E.slotN(); i++) if (L.slots?.[i] !== k) E.setSlot(i, k); }
     const age = L.age;
     E.tickTo(1);
     if (L.pending && L.pending.type === 'dec') {

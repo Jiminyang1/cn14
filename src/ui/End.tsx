@@ -1,7 +1,7 @@
 // 档案封存：回看这一生。先是小传、人生标签、人生大事、走过的岔路口、同一秒建档的人；
 // 履历表、这一生的钱、一生曲线、证件、自述收在最下面的「档案附件」里（见 AGENTS.md「回看这一生」）。
 import { useState } from 'react';
-import { CAUSE, EDU_LV, LT, PBY, S, TAG_N, deathText, forksOf, inheritedValue, lifeStory, lifeTags, loanBal, mainJob, lifeMajors, netWorth, persWords, shownZ, wan, wanM } from '../engine';
+import { CAUSE, EDU_LV, LT, PBY, S, TAG_N, lifeTime, deathText, forksOf, inheritedValue, lifeStory, lifeTags, loanBal, mainJob, lifeMajors, netWorth, persWords, shownZ, wan, wanM } from '../engine';
 import { game } from '../game/controller';
 import { loadPast } from '../game/storage';
 import { Cell } from './BirthCert';
@@ -9,6 +9,7 @@ import { RunId } from './RunId';
 import { Curve, DocCard } from './Sidebar';
 import { MonthlyLedger } from './Finance';
 import { dots, fileNo } from './util';
+import { FOCUS_C } from './Life';
 
 const RARE = ['', '', '少见', '罕见'];
 
@@ -26,6 +27,7 @@ export function End() {
   // 收集过的人生标签：所有封存过的档案（这一生在 game.finish 里已经存进去了）
   const seen = new Set(loadPast().flatMap(x => x.tags || []));
   const shownMajors = allMajors ? majors : majors.slice(0, 12);
+  const time = lifeTime(S), timeAll = time.reduce((t, x) => t + x.y, 0);
   return (
     <div className="wrap narrow">
       <div className="folder sealed">
@@ -44,6 +46,14 @@ export function End() {
         <h4>{S.name}的一生</h4>
         {story.map((s, i) => <p key={i}>{s}</p>)}
       </div>
+
+      {timeAll >= 3 && <div className="end-sec">
+        <h4>这一生的时间<small className="end-small">六岁以后的空闲时间放在了哪里</small></h4>
+        <div className="tbar" role="img" aria-label={time.map(t => `${t.n}${Math.round(t.y)}年`).join('，')}>
+          {time.map(t => <span key={t.k} style={{ width: `${t.y / timeAll * 100}%`, background: FOCUS_C[t.k] || 'var(--muted)' }} />)}
+        </div>
+        <div className="tlegend">{time.map(t => <span key={t.k}><i style={{ background: FOCUS_C[t.k] || 'var(--muted)' }} />{t.n} {Math.round(t.y)}年</span>)}</div>
+      </div>}
 
       {tags.length > 0 && <div className="end-sec">
         <h4>人生标签<small className="end-small">你已经见过 {seen.size} / {TAG_N} 种</small></h4>

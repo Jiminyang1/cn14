@@ -34,7 +34,8 @@ npm run replay -- <局ID>   # 重放某一局（见下面「排查问题」）
   - `family.ts` / `parents.ts` / `romance.ts` 兄弟姐妹与孩子、父母、恋爱婚姻
   - `accounts.ts` / `budget.ts` 现金与欠款、家庭生活预算；`household.ts` / `finance.ts` / `housing.ts` 父母家的账、自己的账、公积金与房贷（规则见 [财务模型](docs/finance.md)）
   - `content/events.ts` 随机事件 `EVENTS`；`content/decisions.ts` 抉择 `DEC`；`content/daily.ts` 日常（年节、生活片段、状态节点）；`content/echoes.ts` 回响（发小、初恋、童年选择后来的回声）
-  - `story.ts` 回看这一生：小传、人生标签、人生大事、岔路口（结局页用）
+  - `story.ts` 回看这一生：小传、人生标签、人生大事、岔路口、这一生的时间（结局页用）
+  - `focus.ts` 年度时间安排：1–2 个格子，效果、领域事件倾向、一辈子的时间账
   - `data.ts` 省份等估计值；`real.generated.ts` 由 `tools/build_real.py` 从 `research/*.json` 生成（见 DATA.md）
 - `src/game/`：推进循环、速度、存档（localStorage，带格式版本，格式不兼容时需重新开始）、局日志与重放
 - `src/ui/`：React 组件（首页、出生登记表、一生、弹窗、结局、「怎么算的」卡片）

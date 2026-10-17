@@ -4,6 +4,8 @@ import { EDU_LV } from './education';
 import { CAUSE } from './mortality';
 import { BIG, PBY } from './data';
 import { JOBS, mainJob } from './career';
+import { FOCUS } from './focus';
+import { FY } from './content/echoes';
 
 // ===== 人生标签 =====
 // r：大致有多少见（1 常见、2 少见、3 罕见；估计）。标签收集在浏览器里（game/storage.ts 的 PastLife.tags），首页和结局页显示收集了几种
@@ -39,6 +41,11 @@ export const TAGS: [Tag, (L: Life) => boolean][] = [
   [{ k: 'nokid', n: '没有孩子', d: '结了婚，没有孩子', r: 2 }, L => (L.fam.partner != null || L.flags.divorced != null) && L.fam.kids.length === 0 && L.age >= 45],
   [{ k: 'manykid', n: '儿孙满堂', d: '有三个以上的孩子', r: 2 }, L => kidsOf(L).length >= 3],
   [{ k: 'survivor', n: '挺过了大病', d: '', r: 2 }, L => !!L.flags.survivor],
+  [{ k: 'work', n: '工作狂', d: '一辈子的时间大多给了工作', r: 2 }, L => (L.fy?.work || 0) >= FY.work],
+  [{ k: 'family', n: '顾家', d: '一辈子的时间大多给了家人', r: 2 }, L => (L.fy?.family || 0) >= FY.family],
+  [{ k: 'hobby', n: '活出了自己', d: '几十年没放下自己的爱好', r: 2 }, L => (L.fy?.hobby || 0) >= FY.hobby],
+  [{ k: 'health', n: '养生达人', d: '几十年早睡早起、跑步散步', r: 2 }, L => (L.fy?.sport || 0) + (L.fy?.rest || 0) >= FY.health],
+  [{ k: 'friends', n: '朋友遍天下', d: '一辈子的时间大多给了朋友', r: 2 }, L => (L.fy?.friends || 0) >= FY.friends],
   [{ k: 'long', n: '长寿', d: '活过了九十岁', r: 2 }, L => !!L.death && L.death.age >= 90],
   [{ k: 'short', n: '走得太早', d: '没活到四十五岁', r: 2 }, L => !!L.death && L.death.age < 45],
 ];
@@ -58,6 +65,10 @@ export function forksOf(L: Life): Fork[] {
   }
   return out;
 }
+
+// ===== 这一生的时间 =====
+/** 一辈子在每一项上放了多少格·年，从多到少（结局页画成一条） */
+export const lifeTime = (L: Life) => Object.entries(L.fy || {}).filter(([, y]) => y >= 0.5).sort((a, b) => b[1] - a[1]).map(([k, y]) => ({ k, n: FOCUS[k]?.n || k, y }));
 
 // ===== 小传 =====
 const Q_WORD = ['', '家里很穷', '家里不宽裕', '家境普通', '家里过得不错', '家境优渥'];
@@ -103,6 +114,8 @@ export function lifeStory(L: Life): string[] {
   const ks = L.fam.kids;
   if (ks.length) s += `有${ks.length}个孩子：${ks.map(k => k.name).join('、')}。`;
   if (s) out.push(s);
+  const top = lifeTime(L).filter(t => t.k !== 'study' && t.k !== 'play')[0];
+  if (top && top.y >= 10) out.push(`这一生，${he}把最多的空闲时间给了${top.n}，前后算起来有${Math.round(top.y)}年。`);
   const mo = mood(L);
   if (L.death) out.push(`${L.death.age}岁，${he}因为${CAUSE[L.death.cause]}离开了。${mo || ''}`);
   return out;

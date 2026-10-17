@@ -18,7 +18,7 @@ import { wan, wanM } from './format';
 import { partnerPay } from './finance';
 import { PERS, partnerPz, partnerTrait, pz, tiltW } from './personality';
 import type { PZ } from './types';
-import { loveNow } from './focus';
+import { loveNow, slotW } from './focus';
 import { nowM } from './calendar';
 
 declare module './types' {
@@ -59,16 +59,16 @@ export function meetHow() {
 const PM = new Map<number, number>();
 const pm = (p: number) => { let v = PM.get(p); if (v === undefined) PM.set(p, v = perMonth(p)); return v; };
 // 单身的人这个月会不会认识一个「可能发展」的人：MEET_P 是一年的，换算成每月。外向的人认识人多一些（每个标准差约 ×1.28）。
-// 这个月的重心是「恋爱」的再 ×LOVE_FOCUS_K。原来还有一个 loveBoost：某一年在恋爱上花过 0.4 年以上就设上，之后再也不清，
-// 一辈子都多乘 1.5（18 岁那年自动替你选过恋爱的也算），和「重心是恋爱」叠在一起是 ×2.25，同一件事算了两次
-export const LOVE_FOCUS_K = 1.5;
+// 「恋爱」每占一格，认识人的机会多 LOVE_FOCUS_K 倍那么多（一格 ×1.8，两格都放 ×2.3）；「朋友」每格 ×1.2（朋友多了，介绍的人也多）。
+// 原来还有一个 loveBoost：某一年在恋爱上花过 0.4 年以上就一辈子多乘 1.5，同一件事算了两次，已经去掉
+export const LOVE_FOCUS_K = 0.8, FRIEND_MEET_K = 0.2;
 const MEET_T = { e: 0.25 };
 function meetMonth(m: number) {
   if (S.age < 18 || S.age > 60 || !single() || !soloK()) return;
   const love = loveNow();
   // 说过「现在不想谈恋爱」的，这段时间里不再认识新的人；改回「恋爱」重心就是又想谈了
   if (S.flags.noLove != null) { if (love || nowM() >= S.flags.noLove) S.flags.noLove = undefined; else return; }
-  const p = MEET_P(S.age) * MEET_K * (S.sex === 'F' ? MEET_KF : 1) * (love ? LOVE_FOCUS_K : 1) * tiltW(MEET_T);
+  const p = MEET_P(S.age) * MEET_K * (S.sex === 'F' ? MEET_KF : 1) * (1 + LOVE_FOCUS_K * slotW('love') + FRIEND_MEET_K * slotW('friends')) * tiltW(MEET_T);
   if (!chance(perMonth(Math.min(0.95, p)))) return;
   S.cand = makePartner(meetHow());
   queueRomance(m);
@@ -171,7 +171,7 @@ const LOVE_K = approachPerMonth(0.35), LOVE_SD = sdPerMonth(7), PARENTS_P = perM
 // 恋爱中的每个月：感情向一个目标值靠拢（合不合得来、花多少时间、是不是异地），感情差了就可能分手
 export function loveStep(d) {
   const ldr = d.city !== S.loc.city;
-  const T = 48 + 32 * d.fit + (S.focus === 'love' ? 8 : 0) + (S.focus === 'work' ? -4 : 0) + (ldr ? -12 : 0) + (S.st.h - 55) * 0.2 + loveP(d);
+  const T = 48 + 32 * d.fit + 10 * slotW('love') - 5 * slotW('work') + (ldr ? -12 : 0) + (S.st.h - 55) * 0.2 + loveP(d);
   d.love = clamp(d.love + (T - d.love) * LOVE_K + gauss(0, LOVE_SD), 0, 100);
   const yrs = S.age - d.metAt;
   let met = false; // 这个月刚见过家长：这个月不会分手

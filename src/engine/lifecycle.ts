@@ -32,7 +32,7 @@ export function birth(seed, opts: { year?: number; headless?: boolean } = {}) {
     seed, rs: seed | 0, age: 0, t: 0, month: 0, birthYear: opts.year || 2026, birthMonth: 1,
     st: {}, flags: {}, done: {}, recent: [], log: [], years: [], queue: [], fT: {}, notes: [], places: [], jobs: [],
     stats: { maxMoney: 0 }, phase: 'life', money: 0, income: 0, job: null, jobY: 0, wageK: 1,
-    school: null, schoolEnd: null, edu: 0, house: null, focus: null, pending: null, headless: !!opts.headless,
+    school: null, schoolEnd: null, edu: 0, house: null, pending: null, headless: !!opts.headless,
   });
   S.birthMonth = ri(1, 12);
   const p = wpick(PROVS.map(x => [x, x.b]));

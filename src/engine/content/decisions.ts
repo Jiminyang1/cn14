@@ -31,6 +31,7 @@ import { eff } from '../stats';
 import { bothParents, carer, parentsWord } from '../parents';
 import { rural } from './events';
 import { ECHO_DEC, meetCrush } from './echoes';
+import { domK } from '../focus';
 import { wan } from '../format';
 import { careFeeY, oldIncomeY, uiMonths } from '../finance';
 // 晚年住养老院的抉择：积蓄要撑多少年才和收入够付的一样愿意去（80 岁左右的余寿约 9 年，估计）
@@ -164,7 +165,7 @@ export function monthDecisions() {
   // 每年 1%：在私企干到 48 岁的约一成会遇到（智联招聘：46–50 岁求职者 11.5% 曾因年龄被裁，见 DATA.md）；这一年出过的，裁员名单不再出现（见 layofflist）
   if (J && J.priv && a >= 35 && a <= 48 && once('crisis') && yearly('crisis', CUT35[S.job] ?? 0.01)) d.push('crisis');
   // 跳槽：被别的公司挖，只说得通有雇主的工作（骑手、司机、个体户、小老板、务农不算）
-  if (working && J.risk > 0 && !SELF_EMP.has(S.job) && a >= 24 && a <= 50 && gapOK('jobhop', 6) && yearly('jobhop', 0.07)) d.push('jobhop');
+  if (working && J.risk > 0 && !SELF_EMP.has(S.job) && a >= 24 && a <= 50 && gapOK('jobhop', 6) && yearly('jobhop', 0.07 * domK('work'))) d.push('jobhop');
   if (a >= 78 && once('oldcare') && yearly('oldcare', 0.3)) d.push('oldcare');
   if (S.indep && a >= 24 && a <= 65 && !S.flags.sibLoan && sibsAlive().some(s => s.age >= 22) && S.money > inc * 0.6 && gapOK('sibloan', 10) && yearly('sibloan', 0.015)) d.push('sibloan'); // 有兄弟姐妹的人一辈子约被借 0.6 次（估计）
   if (lb && !arrears && !(S.debt > 0) && S.money - inc * 1.5 > Math.max(inc * 0.5, lb * 0.2) && gapOK('prepay', 4) && yearly('prepay', 0.3)) d.push('prepay');

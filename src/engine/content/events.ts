@@ -10,7 +10,7 @@ import { severance } from '../turns';
 import { MAJORS } from '../education';
 import { PBY } from '../data';
 import { S } from '../state';
-import { addDoc } from '../journal';
+import { addDoc, vary } from '../journal';
 import { awayFromHome, farFromParents, placeInc } from '../place';
 import { anyParent, bothParents, carer, parentsWord } from '../parents';
 import { chance, clamp, gauss, pick, ri, wpick } from '../rng';
@@ -26,6 +26,7 @@ import { nowM } from '../calendar';
 import { inKg } from '../schedule';
 import { reimburse } from '../health';
 import { ECHO_EVENTS, meetCrush, meetPal } from './echoes';
+import { slotW } from '../focus';
 
 declare module '../types' {
   interface Flags { parDivWith?: 'mom' | 'dad' } // 父母离婚后你跟着谁生活（判给谁）
@@ -33,17 +34,6 @@ declare module '../types' {
 
 export const rural = () => S.loc.kind === 'rural';
 
-declare module '../types' {
-  interface Life { vary?: Record<string, number> } // 反复发生的事件已经用过哪几种说法（位掩码，见 vary）
-}
-/** 反复发生的事件换着说：从这件事还没用过的说法里挑一句，都用过了再从头来（见 AGENTS.md「不重复」） */
-export function vary(id: string, xs: string[]) {
-  const V = (S.vary ||= {}), all = (1 << xs.length) - 1;
-  if ((V[id] & all) === all) V[id] = 0;
-  const free = xs.map((_, i) => i).filter(i => !(V[id] & (1 << i)));
-  const i = pick(free); V[id] = (V[id] || 0) | (1 << i);
-  return xs[i];
-}
 export const dz = t => PBY[S.loc.p].dz.includes(t);
 
 // 住一次院自付多少：2024 年全国医院次均住院费用 9,870 元（卫健委统计公报），按医保的实际报销比例（health.ts 的 reimburse，在本地看）扣掉报销。
@@ -101,7 +91,8 @@ export function divorceRisk() {
   if (!canDivorce()) return 0;
   const p = S.fam.partner;
   const q = fexp(-2.6 * (p.fit - 0.55) - 0.018 * ((p.love ?? 63) - 63) - 0.03 * (S.st.h - 80));
-  return DIV_BASE * DIV_DUR(S.age - p.marriedAt) * q * (S.age >= 60 ? DIV_OLD : 1) * (PBY[S.loc.p].divK || 1) * tiltW(DIV_T) * tiltW(DIV_T, p.pz || null);
+  // 格子放在「家人」上的，婚姻更稳：一格风险降三成，两格都放降近一半
+  return DIV_BASE * DIV_DUR(S.age - p.marriedAt) * q * (1 - 0.3 * Math.min(1.6, slotW('family'))) * (S.age >= 60 ? DIV_OLD : 1) * (PBY[S.loc.p].divK || 1) * tiltW(DIV_T) * tiltW(DIV_T, p.pz || null);
 }
 // 父母离婚：同一条婚龄曲线（婚龄按你的年龄 + 2 估计，上面有哥哥姐姐的按最大的那个算），不看婚姻质量（没有记），按老家的省份系数。
 // 只在你 1–17 岁时判定（之后的不影响「跟着谁生活」）。家里有不满一岁的弟弟妹妹时不离（民法典第 1082 条）
@@ -276,6 +267,17 @@ export const EVENTS = [
   { id: 'oldFriend', a: [65, 105], gap: 5, w: 2, run: () => { eff({ so: -3, h: -4 }); return vary('oldFriend', ['一个认识了几十年的老朋友走了。', '以前一起下棋的老张走了。公园的石桌边上，少了一个人。', '老同事打来电话，说又有一个人走了。你挂了电话，在窗前站了很久。']); } },
   { id: 'hosp', a: [65, 105], gap: 3, w: 1.5, run: () => { eff({ hl: -3, money: -hospOop() }); return `因为${pick(['肺炎', '摔跤骨折', '心律不齐', '白内障手术'])}住了一次院。`; } },
   { id: 'pensionUp', a: [63, 105], gap: 5, w: 1, c: () => S.job === 'retired', run: () => { S.pension *= 1.05; return '养老金又涨了一点。'; } },
+  // ---------- 格子放在哪，就多遇到哪一类事（权重低，格子所在领域乘上 domK 才常见，见 EV_DOM 和 focus.ts） ----------
+  { id: 'workTrip', a: [22, 60], gap: 3, w: 0.5, c: () => isWorking() && !['farmer', 'retired'].includes(S.job), run: () => { eff({ hl: -1, h: -1 }); return vary('workTrip', ['出差了半个月，在酒店里吃了十几顿外卖。', '跟着领导去外地谈项目，酒桌上替他挡了三杯酒。', '第一次一个人出差，在高铁上把方案改了三遍。']); } },
+  { id: 'workClash', a: [22, 60], gap: 4, w: 0.4, c: () => isWorking(), run: () => { eff({ h: -3, so: -1 }); return vary('workClash', ['和同事因为一个方案吵了起来，之后在电梯里遇到都不说话。', '领导当着全组的面批评你的报告。你回到座位上，盯着屏幕看了很久。', '被客户投诉了一次。你写了三页的情况说明，没人看。']); } },
+  { id: 'workPraise', a: [22, 60], gap: 4, w: 0.4, c: () => isWorking(), run: () => { eff({ h: 3, so: 1 }); return { t: vary('workPraise', ['你做的项目拿了年度奖。奖金不多，奖杯摆在了工位上。', '新来的同事说，进来之前就听说过你。', '年终总结会上，领导拿你的事当了例子。']), k: 'good' }; } },
+  { id: 'famKid', a: [24, 60], gap: 3, w: 0.5, c: () => kidsAlive().some(k => k.age >= 3 && k.age < 13), run: () => { eff({ h: 3, so: 1 }); return vary('famKid', ['周末带孩子去公园放风筝。线断了，风筝飞走了，孩子笑得比放起来还开心。', '陪孩子写作业到十点，一道题讲到第三遍，你自己先急了。', '孩子学校开运动会，你请了假去当啦啦队，嗓子喊哑了。']); } },
+  { id: 'famParents', a: [28, 65], gap: 3, w: 0.5, c: () => bothParents() && !S.flags.parDiv, run: () => { eff({ h: 2, so: 1 }); return vary('famParents', ['带爸妈去做了一次全面体检，排了一上午的队。爸爸一直说「花这个钱干什么」。', '周末陪妈妈去逛菜市场，她跟每个摊主都介绍「这是我孩子」。', '给爸妈换了一台大电视，遥控器教了三遍。']); } },
+  { id: 'famHome', a: [24, 85], gap: 3, w: 0.4, c: () => S.fam.married && !!S.fam.partner && S.fam.partner.alive, run: () => { eff({ h: 3 }); return vary('famHome', ['一家人难得在家吃了一顿晚饭，谁都没看手机。', `结婚纪念日，你和${S.fam.partner.name}回到了第一次约会的那家店。店还在，老板换了。`, `周末和${S.fam.partner.name}把家里大扫除了一遍，翻出了结婚时的照片，看了一下午。`]); } },
+  { id: 'halfMara', a: [20, 60], once: 1, w: 0.3, run: () => { eff({ hl: 2, h: 4 }); return { t: '跑完了人生第一个半程马拉松。到终点的时候，腿已经不是自己的了。', k: 'good' }; } },
+  { id: 'keepFit', a: [18, 75], gap: 4, w: 0.4, run: () => { eff({ hl: 2, h: 1 }); return vary('keepFit', ['办的健身卡，这次居然坚持了一整年。', '每天晚饭后绕着小区走一万步，保安都认识你了。', '体检的时候，几项指标都比去年好了。']); } },
+  { id: 'hobbyDeep', a: [16, 85], gap: 3, w: 0.4, run: () => { eff({ h: 3 }); return vary('hobbyDeep', ['周末都泡在自己的爱好上，家里堆满了相关的东西。', '在网上找到了一群同好，约好每个月见一次面。', '花了半年做成的一件东西发到网上，有几百个人点了赞。']); } },
+  { id: 'friendsNight', a: [16, 80], gap: 2, w: 0.4, run: () => { eff({ so: 2, h: 2, hl: -1 }); return vary('friendsNight', ['和几个朋友吃火锅吃到半夜，聊的都是十年前的事。', '朋友失恋了，你陪着喝到凌晨三点。', '几个朋友组了个周末爬山的群，坚持了两个月就散了。']); } },
   // ---------- 少见的大事：一辈子碰上的人不多，碰上了就是人生大事（权重是估计，一生里各约百分之一到几） ----------
   { id: 'lottery', big: 1, a: [25, 75], once: 1, w: 0.02, run: () => { const x = Math.round(placeInc() * ri(3, 8) / 1e3) * 1e3; eff({ money: x, h: 8 }); return { t: `随手买的彩票中了二等奖，税后到手${wan(x)}。你把彩票复印了一份，原件锁进了抽屉，好几天没睡好觉。`, k: 'good' }; } },
   { id: 'hero', big: 1, a: [16, 65], once: 1, mo: [6, 7, 8], w: 0.04, run: () => { eff({ so: 8, h: 6, hl: -2 }); return { t: `在河边跳下去，救起了一个落水的孩子。本地新闻播了你的名字，${isWorking() ? '单位给你发了一面锦旗' : '居委会给你送了一面锦旗'}。孩子的家长每年过年都来看你。`, k: 'good' }; } },
@@ -295,4 +297,16 @@ const HOLIDAY = { 1: '春节假期', 2: '春节假期', 3: '请了几天年假',
 const sibPals = () => sibsAlive().filter(s => s.age >= 3 && s.age <= 20);
 
 export const EVMAP = {};
+// 事件属于哪个领域：格子放在这个领域上，这类事更容易抽到（focus.ts 的 domK），好事坏事一起多
+export const EV_DOM: Record<string, string> = {
+  homework: 'study', olympiad: 'study', cadre: 'study', essay: 'study', cet: 'study', nosleep: 'study', myopia: 'study',
+  workTrip: 'work', workClash: 'work', workPraise: 'work', famKid: 'family', famParents: 'family', famHome: 'family',
+  halfMara: 'health', keepFit: 'health', hobbyDeep: 'leisure', friendsNight: 'social',
+  game: 'leisure', pet: 'leisure', snack: 'leisure', campSummer: 'leisure', river: 'leisure', travel: 'leisure', dance: 'leisure', phoneOld: 'leisure', viral: 'leisure',
+  bestie: 'social', fightKid: 'social', dorm: 'social', reunion: 'social', redEnv: 'social', newYearShow: 'social', oldFriend: 'social', palMid: 'social', crushMeet: 'social', bulliedMeet: 'social', star: 'social',
+  sportsDay: 'health', peTest: 'health', checkup: 'health', quitSmoke: 'health',
+  overtime: 'work', promo: 'work', drink: 'work', factoryLine: 'work', buildSite: 'work', riderRain: 'work', parttime: 'work', palCall: 'work',
+  crush: 'love', blind: 'love', dateTrip: 'love', dateFight: 'love',
+  visitHome: 'family', kidSchool: 'family', grandcare: 'family', sibWed: 'family', echoLego: 'family', echoLb: 'family',
+};
 EVENTS.forEach(e => { EVMAP[e.id] = e; });

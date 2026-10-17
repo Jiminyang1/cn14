@@ -35,6 +35,10 @@ const HOME_JOBS = ['进了县城的银行', '回镇上的中学当了老师', '�
 const ppl = () => (S.ppl ||= {});
 const person = (sex: Sex): Pal => ({ name: makeName(sex, chance(0.92) ? '汉族' : S.eth).full, sex, at: S.age, close: 60, alive: true });
 const kidPick = (id: string) => S.flags.kid && S.flags.kid[id];
+/** 一辈子在某一项上放了多少格·年（focus.ts 的 S.fy） */
+const fy = (k: string) => (S.fy && S.fy[k]) || 0;
+// 回响和人生标签的门槛：比自动分配下九成的人生都高（活过 60 岁的人生里：工作 p90 约 26、家人 37、爱好 21、运动加养身体约 50、朋友 33）
+export const FY = { work: 32, family: 42, hobby: 25, health: 58, friends: 38 };
 
 // ===== 认识的人 =====
 /** 交到最好的朋友（events.ts 的 bestie）：多半同性。这个人以后大概会怎么走，现在就定下 */
@@ -174,6 +178,29 @@ export const ECHO_EVENTS: any[] = [
   { id: 'echoLb', a: [28, 50], once: 1, w: 3, c: () => !!S.flags.lb && farFromParents() && !!parentsWord(), run: () => {
     const w = parentsWord();
     return `小时候是你在村口等${S.flags.lbWho === 'both' ? '爸妈' : S.flags.lbWho === 'dad' ? '爸爸' : '妈妈'}过年回来。现在是${w}在村口等你，${bothParents() ? '他们' : w === '妈妈' ? '她' : '他'}比你记忆里矮了。`;
+  } },
+
+  // ---- 一辈子把时间放在哪里（focus.ts 的 S.fy：每一项放了多少格·年；门槛比自动分配的九成人生都高，偏向某一项的人生才会遇到） ----
+  { id: 'fyWork', a: [48, 66], once: 1, w: 6, c: () => fy('work') >= FY.work, run: () => {
+    eff({ h: -3 });
+    if (kidsAlive().length) return { t: `整理旧照片的时候发现，孩子小时候的照片里几乎没有你：那些年你总在加班。孩子已经长大了，说起小时候，记得的都是${S.fam.partner ? S.fam.partner.name : '别人'}。`, x: 1 };
+    return '单位给你发了一张「二十年优秀员工」的奖状。你把它放进抽屉，和这些年的工牌放在一起。';
+  } },
+  { id: 'fyFamily', a: [58, 88], once: 1, w: 6, c: () => fy('family') >= FY.family && kidsAlive().some(k => k.age >= 25), run: () => {
+    eff({ h: 6, so: 3 });
+    return { t: '孩子在饭桌上说，小时候最记得的，是每个周末你都带着他们出去，哪怕只是去公园转一圈。你装作没听见，夹了一筷子菜。', k: 'good', x: 1 };
+  } },
+  { id: 'fyHobby', a: [55, 88], once: 1, w: 5, c: () => fy('hobby') >= FY.hobby, run: () => {
+    eff({ h: 5, so: 2 }); return { t: '这些年一直没放下的爱好，社区给你办了个小小的展览。来看的人不多，你在门口站了一整天。', k: 'good' };
+  } },
+  { id: 'fyHealth', a: [62, 88], once: 1, w: 5, c: () => fy('sport') + fy('rest') >= FY.health, run: () => {
+    eff({ hl: 5, h: 3 }); return { t: '体检的医生翻着报告说，你的身体比同龄人年轻十岁。几十年的早睡早起、跑步散步，算是没白费。', k: 'good' };
+  } },
+  { id: 'fyFriends', a: [55, 90], once: 1, w: 5, c: () => fy('friends') >= FY.friends, run: () => {
+    eff({ so: 5, h: 4 }); return { t: '你住院那几天，来看你的老朋友排着队，护士说没见过这么热闹的病房。', k: 'good' };
+  } },
+  { id: 'fyNoFriends', a: [60, 90], once: 1, w: 3, c: () => S.fy && fy('friends') < 8 && fy('work') >= 20, run: () => {
+    eff({ h: -4, so: -3 }); return '退休以后，手机安静了下来。你翻遍通讯录，找不到一个能约出去喝茶的人。';
   } },
 
   // ---- 当年没选的那条路 ----

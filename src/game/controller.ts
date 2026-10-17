@@ -91,7 +91,7 @@ export const game = {
   setSpeed(v: number) { this.speed = v; event('speed', { v }); emit(); },
   fastForward(to: 'big' | 'dec') { this.ff = to; this.paused = false; event('ff', { to }); emit(); },
   setAuto(on: boolean) { input({ ...here(), type: 'auto', on }); emit(); },
-  setFocus(k: string) { input({ ...here(), type: 'focus', k }); emit(); },
+  setSlot(i: number, k: string | null) { input({ ...here(), type: 'slot', i, k }); emit(); },
 
   /** 自动抉择要选哪个。抽签会消耗随机数，所以每个弹窗只抽一次，并记成一条输入（和存档一起保存，刷新后不会重抽） */
   autoChoice(P: Pending): string {

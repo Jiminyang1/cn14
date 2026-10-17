@@ -5,10 +5,10 @@ import type { QueueItem } from './types';
 import { S } from './state';
 import { chance, ri, rnd, wpick } from './rng';
 import { log, major } from './journal';
-import { EVENTS } from './content/events';
+import { EVENTS, EV_DOM } from './content/events';
 import { huntMonth, monthDecisions, schoolDecision, yearDecisions } from './content/decisions';
 import { planDaily } from './content/daily';
-import { FOCUS, autoFocus, focusList } from './focus';
+import { domK, slotsYear } from './focus';
 import { carer } from './parents';
 import { isWorking, retire, retireAge } from './career';
 import { ENABLE_REFLECT, MILESTONES, REFLECT } from './lifecycle';
@@ -55,18 +55,19 @@ function evOK(ev, cm: number) {
  *  带季节的事件（mo）只在那几个公历月份可选，权重乘「12 ÷ 月数」，让一年里被抽中的机会和不分季节时差不多；
  *  状态事件（pm）不参与抽取，每个月单独判定（见 planMonth） */
 export function chooseEvent(used: Set<string> = new Set(), m = S.month) {
-  const cm = calMonth(m), w: [string | null, number][] = [[null, QUIET_W(S.age)]];
+  const cm = calMonth(m), w: [string | null, number][] = [[null, QUIET_W(S.age)]], dk: Record<string, number> = {};
   for (const ev of evLists().slot) {
     if (used.has(ev.id) || !evOK(ev, cm)) continue;
     let wt = typeof ev.w === 'function' ? ev.w() : (ev.w == null ? 1 : ev.w);
     if (ev.mo) wt *= MONTHS / ev.mo.length;
     if (S.recent.includes(ev.id)) wt *= 0.1;
+    const dom = EV_DOM[ev.id]; if (dom) wt *= dk[dom] ??= domK(dom); // 格子所在领域的事更容易抽到（focus.ts）
     if (wt > 0) w.push([ev.id, wt]);
   }
   return wpick(w);
 }
 
-/** 生日那个月：定下这一年的事件位置、每年一次的抉择、里程碑、日常，选好这一年的重心 */
+/** 生日那个月：定下这一年的事件位置、每年一次的抉择、里程碑、日常，排好这一年的格子 */
 export function planYearSchedule() {
   // 上一年最后一个月给「下个月」排的事（at > 1）挪到这一年的第一个月；其余的都已经发生过
   S.queue = S.queue.filter(e => e.at > 1).map(e => ({ ...e, at: Math.min(e.at - 1, posIn(0, 1)) }));
@@ -82,8 +83,7 @@ export function planYearSchedule() {
   if (ENABLE_REFLECT && !S.headless && REFLECT[S.age]) enqueue({ at: 0.92, type: 'ref' });
   planDaily(); // 日常：只用第二条随机数流，不影响上面这些
   S.queue.sort((a, b) => a.at - b.at);
-  if (S.focus && !(FOCUS[S.focus] && FOCUS[S.focus].ok())) S.focus = null;
-  if (!S.focus && focusList().length) S.focus = autoFocus();
+  slotsYear();
 }
 
 /** 每个月开始时（第 0 个月在 planYearSchedule 之后）：学校的日历、这个月的随机事件、这个月该弹出的抉择 */

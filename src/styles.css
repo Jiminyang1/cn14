@@ -169,6 +169,24 @@ textarea { font: 15px/1.7 var(--sans); color: var(--ink); width: 100%; min-heigh
 
 /* 三、本年度时间安排 */
 .plan-chips { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+/* 年度时间安排的格子（ui/Life.tsx 的 FocusPlan） */
+.slots { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 16px; }
+.slot { display: flex; align-items: baseline; gap: 8px; min-width: 0; min-height: 40px; padding: 4px 0 6px; border: 0; border-bottom: 1px solid var(--rule); background: none; color: var(--ink); cursor: pointer; text-align: left; font: inherit; }
+.slot:hover, .slot.on { border-bottom-color: var(--ink); }
+.slot:focus-visible, .pick:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.slot i, .pick i { flex: none; width: 8px; height: 8px; background: var(--c); align-self: center; }
+.slot-n { font-family: var(--serif); font-size: 13px; color: var(--seal); }
+.slot-v { font-family: var(--serif); font-size: 17px; font-weight: 700; white-space: nowrap; }
+.slot-more { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 12px; color: var(--muted); }
+.slot-edit { margin-left: auto; flex: none; font-size: 12px; color: var(--muted); }
+.picks { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 4px 14px; margin-top: 10px; }
+.pick { display: flex; flex-direction: column; gap: 2px; padding: 7px 8px; border: 0; border-radius: 3px; background: none; color: var(--ink); font: inherit; font-size: 14px; cursor: pointer; text-align: left; }
+.pick:hover { background: var(--tint); }
+.pick.on { background: var(--tint); box-shadow: inset 2px 0 0 var(--c); }
+.pick-h { display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap; font-weight: 500; }
+.pick-h small { font-weight: 400; font-size: 12px; color: var(--muted); }
+.pick .fx { display: inline-flex; gap: 6px; font-size: 11.5px; font-weight: 400; }
+.pick-d { font-size: 12px; color: var(--muted); }
 .fz { font-size: 13px; height: 32px; padding: 0 12px; border: 1px solid var(--rule); border-radius: 3px; background: var(--card); color: var(--ink); cursor: pointer; display: inline-flex; align-items: center; gap: 7px; white-space: nowrap; }
 .fz i { width: 7px; height: 7px; display: block; background: var(--c); }
 .fz:hover { border-color: var(--ink); }
@@ -487,6 +505,9 @@ table.cmp th { font-weight: 500; font-family: var(--serif); color: var(--muted);
   .plan-chips::-webkit-scrollbar { display: none; }
   .plan-fx { display: none; }
   .fz { height: 36px; }
+  .slots { gap: 10px; }
+  .slot-more { display: none; }
+  .picks { grid-template-columns: 1fr 1fr; max-height: 46dvh; overflow-y: auto; }
   .row { font-size: 14px; padding: 7px 0; }
   .modal { padding: 24px 10px 10px; }
   .ds-sheet { padding: 18px 16px; }
@@ -573,6 +594,10 @@ table.cmp th { font-weight: 500; font-family: var(--serif); color: var(--muted);
 .fk-pick { margin: 6px 0 2px; }
 .fk-res { margin: 0 0 4px; font-family: var(--serif); font-size: 13px; color: var(--ink2); }
 .fk-alt { margin: 0; font-size: 13px; color: var(--muted); }
+.tbar { display: flex; height: 14px; border-radius: 2px; overflow: hidden; background: var(--tint); }
+.tbar span { display: block; height: 100%; }
+.tlegend { display: flex; flex-wrap: wrap; gap: 4px 14px; margin-top: 8px; font-size: 12.5px; color: var(--ink2); }
+.tlegend i { display: inline-block; width: 8px; height: 8px; margin-right: 5px; }
 .end-more { margin-top: 30px; border-top: 1px solid var(--rule); padding-top: 12px; }
 .end-more > summary { cursor: pointer; font-size: 14px; color: var(--ink2); min-height: 32px; }
 .end-more > summary:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }

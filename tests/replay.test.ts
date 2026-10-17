@@ -32,7 +32,7 @@ function play(seed: number) {
       const k = auto && r() < 0.7 ? auto : ok[Math.floor(r() * ok.length)].k;
       input({ ...here, type: 'decide', id: P.id, k });
     } else if (P) input({ ...here, type: 'reflect', text: '' });
-    else if (r() < 0.04 && E.focusList().length) { const l = E.focusList(); input({ ...here, type: 'focus', k: l[Math.floor(r() * l.length)] }); }
+    else if (r() < 0.04 && E.slotN() && E.focusList().length) { const l = E.focusList(); input({ ...here, type: 'slot', i: Math.floor(r() * E.slotN()), k: l[Math.floor(r() * l.length)] }); }
     else if (r() < 0.01) input({ ...here, type: 'auto', on: !L.auto });
     else if (r() < 0.005) reload();
     else E.tick(0.001 + r() * 0.3);

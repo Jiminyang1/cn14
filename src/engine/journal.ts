@@ -3,11 +3,13 @@
 import { S } from './state';
 import type { LogEntry } from './types';
 import { calMonth, calYear } from './monthly';
+import { pick } from './rng';
 
 declare module './types' {
   // y、m：写下时是公历哪年哪月（和页头的「X年X月」一致）
   interface Doc { m: number }
   interface LogEntry { y: number; m: number; x?: 1 } // x：人生大事（见 major）
+  interface Life { vary?: Record<string, number> } // 反复发生的事已经用过哪几种说法（位掩码，见 vary）
 }
 
 const curM = () => S.month;
@@ -40,4 +42,14 @@ export function out(r, kind = 'ev', x = false) {
   if (r) { if (typeof r === 'string') log(r, kind, null, null, x); else log(r.t, r.k || kind, r.f || null, r.pic || null, x || !!r.x); }
   const l = later; later = [];
   for (const [t, k] of l) log(t, k);
+}
+
+// ===== 换着说 =====
+/** 反复发生的事换着说：从这件事还没用过的说法里挑一句，都用过了再从头来（见 AGENTS.md「不重复」） */
+export function vary(id: string, xs: string[]) {
+  const V = (S.vary ||= {}), all = (1 << xs.length) - 1;
+  if ((V[id] & all) === all) V[id] = 0;
+  const free = xs.map((_, i) => i).filter(i => !(V[id] & (1 << i)));
+  const i = pick(free); V[id] = (V[id] || 0) | (1 << i);
+  return xs[i];
 }
