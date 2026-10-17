@@ -57,10 +57,11 @@ function meetMonth(m: number) {
   queueRomance(m);
 }
 // 认识了，就在下个月排一个「要不要在一起」的抉择（队列按时间排序）。
-// 第 12 个月认识的：新一年开始时 planYearSchedule 会清空队列，所以先记在 S.cand 上，等下一年第 0 个月月底再排进第 1 个月（见 loveMonth）
+// 第 12 个月认识的排在 posIn(12, …)，也就是 at > 1：新一年开始时 planYearSchedule 会把 at > 1 的条目挪到下一年的第 0 个月（at − 1）。
+// 这个位置不能正好是 1（那会被当成这一年已经过去的事丢掉），所以月内的位置至少取 0.01
 function queueRomance(m: number) {
-  if (m >= MONTHS - 1) return;
-  const e = { at: posIn(m + 1, rnd()), type: 'dec' as const, id: 'romance' };
+  const f = rnd();
+  const e = { at: posIn(m + 1, m >= MONTHS - 1 ? Math.max(0.01, f) : f), type: 'dec' as const, id: 'romance' };
   let i = S.queue.length; while (i > 0 && S.queue[i - 1].at > e.at) i--;
   S.queue.splice(i, 0, e);
 }
@@ -121,8 +122,13 @@ export function partnerRows(p, opts: { love?: boolean } = {}) {
 // 恋爱中的每一年：对象长一岁、毕业了找工作、收入更新（在第 12 个月月底，紧接着你自己长一岁）
 function partnerYear(d) {
   d.age++;
-  if (!d.jk && d.age >= d.startAge) { partnerJob(d); log(`${d.name}毕业了，成了一名${ptJobName(d)}。`, 'ev'); }
-  else if (d.jk) d.inc = partnerInc(d);
+  if (!d.jk && d.age >= d.startAge) {
+    // 说好毕业后来找你的：到你现在的城市找工作
+    const come = d.follow && d.city !== S.loc.city;
+    if (come) d.city = S.loc.city;
+    d.follow = 0; partnerJob(d);
+    log(come ? `${d.name}毕业了，来${S.loc.city}找你，成了一名${ptJobName(d)}。` : `${d.name}毕业了，成了一名${ptJobName(d)}。`, 'ev');
+  } else if (d.jk) d.inc = partnerInc(d);
 }
 // 双方的性格：敏感的人感情差一些、随和的人好一些（各算一次；性格相似度本身几乎不起作用，Dyrenforth 2010，所以不算「合不合」）
 const ptz = (d: { pz?: PZ }, x: keyof PZ) => d.pz ? d.pz[x] : 0;
@@ -139,24 +145,35 @@ export function loveStep(d) {
   const T = 48 + 32 * d.fit + (S.focus === 'love' ? 8 : 0) + (S.focus === 'work' ? -4 : 0) + (ldr ? -12 : 0) + (S.st.h - 55) * 0.2 + loveP(d);
   d.love = clamp(d.love + (T - d.love) * LOVE_K + gauss(0, LOVE_SD), 0, 100);
   const yrs = S.age - d.metAt;
+  let met = false; // 这个月刚见过家长：这个月不会分手
   if (yrs >= 1 && !d.metParents && chance(PARENTS_P)) {
-    d.metParents = 1;
-    log(S.sex === 'M' ? `第一次去${d.name}家见家长，提了两大袋礼物。${d.q >= 4 ? '对方爸妈话不多，问了问你的工作和房子。' : '对方爸妈留你吃了顿饭，一直往你碗里夹菜。'}` : `${d.name}第一次来家里见你爸妈。${S.q <= 2 ? '妈妈私下问你：“他家里条件怎么样？”' : '爸妈挺满意，说小伙子看着踏实。'}`, 'ev');
+    d.metParents = 1; met = true;
+    log(S.sex === 'M' ? `第一次去${d.name}家见家长，提了两大袋礼物。${d.q >= 4 ? '对方爸妈话不多，问了问你的工作和房子。' : '对方爸妈留你吃了顿饭，一直往你碗里夹菜。'}` : meetMyParents(d), 'ev');
   }
   // 分手的可能（一年的）：感情越差越容易分；刚在一起的头两年、年纪轻的时候更容易分（BREAK_K 为校准系数）。换算成每月
   const pBreak = ((d.love < 30 ? 0.45 : d.love < 45 ? 0.22 : 0.06) + (yrs <= 2 ? 0.05 : 0) + (S.age < 24 ? 0.08 : 0)) * BREAK_K + (ldr ? 0.08 : 0) + (d.asks >= 2 ? 0.1 : 0);
-  if (chance(pBreakM(pBreak, d))) {
+  if (!met && chance(pBreakM(pBreak, d))) {
     S.fam.dating = null; S.flags.exes = (S.flags.exes || 0) + 1;
     eff({ h: d.love > 55 ? -8 : -4 });
     const why = ldr ? '异地太久，联系越来越少，' : d.asks >= 2 ? '对方等不到你的答复，' : d.love < 35 ? '吵得越来越多，' : pick(['两家对彩礼和房子谈不拢，', '对未来的打算不一样，', '慢慢觉得不合适，']);
     log(`${why}你和${d.name}分手了。在一起${yrs ? yrs + '年' : '不到一年'}。`, 'bad');
   }
 }
-// 你搬去别的城市时，恋人要么跟着去，要么开始异地
+// 女方带男朋友回家见父母：父母不在了的，带他去看看父母；还有一方在世的，见那一位
+function meetMyParents(d) {
+  const { mom, dad } = S.fam;
+  if (!mom.alive && !dad.alive) return `你带${d.name}回了一趟老家，去给爸妈上了坟。回来的路上，他一直握着你的手。`;
+  const who = mom.alive && dad.alive ? '你爸妈' : mom.alive ? '你妈妈' : '你爸爸';
+  const ask = mom.alive ? '妈妈' : '爸爸';
+  return `${d.name}第一次来家里见${who}。${S.q <= 2 ? `${ask}私下问你：“他家里条件怎么样？”` : `${mom.alive && dad.alive ? '爸妈' : ask}挺满意，说小伙子看着踏实。`}`;
+}
+// 你搬去别的城市时，恋人要么跟着去，要么开始异地。还在读书的走不开：说好毕业后过来，先异地（毕业时见 partnerYear）
 export function loveMove() {
   const d = S.fam.dating; if (!d || d.city === S.loc.city) return;
-  if (chance(0.35 + d.love / 250)) { d.city = S.loc.city; if (d.jk) { partnerJob(d); } log(`${d.name}辞了工作，跟你一起去了${S.loc.city}。`, 'ev'); }
-  else log(`你去了${S.loc.city}，${d.name}留在${d.city}。你们开始异地恋。`, 'ev');
+  if (chance(0.35 + d.love / 250)) {
+    if (!d.jk) { d.follow = 1; log(`你去了${S.loc.city}。${d.name}还在读书，说好毕业以后就过来找你。`, 'ev'); return; }
+    d.city = S.loc.city; d.follow = 0; partnerJob(d); log(`${d.name}辞了工作，跟你一起去了${S.loc.city}。`, 'ev');
+  } else { d.follow = 0; log(`你去了${S.loc.city}，${d.name}留在${d.city}。你们开始异地恋。`, 'ev'); }
 }
 // 彩礼：各省调查/报道的区间（见 DATA.md，可信度多为中低）；没有数据的省份用农村调查均值 3.86 万
 export const brideAmt = pid => { const b = PBY[pid].bride; return b ? Math.round((b[0] + (b[1] - b[0]) * rnd()) / 1e3) * 1e3 : 38600; };
@@ -165,7 +182,7 @@ export const brideAmt = pid => { const b = PBY[pid].bride; return b ? Math.round
 /** 单身的：这个月会不会认识人；恋爱中的：感情变化、见家长、分手（第 12 个月月底对象还长一岁） */
 export function loveMonth(m: number) {
   if (S.cand) {
-    // 认识了还没决定（抉择排在下个月）。跨年留下的（或者队列被清掉了的）：补排进下个月
+    // 认识了还没决定（抉择排在下个月）。万一抉择不在队列里了（比如这个月被清掉），补排进下个月，免得一直卡在「还没决定」
     if (!S.queue.some(e => e.type === 'dec' && e.id === 'romance')) queueRomance(m);
   } else meetMonth(m);
   const d = S.fam.dating; if (!d) return;
