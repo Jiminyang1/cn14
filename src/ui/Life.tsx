@@ -1,6 +1,6 @@
 // 一生：顶部的姓名和年龄、本年度计划、时间线、侧栏、底部播放条。
 import { memo, useLayoutEffect, useRef, useState } from 'react';
-import { EDU_LV, FOCUS, S, carer, focusList, placeName, statusLabel, type LogEntry } from '../engine';
+import { EDU_LV, FOCUS, S, calMonth, calYear, carer, focusList, placeName, statusLabel, type LogEntry } from '../engine';
 import { SPEEDS, game } from '../game/controller';
 import './day.css';
 import { Modal } from './Modal';
@@ -21,7 +21,7 @@ function Header() {
         </div>
         <div className="who-2"><span className="mono small muted">档案号 {fileNo(S)}</span><RunId /></div>
       </div>
-      <div className="agebig"><b>{S.age}</b><span>岁</span><small>{S.birthYear + S.age}年 · 1年≈{Math.round(game.yearSec)}秒</small></div>
+      <div className="agebig"><b>{S.age}</b><span>岁</span><small>{calYear()}年{calMonth()}月 · 1年≈{Math.round(game.yearSec)}秒</small></div>
     </header>
   );
 }

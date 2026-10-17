@@ -1,0 +1,34 @@
+{
+ "motherUnder20AtFirst": "0.0%",
+ "srbAll": "117",
+ "order1": {
+  "share": "47%",
+  "srb": "115",
+  "momAgeAtYou": "27.2",
+  "momAgeAtFirst": "27.2",
+  "gapToNearestOlder": "-",
+  "getsYoungerSib": "56%",
+  "olderSibsMale": "-"
+ },
+ "order2": {
+  "share": "39%",
+  "srb": "110",
+  "momAgeAtYou": "30.2",
+  "momAgeAtFirst": "25.3",
+  "gapToNearestOlder": "4.9",
+  "getsYoungerSib": "17%",
+  "olderSibsMale": "42%"
+ },
+ "order3": {
+  "share": "15%",
+  "srb": "142",
+  "momAgeAtYou": "32.3",
+  "momAgeAtFirst": "23.9",
+  "gapToNearestOlder": "3.6",
+  "getsYoungerSib": "0%",
+  "olderSibsMale": "28%",
+  "allOlderGirls": "57%"
+ },
+ "finalKids_urban": "24% / 54% / 22%",
+ "finalKids_rural": "13% / 52% / 35%"
+}

@@ -1,0 +1,149 @@
+{
+ "N": 4000,
+ "personYears": 315816,
+ "perYearByBand": {
+  "0-5": {
+   "事件": "1.137",
+   "抉择": "0.000"
+  },
+  "6-14": {
+   "事件": "1.932",
+   "抉择": "0.019"
+  },
+  "15-22": {
+   "事件": "1.201",
+   "抉择": "0.771"
+  },
+  "23-35": {
+   "事件": "1.460",
+   "抉择": "0.850"
+  },
+  "36-59": {
+   "事件": "1.156",
+   "抉择": "0.357"
+  },
+  "60-79": {
+   "事件": "0.855",
+   "抉择": "0.110"
+  },
+  "80-120": {
+   "事件": "0.294",
+   "抉择": "0.089"
+  }
+ },
+ "eventsPer100PY": {
+  "travel": 6.77,
+  "redEnv": 6.56,
+  "checkup": 5.75,
+  "scam": 5.27,
+  "promo": 5.27,
+  "stock": 5.11,
+  "disaster": 5.1,
+  "drink": 3.57,
+  "reunion": 3.32,
+  "parentFight": 3.16,
+  "visitHome": 3.07,
+  "overtime": 3.04,
+  "low": 3.03,
+  "homework": 2.94,
+  "springHome": 2.73,
+  "hosp": 2.35,
+  "oldFriend": 2.31,
+  "kidSchool": 2.31,
+  "pensionUp": 2.07,
+  "fever": 1.75,
+  "classes": 1.46,
+  "grandcare": 1.35,
+  "factoryLine": 1.33,
+  "sibWed": 1.3,
+  "tablet": 1.26,
+  "bestie": 1.26,
+  "myopia": 1.26,
+  "game": 1.26,
+  "crush": 1.26,
+  "phone": 1.26,
+  "cadre": 1.24,
+  "bully": 1.24,
+  "car": 1.23,
+  "firstRent": 1.23,
+  "snack": 1.21,
+  "dateTrip": 1.2,
+  "river": 1.17,
+  "urge": 1.16,
+  "dance": 1.12,
+  "phoneOld": 1.11,
+  "smoke": 1.06,
+  "quitSmoke": 1.05,
+  "word": 1.05,
+  "redscarf": 1.02,
+  "dateFight": 1.02,
+  "peTest": 1.01,
+  "vax": 0.96,
+  "dorm": 0.86,
+  "farmHelp": 0.86,
+  "steps": 0.84,
+  "oldDrift": 0.8,
+  "parttime": 0.8,
+  "nosleep": 0.76,
+  "gk100": 0.74,
+  "jxun": 0.71,
+  "layoff": 0.69,
+  "vocIntern": 0.42,
+  "lbCall": 0.39,
+  "cet": 0.37,
+  "boarding": 0.36,
+  "lbSpring": 0.35,
+  "blind": 0.34,
+  "divorce": 0.31,
+  "gigExit": 0.31,
+  "olympiad": 0.22,
+  "riderRain": 0.21,
+  "major": 0.2,
+  "migSchool": 0.05
+ },
+ "decisionsPer100PY": {
+  "romance": 6.71,
+  "marry": 4.26,
+  "house": 2.45,
+  "baby": 2.43,
+  "layofflist": 2.37,
+  "prepay": 2.33,
+  "seek": 2.1,
+  "jobhop": 1.46,
+  "zhongkao": 1.35,
+  "retireplan": 1.1,
+  "kidhome": 1.03,
+  "graduate": 0.95,
+  "gaokao": 0.91,
+  "parentcare": 0.87,
+  "heritage": 0.85,
+  "oldcare": 0.68,
+  "bigcity": 0.65,
+  "illness": 0.58,
+  "sibloan": 0.48,
+  "vocgrad": 0.42,
+  "civilretry": 0.35,
+  "arrears": 0.11,
+  "slip": 0.1,
+  "crisis": 0.08,
+  "demolish": 0.06
+ },
+ "schoolWhen": {
+  "zhongkao": {
+   "公历月": "6:100%",
+   "年龄": "14:16% 15:78% 16:6%"
+  },
+  "gaokao": {
+   "公历月": "6:100%",
+   "年龄": "17:13% 18:70% 19:15% 20:2% 21:0%"
+  },
+  "graduate": {
+   "公历月": "6:55% 7:45%",
+   "年龄": "20:7% 21:40% 22:39% 23:6% 24:1% 25:5% 26:1%"
+  },
+  "vocgrad": {
+   "公历月": "6:54% 7:46%",
+   "年龄": "17:16% 18:76% 19:8%"
+  }
+ }
+}

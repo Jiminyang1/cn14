@@ -18,7 +18,7 @@ export function End() {
       <div className="folder sealed">
         <div className="folder-tab">人生档案 · <span className="mono">No. {fileNo(S)}</span></div>
         <div className="folder-body">
-          <p className="eyebrow">{S.birthYear}年{S.birthMonth}月 — {d.year}年 · 享年{d.age}岁</p>
+          <p className="eyebrow">{S.birthYear}年{S.birthMonth}月 — {d.year}年{d.month ? d.month + '月' : ''} · 享年{d.age}岁</p>
           <div className="end-h">{S.name}</div>
           <p className="end-cause">{deathText(d.cause)}</p>
           <p>同一年在{p.n}出生的{S.sex === 'M' ? '男孩' : '女孩'}里，大约 {Math.round(longer * 100)}% 会活得比{he}更久。</p>
