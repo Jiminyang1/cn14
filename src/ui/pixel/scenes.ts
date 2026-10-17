@@ -1,9 +1,10 @@
 // 关键节点的像素插画：出生、高考、结婚、买房。每张 96×54，按需要读一点当前人生的信息（城乡、性别）。
 // t 是动画的第几拍（每拍 250ms），会动的东西各自按自己的节奏取 t。所有场景可以在开发时打开 /?pixel 一起看。
-import { C, Pix, baby, bob, glyphs, hash, man, person, woman, type Pose } from './pix';
+import { C, Pix, baby, bob, glyphs, hanzi, hash, line, man, person, woman, type Pose } from './pix';
 
 export const W = 96, H = 54;
-export type SceneId = 'birth' | 'gaokao' | 'wedding' | 'house' | 'date' | 'grad' | 'train' | 'layoff' | 'nursery' | 'ward' | 'oldage';
+export type SceneId = 'birth' | 'gaokao' | 'wedding' | 'house' | 'date' | 'grad' | 'train' | 'layoff' | 'nursery' | 'ward' | 'oldage'
+  | 'demolish' | 'kidhome' | 'sibloan' | 'heritage' | 'layofflist' | 'retire';
 export interface SceneCtx { rural?: boolean; sex?: 'M' | 'F'; seed?: number }
 
 const disc = (p: Pix, cx: number, cy: number, r: number, c: string) => {
@@ -455,4 +456,187 @@ function oldage(o: SceneCtx, t: number) {
   return p;
 }
 
-export const SCENES: Record<SceneId, (o: SceneCtx, t: number) => Pix> = { birth, gaokao, wedding, house, date, grad, train, layoff, nursery, ward, oldage };
+// ---------- 拆迁：墙上画着红圈“拆”，挖掘机在拆隔壁 ----------
+function demolishScene(o: SceneCtx, t: number) {
+  const p = new Pix(W, H), s = o.seed || 1;
+  p.rect(0, 0, W, 44, '#e8dcc0'); p.rect(0, 0, W, 10, '#d9c7a6'); p.dither(0, 10, W, 3, '#d9c7a6', '#e8dcc0');
+  // 远处已经盖起来的新楼
+  for (const [x, w, h] of [[50, 9, 26], [61, 7, 32], [70, 10, 22], [84, 8, 28]]) { p.rect(x, 44 - h, w, h, '#c9c3b8'); for (let j = 47 - h; j < 40; j += 3) p.rect(x + 2, j, w - 4, 1, '#b8b2a6'); }
+  // 老房子：砖墙、破窗，墙上刷白的一块写着红圈“拆”
+  p.rect(3, 17, 46, 27, '#9a8f84');
+  for (let j = 19; j < 44; j += 3) for (let i = 3 + (j % 2) * 2; i < 49; i += 5) p.rect(i, j, 4, 1, '#8a7f74');
+  p.rect(1, 13, 50, 4, '#5b524a'); p.rect(3, 12, 46, 1, '#4a423b');
+  for (const x of [7, 38]) { p.rect(x, 21, 7, 8, '#3e3832'); p.rect(x, 21, 7, 1, C.grayLt); p.px(x + 2, 23, '#6a7884'); }
+  p.rect(18, 20, 17, 17, '#e9e3d6');
+  for (let a = 0; a < 64; a++) { const x = Math.round(26 + 7 * Math.cos(a / 64 * 2 * Math.PI)), y = Math.round(28 + 7 * Math.sin(a / 64 * 2 * Math.PI)); p.rect(x, y, 1, 1, C.red); }
+  hanzi(p, '拆', 21, 23, 11, C.red);
+  // 拆了一半的废墟
+  for (let k = 0; k < 120; k++) { const x = 50 + Math.floor(hash(s, k) * 30), h = 9 - Math.abs(x - 64) * 0.5; const y = 44 - Math.floor(hash(s + 1, k) * Math.max(1, h)); p.px(x, y, ['#9a8f84', '#8a7f74', C.gray, '#b36a4a'][k % 4]); }
+  // 地面
+  p.rect(0, 44, W, 10, '#b8a98c'); for (let x = 2; x < W; x += 7) p.px(x, 47 + (x % 3), '#a39272');
+  // 挖掘机：动臂一抬一落，斗子落下时扬起灰
+  const ph = [0, 1, 2, 3, 3, 2, 1, 0][(t >> 1) % 8];
+  p.rect(66, 44, 24, 4, C.grayDk); for (let x = 68; x < 89; x += 4) p.rect(x, 45, 2, 2, C.gray);
+  p.rect(68, 36, 18, 8, C.gold); p.rect(68, 42, 18, 2, C.goldDk); p.rect(79, 29, 7, 7, C.gold); p.rect(80, 30, 5, 4, '#7f9aab');
+  const ex = 59, ey = 23 + ph, bx = 55, by = 31 + ph * 3;
+  line(p, 70, 36, ex, ey, C.goldDk, 2); line(p, ex, ey, bx, by, C.gold, 2);
+  p.rect(bx - 2, by + 1, 4, 3, C.grayDk); p.px(bx - 2, by + 4, C.grayDk); p.px(bx, by + 4, C.grayDk);
+  if (ph >= 2) for (let k = 0; k < 7; k++) p.px(bx - 4 + Math.floor(hash(t, k) * 9), by + 2 - Math.floor(hash(t + 9, k) * (ph * 2)), '#d6cbb5');
+  // 站在门口看的爸妈
+  const pa: Pose = { t, ph: 0 }, ma: Pose = { t, ph: 2, nod: (t >> 3) % 2 };
+  man(p, 6, 32, { top: '#6a7682', topSh: '#56616c', bottom: C.grayDk, hair: C.hairGray }, pa);
+  woman(p, 30, 32, { top: '#a37f48', topSh: '#8a6a3a', bottom: '#4a423b', hair: '#6b6158' }, ma);
+  return p;
+}
+
+// ---------- 给孩子买婚房：售楼处的沙盘 ----------
+function kidhomeScene(o: SceneCtx, t: number) {
+  const p = new Pix(W, H);
+  p.rect(0, 0, W, 42, '#efe4cc'); p.rect(0, 42, W, 12, '#d8cdb8');
+  for (let y = 45; y < H; y += 3) p.rect(0, y, W, 1, '#e4dacb');
+  // 落地窗外的楼
+  p.rect(3, 3, 40, 30, C.grayLt); p.rect(4, 4, 38, 28, C.sky);
+  for (const [x, w, h] of [[6, 7, 18], [15, 8, 24], [25, 7, 15], [34, 7, 21]]) { p.rect(x, 32 - h, w, h, '#e6dcc8'); for (let j = 34 - h; j < 30; j += 3) for (let i = x + 1; i < x + w - 1; i += 2) p.px(i, j, C.glass); }
+  p.rect(23, 4, 1, 28, C.grayLt);
+  // 红色横幅
+  p.rect(50, 5, 40, 6, C.red); glyphs(p, 52, 6, 9, C.gold, 21);
+  // 人：你和老伴、孩子和对象，售楼员在指沙盘
+  const sp: Pose = { t, ph: 5, arms: (t >> 2) % 2 ? 'L' : undefined };
+  man(p, 84, 20, { top: C.suit, topSh: C.suitSh, bottom: C.suit, hair: C.hair }, sp);
+  const card = (t >> 2) % 3 === 0, yp: Pose = { t, ph: 0, arms: card ? 'R' : undefined };
+  person(p, o.sex, 8, 21, { top: '#8a6a3a', topSh: '#735a30', bottom: C.grayDk, hair: '#6b6158' }, yp);
+  if (card) { p.rect(17, 21 + bob(yp), 4, 3, C.gold); p.px(18, 22 + bob(yp), C.goldDk); }
+  person(p, o.sex === 'F' ? 'M' : 'F', 20, 21, { top: '#5a7f6a', topSh: '#4a6a58', bottom: '#4a423b', hair: '#6b6158' }, { t, ph: 2 });
+  man(p, 58, 20, { top: '#5a7fb0', topSh: '#476b9b', bottom: C.grayDk }, { t, ph: 1, lean: -((t >> 3) % 2) });
+  woman(p, 69, 21, { top: '#e6a1a0', topSh: '#cf8584', bottom: C.blue }, { t, ph: 3, lean: -((t >> 3) % 2) });
+  // 沙盘挡住大家的腿，小楼的灯一闪一闪
+  p.rect(32, 34, 50, 2, C.white); p.rect(32, 36, 50, 6, C.woodLt); p.rect(32, 41, 50, 1, C.wood);
+  p.rect(33, 32, 48, 2, '#cfe0c4');
+  for (let i = 0; i < 9; i++) {
+    const x = 35 + i * 5, h = 3 + Math.floor(hash(i, 7) * 7);
+    p.rect(x, 33 - h, 3, h, '#f6efe0'); p.rect(x + 2, 33 - h, 1, h, '#ddd3c0');
+    if (hash(i, t >> 1) < 0.5) p.px(x + 1, 33 - h + 1 + (i % 2), C.sun);
+  }
+  return p;
+}
+
+// ---------- 兄弟姐妹来借钱：夜里的饭桌 ----------
+function sibloanScene(o: SceneCtx, t: number) {
+  const p = new Pix(W, H);
+  p.rect(0, 0, W, 42, '#cdbf9f'); p.rect(0, 30, W, 12, '#b9a77f'); p.rect(0, 30, W, 1, '#a39065');
+  p.rect(0, 42, W, 12, C.woodLt); for (let y = 45; y < H; y += 4) p.rect(0, y, W, 1, C.wood);
+  // 窗外是夜
+  p.rect(4, 6, 18, 16, C.white); p.rect(5, 7, 16, 14, '#2f3b55'); p.rect(12, 7, 1, 14, C.white); p.px(8, 10, '#f2e6b8'); p.px(17, 15, '#f2e6b8');
+  // 挂历
+  p.rect(78, 6, 11, 14, C.white); p.rect(78, 6, 11, 3, C.red);
+  for (let j = 11; j < 19; j += 2) for (let i = 79; i < 88; i += 2) p.px(i, j, j === 13 && i === 83 ? C.red : C.gray);
+  // 吊灯来回晃，灯光跟着晃
+  const sw = [0, 1, 1, 0, 0, -1, -1, 0][t % 8], lx = 48 + sw;
+  p.dither(lx - 14, 14, 28, 22, '#ddd0b0', '#cdbf9f');
+  line(p, 48, 0, lx, 9, C.ink);
+  p.rect(lx - 4, 10, 9, 2, C.green); p.rect(lx - 5, 12, 11, 2, C.green); p.rect(lx - 2, 14, 5, 1, '#f7d36e');
+  // 你和兄弟姐妹面对面坐着；对方说着说着就比划起来
+  const sp: Pose = { sit: true, t, ph: 2, arms: (t >> 2) % 3 === 1 ? 'L' : undefined };
+  for (const x of [26, 61]) { p.rect(x + 1, 38, 8, 2, C.wood); p.rect(x + 2, 40, 1, 5, C.wood); p.rect(x + 7, 40, 1, 5, C.wood); }
+  person(p, o.sex, 26, 22, { top: '#5a7fb0', topSh: '#476b9b', bottom: C.grayDk }, { sit: true, t, ph: 0, nod: (t >> 3) % 2 });
+  man(p, 61, 22, { top: '#a37f48', topSh: '#8a6a3a', bottom: '#4a423b' }, sp);
+  // 饭桌、两杯茶冒着热气、一盘花生
+  p.rect(28, 36, 42, 2, C.wood); p.rect(28, 38, 42, 1, '#6e4626'); p.rect(31, 39, 2, 9, C.wood); p.rect(65, 39, 2, 9, C.wood);
+  for (const cx of [38, 58]) {
+    p.rect(cx, 33, 3, 3, C.white);
+    for (let k = 0; k < 2; k++) p.px(cx + 1 + [0, 1, 0, -1][(t + k * 2) % 4], 31 - ((t + k * 3) % 5), '#efe6d2');
+  }
+  p.rect(45, 34, 8, 2, C.white); p.px(47, 33, C.woodLt); p.px(49, 33, C.woodLt); p.px(48, 33, C.wood);
+  return p;
+}
+
+// ---------- 老房子怎么分：堂屋里的遗像和香 ----------
+function heritageScene(o: SceneCtx, t: number) {
+  const p = new Pix(W, H);
+  p.rect(0, 0, W, 44, '#e8d9b8'); p.rect(0, 32, W, 12, '#6e4626'); p.rect(0, 32, W, 1, '#5b3a1f');
+  p.rect(0, 44, W, 10, '#a59a8a'); for (let x = 0; x < W; x += 12) p.rect(x, 44, 1, 10, '#958a7a');
+  // 白色挽联
+  for (const x of [8, 84]) { p.rect(x, 4, 4, 28, C.white); for (let j = 6; j < 30; j += 4) p.rect(x + 1, j, 2, 2, C.gray); }
+  // 遗像：黑框、黑纱
+  for (const [x, hair] of [[30, C.hairGray], [54, '#b5aca2']] as const) {
+    p.rect(x, 6, 12, 15, C.ink); p.rect(x + 1, 7, 10, 13, '#cfcac2');
+    p.rect(x + 3, 9, 6, 3, hair); p.rect(x + 3, 11, 6, 5, '#b9b1a6'); p.px(x + 4, 13, '#6e665c'); p.px(x + 7, 13, '#6e665c');
+    p.rect(x + 2, 17, 8, 3, '#8a8378');
+    p.rect(x + 4, 4, 4, 2, C.ink); p.px(x + 3, 5, C.ink); p.px(x + 8, 5, C.ink);
+  }
+  // 供桌、香炉、蜡烛
+  p.rect(22, 26, 52, 3, '#5b3a1f'); p.rect(24, 29, 2, 15, '#4a2e18'); p.rect(70, 29, 2, 15, '#4a2e18');
+  p.rect(45, 22, 6, 4, '#a37f48'); p.rect(44, 22, 8, 1, '#8a6a3a');
+  for (const [k, x] of [[0, 46], [1, 48], [2, 50]]) {
+    p.rect(x, 17, 1, 5, '#b36a4a'); p.px(x, 16, (t + k) % 3 ? C.redLt : C.sun);
+    for (let j = 0; j < 4; j++) p.px(x + [0, 1, 1, 0, -1, -1][(t + j + k * 2) % 6], 14 - j * 2 - ((t + k) % 2), '#cfc8bc');
+  }
+  for (const x of [26, 68]) { p.rect(x, 20, 2, 6, C.red); p.px(x, 18 + (t % 2), C.sun); p.px(x + 1, 19, (t >> 1) % 2 ? '#ff9a3c' : C.sun); p.px(x, 19, '#ff9a3c'); }
+  // 兄弟姐妹（背影，戴孝）
+  const mourn = { top: C.white, topSh: '#ddd3c0', bottom: C.ink };
+  man(p, 22, 32, { ...mourn, hair: C.hair }, { back: true, t, ph: 0 });
+  person(p, o.sex, 43, 32, { ...mourn, hair: C.hair }, { back: true, t, ph: 2, nod: (t >> 3) % 2 });
+  woman(p, 64, 32, { ...mourn, hair: '#3a2a20' }, { back: true, t, ph: 4, lean: (t >> 4) % 2 ? -1 : 0 });
+  return p;
+}
+
+// ---------- 裁员名单：会议室里，HR 手上拿着名单 ----------
+function layofflistScene(o: SceneCtx, t: number) {
+  const p = new Pix(W, H);
+  p.rect(0, 0, W, 44, '#e6e2da'); p.rect(0, 44, W, 10, '#a9a49a'); p.dither(0, 44, W, 2, '#b9b4aa', '#a9a49a');
+  // 玻璃隔断外面是工位：显示器一闪一闪，有一个工位已经空了，桌上放着纸箱
+  p.rect(2, 4, 62, 28, '#cfd8da'); p.rect(2, 4, 62, 1, C.gray); p.rect(2, 31, 62, 1, C.gray);
+  for (let x = 2; x < 64; x += 20) p.rect(x, 4, 1, 28, C.gray);
+  for (const [k, x] of [[0, 6], [1, 20], [2, 34], [3, 48]] as const) {
+    p.rect(x, 24, 12, 2, C.grayLt);
+    if (k === 2) { p.rect(x + 3, 20, 6, 4, C.kraft); p.rect(x + 3, 20, 6, 1, C.kraftDk); continue; }
+    p.rect(x + 4, 17, 6, 5, C.ink); p.rect(x + 5, 18, 4, 3, hash(k, t >> 1) < 0.2 ? '#9fc0d0' : '#5a7fb0');
+    p.rect(x + 1, 18 + ((t + k) % 4 === 0 ? 1 : 0), 3, 3, C.hair); p.rect(x + 1, 21, 3, 3, ['#7fa36a', '#c0453a', '#5a7fb0', '#a37f48'][k]);
+  }
+  // 挂钟
+  disc(p, 82, 10, 4, C.white); p.px(82, 10, C.ink); p.px(82, 8, C.ink); p.px(82, 7, C.ink);
+  const sx = [0, 1, 2, 1, 0, -1, -2, -1][t % 8], sy = [-3, -2, 0, 2, 3, 2, 0, -2][t % 8]; p.px(82 + sx, 10 + sy, C.red);
+  // HR 坐在对面，名单时不时拿起来看一眼
+  const hp: Pose = { sit: true, t, ph: 3, arms: (t >> 2) % 3 === 0 ? 'R' : undefined };
+  woman(p, 58, 22, { top: C.suit, topSh: C.suitSh, bottom: C.suit, hair: '#3a2a20' }, hp);
+  if (hp.arms) { p.rect(67, 19 + bob(hp), 5, 7, C.white); for (let j = 21; j < 25; j++) p.rect(68, j + bob(hp), 3, 1, C.gray); }
+  // 会议桌，桌上一杯水、一叠纸
+  p.rect(24, 36, 54, 2, C.white); p.rect(24, 38, 54, 1, C.grayLt); p.rect(27, 39, 2, 7, C.gray); p.rect(73, 39, 2, 7, C.gray);
+  p.rect(60, 33, 3, 3, '#c3d8da'); p.rect(44, 35, 8, 1, C.white);
+  if (!hp.arms) { p.rect(64, 34, 6, 2, C.white); p.px(65, 34, C.red); }
+  // 你，背对着我们坐着，低着头
+  for (const x of [30]) { p.rect(x + 1, 40, 8, 2, C.grayDk); p.rect(x + 2, 42, 1, 4, C.grayDk); p.rect(x + 7, 42, 1, 4, C.grayDk); }
+  person(p, o.sex, 30, 26, { top: '#5a7fb0', topSh: '#476b9b', bottom: C.grayDk }, { sit: true, back: true, t, nod: (t >> 3) % 2 });
+  return p;
+}
+
+// ---------- 退休：欢送会，红横幅“光荣退休” ----------
+function retireScene(o: SceneCtx, t: number) {
+  const p = new Pix(W, H), s = o.seed || 1;
+  p.rect(0, 0, W, 42, '#efe4cc'); p.rect(0, 42, W, 12, '#d8cdb8'); for (let y = 45; y < H; y += 3) p.rect(0, y, W, 1, '#cbbfa8');
+  // 横幅
+  p.rect(18, 2, 60, 15, C.red); p.rect(18, 16, 60, 1, C.redDk);
+  '光荣退休'.split('').forEach((ch, i) => hanzi(p, ch, 22 + i * 13, 3, 13, C.gold, false)); // 13px 常规字重在这个尺寸最清楚
+  // 彩带
+  for (let x = 0; x < W; x += 2) { const y = 1 + Math.round(2 * Math.sin((x + t) / 4)); p.px(x, y, x % 6 < 2 ? C.redLt : x % 6 < 4 ? C.gold : C.blueLt); }
+  // 桌上的蛋糕
+  p.rect(66, 34, 24, 2, C.white); p.rect(67, 36, 1, 6, C.grayLt); p.rect(88, 36, 1, 6, C.grayLt);
+  p.rect(72, 29, 10, 5, '#f2cf9c'); p.rect(72, 29, 10, 1, C.white); p.rect(76, 26, 1, 3, C.redLt); p.px(76, 25 + (t % 2), C.sun);
+  // 同事们鼓掌（手一上一下）
+  const mates: [number, string, 'M' | 'F'][] = [[4, '#7fa36a', 'F'], [15, '#5a7fb0', 'M'], [58, '#a37f48', 'M'], [84, '#c0453a', 'F']];
+  mates.forEach(([x, top, sx], k) => person(p, sx, x, 22 + (k % 2), { top, topSh: top, bottom: C.grayDk }, { t, ph: k, arms: (t + k) % 2 ? 'both' : undefined }));
+  // 退休的你：抱着花，手里是红色的退休证
+  const me: Pose = { t, ph: 5 }, d = bob(me);
+  person(p, o.sex, 36, 21, { top: C.suit, topSh: C.suitSh, bottom: C.suit, hair: C.hairGray }, me);
+  for (const [x, y, c] of [[38, 30, C.redLt], [39, 29, C.pink], [40, 30, C.redLt], [39, 31, C.red], [41, 29, C.gold], [38, 32, C.leaf], [40, 32, C.leaf], [39, 33, C.leaf]] as const) p.px(x, y + d, c);
+  p.rect(43, 31 + d, 4, 3, C.red); p.px(44, 32 + d, C.gold);
+  // 掉下来的彩纸
+  for (let k = 0; k < 14; k++) { const y = (Math.floor(hash(s, k) * 40) + t) % 40, x = Math.floor(hash(s + 2, k) * W); if (y > 16) p.px(x, y, k % 2 ? C.gold : C.pinkLt); }
+  return p;
+}
+
+export const SCENES: Record<SceneId, (o: SceneCtx, t: number) => Pix> = {
+  birth, gaokao, wedding, house, date, grad, train, layoff, nursery, ward, oldage,
+  demolish: demolishScene, kidhome: kidhomeScene, sibloan: sibloanScene, heritage: heritageScene,
+  layofflist: layofflistScene, retire: retireScene,
+};

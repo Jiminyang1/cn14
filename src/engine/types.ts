@@ -44,8 +44,8 @@ export interface Parent {
   ill?: number;              // 1 刚生病、2 已安排照顾
   diedAt?: number;
 }
-export interface Sibling { rel: string; sex: Sex; age: number }
-export interface Kid { name: string; sex: Sex; bornAt: number; age: number; alive: boolean; path?: string; married?: number; gk?: number }
+export interface Sibling { rel: string; sex: Sex; age: number; married?: number }
+export interface Kid { name: string; sex: Sex; bornAt: number; age: number; alive: boolean; path?: string; married?: number; gk?: number; wed?: number } // wed=1：今年要结婚，等婚房的抉择
 /** 恋爱对象 / 配偶（romance.ts 的 makePartner） */
 export interface Partner {
   name: string; sur: string; sex: Sex; age: number; edu: number; home: string; rural: boolean; alive: boolean;
@@ -88,8 +88,12 @@ export interface Flags {
   zkRedo?: number; slip?: { score: number }; stuLoan?: number;
   civilRetry?: number; civilN?: number; lastJob?: string; empIns?: number; farmStop?: number;
   badCredit?: number; heldOn?: number; widowed?: number; supportY?: number; inherited?: number; grandkids?: number;
-  oldLive?: 'kid' | 'home';
-  parWithMe?: number;        // 爸妈和你住在一起（接来同住、回老家照顾）；你搬家他们跟着   // 晚年：和子女同住 / 住养老院
+  oldLive?: 'kid' | 'home';   // 晚年：和子女同住 / 住养老院
+  parWithMe?: number;        // 爸妈和你住在一起（接来同住、回老家照顾）；你搬家他们跟着
+  demol?: number; demolHold?: number | null; demolSwap?: number | null; // 老房子拆迁的年龄；先不签、等安置房（kin.ts）
+  sibLoan?: { rel: string; amt: number; at: number; back: number | null } | null; // 借给兄弟姐妹的钱：几岁借的、几岁还（null 不还）
+  heirDue?: number;          // 父母都走了，老房子等着兄弟姐妹商量怎么分（抉择 heritage）
+  rehire?: { until: number; inc: number } | null; snowbird?: number | null; grandHelp?: number; // 退休后返聘到几岁、每年多少；候鸟过冬到几岁；去子女家带孙辈（turns.ts）
 }
 
 export interface Life {

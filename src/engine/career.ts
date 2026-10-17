@@ -7,7 +7,7 @@ import { addDoc, log, logLater } from './journal';
 import { wan } from './format';
 import { chance, clamp, gauss, wpick } from './rng';
 import { eff } from './stats';
-import { accrueWage, goIndep, wageRate } from './finance';
+import { accrueWage, goIndep } from './finance';
 import { cityLoc, homeCity, migrantCity, moveTo, placeInc, placeName } from './place';
 import { hpfStart } from './housing';
 import { tierK } from './education';
@@ -130,8 +130,6 @@ export function quitJob() {
   S.job = 'seeking';
   if (S.hpfOn) { S.hpfOn = false; if (S.hpf > 0) logLater(`公积金账户封存了，余额${wan(S.hpf)}还在，照样计息；找到交公积金的工作后接着缴。`); }
 }
-// 被裁员的经济补偿：按工龄每年一个月工资（最多算 12 年），没提前一个月通知再加一个月（N+1）
-export const severance = () => wageRate() / 12 * (Math.min(12, S.jobY) + 1);
 export function civilTry() {
   const p = clamp(0.07 + (S.st.kn - 60) / 120 + (S.edu >= 6 ? 0.05 : 0) + (S.edu >= 7 ? 0.05 : 0) + tierK() * 0.3, 0.03, 0.4);
   if (chance(p)) { hire('civil', homeCity()); S.flags.civilRetry = 0; eff({ h: 6 }); return { t: `考上了！在${S.loc.city}当了公务员。家里人逢人就说。`, k: 'good', f: '2026年度国考过审371.8万人，约98人竞争一个岗位' }; }

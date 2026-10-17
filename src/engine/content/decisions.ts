@@ -6,7 +6,7 @@ import { BIG, BIRTH_TOTAL, NATION, PBY } from '../data';
 import { CAUSE } from '../mortality';
 import { EDU_LV, enroll, gkAutoApps, gkCandidates, gkLines, gkRank, gkResolve, gkScore } from '../education';
 import { ILL, oop, reimburse } from '../health';
-import { JOBS, civilTry, gig, gradJob, hire, hireInCity, isWorking, quitJob, severance } from '../career';
+import { JOBS, civilTry, gig, gradJob, hire, hireInCity, isWorking, quitJob } from '../career';
 import { MEET_HOW, READY0, READY_K, brideAmt, loveWord, mShift, mutualP, partnerInc, partnerRows, ptJobName } from '../romance';
 import { S } from '../state';
 import { addDoc, log, logLater } from '../journal';
@@ -18,6 +18,9 @@ import { eff } from '../stats';
 import { parentsHelp } from '../parents';
 import { rural } from './events';
 import { wan } from '../format';
+import { DEMOL_K, demolDue, demolish, kidHomeCost, lendSib, marryKid, weddingKid } from '../kin';
+import { heirShares, inheritSplit } from '../household';
+import { KEEP, goHomeOld, jumpShip, lastJob, layOff, listDue, rehireText, severance, startRehire, startSnowbird } from '../turns';
 
 export function dueDecisions() {
   const a = S.age, f = S.fam, d = [];
@@ -27,6 +30,8 @@ export function dueDecisions() {
   if (S.school && S.schoolEnd === a) d.push({ 初中: 'zhongkao', 高中: 'gaokao', 复读: 'gaokao', 职高: 'vocgrad', 大专: 'graduate', 本科: 'graduate', 硕士: 'graduate' }[S.school]);
   if (S.job === 'seeking' && !S.school) d.push(S.flags.civilRetry && a < 35 ? 'civilretry' : 'seek');
   if ((f.mom.alive && f.mom.ill === 1) || (f.dad.alive && f.dad.ill === 1)) { if (a >= 22) d.push('parentcare'); }
+  if (weddingKid()) d.push('kidhome');
+  if (S.flags.heirDue && !S.flags.inherited) d.push('heritage');
   if (f.dating && !f.married && a >= (S.sex === 'M' ? 22 : 20) && a - f.dating.metAt >= (a < 28 && !(mShift() < -2) ? 2 : 1)) d.push('marry');
   if (f.married && f.partner && f.partner.alive && canBaby() && chance(babyP())) d.push('baby');
   const ask = !!f.dating && f.dating.wh === 2; // 对方家里等着婚房
@@ -35,6 +40,10 @@ export function dueDecisions() {
   if (JOBS[S.job] && JOBS[S.job].priv && a >= 35 && a <= 48 && once('crisis') && chance(0.12)) d.push('crisis');
   if (isWorking() && JOBS[S.job].risk > 0 && a >= 24 && a <= 50 && gapOK('jobhop', 6) && chance(0.07)) d.push('jobhop');
   if (a >= 78 && once('oldcare') && chance(0.3)) d.push('oldcare');
+  if (S.job === 'retired' && once('retireplan') && a <= 75) d.push('retireplan');
+  if (isWorking() && gapOK('layofflist', 4) && S.done.dec_crisis !== a && listDue()) d.push('layofflist');
+  if (a >= 18 && demolDue()) d.push('demolish');
+  if (S.indep && a >= 24 && a <= 65 && !S.flags.sibLoan && f.sibs.some(s => s.age >= 22) && S.money > placeInc() * 0.6 && gapOK('sibloan', 10) && chance(0.015)) d.push('sibloan'); // 有兄弟姐妹的人一辈子约被借 0.6 次（估计）
   // 欠款超过一年的月供（或半年的当地收入）才算真的还不上；小额缺口靠信用卡、亲戚周转
   if (loanBal() && S.money < -Math.max(loanPayY() * 1.5, placeInc()) && gapOK('arrears', 1)) d.push('arrears');
   else if (loanBal() && S.money - placeInc() * 1.5 > Math.max(placeInc() * 0.5, loanBal() * 0.2) && gapOK('prepay', 4) && chance(0.3)) d.push('prepay');
@@ -456,6 +465,178 @@ export const DEC = {
       if (k === 'kid') { S.flags.oldLive = 'kid'; eff({ so: 5, h: 2 }); return '搬去和子女同住，每天看着孙辈进进出出。'; }
       if (k === 'home') { S.flags.oldLive = 'home'; eff({ so: 2, h: -2 }); return '住进了养老院，和几个老人一间屋。每年的费用从养老金和积蓄里出。'; }
       eff({ so: -3 }); return '还是住在自己家，邻居偶尔过来看看。';
+    },
+  },
+
+  // ---------- 家里的大事（规则在 kin.ts） ----------
+  demolish: {
+    build: () => {
+      const H = S.famHouse, rural = S.home.kind === 'rural', u = rural ? 'rural' : 'urban';
+      const cash = Math.round(H.v * DEMOL_K.cash[u] / 1e3) * 1e3, swap = Math.round(H.v * DEMOL_K.swap[u] / 1e3) * 1e3;
+      return {
+        title: '拆迁',
+        body: `${H.where}${rural ? '老家的宅子' : '家里的老房子'}划进了征收范围，墙上画了一个红圈，里面写着“拆”。爸妈打电话来，问你的意思。房子估价约${wan(H.v)}。`,
+        card: [['货币补偿', `约${wan(cash)}，含搬迁费和奖励`], ['产权调换', `等${DEMOL_K.swapWait}年，换一套约值${wan(swap)}的安置房`]],
+        fact: '《国有土地上房屋征收与补偿条例》：货币补偿不得低于类似房地产的市场价格；被征收人可以选择货币补偿，也可以选择房屋产权调换。2013–2022 年全国棚户区改造累计开工 4300 多万套（住建部）',
+        choices: [
+          { k: 'cash', label: '拿钱', sub: '一次拿到补偿款，爸妈另买房子', w: 3 },
+          { k: 'swap', label: '换安置房', sub: `新房更值钱，但要租房等${DEMOL_K.swapWait}年`, w: 2 },
+          { k: 'hold', label: '先不签，等更好的条件', sub: '可能多拿，也可能闹僵', w: 0.6 },
+        ],
+      };
+    },
+    apply: k => demolish(k),
+  },
+
+  kidhome: {
+    build: () => {
+      const kd = weddingKid(); if (!kd) return null;
+      const c = kidHomeCost(kd), have = Math.max(0, S.money), son = kd.sex === 'M';
+      const need = son ? c.bride + c.down : c.car + c.down / 2;
+      const lack = (x: number) => have < x ? `，不够的${S.fam.sibs.length ? '找兄弟姐妹' : '找亲戚'}借` : '';
+      const body = son
+        ? `${kd.name}要结婚了。女方家里提出彩礼${wan(c.bride)}，还希望有一套婚房。${S.loc.city}一套90平米的房子约${wan(c.price)}，首付三成要${wan(c.down)}。你手上有${wan(have)}。`
+        : `${kd.name}要结婚了。男方家里准备买婚房，首付三成要${wan(c.down)}，还差一些。按老规矩，娘家要准备陪嫁。你手上有${wan(have)}。`;
+      return {
+        title: son ? '儿子的婚房' : '女儿的陪嫁', body,
+        fact: '据贝壳研究院2021年对约40万名90后购房客户的调研，61.1%买房时靠父母出钱（全款或部分资助）',
+        choices: son ? [
+          { k: 'all', label: '出彩礼，首付也全包了', sub: `一共${wan(c.bride + c.down)}${lack(c.bride + c.down)}`, w: have >= need ? 3 : 1 },
+          { k: 'part', label: '出彩礼和一半首付', sub: `一共${wan(c.bride + c.down / 2)}${lack(c.bride + c.down / 2)}`, w: 3 },
+          { k: 'none', label: '只出彩礼，房子让他们自己想办法', sub: wan(c.bride), w: have < c.bride + c.down / 2 ? 3 : 1 },
+        ] : [
+          { k: 'all', label: '陪嫁一辆车，再帮着出一半首付', sub: `一共${wan(c.car + c.down / 2)}${lack(c.car + c.down / 2)}`, w: have >= need ? 2 : 0.5 },
+          { k: 'part', label: '陪嫁一辆车', sub: wan(c.car), w: 3 },
+          { k: 'none', label: '彩礼原样带过去，算作陪嫁', sub: '不额外出钱', w: 1.5 },
+        ],
+        ctx: { ...c, son },
+      };
+    },
+    apply: (k, c) => {
+      const kd = weddingKid(); if (!kd) return null;
+      const spend = c.feast + (c.son ? c.bride + (k === 'all' ? c.down : k === 'part' ? c.down / 2 : 0) : (k === 'all' ? c.car + c.down / 2 : k === 'part' ? c.car : 0));
+      marryKid(kd, spend);
+      eff({ h: k === 'none' ? (c.son ? -2 : 1) : 4 });
+      const owe = `${c.son ? '连彩礼、酒席在内' : '连酒席在内'}，一共花了约${wan(spend)}。` + (S.money < 0 ? `为这场婚事，你还欠着${wan(-S.money)}。` : '');
+      if (c.son) return { t: `${kd.name}结婚了。${k === 'none' ? '婚房没买成，小两口先租房住，亲家那边有些不高兴。' : `你出了${k === 'all' ? '全部' : '一半'}首付，婚房写的是他们的名字。`}${owe}`, k: 'good' };
+      return { t: `${kd.name}出嫁了。${k === 'none' ? '男方给的彩礼，你们原样让她带了过去。' : k === 'all' ? '你陪嫁了一辆车，还帮小两口出了一半首付。' : '你陪嫁了一辆车。'}${owe}`, k: 'good' };
+    },
+  },
+
+  sibloan: {
+    build: () => {
+      const adults = S.fam.sibs.filter(s => s.age >= 22); if (!adults.length || S.money <= 0) return null;
+      const s = pick(adults), why = pick(['买房凑首付', '做生意周转', '孩子要上学', '家里有人看病']);
+      const amt = Math.max(1e4, Math.round(Math.min(S.money * 0.5, placeInc() * 1.5) / 1e3) * 1e3);
+      return {
+        title: `${s.rel}来借钱`,
+        body: `${s.rel}打来电话，先问了问爸妈的身体，又绕了半天，最后说${why}，想借${wan(amt)}。你手上有${wan(S.money)}。`,
+        fact: '向父母、兄弟姐妹、朋友借钱是中国家庭借钱的主要渠道之一，越穷的家庭越依赖这类借款（基于中国家庭金融调查的研究）',
+        choices: [
+          { k: 'all', label: `借${wan(amt)}`, sub: '亲兄弟姐妹，不打借条', w: 2.5 },
+          { k: 'half', label: `先借${wan(Math.round(amt / 2 / 1e3) * 1e3)}`, sub: '说手头只有这么多', w: 2 },
+          { k: 'no', label: '不借', sub: '可能伤感情', w: 1.2 },
+        ],
+        ctx: { rel: s.rel, amt },
+      };
+    },
+    apply: (k, c) => {
+      if (k === 'no') { eff({ so: -4, h: -2 }); return { t: `你说最近手头也紧。${c.rel}说“那算了”。之后过年见面，话少了很多。`, k: 'bad' }; }
+      const x = k === 'all' ? c.amt : Math.round(c.amt / 2 / 1e3) * 1e3;
+      lendSib(c.rel, x); eff({ so: 2 });
+      return `借给了${c.rel}${wan(x)}，没打借条。`;
+    },
+  },
+
+  heritage: {
+    build: () => {
+      const H = S.famHouse, f = S.fam, rural = S.home.kind === 'rural';
+      const bros = f.sibs.filter(s => s.sex === 'M').length;
+      const eq = heirShares(1), cashOnly = heirShares(0), all = heirShares(eq.n);
+      // 老规矩：房子（尤其农村的宅子）留给儿子。你是女儿、家里有兄弟时，多半让出来；你是唯一的儿子时，多半归你
+      const daughter = S.sex === 'F' && bros > 0, onlySon = S.sex === 'M' && bros === 0;
+      const ch: Choice[] = [{ k: 'equal', label: '房子卖了，所有东西平分', sub: `你分到约${wan(eq.share)}`, w: rural ? 1.5 : 3 }];
+      if (onlySon) ch.push({ k: 'take', label: '按老规矩，房子归你，姐妹只分存款', sub: `你分到约${wan(all.share)}`, w: rural ? 3 : 1 });
+      const heir = bros ? '兄弟' : '姐妹';
+      if (!onlySon) ch.push({ k: 'give', label: `房子留给${heir}，你只分存款`, sub: `你分到约${wan(cashOnly.share)}`, w: daughter ? (rural ? 4 : 2) : 1 });
+      ch.push({ k: 'court', label: '谈不拢，去法院', sub: '按法律平分，但要打官司', w: 0.12 });
+      return {
+        title: '老房子怎么分',
+        body: `爸妈都走了，留下${H.where}的${rural ? '老宅' : '老房子'}（约${wan(eq.house)}）和存款约${wan(eq.cash)}。兄弟姐妹${eq.n}个人坐在一起，商量怎么分。${daughter && rural ? '村里的老规矩是，房子和宅基地留给儿子。' : ''}`,
+        fact: '《民法典》第1126条：继承权男女平等。第1130条：同一顺序继承人继承遗产的份额，一般应当均等；继承人协商同意的，也可以不均等',
+        choices: ch, ctx: { n: eq.n, daughter, onlySon, heir },
+      };
+    },
+    apply: (k, c) => {
+      if (k === 'give') { const x = inheritSplit(0, true); eff({ so: 2, h: c.daughter ? -2 : 0 }); return `父母都走了。房子留给了${c.heir}，你分到存款约${wan(x)}。${c.daughter ? '你没说什么，回去的路上一直没说话。' : ''}`; }
+      if (k === 'take') { const x = inheritSplit(c.n, true); eff({ so: -2 }); return `父母都走了。按老规矩，房子归了你，连同存款你一共分到约${wan(x)}。姐妹们没争，只是后来走动少了。`; }
+      const x = inheritSplit(1, true);
+      if (k === 'court') { const fee = Math.round(x * 0.05 / 1e2) * 1e2; eff({ money: -fee, so: -8, h: -5 }); return { t: `父母都走了，兄弟姐妹为老房子打了一年多官司。按法律平分，你分到约${wan(x)}，律师费花了${wan(fee)}。兄弟姐妹之间，从此不再来往。`, k: 'bad' }; }
+      eff({ so: -1 }); return `父母都走了。老房子卖了，所有东西兄弟姐妹${c.n}人平分，你分到约${wan(x)}。`;
+    },
+  },
+
+  // ---------- 工作和晚年的关口（规则在 turns.ts） ----------
+  layofflist: {
+    build: () => {
+      if (!(JOBS[S.job] && JOBS[S.job].priv)) return null;
+      const pct = ri(1, 3) * 10, n = severance(), insY = S.jobY >= 10 ? 24 : S.jobY >= 5 ? 18 : 12;
+      return {
+        title: '裁员名单',
+        body: `公司说要“优化组织结构”，这一轮大约要裁掉${pct}%的人。HR开始一个个约谈，有人悄悄告诉你，名单上可能有你。你在这里干了${S.jobY}年${S.age >= 35 ? `，今年${S.age}岁` : ''}。`,
+        card: [['如果被裁', `按N+1，补偿约${wan(n)}`], ['失业保险金', S.flags.empIns ? `最长可以领${insY}个月` : '没交过失业保险']],
+        fact: '《劳动合同法》第47条：经济补偿按工作年限，每满一年支付一个月工资；第40条：没有提前30天通知的，再额外支付一个月工资。2025年全国城镇调查失业率平均5.2%（国家统计局）',
+        choices: [
+          { k: 'stay', label: '拼命加班，表现给领导看', sub: '累，未必有用', w: 3 },
+          { k: 'connect', label: '找领导吃饭，托托关系', sub: S.st.so >= 60 ? '你人缘不错' : '你在公司里人缘一般', w: 1.5 },
+          { k: 'next', label: '悄悄投简历，先找好下家', sub: S.age >= 35 ? '这个年纪不好找' : '', w: 2 },
+          { k: 'take', label: '主动去谈，拿N+1走人', sub: `约${wan(n)}`, w: 1 },
+        ],
+      };
+    },
+    apply: k => {
+      const cut = () => { const n = layOff(); eff({ h: -6 }); return n; };
+      if (k === 'take') { const n = layOff(); eff({ h: -2 }); return `你主动找HR谈了，签了协议，拿了${wan(n)}补偿。收拾东西那天，工位上的绿萝送给了隔壁同事。`; }
+      if (k === 'next') {
+        if (chance(KEEP.next())) { jumpShip(); eff({ h: 3 }); return { t: `名单公布之前，你拿到了另一家公司的offer，还是做${JOBS[S.job].n}，工资涨了一点。`, k: 'good' }; }
+        if (chance(KEEP.nextStay)) { eff({ h: -2 }); return '简历投了几十份，只有两个面试，都没下文。好在这一轮名单上最后没有你。'; }
+        const n = cut(); return { t: `简历投了几十份，都没下文。名单下来，上面有你。拿了${wan(n)}补偿。`, k: 'bad' };
+      }
+      if (k === 'connect') {
+        eff({ money: -placeInc() * 0.05 });
+        if (chance(KEEP.connect())) { eff({ so: 2 }); return '请领导吃了两顿饭，过年还送了礼。名单下来，上面没有你。'; }
+        const n = cut(); eff({ so: -2 }); return { t: `饭也请了，礼也送了。名单下来，上面还是有你。领导说“我也没办法”。拿了${wan(n)}补偿。`, k: 'bad' };
+      }
+      eff({ hl: -4, h: -3 });
+      if (chance(KEEP.stay)) return '连着三个月最后一个走。名单下来，上面没有你，旁边的工位空了好几个。';
+      const n = cut(); return { t: `连着三个月加班到深夜，名单下来，上面还是有你。拿了${wan(n)}补偿。`, k: 'bad' };
+    },
+  },
+
+  retireplan: {
+    build: () => {
+      const j = lastJob(), f = S.fam, rural = S.loc.kind === 'rural';
+      const kidsGrown = kidsAlive().some(k => k.married || k.age >= 22), away = awayFromHome();
+      const ch: Choice[] = [], work = rehireText();
+      if (j !== 'farmer' && S.st.hl > 40) ch.push({ k: 'rehire', label: '再干几年', sub: work, w: S.pension < placeInc() * 0.6 ? 3 : 1.5 });
+      if (kidsGrown) ch.push({ k: 'grand', label: '去帮子女带孩子', sub: '搬去他们那边住', w: (S.flags.grandkids || 0) > 0 ? 3.5 : 1.5 });
+      if (away) ch.push({ k: 'home', label: '回老家养老', sub: `回${S.home.city}，老邻居、老同学都在`, w: 2 });
+      if (!rural && S.money > placeInc() * 3 && S.st.hl > 45) ch.push({ k: 'snow', label: '冬天去海南，夏天回来', sub: '每年花一笔房租和路费', w: 1 });
+      ch.push({ k: 'school', label: '上老年大学，跳跳广场舞', sub: '书法、合唱、摄影……', w: 2 });
+      const pen = S.pension ? `每月养老金约${wan(S.pension / 12)}。` : '';
+      return {
+        title: '退休以后',
+        body: `${j === 'farmer' ? '地种不动了，交给了亲戚。' : `${S.age}岁，退休了。`}${pen}${(S.flags.grandkids || 0) > 0 ? '子女那边的孙辈还小，' + (f.married ? '老伴' : '家里') + '总念叨着想去帮忙。' : ''}往后的日子，打算怎么过？`,
+        fact: '2010年人口普查：60岁及以上老人的主要生活来源，城市66%是离退休金，农村41%靠自己劳动、48%靠家人供养',
+        choices: ch.slice(0, 4), ctx: { work },
+      };
+    },
+    apply: (k, c) => {
+      if (k === 'rehire') { startRehire(); eff({ so: 1, h: 1 }); return `闲不住，${c.work}。每年多挣${wan(S.flags.rehire.inc)}。`; }
+      if (k === 'grand') { S.flags.grandHelp = 1; eff({ so: 3, h: 2, hl: -1, money: -placeInc() * 0.1 }); return { t: '搬去子女家，住进了次卧。每天买菜、做饭、接送孙辈，比上班还忙。', f: '约41%的60岁及以上老人和成年子女住在一起（中国健康与养老追踪调查 CHARLS 基线）' }; }
+      if (k === 'home') { goHomeOld(); eff({ so: 3, h: 3 }); return `回到了${S.loc.city}。早上去公园打拳，下午和老同学喝茶、打牌。`; }
+      if (k === 'snow') { startSnowbird(); eff({ h: 4 }); return { t: '入冬以后，和一群老乡在海南租了间房，住到开春再回来。', f: '2017年10月到2018年4月，在海南过冬的“候鸟”约165万人，多是北方来的老人（海南省数据）' }; }
+      eff({ so: 4, kn: 2, h: 3 }); return { t: `报了老年大学的${pick(['书法班', '合唱团', '摄影班', '国画班', '智能手机班'])}，每周去两次。晚上还加入了小区的广场舞队。`, f: '全国有7.6万多所老年大学和老年学校，在校学员1000多万人（中国老年大学协会，2024年）' };
     },
   },
 };

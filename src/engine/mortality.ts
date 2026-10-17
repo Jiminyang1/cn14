@@ -71,7 +71,7 @@ export const DIAG = {
   liver: '一直觉得累，查出来是肝硬化。',
   resp: '咳嗽和气短越来越重，确诊为慢性阻塞性肺病。',
 };
-export const MORT_K = { M: 1.5, F: 1.51 }; // npm run calib -- mortk
+export const MORT_K = { M: 1.43, F: 1.59 }; // npm run calib -- mortk
 export function deathProb() {
   const hm = S.age < 15 ? 1 : clamp(fexp((hlExp(S.age) - S.st.hl) / 30), 0.6, 2.2);
   // ×MORT_K：抵消“确诊后治愈”带走的那部分死亡，使模拟的平均寿命对上生命表

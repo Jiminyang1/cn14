@@ -78,17 +78,25 @@ export function famDebtPaidText() {
   const how = { 盖房子: '盖房子借的', 看病: '看病借的', '办婚事、彩礼': '办婚事、出彩礼借的', 做生意: '做生意欠下的' }[w] || '借的';
   return `家里当年${how}${d}，这一年终于还清了。`;
 }
-// 父母都去世以后：存款和房子由兄弟姐妹平分
+// 父母都去世以后：存款和房子由兄弟姐妹分。有兄弟姐妹、又有老房子的，先商量怎么分（抉择 heritage），没有的直接平分
 export function inherit() {
   if (S.flags.inherited) return;
-  S.flags.inherited = 1;
-  // 父母的欠款先用遗产抵；子女不承担超出遗产的债务
-  const H = S.famHouse || { v: 0 }, total = Math.max(0, (S.famMoney || 0) + (H.v || 0) - (S.famDebt || 0));
-  S.famDebt = 0;
-  const share = total / (1 + S.fam.sibs.length);
-  S.famMoney = 0; S.famHouse = { ...H, type: 'gone', v: 0 };
-  if (share < 1000) return;
-  if (S.indep === false) { S.famMoney = share; return; }
+  if (S.indep && S.fam.sibs.length && S.famHouse && S.famHouse.v > 0) { S.flags.heirDue = 1; return; }
+  inheritSplit(1);
+}
+/** 你能分到多少：存款平分，房子按 houseK 倍的平分份额（0 = 房子让给别人，1 = 平分，n = 房子全归你）。欠款先用存款抵，不够再用房子抵；子女不承担超出遗产的债务 */
+export function heirShares(houseK = 1) {
+  const n = 1 + S.fam.sibs.length, H = S.famHouse || { v: 0 };
+  const cash = (S.famMoney || 0) - (S.famDebt || 0), house = Math.max(0, (H.v || 0) + Math.min(0, cash));
+  return { n, cash: Math.max(0, cash), house, share: Math.max(0, cash) / n + house / n * houseK };
+}
+export function inheritSplit(houseK, quiet = false) {
+  S.flags.inherited = 1; S.flags.heirDue = 0;
+  const H = S.famHouse || { v: 0 }, { share } = heirShares(houseK);
+  S.famDebt = 0; S.famMoney = 0; S.famHouse = { ...H, type: 'gone', v: 0 } as any;
+  if (share < 1000) return 0;
+  if (S.indep === false) { S.famMoney = share; return share; }
   S.money += share; S.stats.inherit = share;
-  log(`父母都走了。${H.v ? '老房子和' : ''}存款${S.fam.sibs.length ? `由兄弟姐妹${1 + S.fam.sibs.length}人分了，` : '都留给了你，'}你分到约${wan(share)}。`, 'ev');
+  if (!quiet) log(`父母都走了。${H.v ? '老房子和' : ''}存款${S.fam.sibs.length ? `由兄弟姐妹${1 + S.fam.sibs.length}人分了，` : '都留给了你，'}你分到约${wan(share)}。`, 'ev');
+  return share;
 }

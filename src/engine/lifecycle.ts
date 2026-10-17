@@ -17,6 +17,8 @@ import { cityLoc, migrantCity, moveTo, placeInc, placeName } from './place';
 import { die, illYear } from './health';
 import { drift, eff } from './stats';
 import { finances } from './finance';
+import { kinYear } from './kin';
+import { turnsYear } from './turns';
 import { loveQueue, loveYear } from './romance';
 import { makeName } from './names';
 
@@ -190,6 +192,8 @@ export function runHeadlessYear() {
 export function yearStart() {
   const a = S.age, f = S.fam;
   if (S.flags.nextSib === a && f.mom.alive) newSib();
+  kinYear();
+  turnsYear();
   if (a === 3) {
     if (chance(S.loc.kind === 'rural' ? 0.85 : 0.96)) log(S.loc.kind === 'rural' ? '上了镇上的幼儿园，每天坐校车来回。' : '上幼儿园了。第一天你抱着门框哭，第二天就交到了朋友。', 'ev');
     else log(`没有上幼儿园，每天跟着${carer()}在家附近转。`, 'ev');
@@ -206,7 +210,7 @@ export function yearStart() {
       const t = wpick([['考上了一所不错的本科', 0.25 + S.q * 0.06 + (S.edu >= 6 ? 0.2 : 0)], ['考上了大专', 0.5], ['没有继续读书，出去工作了', 0.25 - S.q * 0.03]]);
       k.path = t; log(`${k.name}参加了高考，${t}。`, 'ev');
     }
-    if (k.age >= 23 && k.age <= 38 && !k.married && chance(0.11)) { k.married = 1; log(`${k.name}结婚了。`, 'good'); eff({ h: 4, money: -placeInc() * 0.3 }); }
+    if (k.age >= 23 && k.age <= 38 && !k.married && !k.wed && chance(0.11)) k.wed = 1; // 今年要结婚：先由抉择 kidhome 定家里出多少钱
     if (k.married && (k.gk || 0) < 2 && k.age <= 42 && chance(0.12)) { k.gk = (k.gk || 0) + 1; S.flags.grandkids = (S.flags.grandkids || 0) + 1; log(`你当上了${S.sex === 'M' ? '爷爷' : '奶奶'}（或${S.sex === 'M' ? '外公' : '外婆'}）。${k.name}的孩子出生了。`, 'good'); eff({ h: 6, so: 4 }); }
   }
 }

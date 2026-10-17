@@ -179,3 +179,29 @@ export function glyphs(p: Pix, x: number, y: number, n: number, c: string, seed:
     for (let j = 0; j < 3; j++) for (let i = 0; i < 3; i++) if (hash(seed + k, j * 3 + i) < 0.62 || (i === 1 && j === 1)) p.px(x + k * 4 + i, y + j, c);
   }
 }
+
+/** 一条粗细为 w 的直线 */
+export function line(p: Pix, x0: number, y0: number, x1: number, y1: number, c: string, w = 1) {
+  const n = Math.max(Math.abs(x1 - x0), Math.abs(y1 - y0), 1);
+  for (let k = 0; k <= n; k++) {
+    const x = Math.round(x0 + (x1 - x0) * k / n), y = Math.round(y0 + (y1 - y0) * k / n);
+    p.rect(x, y, w, w, c);
+  }
+}
+
+/** 写一个汉字：用浏览器字体在小画布上写出来，再按透明度取点（结果按字缓存）。没有 document 时（测试、校准脚本）不画 */
+const HANZI: Record<string, boolean[][]> = {};
+export function hanzi(p: Pix, ch: string, x: number, y: number, size: number, c: string, bold = true) {
+  const key = ch + size + (bold ? 'b' : '');
+  if (!HANZI[key]) {
+    if (typeof document === 'undefined') return;
+    const cv = document.createElement('canvas'); cv.width = cv.height = size;
+    const g = cv.getContext('2d', { willReadFrequently: true }); if (!g) return;
+    g.font = `${bold ? 'bold ' : ''}${size}px "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif`;
+    g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillStyle = '#000';
+    g.fillText(ch, size / 2, size / 2 + 0.5);
+    const d = g.getImageData(0, 0, size, size).data;
+    HANZI[key] = Array.from({ length: size }, (_, j) => Array.from({ length: size }, (_, i) => d[(j * size + i) * 4 + 3] > 120));
+  }
+  HANZI[key].forEach((row, j) => row.forEach((on, i) => { if (on) p.px(x + i, y + j, c); }));
+}

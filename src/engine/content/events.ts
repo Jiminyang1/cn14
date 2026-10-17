@@ -2,7 +2,8 @@
 // 事件：{ id, a:[最小年龄,最大年龄], w:权重或函数, c:条件, once:只发生一次, gap:冷却年数, run:()=>文字或{t,k,f} }
 // k: good / bad / loss / ev；f: 附带的一条真实统计
 
-import { JOBS, hireInCity, isWorking, quitJob, severance } from '../career';
+import { JOBS, hireInCity, isWorking, quitJob } from '../career';
+import { severance } from '../turns';
 import { MAJORS } from '../education';
 import { PBY } from '../data';
 import { S } from '../state';
@@ -14,6 +15,7 @@ import { eff } from '../stats';
 import { kidsAlive } from '../family';
 import { single, soloK } from '../romance';
 import { wan } from '../format';
+import { sibToWed, sibWed } from '../kin';
 
 export const rural = () => S.loc.kind === 'rural';
 export const dz = t => PBY[S.loc.p].dz.includes(t);
@@ -73,7 +75,8 @@ export const EVENTS = [
   { id: 'dateTrip', a: [18, 50], gap: 2, w: 1.2, c: () => !!S.fam.dating, run: () => { const d = S.fam.dating; d.love = clamp(d.love + 6, 0, 100); eff({ h: 3, money: -placeInc() * 0.04 }); return { t: `和${d.name}去${pick(['厦门', '大理', '成都', '青岛', '西安', '桂林'])}玩了几天。${d.city !== S.loc.city ? '难得见一次面。' : ''}`, k: 'good' }; } },
   { id: 'dateFight', a: [18, 50], gap: 2, w: () => S.fam.dating && S.fam.dating.fit < 0.5 ? 1.5 : 0.6, c: () => !!S.fam.dating, run: () => { const d = S.fam.dating; d.love = clamp(d.love - 8, 0, 100); eff({ h: -3 }); return pick([`和${d.name}为了一件小事吵了一架，冷战了一个星期。`, `${d.name}嫌你回消息太慢，吵了一架。`, `${d.name}说你从来不考虑你们的以后。`]); } },
   { id: 'redEnv', a: [22, 70], gap: 4, w: 1, run: () => { const x = ri(2, 10) * 100; eff({ money: -x * ri(2, 5) }); return `这一年随了好几份份子钱，同事结婚、亲戚家孩子考上大学，每份${x}元。`; } },
-  { id: 'layoff', a: [20, 60], gap: 4, w: () => isWorking() ? JOBS[S.job].risk * 4 : 0, run: () => {
+  // 私企岗位（销售、职员、程序员、工程师）改成先听到风声、再决定怎么应对：抉择 layofflist（turns.ts）
+  { id: 'layoff', a: [20, 60], gap: 4, w: () => isWorking() && !JOBS[S.job].priv ? JOBS[S.job].risk * 4 : 0, run: () => {
       const boss = ['boss', 'shop'].includes(S.job), comp = boss ? 0 : severance();
       quitJob(); eff({ h: -8, money: comp });
       return boss ? { t: '生意越来越难做，最后关了门。', k: 'bad' }
@@ -107,6 +110,8 @@ export const EVENTS = [
       if (t === 'cold') { eff({ hl: -1 }); return '一场大雪加寒潮，道路结冰，停课停工了好几天。'; }
       eff({ hl: -1 }); return '沙尘暴来了，天空一片昏黄，出门要戴口罩。';
     } },
+  // ---------- 兄弟姐妹 ----------
+  { id: 'sibWed', a: [8, 75], w: 2.5, c: () => !!sibToWed() && (S.fam.mom.alive || S.fam.dad.alive), run: sibWed },
   // ---------- 老年 ----------
   { id: 'dance', a: [50, 85], once: 1, w: () => S.sex === 'F' ? 3 : 0.8, c: () => S.job === 'retired' || S.age > 58, run: () => { eff({ so: 5, hl: 2, h: 3 }); return '加入了小区的广场舞队，每天晚上七点准时出现。'; } },
   { id: 'grandcare', a: [50, 80], gap: 4, w: 2, c: () => (S.flags.grandkids || 0) > 0, run: () => { eff({ so: 3, hl: -1, h: 2 }); return '帮子女带孙辈，每天接送上学、做饭，比上班还忙。'; } },

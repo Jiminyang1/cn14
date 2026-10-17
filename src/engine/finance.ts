@@ -62,7 +62,7 @@ export function finances() {
     // 老了住进养老院：每年的费用代替房租；搬去和子女同住：不付房租
     const ownHere = S.house && S.house.city === S.loc.city;
     if (S.flags.oldLive === 'home') cost += placeInc() * 0.5;
-    else if (!ownHere && S.loc.kind !== 'rural' && S.flags.oldLive !== 'kid') { const rent = placeHp() * 45 * 0.018 * 0.6; cost += rent - rentDraw(rent); }
+    else if (!ownHere && S.loc.kind !== 'rural' && S.flags.oldLive !== 'kid' && !S.flags.grandHelp) { const rent = placeHp() * 45 * 0.018 * 0.6; cost += rent - rentDraw(rent); }
   }
   cost += mort;
   S.money += hh - cost;
