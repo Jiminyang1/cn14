@@ -309,6 +309,7 @@ declare module './types' {
     wAt?: number;     // 说「再等等」是哪个月
     w0?: number;      // 第一次说「再等等」是哪个月（Ta 等了多久）
     apart?: number;   // 婚后两地分居是哪个月开始的（抉择 wedMove）
+    wedHow?: string;  // 婚礼怎么办的：farm 老家流水席、hotel 酒店、trip 旅行结婚、none 没办（五十岁以后再婚）
   }
 }
 // ===== 感情线 =====

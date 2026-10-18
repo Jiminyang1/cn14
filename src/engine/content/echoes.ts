@@ -97,7 +97,7 @@ export const ECHO_EVENTS: any[] = [
     return `${p.name}去了${p.city}。你们的聊天记录，从每天几十条，变成了逢年过节的一句「新年快乐」。`;
   } },
   // 你的婚礼
-  { id: 'palWed', a: [20, 60], once: 1, w: 12, c: () => !!pal() && justMarried(), run: () => {
+  { id: 'palWed', a: [20, 60], once: 1, w: 12, c: () => !!pal() && justMarried() && ['farm', 'hotel'].includes(S.fam.partner.wedHow), run: () => {
     const p = pal(), role = p.sex === S.sex ? (S.sex === 'M' ? '伴郎' : '伴娘') : '证婚的朋友';
     if (p.close >= 45) { p.close += 5; eff({ h: 2, so: 2 }); return `${p.name}特意从${p.city || '老家'}赶回来当你的${role}，敬酒的时候喝得比你还多。`; }
     eff({ h: -1 }); return `婚礼前给${p.name}发了请帖。${ta(p)}说实在走不开，转了一个大红包，附了一句「一定幸福」。`;
