@@ -69,6 +69,10 @@
 .yr-act b { display: block; font: 700 16px var(--serif); }
 .yr-act > div > span { font-size: 12.5px; color: var(--muted); }
 .yr-act.off b { color: var(--muted); }
+.yr-afx { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 5px; }
+.yr-afx em { font-style: normal; font-size: 11.5px; line-height: 20px; padding: 0 7px; border-radius: 10px; background: var(--tint); color: var(--ink2); }
+.yr-afx em.up { color: var(--good); }
+.yr-afx em.dn { color: var(--seal); }
 .yr-am { text-align: right; font-size: 14px; }
 .yr-am small { display: block; font-size: 11.5px; color: var(--muted); }
 .yr-am small.dn { color: var(--seal); }

@@ -172,7 +172,8 @@ function ActPage({ g, title }: { g: string; title: string }) {
         {keys.map(k => {
           const A = ACTS[k], st = actState(k), short = st.why === '手头的钱不够' ? st.cost - liquidBalance() : 0;
           return <div key={k} className={'yr-act' + (st.ok ? '' : ' off')}>
-            <div><b>{A.n}</b><span>{A.d()}</span></div>
+            <div><b>{A.n}</b><span>{A.d()}</span>
+              {A.fx && <span className="yr-afx">{A.fx().map(t => <em key={t} className={/[+↑]/.test(t) ? 'up' : /[−↓]/.test(t) ? 'dn' : undefined}>{t}</em>)}</span>}</div>
             <div className="yr-am"><span className="mono">{st.cost > 0 ? '约 ' + wan(st.cost) : '不花钱'}</span>
               {!st.ok && <small className={short > 0 ? 'dn' : undefined}>{short > 0 ? `还差 ${wan(short)}` : st.why === '今年已经做过了' ? '今年做过了' : st.why}</small>}</div>
             <button type="button" className="yr-go" disabled={!st.ok} onClick={() => doIt(k)}>去做</button>

@@ -78,6 +78,7 @@ export const quitP = () => clamp(0.35 + 0.12 * pz('c') + (S.age >= 40 ? 0.1 : 0)
 defineAct('quitSmoke', {
   n: '戒烟', g: 'health', max: 1, d: () => '把烟戒了',
   cost: () => 0, ok: () => !!S.flags.smoke,
+  fx: () => [`戒掉约 ${Math.round(quitP() * 100)}%`, '健康 +3', '幸福 +2'],
   run: () => {
     if (chance(quitP())) {
       S.flags.smoke = 0; eff({ hl: 3, h: 2 });
