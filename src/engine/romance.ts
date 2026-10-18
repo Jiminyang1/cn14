@@ -355,8 +355,9 @@ export function wedLine(p) {
 export function breakUp(d, why: string, h = -5, k = '') {
   const e = loveOf(d); if (e) { e.end = S.age; e.why = k; }
   const yrs = S.age - d.metAt, near = d.city === S.loc.city, w = why.includes(d.name) ? '你们' : `你和${d.name}`; // 前因里已经提到名字的，不再重复
+  // 家里拦着分的（parents），介绍人心里有数，不再来问
   const tail = { school: '一起上过的课、一起排过的食堂窗口，后来想起来都隔得很远。', work: near && isWorking() && d.jk ? '第二天在公司碰见，两个人都低头看手机。' : '',
-    blind: `${matchmaker()}打电话来问怎么回事，你没多说。`, reunion: '兜兜转转又走到一起，最后还是没成。', etc: '' }[howK(d)];
+    blind: k === 'parents' ? '' : `${matchmaker()}打电话来问怎么回事，你没多说。`, reunion: '兜兜转转又走到一起，最后还是没成。', etc: '' }[howK(d)];
   S.fam.dating = null; eff({ h });
   log(`${why}${vary('breakUp', [`${w}分手了。`, `${w}还是分开了。`, `${w}走到了头。`])}在一起${yrs ? yrs + '年' : '不到一年'}。${tail}`, 'bad');
 }
