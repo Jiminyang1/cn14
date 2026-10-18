@@ -84,7 +84,7 @@ function YearSheet({ tab0 }: { tab0: string }) {
               <div className="yr-grp-n">
                 <div className="yr-ng"><span>做点什么</span></div>
                 {nav('plan', '计划')}
-                {(plansShown().includes('invest') || groups.some(x => x.g === 'money')) && nav('money', '理财', planOpt('invest')?.label || '', groups.find(x => x.g === 'money')?.ok)}
+                {(plansShown().includes('invest') || groups.some(x => x.g === 'money')) && nav('money', '理财', undefined, groups.find(x => x.g === 'money')?.ok)}
                 {groups.filter(x => x.g !== 'money').map(x => nav(x.g, x.n, x.r, x.ok))}
               </div>
               <div className="yr-grp-n see">
