@@ -126,6 +126,9 @@ function parentMonth(p, male: boolean) {
     const tail = S.age < 18 ? '你还没有长大。' : !grown ? '' : S.flags.parWithMe || c >= 75 ? '最后那段日子，你一直在身边。' : c < 35 ? '你赶回去的时候，已经来不及了。上一次回家，是好几年前。' : '';
     major(`${male ? '爸爸' : '妈妈'}去世了，享年${p.age}岁。${tail}`, 'loss');
     eff({ h: S.age < 18 ? -14 : grown && c < 35 ? -13 : -9, so: -3 });
+    // 下个月办丧事（content/echoes.ts 的 funeral）。apart：父母离婚后不跟着生活、也不亲的那一位（要在 parentGone 改「跟着谁」之前记）
+    const F = S.flags, apart = !!F.parDiv && !!F.parDivWith && F.parDivWith !== (male ? 'dad' : 'mom') && c < 60 ? 1 : 0;
+    (F.funeral ||= []).push({ who: male ? 'dad' : 'mom', m: nowM(), c, apart });
     parentGone(male ? 'dad' : 'mom');
   } else if (x >= 62 && !p.ill && chance(PAR_ILL_M)) p.ill = 1;
 }
@@ -148,7 +151,7 @@ function familyDeaths() {
   const pt = f.partner;
   if (pt && pt.alive && f.married && chance(qMonth(kinLT('pt', pt.sex), pt.age + 1))) {
     // 丧偶：不再算已婚，以后还可以再认识人（f.partner 留着，界面显示「丧偶」，再婚时被替换）
-    pt.alive = false; f.married = false; S.flags.widowed = S.age; const le = loveOf(pt); if (le) le.died = S.age; major(`${pt.name}去世了，享年${pt.age}岁。你们一起走过了${S.age - pt.marriedAt}年。`, 'loss'); eff({ h: -15, so: -6 });
+    pt.alive = false; f.married = false; S.flags.widowed = S.age; const le = loveOf(pt); if (le) le.died = S.age; major(`${pt.name}去世了，享年${pt.age}岁。你们一起走过了${S.age - pt.marriedAt}年。`, 'loss'); eff({ h: -15, so: -6 }); (S.flags.funeral ||= []).push({ who: 'pt', m: nowM(), c: 100 });
     if (S.sex === 'M' && S.flags.preg) S.flags.preg = null; // 怀着孩子的是她
   }
   for (const s of f.sibs) if (s.alive) sibMonth(s);
