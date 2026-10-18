@@ -237,16 +237,16 @@
 .dgal-grid > div { display: flex; flex-direction: column; gap: 10px; }
 .dgal-grid h5 { margin: 0; font-size: 13px; color: var(--muted); }
 
-/* 右下角「材料目录」：留白的卡片，左边一条证件本来的颜色（浅色封皮用它的字色）；写名字、年月和最要紧的一两样；点开在下面原地摊开 */
-.dshelf { display: flex; flex-direction: column; }
-.dcv { display: block; width: 100%; padding: 7px 4px 8px 12px; border: 0; border-left: 4px solid var(--spine); border-bottom: 1px solid var(--hair); border-radius: 0; background: none; color: var(--ink); text-align: left; cursor: pointer; }
-.dcv:hover, .dcv-w.open .dcv { background: var(--tint); }
-.dcv-t { display: flex; align-items: baseline; gap: 8px; }
+/* 右下角「材料目录」：留白的卡片，上方一条证件本来的颜色（浅色封皮用它的字色），带上写类别和年月；下面写名字和最要紧的一两样；点开在下面原地摊开 */
+.dshelf { display: flex; flex-direction: column; gap: 8px; }
+.dcv { display: block; width: 100%; padding: 0; border: 1px solid var(--line); border-radius: 4px; overflow: hidden; background: var(--card); color: var(--ink); text-align: left; cursor: pointer; }
+.dcv:hover, .dcv-w.open .dcv { border-color: var(--rule); background: var(--tint); }
+.dcv-band { display: flex; align-items: baseline; gap: 8px; padding: 3px 10px; font-size: 11px; letter-spacing: .1em; }
+.dcv-band .mono { margin-left: auto; letter-spacing: 0; opacity: .85; }
+.dcv-t { display: block; padding: 6px 10px 0; }
 .dcv-t b { font: 600 13.5px var(--serif); }
-.dcv-t .mono { margin-left: auto; font-size: 11px; color: var(--muted); }
-.dcv-s { display: block; margin-top: 1px; font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.dcv-s { display: block; padding: 1px 10px 8px; font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .dcv-s em { margin-left: 8px; padding: 0 4px; border: 1px solid var(--seal); border-radius: 2px; color: var(--seal); font-style: normal; font-size: 11px; }
-.dshelf > .dcv-w + .dcv-w { margin-top: 4px; }
 .dcv-open { padding: 10px 0 4px; text-align: right; }
 .dshelf-doc { display: block; width: 100%; padding: 0 0 6px; border: 0; background: none; cursor: zoom-in; text-align: left; }
 .dshrunk { position: relative; overflow: hidden; }

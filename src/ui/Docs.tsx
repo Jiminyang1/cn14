@@ -564,8 +564,9 @@ export function DocShelf() {
     {docs.map((d, i) => [d, i] as const).reverse().map(([d, i]) => {
       const c = coverOf(d), m = lastMark(d), open = on === i;
       return <div key={i} className={'dcv-w' + (open ? ' open' : '')}>
-        <button type="button" className="dcv" aria-expanded={open} style={{ '--spine': c.line ? c.fg : c.bg } as CSSProperties} onClick={() => setOn(open ? null : i)}>
-          <span className="dcv-t"><b>{d.title}</b><span className="mono">{d.y}.{pad2(d.m)}</span></span>
+        <button type="button" className="dcv" aria-expanded={open} onClick={() => setOn(open ? null : i)}>
+          <span className="dcv-band" style={{ background: c.line ? c.fg : c.bg, color: c.line ? '#fff' : c.fg }}><span className="serif">{c.s}</span><span className="mono">{d.y}.{pad2(d.m)} · {d.a}岁</span></span>
+          <span className="dcv-t"><b>{d.title}</b></span>
           <span className="dcv-s">{sumOf(d)}{m && <em>{m.t.split(' · ')[0].replace(/^\d{4}\.\d+ /, '')}</em>}</span>
         </button>
         {open && <div className="dcv-open">
