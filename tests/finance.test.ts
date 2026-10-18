@@ -37,27 +37,40 @@ test('the living tier follows income and savings, and the bill adds up', () => {
   expect(bills[1].living).toBeGreaterThan(bills[0].living);
 });
 
-test('tiers: income relative to local consumption, and retirees step down at most one tier a year', () => {
-  const cons = 36000, unit = cons / 12;
-  expect(E.tierOf(unit * 1.0, 0, cons, 1)).toBe(0);
-  expect(E.tierOf(unit * 1.2, 0, cons, 1)).toBe(1);
-  expect(E.tierOf(unit * 2.0, 0, cons, 1)).toBe(2);
-  expect(E.tierOf(unit * 2.0, 0, cons, 2)).toBe(0); // 两个人分同样的收入
-  expect(E.tierOf(unit * 5, 0, cons, 1)).toBe(E.TIERS.length - 1);
-  expect(E.tierOf(unit * 0.5, 0, cons, 1, 3, true)).toBe(2);
-  // 每一档刚够上的时候，开销都比收入少
-  for (const [i, t] of E.TIERS.entries()) if (i) expect(E.tierCost(i, cons, 1)).toBeLessThan(unit * t.from);
+test('living costs: household size and income set the share of income spent', () => {
+  const c = 29300, y0 = 54188; // 全国城镇每人日常开销（去掉折算的房租）、人均收入
+  const share = (incY: number, adults: number, kids: number[], k = 1) =>
+    E.livingCost(E.incUnits(incY / 12, 0, y0), c, E.familySize(adults, kids), k) * 12 / incY;
+  // 一般收入的人家花掉一半多一点；两口子都上班最能存钱，有了孩子花得多，只有一个人挣钱的更紧
+  expect(share(60000, 1, [])).toBeGreaterThan(0.45);
+  expect(share(60000, 1, [])).toBeLessThan(0.7);
+  expect(share(120000, 2, [])).toBeLessThan(share(60000, 1, []));
+  expect(share(120000, 2, [9])).toBeGreaterThan(share(120000, 2, []));
+  expect(share(120000, 2, [3, 9])).toBeGreaterThan(share(120000, 2, [9]));
+  expect(share(70000, 2, [4])).toBeGreaterThan(0.6);
+  // 收入越高，花掉的比例越低
+  expect(share(300000, 2, [9])).toBeLessThan(share(120000, 2, [9]));
+  // 再省也省不过吃穿的底线；底线就是拮据
+  expect(E.livingCost(0, c, 1)).toBeCloseTo(c / 12 * E.FLOOR, 6);
+  expect(E.tierOf(E.livingCost(0, c, 1), c, 1)).toBe(0);
+  // 普通人家照常过是普通，省着过就成了拮据，过好一点是小康
+  const q = E.incUnits(120000 / 12, 0, y0), n = E.familySize(2, [9]);
+  expect(E.tierOf(E.livingCost(q, c, n), c, n)).toBe(1);
+  expect(E.tierOf(E.livingCost(q, c, n, E.STYLE_K.save), c, n)).toBe(0);
+  expect(E.tierOf(E.livingCost(q, c, n, E.STYLE_K.more), c, n)).toBe(2);
+  // 收入一下子少了，日子每年最多紧一成半
+  expect(E.incUnits(0, 0, y0, 2)).toBeCloseTo(1.7, 6);
 });
 
 test('higher pensions improve cash flow instead of being spent in full', () => {
   const changes = [24000, 120000].map(pension => {
     const life = household();
-    life.age = 70; life.job = 'retired'; life.pension = pension; life.tier = 1; life.money = 1000000;
+    life.age = 70; life.job = 'retired'; life.pension = pension; life.money = 1000000;
     E.moneyMonth(1);
     checkStatement(life.statement);
     return life.money - 1000000;
   });
-  expect(changes[1] - changes[0]).toBeGreaterThan(7000);
+  expect(changes[1] - changes[0]).toBeGreaterThan((120000 - 24000) / 12 * 0.7); // 多出来的养老金至少存下七成
   expect(changes[1]).toBeGreaterThan(0);
 });
 
@@ -207,9 +220,9 @@ test('parents pay mortgages from their actual funds while employed', () => {
 test('retirement keeps established consumption habits when pension income falls', () => {
   const life = household();
   life.age = 70; life.job = 'retired'; life.pension = 24000;
-  life.tier = 3; life.money = 1000000;
+  life.incQ = 4; life.money = 1000000;
   for (let month = 0; month < 12; month++) E.moneyMonth(month);
-  expect(life.tier).toBeGreaterThanOrEqual(2); // 收入少了，一年最多往下退一档（存款还撑得住的，不退）
+  expect(life.tier).toBeGreaterThanOrEqual(2); // 收入少了，日子是慢慢紧下来的
   expect(life.statement.living).toBeGreaterThan(life.statement.income);
   expect(life.money).toBeLessThan(1000000);
   checkStatement(life.statement);

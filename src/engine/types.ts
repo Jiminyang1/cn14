@@ -142,7 +142,7 @@ export interface Life {
   pen?: { y: number; r: number; s: number };       // 职工养老保险缴费记录（finance.ts 的 penMonth）
   // 钱：经济独立以前算在家里
   indep: boolean; indepAt?: number; money: number;
-  debt?: number; parentTier?: number;              // 父母家这一年的生活档位（budget.ts）
+  debt?: number; parentTier?: number;              // 父母家这个月过的是哪一档（budget.ts 的 TIERS）
   statement?: MonthlyStatement;
   statements?: MonthlyStatement[];
   cashflow?: { months: number; income: number; spending: number; mortgage: number; debtRepaid: number };

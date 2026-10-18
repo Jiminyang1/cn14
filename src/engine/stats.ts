@@ -7,6 +7,7 @@ import { JOBS, isWorking } from './career';
 import { MONTHS, approachPerMonth } from './monthly';
 import { pz } from './personality';
 import { changeMoney, liquidBalance } from './accounts';
+import { POOR_HURT, POOR_LONG, TIERS } from './budget';
 
 export function eff(o) {
   for (const k in o) {
@@ -29,9 +30,15 @@ export function drift() {
   // 中风留下残疾（content/decisions.ts 的治疗抉择里设 flags.disabled）：健康的目标值一直低 10（估计；残疾后的死亡风险经 deathProb 的健康倍数升高），幸福低 4
   const dis = S.flags.disabled ? 1 : 0;
   const hardship = S.statement && S.statement.shortfall > 0 ? 3 : 0;
-  const hT = hlExp(a) + (S.q - 3) * 1.5 + (liquidBalance() < 0 && a >= 22 ? -3 : 0) + (S.flags.smoke ? -6 : 0) + (S.flags.ill ? -20 : 0) - dis * 10 - hardship + 0.8 * pz('c');
+  // 过的什么日子（budget.ts 的档位）：经济独立以前看父母家，以后看自己的小家。长期拮据的，幸福再低 3、健康再低 2
+  const own = S.indep !== false;
+  const T = TIERS[(own ? S.statement?.tier : S.parentTier) ?? 1] || TIERS[1];
+  const poorLong = ((own ? S.poorM : S.famPoorM) || 0) >= POOR_LONG ? 1 : 0;
+  if (T === TIERS[0]) { st.h = clamp(st.h - POOR_HURT.h * (1 + poorLong) / MONTHS, 0, 100); st.hl = clamp(st.hl - POOR_HURT.hl * (1 + poorLong) / MONTHS, 1, 100); }
+  const hT = hlExp(a) + (S.q - 3) * 1.5 + T.hl - poorLong * 2 + (liquidBalance() < 0 && a >= 22 ? -3 : 0) + (S.flags.smoke ? -6 : 0) + (S.flags.ill ? -20 : 0) - dis * 10 - hardship + 0.8 * pz('c');
   st.hl = clamp(st.hl + (hT - st.hl) * K_HL, 1, 100);
-  const rel = a < 18 ? (S.q - 3) * 2.5 : (S.relInc || 0);
+  // 成年以后还要和当地人比收入（relInc），比日子的档位轻一些
+  const rel = T.h - poorLong * 3 + (a < 18 ? 0 : (S.relInc || 0) * 0.4);
   const debt = a >= 22 && liquidBalance() < -placeInc() ? 7 : 0;
   const hpT = 56 + rel + (f.married && f.partner && f.partner.alive ? 5 : 0) + Math.min(6, kids * 3) + (st.so - 50) * 0.25 + (st.hl - 60) * 0.15
     - debt - (S.flags.lb && a < 16 ? 6 : 0) - (S.job === 'seeking' ? 6 : 0) - dis * 4 + persH();

@@ -36,6 +36,13 @@ export function placeCons(L = S.loc) {
   if (L.kind === 'rural') return p.consR;
   return p.consU * placeInc(L) / p.incU;
 }
+// 当地人均消费里「居住」占几成（2024 年城镇，统计年鉴表 6-27）。这一项约三分之二是自己住自己房子折算的房租，不是真的花出去的钱
+// （全国城镇居住 8,008 元里现金只有 2,707 元，表 6-6）；游戏里房租、房贷另算，日常开销要先去掉折算的这部分，不然住房就算了两遍。
+// 剩下的三分之一（水电燃气、物业、修修补补）还是日常开销。农村居住按两成（估计）
+const HOUSE_SH: Record<string, number> = { BJ: 0.39, TJ: 0.21, HE: 0.23, SX: 0.21, NM: 0.18, LN: 0.20, JL: 0.19, HL: 0.19, SH: 0.34, JS: 0.27, ZJ: 0.23, AH: 0.21, FJ: 0.28, JX: 0.21, SD: 0.19, HA: 0.22, HB: 0.21, HN: 0.18, GD: 0.25, GX: 0.21, HI: 0.24, CQ: 0.20, SC: 0.18, GZ: 0.16, YN: 0.20, XZ: 0.20, SN: 0.22, GS: 0.20, QH: 0.22, NX: 0.18, XJ: 0.17 };
+/** 当地每人一年的日常开销（不含住房） */
+export const placeLive = (L = S.loc) => placeCons(L) * (1 - IMPUTED * (L.kind === 'rural' ? 0.2 : HOUSE_SH[L.p] ?? 0.22));
+const IMPUTED = 0.66;
 // 房价：省会用35个大中城市的新建住宅均价；其他城市用全省均价；县城用县城价（没有数据时取全省均价的七成）
 export const hpCounty = p => p.hpCounty || p.hp * 0.7;
 export function placeHp(L = S.loc) {

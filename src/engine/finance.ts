@@ -8,7 +8,7 @@ import { clamp, gauss } from './rng';
 import { familyMoneyMonth } from './household';
 import { HPF_JOB, houseMonth, hpfMonth, loanMonth, plusMonth, rentDraw } from './housing';
 import { log, noteMoney } from './journal';
-import { NAT_URBAN_INC, placeCons, placeHp, placeInc, wageBase } from './place';
+import { NAT_URBAN_INC, placeCons, placeHp, placeInc, placeLive, wageBase } from './place';
 import { wan } from './format';
 import { MONTHS, calMonth, calYear } from './monthly';
 import { turnsMonth } from './turns';
@@ -16,8 +16,7 @@ import { partnerLoc } from './romance';
 import { dedOf, netOf, penBase, type DedRow, type NetPay } from './tax';
 import type { Partner } from './types';
 import { changeMoney, repayDebt } from './accounts';
-import { TIERS, familySize, tierCost, tierOf } from './budget';
-import { liveTier } from './plans/style';
+import { POOR_LONG, familySize, floorCost, incUnits, livingCost, poorStep, styleK, tierOf } from './budget';
 import { invBal } from './plans/invest';
 import { dibaoMonth, frugalEnd, frugalK, kidAdvMonth, kidSupportY, tightMonth } from './tight';
 
@@ -28,14 +27,15 @@ declare module './types' {
     uiM?: number;   // 还能领几个月失业保险金
     uiOn?: boolean; // 这一段待业已经办了领取
     net?: number;   // 现在的年收入（到手）：这个月到手的钱 × 12（S.income 是税前）
-    tier?: number;  // 这一年的生活档位（budget.ts 的 TIERS）；经济独立以后才有
+    tier?: number;  // 这一年照计划过的是哪一档（budget.ts 的 TIERS，每年过生日定）；经济独立以后才有。每个月实际过的是账单上的 tier
+    incQ?: number;  // 这一年的收入相当于当地几个人的（budget.ts 的 incUnits，每年过生日定）
+    poorM?: number; // 拮据的月份（budget.ts 的 poorStep）：攒多了就是长期拮据
   }
 }
 // 档位变了，时间线上写一句
 const TIER_UP = ['', '日子慢慢稳了下来，不用再月月发愁。', '手头宽裕了些，周末敢下馆子了。', '日子过得宽裕了，买东西不太看价钱了。', '家里的日子富足了，钱已经不太是问题。'];
 const TIER_DOWN = ['钱不够花了，日子过得紧巴巴的。', '手头紧了些，能省则省。', '收入少了，日子没以前那么宽裕了。', '日子从富足退回了宽裕。'];
-// 必要的生活开销：档位里这一部分一定要付，钱不够就是缺口（「手头紧了」）；多出来的只从余钱里出，不借钱
-const ESSENTIAL = 0.55;
+// 生活开销里吃穿的底线（budget.ts 的 floorCost）一定要付，钱不够就是缺口（「手头紧了」）；多出来的只从余钱里出，不借钱
 
 // 经济独立：开始工作（或毕业/辍学后离开学校）才有自己的账户；之前钱的进出都算家里的。
 // · 父母都已经去世的：家里账上剩下的钱（遗产扣掉这些年的生活费、学费）转给你；
@@ -99,21 +99,20 @@ export function moneyMonth(m: number) {
   const hh = earned + aid;
   changeMoney(hh);
   houseMonth(m);
-  // 生活开销（budget.ts）：每年过生日那个月定一次档，刚独立的当月就定
-  const kids = f.kids.filter(child => child.alive && child.age < 22).map(child => child.age);
-  const size = familySize(mate ? 2 : 1, kids);
-  if (S.tier == null || m === 0) {
+  // 生活开销（budget.ts）：收入每年过生日那个月看一次，刚独立的当月就看；家里几口人按这个月的算
+  const size = mySize();
+  if (S.incQ == null || m === 0) {
     // 存款也算理财和基金里的钱（plans/invest.ts）：钱挪进去不该让日子突然变紧
-    const t = tierOf(hh, S.money + invBal(), H.cons, size, S.tier, S.job === 'retired' && (!mate || !!mate.retired));
+    S.incQ = incUnits(hh, S.money + invBal(), H.inc, S.incQ);
+    const t = tierOf(livingCost(S.incQ, H.live, size, styleK()), H.live, size);
     if (S.tier != null && t !== S.tier) log(t > S.tier ? TIER_UP[t] : TIER_DOWN[t], t > S.tier ? 'good' : 'bad');
     S.tier = t;
   }
   // 住养老院：费用里包了吃住，不再另付生活开销。节衣缩食的（tight.ts）：欠款还清以前，必要的那部分少花一些
   const inCare = S.flags.oldLive === 'home';
-  // 实际按哪一档花：自动的档位加上玩家的生活方式（plans/style.ts）
-  const live = liveTier();
-  const full = inCare ? 0 : tierCost(live, H.cons, size);
-  const basic = Math.min(full, H.cons / MONTHS * size * ESSENTIAL) * frugalK();
+  // 照计划要花多少：收入、几口人，加上玩家的生活方式（plans/style.ts）
+  const full = inCare ? 0 : livingCost(S.incQ, H.live, size, styleK());
+  const basic = Math.min(full, floorCost(H.live, size)) * frugalK();
   const basicPaid = Math.min(S.money, basic);
   S.money -= basicPaid;
   const ownHere = S.house && S.house.city === S.loc.city;
@@ -133,12 +132,16 @@ export function moneyMonth(m: number) {
   const extra = Math.min(full - Math.min(full, basic) + lateLife.cost, Math.max(0, S.money - reserve));
   S.money -= extra;
   const living = basicPaid + extra;
+  // 这个月实际过的是哪一档：钱不够、只付得起底线的，就是拮据（住养老院的按计划的算）
+  const tierNow = inCare ? S.tier : tierOf(living, H.live, size);
+  S.poorM = poorStep(S.poorM, tierNow);
+  if (S.poorM === POOR_LONG) log('好几年了，日子一直紧巴巴的。人也跟着憔悴了。', 'bad');
   const depositInterest = S.money * (SAVE_INT_M - 1);
   S.money += depositInterest;
   const previous = S.statement;
   S.statement = { year: calYear(m), month: calMonth(m), opening, closing: S.money, events, transfers, income: hh,
     incomeDetails: { personal: net, partner: mp ? mp.net / MONTHS : 0, rehire: lateLife.income, ...(aid ? { aid } : {}) },
-    tier: live, living, plans, rent, mortgage: mortgage.cash, mortgageInterest: mortgage.interest,
+    tier: tierNow, living, plans, rent, mortgage: mortgage.cash, mortgageInterest: mortgage.interest,
     mortgageHpf: mortgage.hpf, debtRepaid, depositInterest, debtInterest,
     shortfall: basic - basicPaid + rentDue - rent, arrears: mortgage.arrears, debt: S.debt };
   if (!S.headless) {
@@ -154,6 +157,16 @@ export function moneyMonth(m: number) {
   if (S.money > S.stats.maxMoney) S.stats.maxMoney = S.money;
   tightMonth(S.statement.shortfall, previous?.debt ?? 0);
   frugalEnd();
+}
+/** 你的小家算几个人（budget.ts 的 familySize）：你、配偶、还在上学年纪的孩子 */
+export function mySize() {
+  const f = S.fam, mate = f.married && f.partner && f.partner.alive;
+  return familySize(mate ? 2 : 1, f.kids.filter(child => child.alive && child.age < 22).map(child => child.age));
+}
+/** 照生活方式 k（budget.ts 的 STYLE_K）过，这个月要花多少、算哪一档（行动单上给玩家看） */
+export function myLiving(k: number) {
+  const H = here(), size = mySize(), cost = livingCost(S.incQ ?? 1, H.live, size, k);
+  return { cost, tier: tierOf(cost, H.live, size) };
 }
 // ===== 失业保险金 =====
 // 《失业保险条例》第14、17条：缴费满 1 年、非本人意愿中断就业的可以领；缴费 1–5 年最长 12 个月、5–10 年 18 个月、10 年以上 24 个月；
@@ -178,12 +191,12 @@ function uiMonth() {
   return uiPay() / MONTHS;
 }
 // 当地的收入、消费、房价、工资基数只取决于在哪里（地点数据是常量）：每月都要用，按地点缓存，只省掉重复计算，结果完全相同
-let hereKey: { p: string; city: string; kind: string } = null, hereVal: { inc: number; cons: number; hp: number; wb: number } = null;
+let hereKey: { p: string; city: string; kind: string } = null, hereVal: { inc: number; cons: number; live: number; hp: number; wb: number } = null;
 function here() {
   const L = S.loc, k = hereKey;
   if (!k || k.p !== L.p || k.city !== L.city || k.kind !== L.kind) {
     hereKey = { p: L.p, city: L.city, kind: L.kind };
-    hereVal = { inc: placeInc(L), cons: placeCons(L), hp: placeHp(L), wb: wageBase(L) };
+    hereVal = { inc: placeInc(L), cons: placeCons(L), live: placeLive(L), hp: placeHp(L), wb: wageBase(L) };
   }
   return hereVal;
 }
