@@ -73,7 +73,7 @@ export const ACTS: Record<string, Act> = {
     n: '回家看看', g: 'kin', max: 4, d: () => `回${S.home.city}看${parentsWord()}`,
     cost: tripCost, ok: () => workingAdult() && anyParent() && farFromParents() && !S.flags.parWithMe,
     run: () => {
-      addPar(3); eff({ h: 2, so: 1 });
+      addPar(3); eff({ so: 1 }); // 幸福不在这里加：自动的人生年年回家，年年加就成了持续的加成；跟爸妈亲，幸福的目标值高一点（stats.ts）
       const w = parentsWord(), ta = w === '爸妈' ? '他们' : w === '妈妈' ? '她' : '他';
       return vary('actVisit', [`请了几天假回去看${w}。${ta}一大早就在路口等着。`, `回家住了几天。走的时候，${w}往你的箱子里塞满了吃的。`, `回去陪${w}吃了几顿饭，听${ta}把邻居家的事讲了一遍又一遍。`, `回家帮${w}把屋顶漏雨的地方修好了。`]);
     },
@@ -82,7 +82,7 @@ export const ACTS: Record<string, Act> = {
     n: '给爸妈钱', g: 'kin', max: 2, d: () => `转给${parentsWord()}一个月的工资`,
     cost: () => Math.round(Math.max(inc() / 12, (S.net || 0) / 12) / 100) * 100, ok: () => workingAdult() && anyParent() && S.age >= 22,
     run: () => {
-      addPar(3); eff({ h: 1 });
+      addPar(3);
       const w = parentsWord();
       return vary('actGive', [`给${w}转了一笔钱。${w}嘴上说不要，第二天发来一张新衣服的照片。`, `给${w}包了个红包，${w}推辞了半天才收下。`, `给${w}转了钱，让${w === '爸妈' ? '他们' : '自己'}别省着。`]);
     },
@@ -90,7 +90,7 @@ export const ACTS: Record<string, Act> = {
   giveKid: {
     n: '给孩子钱', g: 'kin', max: 1, d: () => '贴补成家立业的孩子',
     cost: () => Math.round(inc() * 0.5 / 1e3) * 1e3, ok: () => S.indep && kidsAlive().some(k => k.age >= 22),
-    run: () => { addKids(3, true); eff({ h: 2 }); return vary('actGiveKid', ['给孩子转了一笔钱，说是给小两口过日子用的。', '孩子说手头紧，你没多问，转了一笔过去。', '孩子换工作的那几个月，你每个月都给他转点钱。']); },
+    run: () => { addKids(3, true); return vary('actGiveKid', ['给孩子转了一笔钱，说是给小两口过日子用的。', '孩子说手头紧，你没多问，转了一笔过去。', '孩子换工作的那几个月，你每个月都给他转点钱。']); },
   },
   trip: {
     n: '旅行', g: 'kin', max: 1, d: () => people() > 1 ? '带家人出去玩几天' : '一个人出去走走',

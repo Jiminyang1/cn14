@@ -41,13 +41,16 @@ export function drift() {
   const own = S.indep !== false;
   const T = TIERS[(own ? S.statement?.tier : S.parentTier) ?? 1] || TIERS[1];
   const poorLong = ((own ? S.poorM : S.famPoorM) || 0) >= POOR_LONG ? 1 : 0;
-  if (T === TIERS[0]) { st.h = clamp(st.h - POOR_HURT.h * (1 + poorLong) / MONTHS, 0, 100); st.hl = clamp(st.hl - POOR_HURT.hl * (1 + poorLong) / MONTHS, 1, 100); }
+  // 拮据的日子每年还直接扣一些（自己当家的才扣；孩子只看目标值，家境差的孩子不开心，但不至于压垮）
+  if (own && T === TIERS[0]) { st.h = clamp(st.h - POOR_HURT.h * (1 + poorLong) / MONTHS, 0, 100); st.hl = clamp(st.hl - POOR_HURT.hl * (1 + poorLong) / MONTHS, 1, 100); }
   const hT = hlExp(a) + (S.q - 3) * 1.5 + T.hl - poorLong * 2 + (liquidBalance() < 0 && a >= 22 ? -3 : 0) + (S.flags.smoke ? -6 : 0) + (S.flags.ill ? -20 : 0) - dis * 10 - hardship + 0.8 * pz('c');
   st.hl = clamp(st.hl + (hT - st.hl) * K_HL, 1, 100);
   // 成年以后还要和当地人比收入（relInc），比日子的档位轻一些
   const rel = T.h - poorLong * 3 + (a < 18 ? 0 : (S.relInc || 0) * 0.4);
   const debt = a >= 22 && liquidBalance() < -placeInc() ? 7 : 0;
-  const hpT = H_BASE + H_FOCUS * focusH() + rel + (f.married && f.partner && f.partner.alive ? 5 : 0) + Math.min(6, kids * 3) + (st.so - 70) * 0.2 + (st.hl - 60) * 0.15 + (a < 18 ? H_KID : 0)
+  // 成年以后和爸妈亲不亲（actions.ts 的亲疏，常回家看看就亲）：最亲 +3，很疏远 −5
+  const par = a >= 18 && (f.mom.alive || f.dad.alive) ? ((S.close?.par ?? 70) - 60) * 0.08 : 0;
+  const hpT = H_BASE + H_FOCUS * focusH() + rel + par + (f.married && f.partner && f.partner.alive ? 5 : 0) + Math.min(6, kids * 3) + (st.so - 70) * 0.2 + (st.hl - 60) * 0.15 + (a < 18 ? H_KID : 0)
     + (isWorking() ? (JOBS[S.job].h || 0) * H_JOB : 0)
     - debt - (S.flags.lb && a < 16 ? 6 : 0) - (S.job === 'seeking' ? 6 : 0) - dis * 4 + persH();
   st.h = clamp(st.h + (hpT - st.h) * K_H, 0, 100);
