@@ -74,9 +74,6 @@ button { font: inherit; }
 .row > .v small { display: block; font-size: 12px; color: var(--muted); }
 .row.off > .v, .row.gone > .v { color: var(--muted); }
 .row b { font-weight: 500; }
-.person-details > summary { cursor: pointer; list-style-position: inside; min-height: 24px; }
-.person-details[open] > summary { margin-bottom: 4px; }
-.person-details > summary:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
 .neg { color: var(--bad); }
 .f4 { display: grid; grid-template-columns: 2.4em minmax(0, 1fr) 2.4em minmax(0, 1fr); gap: 4px 8px; font-size: 13px; }
 .f4 > .k { font-family: var(--serif); font-size: 12px; color: var(--muted); padding-top: 1px; }
@@ -702,3 +699,19 @@ table.cmp th { font-weight: 500; font-family: var(--serif); color: var(--muted);
 .fk p { margin: 3px 0 0; font-size: 13px; line-height: 1.5; }
 .fk .chop { width: 17px; height: 17px; margin-right: 6px; font-size: 10px; }
 .fk-no { color: var(--muted); font-size: 12px !important; }
+
+/* 右下角「人际关系」：三组，每个人一样的样子——关系 | 名字 年龄 / 一行事实 | 亲疏 */
+.pg-g + .pg-g { margin-top: 14px; }
+.pg-h { display: flex; align-items: baseline; gap: 8px; padding-bottom: 4px; margin-bottom: 2px; border-bottom: 1px solid var(--hair); font: 600 12px var(--serif); color: var(--muted); letter-spacing: .1em; }
+.pg-h small { margin-left: auto; font: 400 12px var(--sans); letter-spacing: 0; }
+.ps { display: grid; grid-template-columns: 3em minmax(0, 1fr) auto; gap: 0 10px; align-items: baseline; padding: 6px 0; }
+.ps-r { font-size: 12px; color: var(--muted); }
+.ps-n { display: flex; align-items: baseline; gap: 6px; font-size: 13px; }
+.ps-n b { font: 600 13.5px var(--serif); }
+.ps-n span { color: var(--ink2); }
+.ps-f { margin-top: 1px; font-size: 12px; line-height: 1.5; color: var(--muted); }
+.ps-c { font-size: 12px; white-space: nowrap; }
+.ps-c.hi { color: var(--good); }
+.ps-c.mid { color: var(--ink2); }
+.ps-c.lo { color: var(--seal); }
+.ps.gone { opacity: .5; }

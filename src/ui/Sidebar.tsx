@@ -84,13 +84,6 @@ export function Basic() {
   );
 }
 
-function famMeta() {
-  const F = S.flags;
-  if (F.lb === 'both' && S.age < 16) return `父母在外打工 · ${F.carer}照看`;
-  if (S.fam.married) return '已成家';
-  return F.parDiv ? '父母已离婚' : '';
-}
-
 // 家庭成员只写人：谁、多大、做什么、在哪里、关系怎样。钱的事都在「我的经济」里
 /** 父母在哪：和你住一起、在外打工的城市、老家 */
 function parentWhere(p, ret: boolean) {
@@ -99,39 +92,74 @@ function parentWhere(p, ret: boolean) {
   if (!awayFromHome()) return S.indep ? '和你在同一座城市' : '和你住在一起';
   return '在' + placeName(S.home);
 }
-function ParentRow({ who, label }: { who: 'mom' | 'dad'; label: string }) {
-  const p = S.fam[who], male = who === 'dad';
-  if (!p.alive) return <Row k={label} v={'已去世 · 享年' + p.age + '岁'} cls="gone" />;
-  const ret = parentRetired(p, male);
-  return <Row k={label} v={<>{p.age}岁 · {ret ? '退休了' : p.job}<small>{parentWhere(p, ret)}{S.age >= 18 && S.indep ? ' · ' + closeWord(parClose()) : ''}</small></>} />;
-}
 // 发小在哪：各奔东西（echoes.ts 的 palApart）以前是你的同学，之后才看得出去了哪里
 const palWhere = (p: NonNullable<NonNullable<typeof S.ppl>['pal']>) => S.done.palApart == null ? (S.age < 19 ? '你的同学' : '在' + S.home.city) : p.fate === 'abroad' ? '在国外' : p.city ? '在' + p.city : '在老家';
 const CLOSE = (c: number) => c >= 65 ? '无话不谈' : c >= 45 ? '常联系' : c >= 25 ? '偶尔联系' : '很少联系';
 /** 对方在哪：同一座城市不写，异地写城市 */
 const ptWhere = (p: Partner) => p.city && p.city !== S.loc.city ? `异地，在${p.city}` : `也在${S.loc.city}`;
-// 家庭成员：父母、兄弟姐妹、恋人、配偶、孩子
-export function FamilyRows() {
-  const f = S.fam, d = f.dating, pt = f.partner, pal = S.ppl?.pal;
+// ===== 右下角「人际关系」 =====
+// 分三组：家里（父母、兄弟姐妹）、自己的家（恋人或配偶、孩子、孙辈）、朋友（发小、初恋）。
+// 每个人一个样子：关系 | 名字 · 年龄 + 一行事实（做什么、在哪、多少年） | 右边亲疏。走了的人变灰，写享年
+type Tone = 'hi' | 'mid' | 'lo';
+// 颜色跟着词走：亲近的绿、平常的墨色、疏远或冷淡的红（分界和 closeWord、loveWord、CLOSE 一样）
+const tone = (c: number, hi: number, lo: number): Tone => c >= hi ? 'hi' : c >= lo ? 'mid' : 'lo';
+const kin = (c: number): [string, Tone] => [closeWord(c), tone(c, 55, 55)];        // 很亲、还算亲 / 有点疏远、很少联系
+const love = (c: number): [string, Tone] => ['感情' + loveWord(c), tone(c, 58, 42)]; // 很好、不错 / 一般 / 有点冷淡
+const pals = (c: number): [string, Tone] => [CLOSE(c), tone(c, 45, 25)];           // 无话不谈、常联系 / 偶尔联系 / 很少联系
+function Person({ rel, name, age, facts, close, gone }: { rel: string; name?: string; age?: number | string; facts?: (string | false | null | undefined)[]; close?: [string, Tone]; gone?: boolean }) {
+  const fs = (facts || []).filter(Boolean) as string[];
+  return <div className={'ps' + (gone ? ' gone' : '')}>
+    <span className="ps-r">{rel}</span>
+    <div className="ps-m">
+      <div className="ps-n">{name && <b>{name}</b>}{age != null && <span>{typeof age === 'number' ? age + '岁' : age}</span>}</div>
+      {fs.length > 0 && <div className="ps-f">{fs.join(' · ')}</div>}
+    </div>
+    {close && <span className={'ps-c ' + close[1]}>{close[0]}</span>}
+  </div>;
+}
+function Group({ n, meta, children }: { n: string; meta?: string; children: ReactNode }) {
+  return <div className="pg-g"><div className="pg-h"><span>{n}</span>{meta && <small>{meta}</small>}</div>{children}</div>;
+}
+function ParentP({ who }: { who: 'mom' | 'dad' }) {
+  const p = S.fam[who], male = who === 'dad', rel = male ? '父亲' : '母亲';
+  if (!p.alive) return <Person rel={rel} age={'享年' + p.age} gone />;
+  const ret = parentRetired(p, male);
+  const c = parClose();
+  return <Person rel={rel} age={p.age} facts={[ret ? '退休了' : p.job, parentWhere(p, ret)]} close={S.age >= 18 && S.indep ? kin(c) : undefined} />;
+}
+export function People() {
+  const f = S.fam, F = S.flags, d = f.dating, pt = f.partner, pal = S.ppl?.pal, crush = S.ppl?.crush;
   const ptStudy = !!pt && !pt.retired && pt.k != null && !pt.jk; // 配偶还在读书：职业一栏已经写了「本科在读」
+  const homeMeta = F.lb === 'both' && S.age < 16 ? `在外打工 · ${F.carer}照看` : F.parDiv ? '已离婚' : undefined;
+  const own = !!d || !!pt || f.kids.length > 0 || !!S.flags.divorced;
+  const crushOn = !!crush && crush.name !== pt?.name && crush.name !== d?.name;
   return <>
-    <ParentRow who="dad" label="父亲" /><ParentRow who="mom" label="母亲" />
-    {f.sibs.map((x, i) => <Row key={'s' + i} k={x.rel} v={x.alive ? x.age + '岁' : '已去世'} cls={x.alive ? undefined : 'gone'} />)}
-    {d && <Row k={d.sex === 'M' ? '男朋友' : '女朋友'} v={<>{d.name} · {d.age} · {partnerTrait(d)}
-      <small>{d.jk ? EDU_LV[d.edu] : EDU_LV[d.edu] + '在读'} · {ptJobName(d)} · {ptWhere(d)} · {PBY[d.home].n}{d.rural ? '农村' : '城里'}人</small>
-      <small>{S.age - d.metAt ? '在一起' + (S.age - d.metAt) + '年' : '刚在一起'} · 感情{loveWord(d.love)}</small></>} />}
-    {pt && <div className={'row' + (pt.alive ? '' : ' gone')}>
-      <span className="k">{pt.sex === 'M' ? '丈夫' : '妻子'}</span>
-      {pt.alive ? <details className="v person-details">
-        <summary>{pt.name} · {pt.age}岁</summary>
-        <small>{pt.edu && !ptStudy ? EDU_LV[pt.edu] + ' · ' : ''}{pt.retired ? '退休' : pt.k != null ? ptJobName(pt) : JOBS[pt.job] ? JOBS[pt.job].n : ''} · {ptWhere(pt)}</small>
-        <small>{pt.marriedAt != null ? `结婚${Math.max(0, S.age - pt.marriedAt)}年` : ''}{pt.love != null ? ' · 感情' + loveWord(pt.love) : ''}</small>
-      </details> : <span className="v">{pt.name} · 已去世</span>}
-    </div>}
-    {!f.married && !!S.flags.divorced && <Row k="婚姻" v="离异" />}
-    {f.kids.map((k, i) => <Row key={'k' + i} k={k.sex === 'M' ? '儿子' : '女儿'} cls={k.alive ? undefined : 'gone'} v={k.alive ? <>{k.name} · {k.age}岁{k.path ? ' · ' + k.path.replace(/^考上了/, '') : ''}{k.ex && k.age < 18 ? ' · 跟着对方' : ''}{k.age >= 12 && <small>{closeWord(kidClose(k))}</small>}</> : k.name + ' · 已离世'} />)}
-    {S.flags.grandkids > 0 && <Row k="孙辈" v={S.flags.grandkids + '人'} />}
-    {pal && <Row k="发小" cls={pal.alive ? undefined : 'gone'} v={pal.alive ? <>{pal.name} · 认识{S.age - pal.at}年<small>{palWhere(pal)} · {CLOSE(pal.close)}</small></> : pal.name + ' · 已去世'} />}
+    <Group n="家里" meta={homeMeta}>
+      <ParentP who="dad" /><ParentP who="mom" />
+      {f.sibs.map((x, i) => <Person key={'s' + i} rel={x.rel} age={x.alive ? x.age : '已去世'} facts={[x.alive && x.married != null && '成家了']} gone={!x.alive} />)}
+    </Group>
+    {own && <Group n="自己的家" meta={pt?.alive && pt.marriedAt != null ? `结婚${Math.max(0, S.age - pt.marriedAt)}年` : !f.married && S.flags.divorced ? '离异' : undefined}>
+      {d && <Person rel={d.sex === 'M' ? '男朋友' : '女朋友'} name={d.name} age={d.age}
+        facts={[partnerTrait(d), d.jk ? EDU_LV[d.edu] : EDU_LV[d.edu] + '在读', ptJobName(d), ptWhere(d), PBY[d.home].n + (d.rural ? '农村' : '城里') + '人', S.age - d.metAt ? '在一起' + (S.age - d.metAt) + '年' : '刚在一起']}
+        close={d.love != null ? love(d.love) : undefined} />}
+      {pt && (pt.alive
+        ? <Person rel={pt.sex === 'M' ? '丈夫' : '妻子'} name={pt.name} age={pt.age}
+          facts={[pt.edu && !ptStudy && EDU_LV[pt.edu], pt.retired ? '退休了' : pt.k != null ? ptJobName(pt) : JOBS[pt.job]?.n, ptWhere(pt)]}
+          close={pt.love != null ? love(pt.love) : undefined} />
+        : <Person rel={pt.sex === 'M' ? '丈夫' : '妻子'} name={pt.name} age="已去世" gone />)}
+      {f.kids.map((k, i) => k.alive
+        ? <Person key={'k' + i} rel={k.sex === 'M' ? '儿子' : '女儿'} name={k.name} age={k.age}
+          facts={[k.path && k.path.replace(/^考上了/, ''), k.ex && k.age < 18 && '跟着对方', k.married != null && '成家了']}
+          close={k.age >= 12 ? kin(kidClose(k)) : undefined} />
+        : <Person key={'k' + i} rel={k.sex === 'M' ? '儿子' : '女儿'} name={k.name} age="已离世" gone />)}
+      {S.flags.grandkids > 0 && <Person rel="孙辈" age={S.flags.grandkids + '个'} />}
+    </Group>}
+    {(pal || crushOn) && <Group n="朋友">
+      {pal && (pal.alive
+        ? <Person rel="发小" name={pal.name} facts={[palWhere(pal), '认识' + (S.age - pal.at) + '年']} close={pals(pal.close)} />
+        : <Person rel="发小" name={pal.name} age="已去世" gone />)}
+      {crushOn && crush && <Person rel="初恋" name={crush.name} facts={[crush.at + '岁时喜欢过', crush.city && '在' + crush.city]} />}
+    </Group>}
   </>;
 }
 
@@ -394,7 +422,7 @@ export function ArchiveTabs({ mtab }: { mtab: string }) {
       <div className="tp" data-t="fork" data-m="body"><div className="sub-h m-only" style={{ marginTop: 0 }}>岔路口</div><Forks /></div>
       <div className="tp" data-t="doc" data-m="doc"><Docs /></div>
       <div className="tp" data-t="peer" data-m="peer"><p className="note-line" style={{ margin: '0 0 4px' }}>同一秒建档的另外 {S.comps.length} 人 · 此刻也是 {S.age} 岁</p><Companions /></div>
-      <div className="tp" data-t="ppl" data-m="home"><p className="note-line" style={{ margin: '0 0 4px' }}>{famMeta()}</p><FamilyRows /></div>
+      <div className="tp" data-t="ppl" data-m="home"><People /></div>
     </section>
   );
 }
