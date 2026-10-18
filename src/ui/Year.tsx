@@ -84,7 +84,8 @@ function YearSheet({ tab0 }: { tab0: string }) {
               <div className="yr-grp-n">
                 <div className="yr-ng"><span>做点什么</span></div>
                 {nav('plan', '这一年怎么过')}
-                {groups.map(x => nav(x.g, x.n, x.r, x.ok))}
+                {(plansShown().includes('invest') || groups.some(x => x.g === 'money')) && nav('money', '理财', planOpt('invest')?.label || '', groups.find(x => x.g === 'money')?.ok)}
+                {groups.filter(x => x.g !== 'money').map(x => nav(x.g, x.n, x.r, x.ok))}
               </div>
               <div className="yr-grp-n see">
                 <div className="yr-ng"><span>看看账</span></div>
@@ -98,6 +99,7 @@ function YearSheet({ tab0 }: { tab0: string }) {
             {tab === 'plan' ? <PlanPage pm={pm} />
               : tab === 'book' ? <BookPage />
               : tab === 'par' ? <ParPage go={() => setTab('kin')} />
+              : tab === 'money' ? <MoneyPage />
               : <ActPage g={tab} title={GROUPS.find(x => x[0] === tab)?.[1] || ''} />}
           </section>
         </div>
@@ -110,7 +112,7 @@ function YearSheet({ tab0 }: { tab0: string }) {
 function PlanPage({ pm }: { pm: ReturnType<typeof perMonth> }) {
   const n = slotN(), slots = S.slots || [], l = focusList();
   const ORDER = ['style', 'gym', 'checkup'];
-  const spend = plansShown().filter(k => PLANS[k].g !== 'money').sort((p, q) => (ORDER.indexOf(p) + 99) % 99 - (ORDER.indexOf(q) + 99) % 99), save = plansShown().filter(k => PLANS[k].g === 'money');
+  const spend = plansShown().filter(k => PLANS[k].g !== 'money').sort((p, q) => (ORDER.indexOf(p) + 99) % 99 - (ORDER.indexOf(q) + 99) % 99);
   const fx = yearFx();
   const out = pm.live + pm.other + pm.rent + pm.loan, base = Math.max(pm.income, out, 1);
   const seg: [string, number, string][] = ([['过日子', pm.live, 'var(--kraft)'], ['房租', pm.rent, '#8FA9C9'], ['房贷', pm.loan, '#8FA9C9'], ['计划', pm.other, 'var(--so)'], ['剩下', Math.max(0, pm.left), 'var(--good)']] as [string, number, string][]).filter(x => x[1] >= 1);
@@ -144,7 +146,6 @@ function PlanPage({ pm }: { pm: ReturnType<typeof perMonth> }) {
           </div>)}
         </div>}
         {spend.length > 0 && <div className="yr-grp"><div className="yr-gt">花钱</div>{spend.map(opt)}</div>}
-        {save.length > 0 && <div className="yr-grp"><div className="yr-gt">存钱</div>{save.map(opt)}</div>}
       </div>
       <aside className="yr-res">
         <h4>这样过，每个月</h4>
@@ -164,32 +165,62 @@ function PlanPage({ pm }: { pm: ReturnType<typeof perMonth> }) {
 }
 
 // ===== 一次性的行动：一类一页 =====
-function ActPage({ g, title }: { g: string; title: string }) {
+function ActRows({ keys }: { keys: string[] }) {
   const [said, setSaid] = useState<string | null>(null);
-  const keys = actsShown().filter(k => ACTS[k].g === g);
   const doIt = (k: string) => { const n0 = S.log.length; game.act(k); setSaid(S.log.length > n0 ? S.log[0].t : null); };
+  return <>
+    {keys.map(k => {
+      const A = ACTS[k], st = actState(k), short = st.why === '手头的钱不够' ? st.cost - liquidBalance() : 0;
+      return <div key={k} className={'yr-act' + (st.ok ? '' : ' off')}>
+        <div><b>{A.n}</b><span>{A.d()}</span>
+          {A.fx && <span className="yr-afx">{A.fx().map(t => <em key={t} className={/[+↑]/.test(t) ? 'up' : /[−↓]/.test(t) ? 'dn' : undefined}>{t}</em>)}</span>}</div>
+        <div className="yr-am"><span className="mono">{st.cost > 0 ? '约 ' + wan(st.cost) : '不花钱'}</span>
+          {!st.ok && <small className={short > 0 ? 'dn' : undefined}>{short > 0 ? `还差 ${wan(short)}` : st.why === '今年已经做过了' ? '今年做过了' : st.why}</small>}</div>
+        <button type="button" className="yr-go" disabled={!st.ok} onClick={() => doIt(k)}>去做</button>
+      </div>;
+    })}
+    {said && <p className="yr-said">{said}</p>}
+  </>;
+}
+function ActPage({ g, title }: { g: string; title: string }) {
+  const keys = actsShown().filter(k => ACTS[k].g === g);
   const kids = kidsAlive().filter(k => k.age >= 18);
   return <>
     <div className="yr-hd"><h3>{title}</h3></div>
     <div className={g === 'kin' ? 'yr-cols' : ''}>
-      <div>
-        {keys.map(k => {
-          const A = ACTS[k], st = actState(k), short = st.why === '手头的钱不够' ? st.cost - liquidBalance() : 0;
-          return <div key={k} className={'yr-act' + (st.ok ? '' : ' off')}>
-            <div><b>{A.n}</b><span>{A.d()}</span>
-              {A.fx && <span className="yr-afx">{A.fx().map(t => <em key={t} className={/[+↑]/.test(t) ? 'up' : /[−↓]/.test(t) ? 'dn' : undefined}>{t}</em>)}</span>}</div>
-            <div className="yr-am"><span className="mono">{st.cost > 0 ? '约 ' + wan(st.cost) : '不花钱'}</span>
-              {!st.ok && <small className={short > 0 ? 'dn' : undefined}>{short > 0 ? `还差 ${wan(short)}` : st.why === '今年已经做过了' ? '今年做过了' : st.why}</small>}</div>
-            <button type="button" className="yr-go" disabled={!st.ok} onClick={() => doIt(k)}>去做</button>
-          </div>;
-        })}
-        {said && <p className="yr-said">{said}</p>}
-      </div>
+      <div><ActRows keys={keys} /></div>
       {g === 'kin' && <aside className="yr-res">
         {anyParent() && <><h4>和爸妈</h4><div className="yr-close">{closeWord(parClose())}</div><div className="yr-meter"><u style={{ width: parClose() + '%' }} /></div></>}
         {kids.map((k, i) => <div key={i} style={{ marginTop: 14 }}><h4>和{k.name}</h4><div className="yr-close">{closeWord(kidClose(k))}</div><div className="yr-meter"><u style={{ width: kidClose(k) + '%' }} /></div></div>)}
       </aside>}
     </div>
+  </>;
+}
+
+// ===== 理财：钱放在哪（持续的计划）+ 现在放了多少、今年赚了多少；理财类的一次性行动也放这里 =====
+const RATE: Record<string, string> = { bank: '一年约 1.5%', wealth: '一年约 2%–3%', fund: '跟着股市涨跌' };
+const RULE: Record<string, string> = { bank: '随用随取', wealth: '留半年生活费，其余一半', fund: '留半年生活费，其余三成' };
+function MoneyPage() {
+  const P = PLANS.invest, cur = planOf('invest'), I = S.inv;
+  const w = I?.w || 0, f = I?.f || 0, gain = (I?.gw || 0) + (I?.gf || 0), life = (I?.cw || 0) + (I?.cf || 0);
+  const acts = actsShown().filter(k => ACTS[k].g === 'money');
+  return <>
+    <div className="yr-hd"><h3>理财</h3></div>
+    <div className="yr-kp4">
+      <div><span>现金</span><b className="mono">{wan(S.money)}</b></div>
+      <div><span>银行理财</span><b className="mono">{w >= 1 ? wan(w) : '—'}</b></div>
+      <div><span>基金</span><b className="mono">{f >= 1 ? wan(f) : '—'}</b>{f >= 1 && I && <small className={I.x >= 1 ? 'up' : 'dn'}>今年行情 {I.x >= 1 ? '+' : '−'}{Math.abs(Math.round((I.x - 1) * 100))}%</small>}</div>
+      <div><span>今年赚了</span><b className={'mono ' + (gain > 0 ? 'up' : gain < 0 ? 'dn' : '')}>{Math.abs(gain) >= 1 ? (gain > 0 ? '+' : '−') + wan(Math.abs(gain)) : '—'}</b>{Math.abs(life) >= 1 && <small>一生 {life > 0 ? '+' : '−'}{wan(Math.abs(life))}</small>}</div>
+    </div>
+    {P && cur && <>
+      <div className="yr-gt" style={{ marginTop: 22 }}>钱放在</div>
+      <div className="yr-pick" role="radiogroup" aria-label="钱放在哪">
+        {P.opts.map(o => <button key={o.k} type="button" role="radio" aria-checked={cur === o.k} className={cur === o.k ? 'on' : ''} onClick={() => { if (cur !== o.k) game.plan('invest', o.k); }}>
+          <b>{o.label}</b><span>{RATE[o.k]}</span><small>{RULE[o.k]}</small>
+        </button>)}
+      </div>
+    </>}
+    {acts.length > 0 && <div style={{ marginTop: 18 }}><ActRows keys={acts} /></div>}
   </>;
 }
 

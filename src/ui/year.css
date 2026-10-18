@@ -69,6 +69,16 @@
 .yr-fx div { display: flex; justify-content: space-between; align-items: baseline; padding: 7px 10px; border-radius: 5px; background: var(--tint); font-size: 12.5px; }
 .yr-fx b { font-weight: 600; }
 
+/* 理财：三种放法，一张一张卡片 */
+.yr-pick { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.yr-pick button { display: flex; flex-direction: column; gap: 2px; padding: 12px 14px; border: 0; border-radius: 6px; background: var(--tint); color: var(--ink); text-align: left; cursor: pointer; }
+.yr-pick button b { font: 700 15px var(--serif); }
+.yr-pick button span { font: 13px var(--mono); color: var(--ink2); }
+.yr-pick button small { font-size: 11.5px; color: var(--muted); }
+.yr-pick button.on { background: var(--ink); color: var(--card); }
+.yr-pick button.on span, .yr-pick button.on small { color: color-mix(in srgb, var(--card) 72%, transparent); }
+.yr-pick button:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+
 /* 一次性的行动 */
 .yr-act { display: grid; grid-template-columns: minmax(0, 1fr) 130px 88px; gap: 16px; align-items: center; padding: 13px 0; border-top: 1px solid var(--hair); }
 .yr-act:first-child { border-top: 0; }
@@ -152,5 +162,6 @@
   .yr-am { grid-column: 1; grid-row: 2; text-align: left; display: flex; gap: 8px; align-items: baseline; }
   .yr-go { grid-row: 1 / 3; grid-column: 2; height: 44px; padding: 0 16px; }
   .yr-kp4 { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 12px; }
+  .yr-pick { grid-template-columns: 1fr; }
   .yr-kp4 > div:nth-child(3) { padding-left: 0; border-left: 0; }
 }
