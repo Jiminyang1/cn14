@@ -170,6 +170,7 @@ export const feelWord = p => p.fit >= 0.7 ? '聊得很投缘' : p.fit >= 0.5 ? '
 // 中国人谈对象，看的不只是两个人。两家用同一张条件表互相看：工作（编制、有没有工作）、房子、收入、家境、城乡、是不是外地的、
 // 兄弟姐妹、爸妈以后要不要养、年龄差。对方家里看你（theirWhys）、你家里看对方（myWhys）都是这张表，只是说法不同。
 // 每一条一个分数：总分 ≥ 1 是满意、≤ −1 是不太满意（见家长时用）；对方家里的总分也算进 Ta 愿不愿意（mutualP）。
+// 见家长时还有硬伤：没工作、家境差两档以上，一条就不同意，别的条件再好也抵不过（原来只看总分，一局约 0.15 次见家长的抉择，太少）
 // 确定的，不消耗随机数（界面上也会算）。二十二岁以前、还在读书的，家里还不过问
 type Prof = { male: boolean; age: number; bz: boolean; noJob: boolean; house: boolean; rich: boolean; q: number; rural: boolean; home: string; only: boolean; burden: string };
 const meProf = (): Prof => {
@@ -196,6 +197,12 @@ function score(a: Prof, b: Prof): [string, number][] {
   return r;
 }
 const involved = () => !S.school && S.age >= 22;
+const HARD = new Set(['seek', 'poor']);
+const hardOf = (ws: { k: string; v: number }[]) => ws.find(w => HARD.has(w.k) && w.v <= -0.5);
+/** 一张表的结论：1 满意、0 没意见、-1 不太满意（有硬伤，或者总分 ≤ −1） */
+const verdict = (ws: { k: string; v: number }[]) => { const f = ws.reduce((a, w) => a + w.v, 0); return hardOf(ws) || f <= -1 ? -1 : f >= 1 ? 1 : 0; };
+/** 最在意的那一条：有硬伤先说硬伤 */
+export const worstOf = <T extends { k: string; v: number }>(ws: T[]): T | undefined => hardOf(ws) as T || ws.filter(w => w.v < 0).sort((a, b) => a.v - b.v)[0];
 type Why = { k: string; v: number; t: (subj: string) => string };
 /** 对方家里看你：每一条配一句话（subj 是「张三家里」） */
 export function theirWhys(p): Why[] {
@@ -223,7 +230,7 @@ export const famPts = p => theirWhys(p).reduce((a, w) => a + w.v, 0);
 /** 对方家里怎么看你（subj：「张三家里」）：最满意的一条和最在意的一条各说一句 */
 export function theirView(p, subj = `${p.name}家里`): string | null {
   const ws = theirWhys(p).filter(w => Math.abs(w.v) >= 0.3); if (!ws.length) return null;
-  const best = ws.reduce((a, b) => b.v > a.v ? b : a), worst = ws.reduce((a, b) => b.v < a.v ? b : a);
+  const best = ws.reduce((a, b) => b.v > a.v ? b : a), worst = worstOf(ws) || best;
   const ta = p.sex === 'M' ? '他' : '她';
   if (best.v > 0 && worst.v < 0) return best.t(subj) + worst.t(`不过${ta}家里`);
   return (best.v > 0 ? best : worst).t(subj);
@@ -245,8 +252,8 @@ export function myWhys(p): { k: string; v: number; t: string }[] {
 export function famView(p): { who: string | null; good: string | null; bad: string | null; par: number } {
   const who = S.fam.mom.alive ? '妈妈' : S.fam.dad.alive ? '爸爸' : null, ws = myWhys(p);
   if (!ws.length) return { who: involved() ? who : null, good: null, bad: null, par: 0 };
-  const best = ws.reduce((a, b) => b.v > a.v ? b : a), worst = ws.reduce((a, b) => b.v < a.v ? b : a), f = ws.reduce((a, w) => a + w.v, 0);
-  return { who, good: best.v > 0 ? best.t : null, bad: worst.v < 0 ? worst.t : null, par: f <= -1 ? -1 : f >= 1 ? 1 : 0 };
+  const best = ws.reduce((a, b) => b.v > a.v ? b : a), worst = worstOf(ws);
+  return { who, good: best.v > 0 ? best.t : null, bad: worst ? worst.t : null, par: verdict(ws) };
 }
 /** 「妈妈说：“……”」 */
 export function famSay(p): string | null {
@@ -349,8 +356,8 @@ export function loveStep(d) {
   if (d.drag == null && m - d.coldAt >= 3 && (d.coldAsk == null || m - d.coldAsk >= 24)) { d.coldAsk = m; soon('cold'); }
 }
 // 见家长：两家都没意见的，写一句就过去了；有一边不同意的，停下来问你（抉择 parents）。
-// 对方家里满不满意就是上面那张条件表的总分
-export const theirPar = p => { const f = famPts(p); return f <= -1 ? -1 : f >= 1 ? 1 : 0; };
+// 对方家里满不满意就是上面那张条件表的结论（verdict）
+export const theirPar = p => verdict(theirWhys(p));
 function meetParents(d) {
   // 先缓过一阵的，家里有一半的可能松口（估计）
   if (d.slowed != null) { if (d.par < 0 && chance(0.5)) d.par = 0; if (d.tpar < 0 && chance(0.5)) d.tpar = 0; }

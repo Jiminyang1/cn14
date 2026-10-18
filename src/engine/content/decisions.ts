@@ -9,7 +9,7 @@ import { EDU_LV, HS_NAME, admit, enroll, gkAutoApps, gkCandidates, gkLines, gkRa
 import { ILL, oop, reimburse } from '../health';
 import { JOBS, RAISE, RESID_PENSION_JOBS, civilTry, gig, gradJob, hire, hireInCity, isWorking, quitJob, raise, retire } from '../career';
 import { supportOf } from '../family';
-import { LOVE_COLD, MEET_HOW, READY0, READY_K, breakUp, brideAmt, bianzhi, famSay, famView, feelWord, famPts, loveOf, loveWord, noteLove, partnerBrief, selfP, theirWhys, matchmaker, mShift, mutualP, partnerInc, partnerJob, partnerLoc, partnerRows, pickW, ptJobName, theirView } from '../romance';
+import { LOVE_COLD, MEET_HOW, READY0, READY_K, breakUp, brideAmt, bianzhi, famSay, famView, feelWord, loveOf, loveWord, noteLove, partnerBrief, selfP, theirWhys, matchmaker, mShift, mutualP, partnerInc, partnerJob, partnerLoc, partnerRows, pickW, ptJobName, theirPar, theirView, worstOf } from '../romance';
 import { S } from '../state';
 import { addDoc, log, logLater } from '../journal';
 import { annualPay, bestPlan, buyHouse, houseHelp, inlawHelp, mate, foreclose, hhIncome, hometownHouse, loanBal, loanArrears, loanPayY, loanPlans, planSub, sellHouse, sellInherited } from '../housing';
@@ -653,7 +653,7 @@ export const DEC = {
       if (!chance(mutualP(p))) {
         eff({ h: -3 });
         // Ta 本人愿意、是家里拦着的，说清楚
-        if (famPts(p) <= -1 && selfP(p) >= 0.6) return { t: `${p.name}挺喜欢你，可${p.sex === 'M' ? '他' : '她'}家里不同意。${theirView(p) || ''}`, k: 'bad' };
+        if (theirPar(p) < 0 && selfP(p) >= 0.6) return { t: `${p.name}挺喜欢你，可${p.sex === 'M' ? '他' : '她'}家里不同意。${theirView(p) || ''}`, k: 'bad' };
         return { t: p.how === 'blind' ? `又见了两次，${p.name}说觉得你们不太合适。` : `你鼓起勇气表白，${p.name}说只想做朋友。`, k: 'bad' };
       }
       p.love = clamp(55 + 25 * (p.fit - 0.5) + gauss(0, 8), 20, 90); p.asks = 0;
@@ -699,7 +699,7 @@ export const DEC = {
       const d = S.fam.dating; if (!d || !(d.par < 0 || d.tpar < 0)) return null;
       const v = famView(d), ta = d.sex === 'M' ? '他' : '她';
       // 对方家里最在意的那一条（和算满不满意的是同一张表，romance.ts 的 theirWhys）
-      const worst = theirWhys(d).filter(w => w.v < 0).sort((a, b) => a.v - b.v)[0];
+      const worst = worstOf(theirWhys(d));
       const why = (MEET_WHY[worst?.k] || MEET_WHY.poor)(d.name);
       const again = d.slowed != null;
       const theirs = d.tpar < 0 ? (again ? `又去了一趟${d.name}家。` : S.sex === 'M' ? `第一次去${d.name}家见家长。` : `${d.name}带你回家见了${ta}爸妈。`) + why : '';
