@@ -9,7 +9,7 @@ import { YearProgress } from './Progress';
 import { RunId } from './RunId';
 import { VersionTag } from './Version';
 import { ActionsButton, PendingFloat } from './Actions';
-import { YearHost, openYear } from './Year';
+import { YearHost, openYear, perMonth, yearFx } from './Year';
 import { Account, ArchiveTabs, Basic, Body, FamilySec } from './Sidebar';
 import { TimelineFinance, statementAge } from './Finance';
 import { cnNum, fileNo } from './util';
@@ -107,21 +107,30 @@ function FocusPlan() {
 const PLAN_N: Record<string, string> = { style: '过日子', gym: '健身', checkup: '体检', invest: '钱放在' };
 const PLAN_I = (k: string) => { const i = Object.keys(PLAN_N).indexOf(k); return i < 0 ? 99 : i; };
 function YearPlan() {
-  const n = slotN(), slots = S.slots || [];
+  const n = slotN(), slots = (S.slots || []).slice(0, n);
+  const same = n > 1 && slots[0] && slots[0] === slots[1];
+  const fx = yearFx(), pm = perMonth();
+  const plans = plansShown().sort((p, q) => PLAN_I(p) - PLAN_I(q));
+  const STATS = [['hl', '健康'], ['h', '幸福'], ['so', '人际'], ['kn', '学识']] as const;
+  const num = (v: number) => (v > 0 ? '+' : v < 0 ? '−' : '') + Math.abs(Math.round(v * 10) / 10);
   return (
     <section className="pg plan year-plan">
       <div className="sec"><span className="no">三</span><h3>计划</h3><small><button type="button" className="sec-link" onClick={() => openYear('plan')}>调整 ›</button></small></div>
-      <div className="yp-slots">
-        {Array.from({ length: n }, (_, i) => {
-          const k = slots[i];
-          return <button key={i} type="button" className="yp-slot" style={{ '--c': k ? FOCUS_C[k] : 'var(--muted)' } as React.CSSProperties} onClick={() => openYear('plan')}>
-            <span className="slot-n">{i ? '二' : '一'}</span><i /><b>{k ? FOCUS[k].n : '—'}</b>{k && <small>{focusMore(k)}</small>}
-          </button>;
-        })}
-      </div>
-      <div className="yp-habits">
-        {plansShown().sort((p, q) => PLAN_I(p) - PLAN_I(q)).map(k => { const o = planOpt(k); return o && <span key={k}><em>{PLAN_N[k] || PLANS[k].n}</em>{o.label.replace(/^办张健身卡，?常去$/, '办卡常去').replace(/^每年全面/, '每年')}</span>; })}
-      </div>
+      <button type="button" className="yp" onClick={() => openYear('plan')} aria-label="打开计划">
+        <span className="yp-k">时间</span>
+        <span className="yp-v yp-time">
+          {(same ? [slots[0]] : slots).map((k, i) => <span key={i} className="yp-slot" style={{ '--c': k ? FOCUS_C[k] : 'var(--muted)' } as React.CSSProperties}><i /><b>{k ? FOCUS[k].n : '—'}</b>{same && <em>两格</em>}</span>)}
+        </span>
+        <span className="yp-k">花钱</span>
+        <span className="yp-v yp-money">
+          {plans.map(k => { const o = planOpt(k); return o && <span key={k}><em>{PLAN_N[k] || PLANS[k].n}</em>{o.label.replace(/^办张健身卡，?常去$/, '办卡常去').replace(/^每年全面/, '每年')}</span>; })}
+        </span>
+        <span className="yp-k">一年</span>
+        <span className="yp-v yp-out">
+          {STATS.map(([k, t]) => Math.round(fx[k] * 10) !== 0 && <span key={k} className={fx[k] > 0 ? 'money-up' : 'neg'}>{t} {num(fx[k])}</span>)}
+          <span className="yp-left">每月 <b className={'mono ' + (pm.left >= 0 ? 'money-up' : 'neg')}>{(pm.left >= 0 ? '+' : '−') + Math.abs(Math.round(pm.left)).toLocaleString('zh-CN')}</b></span>
+        </span>
+      </button>
     </section>
   );
 }

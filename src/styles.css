@@ -650,15 +650,20 @@ table.cmp th { font-weight: 500; font-family: var(--serif); color: var(--muted);
 .eco-two small { display: block; font-size: 11.5px; color: var(--muted); }
 .eco-two small.neg { color: var(--seal); }
 
-/* 三、这一年怎么过（经济独立以后）：两格 + 一行持续的计划 */
-.yp-slots { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 10px; }
-.yp-slot { display: flex; align-items: baseline; gap: 8px; min-width: 0; padding: 8px 10px; border: 0; border-radius: 4px; background: var(--tint); color: var(--ink); font: inherit; text-align: left; cursor: pointer; }
-.yp-slot:hover { filter: brightness(.98); }
-.yp-slot i { flex: none; width: 8px; height: 8px; background: var(--c); align-self: center; }
-.yp-slot b { font-family: var(--serif); font-size: 15px; white-space: nowrap; }
-.yp-slot small { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 12px; color: var(--muted); }
-.yp-habits { display: flex; flex-wrap: wrap; gap: 4px 18px; margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--hair); font-size: 13px; }
-.yp-habits em { font-style: normal; font-family: var(--serif); font-size: 12px; color: var(--muted); margin-right: 6px; }
-@media (max-width: 760px) {
-  .yp-slots { grid-auto-flow: row; }
-}
+/* 三、计划（经济独立以后）：三行表单——时间、花钱、一年下来；整块点开「这一年」 */
+.yp { display: grid; grid-template-columns: 2.6em minmax(0, 1fr); gap: 0 12px; width: 100%; padding: 0; border: 0; background: none; color: var(--ink); font: inherit; text-align: left; cursor: pointer; }
+.yp > span { padding: 6px 0; border-top: 1px solid var(--hair); }
+.yp > span:nth-child(-n+2) { border-top: 0; padding-top: 2px; }
+.yp:hover .yp-v { color: var(--ink); }
+.yp:focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; border-radius: 2px; }
+.yp-k { font-family: var(--serif); font-size: 12px; color: var(--muted); padding-top: 8px !important; }
+.yp-v { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 16px; min-width: 0; font-size: 13.5px; }
+.yp-slot { display: inline-flex; align-items: baseline; gap: 6px; }
+.yp-slot i { width: 8px; height: 8px; background: var(--c); align-self: center; }
+.yp-slot b { font-family: var(--serif); font-size: 16px; }
+.yp-slot em { font-style: normal; font-size: 11.5px; color: var(--muted); }
+.yp-money em { font-style: normal; font-family: var(--serif); font-size: 12px; color: var(--muted); margin-right: 5px; }
+.yp-out > span { font-family: var(--mono); font-size: 13px; }
+.yp-left { margin-left: auto; font-family: var(--sans) !important; font-size: 12px !important; color: var(--muted); }
+.yp-left b { font-size: 14px; font-weight: 600; margin-left: 4px; }
+

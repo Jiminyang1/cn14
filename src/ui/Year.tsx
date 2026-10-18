@@ -34,7 +34,7 @@ const signed = (x: number) => (Math.round(x) > 0 ? '+' : Math.round(x) < 0 ? '�
 const bills = (): MonthlyStatement[] => S.statements?.length ? S.statements : S.statement ? [S.statement] : [];
 
 /** 照现在的设置过，一个月进多少、花多少、剩多少（按最近一次结算的收入和住房，生活开销按现在选的档） */
-function perMonth() {
+export function perMonth() {
   const bill = S.statement, f = S.fam, mate = f.married && f.partner?.alive ? f.partner : null;
   const income = bill ? bill.income : monthlyPay().net + ((S.flags.rehire?.inc || 0) + (mate ? partnerPay(mate).net : 0)) / 12;
   const live = myLiving(planOf('style') || 'normal').cost;
@@ -43,7 +43,7 @@ function perMonth() {
   return { income, live, other, rent, loan, left: income - live - other - rent - loan };
 }
 /** 这一年对体检与鉴定的影响（一整年的量）：格子 + 持续的计划 */
-function yearFx() {
+export function yearFx() {
   const fx: Record<string, number> = { hl: 0, h: 0, kn: 0, so: 0 };
   for (const k of new Set(S.slots || [])) if (k && FOCUS[k]) for (const [st, v] of Object.entries(FOCUS[k].e)) fx[st] += (v as number) * slotW(k);
   for (const k of plansShown()) { const e = planOpt(k)?.e; if (e) for (const [st, v] of Object.entries(e)) fx[st] += v as number; }
