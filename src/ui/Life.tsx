@@ -1,8 +1,9 @@
 // 一生：页头（档案号、播放控制）；左栏 一、基本情况 二、体检与鉴定；中栏 三、本年度时间安排 四、大事记；
 // 右栏 五、我的经济 六、收支账本，底下是材料目录 / 同批建档 / 一生曲线。手机上是单栏，下面用五个标签切换。
 import { memo, useEffect, useRef, useState } from 'react';
-import { FOCUS, PLANS, S, focusMore, calYear, carer, focusList, planOpt, plansShown, slotN, type LogEntry, type MonthlyStatement } from '../engine';
-import { SPEEDS, game } from '../game/controller';
+import { FOCUS, PLANS, S, focusMore, calMonth, calYear, carer, focusList, planOpt, plansShown, slotN, type LogEntry, type MonthlyStatement } from '../engine';
+import { SPEEDS, ageK, game } from '../game/controller';
+const SEASON_W = (m: number) => m >= 3 && m <= 5 ? '春' : m >= 6 && m <= 8 ? '夏' : m >= 9 && m <= 11 ? '秋' : '冬';
 import { Modal } from './Modal';
 import { LogPic } from './Photo';
 import { YearProgress } from './Progress';
@@ -10,7 +11,7 @@ import { RunId } from './RunId';
 import { VersionTag } from './Version';
 import { ActionsButton, PendingFloat } from './Actions';
 import { YearHost, openYear, perMonth, yearFx } from './Year';
-import { Account, ArchiveTabs, Basic, Body, FamilySec } from './Sidebar';
+import { Account, ArchiveTabs, Basic, Body } from './Sidebar';
 import { TimelineFinance, statementAge } from './Finance';
 import { cnNum, fileNo } from './util';
 
@@ -208,7 +209,7 @@ export function Timeline() {
   return (
     <section className="pg tl-card" data-m="log">
       <div className="sec">
-        <span className="no">四</span><h3>大事记</h3><small>共 {n} 条</small>
+        <span className="no">四</span><h3>大事记</h3><small>{calYear()}年{calMonth()}月 · {SEASON_W(calMonth())} · 1年≈{Math.round(game.yearSec / ageK(S.age))}秒 · 共 {n} 条</small>
       </div>
       <div className="tl-scroll" ref={box} onScroll={event => setScrolled(event.currentTarget.scrollTop > 8)}>
         {years.map(y => { const cur = y.a === S.age && S.phase === 'life'; return <YearGroup key={y.a} a={y.a} items={y.items} bills={y.bills} current={cur} now={cur ? calYear() : 0} initial={initial.current} />; })}
@@ -235,7 +236,7 @@ export function Life() {
       <nav className="mtabs" role="tablist">
         {MTABS.map(([k, n]) => <button key={k} type="button" role="tab" aria-selected={mtab === k} className={mtab === k ? 'on' : ''} onClick={() => setMtab(k)}>{n}</button>)}
       </nav>
-      <div className="col col-r"><Account m="home" /><FamilySec m="home" /><ArchiveTabs mtab={mtab} /></div>
+      <div className="col col-r"><Account m="home" /><ArchiveTabs mtab={mtab} /></div>
     </main>
     <Modal />
     <YearHost />

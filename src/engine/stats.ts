@@ -30,32 +30,48 @@ const persSo = () => 2.5 * pz('e') + 1.0 * pz('a');
 // 格子：每格按 FOCUS 的 h 乘 H_FOCUS（两格都放爱好约 +14、两格都放工作约 −6）；职业：职业表的 h 乘 H_JOB（原来每年直接加一半，折成目标值一样大）；
 // 未成年人心事少，目标高 H_KID。人际大多在 85 以上，按 70 算起，免得它把幸福一起抬满
 const H_BASE = 47, H_FOCUS = 1.5, H_JOB = 2, H_KID = 8;
-/** 健康、幸福、人际向各自的目标值靠拢一个月（目标按这个月月底的状态算） */
-export function drift() {
-  const st = S.st, f = S.fam, a = S.age;
-  let kids = 0; for (const k of f.kids) if (k.alive) kids++;
+// ===== 目标值 =====
+// 拆成三个函数，月底结算（drift）和界面上的「状态」（status.ts）都从这里取；status.ts 把同样的式子拆成一项一项（tests/status.test.ts 核对加起来一样）
+const kidsN = () => { let n = 0; for (const k of S.fam.kids) if (k.alive) n++; return n; };
+// 过的什么日子（budget.ts 的档位）：经济独立以前看父母家，以后看自己的小家。长期拮据的，幸福再低 3、健康再低 2
+export const tierNow = () => TIERS[(S.indep !== false ? S.statement?.tier : S.parentTier) ?? 1] || TIERS[1];
+export const poorLongNow = () => ((S.indep !== false ? S.poorM : S.famPoorM) || 0) >= POOR_LONG ? 1 : 0;
+/** 健康的目标值 */
+export function hlTarget() {
+  const a = S.age, T = tierNow(), poorLong = poorLongNow();
   // 中风留下残疾（content/decisions.ts 的治疗抉择里设 flags.disabled）：健康的目标值一直低 10（估计；残疾后的死亡风险经 deathProb 的健康倍数升高），幸福低 4
   const dis = S.flags.disabled ? 1 : 0;
   const hardship = S.statement && S.statement.shortfall > 0 ? 3 : 0;
-  // 过的什么日子（budget.ts 的档位）：经济独立以前看父母家，以后看自己的小家。长期拮据的，幸福再低 3、健康再低 2
-  const own = S.indep !== false;
-  const T = TIERS[(own ? S.statement?.tier : S.parentTier) ?? 1] || TIERS[1];
-  const poorLong = ((own ? S.poorM : S.famPoorM) || 0) >= POOR_LONG ? 1 : 0;
-  // 拮据的日子每年还直接扣一些（自己当家的才扣；孩子只看目标值，家境差的孩子不开心，但不至于压垮）
-  if (own && T === TIERS[0]) { st.h = clamp(st.h - POOR_HURT.h * (1 + poorLong) / MONTHS, 0, 100); st.hl = clamp(st.hl - POOR_HURT.hl * (1 + poorLong) / MONTHS, 1, 100); }
-  const hT = hlExp(a) + (S.q - 3) * 1.5 + T.hl - poorLong * 2 + (liquidBalance() < 0 && a >= 22 ? -3 : 0) + (S.flags.smoke ? -6 : 0) + (S.flags.ill ? -20 : 0) - dis * 10 - hardship + 0.8 * pz('c');
-  st.hl = clamp(st.hl + (hT - st.hl) * K_HL, 1, 100);
+  return hlExp(a) + (S.q - 3) * 1.5 + T.hl - poorLong * 2 + (liquidBalance() < 0 && a >= 22 ? -3 : 0) + (S.flags.smoke ? -6 : 0) + (S.flags.ill ? -20 : 0) - dis * 10 - hardship + 0.8 * pz('c');
+}
+/** 幸福的目标值 */
+export function hTarget() {
+  const st = S.st, f = S.fam, a = S.age, T = tierNow(), poorLong = poorLongNow(), dis = S.flags.disabled ? 1 : 0;
   // 成年以后还要和当地人比收入（relInc），比日子的档位轻一些
   const rel = T.h - poorLong * 3 + (a < 18 ? 0 : (S.relInc || 0) * 0.4);
   const debt = a >= 22 && liquidBalance() < -placeInc() ? 7 : 0;
   // 成年以后和爸妈亲不亲（actions.ts 的亲疏，常回家看看就亲）：最亲 +3，很疏远 −5
   const par = a >= 18 && (f.mom.alive || f.dad.alive) ? ((S.close?.par ?? 70) - 60) * 0.08 : 0;
-  const hpT = H_BASE + H_FOCUS * focusH() + rel + par + (f.married && f.partner && f.partner.alive ? 5 : 0) + Math.min(6, kids * 3) + (st.so - 70) * 0.2 + (st.hl - 60) * 0.15 + (a < 18 ? H_KID : 0)
+  return H_BASE + H_FOCUS * focusH() + rel + par + (f.married && f.partner && f.partner.alive ? 5 : 0) + Math.min(6, kidsN() * 3) + (st.so - 70) * 0.2 + (st.hl - 60) * 0.15 + (a < 18 ? H_KID : 0)
     + (isWorking() ? (JOBS[S.job].h || 0) * H_JOB : 0)
     - debt - (S.flags.lb && a < 16 ? 6 : 0) - (S.job === 'seeking' ? 6 : 0) - dis * 4 + persH();
-  st.h = clamp(st.h + (hpT - st.h) * K_H, 0, 100);
-  const soT = 50 + (f.married ? 8 : 0) + Math.min(9, kids * 3) + (S.flags.lb && a < 16 ? -4 : 0) + (a > 75 ? -6 : 0) + persSo();
-  st.so = clamp(st.so + (soT - st.so) * K_SO, 0, 100);
+}
+/** 人际的目标值 */
+export function soTarget() {
+  const f = S.fam, a = S.age;
+  return 50 + (f.married ? 8 : 0) + Math.min(9, kidsN() * 3) + (S.flags.lb && a < 16 ? -4 : 0) + (a > 75 ? -6 : 0) + persSo();
+}
+export { persH, persSo, H_BASE, H_FOCUS, H_JOB, H_KID };
+
+/** 健康、幸福、人际向各自的目标值靠拢一个月（目标按这个月月底的状态算） */
+export function drift() {
+  const st = S.st;
+  const own = S.indep !== false, T = tierNow(), poorLong = poorLongNow();
+  // 拮据的日子每年还直接扣一些（自己当家的才扣；孩子只看目标值，家境差的孩子不开心，但不至于压垮）
+  if (own && T === TIERS[0]) { st.h = clamp(st.h - POOR_HURT.h * (1 + poorLong) / MONTHS, 0, 100); st.hl = clamp(st.hl - POOR_HURT.hl * (1 + poorLong) / MONTHS, 1, 100); }
+  st.hl = clamp(st.hl + (hlTarget() - st.hl) * K_HL, 1, 100);
+  st.h = clamp(st.h + (hTarget() - st.h) * K_H, 0, 100);
+  st.so = clamp(st.so + (soTarget() - st.so) * K_SO, 0, 100);
 }
 export const hlExp = a => clamp(90 - Math.max(0, a - 22) * 0.8, 15, 90);
 
