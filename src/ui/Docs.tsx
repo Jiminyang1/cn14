@@ -556,6 +556,25 @@ const sumOf = (d: Doc) => {
   const vs = d.k === 'job' ? (d.v === 'blue' ? [r('工种'), r('务工地')] : [r('岗位'), r('甲方')]) : SUM[d.k] ? SUM[d.k](r) : d.rows.slice(0, 2).map(x => x[1]);
   return vs.filter(Boolean).join(' · ');
 };
+// 卡片上方颜色带：证件本来颜色的柔和版本（不那么艳，也不发灰），配白字
+const softOf = (d: Doc) => {
+  switch (d.k) {
+    case 'birth': return '#7F98B8';
+    case 'report': return '#C29A4E';
+    case 'school': return '#5A77AE';
+    case 'id': return '#6E9BAE';
+    case 'admit': case 'marry': return '#C0574B';
+    case 'grad': return d.v === 'zhong' ? '#5C7D6E' : d.v === 'master' ? '#56658F' : '#9C4F48';
+    case 'job': return d.v === 'blue' ? '#5B8BA3' : '#757A82';
+    case 'civil': return '#B4645A';
+    case 'divorce': return '#86574F';
+    case 'house': return '#5F8574';
+    case 'kid': return '#C07E97';
+    case 'ill': return '#6F8DBE';
+    case 'retire': return '#B65C52';
+    default: return '#857C6E';
+  }
+};
 export function DocShelf() {
   const docs = S.docs || [];
   const [on, setOn] = useState<number | null>(null);
@@ -565,7 +584,7 @@ export function DocShelf() {
       const c = coverOf(d), m = lastMark(d), open = on === i;
       return <div key={i} className={'dcv-w' + (open ? ' open' : '')}>
         <button type="button" className="dcv" aria-expanded={open} onClick={() => setOn(open ? null : i)}>
-          <span className="dcv-band" style={{ '--c': c.line ? c.fg : c.bg } as CSSProperties}><span className="serif">{c.s}</span><span className="mono">{d.y}.{pad2(d.m)} · {d.a}岁</span></span>
+          <span className="dcv-band" style={{ background: softOf(d) }}><span className="serif">{c.s}</span><span className="mono">{d.y}.{pad2(d.m)} · {d.a}岁</span></span>
           <span className="dcv-t"><b>{d.title}</b></span>
           <span className="dcv-s">{sumOf(d)}{m && <em>{m.t.split(' · ')[0].replace(/^\d{4}\.\d+ /, '')}</em>}</span>
         </button>

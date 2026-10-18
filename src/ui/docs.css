@@ -241,10 +241,7 @@
 .dshelf { display: flex; flex-direction: column; gap: 8px; }
 .dcv { display: block; width: 100%; padding: 0; border: 1px solid var(--line); border-radius: 4px; overflow: hidden; background: var(--card); color: var(--ink); text-align: left; cursor: pointer; }
 .dcv:hover, .dcv-w.open .dcv { border-color: var(--rule); background: var(--tint); }
-.dcv-band { display: flex; align-items: baseline; gap: 8px; padding: 3px 10px; font-size: 11px; letter-spacing: .1em; color: var(--ink2);
-  background: color-mix(in srgb, var(--c) 16%, var(--card)); border-top: 2px solid color-mix(in srgb, var(--c) 55%, var(--card)); } /* 证件本来的颜色冲淡了用 */
-@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .dcv-band { background: color-mix(in srgb, var(--c) 26%, var(--card)); } }
-:root[data-theme="dark"] .dcv-band { background: color-mix(in srgb, var(--c) 26%, var(--card)); }
+.dcv-band { display: flex; align-items: baseline; gap: 8px; padding: 4px 10px; font-size: 11px; letter-spacing: .1em; color: #fff; }
 .dcv-band .mono { margin-left: auto; letter-spacing: 0; opacity: .85; }
 .dcv-t { display: block; padding: 6px 10px 0; }
 .dcv-t b { font: 600 13.5px var(--serif); }
