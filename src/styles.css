@@ -676,15 +676,10 @@ table.cmp th { font-weight: 500; font-family: var(--serif); color: var(--muted);
   .year-plan .sec { display: flex; }
 }
 
-/* 二、体检与鉴定下面的「状态」（engine/status.ts）：一行一条——来源、推着哪几项；能处理的后面一个 › */
-.stl { display: flex; flex-direction: column; }
-.stl-r { display: grid; grid-template-columns: auto minmax(0, 1fr) 14px; align-items: baseline; gap: 8px; padding: 4px 0; border-top: 1px solid var(--hair); font-size: 12.5px; }
-.sub-h + .stl .stl-r:first-child { border-top: 0; }
-.stl-n { font-family: var(--serif); white-space: nowrap; }
-.stl-fx { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 0 6px; }
-.stl-fx em { font-style: normal; font-family: var(--mono); font-size: 11.5px; }
-.stl-fx em.up { color: var(--good); }
-.stl-fx em.dn { color: var(--seal); }
-.stl-go { padding: 0; border: 0; background: none; color: var(--seal); font-size: 14px; line-height: 1; cursor: pointer; }
-.stl-more { margin-top: 2px; padding: 4px 0 0; border: 0; background: none; color: var(--muted); font-size: 12px; cursor: pointer; text-align: left; }
-.stl-more:hover { color: var(--ink); }
+/* 二、体检与鉴定：每项下面一行，此刻往上推、往下拉的是什么（engine/status.ts）；能处理的那个词可以点 */
+.vt-why { display: flex; flex-wrap: wrap; gap: 0 12px; margin: -3px 0 6px; padding-left: 41px; font-size: 11.5px; color: var(--ink2); line-height: 1.5; }
+.vt-why > span { display: inline-flex; flex-wrap: wrap; gap: 0 6px; }
+.vt-why i { font-style: normal; font-family: var(--mono); }
+.vt-why .up i { color: var(--good); }
+.vt-why .dn i { color: var(--seal); }
+.vt-why .go { padding: 0; border: 0; background: none; font: inherit; color: var(--seal); text-decoration: underline dotted; text-underline-offset: 3px; cursor: pointer; }

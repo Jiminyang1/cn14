@@ -32,32 +32,32 @@ export function targetTerms(): Record<'hl' | 'h' | 'so', { k: string; n: string;
     hl: [
       { k: 'age', n: '年纪', v: hlExp(a), base: true },
       { k: 'q', n: '出身 · ' + (Q_WORD[S.q] || ''), v: (S.q - 3) * 1.5 },
-      { k: 'tier', n: '过日子 · ' + T.n, v: T.hl },
+      { k: 'tier', n: '日子' + T.n, v: T.hl },
       { k: 'poor', n: '长期拮据', v: -poorLong * 2 },
-      { k: 'neg', n: '手头欠钱', v: liquidBalance() < 0 && a >= 22 ? -3 : 0 },
+      { k: 'neg', n: '欠着钱', v: liquidBalance() < 0 && a >= 22 ? -3 : 0 },
       { k: 'smoke', n: '抽烟', v: S.flags.smoke ? -6 : 0, act: 'quitSmoke' },
-      { k: 'ill', n: '生病' + (ill?.k && CAUSE[ill.k] ? ' · ' + CAUSE[ill.k] : ''), v: S.flags.ill ? -20 : 0 },
-      { k: 'dis', n: '中风后行动不便', v: -dis * 10 },
+      { k: 'ill', n: ill?.k && CAUSE[ill.k] ? CAUSE[ill.k] : '生病', v: S.flags.ill ? -20 : 0 },
+      { k: 'dis', n: '中风', v: -dis * 10 },
       { k: 'short', n: '付不起开销', v: S.statement && S.statement.shortfall > 0 ? -3 : 0 },
       { k: 'pers', n: c >= 0 ? '性格 · 认真' : '性格 · 随性', v: 0.8 * c },
     ],
     h: [
       { k: 'baseH', n: '底子', v: H_BASE, base: true },
-      { k: 'slots', n: '时间怎么分', v: H_FOCUS * focusH() },
-      { k: 'tier', n: '过日子 · ' + T.n, v: T.h },
+      { k: 'slots', n: '时间安排', v: H_FOCUS * focusH() },
+      { k: 'tier', n: '日子' + T.n, v: T.h },
       { k: 'poor', n: '长期拮据', v: -poorLong * 3 },
-      { k: 'rel', n: (S.relInc || 0) >= 0 ? '收入比当地高' : '收入比当地低', v: a < 18 ? 0 : (S.relInc || 0) * 0.4 },
-      { k: 'par', n: `和${parentsWord() || '爸妈'} · ${closeWord(S.close?.par ?? 70)}`, v: a >= 18 && (f.mom.alive || f.dad.alive) ? ((S.close?.par ?? 70) - 60) * 0.08 : 0, act: 'visit' },
+      { k: 'rel', n: (S.relInc || 0) >= 0 ? '挣得比当地多' : '挣得比当地少', v: a < 18 ? 0 : (S.relInc || 0) * 0.4 },
+      { k: 'par', n: `和${parentsWord() || '爸妈'}${closeWord(S.close?.par ?? 70)}`, v: a >= 18 && (f.mom.alive || f.dad.alive) ? ((S.close?.par ?? 70) - 60) * 0.08 : 0, act: 'visit' },
       { k: 'married', n: '结了婚', v: married ? 5 : 0 },
       { k: 'kids', n: kids + ' 个孩子', v: Math.min(6, kids * 3) },
       { k: 'soH', n: '人缘', v: (st.so - 70) * 0.2, base: true },
       { k: 'hlH', n: '身体', v: (st.hl - 60) * 0.15, base: true },
       { k: 'kid', n: '还是孩子', v: a < 18 ? H_KID : 0 },
-      { k: 'job', n: '工作 · ' + (JOBS[S.job]?.n || ''), v: isWorking() ? (JOBS[S.job].h || 0) * H_JOB : 0 },
-      { k: 'debt', n: '欠的钱太多', v: a >= 22 && liquidBalance() < -placeInc() ? -7 : 0 },
+      { k: 'job', n: JOBS[S.job]?.n || '工作', v: isWorking() ? (JOBS[S.job].h || 0) * H_JOB : 0 },
+      { k: 'debt', n: '欠债太多', v: a >= 22 && liquidBalance() < -placeInc() ? -7 : 0 },
       { k: 'lb', n: '留守', v: S.flags.lb && a < 16 ? -6 : 0 },
       { k: 'seek', n: '没有工作', v: S.job === 'seeking' ? -6 : 0 },
-      { k: 'dis', n: '中风后行动不便', v: -dis * 4 },
+      { k: 'dis', n: '中风', v: -dis * 4 },
       { k: 'pers', n: '性格', v: persH() },
     ],
     so: [
@@ -74,17 +74,17 @@ export function targetTerms(): Record<'hl' | 'h' | 'so', { k: string; n: string;
 /** 每年直接加减的（不经过目标值） */
 function yearly(): { k: string; n: string; y: Fx; act?: string }[] {
   const out: { k: string; n: string; y: Fx; act?: string }[] = [];
-  if (isWorking()) { const J = JOBS[S.job]; if (J.hl) out.push({ k: 'job', n: '工作 · ' + J.n, y: { hl: J.hl * 0.5 } }); }
+  if (isWorking()) { const J = JOBS[S.job]; if (J.hl) out.push({ k: 'job', n: J.n, y: { hl: J.hl * 0.5 } }); }
   // 格子：每格的效果（幸福走目标值，这里只算健康、学识、人际）
   const fy: Fx = {};
   for (const k of new Set(S.slots || [])) {
     if (!k || !FOCUS[k] || !FOCUS[k].ok()) continue;
     for (const [st, v] of Object.entries(FOCUS[k].e) as [St, number][]) if (st !== 'h') fy[st] = (fy[st] || 0) + v * slotW(k);
   }
-  if (Object.keys(fy).length) out.push({ k: 'slots', n: '时间怎么分', y: fy });
-  for (const k of plansShown()) { const o = planOpt(k); if (o?.e) out.push({ k: 'plan:' + k, n: PLANS[k].n + ' · ' + o.label.replace(/^办张健身卡，?常去$/, '办卡常去'), y: { ...o.e } }); }
+  if (Object.keys(fy).length) out.push({ k: 'slots', n: '时间安排', y: fy });
+  for (const k of plansShown()) { const o = planOpt(k); if (o?.e) out.push({ k: 'plan:' + k, n: PLANS[k].n, y: { ...o.e } }); }
   const T = tierNow();
-  if (S.indep !== false && T === TIERS[0]) { const m = 1 + poorLongNow(); out.push({ k: 'tier', n: '过日子 · ' + T.n, y: { h: -POOR_HURT.h * m, hl: -POOR_HURT.hl * m } }); }
+  if (S.indep !== false && T === TIERS[0]) { const m = 1 + poorLongNow(); out.push({ k: 'tier', n: '日子' + T.n, y: { h: -POOR_HURT.h * m, hl: -POOR_HURT.hl * m } }); }
   if (S.age >= 68 && S.st.kn > 25) out.push({ k: 'oldKn', n: '上了年纪', y: { kn: -0.3 } });
   return out;
 }

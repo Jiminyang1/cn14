@@ -135,8 +135,26 @@ export function FamilyRows() {
 }
 
 // ===== 二、体检与鉴定 =====
-function Bar({ n, v, c }: { n: string; v: number; c: string }) {
-  return <div className="vt"><span>{n}</span><i><u style={{ '--v': v + '%', '--c': `var(${c})` } as React.CSSProperties} /></i><b>{Math.round(v)}</b></div>;
+function Bar({ n, v, c, why }: { n: string; v: number; c: string; why?: Why }) {
+  return <>
+    <div className="vt"><span>{n}</span><i><u style={{ '--v': v + '%', '--c': `var(${c})` } as React.CSSProperties} /></i><b>{Math.round(v)}</b></div>
+    {why && (why.up.length > 0 || why.dn.length > 0) && <div className="vt-why">
+      {why.up.length > 0 && <span className="up"><i>↑</i>{why.up.map(e => <Cause key={e.k} e={e} />)}</span>}
+      {why.dn.length > 0 && <span className="dn"><i>↓</i>{why.dn.map(e => <Cause key={e.k} e={e} />)}</span>}
+    </div>}
+  </>;
+}
+// 每一项下面一行：此刻是什么在往上推、往下拉（engine/status.ts），按影响大小排，各最多三个；能处理的点开「这一年」里对应的行动
+type Why = { up: Eff[]; dn: Eff[] };
+function whyOf(st: 'hl' | 'h' | 'kn' | 'so', list: Eff[]): Why {
+  // 目标值是状态慢慢靠过去的地方，每年直接加减的按两倍算，和 statusNow 排序的口径一样
+  const v = (e: Eff) => (e.t[st] || 0) + (e.y[st] || 0) * 2;
+  const xs = list.filter(e => Math.abs(v(e)) >= 0.5).sort((p, q) => Math.abs(v(q)) - Math.abs(v(p)));
+  return { up: xs.filter(e => v(e) > 0).slice(0, 3), dn: xs.filter(e => v(e) < 0).slice(0, 3) };
+}
+function Cause({ e }: { e: Eff }) {
+  const go = e.act && ACTS[e.act] && actState(e.act).ok;
+  return go ? <button type="button" className="go" title={ACTS[e.act!].n} onClick={() => openYear(ACTS[e.act!].g)}>{e.n}</button> : <span>{e.n}</span>;
 }
 // 性格：五条刻度，两头是词，不显示数字；离中间超过半个标准差的那一头加重。三岁以前还看不出来
 function Personality() {
@@ -158,39 +176,15 @@ function Personality() {
 }
 export function Body({ m }: { m?: string }) {
   const st = S.st;
+  // 性格、出身是一辈子的底色，不算「此刻」
+  const list = S.age < 3 ? [] : statusNow().filter(e => e.k !== 'pers' && e.k !== 'q');
   return (
     <Sec no="二" title="体检与鉴定" meta="0–100" m={m}>
-      <Bar n="健康" v={st.hl} c="--hl" /><Bar n="幸福" v={st.h} c="--h" /><Bar n="学识" v={st.kn} c="--kn" /><Bar n="人际" v={st.so} c="--so" />
+      <Bar n="健康" v={st.hl} c="--hl" why={whyOf('hl', list)} /><Bar n="幸福" v={st.h} c="--h" why={whyOf('h', list)} />
+      <Bar n="学识" v={st.kn} c="--kn" why={whyOf('kn', list)} /><Bar n="人际" v={st.so} c="--so" why={whyOf('so', list)} />
       <Personality />
-      <StatusList />
     </Sec>
   );
-}
-// 此刻在起作用的状态（engine/status.ts）：来源 + 推着哪项往上往下；能处理的带一个入口，点开「这一年」里对应的行动
-const STN: Record<string, string> = { hl: '健康', h: '幸福', so: '人际', kn: '学识' };
-const fmt = (v: number) => (v > 0 ? '+' : '−') + Math.abs(Math.round(v * 10) / 10);
-function StatusList() {
-  const [all, setAll] = useState(false);
-  if (S.age < 3) return null;
-  // 性格、出身是一辈子的底色，不算「此刻」；太小的也不列
-  const size = (e: Eff) => Object.values(e.t).reduce((t, v) => t + Math.abs(v), 0) + Object.values(e.y).reduce((t, v) => t + Math.abs(v) * 2, 0);
-  const list = statusNow().filter(e => e.k !== 'pers' && e.k !== 'q' && size(e) >= 1);
-  if (!list.length) return null;
-  const MAX = 4, shown = all ? list : list.slice(0, MAX);
-  return <>
-    <div className="sub-h">状态</div>
-    <div className="stl">
-      {shown.map(e => <div key={e.k} className="stl-r">
-        <span className="stl-n">{e.n}</span>
-        <span className="stl-fx">
-          {(Object.entries(e.t) as [string, number][]).map(([k, v]) => <em key={'t' + k} className={v > 0 ? 'up' : 'dn'}>{STN[k]}{fmt(v)}</em>)}
-          {(Object.entries(e.y) as [string, number][]).map(([k, v]) => <em key={'y' + k} className={v > 0 ? 'up' : 'dn'}>{STN[k]}{fmt(v)}/年</em>)}
-        </span>
-        {e.act && ACTS[e.act] && actState(e.act).ok ? <button type="button" className="stl-go" title={ACTS[e.act].n} onClick={() => openYear(ACTS[e.act].g)}>›</button> : <span />}
-      </div>)}
-    </div>
-    {list.length > MAX && <button type="button" className="stl-more" onClick={() => setAll(x => !x)}>{all ? '收起' : `还有 ${list.length - MAX} 项`}</button>}
-  </>;
 }
 
 // ===== 父母与家庭支持 =====
