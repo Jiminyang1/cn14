@@ -10,7 +10,7 @@ import { YearProgress } from './Progress';
 import { RunId } from './RunId';
 import { VersionTag } from './Version';
 import { ActionsButton, PendingFloat } from './Actions';
-import { YearHost, openYear, perMonth, yearFx } from './Year';
+import { YearHost, openYear, perMonth } from './Year';
 import { Account, ArchiveTabs, Basic, Body } from './Sidebar';
 import { TimelineFinance, statementAge } from './Finance';
 import { cnNum, fileNo } from './util';
@@ -109,10 +109,9 @@ const PLAN_I = (k: string) => { const i = Object.keys(PLAN_N).indexOf(k); return
 function YearPlan() {
   const n = slotN(), slots = (S.slots || []).slice(0, n);
   const same = n > 1 && slots[0] && slots[0] === slots[1];
-  const fx = yearFx(), pm = perMonth();
+  const pm = perMonth();
+  const yuan = (v: number) => Math.round(v).toLocaleString('zh-CN');
   const plans = plansShown().sort((p, q) => PLAN_I(p) - PLAN_I(q));
-  const STATS = [['hl', '健康'], ['h', '幸福'], ['so', '人际'], ['kn', '学识']] as const;
-  const num = (v: number) => (v > 0 ? '+' : v < 0 ? '−' : '') + Math.abs(Math.round(v * 10) / 10);
   return (
     <section className="pg plan year-plan">
       <div className="sec"><span className="no">三</span><h3>计划</h3><span className="yp-acts"><ActionsButton /></span></div>
@@ -125,10 +124,11 @@ function YearPlan() {
         <span className="yp-v yp-money">
           {plans.map(k => { const o = planOpt(k); return o && <span key={k}><em>{PLAN_N[k] || PLANS[k].n}</em>{o.label.replace(/^办张健身卡，?常去$/, '办卡常去').replace(/^每年全面/, '每年')}</span>; })}
         </span>
-        <span className="yp-k">一年</span>
-        <span className="yp-v yp-out">
-          {STATS.map(([k, t]) => Math.round(fx[k] * 10) !== 0 && <span key={k} className={fx[k] > 0 ? 'money-up' : 'neg'}>{t} {num(fx[k])}</span>)}
-          <span className="yp-left">每月 <b className={'mono ' + (pm.left >= 0 ? 'money-up' : 'neg')}>{(pm.left >= 0 ? '+' : '−') + Math.abs(Math.round(pm.left)).toLocaleString('zh-CN')}</b></span>
+        <span className="yp-k">每月</span>
+        <span className="yp-v yp-led">
+          <span><em>收入</em><b className="mono">{yuan(pm.income)}</b></span>
+          <span><em>支出</em><b className="mono">{yuan(pm.income - pm.left)}</b></span>
+          <span><em>结余</em><b className={'mono ' + (pm.left >= 0 ? 'money-up' : 'neg')}>{(pm.left >= 0 ? '+' : '−') + yuan(Math.abs(pm.left))}</b></span>
         </span>
       </button>
     </section>

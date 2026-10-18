@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import {
   AX, AX_NAME, CAUSE, EDU_LV, FAM_HOUSE_N, JOBS, PBY, S, axWord, calMonth, calYear, leOf, partnerPay, partnerTrait, persWords, placeName, shownZ, statusLabel,
-  loanBal, loanArrears, loanPayY, loveWord, parentIncome, parentRetired, closeWord, parClose, kidClose, parentWorkLoc, awayFromHome, ptJobName, Q_WORD, wan, wanM, monthlyPay, inheritedValue, netWorth, anyParent, statusNow, ACTS, actState, type Eff,
+  loanBal, loanArrears, loanPayY, loveWord, parentIncome, parentRetired, closeWord, parClose, kidClose, parentWorkLoc, awayFromHome, ptJobName, Q_WORD, wan, wanM, monthlyPay, inheritedValue, netWorth, anyParent, opinion, heading, ACTS, actState,
   type Companion, type Doc, type Partner,
 } from '../engine';
 import { ageK, game } from '../game/controller';
@@ -135,26 +135,27 @@ export function FamilyRows() {
 }
 
 // ===== 二、体检与鉴定 =====
-function Bar({ n, v, c, why }: { n: string; v: number; c: string; why?: Why }) {
+// 横条：当前值 + 一根细竖线标「照这样过下去会停在哪」（engine/status.ts 的 heading）；差三分以上，数字后面一个 ▲▼
+// 学识没有目标值，只给方向（kn：每年加减多少）
+function Bar({ n, v, c, to, kn }: { n: string; v: number; c: string; to?: number; kn?: number }) {
+  const d = to == null ? (kn || 0) * 3 : to - v;
+  return <div className="vt"><span>{n}</span><i><u style={{ '--v': v + '%', '--c': `var(${c})` } as React.CSSProperties} />{to != null && <s style={{ left: Math.max(0, Math.min(100, to)) + '%' }} />}</i><b>{Math.round(v)}</b><em className={d > 0 ? 'up' : 'dn'}>{d >= 3 ? '▲' : d <= -3 ? '▼' : ''}</em></div>;
+}
+// 鉴定意见（engine/status.ts 的 opinion）：一段话；能处理的短语可点，打开「这一年」里对应的行动
+function Opinion() {
+  const segs = opinion();
+  if (!segs.length) return null;
+  const go = (g?: { act?: string }) => !!(g?.act && ACTS[g.act] && actState(g.act).ok);
   return <>
-    <div className="vt"><span>{n}</span><i><u style={{ '--v': v + '%', '--c': `var(${c})` } as React.CSSProperties} /></i><b>{Math.round(v)}</b></div>
-    {why && (why.up.length > 0 || why.dn.length > 0) && <div className="vt-why">
-      {why.up.length > 0 && <span className="up"><i>↑</i>{why.up.map(e => <Cause key={e.k} e={e} />)}</span>}
-      {why.dn.length > 0 && <span className="dn"><i>↓</i>{why.dn.map(e => <Cause key={e.k} e={e} />)}</span>}
-    </div>}
+    <div className="sub-h">鉴定意见</div>
+    <p className="op">{segs.map((g, i) => {
+      if (go(segs[i - 1]) && /^[，；。]$/.test(g.t)) return null; // 已经和前面可点的短语放在一起
+      if (!go(g)) return <span key={i}>{g.t}</span>;
+      // 可点的短语和后面的标点不分开，标点不会落到下一行开头
+      const p = segs[i + 1] && /^[，；。]$/.test(segs[i + 1].t) ? segs[i + 1].t : '';
+      return <span key={i} className="op-nb"><button type="button" className="op-go" title={ACTS[g.act].n} onClick={() => openYear(ACTS[g.act!].g)}>{g.t}</button>{p}</span>;
+    })}</p>
   </>;
-}
-// 每一项下面一行：此刻是什么在往上推、往下拉（engine/status.ts），按影响大小排，各最多三个；能处理的点开「这一年」里对应的行动
-type Why = { up: Eff[]; dn: Eff[] };
-function whyOf(st: 'hl' | 'h' | 'kn' | 'so', list: Eff[]): Why {
-  // 目标值是状态慢慢靠过去的地方，每年直接加减的按两倍算，和 statusNow 排序的口径一样
-  const v = (e: Eff) => (e.t[st] || 0) + (e.y[st] || 0) * 2;
-  const xs = list.filter(e => Math.abs(v(e)) >= 0.5).sort((p, q) => Math.abs(v(q)) - Math.abs(v(p)));
-  return { up: xs.filter(e => v(e) > 0).slice(0, 3), dn: xs.filter(e => v(e) < 0).slice(0, 3) };
-}
-function Cause({ e }: { e: Eff }) {
-  const go = e.act && ACTS[e.act] && actState(e.act).ok;
-  return go ? <button type="button" className="go" title={ACTS[e.act!].n} onClick={() => openYear(ACTS[e.act!].g)}>{e.n}</button> : <span>{e.n}</span>;
 }
 // 性格：五条刻度，两头是词，不显示数字；离中间超过半个标准差的那一头加重。三岁以前还看不出来
 function Personality() {
@@ -175,13 +176,14 @@ function Personality() {
   </>;
 }
 export function Body({ m }: { m?: string }) {
-  const st = S.st;
-  // 性格、出身是一辈子的底色，不算「此刻」
-  const list = S.age < 3 ? [] : statusNow().filter(e => e.k !== 'pers' && e.k !== 'q');
+  const st = S.st, to = S.age >= 3 ? heading() : null;
   return (
     <Sec no="二" title="体检与鉴定" meta="0–100" m={m}>
-      <Bar n="健康" v={st.hl} c="--hl" why={whyOf('hl', list)} /><Bar n="幸福" v={st.h} c="--h" why={whyOf('h', list)} />
-      <Bar n="学识" v={st.kn} c="--kn" why={whyOf('kn', list)} /><Bar n="人际" v={st.so} c="--so" why={whyOf('so', list)} />
+      <div className="vts">
+        <Bar n="健康" v={st.hl} c="--hl" to={to?.hl} /><Bar n="幸福" v={st.h} c="--h" to={to?.h} />
+        <Bar n="学识" v={st.kn} c="--kn" kn={to?.kn} /><Bar n="人际" v={st.so} c="--so" to={to?.so} />
+      </div>
+      <Opinion />
       <Personality />
     </Sec>
   );

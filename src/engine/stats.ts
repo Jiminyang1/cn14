@@ -61,7 +61,7 @@ export function soTarget() {
   const f = S.fam, a = S.age;
   return 50 + (f.married ? 8 : 0) + Math.min(9, kidsN() * 3) + (S.flags.lb && a < 16 ? -4 : 0) + (a > 75 ? -6 : 0) + persSo();
 }
-export { persH, persSo, H_BASE, H_FOCUS, H_JOB, H_KID };
+export { persH, persSo, H_BASE, H_FOCUS, H_JOB, H_KID, K_HL, K_H, K_SO };
 
 /** 健康、幸福、人际向各自的目标值靠拢一个月（目标按这个月月底的状态算） */
 export function drift() {

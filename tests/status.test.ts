@@ -32,3 +32,22 @@ test('status lists smoking and points to quitting', () => {
   expect(s?.t.hl).toBe(-6);
   expect(s?.act).toBe('quitSmoke');
 });
+
+test('opinion: every phrase at most once, at most four sentences, and smoking is always named', () => {
+  for (const seed of [11, 2024, 31337, 777, 90210]) {
+    E.birth(seed, { headless: true });
+    const L = E.S;
+    let g = 0;
+    while (L.phase === 'life' && g++ < 110) {
+      E.runHeadlessYear();
+      if (L.phase !== 'life') break;
+      const words = E.opinion().filter(x => !/^[，；。]$/.test(x.t)).map(x => x.t);
+      expect(new Set(words).size).toBe(words.length);
+      expect(E.opinion().filter(x => x.t === '。').length).toBeLessThanOrEqual(4);
+    }
+  }
+  E.birth(5000, { headless: true });
+  const L = E.S;
+  L.age = 40; L.indep = true; L.flags = { smoke: 1 } as any;
+  expect(E.opinion().find(x => x.t === '烟没戒')?.act).toBe('quitSmoke');
+});
