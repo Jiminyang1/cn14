@@ -70,7 +70,16 @@ const UNIT = new Set(['factory', 'skilled', 'sales', 'clerk', 'tech', 'engineer'
 export const unitJob = () => isWorking() && UNIT.has(S.job);
 /** 这个年龄年里刚入职（换了工作、裁员后重新找到的）：不升职 */
 const newJob = () => { const j = S.jobs[S.jobs.length - 1]; return !!j && j.age === S.age; };
-const PROMO_T = { civil: '提了一级，工资涨了一点。', teacher: '评上了高一级的职称，工资涨了一些。', doctor: '评上了高一级的职称，工资涨了一些。', nurse: '评上了主管护师，工资涨了一些。', factory: '当上了班组长，工资涨了一些。', skilled: '考下了高一级的技能证书，当上了班组长。' };
+// 升职：一辈子会有好几次，每种说法轮着用（vary）；有单位的几种职业用自己的说法
+const PROMO_T: Record<string, string[]> = {
+  civil: ['提了一级，工资涨了一点。', '熬了几年，终于从副科提了正科。', '年底考核优秀，职级往上走了一格。'],
+  teacher: ['评上了高一级的职称，工资涨了一些。', '带的班中考考得好，评上了骨干教师。', '公开课拿了区里的一等奖，职称评上去了。'],
+  doctor: ['评上了高一级的职称，工资涨了一些。', '升了主治，门诊的号一下子难挂了。', '论文终于发出来了，职称评上了。'],
+  nurse: ['评上了主管护师，工资涨了一些。', '当上了护士长，排班表从此归你管。', '轮岗几年，评上了高一级的职称。'],
+  factory: ['当上了班组长，工资涨了一些。', '车间主任点名让你带新人，每个月多了几百块。', '技能比武拿了第一，工资涨了一级。'],
+  skilled: ['考下了高一级的技能证书，当上了班组长。', '厂里的老师傅退休了，那台机器归你管，工资也跟着涨了。', '评上了技师，工资条上多了一行补贴。'],
+};
+const PROMO_ANY = ['升职加薪了。', '年底调薪，你涨得比同组的人都多。', '领导找你谈话，说下个月起你带一个小组。', '换了个更大的工位，名片上的头衔改了。', '加薪的邮件来了，你看了两遍才关掉。'];
 
 // ===== 离婚 =====
 // 你自己的婚姻：每个月按风险判定会不会出问题（marCrisis），出了问题先有苗头，三个月后问你（抉择 split）：谈开了就过去了，
@@ -171,7 +180,7 @@ export const EVENTS = [
   { id: 'sibSquabble', a: [3, 12], gap: 2, w: () => sibPals().length ? 1.5 : 0, run: () => { const s = pick(sibPals()); eff({ h: -1, so: 1 }); return `和${s.rel}为了${pick(['一块蛋糕', '遥控器', '谁坐窗边', '一个玩具'])}吵起来，最后两个人都挨了骂。`; } },
   // ---------- 6–14 岁 ----------
   { id: 'redscarf', a: [7, 8], once: 1, w: 2, c: () => !!S.school, run: () => { eff({ h: 1, so: 1 }); return '戴上了红领巾，入了少先队。'; } },
-  { id: 'homework', a: [6, 14], gap: 2, w: () => rural() ? 1 : 3, c: () => !!S.school, run: () => { eff({ kn: 2, h: -2 }); return `家长群里，老师又@了你${withWho()}。那天的作业写到晚上十点。`; } },
+  { id: 'homework', a: [6, 14], gap: 2, w: () => rural() ? 1 : 3, c: () => !!S.school, run: () => { eff({ kn: 2, h: -2 }); const w = withWho(); return vary('homework', [`家长群里，老师又@了你${w}。那天的作业写到晚上十点。`, `数学卷子要家长签字。${w}看了一眼分数，没说话，签了。`, '一张手抄报画到半夜，第二天交上去，发现别人的都是打印的。', `${w}在旁边盯着你写作业，橡皮擦破了两块。`]); } },
   { id: 'myopia', a: [7, 16], once: 1, w: 2, run: () => { eff({ hl: -1 }); return { t: '看黑板越来越模糊，配了人生第一副眼镜。', f: '2025年全国儿童青少年总体近视率为49.9%（国家疾控局）' }; } },
   { id: 'classes', a: [7, 15], gap: 2, w: () => !rural() && S.q >= 3 ? 2.5 : 0, run: () => { eff({ kn: 3, h: -3, money: 0 }); return `周末被报了好几个班：${pick(['书法和编程', '英语和奥数', '钢琴和游泳', '画画和跆拳道'])}，比上学还累。`; } },
   { id: 'olympiad', a: [9, 14], once: 1, w: () => S.st.kn > 62 ? 2 : 0, run: () => { eff({ kn: 2, h: 4 }); return { t: '数学竞赛拿了奖。奖状被贴在家里最显眼的那面墙上。', k: 'good' }; } },
@@ -187,7 +196,7 @@ export const EVENTS = [
   { id: 'farmHelp', a: [8, 15], gap: 2, mo: [3, 4, 5, 6, 8, 9, 10], w: () => rural() ? 2.5 : 0, run: () => { eff({ hl: 1, so: 1 }); return `农忙时请假回家帮忙${pick(FARM_WORK[calMonth()])}，晒得黢黑。`; } },
   { id: 'snack', a: [6, 11], once: 1, w: 1, run: () => { eff({ h: 2 }); return '放学路过小卖部，用攒下的零花钱买了辣条，和同学分着吃。'; } },
   // 父母吵架：两人都在世、没有离婚，也不是都在外打工（一方在外的少一些，过年回来时吵）。离婚另有状态事件 parentsDiv
-  { id: 'parentFight', a: [4, 16], gap: 3, w: () => S.flags.lb === 'both' ? 0 : S.flags.lb ? 0.5 : 1, c: () => bothParents() && !S.flags.parDiv, run: () => { eff({ h: -4 }); return '爸妈又吵架了，你躲在房间里假装写作业。'; } },
+  { id: 'parentFight', a: [4, 16], gap: 3, w: () => S.flags.lb === 'both' ? 0 : S.flags.lb ? 0.5 : 1, c: () => bothParents() && !S.flags.parDiv, run: () => { eff({ h: -4 }); return vary('parentFight', ['爸妈又吵架了，你躲在房间里假装写作业。', '吃饭的时候爸妈谁也不理谁，你扒完饭就回了房间。', '半夜听到客厅里摔东西的声音。第二天早上，桌上照样摆着早饭。', '爸妈吵完架，妈妈拉着你说了很久的话，你一句也没听进去。']); } },
   { id: 'parentsDiv', big: 1, a: [1, 17], pm: () => parDivRisk() / 12, c: () => parDivRisk() > 0, run: parentsDivorce },
   // 住校：农村孩子上初中那年的 9 月（按学校日历，状态事件）
   { id: 'boarding', a: [11, 15], once: 1, mo: [9], pm: () => rural() ? 0.85 : 0, c: () => S.school === '初中' && calYear() === S.schoolEnd - 3, run: () => { eff({ so: 2, h: -1 }); return '去镇上读初中，开始住校。每周回家一次，带一罐家里腌的咸菜。'; } },
@@ -242,7 +251,7 @@ export const EVENTS = [
         : { t: `公司裁员，名单上有你。按工龄拿到了${wan(comp)}的经济补偿，工资发到离职那天为止。`, k: 'bad', f: '劳动合同法：经济补偿按在本单位工作的年数，每满一年支付一个月工资；没有提前30天通知的，再多付一个月（俗称“N+1”）' };
     } },
   // 升职：有单位的工作，这个年龄年里刚入职的、被裁过的不升。涨工资统一用 raise（越接近上限涨得越少）
-  { id: 'promo', a: [25, 58], gap: 4, w: () => unitJob() ? 1.8 : 0, c: () => unitJob() && !newJob() && S.done.layoff !== S.age, run: () => { raise(RAISE.promo); eff({ h: 4 }); return { t: PROMO_T[S.job] || '升职加薪了。', k: 'good' }; } },
+  { id: 'promo', a: [25, 58], gap: 4, w: () => unitJob() ? 1.8 : 0, c: () => unitJob() && !newJob() && S.done.layoff !== S.age, run: () => { raise(RAISE.promo); eff({ h: 4 }); return { t: vary('promo', PROMO_T[S.job] || PROMO_ANY), k: 'good' }; } },
   // 炒股：在单位上班的跟着同事，其余跟着朋友、老同事
   { id: 'stock', a: [25, 65], gap: 5, w: 1, c: () => S.money > placeInc() * 0.5, run: () => { const g = gauss(-0.05, 0.25), x = S.money * 0.3 * g, who = unitJob() ? '同事' : isWorking() ? '朋友' : '老同事'; eff({ money: x, h: g > 0 ? 2 : -3 }); return g > 0 ? `跟着${who}买了股票，赚了${wan(x)}。` : `跟着${who}买了股票，亏了${wan(-x)}。`; } },
   // 买车是玩家自己的行动了（actions.ts）；自动的人生在 autoActs 里替你买
@@ -251,7 +260,7 @@ export const EVENTS = [
   { id: 'travel', a: [20, 75], gap: 4, w: 1, c: () => S.money > 0 && (S.headless || !!S.auto), run: () => { eff({ h: 3, money: -placeInc() * 0.08 }); const go = `${HOLIDAY[calMonth()]}去${pick(['西安', '三亚', '大理', '重庆', '青岛', '张家界', '哈尔滨', '桂林', '敦煌', '厦门'])}`;
     return vary('travel', [`${go}旅游，景区人山人海，看人比看风景多。`, `${go}玩了几天。拍了几百张照片，回来以后一张也没再看过。`, `${go}。在一家小馆子里吃到了这辈子吃过最好吃的一碗面，后来再也没找到那家店。`, `${go}，赶上下雨，在酒店里躺了两天。倒也挺好。`, `${go}，${S.fam.married ? '和另一半' : '一个人'}看了一场日出。`]); } },
   // 春运回家：1–2 月（状态事件），在外省、父母还有人在、没有跟你住在一起
-  { id: 'springHome', a: [18, 60], gap: 3, mo: [1, 2], pm: () => SPRING_PM, c: () => S.loc.p !== S.home.p && !S.flags.parWithMe && anyParent(), run: () => { eff({ h: 2, so: 2 }); return `春运抢票抢了三天，坐了${ri(6, 30)}个小时的车回家过年。`; } },
+  { id: 'springHome', a: [18, 60], gap: 3, mo: [1, 2], pm: () => SPRING_PM, c: () => S.loc.p !== S.home.p && !S.flags.parWithMe && anyParent(), run: () => { eff({ h: 2, so: 2 }); const h = ri(6, 30); return vary('springHome', [`春运抢票抢了三天，坐了${h}个小时的车回家过年。`, `抢到一张站票，在车厢连接处站了${h}个小时，到家的时候腿都是肿的。`, `今年开车回家，高速上堵了${h}个小时，泡面吃了三桶。`, '年三十那天才到家，一进门，饺子已经下锅了。']); } },
   { id: 'smoke', a: [15, 40], once: 1, w: () => S.sex === 'M' ? 1.6 : 0.1, run: () => { S.flags.smoke = 1; eff({ hl: -3 }); return { t: S.age < 18 ? '和几个同学躲在厕所里学会了抽烟。' : S.age < 22 ? '开始抽烟了。宿舍里的人都抽，你也跟着抽上了。' : '开始抽烟了。一开始是应酬时别人递过来的。', f: '中国成年男性的吸烟率远高于女性' }; } },
   // 戒烟：玩家在「行动」里自己去戒（plans/health.ts）；自动的人生（无界面、自动抉择）才自己发生
   { id: 'quitSmoke', a: [30, 75], once: 1, w: 0.8, c: () => !!S.flags.smoke && (S.headless || !!S.auto), run: () => { S.flags.smoke = 0; eff({ hl: 3 }); return { t: '戒烟了。试了好几次，这次终于成功。', k: 'good' }; } },
@@ -279,7 +288,7 @@ export const EVENTS = [
       if (P.dz.includes('quake')) w.quake = 0.15; if (P.dz.includes('sand')) w.sand = 0.1;
       const t = Object.keys(w).length ? wpick(w) : pick(P.dz.length ? P.dz : ['flood']);
       if (t === 'quake') { eff({ h: -6, money: -placeInc() * 0.3 }); return { t: '发生了地震。房子裂了几道缝，你们在帐篷里住了一个月。', k: 'bad' }; }
-      if (t === 'flood') { eff({ h: -4, money: -placeInc() * 0.15 }); return { t: '连续暴雨引发洪水，家里一楼被淹，在安置点住了几天。', k: 'bad' }; }
+      if (t === 'flood') { eff({ h: -4, money: -placeInc() * 0.15 }); return { t: vary('flood', ['连续暴雨引发洪水，家里一楼被淹，在安置点住了几天。', '暴雨下了一整夜，楼下的车泡在水里，一家人在楼上等了两天水才退。', '又发大水了。这次早有准备，东西提前搬上了楼，还是在亲戚家住了一个星期。']), k: 'bad' }; }
       if (t === 'typhoon') { eff({ h: -2 }); return '台风过境，停课停工两天，窗户玻璃被吹裂了。'; }
       if (t === 'drought') { eff({ h: -2, money: rural() ? -placeInc() * 0.15 : 0 }); return rural() ? { t: '大旱，地里的庄稼减产了一大半。', k: 'bad' } : '持续干旱，城里限时供水了好几周。'; }
       if (t === 'hail') { eff({ h: -2, money: rural() ? -placeInc() * 0.1 : 0 }); return rural() ? '一场冰雹把快熟的庄稼砸坏了。' : '一场冰雹砸坏了停在路边的车。'; }
@@ -294,7 +303,7 @@ export const EVENTS = [
   { id: 'phoneOld', a: [60, 85], once: 1, w: 1.5, run: () => { eff({ h: 2 }); return '学会了用手机视频通话和扫码付款，还加了好几个老同学群。'; } },
   { id: 'oldFriend', a: [65, 105], gap: 5, w: 2, run: () => { eff({ so: -3, h: -4 }); return vary('oldFriend', ['一个认识了几十年的老朋友走了。', '以前一起下棋的老张走了。公园的石桌边上，少了一个人。', '老同事打来电话，说又有一个人走了。你挂了电话，在窗前站了很久。']); } },
   { id: 'hosp', a: [65, 105], gap: 3, w: 1.5, run: () => { eff({ hl: -3, money: -hospOop() }); return `因为${pick(['肺炎', '摔跤骨折', '心律不齐', '白内障手术'])}住了一次院。`; } },
-  { id: 'pensionUp', a: [63, 105], gap: 5, w: 1, c: () => S.job === 'retired', run: () => { S.pension *= 1.05; return '养老金又涨了一点。'; } },
+  { id: 'pensionUp', a: [63, 105], gap: 5, w: 1, c: () => S.job === 'retired', run: () => { S.pension *= 1.05; return vary('pensionUp', ['养老金又涨了一点。', '社区的广播说养老金涨了。你去银行查了查，每个月多了一百来块。', '养老金涨了。老伙计们在楼下算了半天，谁涨得多谁涨得少。']); } },
   // ---------- 格子放在哪，就多遇到哪一类事（权重低，格子所在领域乘上 domK 才常见，见 EV_DOM 和 focus.ts） ----------
   { id: 'workTrip', a: [22, 60], gap: 3, w: 0.5, c: () => isWorking() && !['farmer', 'retired'].includes(S.job), run: () => { eff({ hl: -1, h: -1 }); return vary('workTrip', ['出差了半个月，在酒店里吃了十几顿外卖。', '跟着领导去外地谈项目，酒桌上替他挡了三杯酒。', '第一次一个人出差，在高铁上把方案改了三遍。']); } },
   { id: 'workClash', a: [22, 60], gap: 4, w: 0.4, c: () => isWorking(), run: () => { eff({ h: -3, so: -1 }); return vary('workClash', ['和同事因为一个方案吵了起来，之后在电梯里遇到都不说话。', '领导当着全组的面批评你的报告。你回到座位上，盯着屏幕看了很久。', '被客户投诉了一次。你写了三页的情况说明，没人看。']); } },
@@ -315,8 +324,8 @@ export const EVENTS = [
   { id: 'halfMara', a: [20, 60], once: 1, w: 0.3, run: () => { eff({ hl: 2, h: 4 }); return { t: '跑完了人生第一个半程马拉松。到终点的时候，腿已经不是自己的了。', k: 'good' }; } },
   // 健身：只在健身计划开着时发生（plans/health.ts）
   { id: 'keepFit', a: [18, 75], gap: 4, w: 0.4, c: () => planOf('gym') === 'gym', run: () => { eff({ hl: 2, h: 1 }); return vary('keepFit', ['办的健身卡，这次居然坚持了一整年。', '每天晚饭后绕着小区走一万步，保安都认识你了。', '体检的时候，几项指标都比去年好了。']); } },
-  { id: 'hobbyDeep', a: [16, 85], gap: 3, w: 0.4, run: () => { eff({ h: 3 }); return vary('hobbyDeep', ['周末都泡在自己的爱好上，家里堆满了相关的东西。', '在网上找到了一群同好，约好每个月见一次面。', '花了半年做成的一件东西发到网上，有几百个人点了赞。']); } },
-  { id: 'friendsNight', a: [16, 80], gap: 2, w: 0.4, run: () => { eff({ so: 2, h: 2, hl: -1 }); return vary('friendsNight', ['和几个朋友吃火锅吃到半夜，聊的都是十年前的事。', '朋友失恋了，你陪着喝到凌晨三点。', '几个朋友组了个周末爬山的群，坚持了两个月就散了。']); } },
+  { id: 'hobbyDeep', a: [16, 85], gap: 5, w: 0.4, run: () => { eff({ h: 3 }); return vary('hobbyDeep', ['周末都泡在自己的爱好上，家里堆满了相关的东西。', '在网上找到了一群同好，约好每个月见一次面。', '花了半年做成的一件东西发到网上，有几百个人点了赞。']); } },
+  { id: 'friendsNight', a: [16, 80], gap: 4, w: 0.4, run: () => { eff({ so: 2, h: 2, hl: -1 }); return vary('friendsNight', ['和几个朋友吃火锅吃到半夜，聊的都是十年前的事。', '朋友失恋了，你陪着喝到凌晨三点。', '几个朋友组了个周末爬山的群，坚持了两个月就散了。']); } },
   // ---------- 少见的大事：一辈子碰上的人不多，碰上了就是人生大事（权重是估计，一生里各约百分之一到几） ----------
   { id: 'lottery', big: 1, a: [25, 75], once: 1, w: 0.02, run: () => { const x = Math.round(placeInc() * ri(3, 8) / 1e3) * 1e3; eff({ money: x, h: 8 }); return { t: `随手买的彩票中了二等奖，税后到手${wan(x)}。你把彩票复印了一份，原件锁进了抽屉，好几天没睡好觉。`, k: 'good' }; } },
   { id: 'hero', big: 1, a: [16, 65], once: 1, mo: [6, 7, 8], w: 0.04, run: () => { eff({ so: 8, h: 6, hl: -2 }); return { t: `在河边跳下去，救起了一个落水的孩子。本地新闻播了你的名字，${isWorking() ? '单位给你发了一面锦旗' : '居委会给你送了一面锦旗'}。孩子的家长每年过年都来看你。`, k: 'good' }; } },

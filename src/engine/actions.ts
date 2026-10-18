@@ -22,6 +22,7 @@ declare module './types' {
     close?: { par: number };                     // 和父母的亲疏（0–100）
     actN?: { a: number; n: Record<string, number> }; // 这一年（几岁那年）每项行动做了几次
     actAt?: Record<string, number>;               // 每项行动上一次是几岁做的（有冷却的用）
+    actLog?: Record<string, number>;              // 自动做的行动上一次写进时间线是几岁（doAct）
   }
   interface Kid { close?: number }               // 和这个孩子的亲疏（0–100）
   interface Flags {
@@ -142,14 +143,17 @@ export function actState(k: string) {
 /** 现在能做的行动（界面只列出能做的和「今年做过了」「钱不够」的，完全不相干的不列） */
 export const actsShown = () => actKeys().filter(k => ACTS[k].ok());
 
-/** 做一件（玩家的输入、自动的人生都走这里）。做不了就什么都不做 */
-export function doAct(k: string) {
+// 自动的人生年年回家、给钱，每次都记一句，一辈子就是十几条一样的话：自动做的这几项，第一次和隔了 QUIET_Y 年以上才记
+const QUIET = new Set(['visit', 'giveParents', 'giveKid']), QUIET_Y = 8;
+/** 做一件（玩家的输入、自动的人生都走这里）。做不了就什么都不做。auto：自动的人生替你做的 */
+export function doAct(k: string, auto = false) {
   const A = ACTS[k]; if (!A) return false;
   const st = actState(k); if (!st.ok) return false;
   moneyAround(() => A.n, () => {
     if (k === 'giveParents') { S.money -= st.cost; S.famMoney = (S.famMoney || 0) + st.cost; }
     else eff({ money: -st.cost });
-    log(A.run(), 'ev');
+    const t = A.run(), seen = S.actLog?.[k];
+    if (!auto || !QUIET.has(k) || seen == null || S.age - seen >= QUIET_Y) { log(t, 'ev'); (S.actLog ||= {})[k] = S.age; }
   });
   if (!S.actN || S.actN.a !== S.age) S.actN = { a: S.age, n: {} };
   S.actN.n[k] = (S.actN.n[k] || 0) + 1;
@@ -172,13 +176,13 @@ export function actsMonth() {
 export function autoActs() {
   if (!S.indep || S.age < 18) return;
   const rich = (k: string, n: number) => liquidBalance() > ACTS[k].cost() * n;
-  if (ACTS.visit.ok()) { doAct('visit'); if (chance(0.6)) doAct('visit'); }
-  if (ACTS.giveParents.ok() && rich('giveParents', 6) && chance(S.q <= 2 ? 0.5 : 0.25)) doAct('giveParents');
-  if (ACTS.trip.ok() && rich('trip', 8) && chance(0.35)) doAct('trip');
-  if (ACTS.car.ok() && rich('car', 2.5) && S.age >= 25 && chance(0.15)) doAct('car');
-  if (ACTS.renovate.ok() && rich('renovate', 3) && chance(0.08)) doAct('renovate');
-  if (ACTS.giveKid.ok() && rich('giveKid', 4) && chance(0.2)) doAct('giveKid');
-  if (ACTS.course.ok() && rich('course', 4) && S.age <= 35 && chance(0.06)) doAct('course');
+  if (ACTS.visit.ok()) { doAct('visit', true); if (chance(0.6)) doAct('visit', true); }
+  if (ACTS.giveParents.ok() && rich('giveParents', 6) && chance(S.q <= 2 ? 0.5 : 0.25)) doAct('giveParents', true);
+  if (ACTS.trip.ok() && rich('trip', 8) && chance(0.35)) doAct('trip', true);
+  if (ACTS.car.ok() && rich('car', 2.5) && S.age >= 25 && chance(0.15)) doAct('car', true);
+  if (ACTS.renovate.ok() && rich('renovate', 3) && chance(0.08)) doAct('renovate', true);
+  if (ACTS.giveKid.ok() && rich('giveKid', 4) && chance(0.2)) doAct('giveKid', true);
+  if (ACTS.course.ok() && rich('course', 4) && S.age <= 35 && chance(0.06)) doAct('course', true);
 }
 
 /** 生日那个月：亲疏变化，自动的人生做这一年的行动 */

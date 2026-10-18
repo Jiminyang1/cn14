@@ -31,6 +31,7 @@ declare module './types' {
     tier?: number;  // 这一年照计划过的是哪一档（budget.ts 的 TIERS，每年过生日定）；经济独立以后才有。每个月实际过的是账单上的 tier
     incQ?: number;  // 这一年的收入相当于当地几个人的（budget.ts 的 incUnits，每年过生日定）
     poorM?: number; // 拮据的月份（budget.ts 的 poorStep）：攒多了就是长期拮据
+    tierSaid?: number; tierSaidA?: number; // 时间线上一次写的是哪一档、几岁写的
   }
 }
 // 档位变了，时间线上写一句
@@ -108,7 +109,11 @@ export function moneyMonth(m: number) {
     // 存款也算理财和基金里的钱（plans/invest.ts）：钱挪进去不该让日子突然变紧
     S.incQ = incUnits(hh, S.money + invBal(), H.inc, S.incQ);
     const t = tierOf(livingCost(S.incQ, H.live, size, styleOf()), H.live, size);
-    if (S.tier != null && t !== S.tier) log(t > S.tier ? TIER_UP[t] : TIER_DOWN[t], t > S.tier ? 'good' : 'bad');
+    // 时间线只在日子真的变了的时候写：和上一次写的那档不一样，并且离上一次写已经三年以上（收入一年好一年坏、档位来回跳的不写）
+    const said = S.tierSaid ?? S.tier;
+    if (said != null && t !== said && (S.tierSaidA == null || S.age - S.tierSaidA >= 3)) {
+      log(t > said ? TIER_UP[t] : TIER_DOWN[t], t > said ? 'good' : 'bad'); S.tierSaid = t; S.tierSaidA = S.age;
+    } else if (said == null) S.tierSaid = t;
     S.tier = t;
   }
   // 住养老院：费用里包了吃住，不再另付生活开销。节衣缩食的（tight.ts）：欠款还清以前，必要的那部分少花一些
