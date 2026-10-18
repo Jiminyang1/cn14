@@ -118,7 +118,7 @@ export function rentDed(L: Loc) {
   return c && c.p === L.p && c.pop >= 500 ? 13200 : 9600;
 }
 // 还在世、22 岁以前的孩子有几个（孩子按自己的生日长大，k.age）
-const kidsUnder = (kids: { age: number; alive: boolean }[]) => { let n = 0; for (const k of kids) if (k.alive && k.age < 22) n++; return n; };
+const kidsUnder = (kids: { age: number; alive: boolean; ex?: number }[]) => { let n = 0; for (const k of kids) if (k.alive && k.age < 22 && !k.ex) n++; return n; }; // 跟着对方的孩子由对方扣
 /** 你本人、配偶这个家的住房扣除（一年）：有房贷、买房不满 20 年的扣房贷利息；在工作的城市没有房子、自己租房的扣房租；都没有是 0 */
 export function houseDed() {
   if (S.loans && S.loans.length && S.house && S.age - S.house.at < LOAN_DED_YEARS) return LOAN_DED;

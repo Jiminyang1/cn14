@@ -6,7 +6,8 @@ import { BIG, CROSS_PROV, LEAN_OF, MIGRANT_DEST, MIGRANT_LEAN, PBY, REGION_OF } 
 import { CITY } from './real.generated';
 import { S } from './state';
 import { chance, pick, wpick } from './rng';
-import { loveMove, partnerInc } from './romance';
+import { loveMove, partnerInc, soon } from './romance';
+import { log } from './journal';
 
 // ===== 地点、收入、房价 =====
 export const MUNI = new Set(['BJ', 'SH', 'TJ', 'CQ']);
@@ -65,9 +66,13 @@ export function moveTo(L) {
   S.loc = { ...L };
   if (!S.places.includes(L.city)) S.places.push(L.city);
   if (S.fam && S.fam.dating) loveMove();
-  // 结了婚一起搬；到了新的城市工资按新城市算（不然要等到下一个生日才更新）
-  const pt = S.fam && S.fam.married ? S.fam.partner : null;
-  if (pt) { pt.city = L.city; if (pt.alive && pt.jk && !pt.retired && pt.k != null) pt.inc = partnerInc(pt); }
+  // 结了婚的：配偶在原来的城市有工作，问你一起走还是两地分居（抉择 wedMove）；没工作、退休了的一起搬。
+  // 搬回配偶所在的城市，两地分居就结束了。到了新的城市工资按新城市算（不然要等到下一个生日才更新）
+  const pt = S.fam && S.fam.married && S.fam.partner?.alive ? S.fam.partner : null;
+  if (pt && pt.city !== L.city) {
+    if (pt.jk && !pt.retired) soon('wedMove');
+    else { pt.city = L.city; if (pt.jk && !pt.retired && pt.k != null) pt.inc = partnerInc(pt); }
+  } else if (pt && pt.apart != null) { pt.apart = undefined; log(`回到了${L.city}，和${pt.name}不用再两地跑了。`, 'good'); }
   const d = S.fam && S.fam.dating;
   if (d && d.jk && d.city === L.city) d.inc = partnerInc(d); // 恋爱对象跟着来了
 }

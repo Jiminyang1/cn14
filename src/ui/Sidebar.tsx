@@ -123,7 +123,7 @@ export function FamilyRows() {
       </details> : <span className="v">{pt.name} · 已去世</span>}
     </div>}
     {!f.married && !!S.flags.divorced && <Row k="婚姻" v="离异" />}
-    {f.kids.map((k, i) => <Row key={'k' + i} k={k.sex === 'M' ? '儿子' : '女儿'} cls={k.alive ? undefined : 'gone'} v={k.name + ' · ' + (k.alive ? k.age + '岁' + (k.path ? ' · ' + k.path.replace(/^考上了/, '') : '') : '已离世')} />)}
+    {f.kids.map((k, i) => <Row key={'k' + i} k={k.sex === 'M' ? '儿子' : '女儿'} cls={k.alive ? undefined : 'gone'} v={k.name + ' · ' + (k.alive ? k.age + '岁' + (k.path ? ' · ' + k.path.replace(/^考上了/, '') : '') + (k.ex && k.age < 18 ? ' · 跟着对方' : '') : '已离世')} />)}
     {S.flags.grandkids > 0 && <Row k="孙辈" v={S.flags.grandkids + '人'} />}
     {pal && <Row k="发小" cls={pal.alive ? undefined : 'gone'} v={pal.alive ? <>{pal.name} · 认识{S.age - pal.at}年<small>{palWhere(pal)} · {CLOSE(pal.close)}</small></> : pal.name + ' · 已去世'} />}
   </>;

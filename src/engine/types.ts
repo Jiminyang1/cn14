@@ -51,12 +51,13 @@ export interface Parent {
 }
 export interface Sibling { rel: string; sex: Sex; age: number; alive: boolean; married?: number; diedAt?: number } // diedAt：去世时你几岁
 /** 你的孩子。bornAt：出生时你几岁；bornM：出生在你出生后的第几个月（nowM），孩子的年龄按它算、在孩子自己的生日那个月长一岁 */
-export interface Kid { name: string; sex: Sex; bornAt: number; bornM: number; age: number; alive: boolean; path?: string; married?: number; gk?: number; wed?: number } // wed=1：今年要结婚，等婚房的抉择
+export interface Kid { name: string; sex: Sex; bornAt: number; bornM: number; age: number; alive: boolean; path?: string; married?: number; gk?: number; wed?: number; ex?: number } // ex=1：离婚后跟着对方生活 // wed=1：今年要结婚，等婚房的抉择
 /** 恋爱对象 / 配偶（romance.ts 的 makePartner） */
 export interface Partner {
   name: string; sur: string; sex: Sex; age: number; edu: number; home: string; rural: boolean; alive: boolean;
   metAt: number; how: string; city: string; startAge: number; k: number; q: number; trait: string;
-  jk: string | null; job: string | null; inc: number; hpf: boolean; fit: number;
+  jk: string | null; job: string | null; hpf: boolean; fit: number;
+  inc: number;               // 税前年收入（退休后是一年的养老金）；到手见 finance.ts 的 partnerPay。和别的年收入比时不要再 × 12
   love?: number; asks?: number; metParents?: number; marriedAt?: number; retired?: number;
   wh?: number;               // 对方家里要不要婚房：1 要、2 已经因为没房拒过一次求婚
   crisis?: number;           // 婚姻出问题是哪个月（苗头出现，三个月后问你：抉择 split）
@@ -81,6 +82,7 @@ export type Pending = { type: 'dec'; id: string; d: Decision } | { type: 'ref'; 
 export interface Loan { kind: 'com' | 'hpf'; bal: number; rate: number; years: number; pay: number; arrears?: number }
 export interface House { city: string; p: string; v: number; paid: number; at: number; pt?: number } // pt：配偶婚前的房（离婚时归对方）
 export interface InheritedHome { city: string; p: string; v: number; share: number; reviewed?: boolean }
+/** 一个月的账单：里面的钱全是「这一个月」的量（和人物身上按年记的收入、养老金不同，见 docs/finance.md「口径」） */
 export interface MonthlyStatement {
   year: number; month: number; opening: number; closing: number;
   events: number; transfers: number; income: number;
@@ -122,7 +124,7 @@ export interface Flags {
   demol?: number; demolHold?: number | null; demolSwap?: number | null; // 老房子拆迁的年龄；先不签、等安置房（kin.ts）
   sibLoan?: { rel: string; amt: number; at: number; back: number | null } | null; // 借给兄弟姐妹的钱：几岁借的、几岁还（null 不还）
   heirDue?: number;          // 父母都走了，老房子等着兄弟姐妹商量怎么分（抉择 heritage）
-  rehire?: { until: number; inc: number } | null; snowbird?: number | null; grandHelp?: number; // 退休后返聘到几岁、每年多少；候鸟过冬到几岁；去子女家带孙辈（turns.ts）
+  rehire?: { until: number; inc: number } | null; snowbird?: number | null; grandHelp?: number; // 退休后返聘到几岁、每年多少（inc 是一年的）；候鸟过冬到几岁；去子女家带孙辈（turns.ts）
 }
 
 export interface Life {
@@ -140,7 +142,9 @@ export interface Life {
   school: string | null; schoolEnd: number | null; edu: number;
   job: string | null; jobY: number; wageK: number; jobs: { job: string; age: number; city: string }[];
   empY?: number;                                   // 在现在这家单位干了几年（按月累计；经济补偿的 N 按它算，换单位就从头算）
-  income: number; relInc?: number; pension?: number;
+  income: number;            // 税前年收入：上个月月底这个月的收入 × 12（到手的年收入是 S.net）
+  relInc?: number;
+  pension?: number;          // 一年的养老金
   pen?: { y: number; r: number; s: number };       // 职工养老保险缴费记录（finance.ts 的 penMonth）
   // 钱：经济独立以前算在家里
   indep: boolean; indepAt?: number; money: number;

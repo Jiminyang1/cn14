@@ -160,6 +160,14 @@ function familyDeaths() {
   }
 }
 export const kidsAlive = () => S.fam.kids.filter(k => k.alive);
+/** 抚养费（每月）：到手收入的两成一个孩子，最多一半，取整到百元（估计） */
+export const supportOf = (net: number, n: number) => n > 0 ? Math.round(Math.max(0, net) * Math.min(0.5, 0.2 * n) / 100) * 100 : 0;
+/** 这个月的抚养费：收的为正、给的为负；孩子满十八岁那个月停 */
+export function supportMonth() {
+  const s = S.flags.support; if (!s) return 0;
+  if (nowM() >= s.until) { S.flags.support = undefined; return 0; }
+  return s.m;
+}
 /** 孩子出生。pa：另一位家长（默认是现在的配偶；怀孕期间离婚、丧偶的，用怀孕时记下的） */
 export function haveKid(pa?: { name: string; sur: string }) {
   const o = pa || S.fam.partner, on = o ? o.name : '';

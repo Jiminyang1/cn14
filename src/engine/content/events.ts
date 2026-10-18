@@ -11,13 +11,14 @@ import { MAJORS } from '../education';
 import { PBY } from '../data';
 import { S } from '../state';
 import { addDoc, vary } from '../journal';
-import { crisisLine, loveOf } from '../romance';
+import { crisisLine, loveOf, soon } from '../romance';
 import { awayFromHome, farFromParents, placeInc } from '../place';
 import { anyParent, bothParents, carer, parentsWord } from '../parents';
 import { chance, clamp, gauss, pick, ri, wpick } from '../rng';
 import { fexp } from '../fmath';
 import { eff } from '../stats';
 import { kidsAlive, sibsAlive } from '../family';
+import { partnerPay } from '../finance';
 import { wan } from '../format';
 import { sibToWed, sibWed } from '../kin';
 import { shape, tiltW } from '../personality';
@@ -93,6 +94,8 @@ const canDivorce = () => { const f = S.fam, p = f.partner; return f.married && !
 export function divorce(p, why = '') {
   S.fam.married = false; S.fam.partner = null; S.flags.divorced = S.age; p.crisis = p.stay = undefined;
   const le = loveOf(p); if (le) le.div = S.age;
+  // 有没成年的孩子：接着问孩子跟谁（抉择 custody）
+  if (kidsAlive().some(k => k.age < 18 && !k.ex)) { S.flags.custody = { name: p.name, sex: p.sex, net: p.jk && !p.retired ? Math.round(partnerPay(p).net / 12) : 0 }; soon('custody'); }
   addDoc('divorce', '离婚证', [['对方', p.name]]);
   eff({ h: -8, so: -4, money: -Math.max(0, S.money) * 0.4 });
   const back = S.house?.pt ? (S.house = null, `房子是${p.name}婚前的，归了${p.sex === 'M' ? '他' : '她'}。你搬了出去。`) : '';

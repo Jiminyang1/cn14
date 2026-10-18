@@ -13,6 +13,7 @@ import { wan } from './format';
 import { MONTHS, calMonth, calYear } from './monthly';
 import { turnsMonth } from './turns';
 import { partnerLoc } from './romance';
+import { supportMonth } from './family';
 import { dedOf, netOf, penBase, type DedRow, type NetPay } from './tax';
 import type { Partner } from './types';
 import { changeMoney, repayDebt } from './accounts';
@@ -95,8 +96,10 @@ export function moneyMonth(m: number) {
   const hh = earned + aid;
   changeMoney(hh);
   houseMonth(m);
+  // 离婚以后的抚养费（family.ts），算在往来里
+  const sup = supportMonth(); if (sup) { changeMoney(sup); transfers += sup; }
   // 生活开销（budget.ts）：每年过生日那个月定一次档，刚独立的当月就定
-  const kids = f.kids.filter(child => child.alive && child.age < 22).map(child => child.age);
+  const kids = f.kids.filter(child => child.alive && child.age < 22 && !child.ex).map(child => child.age); // 跟着对方的孩子不算你家的人口
   const size = familySize(mate ? 2 : 1, kids);
   if (S.tier == null || m === 0) {
     const t = tierOf(hh, S.money, H.cons, size, S.tier, S.job === 'retired' && (!mate || !!mate.retired));
@@ -245,8 +248,6 @@ export function monthlyPay(): { gross: number; net: number } {
     : S.job === 'seeking' && S.flags.empIns && (S.uiOn ? S.uiM > 0 : uiMonths() > 0) ? uiPay() / MONTHS : 0;
   return { gross: x, net: x };
 }
-/** 这个月到手的钱（侧栏「月收入」） */
-export const monthlyIncome = () => monthlyPay().net;
 // 当前工作的年薪（税前，不含个体户、销售的年度波动）
 export const wageRate = () => { const J = JOBS[S.job]; return J && J.m ? wageBase() * J.m * S.wageK * expK() : 0; };
 /** 夫妻俩谁的税前工资高（配偶退休、没有工作时是 0） */

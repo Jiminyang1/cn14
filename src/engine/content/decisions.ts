@@ -8,6 +8,7 @@ import { CAUSE } from '../mortality';
 import { EDU_LV, HS_NAME, admit, enroll, gkAutoApps, gkCandidates, gkLines, gkRank, gkResolve, gkScore, gkShock, hsTier, schoolStart, tutorFee } from '../education';
 import { ILL, oop, reimburse } from '../health';
 import { JOBS, RAISE, RESID_PENSION_JOBS, civilTry, gig, gradJob, hire, hireInCity, isWorking, quitJob, raise, retire } from '../career';
+import { supportOf } from '../family';
 import { LOVE_COLD, MEET_HOW, READY0, READY_K, breakUp, brideAmt, bianzhi, famSay, famView, feelWord, famPts, loveOf, loveWord, noteLove, partnerBrief, selfP, theirWhys, matchmaker, mShift, mutualP, partnerInc, partnerJob, partnerLoc, partnerRows, pickW, ptJobName, theirView } from '../romance';
 import { S } from '../state';
 import { addDoc, log, logLater } from '../journal';
@@ -21,6 +22,8 @@ declare module '../types' {
   interface Flags {
     hunt?: { at: number; job: string; same?: number; home?: number } | null; // 正在找工作：出生后第几个月上岗、找到的是什么工作
     toWork?: number;   // 中考后不读了、还不满 16 岁：在家待到 16 岁再出去打工（见 huntMonth）
+    custody?: { name: string; sex: 'M' | 'F'; net: number }; // 刚离婚、有没成年的孩子：对方是谁、每月到手多少（抉择 custody 用）
+    support?: { m: number; until: number }; // 抚养费：每月进出多少（正的是收、负的是给），到出生后第几个月为止
     singleAt?: number;  // 上一次问「一个人过？」是几岁（三十岁起每五年问一次，到五十岁）
     nyHome?: string;   // 回谁家过年：mine 你家、theirs 对方家、turn 轮着、apart 各回各家（抉择 newyear）
     babyAsk?: { n: number; a: number }; // 上一次问你要不要孩子：当时有几个孩子、几岁（抉择 baby 的 quiet）
@@ -854,6 +857,63 @@ export const DEC = {
       if ((p.love ?? 63) < 45) return divorce(p, `${p.name}说，不想再这么过了。`);
       p.stay = p.crisis = undefined; p.love = clamp((p.love ?? 63) + 8, 0, 100); eff({ h: 3 });
       return { t: '这么多年，也就这么过来了。', k: 'good' };
+    },
+  },
+
+  // 离婚时有没成年的孩子：跟谁（events.ts 的 divorce 之后马上问）。抚养费按到手收入的两成一个孩子、最多一半（估计，参照常见判法），给到孩子十八岁
+  custody: {
+    fork: true,
+    build: () => {
+      const c = S.flags.custody, kids = kidsAlive().filter(k => k.age < 18 && !k.ex).sort((a, b) => b.age - a.age);
+      if (!c || !kids.length) { S.flags.custody = undefined; return null; }
+      const ta = c.sex === 'M' ? '他' : '她', n = kids.length, who = n > 1 ? '孩子们' : kids[0].name;
+      const get = supportOf(c.net, n), pay = supportOf(S.net / 12, n);
+      const ch: Choice[] = [
+        { k: 'me', label: `${who}跟你`, sub: `${c.name}每月给${wan(get)}抚养费；接送、家长会都是你一个人`, w: S.sex === 'F' ? 2 : 1, tilt: { a: 0.3 } },
+        { k: 'ex', label: `${who}跟${ta}`, sub: `你每月给${wan(pay)}抚养费，周末才能见到`, w: S.sex === 'F' ? 1 : 1.5, tilt: { r: 0.2 } },
+      ];
+      if (n > 1) ch.push({ k: 'split', label: `${kids[0].name}跟你，小的跟${ta}`, sub: '兄弟姐妹分开过', w: 0.5 });
+      return { title: '孩子跟谁', body: `离婚的手续还差最后一样：${kids.map(k => `${k.name}${k.age}岁`).join('、')}。`, choices: ch };
+    },
+    apply: k => {
+      const c = S.flags.custody, kids = kidsAlive().filter(x => x.age < 18 && !x.ex).sort((a, b) => b.age - a.age);
+      S.flags.custody = undefined;
+      const mine = k === 'me' ? kids : k === 'split' ? kids.slice(0, 1) : [], theirs = kids.filter(x => !mine.includes(x));
+      for (const x of theirs) x.ex = 1;
+      const m = supportOf(c.net, mine.length) - supportOf(S.net / 12, theirs.length), youngest = Math.min(...kids.map(x => x.age));
+      if (m) S.flags.support = { m, until: nowM() + (18 - youngest) * 12 };
+      const ta = c.sex === 'M' ? '他' : '她';
+      if (!theirs.length) return `孩子跟了你。${c.name}每月给${wan(m)}抚养费。`;
+      if (!mine.length) return { t: `孩子跟了${ta}。你每月给${wan(-m)}抚养费，周末去接孩子出来吃顿饭。`, k: 'bad' };
+      return { t: `${mine[0].name}跟了你，${theirs.map(x => x.name).join('、')}跟了${ta}。逢年过节，两边才凑得齐。`, k: 'bad' };
+    },
+  },
+
+  // 结了婚，你要去别的城市，配偶在原来的城市有工作（place.ts 的 moveTo）：一起走，还是两地分居
+  wedMove: {
+    fork: true,
+    build: () => {
+      const p = S.fam.married && S.fam.partner?.alive ? S.fam.partner : null;
+      if (!p || p.city === S.loc.city || !p.jk || p.retired) return null;
+      const ta = p.sex === 'M' ? '他' : '她', bz = bianzhi(p.jk), kids = kidsAlive().some(k => k.age >= 6 && k.age < 18 && !k.ex);
+      return {
+        title: '一起走？', body: `你要去${S.loc.city}了。${p.name}在${p.city}做${ptJobName(p)}${kids ? '，孩子也在那边上学' : ''}。`,
+        card: [['结婚', `${S.age - p.marriedAt}年`], ['感情', loveWord(p.love ?? 63)]],
+        choices: [
+          { k: 'come', label: `让${p.name}跟你过来`, sub: bz ? `${ta}有编制，过来就得辞掉，未必肯` : `${ta}要辞掉那边的工作`, w: bz ? 1 : 3, tilt: { e: 0.3 } },
+          { k: 'apart', label: '两地分居', sub: '周末夫妻，感情容易淡；过一两年也许能调到一起', w: bz ? 2 : 1, tilt: { c: 0.2 } },
+        ],
+      };
+    },
+    apply: k => {
+      const p = S.fam.partner, ta = p.sex === 'M' ? '他' : '她';
+      // 有编制的有一半不肯走（写在选项下面）
+      if (k === 'come' && !(bianzhi(p.jk) && !chance(0.5))) {
+        const was = bianzhi(p.jk); p.city = S.loc.city; partnerJob(p); p.love = clamp((p.love ?? 63) - (was ? 4 : 1), 0, 100);
+        return was ? { t: `${p.name}辞了编制，跟你来了${S.loc.city}。${ta}嘴上没说什么，收拾东西收拾了很久。`, k: 'bad' } : `${p.name}辞了工作，跟你来了${S.loc.city}，成了一名${ptJobName(p)}。`;
+      }
+      p.apart = nowM();
+      return { t: k === 'come' ? `${p.name}说舍不得那边的编制。你们开始两地分居，每个周末总有一个人在路上。` : `你们开始两地分居，每个周末总有一个人在路上。`, k: 'bad' };
     },
   },
 

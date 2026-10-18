@@ -177,7 +177,7 @@ const meProf = (): Prof => {
   return { male: S.sex === 'M', age: S.age, bz: bianzhi(S.job), noJob: S.job === 'seeking', house: !!S.house, rich: S.income > placeInc() * RICH_K, q: S.q, rural: S.home.kind === 'rural', home: S.home.p,
     only: !S.fam.sibs.some(b => b.alive), burden: par.some(x => x.ill) ? 'ill' : par.length && par.every(x => RESID_PENSION_JOBS.has(x.jk)) ? 'pension' : '' };
 };
-const taProf = (p): Prof => ({ male: p.sex === 'M', age: p.age, bz: bianzhi(p.jk), noJob: !p.jk && p.age >= 24, house: !!p.house, rich: p.inc * 12 > placeInc() * RICH_K, q: p.q, rural: p.rural, home: p.home, only: !!p.only, burden: '' });
+const taProf = (p): Prof => ({ male: p.sex === 'M', age: p.age, bz: bianzhi(p.jk), noJob: !p.jk && p.age >= 24, house: !!p.house, rich: p.inc > placeInc() * RICH_K, q: p.q, rural: p.rural, home: p.home, only: !!p.only, burden: '' });
 /** a 在 b 家眼里的每一条：[哪一条, 分数] */
 function score(a: Prof, b: Prof): [string, number][] {
   const r: [string, number][] = [];
@@ -301,6 +301,7 @@ declare module './types' {
     wf?: string;      // 结婚的事，你说要等什么：grad 毕业、job 工作稳定、house 买了房、think 还没想好
     wAt?: number;     // 说「再等等」是哪个月
     w0?: number;      // 第一次说「再等等」是哪个月（Ta 等了多久）
+    apart?: number;   // 婚后两地分居是哪个月开始的（抉择 wedMove）
   }
 }
 // ===== 感情线 =====
@@ -380,14 +381,21 @@ export const brideAmt = pid => { const b = PBY[pid].bride; return b ? Math.round
 // 淡了先有苗头（时间线上一句），半年还没缓过来，婚姻就出了问题（p.crisis：三个月后问你，抉择 split）。
 // 另外还有说不清的变故（events.ts 的 marCrisis，按 divorceRisk）：感情越差越容易碰上
 // WED_T0 和 events.ts 的 DIV_BASE 一起校准：婚后任何时候约 1% 的夫妻感情淡了，活到 60 岁离过婚的约 10%
-const WED_T0 = 45, WED_K = approachPerMonth(0.2), WED_SD = sdPerMonth(6);
+const WED_T0 = 45, WED_K = approachPerMonth(0.2), WED_SD = sdPerMonth(6), APART_END = perMonth(0.25);
 /** 婚姻出问题时时间线上的那一句（marCrisis 也用） */
 export const crisisLine = p => pick([`你和${p.name}已经分房睡了大半年，谁也没提。`, `吵架的时候，${p.name}第一次说出了“离婚”两个字。`, '一家人吃饭，只听得见碗筷的声音。', `${p.name}越来越晚回家，问起来就说加班。`]);
 export function marriedStep(p) {
   const baby = S.fam.kids.some(k => k.alive && k.age < 1), broke = liquidBalance() < 0 || (S.debt || 0) > 0;
-  const T = WED_T0 + 30 * p.fit + 6 * slotW('family') - 4 * slotW('work') - (baby ? 6 : 0) - (broke ? 5 : 0) + (S.st.h - 75) * 0.2 + loveP(p);
+  const apart = p.city !== S.loc.city;
+  const T = WED_T0 + 30 * p.fit + 6 * slotW('family') - 4 * slotW('work') - (baby ? 6 : 0) - (broke ? 5 : 0) - (apart ? 10 : 0) + (S.st.h - 75) * 0.2 + loveP(p);
   const v = p.love ?? 63;
   p.love = clamp(v + (T - v) * WED_K + gauss(0, WED_SD), 0, 100);
+  // 两地分居：退休了就过来；分居两年以后，每年约四分之一的可能 Ta 调到你这边（估计）
+  if (apart && (p.retired || p.apart != null && nowM() - p.apart >= 24 && chance(APART_END))) {
+    p.city = S.loc.city; p.apart = undefined;
+    if (p.jk && !p.retired) partnerJob(p);
+    log(p.retired ? `${p.name}退休了，搬来${S.loc.city}和你一起住。两地分居的日子总算到头了。` : `${p.name}在${S.loc.city}找到了工作，搬了过来。两地分居的日子总算到头了。`, 'good');
+  }
   if (p.crisis != null) return;
   const m = nowM();
   if (p.love >= LOVE_COLD + 5) { p.coldAt = undefined; return; }

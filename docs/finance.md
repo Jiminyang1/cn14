@@ -2,6 +2,15 @@
 
 这次修改重建了收支与资产的记账方式。旧文档里的 `SAVE_BASE`、`WEALTH_MPC`、`RET_DRAW`、`PAR_DRAW` 和欠款冻结公式已经停用。存档格式从 7 升到 8，旧格式需要重新开始；过往人生记录保留。
 
+## 口径：年还是月
+
+钱的量只有两种口径，混用就会出错（原来对象的「收入不错」把年收入 `p.inc` 又乘了 12，几乎人人都算收入不错）：
+
+- **按年**：记在人物身上、或者描述一个人「挣多少、领多少、要付多少」的量，一律是一年的。`S.income`（税前）、`S.net`（到手）、`p.inc`（对象、配偶，税前）、`S.pension`、`flags.rehire.inc`、`parentIncome()`、`myPay()` / `matePay()` / `partnerPay()` / `parentPay()` 返回的 `gross`、`net`，地点的 `placeInc()`、`placeCons()`，名字带 `Y` 的（`careFeeY`、`kidSupportY`、`oldIncomeY`、`dibaoStdY`）。
+- **按月**：只有三类。月底结算里算出来的这个月的量（`moneyMonth`、`familyMoneyMonth` 里的局部变量），账单 `MonthlyStatement` 里的每一项，以及名字里写明「月」的（`monthlyPay()`、名字带 `M` 的变量和参数，如 `incM`、`DIBAO_M`）。
+- 比较、相加之前先换到同一个口径：年 ÷ `MONTHS` 得月，月 × `MONTHS` 得年。显示用 `wanM(年)`、`perMo(年)`，它们自己除以 12，传进去的必须是一年的量。
+- 存量（`money`、`debt`、房价、欠款）没有口径，和「一年的收入」比的时候直接比，例如「欠款超过一年收入」。
+
 ## 现金、债务和房产
 
 - `money` 是可用现金，不小于零；`debt` 是其他欠款。事件支出超过现金的部分记为欠款，现金收入先到账，月底再按实际余额还债。
