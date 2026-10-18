@@ -1,4 +1,4 @@
-// 「这一年」：行动单和账本合成一张。左边是手头的钱和分类：做点什么（这一年怎么过、家人、生活……）、看看账（账本、父母家）；
+// 「这一年」：行动单和账本合成一张。左边是手头的钱和分类：做点什么（计划、理财、家人、生活……）、看看账（账本、父母家）；
 // 右边一次只看一类。页头「行动」、三「调整」、五「看账本」都打开这一张，各自停在对应的一页。
 // 打开时暂停，关上以后保持暂停（和抉择单一样，想好了玩家自己按 ▶）
 import { useEffect, useState, useSyncExternalStore } from 'react';
@@ -83,7 +83,7 @@ function YearSheet({ tab0 }: { tab0: string }) {
             <nav className="yr-nav" role="tablist" aria-label="这一年">
               <div className="yr-grp-n">
                 <div className="yr-ng"><span>做点什么</span></div>
-                {nav('plan', '这一年怎么过')}
+                {nav('plan', '计划')}
                 {(plansShown().includes('invest') || groups.some(x => x.g === 'money')) && nav('money', '理财', planOpt('invest')?.label || '', groups.find(x => x.g === 'money')?.ok)}
                 {groups.filter(x => x.g !== 'money').map(x => nav(x.g, x.n, x.r, x.ok))}
               </div>
@@ -108,14 +108,14 @@ function YearSheet({ tab0 }: { tab0: string }) {
   );
 }
 
-// ===== 这一年怎么过：时间格子 + 持续的计划，右边是照这样过的结果 =====
+// ===== 计划：时间格子 + 持续的计划，右边是照这样过的结果 =====
 function PlanPage({ pm }: { pm: ReturnType<typeof perMonth> }) {
   const n = slotN(), slots = S.slots || [], l = focusList();
   const ORDER = ['style', 'gym', 'checkup'];
   const spend = plansShown().filter(k => PLANS[k].g !== 'money').sort((p, q) => (ORDER.indexOf(p) + 99) % 99 - (ORDER.indexOf(q) + 99) % 99);
   const fx = yearFx();
   const out = pm.live + pm.other + pm.rent + pm.loan, base = Math.max(pm.income, out, 1);
-  const seg: [string, number, string][] = ([['过日子', pm.live, 'var(--kraft)'], ['房租', pm.rent, '#8FA9C9'], ['房贷', pm.loan, '#8FA9C9'], ['计划', pm.other, 'var(--so)'], ['剩下', Math.max(0, pm.left), 'var(--good)']] as [string, number, string][]).filter(x => x[1] >= 1);
+  const seg: [string, number, string][] = ([['过日子', pm.live, 'var(--kraft)'], ['房租', pm.rent, '#8FA9C9'], ['房贷', pm.loan, '#8FA9C9'], ['健身体检', pm.other, 'var(--so)'], ['剩下', Math.max(0, pm.left), 'var(--good)']] as [string, number, string][]).filter(x => x[1] >= 1);
   const opt = (k: string) => {
     const P = PLANS[k], cur = planOf(k);
     return <div key={k} className="yr-row">
@@ -132,7 +132,7 @@ function PlanPage({ pm }: { pm: ReturnType<typeof perMonth> }) {
     </div>;
   };
   return <>
-    <div className="yr-hd"><h3>这一年怎么过</h3></div>
+    <div className="yr-hd"><h3>计划</h3></div>
     <div className="yr-cols">
       <div>
         {n > 0 && <div className="yr-grp">

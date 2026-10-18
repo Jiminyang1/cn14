@@ -110,7 +110,7 @@ function YearPlan() {
   const n = slotN(), slots = S.slots || [];
   return (
     <section className="pg plan year-plan">
-      <div className="sec"><span className="no">三</span><h3>这一年怎么过</h3><small><button type="button" className="sec-link" onClick={() => openYear('plan')}>调整 ›</button></small></div>
+      <div className="sec"><span className="no">三</span><h3>计划</h3><small><button type="button" className="sec-link" onClick={() => openYear('plan')}>调整 ›</button></small></div>
       <div className="yp-slots">
         {Array.from({ length: n }, (_, i) => {
           const k = slots[i];
