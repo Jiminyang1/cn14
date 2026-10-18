@@ -236,3 +236,20 @@
 .dgal-grid { display: flex; flex-wrap: wrap; gap: 40px 34px; align-items: flex-start; margin-top: 24px; }
 .dgal-grid > div { display: flex; flex-direction: column; gap: 10px; }
 .dgal-grid h5 { margin: 0; font-size: 13px; color: var(--muted); }
+
+/* 右下角「材料目录」：一排封皮 + 缩小摊开的那一份 */
+.dshelf-row { display: flex; flex-wrap: wrap; gap: 6px; padding-bottom: 10px; border-bottom: 1px solid var(--hair); }
+.dshelf-it { padding: 0 0 4px; border: 0; background: none; cursor: pointer; border-bottom: 2px solid transparent; }
+.dshelf-it .dmini { font-size: 0 !important; box-shadow: 0 2px 4px -2px rgba(0, 0, 0, .45); }
+.dshelf-it .dmini.line { box-shadow: 0 2px 4px -2px rgba(0, 0, 0, .45), inset 0 0 0 1px #D8CFBE; }
+.dshelf-it.on { border-bottom-color: var(--seal); }
+.dshelf-it:not(.on) { opacity: .7; }
+.dshelf-it:hover { opacity: 1; }
+.dshelf-h { display: flex; align-items: baseline; gap: 8px; margin: 10px 0 8px; }
+.dshelf-h b { font-size: 14px; }
+.dshelf-h .mono { font-size: 11.5px; color: var(--muted); }
+.dshelf-h .sec-link { margin-left: auto; }
+.dshelf-doc { display: block; width: 100%; padding: 4px 0 10px; border: 0; background: none; cursor: zoom-in; text-align: left; }
+.dshrunk { position: relative; overflow: hidden; }
+.dshrunk-in { transform-origin: 0 0; display: flex; justify-content: center; }
+.dshrunk-in > .dview { width: 100%; display: flex; justify-content: center; }

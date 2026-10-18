@@ -1,6 +1,6 @@
 // 一生页面的各个栏目：一、基本情况（含家庭成员）；二、体检与鉴定；五、我的经济；
 // 右下角的分隔签（材料目录 / 同批建档 / 一生曲线）。结局页也用这里的证件和一生曲线。
-import { DocMini, openDoc } from './Docs';
+import { DocShelf } from './Docs';
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import {
   AX, AX_NAME, CAUSE, EDU_LV, FAM_HOUSE_N, JOBS, PBY, S, axWord, calMonth, calYear, leOf, partnerPay, partnerTrait, persWords, placeName, shownZ, statusLabel,
@@ -337,17 +337,6 @@ export function Account({ m }: { m?: string }) {
 
 // ===== 证件 =====
 // 材料目录：最新的在上面，一行一份，点开进证件夹（Docs.tsx）。后来盖的章写成小标签
-function Docs() {
-  const docs = S.docs || [];
-  return <>{docs.map((d, i) => [d, i] as const).reverse().map(([d, i]) => {
-    const m = (d.marks || []).filter(x => x.t !== '抵押').pop();
-    return (
-      <button key={i} type="button" className={'toc' + (i === docs.length - 1 ? ' fresh' : '')} onClick={() => openDoc(i)}>
-        <DocMini d={d} w={12} /><span className="tt">{d.title}</span>{m && <span className="mk">{m.t.split(' · ')[0].replace(/^\d{4}\.\d+ /, '')}</span>}<span className="lead" /><span className="d">{d.y}.{String(d.m).padStart(2, '0')}</span>
-      </button>
-    );
-  })}</>;
-}
 
 // 一生曲线：幸福（实线）和健康（虚线），竖虚线是平均寿命
 export function Curve({ W = 300, H = 120 }: { W?: number; H?: number }) {
@@ -405,7 +394,7 @@ export function ArchiveTabs({ mtab }: { mtab: string }) {
         ))}
       </nav>
       <div className="tp" data-t="fork" data-m="body"><div className="sub-h m-only" style={{ marginTop: 0 }}>岔路口</div><Forks /></div>
-      <div className="tp" data-t="doc" data-m="doc"><Docs /></div>
+      <div className="tp" data-t="doc" data-m="doc"><DocShelf /></div>
       <div className="tp" data-t="peer" data-m="peer"><p className="note-line" style={{ margin: '0 0 4px' }}>同一秒建档的另外 {S.comps.length} 人 · 此刻也是 {S.age} 岁</p><Companions /></div>
       <div className="tp" data-t="ppl" data-m="home"><People /></div>
     </section>

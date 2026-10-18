@@ -524,6 +524,43 @@ export function DocFolder() {
   );
 }
 
+// ===== 右下角「材料目录」：不弹窗也摊开 =====
+// 上面一排封皮按时间排，点哪份看哪份（默认最新的）；下面把这份证件按原样画出来再缩到栏宽。点证件或「展开」打开证件夹
+const MOUNT_W = 560; // 证件按这个宽度排版，再整体缩小：和证件夹里摊开的是同一个样子
+function Shrunk({ children }: { children: ReactNode }) {
+  const box = useRef<HTMLDivElement>(null), inner = useRef<HTMLDivElement>(null);
+  const [fit, setFit] = useState({ k: 0.5, h: 0 });
+  useEffect(() => {
+    const b = box.current, n = inner.current;
+    if (!b || !n) return;
+    const upd = () => { const k = Math.min(1, b.clientWidth / MOUNT_W); setFit({ k, h: n.offsetHeight * k }); };
+    upd();
+    const ro = new ResizeObserver(upd);
+    ro.observe(b); ro.observe(n);
+    return () => ro.disconnect();
+  }, []);
+  return <div ref={box} className="dshrunk" style={{ height: fit.h || undefined }}>
+    <div ref={inner} className="dshrunk-in" style={{ width: MOUNT_W, transform: `scale(${fit.k})` }}>{children}</div>
+  </div>;
+}
+export function DocShelf() {
+  const docs = S.docs || [];
+  const [sel, setSel] = useState<number | null>(null); // null：跟着最新的一份
+  if (!docs.length) return <p className="note-line" style={{ margin: 0 }}>还没有材料。</p>;
+  const i = sel != null && docs[sel] ? sel : docs.length - 1, d = docs[i];
+  return <div className="dshelf">
+    <div className="dshelf-row" role="tablist" aria-label="材料">
+      {docs.map((x, j) => <button key={j} type="button" role="tab" aria-selected={j === i} title={`${x.title} · ${x.y}.${pad2(x.m)}`}
+        className={'dshelf-it' + (j === i ? ' on' : '')} onClick={() => setSel(j === docs.length - 1 ? null : j)}><DocMini d={x} w={22} /></button>)}
+    </div>
+    <div className="dshelf-h">
+      <b className="serif">{d.title}</b><span className="mono">{d.y}.{pad2(d.m)} · {d.a}岁</span>
+      <button type="button" className="sec-link" onClick={() => openDoc(i)}>展开 ›</button>
+    </div>
+    <button type="button" className="dshelf-doc" aria-label={'展开' + d.title} onClick={() => openDoc(i)}><Shrunk><DocView d={d} /></Shrunk></button>
+  </div>;
+}
+
 // ===== 拿到新证件：右下角滑出来，六秒后收起 =====
 const TOAST_MS = 6000;
 export function DocToast() {
