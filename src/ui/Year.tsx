@@ -203,10 +203,26 @@ function BookPage() {
   const W = 470, H = 150, X = (i: number) => 44 + (ys.length > 1 ? i / (ys.length - 1) : 0.5) * (W - 54), Y = (v: number) => 128 - v / top * 112;
   const step = Math.max(1, Math.ceil(ys.length / 8));
   const ch = recent.map(x => x.closing - x.opening), mx = Math.max(1, ...ch.map(v => Math.abs(v)));
-  const rows: [string, number][] = ([
-    ['到手', b.income], [`过日子（${TIERS[b.tier ?? 1]?.n || ''}）`, -b.living], ['持续的计划', -(b.plans || 0)], ['房租', -b.rent], ['房贷', -b.mortgage],
-    ['还欠款', -b.debtRepaid], ['其他', b.events + b.transfers + b.depositInterest],
-  ] as [string, number][]).filter(([, v]) => Math.round(v) !== 0);
+  // 这个月的明细：收入拆开写谁挣的；「其他」拆成事件（大笔的写出名目）、家里往来、利息；为 0 的不写
+  const inc = b.incomeDetails, mv = (S.moves || []).filter(x => x.y === b.year && x.m === b.month);
+  const evLeft = b.events - mv.reduce((t, x) => t + x.x, 0);
+  type Line = [string, number, boolean?]; // 名目、金额、是不是缩进的分项
+  const lines: Line[] = [['到手', b.income]];
+  if (inc) {
+    const parts: [string, number][] = [['本人', inc.personal], ['配偶', inc.partner], ['返聘', inc.rehire], ['低保', inc.aid || 0]];
+    const shown = parts.filter(([, v]) => Math.round(v) !== 0);
+    if (shown.length > 1) for (const [k, v] of shown) lines.push([k, v, true]);
+  }
+  lines.push([`过日子（${TIERS[b.tier ?? 1]?.n || ''}）`, -b.living], ['持续的计划', -(b.plans || 0)], ['房租', -b.rent], ['房贷', -b.mortgage], ['还欠款', -b.debtRepaid]);
+  for (const x of mv) lines.push([x.t, x.x]);
+  lines.push([mv.length ? '其他事件' : '事件', evLeft], ['家里往来', b.transfers], ['利息', b.depositInterest]);
+  const rows = lines.filter(([, v]) => Math.round(v) !== 0);
+  const notes: string[] = [];
+  if (b.mortgageHpf > 1) notes.push(`公积金另付房贷 ${yuan(b.mortgageHpf)}`);
+  if (b.mortgageInterest > 1) notes.push(`房贷利息 ${yuan(b.mortgageInterest)}，计入贷款`);
+  if (b.debtInterest > 1) notes.push(`欠款利息 ${yuan(b.debtInterest)}`);
+  // 这个月时间线上发生的事（不算日常片段）
+  const said = S.log.filter(e => e.y === b.year && e.m === b.month && e.k !== 'day').slice(0, 3);
   return <>
     <div className="yr-hd"><h3>账本</h3><span className="yr-s">共 {all.length} 个月</span></div>
     <div className="yr-cols">
@@ -233,12 +249,15 @@ function BookPage() {
         <h4>{b.year} 年 {b.month} 月</h4>
         <div className={'yr-big mono ' + (b.closing >= b.opening ? 'up' : 'dn')}>{signed(b.closing - b.opening)}<i>元</i></div>
         <div className="yr-sl-w">
-          {rows.map(([k, v]) => <div key={k} className="yr-sl"><span>{k}</span><b className={'mono ' + (v > 0 ? 'up' : '')}>{signed(v)}</b></div>)}
+          <div className="yr-sl sub"><span>月初现金</span><b className="mono">{yuan(b.opening)}</b></div>
+          {rows.map(([k, v, sub], i) => <div key={i} className={'yr-sl' + (sub ? ' sub' : '')}><span>{k}</span><b className={'mono ' + (v > 0 && !sub ? 'up' : '')}>{signed(v)}</b></div>)}
           <div className="yr-sl tot"><span>月底现金</span><b className="mono">{yuan(b.closing)}</b></div>
         </div>
+        {notes.map(t => <p key={t} className="yr-sm">{t}</p>)}
         {b.debt > 1 && <p className="yr-sm dn">月底欠 {yuan(b.debt)}</p>}
         {b.arrears > 1 && <p className="yr-sm dn">房贷逾期 {yuan(b.arrears)}</p>}
         {b.shortfall > 1 && <p className="yr-sm dn">缺口 {yuan(b.shortfall)}</p>}
+        {said.length > 0 && <div className="yr-said-m">{said.map((e, i) => <p key={i}>{e.k === 'choice' ? e.t.replace(/[？?]? —— /, '：') : e.t}</p>)}</div>}
       </aside>
     </div>
   </>;

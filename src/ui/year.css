@@ -99,6 +99,10 @@
 .yr-sl:first-child { border-top: 0; }
 .yr-sl span { color: var(--ink2); }
 .yr-sl b { font-weight: 500; }
+.yr-sl.sub { border-top: 0; padding: 1px 0 1px 12px; font-size: 12px; }
+.yr-sl.sub span, .yr-sl.sub b { color: var(--muted); }
+.yr-said-m { margin-top: 14px; padding-top: 10px; border-top: 1px solid var(--hair); }
+.yr-said-m p { margin: 0 0 6px; font: 13px/1.6 var(--serif); color: var(--ink2); }
 .yr-sl.tot { border-top: 1px solid var(--ink); margin-top: 2px; padding-top: 6px; }
 .yr-sl.tot span, .yr-sl.tot b { font-weight: 700; color: var(--ink); }
 
