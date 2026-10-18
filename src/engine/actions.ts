@@ -42,6 +42,7 @@ export const closeWord = (c: number) => c >= 75 ? '很亲' : c >= 55 ? '还算�
 export const grownClose = () => { const ks = kidsAlive().filter(k => k.age >= 18); return ks.length ? ks.reduce((t, k) => t + kidClose(k), 0) / ks.length : null; };
 
 /** 生日那个月：亲疏每年向一个目标值靠拢（父母一年走 25%，孩子 20%）。目标值看去年你是怎么做的：
+ *  · 结婚时你帮了多少（kin.ts 的 KID_HELP），孩子一直记着；
  *  · 父母：基础 60；住得远 −25；去年每回一次家 +8（最多四次）、给过钱 +5；和你住一起 +20。只看行动，不看格子：
  *    「家人」格子管的是自己的小家（配偶、孩子），父母那边要你自己回去、自己给（见 AGENTS.md）；
  *  · 成年的孩子：基础 45；去年一起旅行、给过钱各 +8；「家人」每格 +12，「工作」每格 −8（忙着工作的父母和孩子远）；
@@ -55,7 +56,7 @@ export function closeYear() {
     addPar((clamp(T, 0, 100) - parClose()) * 0.25);
   }
   for (const k of kidsAlive()) {
-    const T = k.age >= 18 ? 45 + 8 * Math.min(1, n('trip')) + 8 * Math.min(1, n('giveKid')) + 12 * fam - 8 * work : 65 + 12 * fam - 10 * work;
+    const T = k.age >= 18 ? 45 + (k.help || 0) + 8 * Math.min(1, n('trip')) + 8 * Math.min(1, n('giveKid')) + 12 * fam - 8 * work : 65 + 12 * fam - 10 * work;
     k.close = clamp(kidClose(k) + (clamp(T, 0, 100) - kidClose(k)) * 0.2, 0, 100);
   }
 }

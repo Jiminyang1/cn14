@@ -321,6 +321,17 @@ export const EVENTS = [
     ]);
     return { t: t + (four ? '你也是独生子女。四个老人，就你们两个。' : ''), k: 'bad' };
   } },
+  // 回响：孩子结婚那年你帮了多少（kin.ts 的 KID_HELP），老了以后回来。帮得多的那个孩子更常来、生病时守着你；一分没帮的那个，心里一直有个疙瘩
+  { id: 'kidHelpBack', a: [66, 88], once: 1, w: 3, c: () => kidsAlive().some(k => k.married && k.help && Math.abs(k.help) >= 6), run: () => {
+    const k = kidsAlive().filter(x => x.married && x.help && Math.abs(x.help) >= 6).sort((x, y) => Math.abs(y.help) - Math.abs(x.help))[0];
+    const ta = k.sex === 'M' ? '他' : '她';
+    if (k.help > 0) {
+      eff({ h: 3 });
+      return { t: vary('kidHelpGood', [`你住院那几天，${k.name}请了假，在病床边守了两个星期。护士说你家孩子真孝顺。当年那套婚房的首付，${ta}一直记着。`, `${k.name}把你接过去住了一个冬天。孙辈的房间腾给了你，${ta}说：「这房子当年也有你们的一份。」`]), k: 'good' };
+    }
+    eff({ h: -3 });
+    return { t: vary('kidHelpSore', [`${k.name}很少回来，逢年过节打个电话，说两句就挂了。有一回喝多了，${ta}说起结婚那年，家里一分钱没帮上。`, `你生病住院，${k.name}来看了一次，坐了半个小时就走了。你想起${ta}结婚那年，你说的那句「房子你们自己想办法」。`]), k: 'bad' };
+  } },
   { id: 'famParents', a: [28, 65], gap: 3, w: 0.5, c: () => bothParents() && !S.flags.parDiv, run: () => { eff({ h: 2, so: 1 }); return vary('famParents', ['带爸妈去做了一次全面体检，排了一上午的队。爸爸一直说「花这个钱干什么」。', '周末陪妈妈去逛菜市场，她跟每个摊主都介绍「这是我孩子」。', '给爸妈换了一台大电视，遥控器教了三遍。']); } },
   { id: 'famHome', a: [24, 85], gap: 3, w: 0.4, c: () => S.fam.married && !!S.fam.partner && S.fam.partner.alive, run: () => { eff({ h: 3 }); S.fam.partner.love = clamp((S.fam.partner.love ?? 63) + 3, 0, 100); return vary('famHome', ['一家人难得在家吃了一顿晚饭，谁都没看手机。', `结婚纪念日，你和${S.fam.partner.name}回到了第一次约会的那家店。店还在，老板换了。`, `周末和${S.fam.partner.name}把家里大扫除了一遍，翻出了结婚时的照片，看了一下午。`]); } },
   { id: 'halfMara', a: [20, 60], once: 1, w: 0.3, run: () => { eff({ hl: 2, h: 4 }); return { t: '跑完了人生第一个半程马拉松。到终点的时候，腿已经不是自己的了。', k: 'good' }; } },

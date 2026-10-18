@@ -12,6 +12,10 @@ import { kidsAlive, sibsAlive } from './family';
 import { parentsWord } from './parents';
 import { wan } from './format';
 
+declare module './types' {
+  interface Kid { help?: number } // 孩子结婚时家里帮了多少，孩子一直记着：和你亲疏的目标值高低多少（actions.ts 的 closeYear）
+}
+
 // ===== 拆迁 =====
 // 父母家的老房子每年被征收的概率（估计）。参照：2013–2022 年全国棚户区改造累计开工 4300 多万套（住建部），
 // 约为全国家庭户（2020 年普查 4.94 亿户）的 9%，即高峰期每年约 0.9%。棚改高峰过去以后，城中村改造的规模小得多，
@@ -69,8 +73,11 @@ export function kidHomeCost(k: Kid) {
   const feast = Math.round(placeInc() * 0.3 / 1e3) * 1e3;                 // 酒席
   return { price, down, bride, car, feast };
 }
-export function marryKid(k: Kid, spend: number) {
-  k.wed = 0; k.married = 1;
+// 帮没帮，孩子一直记着（亲疏的目标值）：首付全包 +12、出一部分 +6；儿子的婚房一分没出 −10，女儿没另外陪嫁 −4（估计）
+export const KID_HELP = { all: 12, part: 6, noneSon: -10, noneDau: -4 };
+export function marryKid(k: Kid, spend: number, help = 0) {
+  k.wed = 0; k.married = 1; k.help = help;
+  k.close = Math.max(0, Math.min(100, (k.close ?? 70) + help)); // 当下就看得出来
   eff({ money: -spend });
 }
 
