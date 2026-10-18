@@ -1,6 +1,7 @@
 // 一生页面的各个栏目：一、基本情况（含家庭成员）；二、体检与鉴定；五、我的经济；
 // 右下角的分隔签（材料目录 / 同批建档 / 一生曲线）。结局页也用这里的证件和一生曲线。
 import { DocShelf } from './Docs';
+import { Head } from './Head';
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import {
   AX, AX_NAME, CAUSE, EDU_LV, FAM_HOUSE_N, JOBS, PBY, S, axWord, calMonth, calYear, leOf, partnerPay, partnerTrait, persWords, placeName, shownZ, statusLabel,
@@ -98,67 +99,90 @@ const palWhere = (p: NonNullable<NonNullable<typeof S.ppl>['pal']>) => S.done.pa
 const CLOSE = (c: number) => c >= 65 ? '无话不谈' : c >= 45 ? '常联系' : c >= 25 ? '偶尔联系' : '很少联系';
 /** 对方在哪：同一座城市不写，异地写城市 */
 const ptWhere = (p: Partner) => p.city && p.city !== S.loc.city ? `异地，在${p.city}` : `也在${S.loc.city}`;
-// ===== 右下角「人际关系」 =====
+// ===== 右下角「人际关系」：亲疏名单 =====
 // 分三组：家里（父母、兄弟姐妹）、自己的家（恋人或配偶、孩子、孙辈）、朋友（还在来往的发小）。只列现在还在你生活里的人：初恋这种只是喜欢过的不列
-// 每个人一个样子：关系 | 名字 · 年龄 + 一行事实（做什么、在哪、多少年） | 右边亲疏。走了的人变灰，写享年
+// 一行一个人：像素头像 | 关系 名字 年纪 + 一行事实（做什么、在哪、多少年） | 右边五格亲疏和一个词。走了的人头像变灰，写享年
 type Tone = 'hi' | 'mid' | 'lo';
+type Close = [string, Tone, number];
 // 颜色跟着词走：亲近的绿、平常的墨色、疏远或冷淡的红（分界和 closeWord、loveWord、CLOSE 一样）
 const tone = (c: number, hi: number, lo: number): Tone => c >= hi ? 'hi' : c >= lo ? 'mid' : 'lo';
-const kin = (c: number): [string, Tone] => [closeWord(c), tone(c, 55, 55)];        // 很亲、还算亲 / 有点疏远、很少联系
-const love = (c: number): [string, Tone] => ['感情' + loveWord(c), tone(c, 58, 42)]; // 很好、不错 / 一般 / 有点冷淡
-const pals = (c: number): [string, Tone] => [CLOSE(c), tone(c, 45, 25)];           // 无话不谈、常联系 / 偶尔联系 / 很少联系
-function Person({ rel, name, age, facts, close, gone }: { rel: string; name?: string; age?: number | string; facts?: (string | false | null | undefined)[]; close?: [string, Tone]; gone?: boolean }) {
+const kin = (c: number): Close => [closeWord(c), tone(c, 55, 55), c];        // 很亲、还算亲 / 有点疏远、很少联系
+const love = (c: number): Close => ['感情' + loveWord(c), tone(c, 58, 42), c]; // 很好、不错 / 一般 / 有点冷淡
+const pals = (c: number): Close => [CLOSE(c), tone(c, 45, 25), c];           // 无话不谈、常联系 / 偶尔联系 / 很少联系
+type Who = { sex: 'M' | 'F'; age: number; id: string };
+function Person({ rel, name, age, facts, close, gone, who }: { rel: string; name?: string; age?: number | string; facts?: (string | false | null | undefined)[]; close?: Close; gone?: boolean; who: Who }) {
   const fs = (facts || []).filter(Boolean) as string[];
-  return <div className={'ps' + (gone ? ' gone' : '')}>
-    <span className="ps-r">{rel}</span>
-    <div className="ps-m">
-      <div className="ps-n">{name && <b>{name}</b>}{age != null && <span>{typeof age === 'number' ? age + '岁' : age}</span>}</div>
-      {fs.length > 0 && <div className="ps-f">{fs.join(' · ')}</div>}
+  return <div className={'pp' + (gone ? ' gone' : '')}>
+    <span className="pp-ph"><Head {...who} /></span>
+    <div className="pp-m">
+      <div className="pp-n"><span>{rel}</span>{name && <b>{name}</b>}{age != null && <em>{typeof age === 'number' ? age + '岁' : age}</em>}</div>
+      {fs.length > 0 && <div className="pp-f" title={fs.join(' · ')}>{fs.join(' · ')}</div>}
     </div>
-    {close && <span className={'ps-c ' + close[1]}>{close[0]}</span>}
+    {close && <div className={'pp-c ' + close[1]} title={close[0]}>
+      <span className="pp-meter" aria-hidden="true">{[0, 1, 2, 3, 4].map(i => <i key={i} className={i < Math.max(1, Math.round(close[2] / 20)) ? 'f' : ''} />)}</span>
+      <small>{close[0]}</small>
+    </div>}
   </div>;
 }
 function Group({ n, meta, children }: { n: string; meta?: string; children: ReactNode }) {
-  return <div className="pg-g"><div className="pg-h"><span>{n}</span>{meta && <small>{meta}</small>}</div>{children}</div>;
+  return <div className="pp-g"><div className="pp-h"><span>{n}</span>{meta && <small>{meta}</small>}</div>{children}</div>;
 }
 function ParentP({ who }: { who: 'mom' | 'dad' }) {
-  const p = S.fam[who], male = who === 'dad', rel = male ? '父亲' : '母亲';
-  if (!p.alive) return <Person rel={rel} age={'享年' + p.age} gone />;
-  const ret = parentRetired(p, male);
-  const c = parClose();
-  return <Person rel={rel} age={p.age} facts={[ret ? '退休了' : p.job, parentWhere(p, ret)]} close={S.age >= 18 && S.indep ? kin(c) : undefined} />;
+  const p = S.fam[who], male = who === 'dad', ret = parentRetired(p, male);
+  return <Person rel={male ? '父亲' : '母亲'} age={p.age} facts={[ret ? '退休了' : p.job, parentWhere(p, ret)]} close={S.age >= 18 && S.indep ? kin(parClose()) : undefined}
+    who={{ sex: male ? 'M' : 'F', age: p.age, id: who + S.seed }} />;
 }
+const SIB_SEX: Record<string, 'M' | 'F'> = { 哥哥: 'M', 弟弟: 'M', 姐姐: 'F', 妹妹: 'F' };
+const youThen = (a?: number | null) => a != null && `你${a}岁那年`;
 export function People() {
   const f = S.fam, F = S.flags, d = f.dating, pt = f.partner, pal = S.ppl?.pal;
   const ptStudy = !!pt && !pt.retired && pt.k != null && !pt.jk; // 配偶还在读书：职业一栏已经写了「本科在读」
-  const homeMeta = F.lb === 'both' && S.age < 16 ? `在外打工 · ${F.carer}照看` : F.parDiv ? '已离婚' : undefined;
-  const own = !!d || !!pt || f.kids.length > 0 || !!S.flags.divorced;
+  const homeMeta = F.lb === 'both' && S.age < 16 ? `在外打工 · ${F.carer}照看` : F.parDiv ? '父母已离婚' : undefined;
+  // 走了的人不留在各自的组里，收到最下面的「已故」：上面只看还在你生活里的人
+  const gone: ReactNode[] = [];
+  const home: ReactNode[] = [];
+  for (const who of ['dad', 'mom'] as const) {
+    const p = f[who], male = who === 'dad', w: Who = { sex: male ? 'M' : 'F', age: p.age, id: who + S.seed };
+    if (p.alive) home.push(<ParentP key={who} who={who} />);
+    else gone.push(<Person key={who} rel={male ? '父亲' : '母亲'} age={'享年' + p.age} facts={[youThen(p.diedAt)]} gone who={w} />);
+  }
+  f.sibs.forEach((x, i) => {
+    const w = { sex: x.sex || SIB_SEX[x.rel] || 'M', age: x.age, id: 'sib' + i + S.seed };
+    if (x.alive) home.push(<Person key={'s' + i} rel={x.rel} age={x.age} facts={[x.married != null && '成家了']} who={w} />);
+    else gone.push(<Person key={'s' + i} rel={x.rel} age={'享年' + x.age} facts={[youThen(x.diedAt)]} gone who={w} />);
+  });
+  const mine: ReactNode[] = [];
+  if (d) mine.push(<Person key="d" rel={d.sex === 'M' ? '男朋友' : '女朋友'} name={d.name} age={d.age} who={{ sex: d.sex, age: d.age, id: d.name }}
+    facts={[partnerTrait(d), d.jk ? EDU_LV[d.edu] : EDU_LV[d.edu] + '在读', ptJobName(d), ptWhere(d), PBY[d.home].n + (d.rural ? '农村' : '城里') + '人', S.age - d.metAt ? '在一起' + (S.age - d.metAt) + '年' : '刚在一起']}
+    close={d.love != null ? love(d.love) : undefined} />);
+  if (pt) {
+    const rel = pt.sex === 'M' ? '丈夫' : '妻子', w = { sex: pt.sex, age: pt.age, id: pt.name };
+    if (pt.alive) mine.push(<Person key="pt" rel={rel} name={pt.name} age={pt.age} who={w}
+      facts={[pt.edu && !ptStudy && EDU_LV[pt.edu], pt.retired ? '退休了' : pt.k != null ? ptJobName(pt) : JOBS[pt.job]?.n, ptWhere(pt)]}
+      close={pt.love != null ? love(pt.love) : undefined} />);
+    else gone.push(<Person key="pt" rel={rel} name={pt.name} age={'享年' + pt.age} facts={[youThen(F.widowed), pt.marriedAt != null && F.widowed != null && `一起走过了${F.widowed - pt.marriedAt}年`]} gone who={w} />);
+  }
+  f.kids.forEach((k, i) => {
+    const rel = k.sex === 'M' ? '儿子' : '女儿', w = { sex: k.sex, age: k.age, id: k.name };
+    if (k.alive) mine.push(<Person key={'k' + i} rel={rel} name={k.name} age={k.age} who={w}
+      facts={[k.path && k.path.replace(/^考上了/, ''), k.ex && k.age < 18 && '跟着对方', k.married != null && '成家了']}
+      close={k.age >= 12 ? kin(kidClose(k)) : undefined} />);
+    else gone.push(<Person key={'k' + i} rel={rel} name={k.name} age={'享年' + k.age} gone who={w} />);
+  });
+  if (S.flags.grandkids > 0) mine.push(<Person key="g" rel="孙辈" age={S.flags.grandkids + '个'} who={{ sex: 'M', age: 6, id: 'grand' + S.seed }} />);
+  const friends: ReactNode[] = [];
+  if (pal) {
+    const w = { sex: pal.sex, age: S.age, id: pal.name };
+    if (pal.alive) friends.push(<Person key="pal" rel="发小" name={pal.name} who={w}
+      facts={[palWhere(pal), '认识' + (S.age - pal.at) + '年', pal.loan && (pal.loan.back == null || pal.loan.back > S.age) && `借过${pal.sex === 'M' ? '他' : '她'}${wan(pal.loan.amt)}，还没还`]} close={pals(pal.close)} />);
+    else gone.push(<Person key="pal" rel="发小" name={pal.name} age="已去世" gone who={w} />);
+  }
+  const mineMeta = pt?.alive && pt.marriedAt != null ? `结婚${Math.max(0, S.age - pt.marriedAt)}年` : !f.married && F.divorced ? '离异' : F.widowed != null && !f.married ? '丧偶' : undefined;
   return <>
-    <Group n="家里" meta={homeMeta}>
-      <ParentP who="dad" /><ParentP who="mom" />
-      {f.sibs.map((x, i) => <Person key={'s' + i} rel={x.rel} age={x.alive ? x.age : '已去世'} facts={[x.alive && x.married != null && '成家了']} gone={!x.alive} />)}
-    </Group>
-    {own && <Group n="自己的家" meta={pt?.alive && pt.marriedAt != null ? `结婚${Math.max(0, S.age - pt.marriedAt)}年` : !f.married && S.flags.divorced ? '离异' : undefined}>
-      {d && <Person rel={d.sex === 'M' ? '男朋友' : '女朋友'} name={d.name} age={d.age}
-        facts={[partnerTrait(d), d.jk ? EDU_LV[d.edu] : EDU_LV[d.edu] + '在读', ptJobName(d), ptWhere(d), PBY[d.home].n + (d.rural ? '农村' : '城里') + '人', S.age - d.metAt ? '在一起' + (S.age - d.metAt) + '年' : '刚在一起']}
-        close={d.love != null ? love(d.love) : undefined} />}
-      {pt && (pt.alive
-        ? <Person rel={pt.sex === 'M' ? '丈夫' : '妻子'} name={pt.name} age={pt.age}
-          facts={[pt.edu && !ptStudy && EDU_LV[pt.edu], pt.retired ? '退休了' : pt.k != null ? ptJobName(pt) : JOBS[pt.job]?.n, ptWhere(pt)]}
-          close={pt.love != null ? love(pt.love) : undefined} />
-        : <Person rel={pt.sex === 'M' ? '丈夫' : '妻子'} name={pt.name} age="已去世" gone />)}
-      {f.kids.map((k, i) => k.alive
-        ? <Person key={'k' + i} rel={k.sex === 'M' ? '儿子' : '女儿'} name={k.name} age={k.age}
-          facts={[k.path && k.path.replace(/^考上了/, ''), k.ex && k.age < 18 && '跟着对方', k.married != null && '成家了']}
-          close={k.age >= 12 ? kin(kidClose(k)) : undefined} />
-        : <Person key={'k' + i} rel={k.sex === 'M' ? '儿子' : '女儿'} name={k.name} age="已离世" gone />)}
-      {S.flags.grandkids > 0 && <Person rel="孙辈" age={S.flags.grandkids + '个'} />}
-    </Group>}
-    {pal && <Group n="朋友">
-      {pal && (pal.alive
-        ? <Person rel="发小" name={pal.name} facts={[palWhere(pal), '认识' + (S.age - pal.at) + '年']} close={pals(pal.close)} />
-        : <Person rel="发小" name={pal.name} age="已去世" gone />)}
-    </Group>}
+    <Group n="家里" meta={homeMeta}>{home.length ? home : <p className="note-line" style={{ margin: '4px 0 0' }}>父母和兄弟姐妹都不在了。</p>}</Group>
+    {mine.length > 0 && <Group n="自己的家" meta={mineMeta}>{mine}</Group>}
+    {friends.length > 0 && <Group n="朋友">{friends}</Group>}
+    {gone.length > 0 && <Group n="已故" meta={gone.length + ' 人'}>{gone}</Group>}
   </>;
 }
 

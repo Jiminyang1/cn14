@@ -684,17 +684,25 @@ table.cmp th { font-weight: 500; font-family: var(--serif); color: var(--muted);
 .fk-no { color: var(--muted); font-size: 12px !important; }
 
 /* 右下角「人际关系」：三组，每个人一样的样子——关系 | 名字 年龄 / 一行事实 | 亲疏 */
-.pg-g + .pg-g { margin-top: 14px; }
-.pg-h { display: flex; align-items: baseline; gap: 8px; padding-bottom: 4px; margin-bottom: 2px; border-bottom: 1px solid var(--hair); font: 600 12px var(--serif); color: var(--muted); letter-spacing: .1em; }
-.pg-h small { margin-left: auto; font: 400 12px var(--sans); letter-spacing: 0; }
-.ps { display: grid; grid-template-columns: 3em minmax(0, 1fr) auto; gap: 0 10px; align-items: baseline; padding: 6px 0; }
-.ps-r { font-size: 12px; color: var(--muted); }
-.ps-n { display: flex; align-items: baseline; gap: 6px; font-size: 13px; }
-.ps-n b { font: 600 13.5px var(--serif); }
-.ps-n span { color: var(--ink2); }
-.ps-f { margin-top: 1px; font-size: 12px; line-height: 1.5; color: var(--muted); }
-.ps-c { font-size: 12px; white-space: nowrap; }
-.ps-c.hi { color: var(--good); }
-.ps-c.mid { color: var(--ink2); }
-.ps-c.lo { color: var(--seal); }
-.ps.gone { opacity: .5; }
+/* 人际关系：亲疏名单。像素头像 | 关系 名字 年纪 + 一行事实 | 五格亲疏 */
+.pp-g + .pp-g { margin-top: 12px; }
+.pp-h { display: flex; align-items: baseline; gap: 8px; margin-bottom: 2px; font: 700 12px var(--serif); color: var(--muted); letter-spacing: .15em; }
+.pp-h small { margin-left: auto; font: 400 12px var(--sans); letter-spacing: 0; }
+.pp { display: grid; grid-template-columns: 34px minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 7px 0; border-top: 1px solid var(--hair); }
+.pp-h + .pp { border-top: 0; }
+.pp-ph { width: 34px; height: 34px; border-radius: 4px; background: var(--tint); overflow: hidden; display: grid; place-items: end center; }
+.head-pix { display: block; image-rendering: pixelated; }
+.pp-n { display: flex; align-items: baseline; gap: 6px; min-width: 0; }
+.pp-n span { font-size: 12px; color: var(--muted); white-space: nowrap; }
+.pp-n b { font: 600 13.5px var(--serif); white-space: nowrap; }
+.pp-n em { font-style: normal; font-family: var(--mono); font-size: 12px; color: var(--ink2); white-space: nowrap; }
+.pp-f { font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pp-c { display: flex; flex-direction: column; align-items: flex-end; gap: 3px; }
+.pp-c small { font-size: 11.5px; white-space: nowrap; }
+.pp-meter { display: flex; gap: 2px; }
+.pp-meter i { display: block; width: 9px; height: 5px; background: var(--line); }
+.pp-c.hi { color: var(--good); } .pp-c.hi .pp-meter i.f { background: var(--good); }
+.pp-c.mid { color: var(--ink2); } .pp-c.mid .pp-meter i.f { background: var(--ink2); }
+.pp-c.lo { color: var(--seal); } .pp-c.lo .pp-meter i.f { background: var(--seal); }
+.pp.gone { opacity: .55; }
+.pp.gone .head-pix { filter: grayscale(1); }
