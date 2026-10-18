@@ -28,9 +28,12 @@ const HABIT = 0.85;
 export const POOR_LONG = 36;
 // 拮据不只是目标值低：每年还直接扣掉这么多幸福、健康（吃不好、为钱发愁、小病拖着），长期拮据的翻倍（stats.ts 的 drift）
 export const POOR_HURT = { h: 4, hl: 1.5 };
-// 生活方式（plans/style.ts）：照常花的几倍
-export const STYLE_K: Record<string, number> = { save: 0.75, normal: 1, more: 1.3 };
-export const styleK = () => STYLE_K[planOf('style') || 'normal'] || 1;
+// 生活方式（plans/style.ts）。照常、过好一点：照常花的几倍。
+// 省着过不按收入打折：过当地普通人家的日子（每人花当地日常开销的 SAVE_LV 倍，在「普通」这一档中间），收入再高也是这个数——
+// 一个月挣三万的人省着过，就是和当地一般人一样过，不是照样宽裕。照常过本来就比这还省的人家，再紧一紧，少花 SAVE_CUT
+export const STYLE_K: Record<string, number> = { normal: 1, more: 1.3 };
+export const SAVE_LV = 1.1, SAVE_CUT = 0.25;
+export const styleOf = () => planOf('style') || 'normal';
 
 /** 家里算几个人：第一个大人 1，别的大人各 0.6（住在一起很多东西共用）；孩子 6 岁前 0.5，上学的 0.8（学费、课外班、生活费） */
 export const familySize = (adults: number, children: number[]) =>
@@ -43,9 +46,12 @@ export function incUnits(inc: number, cash: number, y0: number, prev?: number) {
 }
 /** 吃穿的底线（一个月）。c：当地每人日常开销（一年） */
 export const floorCost = (c: number, size: number) => c / MONTHS * size * FLOOR;
-/** 一个月的日常开销。q：收入相当于当地几个人的；c：当地每人日常开销（一年）；k：生活方式 */
-export const livingCost = (q: number, c: number, size: number, k = 1) =>
-  Math.max(c / MONTHS * LIVE_K * Math.sqrt(Math.max(0, q) * size) * k, floorCost(c, size));
+/** 一个月的日常开销。q：收入相当于当地几个人的；c：当地每人日常开销（一年）；style：生活方式（plans/style.ts） */
+export function livingCost(q: number, c: number, size: number, style = 'normal') {
+  const usual = c / MONTHS * LIVE_K * Math.sqrt(Math.max(0, q) * size);
+  const v = style === 'save' ? Math.min(c / MONTHS * size * SAVE_LV, usual * (1 - SAVE_CUT)) : usual * (STYLE_K[style] || 1);
+  return Math.max(v, floorCost(c, size));
+}
 /** 一个月花了 spend，算哪一档 */
 export function tierOf(spend: number, c: number, size: number) {
   const x = spend / (c / MONTHS * size);

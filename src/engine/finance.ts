@@ -17,7 +17,7 @@ import { supportMonth } from './family';
 import { dedOf, netOf, penBase, type DedRow, type NetPay } from './tax';
 import type { Partner } from './types';
 import { changeMoney, repayDebt } from './accounts';
-import { POOR_LONG, familySize, floorCost, incUnits, livingCost, poorStep, styleK, tierOf } from './budget';
+import { POOR_LONG, familySize, floorCost, incUnits, livingCost, poorStep, styleOf, tierOf } from './budget';
 import { invBal } from './plans/invest';
 import { dibaoMonth, frugalEnd, frugalK, kidAdvMonth, kidSupportY, tightMonth } from './tight';
 
@@ -107,14 +107,14 @@ export function moneyMonth(m: number) {
   if (S.incQ == null || m === 0) {
     // 存款也算理财和基金里的钱（plans/invest.ts）：钱挪进去不该让日子突然变紧
     S.incQ = incUnits(hh, S.money + invBal(), H.inc, S.incQ);
-    const t = tierOf(livingCost(S.incQ, H.live, size, styleK()), H.live, size);
+    const t = tierOf(livingCost(S.incQ, H.live, size, styleOf()), H.live, size);
     if (S.tier != null && t !== S.tier) log(t > S.tier ? TIER_UP[t] : TIER_DOWN[t], t > S.tier ? 'good' : 'bad');
     S.tier = t;
   }
   // 住养老院：费用里包了吃住，不再另付生活开销。节衣缩食的（tight.ts）：欠款还清以前，必要的那部分少花一些
   const inCare = S.flags.oldLive === 'home';
   // 照计划要花多少：收入、几口人，加上玩家的生活方式（plans/style.ts）
-  const full = inCare ? 0 : livingCost(S.incQ, H.live, size, styleK());
+  const full = inCare ? 0 : livingCost(S.incQ, H.live, size, styleOf());
   const basic = Math.min(full, floorCost(H.live, size)) * frugalK();
   const basicPaid = Math.min(S.money, basic);
   S.money -= basicPaid;
@@ -166,8 +166,8 @@ export function mySize() {
   const f = S.fam, mate = f.married && f.partner && f.partner.alive;
   return familySize(mate ? 2 : 1, f.kids.filter(child => child.alive && child.age < 22 && !child.ex).map(child => child.age)); // 跟着对方的孩子不算你家的人口
 }
-/** 照生活方式 k（budget.ts 的 STYLE_K）过，这个月要花多少、算哪一档（行动单上给玩家看） */
-export function myLiving(k: number) {
+/** 照生活方式 k（plans/style.ts 的选项）过，这个月要花多少、算哪一档（行动单上给玩家看） */
+export function myLiving(k: string) {
   const H = here(), size = mySize(), cost = livingCost(S.incQ ?? 1, H.live, size, k);
   return { cost, tier: tierOf(cost, H.live, size) };
 }

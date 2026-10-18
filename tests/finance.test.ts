@@ -39,7 +39,7 @@ test('the living tier follows income and savings, and the bill adds up', () => {
 
 test('living costs: household size and income set the share of income spent', () => {
   const c = 29300, y0 = 54188; // 全国城镇每人日常开销（去掉折算的房租）、人均收入
-  const share = (incY: number, adults: number, kids: number[], k = 1) =>
+  const share = (incY: number, adults: number, kids: number[], k = 'normal') =>
     E.livingCost(E.incUnits(incY / 12, 0, y0), c, E.familySize(adults, kids), k) * 12 / incY;
   // 一般收入的人家花掉一半多一点；两口子都上班最能存钱，有了孩子花得多，只有一个人挣钱的更紧
   expect(share(60000, 1, [])).toBeGreaterThan(0.45);
@@ -56,8 +56,13 @@ test('living costs: household size and income set the share of income spent', ()
   // 普通人家照常过是普通，省着过就成了拮据，过好一点是小康
   const q = E.incUnits(120000 / 12, 0, y0), n = E.familySize(2, [9]);
   expect(E.tierOf(E.livingCost(q, c, n), c, n)).toBe(1);
-  expect(E.tierOf(E.livingCost(q, c, n, E.STYLE_K.save), c, n)).toBe(0);
-  expect(E.tierOf(E.livingCost(q, c, n, E.STYLE_K.more), c, n)).toBe(2);
+  expect(E.tierOf(E.livingCost(q, c, n, 'save'), c, n)).toBe(0);
+  expect(E.tierOf(E.livingCost(q, c, n, 'more'), c, n)).toBe(2);
+  // 收入高的一个人过：照常是宽裕；省着过就是当地普通人家的日子，花的比照常少一半多
+  const qr = E.incUnits(400000 / 12, 0, y0), cr = (k: string) => E.livingCost(qr, c, 1, k);
+  expect(E.tierOf(cr('normal'), c, 1)).toBeGreaterThanOrEqual(3);
+  expect(E.tierOf(cr('save'), c, 1)).toBe(1);
+  expect(cr('save')).toBeLessThan(cr('normal') * 0.5);
   // 收入一下子少了，日子每年最多紧一成半
   expect(E.incUnits(0, 0, y0, 2)).toBeCloseTo(1.7, 6);
 });
