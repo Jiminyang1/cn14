@@ -650,6 +650,10 @@ table.cmp th { font-weight: 500; font-family: var(--serif); color: var(--muted);
 .eco-two small { display: block; font-size: 11.5px; color: var(--muted); }
 .eco-two small.neg { color: var(--seal); }
 
+/* 三、计划的标题右边：行动、调整 */
+.yp-acts { margin-left: auto; display: flex; gap: 6px; align-self: center; }
+.yp-acts .ctl { height: 30px; }
+
 /* 三、计划（经济独立以后）：三行表单——时间、花钱、一年下来；整块点开「这一年」 */
 .yp { display: grid; grid-template-columns: 2.6em minmax(0, 1fr); gap: 0 12px; width: 100%; padding: 0; border: 0; background: none; color: var(--ink); font: inherit; text-align: left; cursor: pointer; }
 .yp > span { padding: 6px 0; border-top: 1px solid var(--hair); }
@@ -667,3 +671,7 @@ table.cmp th { font-weight: 500; font-family: var(--serif); color: var(--muted);
 .yp-left { margin-left: auto; font-family: var(--sans) !important; font-size: 12px !important; color: var(--muted); }
 .yp-left b { font-size: 14px; font-weight: 600; margin-left: 4px; }
 
+@media (max-width: 900px) {
+  /* 手机上别的「三」不显示标题；计划的标题上有行动和调整，要留着 */
+  .year-plan .sec { display: flex; }
+}

@@ -1,4 +1,4 @@
-/* 页头的「行动」按钮（ui/Actions.tsx） */
+/* 「三、计划」上的「行动」按钮（ui/Actions.tsx） */
 .act-btn { position: relative; border: 1.5px solid var(--seal); background: var(--card); color: var(--seal); font-weight: 700; }
 .act-n { display: inline-grid; place-items: center; min-width: 16px; height: 16px; margin-left: 4px; padding: 0 4px; border-radius: 8px; background: var(--seal); color: #fff; font-size: 10px; font-weight: 700; }
 

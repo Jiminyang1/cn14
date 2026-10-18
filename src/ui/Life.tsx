@@ -14,7 +14,7 @@ import { Account, ArchiveTabs, Basic, Body, FamilySec } from './Sidebar';
 import { TimelineFinance, statementAge } from './Finance';
 import { cnNum, fileNo } from './util';
 
-// ===== 页头：档案号、播放控制（▶、倍速、快进）、行动、更多（自动抉择、离开） =====
+// ===== 页头：档案号、播放控制（▶、倍速、快进）、更多（自动抉择、离开）；「行动」在三、计划上 =====
 function Menu() {
   const [open, setOpen] = useState(false);
   const box = useRef<HTMLDivElement>(null);
@@ -53,7 +53,6 @@ function Header() {
         <button className="ctl mono spd1" type="button" aria-label={`速度 ${game.speed} 倍，点一下换成 ${nextSpeed} 倍`} onClick={() => game.setSpeed(nextSpeed)}>{game.speed}×</button>
         <button className={'ctl primary' + (game.ff ? ' on' : '')} type="button" title="快进到下一件人生大事（升学、结婚、生子、亲人离世……）；遇到要你决定的事也会停下" onClick={() => game.fastForward()}>快进</button>
       </div>
-      <ActionsButton />
       <VersionTag />
       <Menu />
     </header>
@@ -115,7 +114,7 @@ function YearPlan() {
   const num = (v: number) => (v > 0 ? '+' : v < 0 ? '−' : '') + Math.abs(Math.round(v * 10) / 10);
   return (
     <section className="pg plan year-plan">
-      <div className="sec"><span className="no">三</span><h3>计划</h3><small><button type="button" className="sec-link" onClick={() => openYear('plan')}>调整 ›</button></small></div>
+      <div className="sec"><span className="no">三</span><h3>计划</h3><span className="yp-acts"><ActionsButton /><button type="button" className="ctl" onClick={() => openYear('plan')}>调整</button></span></div>
       <button type="button" className="yp" onClick={() => openYear('plan')} aria-label="打开计划">
         <span className="yp-k">时间</span>
         <span className="yp-v yp-time">
