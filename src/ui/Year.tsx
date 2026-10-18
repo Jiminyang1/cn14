@@ -81,12 +81,16 @@ function YearSheet({ tab0 }: { tab0: string }) {
               <small>每月剩 <span className={'mono ' + (pm.left >= 0 ? 'up' : 'dn')}>{signed(pm.left)}</span>{S.debt > 0 ? <> · <span className="dn">欠 {wan(S.debt)}</span></> : ' · 没有欠款'}</small>
             </div>
             <nav className="yr-nav" role="tablist" aria-label="这一年">
-              <div className="yr-ng">做点什么</div>
-              {nav('plan', '这一年怎么过')}
-              {groups.map(x => nav(x.g, x.n, x.r, x.ok))}
-              <div className="yr-ng">看看账</div>
-              {nav('book', '账本', last ? <span className="mono">{signed(last.closing - last.opening)}</span> : '')}
-              {anyParent() && nav('par', '父母家', closeWord(parClose()))}
+              <div className="yr-grp-n">
+                <div className="yr-ng"><span>做点什么</span></div>
+                {nav('plan', '这一年怎么过')}
+                {groups.map(x => nav(x.g, x.n, x.r, x.ok))}
+              </div>
+              <div className="yr-grp-n see">
+                <div className="yr-ng"><span>看看账</span></div>
+                {nav('book', '账本', last ? <span className="mono">{signed(last.closing - last.opening)}</span> : '')}
+                {anyParent() && nav('par', '父母家', closeWord(parClose()))}
+              </div>
             </nav>
           </aside>
           <section className="yr-main">
@@ -119,7 +123,7 @@ function PlanPage({ pm }: { pm: ReturnType<typeof perMonth> }) {
           const m = k === 'style' ? myLiving(o.k).cost : o.monthly?.() || 0, a = arrows(o.e);
           return <button key={o.k} type="button" role="radio" aria-checked={cur === o.k} className={cur === o.k ? 'on' : ''} title={o.sub?.()}
             onClick={() => { if (cur !== o.k) game.plan(k, o.k); }}>
-            {o.label.replace(/，常去$/, '常去').replace(/^每年全面/, '每年')}{(m > 0 || a) && <i>{[m > 0 && yuan(m), a].filter(Boolean).join(' · ')}</i>}
+            {o.label.replace(/^办张健身卡，?常去$/, '办卡常去').replace(/^每年全面/, '每年')}{(m > 0 || a) && <i>{[m > 0 && yuan(m), a].filter(Boolean).join(' · ')}</i>}
           </button>;
         })}
       </div>

@@ -15,8 +15,14 @@
 .yr-cash b { display: block; font-size: 26px; font-weight: 600; line-height: 1.2; margin-top: 2px; }
 .yr-cash b i { font: 500 13px var(--sans); margin-left: 2px; }
 .yr-cash small { display: block; font-size: 12px; color: var(--ink2); margin-top: 2px; }
-.yr-nav { display: flex; flex-direction: column; }
-.yr-ng { margin: 20px 0 4px; padding: 0 10px; font: 700 11px var(--serif); letter-spacing: .24em; color: var(--muted); }
+.yr-nav { display: flex; flex-direction: column; flex: 1; min-height: 0; }
+.yr-grp-n { display: flex; flex-direction: column; gap: 2px; }
+/* 两组分开：「看看账」沉到侧栏底部，上面一道墨线；组名是小号宋体，后面拖一条细线 */
+.yr-grp-n.see { margin-top: auto; padding-top: 12px; border-top: 1px solid var(--ink); }
+.yr-ng { display: flex; align-items: center; gap: 8px; margin: 20px 0 6px; padding: 0 10px; font: 700 12.5px var(--serif); letter-spacing: .2em; color: var(--ink); }
+.yr-ng::after { content: ''; flex: 1; height: 1px; background: var(--rule); }
+.yr-grp-n.see .yr-ng { margin-top: 0; }
+.yr-grp-n.see .yr-ng::after { display: none; }
 .yr-nb { display: flex; align-items: center; gap: 8px; width: 100%; height: 38px; padding: 0 10px; border: 0; border-radius: 5px; background: transparent; font: 600 14.5px var(--serif); color: var(--ink2); cursor: pointer; text-align: left; white-space: nowrap; }
 .yr-nb:hover { color: var(--ink); }
 .yr-nb.on { background: var(--card); color: var(--ink); box-shadow: var(--shadow); }
@@ -132,6 +138,8 @@
   .yr-nav { flex-direction: row; gap: 4px; overflow-x: auto; scrollbar-width: none; margin: 8px -12px 0; padding: 0 12px 10px; }
   .yr-nav::-webkit-scrollbar { display: none; }
   .yr-ng { display: none; }
+  .yr-grp-n { flex-direction: row; gap: 4px; }
+  .yr-grp-n.see { margin: 0 0 0 4px; padding: 0 0 0 8px; border-top: 0; border-left: 1px solid var(--ink); }
   .yr-nb { width: auto; flex: none; height: 36px; font-size: 14px; }
   .yr-nb.on::before { display: none; }
   .yr-main { padding: 16px 14px 24px; }

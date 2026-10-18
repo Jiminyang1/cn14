@@ -120,7 +120,7 @@ function YearPlan() {
         })}
       </div>
       <div className="yp-habits">
-        {plansShown().sort((p, q) => PLAN_I(p) - PLAN_I(q)).map(k => { const o = planOpt(k); return o && <span key={k}><em>{PLAN_N[k] || PLANS[k].n}</em>{o.label.replace(/，常去$/, '常去').replace(/^每年全面/, '每年')}</span>; })}
+        {plansShown().sort((p, q) => PLAN_I(p) - PLAN_I(q)).map(k => { const o = planOpt(k); return o && <span key={k}><em>{PLAN_N[k] || PLANS[k].n}</em>{o.label.replace(/^办张健身卡，?常去$/, '办卡常去').replace(/^每年全面/, '每年')}</span>; })}
       </div>
     </section>
   );
