@@ -17,7 +17,7 @@ import { supportMonth } from './family';
 import { dedOf, netOf, penBase, type DedRow, type NetPay } from './tax';
 import type { Partner } from './types';
 import { changeMoney, repayDebt } from './accounts';
-import { POOR_LONG, familySize, floorCost, incUnits, livingCost, poorStep, styleOf, tierOf } from './budget';
+import { familySize, floorCost, incUnits, LIVE_MID, liveX, livingCost, POOR_LONG, poorStep, styleOf, tierOf } from './budget';
 import { invBal } from './plans/invest';
 import { dibaoMonth, frugalEnd, frugalK, kidAdvMonth, kidSupportY, tightMonth } from './tight';
 
@@ -31,6 +31,7 @@ declare module './types' {
     tier?: number;  // 这一年照计划过的是哪一档（budget.ts 的 TIERS，每年过生日定）；经济独立以后才有。每个月实际过的是账单上的 tier
     incQ?: number;  // 这一年的收入相当于当地几个人的（budget.ts 的 incUnits，每年过生日定）
     poorM?: number; // 拮据的月份（budget.ts 的 poorStep）：攒多了就是长期拮据
+    liveX?: number; // 这个月每人实际花的钱是当地的几倍（budget.ts 的 liveX）
     tierSaid?: number; tierSaidA?: number; // 时间线上一次写的是哪一档、几岁写的
   }
 }
@@ -142,6 +143,7 @@ export function moneyMonth(m: number) {
   const living = basicPaid + extra;
   // 这个月实际过的是哪一档：钱不够、只付得起底线的，就是拮据（住养老院的按计划的算）
   const tierNow = inCare ? S.tier : tierOf(living, H.live, size);
+  S.liveX = inCare ? LIVE_MID : liveX(living, H.live, size); // 过得好坏的增减益看它（budget.ts 的 liveFx）
   S.poorM = poorStep(S.poorM, tierNow);
   if (S.poorM === POOR_LONG) log('好几年了，日子一直紧巴巴的。人也跟着憔悴了。', 'bad');
   const depositInterest = S.money * (SAVE_INT_M - 1);
@@ -174,7 +176,7 @@ export function mySize() {
 /** 照生活方式 k（plans/style.ts 的选项）过，这个月要花多少、算哪一档（行动单上给玩家看） */
 export function myLiving(k: string) {
   const H = here(), size = mySize(), cost = livingCost(S.incQ ?? 1, H.live, size, k);
-  return { cost, tier: tierOf(cost, H.live, size) };
+  return { cost, tier: tierOf(cost, H.live, size), x: liveX(cost, H.live, size) };
 }
 // ===== 失业保险金 =====
 // 《失业保险条例》第14、17条：缴费满 1 年、非本人意愿中断就业的可以领；缴费 1–5 年最长 12 个月、5–10 年 18 个月、10 年以上 24 个月；

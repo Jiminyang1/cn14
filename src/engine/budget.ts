@@ -4,18 +4,33 @@
 // 照这样算，全国城镇一般的人家日常开销约是到手收入的一半，京沪这样收入高的地方三四成；一个人过、两口子、有孩子、退休，比例各不一样：
 // 两口子都上班最能存钱，有了孩子钱就紧了，只有一个人挣钱的更紧。
 // 收入每年过生日的时候看一次（加上存款能贴补的一点）；收入一下子少了，日子也是慢慢紧下来的。
-// 档位（拮据……富足）是这一家每个人花的钱相当于当地的几倍。档位高低影响幸福和健康，日子长期紧巴巴的伤得更重（stats.ts 的 drift）。
+// 档位（拮据……富足）是这一家每个人花的钱相当于当地的几倍，只是个说法。
+// 过得好坏的增减益（liveFx）按实际花的钱连续变化：多花一点就好一点，省一点就差一点，生活方式的每个选项都看得出来（stats.ts 的 drift、离婚风险）。
+// 日子长期紧巴巴的伤得更重。
 import { MONTHS } from './monthly';
 import { planOf } from './plans';
+import { clamp } from './rng';
+import { flog } from './fmath';
 
-// from：每人花的钱达到当地每人日常开销的几倍算这一档；h、hl：过这样的日子，幸福、健康的目标值高低多少（以最常见的小康为零：钱多了幸福加得越来越少）
+const LN2 = flog(2);
+
+// from：每人花的钱达到当地每人日常开销的几倍算这一档
 export const TIERS = [
-  { n: '拮据', from: 0, h: -9, hl: -2 },
-  { n: '普通', from: 0.9, h: -3, hl: 0 },
-  { n: '小康', from: 1.35, h: 0, hl: 0.5 },
-  { n: '宽裕', from: 1.9, h: 2, hl: 1 },
-  { n: '富足', from: 2.7, h: 3, hl: 1 },
+  { n: '拮据', from: 0 },
+  { n: '普通', from: 0.9 },
+  { n: '小康', from: 1.35 },
+  { n: '宽裕', from: 1.9 },
+  { n: '富足', from: 2.7 },
 ];
+// 过得好坏的增减益：每人实际花的钱是当地每人日常开销的 x 倍，以一般人家的 LIVE_MID 为零，按 log2(x / LIVE_MID) 算。
+// 往下陡、往上缓：省掉的是吃穿和人情往来，多花的是锦上添花。h、so、hl：幸福、人际、健康的目标值；div：离婚风险的倍数（为钱吵架）
+export const LIVE_MID = 1.5;
+const FX = { h: [11, 16, -14, 10], so: [8, 9, -10, 6], hl: [4, 5, -5, 3] }; // 往下每翻一倍、往上每翻一倍，下限、上限
+export function liveFx(x: number) {
+  const l = flog(Math.max(0.3, x) / LIVE_MID) / LN2;
+  const f = (k: keyof typeof FX) => { const [dn, up, lo, hi] = FX[k]; return clamp(l < 0 ? l * dn : l * up, lo, hi); };
+  return { h: f('h'), so: f('so'), hl: f('hl'), div: l < 0 ? 1 - 0.5 * l : 1 - Math.min(0.15, 0.15 * l) };
+}
 // 一家三口算 2.4 个人，比人头少，所以照常过的时候每个「算的人」要比当地人均花得多一些（估计：让一般的人家花掉的比例对上全国的平均）
 export const LIVE_K = 1.2;
 // 存款也撑着日子：每年按存款的 4% 算进收入（存款多的人家花得也多，钱不会只攒不花）
@@ -52,9 +67,11 @@ export function livingCost(q: number, c: number, size: number, style = 'normal')
   const v = style === 'save' ? Math.min(c / MONTHS * size * SAVE_LV, usual * (1 - SAVE_CUT)) : usual * (STYLE_K[style] || 1);
   return Math.max(v, floorCost(c, size));
 }
+/** 一个月花了 spend，每人是当地每人日常开销的几倍 */
+export const liveX = (spend: number, c: number, size: number) => spend / (c / MONTHS * size);
 /** 一个月花了 spend，算哪一档 */
 export function tierOf(spend: number, c: number, size: number) {
-  const x = spend / (c / MONTHS * size);
+  const x = liveX(spend, c, size);
   for (let i = TIERS.length - 1; i > 0; i--) if (x >= TIERS[i].from) return i;
   return 0;
 }

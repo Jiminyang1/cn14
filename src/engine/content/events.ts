@@ -29,6 +29,7 @@ import { reimburse } from '../health';
 import { ECHO_EVENTS, meetCrush, meetPal } from './echoes';
 import { slotW } from '../focus';
 import { planOf } from '../plans';
+import { LIVE_MID, liveFx } from '../budget';
 
 declare module '../types' {
   interface Flags { parDivWith?: 'mom' | 'dad' } // 父母离婚后你跟着谁生活（判给谁）
@@ -119,7 +120,8 @@ export function divorceRisk() {
   // 幸福：已婚的人平常在 75 上下（stats.ts 的 drift），过得不开心的更容易散
   const q = fexp(-2.6 * (p.fit - 0.55) - 0.018 * ((p.love ?? 63) - 63) - 0.03 * (S.st.h - 62));
   // 格子放在「家人」上的，婚姻更稳：一格风险降三成，两格都放降近一半
-  return DIV_BASE * DIV_DUR(S.age - p.marriedAt) * q * (1 - 0.3 * Math.min(1.6, slotW('family'))) * (S.age >= 60 ? DIV_OLD : 1) * (PBY[S.loc.p].divK || 1) * tiltW(DIV_T) * tiltW(DIV_T, p.pz || null);
+  // 日子过得紧的更容易为钱吵架，过得宽裕的少一些（budget.ts 的 liveFx）
+  return DIV_BASE * DIV_DUR(S.age - p.marriedAt) * q * liveFx(S.liveX ?? LIVE_MID).div * (1 - 0.3 * Math.min(1.6, slotW('family'))) * (S.age >= 60 ? DIV_OLD : 1) * (PBY[S.loc.p].divK || 1) * tiltW(DIV_T) * tiltW(DIV_T, p.pz || null);
 }
 // 父母离婚：同一条婚龄曲线（婚龄按你的年龄 + 2 估计，上面有哥哥姐姐的按最大的那个算），不看婚姻质量（没有记），按老家的省份系数。
 // 只在你 1–17 岁时判定（之后的不影响「跟着谁生活」）。家里有不满一岁的弟弟妹妹时不离（民法典第 1082 条）
