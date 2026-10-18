@@ -98,7 +98,7 @@ const CLOSE = (c: number) => c >= 65 ? '无话不谈' : c >= 45 ? '常联系' : 
 /** 对方在哪：同一座城市不写，异地写城市 */
 const ptWhere = (p: Partner) => p.city && p.city !== S.loc.city ? `异地，在${p.city}` : `也在${S.loc.city}`;
 // ===== 右下角「人际关系」 =====
-// 分三组：家里（父母、兄弟姐妹）、自己的家（恋人或配偶、孩子、孙辈）、朋友（发小、初恋）。
+// 分三组：家里（父母、兄弟姐妹）、自己的家（恋人或配偶、孩子、孙辈）、朋友（还在来往的发小）。只列现在还在你生活里的人：初恋这种只是喜欢过的不列
 // 每个人一个样子：关系 | 名字 · 年龄 + 一行事实（做什么、在哪、多少年） | 右边亲疏。走了的人变灰，写享年
 type Tone = 'hi' | 'mid' | 'lo';
 // 颜色跟着词走：亲近的绿、平常的墨色、疏远或冷淡的红（分界和 closeWord、loveWord、CLOSE 一样）
@@ -128,11 +128,10 @@ function ParentP({ who }: { who: 'mom' | 'dad' }) {
   return <Person rel={rel} age={p.age} facts={[ret ? '退休了' : p.job, parentWhere(p, ret)]} close={S.age >= 18 && S.indep ? kin(c) : undefined} />;
 }
 export function People() {
-  const f = S.fam, F = S.flags, d = f.dating, pt = f.partner, pal = S.ppl?.pal, crush = S.ppl?.crush;
+  const f = S.fam, F = S.flags, d = f.dating, pt = f.partner, pal = S.ppl?.pal;
   const ptStudy = !!pt && !pt.retired && pt.k != null && !pt.jk; // 配偶还在读书：职业一栏已经写了「本科在读」
   const homeMeta = F.lb === 'both' && S.age < 16 ? `在外打工 · ${F.carer}照看` : F.parDiv ? '已离婚' : undefined;
   const own = !!d || !!pt || f.kids.length > 0 || !!S.flags.divorced;
-  const crushOn = !!crush && crush.name !== pt?.name && crush.name !== d?.name;
   return <>
     <Group n="家里" meta={homeMeta}>
       <ParentP who="dad" /><ParentP who="mom" />
@@ -154,11 +153,10 @@ export function People() {
         : <Person key={'k' + i} rel={k.sex === 'M' ? '儿子' : '女儿'} name={k.name} age="已离世" gone />)}
       {S.flags.grandkids > 0 && <Person rel="孙辈" age={S.flags.grandkids + '个'} />}
     </Group>}
-    {(pal || crushOn) && <Group n="朋友">
+    {pal && <Group n="朋友">
       {pal && (pal.alive
         ? <Person rel="发小" name={pal.name} facts={[palWhere(pal), '认识' + (S.age - pal.at) + '年']} close={pals(pal.close)} />
         : <Person rel="发小" name={pal.name} age="已去世" gone />)}
-      {crushOn && crush && <Person rel="初恋" name={crush.name} facts={[crush.at + '岁时喜欢过', crush.city && '在' + crush.city]} />}
     </Group>}
   </>;
 }
