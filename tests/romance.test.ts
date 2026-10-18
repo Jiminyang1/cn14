@@ -62,3 +62,20 @@ test('staying single: asked at 30, then every five years until 50', () => {
   life.flags.singleAt = 35; life.flags.noWed = 1;
   expect(asked(40)).toBe(false);
 });
+
+test('one hard flaw is enough for their family to object, whatever else you have', () => {
+  const life = single20();
+  life.age = 27; life.school = null; life.job = 'seeking'; life.house = { city: life.loc.city, p: life.loc.p, v: 1e6, paid: 1e6, at: 26 } as any;
+  const p = E.makePartner('friends');
+  p.age = 27; p.home = life.home.p; p.rural = life.home.kind === 'rural'; p.q = life.q;
+  expect(E.theirWhys(p).some(w => w.k === 'house')).toBe(true);
+  expect(E.theirPar(p)).toBe(-1);
+});
+
+test('love line: the one picked at a blind date who said no is named as such', () => {
+  const life = single20();
+  life.loves = [{ name: '乙', sex: 'F', at: 28, how: 'blind', kind: 'missed', with: '甲' }];
+  expect(E.loveLine(life).find(r => r.name === '乙')?.t).toContain('甲没答应');
+  life.loves.push({ name: '甲', sex: 'F', at: 28, how: 'blind', kind: 'love' });
+  expect(E.loveLine(life).find(r => r.name === '乙')?.t).not.toContain('没答应');
+});

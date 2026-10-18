@@ -58,7 +58,7 @@ export interface Partner {
   metAt: number; how: string; city: string; startAge: number; k: number; q: number; trait: string;
   jk: string | null; job: string | null; hpf: boolean; fit: number;
   inc: number;               // 税前年收入（退休后是一年的养老金）；到手见 finance.ts 的 partnerPay。和别的年收入比时不要再 × 12
-  love?: number; asks?: number; metParents?: number; marriedAt?: number; retired?: number;
+  love?: number; metParents?: number; marriedAt?: number; retired?: number;
   wh?: number;               // 对方家里要不要婚房：1 要、2 已经因为没房拒过一次求婚
   crisis?: number;           // 婚姻出问题是哪个月（苗头出现，三个月后问你：抉择 split）
   stay?: number;             // 你选了先这么过着是哪个月（再出事就是 Ta 提离婚）
@@ -114,7 +114,7 @@ export interface Flags {
   carer?: string;            // 留守时带你的人（父母都外出，或者在家的那一方去世了）
   mig?: number; migBack?: number; // 随迁子女；回老家中考
   ill?: Illness | null; survivor?: number; disabled?: number; illDebt?: number;
-  smoke?: number; parDiv?: number; divorced?: number /* 离婚时几岁 */; exes?: number; mShift?: number;
+  smoke?: number; parDiv?: number; divorced?: number /* 离婚时几岁 */; mShift?: number;
   tier?: string; uni?: { name: string; city: string; prov: string; tier: string }; major?: string;
   zkRedo?: number; slip?: { score: number }; stuLoan?: number;
   civilRetry?: number; civilN?: number; lastJob?: string; empIns?: number; farmStop?: number;

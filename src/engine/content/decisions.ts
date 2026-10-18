@@ -678,7 +678,7 @@ export const DEC = {
         if (theirPar(p) < 0 && selfP(p) >= 0.6) return { t: `${p.name}挺喜欢你，可${p.sex === 'M' ? '他' : '她'}家里不同意。${theirView(p) || ''}`, k: 'bad' };
         return { t: p.how === 'blind' ? `又见了两次，${p.name}说觉得你们不太合适。` : `你鼓起勇气表白，${p.name}说只想做朋友。`, k: 'bad' };
       }
-      p.love = clamp(55 + 25 * (p.fit - 0.5) + gauss(0, 8), 20, 90); p.asks = 0;
+      p.love = clamp(55 + 25 * (p.fit - 0.5) + gauss(0, 8), 20, 90);
       S.fam.dating = p; noteLove(p); eff({ h: 6 });
       return { t: togetherLine(p), k: 'good' };
     },
@@ -983,7 +983,7 @@ export const DEC = {
     apply: (k, ctx) => {
       const p = S.fam.dating;
       if (k.startsWith('wait:')) {
-        p.asks = (p.asks || 0) + 1; p.wf = k.slice(5); p.wAt = nowM(); p.w0 ??= p.wAt;
+        p.wf = k.slice(5); p.wAt = nowM(); p.w0 ??= p.wAt;
         // 选项下面已经写明 Ta 家里在给 Ta 介绍别人：这时再等，Ta 有四成可能不等了（估计）
         if (ctx.restless && chance(0.4)) { breakUp(p, `${p.name}说不想再等了。`, -7, 'wait'); return null; }
         return p.wf === 'think' ? null : `你对${p.name}说，${WAIT_SAID[p.wf]}。`;
@@ -994,7 +994,6 @@ export const DEC = {
       // 第二次还是没房：感情不错的松口（不再要婚房，当场答应），不然就散了。都写在选项下面
       let pre = '';
       if (ctx.wantHouse && !S.house) {
-        p.asks = (p.asks || 0) + 1;
         if (p.wh !== 2) {
           p.love = clamp(p.love - 8, 0, 100); p.wh = 2; eff({ h: -4 });
           return { t: `${p.name}的爸妈说，没有房子不能结婚。婚事先放下了。`, k: 'bad' };
