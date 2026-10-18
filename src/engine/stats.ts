@@ -6,6 +6,7 @@ import { placeInc } from './place';
 import { JOBS, isWorking } from './career';
 import { MONTHS, approachPerMonth } from './monthly';
 import { pz } from './personality';
+import { focusH } from './focus';
 import { changeMoney, liquidBalance } from './accounts';
 import { POOR_HURT, POOR_LONG, TIERS } from './budget';
 
@@ -23,6 +24,12 @@ const K_HL = approachPerMonth(0.18), K_H = approachPerMonth(0.25), K_SO = approa
 // 外向、随和的人人际高一些；认真的人健康习惯好一些。见 docs/personality/PLAN.md
 const persH = () => -2.5 * pz('n') + 1.2 * pz('e') + 0.8 * pz('c') + 0.4 * pz('a');
 const persSo = () => 2.5 * pz('e') + 1.0 * pz('a');
+// 幸福的目标值：成年人大多落在 65–85 之间，顶到 100 的很少，过得好坏才看得出来。
+// 每年持续的东西（格子、婚姻、孩子、收入、失业）都只抬高或压低目标值，不往幸福上直接加——每年直接加 x，目标只拉回四分之一，
+// 等于把目标抬高 4x，几年下来谁都顶到 100。一次性的事（升职、旅游、被骗）还是直接加减，过几年慢慢回到目标，这就是起伏。
+// 格子：每格按 FOCUS 的 h 乘 H_FOCUS（两格都放爱好约 +14、两格都放工作约 −6）；职业：职业表的 h 乘 H_JOB（原来每年直接加一半，折成目标值一样大）；
+// 未成年人心事少，目标高 H_KID。人际大多在 85 以上，按 70 算起，免得它把幸福一起抬满
+const H_BASE = 47, H_FOCUS = 1.5, H_JOB = 2, H_KID = 8;
 /** 健康、幸福、人际向各自的目标值靠拢一个月（目标按这个月月底的状态算） */
 export function drift() {
   const st = S.st, f = S.fam, a = S.age;
@@ -40,7 +47,8 @@ export function drift() {
   // 成年以后还要和当地人比收入（relInc），比日子的档位轻一些
   const rel = T.h - poorLong * 3 + (a < 18 ? 0 : (S.relInc || 0) * 0.4);
   const debt = a >= 22 && liquidBalance() < -placeInc() ? 7 : 0;
-  const hpT = 56 + rel + (f.married && f.partner && f.partner.alive ? 5 : 0) + Math.min(6, kids * 3) + (st.so - 50) * 0.25 + (st.hl - 60) * 0.15
+  const hpT = H_BASE + H_FOCUS * focusH() + rel + (f.married && f.partner && f.partner.alive ? 5 : 0) + Math.min(6, kids * 3) + (st.so - 70) * 0.2 + (st.hl - 60) * 0.15 + (a < 18 ? H_KID : 0)
+    + (isWorking() ? (JOBS[S.job].h || 0) * H_JOB : 0)
     - debt - (S.flags.lb && a < 16 ? 6 : 0) - (S.job === 'seeking' ? 6 : 0) - dis * 4 + persH();
   st.h = clamp(st.h + (hpT - st.h) * K_H, 0, 100);
   const soT = 50 + (f.married ? 8 : 0) + Math.min(9, kids * 3) + (S.flags.lb && a < 16 ? -4 : 0) + (a > 75 ? -6 : 0) + persSo();
@@ -49,12 +57,12 @@ export function drift() {
 export const hlExp = a => clamp(90 - Math.max(0, a - 22) * 0.8, 15, 90);
 
 // ===== 每个月月底 =====
-/** 身体：上了年纪学识慢慢下降（每年 0.3），工作对健康和幸福的影响（每年为职业表里的一半）。每月记 1/12，看这个月月底在不在工作 */
+/** 身体：上了年纪学识慢慢下降（每年 0.3），工作对健康的影响（每年为职业表里的一半；对幸福的影响在 drift 的目标值里）。每月记 1/12，看这个月月底在不在工作 */
 export function bodyMonth(m: number) {
   void m;
   const st = S.st;
   if (S.age >= 68 && st.kn > 25) st.kn -= 0.3 / MONTHS;
-  if (isWorking()) { const J = JOBS[S.job]; st.hl = clamp(st.hl + (J.hl || 0) * 0.5 / MONTHS, 0, 100); st.h = clamp(st.h + (J.h || 0) * 0.5 / MONTHS, 0, 100); }
+  if (isWorking()) { const J = JOBS[S.job]; st.hl = clamp(st.hl + (J.hl || 0) * 0.5 / MONTHS, 0, 100); }
 }
 /** 健康、幸福、人际每月向各自的目标值靠拢 */
 export function driftMonth(m: number) {

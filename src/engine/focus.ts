@@ -1,6 +1,6 @@
 // 每年的时间安排：空闲时间放在哪里。6–17 岁 1 格、18 岁起 2 格，两格可以放同一件事（全力投入，第二格打折）。
 // 玩家要感觉得到（AGENTS.md）：
-// · 状态：每格每年的效果见 FOCUS 的 e，每个月月底按这个月放在各项上的时间结算；
+// · 状态：每格每年的效果见 FOCUS 的 e，每个月月底按这个月放在各项上的时间结算；幸福例外，抬高的是目标值（focusH）；
 // · 遇到什么事：格子所在领域的随机事件更容易抽到（schedule.ts 的 chooseEvent 用 domK），好事坏事一起多；
 // · 具体结果：工作 → 涨工资、被挖；恋爱 → 认识人、感情；家人 → 婚姻更稳；
 // · 一生的回响：每一项一辈子放了多少年记在 S.fy，几十年后会被提起（content/echoes.ts），结局里也看得到（story.ts）。
@@ -101,8 +101,16 @@ function closeFocus() {
 // 拼工作涨工资：一格放满一年 15% 的机会（两格 1.6 份约 24%），换算成每月；越接近个人上限涨得越少（career.ts 的 raise）
 const RAISE_P = 0.15;
 const RAISE_T = ['工作上很拼，涨了工资。', '年底考核拿了优秀，工资涨了一档。', '项目做得漂亮，领导在会上点了你的名，下个月工资条多了一截。', '加了一年的班，换来一次加薪。', '同一批进来的人里，你第一个涨了薪。'];
+// 幸福不在这里每年加：每年都加、每年只拉回四分之一，几年下来谁都顶到 100。改成抬高幸福的目标值（focusH，stats.ts 的 drift 用），
+// 放在爱好上的那几年日子更有滋味，换走了就慢慢回落
 const EFF: Record<string, [string, number][]> = {};
-for (const k in FOCUS) EFF[k] = Object.entries(FOCUS[k].e) as [string, number][];
+for (const k in FOCUS) EFF[k] = (Object.entries(FOCUS[k].e) as [string, number][]).filter(([s]) => s !== 'h');
+/** 现在的格子让幸福的目标值高（低）多少：每一格就是 FOCUS 里写的那个 h（两格放同一件事，第二格打折） */
+export function focusH() {
+  let t = 0;
+  for (const k in FOCUS) { const h = FOCUS[k].e.h; if (h && FOCUS[k].ok()) t += h * slotW(k); }
+  return t;
+}
 /** 重心 k 这个月算 w 格（一格放满一个月是 1）：结算 1/12 年的效果，记进一生的账 */
 function applyOne(k: string, w: number) {
   const f = FOCUS[k]; if (!f || !f.ok() || w <= 0) return;

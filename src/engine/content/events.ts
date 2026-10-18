@@ -107,7 +107,8 @@ export function divorce(p, why = '') {
 export function divorceRisk() {
   if (!canDivorce()) return 0;
   const p = S.fam.partner;
-  const q = fexp(-2.6 * (p.fit - 0.55) - 0.018 * ((p.love ?? 63) - 63) - 0.03 * (S.st.h - 80));
+  // 幸福：已婚的人平常在 75 上下（stats.ts 的 drift），过得不开心的更容易散
+  const q = fexp(-2.6 * (p.fit - 0.55) - 0.018 * ((p.love ?? 63) - 63) - 0.03 * (S.st.h - 62));
   // 格子放在「家人」上的，婚姻更稳：一格风险降三成，两格都放降近一半
   return DIV_BASE * DIV_DUR(S.age - p.marriedAt) * q * (1 - 0.3 * Math.min(1.6, slotW('family'))) * (S.age >= 60 ? DIV_OLD : 1) * (PBY[S.loc.p].divK || 1) * tiltW(DIV_T) * tiltW(DIV_T, p.pz || null);
 }
