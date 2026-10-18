@@ -237,19 +237,19 @@
 .dgal-grid > div { display: flex; flex-direction: column; gap: 10px; }
 .dgal-grid h5 { margin: 0; font-size: 13px; color: var(--muted); }
 
-/* 右下角「材料目录」：一排封皮 + 缩小摊开的那一份 */
-.dshelf-row { display: flex; flex-wrap: wrap; gap: 6px; padding-bottom: 10px; border-bottom: 1px solid var(--hair); }
-.dshelf-it { padding: 0 0 4px; border: 0; background: none; cursor: pointer; border-bottom: 2px solid transparent; }
-.dshelf-it .dmini { font-size: 0 !important; box-shadow: 0 2px 4px -2px rgba(0, 0, 0, .45); }
-.dshelf-it .dmini.line { box-shadow: 0 2px 4px -2px rgba(0, 0, 0, .45), inset 0 0 0 1px #D8CFBE; }
-.dshelf-it.on { border-bottom-color: var(--seal); }
-.dshelf-it:not(.on) { opacity: .7; }
-.dshelf-it:hover { opacity: 1; }
-.dshelf-h { display: flex; align-items: baseline; gap: 8px; margin: 10px 0 8px; }
-.dshelf-h b { font-size: 14px; }
-.dshelf-h .mono { font-size: 11.5px; color: var(--muted); }
-.dshelf-h .sec-link { margin-left: auto; }
-.dshelf-doc { display: block; width: 100%; padding: 4px 0 10px; border: 0; background: none; cursor: zoom-in; text-align: left; }
+/* 右下角「材料目录」：每份证件一张它本来颜色的卡片，写名字、年月和最要紧的一两样；点开在下面原地摊开 */
+.dshelf { display: flex; flex-direction: column; gap: 6px; }
+.dcv { display: block; width: 100%; padding: 8px 12px 9px; border: 0; border-radius: 4px; text-align: left; cursor: pointer; box-shadow: 0 1px 2px rgba(0, 0, 0, .12); }
+.dcv.line { box-shadow: inset 0 0 0 1px #D8CFBE; }
+.dcv:hover { filter: brightness(1.05); }
+.dcv-t { display: flex; align-items: baseline; gap: 8px; }
+.dcv-t b { font: 700 13.5px var(--serif); letter-spacing: .04em; }
+.dcv-t .mono { margin-left: auto; font-size: 11px; opacity: .75; }
+.dcv-s { display: block; margin-top: 2px; font-size: 12px; opacity: .82; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.dcv-s em { margin-left: 8px; padding: 0 4px; border: 1px solid currentColor; border-radius: 2px; font-style: normal; font-size: 11px; }
+.dcv-w.open .dcv { border-radius: 4px 4px 0 0; }
+.dcv-open { padding: 10px 0 4px; text-align: right; }
+.dshelf-doc { display: block; width: 100%; padding: 0 0 6px; border: 0; background: none; cursor: zoom-in; text-align: left; }
 .dshrunk { position: relative; overflow: hidden; }
 .dshrunk-in { transform-origin: 0 0; display: flex; justify-content: center; }
 .dshrunk-in > .dview { width: 100%; display: flex; justify-content: center; }

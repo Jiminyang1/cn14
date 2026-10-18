@@ -543,21 +543,37 @@ function Shrunk({ children }: { children: ReactNode }) {
     <div ref={inner} className="dshrunk-in" style={{ width: MOUNT_W, transform: `scale(${fit.k})` }}>{children}</div>
   </div>;
 }
+// 卡片上写一句：每种证件最要紧的一两样
+const SUM: Record<string, (r: (k: string) => string) => string[]> = {
+  birth: r => [r('出生地'), r('出生地点')], report: r => [r('年级'), r('学校')], school: r => [r('学校')], id: r => [r('住址')],
+  admit: r => [r('学校'), r('专业')], grad: r => [r('学历'), r('专业')], civil: r => [r('岗位'), r('工作地')],
+  marry: r => [r('配偶') && '和' + r('配偶')], divorce: r => [r('对方') && '和' + r('对方'), r('婚姻')],
+  house: r => [r('坐落').replace(/ · $/, ''), r('面积')], kid: r => [r('新生儿'), r('性别')], ill: r => [r('诊断'), r('医院')],
+  retire: r => [r('原单位') || r('原岗位')], demol: r => [r('补偿')],
+};
+const sumOf = (d: Doc) => {
+  const r = (k: string) => row(d, k);
+  const vs = d.k === 'job' ? (d.v === 'blue' ? [r('工种'), r('务工地')] : [r('岗位'), r('甲方')]) : SUM[d.k] ? SUM[d.k](r) : d.rows.slice(0, 2).map(x => x[1]);
+  return vs.filter(Boolean).join(' · ');
+};
 export function DocShelf() {
   const docs = S.docs || [];
-  const [sel, setSel] = useState<number | null>(null); // null：跟着最新的一份
+  const [on, setOn] = useState<number | null>(null);
   if (!docs.length) return <p className="note-line" style={{ margin: 0 }}>还没有材料。</p>;
-  const i = sel != null && docs[sel] ? sel : docs.length - 1, d = docs[i];
   return <div className="dshelf">
-    <div className="dshelf-row" role="tablist" aria-label="材料">
-      {docs.map((x, j) => <button key={j} type="button" role="tab" aria-selected={j === i} title={`${x.title} · ${x.y}.${pad2(x.m)}`}
-        className={'dshelf-it' + (j === i ? ' on' : '')} onClick={() => setSel(j === docs.length - 1 ? null : j)}><DocMini d={x} w={22} /></button>)}
-    </div>
-    <div className="dshelf-h">
-      <b className="serif">{d.title}</b><span className="mono">{d.y}.{pad2(d.m)} · {d.a}岁</span>
-      <button type="button" className="sec-link" onClick={() => openDoc(i)}>展开 ›</button>
-    </div>
-    <button type="button" className="dshelf-doc" aria-label={'展开' + d.title} onClick={() => openDoc(i)}><Shrunk><DocView d={d} /></Shrunk></button>
+    {docs.map((d, i) => [d, i] as const).reverse().map(([d, i]) => {
+      const c = coverOf(d), m = lastMark(d), open = on === i;
+      return <div key={i} className={'dcv-w' + (open ? ' open' : '')}>
+        <button type="button" className={'dcv' + (c.line ? ' line' : '')} aria-expanded={open} style={{ background: c.bg, color: c.fg }} onClick={() => setOn(open ? null : i)}>
+          <span className="dcv-t"><b>{d.title}</b><span className="mono">{d.y}.{pad2(d.m)}</span></span>
+          <span className="dcv-s">{sumOf(d)}{m && <em>{m.t.split(' · ')[0].replace(/^\d{4}\.\d+ /, '')}</em>}</span>
+        </button>
+        {open && <div className="dcv-open">
+          <button type="button" className="dshelf-doc" aria-label={'在证件夹里看' + d.title} onClick={() => openDoc(i)}><Shrunk><DocView d={d} /></Shrunk></button>
+          <button type="button" className="sec-link" onClick={() => openDoc(i)}>放大看 ›</button>
+        </div>}
+      </div>;
+    })}
   </div>;
 }
 
