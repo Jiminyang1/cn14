@@ -77,8 +77,8 @@ export interface Family {
 export interface LogEntry { a: number; t: string; k: string; f: string | null; pic?: string } // pic：配一张像素插画（ui/pixel/scenes.ts 的场景名）
 export interface Doc { k: string; title: string; a: number; y: number; rows: [string, string][] }
 export interface YearRow { a: number; h: number; hl: number; m: number; s: string }
-export interface QueueItem { at: number; type: 'ev' | 'dec' | 'ms' | 'ref' | 'day'; id?: string }
-export type Pending = { type: 'dec'; id: string; d: Decision } | { type: 'ref'; q: string };
+export interface QueueItem { at: number; type: 'ev' | 'dec' | 'ms' | 'day'; id?: string }
+export type Pending = { type: 'dec'; id: string; d: Decision };
 export interface Loan { kind: 'com' | 'hpf'; bal: number; rate: number; years: number; pay: number; arrears?: number }
 export interface House { city: string; p: string; v: number; paid: number; at: number; pt?: number } // pt：配偶婚前的房（离婚时归对方）
 export interface InheritedHome { city: string; p: string; v: number; share: number; reviewed?: boolean }
@@ -148,7 +148,7 @@ export interface Life {
   pen?: { y: number; r: number; s: number };       // 职工养老保险缴费记录（finance.ts 的 penMonth）
   // 钱：经济独立以前算在家里
   indep: boolean; indepAt?: number; money: number;
-  debt?: number; parentTier?: number;              // 父母家这一年的生活档位（budget.ts）
+  debt?: number; parentTier?: number;              // 父母家这个月过的是哪一档（budget.ts 的 TIERS）
   statement?: MonthlyStatement;
   statements?: MonthlyStatement[];
   cashflow?: { months: number; income: number; spending: number; mortgage: number; debtRepaid: number };
@@ -162,7 +162,7 @@ export interface Life {
   month: number;                                   // 这一年的第几个月（0 = 生日那个月），见 monthly.ts
   done: Record<string, number>; recent: string[]; fT: Record<string, number>; fStart?: number; // 每年的格子（focus.ts 的 slots）：这个月各项累计的时间、上次记账的进度
   // 记录
-  log: LogEntry[]; years: YearRow[]; docs?: Doc[]; notes: { a: number; q: string; t: string }[];
+  log: LogEntry[]; years: YearRow[]; docs?: Doc[];
   stats: { maxMoney: number; support?: number; inherit?: number };
   death?: Death; comps?: Companion[];
   dayDone?: Record<string, number>;                // 日常条目上次出现的年龄（content/daily.ts）

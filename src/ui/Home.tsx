@@ -55,7 +55,7 @@ export function Home() {
               <button className="stamp-btn" type="button" onClick={() => game.bornNow()}>出生</button>
               {sv && <button className="resume" type="button" onClick={() => game.resume()}>继续上次的人生<small>{sv.name} · {sv.age} 岁</small></button>}
             </div>
-            <p className="hint">一年约 1 分钟，活到平均寿命大约 70–85 分钟。随时可以暂停、加速，或者快进到下一件大事；关掉页面会保存在这个浏览器里。</p>
+            <p className="hint">一年约 40 秒（小时候更快），活到平均寿命大约 45–55 分钟。随时可以暂停、加速，或者快进到下一件大事；关掉页面会保存在这个浏览器里。</p>
           </div>
         </section>
 

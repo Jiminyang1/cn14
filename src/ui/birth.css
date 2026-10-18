@@ -1,0 +1,14 @@
+/* 出生登记表（ui/BirthCert.tsx）：命运签、同一秒出生的五个人 */
+.fate { margin: 10px 0 14px; padding: 14px 16px; border-left: 3px solid var(--seal); background: var(--seal-soft); }
+.fate-k { font-size: 12px; font-weight: 700; letter-spacing: .15em; color: var(--seal); }
+.fate-t { margin: 4px 0 6px; font-family: var(--serif); font-size: 22px; font-weight: 900; line-height: 1.45; }
+.fate-odds { margin: 0; font-size: 13px; color: var(--ink2); }
+.five { list-style: none; margin: 8px 0 6px; padding: 0; }
+.five li { display: grid; grid-template-columns: 22px auto minmax(0, 1fr) auto; align-items: baseline; gap: 10px; padding: 7px 8px; border-bottom: 1px solid var(--hair); font-size: 13.5px; }
+.five li.me { background: var(--tint); box-shadow: inset 3px 0 0 var(--seal); }
+.five li.me b { color: var(--seal); }
+.five-n { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.five li b { font-family: var(--serif); }
+.five-p { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--muted); font-size: 12.5px; }
+.five-c { margin: 8px 0 18px; font-family: var(--serif); font-size: 15px; line-height: 1.7; }
+@media (max-width: 560px) { .fate-t { font-size: 19px; } }

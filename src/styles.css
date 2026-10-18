@@ -131,7 +131,6 @@ textarea { font: 15px/1.7 var(--sans); color: var(--ink); width: 100%; min-heigh
 .menu > button, .menu > label { text-align: left; border: 0; background: transparent; color: var(--ink); padding: 8px 10px; border-radius: 4px; cursor: pointer; font-size: 13px; }
 .menu > button:hover, .menu > label:hover { background: var(--tint); }
 .menu .runid { margin: 4px 10px 6px; }
-.menu .m-auto { display: none; }
 
 .lbody { flex: 1; min-height: 0; width: 100%; display: grid; grid-template-columns: 300px minmax(0, 1fr) 340px; grid-template-rows: minmax(0, 1fr); gap: 14px; padding: 14px 24px; }
 .col { display: flex; flex-direction: column; gap: 12px; min-height: 0; min-width: 0; }
@@ -218,8 +217,6 @@ textarea { font: 15px/1.7 var(--sans); color: var(--ink); width: 100%; min-heigh
 .tl.loss p { font-weight: 700; }
 .tl.bad p { text-decoration: underline wavy var(--muted) 1px; text-underline-offset: 4px; }
 .tl.day p { color: var(--ink2); }
-.tl.note p { font-family: var(--serif); color: var(--ink2); }
-.tl.note p::before { content: '自述'; font: 700 11px var(--sans); color: var(--kraft-ink); background: var(--kraft); padding: 1px 6px; border-radius: 2px; margin-right: 8px; vertical-align: 1px; }
 .tl.death p { font-family: var(--serif); font-weight: 900; font-size: 17px; color: var(--seal); }
 /* 人生大事（journal.ts 的 major）：一条红线、宋体加粗，和日常拉开分量 */
 .tl.major { margin: 6px 0; padding: 10px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); background: linear-gradient(90deg, var(--seal-soft), transparent 70%); }
@@ -402,7 +399,6 @@ table.cmp th { font-weight: 500; font-family: var(--serif); color: var(--muted);
 .doc.marry::before, .doc.retire::before, .doc.admit::before { background: var(--seal); }
 .doc.house::before { background: var(--good); }
 .doc.job::before, .doc.civil::before, .doc.birth::before { background: var(--blue); }
-.notes p { border-left: 3px solid var(--kraft); padding-left: 10px; font-family: var(--serif); }
 .end-actions { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; margin-top: 26px; }
 
 /* 「怎么算的」：小 i 图标，点击弹出说明卡片 */
@@ -483,7 +479,6 @@ table.cmp th { font-weight: 500; font-family: var(--serif); color: var(--muted);
   .ctrls .spd1 { display: inline-grid; }
   .ctrls .primary { flex: 1; font-size: 15px; }
   .menu-w { margin-left: auto; }
-  .menu .m-auto { display: flex; }
   .lbody { display: flex; flex-direction: column; gap: 10px; padding: 12px; }
   .col { display: contents; }
   .lbody .basic { order: 1; }

@@ -28,14 +28,14 @@ export const FOCUS = {
   sport: { n: '运动', d: '跑步、打球、跳绳', e: { hl: 5, h: 2 }, dom: 'health', ok: () => S.age >= 6 && S.age < 70 },
   work: { n: '工作', d: '加班、学技能、争取升职', e: { h: -2.5, hl: -2.5, so: -1 }, dom: 'work', ok: () => isWorking() },
   love: { n: '恋爱', d: '多出去认识人', e: { so: 2, h: 2 }, dom: 'love', ok: () => S.age >= 18 && S.age < 60 && !S.fam.married },
-  family: { n: '家人', d: '陪伴家人', e: { so: 4, h: 4 }, dom: 'family', ok: () => S.age >= 22 },
+  family: { n: '家人', d: '陪伴配偶和孩子', e: { so: 4, h: 4 }, dom: 'family', ok: () => S.age >= 22 },
   hobby: { n: '爱好', d: '做自己喜欢的事', e: { h: 6, so: 1 }, dom: 'leisure', ok: () => S.age >= 18 },
   rest: { n: '养身体', d: '好好吃饭睡觉，按时体检', e: { hl: 5, h: 1 }, dom: 'health', ok: () => S.age >= 18 },
 };
 // 格子旁边写的「有什么用」（状态以外的结果）
 const MORE: Record<string, string> = {
   study: '', work: '更容易涨工资、被别的公司挖', love: '更容易认识人，感情更好',
-  family: '婚姻更稳，家里的事更多', friends: '朋友多了，事也多了', sport: '少生病', rest: '少生病', hobby: '日子过得有滋味', play: '开心',
+  family: '婚姻更稳，和孩子更亲（父母那边要自己回家看看）', friends: '朋友多了，事也多了', sport: '少生病', rest: '少生病', hobby: '日子过得有滋味', play: '开心',
 };
 export const focusMore = (k: string) => k === 'study' ? (S.age < 18 ? '成绩更好，中考高考更有把握' : '学得更扎实，毕业去向更好') : MORE[k];
 export const focusList = () => Object.keys(FOCUS).filter(k => FOCUS[k].ok());

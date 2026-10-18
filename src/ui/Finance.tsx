@@ -1,4 +1,5 @@
-import { useId, useState } from 'react';
+import { useEffect, useId, useState } from 'react';
+import { game } from '../game/controller';
 import { S, TIERS, wan, type MonthlyStatement } from '../engine';
 
 export const cashAmount = (value: number) => {
@@ -9,7 +10,7 @@ export const cashChange = (value: number) => {
   const rounded = Math.round(value);
   return (rounded > 0 ? '+' : rounded < 0 ? '−' : '') + cashAmount(Math.abs(rounded));
 };
-export const monthlySpending = (bill: MonthlyStatement) => bill.living + bill.rent + bill.mortgage + bill.debtRepaid;
+export const monthlySpending = (bill: MonthlyStatement) => bill.living + (bill.plans || 0) + bill.rent + bill.mortgage + bill.debtRepaid;
 /** 生活档位的名字（budget.ts 的 TIERS） */
 export const tierName = (t?: number) => TIERS[t ?? 1]?.n || '';
 const movementClass = (value: number) => value < 0 ? 'neg' : value > 0 ? 'money-up' : undefined;
@@ -17,11 +18,12 @@ const movementClass = (value: number) => value < 0 ? 'neg' : value > 0 ? 'money-
 export const statementAge = (bill: MonthlyStatement, birthYear: number, birthMonth: number) => bill.year - birthYear - Number(bill.month < birthMonth);
 
 const signedWan = (x: number) => (x > 0 ? '+' : '−') + wan(Math.abs(x));
+// 年终小结：只在这一年有大笔进出时出现（平常年份不占时间线，逐月的账在「我的经济」的「看账单」里）
 export function TimelineFinance({ bills, completed, age }: { bills: MonthlyStatement[]; completed: boolean; age?: number }) {
   const [open, setOpen] = useState(false);
-  if (!completed || !bills.length) return null;
   // 这一年的大笔进出（engine/journal.ts 的 noteMoney）：标题上写最大的两笔，展开后全列出来
   const moves = age == null ? [] : (S.moves || []).filter(mv => mv.a === age);
+  if (!completed || !bills.length || (age != null && !moves.length)) return null;
   const top = moves.slice().sort((p, q) => Math.abs(q.x) - Math.abs(p.x)).slice(0, 2);
   const income = bills.reduce((total, bill) => total + bill.income, 0);
   const spending = bills.reduce((total, bill) => total + monthlySpending(bill), 0);
@@ -46,7 +48,7 @@ export function AccountStatement({ bill = S.statement }: { bill?: MonthlyStateme
   if (!bill) return <p className="account-note">第一个月结束后生成收支账单。</p>;
   // 只留几行：收入、生活（按档位）、住房、还欠款，其余（事件、家里的往来、利息）合成「其他」；为零的不写
   const rows: [string, number][] = [
-    ['到手收入', bill.income], [`生活开销（${tierName(bill.tier)}）`, -bill.living],
+    ['到手收入', bill.income], [`生活开销（${tierName(bill.tier)}）`, -bill.living], ['持续的计划', -(bill.plans || 0)],
     ['房租／养老院', -bill.rent], ['房贷', -bill.mortgage], ['还欠款', -bill.debtRepaid],
     ['其他（事件、往来、利息）', bill.events + bill.transfers + bill.depositInterest],
   ];
@@ -119,4 +121,35 @@ export function MonthlyLedger({ m, embedded = false }: { m?: string; embedded?: 
     <div className="sec"><span className="no">六</span><h3>收支账本</h3><small>按月留档</small></div>
     {content}
   </section>;
+}
+
+// 「看账单」：「我的经济」里的入口，点开是逐月的账（原来右栏单独一栏「收支账本」）。打开时暂停，关上以后保持暂停
+export function LedgerButton() {
+  const [open, setOpen] = useState(false);
+  const n = (S.statements || []).length;
+  if (!n) return null;
+  return <>
+    <button type="button" className="btn ledger-btn" onClick={() => setOpen(true)}>看账单<small>{n} 个月</small></button>
+    {open && <LedgerSheet onClose={() => setOpen(false)} />}
+  </>;
+}
+function LedgerSheet({ onClose }: { onClose: () => void }) {
+  useEffect(() => {
+    if (!game.paused) game.togglePause();
+    const esc = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
+    window.addEventListener('keydown', esc);
+    return () => window.removeEventListener('keydown', esc);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  return (
+    <div className="modal" onClick={e => { if (e.target === e.currentTarget) onClose(); }}>
+      <div className="ds" role="dialog" aria-label="账单">
+        <span className="ftab"><b>账单</b><span className="mono">按月留档</span></span>
+        <div className="ds-sheet">
+          <button type="button" className="ds-x" aria-label="关上" title="关上，游戏保持暂停" onClick={onClose}>×</button>
+          <div className="ds-h"><span className="k">账单</span><h3>每个月的钱</h3></div>
+          <MonthlyLedger embedded />
+        </div>
+      </div>
+    </div>
+  );
 }

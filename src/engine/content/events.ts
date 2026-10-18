@@ -28,6 +28,7 @@ import { inKg } from '../schedule';
 import { reimburse } from '../health';
 import { ECHO_EVENTS, meetCrush, meetPal } from './echoes';
 import { slotW } from '../focus';
+import { planOf } from '../plans';
 
 declare module '../types' {
   interface Flags { parDivWith?: 'mom' | 'dad' } // 父母离婚后你跟着谁生活（判给谁）
@@ -97,6 +98,7 @@ export function divorce(p, why = '') {
   // 有没成年的孩子：接着问孩子跟谁（抉择 custody）
   if (kidsAlive().some(k => k.age < 18 && !k.ex)) { S.flags.custody = { name: p.name, sex: p.sex, net: p.jk && !p.retired ? Math.round(partnerPay(p).net / 12) : 0 }; soon('custody'); }
   addDoc('divorce', '离婚证', [['对方', p.name]]);
+  if (S.inv) { S.inv.w *= 0.6; S.inv.f *= 0.6; } // 理财和基金也分走四成，和现金一样
   eff({ h: -8, so: -4, money: -Math.max(0, S.money) * 0.4 });
   const back = S.house?.pt ? (S.house = null, `房子是${p.name}婚前的，归了${p.sex === 'M' ? '他' : '她'}。你搬了出去。`) : '';
   return { t: `${why}你和${p.name}离婚了。${back}`, k: 'bad', x: 1, f: '2023年全国离婚360.5万对，其中民政部门登记259.3万对，其余为法院判决或调解' };
@@ -242,14 +244,16 @@ export const EVENTS = [
   { id: 'promo', a: [25, 58], gap: 4, w: () => unitJob() ? 1.8 : 0, c: () => unitJob() && !newJob() && S.done.layoff !== S.age, run: () => { raise(RAISE.promo); eff({ h: 4 }); return { t: PROMO_T[S.job] || '升职加薪了。', k: 'good' }; } },
   // 炒股：在单位上班的跟着同事，其余跟着朋友、老同事
   { id: 'stock', a: [25, 65], gap: 5, w: 1, c: () => S.money > placeInc() * 0.5, run: () => { const g = gauss(-0.05, 0.25), x = S.money * 0.3 * g, who = unitJob() ? '同事' : isWorking() ? '朋友' : '老同事'; eff({ money: x, h: g > 0 ? 2 : -3 }); return g > 0 ? `跟着${who}买了股票，赚了${wan(x)}。` : `跟着${who}买了股票，亏了${wan(-x)}。`; } },
-  { id: 'car', a: [25, 55], once: 1, w: 1.5, c: () => S.money > placeInc() * 1.2, run: () => { eff({ money: -placeInc() * 1.0, h: 3 }); return `买了一辆${chance(0.6) ? '新能源车' : '二手车'}，${awayFromHome() ? '过年终于可以自己开车回家了' : '周末终于可以开车出去转转了'}。`; } },
+  // 买车是玩家自己的行动了（actions.ts）；自动的人生在 autoActs 里替你买
   // 旅游：按月份写是哪个假期
-  { id: 'travel', a: [20, 75], gap: 4, w: 1, c: () => S.money > 0, run: () => { eff({ h: 3, money: -placeInc() * 0.08 }); const go = `${HOLIDAY[calMonth()]}去${pick(['西安', '三亚', '大理', '重庆', '青岛', '张家界', '哈尔滨', '桂林', '敦煌', '厦门'])}`;
+  // 旅行：玩家自己在「行动」里安排；开着自动抉择（和无界面的人生）时才自己发生
+  { id: 'travel', a: [20, 75], gap: 4, w: 1, c: () => S.money > 0 && (S.headless || !!S.auto), run: () => { eff({ h: 3, money: -placeInc() * 0.08 }); const go = `${HOLIDAY[calMonth()]}去${pick(['西安', '三亚', '大理', '重庆', '青岛', '张家界', '哈尔滨', '桂林', '敦煌', '厦门'])}`;
     return vary('travel', [`${go}旅游，景区人山人海，看人比看风景多。`, `${go}玩了几天。拍了几百张照片，回来以后一张也没再看过。`, `${go}。在一家小馆子里吃到了这辈子吃过最好吃的一碗面，后来再也没找到那家店。`, `${go}，赶上下雨，在酒店里躺了两天。倒也挺好。`, `${go}，${S.fam.married ? '和另一半' : '一个人'}看了一场日出。`]); } },
   // 春运回家：1–2 月（状态事件），在外省、父母还有人在、没有跟你住在一起
   { id: 'springHome', a: [18, 60], gap: 3, mo: [1, 2], pm: () => SPRING_PM, c: () => S.loc.p !== S.home.p && !S.flags.parWithMe && anyParent(), run: () => { eff({ h: 2, so: 2 }); return `春运抢票抢了三天，坐了${ri(6, 30)}个小时的车回家过年。`; } },
   { id: 'smoke', a: [15, 40], once: 1, w: () => S.sex === 'M' ? 1.6 : 0.1, run: () => { S.flags.smoke = 1; eff({ hl: -3 }); return { t: S.age < 18 ? '和几个同学躲在厕所里学会了抽烟。' : S.age < 22 ? '开始抽烟了。宿舍里的人都抽，你也跟着抽上了。' : '开始抽烟了。一开始是应酬时别人递过来的。', f: '中国成年男性的吸烟率远高于女性' }; } },
-  { id: 'quitSmoke', a: [30, 75], once: 1, w: 0.8, c: () => !!S.flags.smoke, run: () => { S.flags.smoke = 0; eff({ hl: 3 }); return { t: '戒烟了。试了好几次，这次终于成功。', k: 'good' }; } },
+  // 戒烟：玩家在「行动」里自己去戒（plans/health.ts）；自动的人生（无界面、自动抉择）才自己发生
+  { id: 'quitSmoke', a: [30, 75], once: 1, w: 0.8, c: () => !!S.flags.smoke && (S.headless || !!S.auto), run: () => { S.flags.smoke = 0; eff({ hl: 3 }); return { t: '戒烟了。试了好几次，这次终于成功。', k: 'good' }; } },
   { id: 'drink', a: [22, 55], gap: 4, w: () => ['sales', 'boss', 'civil'].includes(S.job) ? 2 : 0.3, run: () => { eff({ hl: -2 }); return vary('drink', ['饭局上被一轮轮敬酒，喝到吐。', '酒桌上领导说「感情深，一口闷」。你闷了，第二天头疼了一整天。', '陪客户喝到半夜，打车回家，在楼下坐了半个小时才上楼。', '体检说你有脂肪肝。你看着报告，想起这几年喝过的酒。']); } },
   { id: 'low', a: [14, 70], gap: 6, w: () => S.st.h < 40 ? 2 : 0.15, run: () => { eff({ h: -3 }); if (chance(0.15)) { eff({ h: 8 }); return { t: '有一段时间每天都很累，什么都不想做。后来你去医院看了心理科，慢慢好了一些。', f: '中国抑郁障碍患者中，一年内接受过任何治疗的不到一成（Lancet Psychiatry 2021）。全国心理援助热线：12356' }; } return { t: '有一段时间每天都很累，什么都不想做，觉得一切都没有意义。你没有告诉任何人。', k: 'bad', f: '全国心理援助热线：12356' }; } },
   // 离婚：状态事件，风险见上面的 divorceRisk（每个月取年风险的 1/12）。月初排进来、月中才发生，c 在发生时再查一次（这个月里刚怀上的不离）
@@ -266,7 +270,8 @@ export const EVENTS = [
   { id: 'reunion', a: [30, 60], gap: 10, w: 1, run: () => { eff({ so: 2, h: S.relInc > 0 ? 2 : -2 }); return vary('reunion', ['同学聚会。有人开着好车来，有人没来。大家聊着聊着，就开始聊房子和孩子。', '同学聚会，当年的班长致辞，说「二十年了，大家都没怎么变」。所有人都笑了。', '同学聚会上，有人提起了已经不在的一位同学。桌上安静了一会儿，又有人举起了杯子。', '同学聚会，回了一趟母校。教学楼翻新了，你们的教室变成了实验室。']); } },
   { id: 'scam', a: [25, 90], gap: 8, w: () => S.age > 60 ? 1.5 : 0.5, c: () => S.money > 0, run: () => { const x = Math.min(S.money * 0.3, placeInc() * (S.age > 60 ? 0.5 : 0.3)); eff({ money: -x, h: -4 }); return { t: S.age > 60 ? vary('scamOld', [`听了几次“健康讲座”，买了${wan(x)}的保健品。`, `有人上门推销“磁疗床垫”，说能治腰疼。你买了一张，花了${wan(x)}。`, `一个说是“老战友的儿子”的人打来电话借钱，你转了${wan(x)}。后来才知道是骗子。`]) : vary('scam', [`接到自称“公检法”的电话，被骗走了${wan(x)}。`, `在网上碰到一个“稳赚不赔”的投资群，投进去${wan(x)}，群第二天就解散了。`, `网购退款，对方让你下载一个软件。卡里的${wan(x)}没了。`]), k: 'bad' }; } },
   { id: 'visitHome', a: [22, 60], gap: 3, w: () => farFromParents() && anyParent() ? 2 : 0, run: () => { const w = parentsWord(); eff({ so: 2, h: 1 }); return vary('visitHome', [`坐高铁回老家看${w}。${ta(w)}老了很多，饭桌上的菜却还是你小时候爱吃的。`, `请了几天假回去看${w}。走的时候，${ta(w)}往你的行李箱里塞满了吃的，拉都拉不上。`, `回老家住了一个星期。第三天就开始吵架，最后一天又舍不得走。`, `回去看${w}，发现家里的灯泡坏了好几个，${ta(w)}一直没说。你一个个换好了。`]); } },
-  { id: 'checkup', a: [35, 75], gap: 4, w: 1.5, run: () => { eff({ hl: -1 }); return { t: `体检报告上有几个向上的箭头：${pick(['血压偏高', '血脂偏高', '血糖偏高', '尿酸偏高'])}。`, f: '中国18岁及以上居民高血压患病率为27.5%（2018年调查，2020年发布）' }; } },
+  // 体检报告：开着「定期体检」的人由计划自己写结果（plans/health.ts），这里不再重复
+  { id: 'checkup', a: [35, 75], gap: 4, w: 1.5, c: () => planOf('checkup') !== 'yearly', run: () => { eff({ hl: -1 }); return { t: `体检报告上有几个向上的箭头：${pick(['血压偏高', '血脂偏高', '血糖偏高', '尿酸偏高'])}。`, f: '中国18岁及以上居民高血压患病率为27.5%（2018年调查，2020年发布）' }; } },
   // 自然灾害：各省受灾人口相对全国的倍数（统计年鉴 8-25，2024）决定频率，农作物受灾面积的构成决定类型；地震按原来的地区名单
   { id: 'disaster', a: [0, 100], gap: 8, w: () => 0.3 * Math.min(4, PBY[S.loc.p].dzK || (PBY[S.loc.p].dz.length ? 1 : 0)), run: () => {
       const P = PBY[S.loc.p], w = { ...(P.dzW || {}) };
@@ -307,7 +312,8 @@ export const EVENTS = [
   { id: 'famParents', a: [28, 65], gap: 3, w: 0.5, c: () => bothParents() && !S.flags.parDiv, run: () => { eff({ h: 2, so: 1 }); return vary('famParents', ['带爸妈去做了一次全面体检，排了一上午的队。爸爸一直说「花这个钱干什么」。', '周末陪妈妈去逛菜市场，她跟每个摊主都介绍「这是我孩子」。', '给爸妈换了一台大电视，遥控器教了三遍。']); } },
   { id: 'famHome', a: [24, 85], gap: 3, w: 0.4, c: () => S.fam.married && !!S.fam.partner && S.fam.partner.alive, run: () => { eff({ h: 3 }); S.fam.partner.love = clamp((S.fam.partner.love ?? 63) + 3, 0, 100); return vary('famHome', ['一家人难得在家吃了一顿晚饭，谁都没看手机。', `结婚纪念日，你和${S.fam.partner.name}回到了第一次约会的那家店。店还在，老板换了。`, `周末和${S.fam.partner.name}把家里大扫除了一遍，翻出了结婚时的照片，看了一下午。`]); } },
   { id: 'halfMara', a: [20, 60], once: 1, w: 0.3, run: () => { eff({ hl: 2, h: 4 }); return { t: '跑完了人生第一个半程马拉松。到终点的时候，腿已经不是自己的了。', k: 'good' }; } },
-  { id: 'keepFit', a: [18, 75], gap: 4, w: 0.4, run: () => { eff({ hl: 2, h: 1 }); return vary('keepFit', ['办的健身卡，这次居然坚持了一整年。', '每天晚饭后绕着小区走一万步，保安都认识你了。', '体检的时候，几项指标都比去年好了。']); } },
+  // 健身：只在健身计划开着时发生（plans/health.ts）
+  { id: 'keepFit', a: [18, 75], gap: 4, w: 0.4, c: () => planOf('gym') === 'gym', run: () => { eff({ hl: 2, h: 1 }); return vary('keepFit', ['办的健身卡，这次居然坚持了一整年。', '每天晚饭后绕着小区走一万步，保安都认识你了。', '体检的时候，几项指标都比去年好了。']); } },
   { id: 'hobbyDeep', a: [16, 85], gap: 3, w: 0.4, run: () => { eff({ h: 3 }); return vary('hobbyDeep', ['周末都泡在自己的爱好上，家里堆满了相关的东西。', '在网上找到了一群同好，约好每个月见一次面。', '花了半年做成的一件东西发到网上，有几百个人点了赞。']); } },
   { id: 'friendsNight', a: [16, 80], gap: 2, w: 0.4, run: () => { eff({ so: 2, h: 2, hl: -1 }); return vary('friendsNight', ['和几个朋友吃火锅吃到半夜，聊的都是十年前的事。', '朋友失恋了，你陪着喝到凌晨三点。', '几个朋友组了个周末爬山的群，坚持了两个月就散了。']); } },
   // ---------- 少见的大事：一辈子碰上的人不多，碰上了就是人生大事（权重是估计，一生里各约百分之一到几） ----------

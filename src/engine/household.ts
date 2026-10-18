@@ -6,15 +6,17 @@ import { MONTHS, monthOfCal } from './monthly';
 import { S } from './state';
 import { log, noteMoney } from './journal';
 import { parentIncome, parentRetired } from './parents';
-import { placeCons, placeHp, placeInc } from './place';
+import { placeCons, placeHp, placeInc, placeLive } from './place';
 import { wan } from './format';
 import { sibsAlive } from './family';
-import { familySize, tierCost, tierOf } from './budget';
+import { familySize, floorCost, incUnits, livingCost, poorStep, tierOf } from './budget';
 import { changeMoney } from './accounts';
 
 declare module './types' {
   interface Life {
     famDebtM?: number;  // 父母的房贷还剩几个月（famDebtMonth）
+    parentQ?: number;   // 父母家这一年的收入相当于当地几个人的（budget.ts 的 incUnits）
+    famPoorM?: number;  // 父母家拮据的月份（budget.ts 的 poorStep）
     stuDebt?: number;   // 助学贷款余额：只有学费、生活费的缺口，按每年的上限借；经济独立时转到你自己名下（finance.ts 的 goIndep）
   }
   interface Flags { supportA?: number }     // 上一次贴补父母生活费是几岁那年（supportY 每年只记一次）
@@ -45,17 +47,20 @@ export function familyMoneyMonth(m: number) {
   const ill = (mom && f.mom.ill ? 1 : 0) + (dad && f.dad.ill ? 1 : 0);
   const children = f.sibs.filter(child => child.alive && child.age < 18).map(child => child.age);
   if (S.indep === false && S.age < 18) children.push(S.age);
-  // 生活开销按档位（budget.ts，和你自己同一套）：每年你过生日那个月定一次档
-  const cons = placeCons(S.home), size = familySize(Number(mom) + Number(dad), children);
-  if (S.parentTier == null || m === 0) S.parentTier = tierOf(inc, S.famMoney, cons, size, S.parentTier, !working);
-  const full = tierCost(S.parentTier, cons, size), basic = Math.min(full, cons / MONTHS * size * 0.55);
+  // 生活开销（budget.ts，和你自己同一套）：收入每年你过生日那个月看一次
+  const cons = placeCons(S.home), live = placeLive(S.home), size = familySize(Number(mom) + Number(dad), children);
+  if (S.parentQ == null || m === 0) S.parentQ = incUnits(inc, S.famMoney, placeInc(S.home), S.parentQ);
+  const full = livingCost(S.parentQ, live, size), basic = floorCost(live, size);
   const rent = S.famHouse?.type === 'rent' ? placeHp(S.home) * 45 * 0.018 * 0.6 / MONTHS : 0;
   const essential = basic + rent + cons * 0.3 * ill / MONTHS;
   S.famMoney += inc - essential;
   if (S.indep === false && S.school && m === monthOfCal(9)) payTuition();
   if (S.famDebt > 0) famDebtMonth(inc, working, mortgage);
-  // 档位里必要以外的部分：只从余钱里出
-  S.famMoney -= Math.min(full - basic, Math.max(0, S.famMoney - essential));
+  // 底线以外的部分：只从余钱里出。这个月实际过的是哪一档，看花了多少（在家的孩子跟着一起过这样的日子，stats.ts）
+  const extra = Math.min(full - basic, Math.max(0, S.famMoney - essential));
+  S.famMoney -= extra;
+  S.parentTier = tierOf(basic + extra, live, size);
+  S.famPoorM = poorStep(S.famPoorM, S.parentTier);
   // 父母都不上班以后，存款花光了，由已经工作的子女补贴生活费（还在世的兄弟姐妹一起分摊）；父母还在上班时，欠款由他们自己慢慢还
   // supportY 记的是贴补了几年（每个年龄年记一次）
   if (S.indep && S.famMoney < 0 && !working) {

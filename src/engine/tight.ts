@@ -57,10 +57,13 @@ export function dibaoMonth(incM: number, size: number) {
 
 // ===== 子女 =====
 // 成年子女每人每年给的钱（按当地消费水平估计，最多算两个）。退休以后的收入里一直有这一项（finance.ts 的 retireMonthly）
+// 给多少看亲疏（actions.ts）：亲疏 70 照原样给，越亲给得越多（最多 1.4 倍），很少联系的几乎不给
 export function kidSupportY(cons: number) {
-  let grown = 0;
-  for (const k of S.fam.kids) if (k.alive && k.age >= 25) grown++;
-  return grown ? cons * 0.35 * Math.min(2, grown) : 0;
+  let grown = 0, close = 0;
+  for (const k of S.fam.kids) if (k.alive && k.age >= 25) { grown++; close += k.close ?? 70; }
+  if (!grown) return 0;
+  const k = Math.min(1.4, Math.max(0.1, (close / grown - 20) / 50));
+  return cons * 0.35 * Math.min(2, grown) * k;
 }
 export const grownKids = () => S.fam.kids.some(k => k.alive && k.age >= 25);
 // 向子女开口：子女先拿出最多三年的生活费帮你还债（估计），之后每月给你的钱先扣回这笔，扣完照常给

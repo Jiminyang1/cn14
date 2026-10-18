@@ -8,11 +8,12 @@ import { LogPic } from './Photo';
 import { YearProgress } from './Progress';
 import { RunId } from './RunId';
 import { VersionTag } from './Version';
+import { ActionsButton, PendingFloat } from './Actions';
 import { Account, ArchiveTabs, Basic, Body, FamilySec } from './Sidebar';
-import { MonthlyLedger, TimelineFinance, statementAge } from './Finance';
+import { TimelineFinance, statementAge } from './Finance';
 import { cnNum, fileNo } from './util';
 
-// ===== 页头：档案号、播放控制、更多 =====
+// ===== 页头：档案号、播放控制（▶、倍速、快进）、行动、更多（自动抉择、离开） =====
 function Menu() {
   const [open, setOpen] = useState(false);
   const box = useRef<HTMLDivElement>(null);
@@ -26,7 +27,7 @@ function Menu() {
     <div className="menu-w" ref={box}>
       <button className="ctl ghost" type="button" aria-label="更多" aria-expanded={open} onClick={() => setOpen(o => !o)}>···</button>
       {open && <div className="menu" role="menu">
-        <label className="chk m-auto"><input type="checkbox" checked={!!S.auto} onChange={e => game.setAuto(e.target.checked)} /> 自动抉择</label>
+        <label className="chk m-auto" title="开着的时候，抉择会按这个人的性格替你选"><input type="checkbox" checked={!!S.auto} onChange={e => game.setAuto(e.target.checked)} /> 自动抉择</label>
         {import.meta.env.DEV && <button type="button" onClick={() => game.exportRun()}>下载这一局的日志</button>}
         <button type="button" onClick={() => game.quit()}>离开（会保存）</button>
         <RunId />
@@ -49,10 +50,9 @@ function Header() {
         <button className={'ctl' + (game.paused ? ' on' : '')} type="button" aria-label={game.paused ? '继续' : '暂停'} title="暂停/继续" onClick={() => game.togglePause()}>{game.paused ? <PlayIcon /> : <PauseIcon />}</button>
         <div className="spd">{SPEEDS.map(v => <button key={v} type="button" className={'ctl mono' + (game.speed === v ? ' on' : '')} onClick={() => game.setSpeed(v)}>{v}×</button>)}</div>
         <button className="ctl mono spd1" type="button" aria-label={`速度 ${game.speed} 倍，点一下换成 ${nextSpeed} 倍`} onClick={() => game.setSpeed(nextSpeed)}>{game.speed}×</button>
-        <label className="chk"><input type="checkbox" checked={!!S.auto} onChange={e => game.setAuto(e.target.checked)} /> 自动抉择</label>
-        <button className={'ctl' + (game.ff === 'dec' ? ' on' : '')} type="button" title="快进，直到要你做决定" onClick={() => game.fastForward('dec')}>下一个抉择</button>
-        <button className={'ctl primary' + (game.ff === 'big' ? ' on' : '')} type="button" title="快进，直到下一件人生大事：升学、结婚、生子、亲人离世……" onClick={() => game.fastForward('big')}>下一件大事</button>
+        <button className={'ctl primary' + (game.ff ? ' on' : '')} type="button" title="快进到下一件人生大事（升学、结婚、生子、亲人离世……）；遇到要你决定的事也会停下" onClick={() => game.fastForward()}>快进</button>
       </div>
+      <ActionsButton />
       <VersionTag />
       <Menu />
     </header>
@@ -73,7 +73,7 @@ function FocusPlan() {
   if (!l.length || !n) return (
     <section className="pg plan">
       <div className="sec"><span className="no">三</span><h3>本年度时间安排</h3></div>
-      <p className="plan-d" style={{ margin: 0 }}>还是个孩子，正由{carer()}带着长大。六岁起可以安排每一年把时间放在哪里；这段时间可以用 8× 快进。</p>
+      <p className="plan-d" style={{ margin: 0 }}>还是个孩子，正由{carer()}带着长大。六岁起可以安排每一年把时间放在哪里；这几年会自动走快一些。</p>
     </section>
   );
   const at = open != null && open < n ? open : null;
@@ -202,8 +202,9 @@ export function Life() {
       <nav className="mtabs" role="tablist">
         {MTABS.map(([k, n]) => <button key={k} type="button" role="tab" aria-selected={mtab === k} className={mtab === k ? 'on' : ''} onClick={() => setMtab(k)}>{n}</button>)}
       </nav>
-      <div className="col col-r"><Account m="home" /><MonthlyLedger m="home" /><FamilySec m="home" /><ArchiveTabs mtab={mtab} /></div>
+      <div className="col col-r"><Account m="home" /><FamilySec m="home" /><ArchiveTabs mtab={mtab} /></div>
     </main>
     <Modal />
+    <PendingFloat />
   </div>;
 }

@@ -323,10 +323,10 @@ export function breakUp(d, why: string, h = -5, k = '') {
   const yrs = S.age - d.metAt;
   log(`${why}你和${d.name}分手了。在一起${yrs ? yrs + '年' : '不到一年'}。`, 'bad');
 }
-/** 把一个抉择排在稍后（同一个月里） */
+/** 把一个抉择排在稍后（同一个月里）。快到年底的就排在当下：不能排到现在之前，不然真实游玩时马上弹出、重放时却停在它前面（content/echoes.ts 的 soon 同样） */
 export function soon(id: string) {
   if (S.queue.some(e => e.type === 'dec' && e.id === id)) return;
-  const at = Math.min(S.t + 0.01, 0.999);
+  const at = S.t + 0.005 <= 0.999 ? S.t + 0.005 : S.t;
   let i = S.queue.length; while (i > 0 && S.queue[i - 1].at > at) i--;
   S.queue.splice(i, 0, { at, type: 'dec', id });
 }

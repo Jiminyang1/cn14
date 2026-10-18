@@ -1,9 +1,10 @@
-// 弹窗：抉择单（含高考填报志愿）与自述。选定后在那一行盖一个「已定」章，再结算。
+// 弹窗：抉择单（含高考填报志愿）。选定后在那一行盖一个「已定」章，再结算。
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { MAJOR_LIST, NO_TIAOJI, S, TIER_N, calMonth, calYear, groupLine, groupP, majorP, majorsOf, type Decision, type Pending } from '../engine';
 import { game } from '../game/controller';
 import { Photo, decScene } from './Photo';
 import { fileNo } from './util';
+import './actions.css';
 
 const STAMP_MS = 420;            // 盖章动画
 const AUTO_SHOW_MS = 900;        // 自动抉择：先停一下，再标出选项
@@ -146,31 +147,25 @@ function Zhiyuan({ P, photo }: { P: Extract<Pending, { type: 'dec' }>; photo: Re
   </>;
 }
 
-function Reflect({ q }: { q: string }) {
-  const [text, setText] = useState('');
-  return <>
-    <Head k="自述" title="停一停"><p>{q}</p><p className="note-line">想一想就好。愿意的话，留一行字，它会被记进这一生的档案。</p></Head>
-    <textarea style={{ marginTop: 14 }} maxLength={300} placeholder="写点什么（可以不写）" value={text} onChange={e => setText(e.target.value)} />
-    <div className="ds-foot"><span>只保存在这个浏览器里。</span><button className="stamp-btn" type="button" onClick={() => game.reflect(text.trim())}>继续</button></div>
-  </>;
-}
-
 export function Modal() {
   const P = S.pending;
-  if (!P) return null;
+  if (!P || game.hidden === game.pendingKey()) return null; // 收起来了：页面上浮着「等待抉择」（Actions.tsx 的 PendingFloat），点了再打开
   const scene = decScene(P);
   const photo = scene ? <Photo {...scene} /> : null;
-  const body = P.type === 'ref' ? <Reflect q={P.q} />
-    : P.d.form === 'zhiyuan' && !S.auto ? <Zhiyuan P={P} photo={photo} />
+  const body = P.d.form === 'zhiyuan' && !S.auto ? <Zhiyuan P={P} photo={photo} />
     : <DecisionSheet P={P} photo={photo} />;
   // 第几份抉择单：已经做过的抉择数 + 1（只读日志，不碰随机数）
   const no = S.log.reduce((n, e) => n + (e.k === 'choice' ? 1 : 0), 0) + 1;
   // key：每个新的抉择重新挂载，状态不会串
   return (
     <div className="modal">
-      <div className="ds" key={P.type === 'dec' ? P.id + S.age : 'ref' + S.age}>
-        <span className="ftab"><b>{P.type === 'ref' ? '自述页' : '抉择单'}</b><span className="mono">No. {fileNo(S)}{P.type === 'dec' ? ` · 第 ${pad2(no)} 份` : ''}</span></span>
-        <div className="ds-sheet" role="dialog" aria-modal="true" aria-labelledby="ds-title">{body}</div>
+      <div className="ds" key={P.id + S.age}>
+        <span className="ftab"><b>抉择单</b><span className="mono">No. {fileNo(S)} · 第 {pad2(no)} 份</span></span>
+        <div className="ds-sheet" role="dialog" aria-modal="true" aria-labelledby="ds-title">
+          {/* 右上角的 ×：先关上看看左右的情况。抉择没定，游戏一直停着，必须回来选（页面上浮着的「等待抉择」，或者按 ▶） */}
+          {!S.auto && <button type="button" className="ds-x" aria-label="先关上，稍后再选" title="先关上，看看左右的情况；这件事还得选，点页面上的「等待抉择」回来" onClick={() => game.hideDec()}>×</button>}
+          {body}
+        </div>
       </div>
     </div>
   );

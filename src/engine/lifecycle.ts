@@ -22,6 +22,8 @@ import { studyMonth } from './education';
 import { moneyMonth } from './finance';
 import { kinYear } from './kin';
 import { turnsYear } from './turns';
+import { actsMonth, actsYear } from './actions';
+import { plansMonth, plansYear } from './plans';
 import { loveMonth } from './romance';
 import { makeName } from './names';
 import { balanceW, persInit, persWords, persYear, shape, shownOf, tiltW, whyPick } from './personality';
@@ -30,7 +32,7 @@ import { balanceW, persInit, persWords, persYear, shape, shownOf, tiltW, whyPick
 export function birth(seed, opts: { year?: number; headless?: boolean } = {}) {
   setS(<Life>{
     seed, rs: seed | 0, age: 0, t: 0, month: 0, birthYear: opts.year || 2026, birthMonth: 1,
-    st: {}, flags: {}, done: {}, recent: [], log: [], years: [], queue: [], fT: {}, notes: [], places: [], jobs: [],
+    st: {}, flags: {}, done: {}, recent: [], log: [], years: [], queue: [], fT: {}, places: [], jobs: [],
     stats: { maxMoney: 0 }, phase: 'life', money: 0, income: 0, job: null, jobY: 0, wageK: 1,
     school: null, schoolEnd: null, edu: 0, house: null, pending: null, headless: !!opts.headless,
   });
@@ -104,14 +106,6 @@ export function birthText() {
 
 // ===== 年度计划 =====
 export const MILESTONES = [1, 5, 15, 30, 50, 65, 80, 90, 100];
-// 自述（「写点什么」）：暂时关闭。改成 true 即可恢复，界面部分（ui/Modal.tsx 的 Reflect）保留着
-export const ENABLE_REFLECT = false;
-export const REFLECT = {
-  15: '这个孩子15岁了。你15岁的时候，在为什么事情烦恼？',
-  30: '30岁的这个人，和30岁的你（或将来的你），过的日子像吗？',
-  50: '如果能回到某一年重新选一次，这个人会选哪一年？你呢？',
-  70: '这一生里，哪些是这个人自己选的，哪些是出生那一刻就决定了的？',
-};
 // 调用前 S.month 已经是 0（出生时、endYear 长一岁时设好），年初结算里的 calYear()、nowM() 才是生日那个月的
 export function planYear() {
   yearStart();
@@ -154,7 +148,6 @@ export function fire(e) {
     out(r, 'ev', !!ev.big);
   } else if (e.type === 'dec') openDec(e.id);
   else if (e.type === 'ms') milestone();
-  else if (e.type === 'ref' && ENABLE_REFLECT) S.pending = { type: 'ref', q: REFLECT[S.age] };
   else if (e.type === 'day') fireDaily(e.id);
 }
 // quiet：这一次不值得停下来问玩家（又认识了一个人、又一年要不要结婚……），顺其自然地定下，时间线上只写结果（见 AGENTS.md「抉择」）。
@@ -200,6 +193,8 @@ export function yearStart() {
   sibYearStart();
   kinYear();
   turnsYear();
+  actsYear();
+  plansYear();
   scheduleYearStart();
 }
 
@@ -210,9 +205,11 @@ function endMonth(m: number) {
   focusMonth(m);
   bodyMonth(m);
   studyMonth();
+  plansMonth();
   moneyMonth(m);
   familyMonth(m);
   loveMonth(m);
+  actsMonth();
   if (S.phase !== 'life') return;
   driftMonth(m);
   if (m === MONTHS - 1) S.years.push({ a: S.age, h: Math.round(S.st.h), hl: Math.round(S.st.hl), m: Math.round(S.money), s: statusLabel() });

@@ -121,8 +121,11 @@ function parentMonth(p, male: boolean) {
   const T = kinLT('par', male ? 'M' : 'F'), x = p.age + 1;
   if (chance(p.ill ? perMonth(Math.min(1, T.q[Math.min(119, x)] * 2)) : qMonth(T, x))) {
     p.alive = false; p.diedAt = S.age; p.diedM = nowM();
-    major(`${male ? '爸爸' : '妈妈'}去世了，享年${p.age}岁。${S.age < 18 ? '你还没有长大。' : ''}`, 'loss');
-    eff({ h: S.age < 18 ? -14 : -9, so: -3 });
+    // 亲疏（actions.ts）：常回家的，最后那段日子你在身边；很少回去的，赶到时已经来不及了
+    const c = S.close?.par ?? 70, grown = S.age >= 18 && S.indep;
+    const tail = S.age < 18 ? '你还没有长大。' : !grown ? '' : S.flags.parWithMe || c >= 75 ? '最后那段日子，你一直在身边。' : c < 35 ? '你赶回去的时候，已经来不及了。上一次回家，是好几年前。' : '';
+    major(`${male ? '爸爸' : '妈妈'}去世了，享年${p.age}岁。${tail}`, 'loss');
+    eff({ h: S.age < 18 ? -14 : grown && c < 35 ? -13 : -9, so: -3 });
     parentGone(male ? 'dad' : 'mom');
   } else if (x >= 62 && !p.ill && chance(PAR_ILL_M)) p.ill = 1;
 }

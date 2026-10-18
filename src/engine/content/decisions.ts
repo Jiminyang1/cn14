@@ -36,6 +36,7 @@ import { bothParents, carer, parentsWord } from '../parents';
 import { divorce, rural } from './events';
 import { ECHO_DEC, meetCrush } from './echoes';
 import { autoFocus, domK, setSlot } from '../focus';
+import { grownClose } from '../actions';
 import { wan } from '../format';
 import { careFeeY, oldIncomeY, uiMonths } from '../finance';
 // 晚年住养老院的抉择：积蓄要撑多少年才和收入够付的一样愿意去（80 岁左右的余寿约 9 年，估计）
@@ -1253,7 +1254,9 @@ export const DEC = {
       const fee = careFeeY(), short = Math.max(0, fee - oldIncomeY()), years = short ? Math.max(0, liquidBalance()) / short : Infinity;
       const careSub = `每年约${wan(fee)}${short ? `，养老金和子女给的钱每年差${wan(short)}${years < 2 ? '，积蓄撑不了两年' : ''}` : '，养老金够付'}`;
       const ch: Choice[] = [{ k: 'home', label: '去养老院', sub: careSub, off: years < 2, w: 1.5 * clamp(years / CARE_YEARS, 0.1, 1) }, { k: 'self', label: '还是自己住', sub: '', w: 2, tilt: { a: -0.4 } }];
-      if (has) ch.unshift({ k: 'kid', label: '搬去和子女一起住', sub: '', w: 3, tilt: { a: 0.3 } });
+      // 能不能搬去和子女住，看亲疏（actions.ts）：孩子们很少联系的，没人提这件事
+      const kc = grownClose();
+      if (has) ch.unshift({ k: 'kid', label: '搬去和子女一起住', sub: kc != null && kc < 35 ? '孩子们很少联系，没人提过这件事' : kc != null && kc >= 75 ? '孩子们一直在催你过去' : '', off: kc != null && kc < 35, w: 3 * clamp((kc ?? 70) / 70, 0.3, 1.5), tilt: { a: 0.3 } });
       const pt = S.fam.married && S.fam.partner && S.fam.partner.alive;
       return { title: '晚年', body: pt ? '年纪大了，老两口互相照应，也越来越吃力。' : '年纪大了，一个人生活越来越吃力。', choices: ch };
     },
