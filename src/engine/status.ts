@@ -26,7 +26,6 @@ export function targetTerms(): Record<'hl' | 'h' | 'so', { k: string; n: string;
   const st = S.st, f = S.fam, a = S.age, T = tierNow(), poorLong = poorLongNow();
   let kids = 0; for (const k of f.kids) if (k.alive) kids++;
   const dis = S.flags.disabled ? 1 : 0, married = !!(f.married && f.partner && f.partner.alive);
-  const slots = [...new Set(S.slots || [])].filter(Boolean).map(k => FOCUS[k]?.n).join('、');
   const ill = S.flags.ill as { k?: string } | undefined;
   const c = pz('c');
   return {
@@ -44,7 +43,7 @@ export function targetTerms(): Record<'hl' | 'h' | 'so', { k: string; n: string;
     ],
     h: [
       { k: 'baseH', n: '底子', v: H_BASE, base: true },
-      { k: 'slots', n: '时间 · ' + slots, v: H_FOCUS * focusH() },
+      { k: 'slots', n: '时间怎么分', v: H_FOCUS * focusH() },
       { k: 'tier', n: '过日子 · ' + T.n, v: T.h },
       { k: 'poor', n: '长期拮据', v: -poorLong * 3 },
       { k: 'rel', n: (S.relInc || 0) >= 0 ? '收入比当地高' : '收入比当地低', v: a < 18 ? 0 : (S.relInc || 0) * 0.4 },
@@ -82,7 +81,7 @@ function yearly(): { k: string; n: string; y: Fx; act?: string }[] {
     if (!k || !FOCUS[k] || !FOCUS[k].ok()) continue;
     for (const [st, v] of Object.entries(FOCUS[k].e) as [St, number][]) if (st !== 'h') fy[st] = (fy[st] || 0) + v * slotW(k);
   }
-  if (Object.keys(fy).length) out.push({ k: 'slots', n: '时间', y: fy });
+  if (Object.keys(fy).length) out.push({ k: 'slots', n: '时间怎么分', y: fy });
   for (const k of plansShown()) { const o = planOpt(k); if (o?.e) out.push({ k: 'plan:' + k, n: PLANS[k].n + ' · ' + o.label.replace(/^办张健身卡，?常去$/, '办卡常去'), y: { ...o.e } }); }
   const T = tierNow();
   if (S.indep !== false && T === TIERS[0]) { const m = 1 + poorLongNow(); out.push({ k: 'tier', n: '过日子 · ' + T.n, y: { h: -POOR_HURT.h * m, hl: -POOR_HURT.hl * m } }); }
@@ -105,7 +104,6 @@ export function statusNow(): Eff[] {
     for (const [st, v] of Object.entries(x.y) as [St, number][]) if (Math.abs(v) >= 0.05) e.y[st] = (e.y[st] || 0) + v;
     if (x.act) e.act = x.act;
   }
-  // 时间格子：目标值那条叫「时间 · 养身体、工作」，每年那条叫「时间」，以前一条的名字为准
   const size = (e: Eff) => Object.values(e.t).reduce((s, v) => s + Math.abs(v), 0) + Object.values(e.y).reduce((s, v) => s + Math.abs(v) * 2, 0);
   return [...by.values()].filter(e => size(e) >= SMALL).sort((p, q) => size(q) - size(p));
 }

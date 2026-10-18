@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import {
   AX, AX_NAME, CAUSE, EDU_LV, FAM_HOUSE_N, JOBS, PBY, S, axWord, calMonth, calYear, leOf, partnerPay, partnerTrait, persWords, placeName, shownZ, statusLabel,
-  loanBal, loanArrears, loanPayY, loveWord, parentIncome, parentRetired, closeWord, parClose, kidClose, parentWorkLoc, awayFromHome, ptJobName, Q_WORD, wan, wanM, monthlyPay, inheritedValue, netWorth, anyParent, statusNow, ACTS, actState,
+  loanBal, loanArrears, loanPayY, loveWord, parentIncome, parentRetired, closeWord, parClose, kidClose, parentWorkLoc, awayFromHome, ptJobName, Q_WORD, wan, wanM, monthlyPay, inheritedValue, netWorth, anyParent, statusNow, ACTS, actState, type Eff,
   type Companion, type Doc, type Partner,
 } from '../engine';
 import { ageK, game } from '../game/controller';
@@ -170,21 +170,26 @@ export function Body({ m }: { m?: string }) {
 const STN: Record<string, string> = { hl: '健康', h: '幸福', so: '人际', kn: '学识' };
 const fmt = (v: number) => (v > 0 ? '+' : '−') + Math.abs(Math.round(v * 10) / 10);
 function StatusList() {
+  const [all, setAll] = useState(false);
   if (S.age < 3) return null;
-  const list = statusNow();
+  // 性格、出身是一辈子的底色，不算「此刻」；太小的也不列
+  const size = (e: Eff) => Object.values(e.t).reduce((t, v) => t + Math.abs(v), 0) + Object.values(e.y).reduce((t, v) => t + Math.abs(v) * 2, 0);
+  const list = statusNow().filter(e => e.k !== 'pers' && e.k !== 'q' && size(e) >= 1);
   if (!list.length) return null;
+  const MAX = 4, shown = all ? list : list.slice(0, MAX);
   return <>
-    <div className="sub-h">状态<small>正在推着这几项</small></div>
+    <div className="sub-h">状态</div>
     <div className="stl">
-      {list.map(e => <div key={e.k} className="stl-r">
+      {shown.map(e => <div key={e.k} className="stl-r">
         <span className="stl-n">{e.n}</span>
         <span className="stl-fx">
-          {(Object.entries(e.t) as [string, number][]).map(([k, v]) => <em key={'t' + k} className={v > 0 ? 'up' : 'dn'}>{STN[k]} {fmt(v)}</em>)}
-          {(Object.entries(e.y) as [string, number][]).map(([k, v]) => <em key={'y' + k} className={v > 0 ? 'up' : 'dn'}>{STN[k]} {fmt(v)}/年</em>)}
+          {(Object.entries(e.t) as [string, number][]).map(([k, v]) => <em key={'t' + k} className={v > 0 ? 'up' : 'dn'}>{STN[k]}{fmt(v)}</em>)}
+          {(Object.entries(e.y) as [string, number][]).map(([k, v]) => <em key={'y' + k} className={v > 0 ? 'up' : 'dn'}>{STN[k]}{fmt(v)}/年</em>)}
         </span>
-        {e.act && ACTS[e.act] && actState(e.act).ok && <button type="button" className="stl-go" onClick={() => openYear(ACTS[e.act].g)}>{ACTS[e.act].n} ›</button>}
+        {e.act && ACTS[e.act] && actState(e.act).ok && <button type="button" className="stl-go" title={ACTS[e.act].n} onClick={() => openYear(ACTS[e.act].g)}>›</button>}
       </div>)}
     </div>
+    {list.length > MAX && <button type="button" className="stl-more" onClick={() => setAll(x => !x)}>{all ? '收起' : `还有 ${list.length - MAX} 项`}</button>}
   </>;
 }
 

@@ -676,13 +676,15 @@ table.cmp th { font-weight: 500; font-family: var(--serif); color: var(--muted);
   .year-plan .sec { display: flex; }
 }
 
-/* 二、体检与鉴定下面的「状态」（engine/status.ts）：来源一行，后面是它推着哪几项；能处理的带入口 */
+/* 二、体检与鉴定下面的「状态」（engine/status.ts）：一行一条——来源、推着哪几项；能处理的后面一个 › */
 .stl { display: flex; flex-direction: column; }
-.stl-r { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 8px; align-items: baseline; padding: 6px 0; border-top: 1px solid var(--hair); font-size: 13px; }
+.stl-r { display: flex; align-items: baseline; gap: 6px; padding: 4px 0; border-top: 1px solid var(--hair); font-size: 12.5px; }
 .sub-h + .stl .stl-r:first-child { border-top: 0; }
-.stl-n { font-family: var(--serif); min-width: 0; }
-.stl-fx { grid-column: 1; display: flex; flex-wrap: wrap; gap: 3px; }
-.stl-fx em { font-style: normal; font-family: var(--mono); font-size: 11.5px; line-height: 19px; padding: 0 6px; border-radius: 10px; background: var(--tint); }
+.stl-n { flex: 1; min-width: 0; font-family: var(--serif); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.stl-fx { display: flex; gap: 6px; flex: none; }
+.stl-fx em { font-style: normal; font-family: var(--mono); font-size: 11.5px; }
 .stl-fx em.up { color: var(--good); }
 .stl-fx em.dn { color: var(--seal); }
-.stl-go { grid-column: 2; grid-row: 1 / 3; align-self: center; padding: 0; border: 0; background: none; color: var(--seal); font-size: 12.5px; cursor: pointer; white-space: nowrap; }
+.stl-go { flex: none; width: 20px; padding: 0; border: 0; background: none; color: var(--seal); font-size: 14px; line-height: 1; cursor: pointer; }
+.stl-more { margin-top: 2px; padding: 4px 0 0; border: 0; background: none; color: var(--muted); font-size: 12px; cursor: pointer; text-align: left; }
+.stl-more:hover { color: var(--ink); }
