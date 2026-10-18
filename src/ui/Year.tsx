@@ -163,11 +163,10 @@ function PlanPage({ pm }: { pm: ReturnType<typeof perMonth> }) {
 function ActPage({ g, title }: { g: string; title: string }) {
   const [said, setSaid] = useState<string | null>(null);
   const keys = actsShown().filter(k => ACTS[k].g === g);
-  const left = keys.filter(k => actState(k).ok).length;
   const doIt = (k: string) => { const n0 = S.log.length; game.act(k); setSaid(S.log.length > n0 ? S.log[0].t : null); };
   const kids = kidsAlive().filter(k => k.age >= 18);
   return <>
-    <div className="yr-hd"><h3>{title}</h3>{left > 0 && <span className="yr-s">今年还能做 {left} 件</span>}</div>
+    <div className="yr-hd"><h3>{title}</h3></div>
     <div className={g === 'kin' ? 'yr-cols' : ''}>
       <div>
         {keys.map(k => {
@@ -175,7 +174,7 @@ function ActPage({ g, title }: { g: string; title: string }) {
           return <div key={k} className={'yr-act' + (st.ok ? '' : ' off')}>
             <div><b>{A.n}</b><span>{A.d()}</span></div>
             <div className="yr-am"><span className="mono">{st.cost > 0 ? '约 ' + wan(st.cost) : '不花钱'}</span>
-              <small className={short > 0 ? 'dn' : undefined}>{short > 0 ? `还差 ${wan(short)}` : !st.ok ? st.why : [A.max > 1 ? `今年还能 ${st.left} 次` : '', st.cost > 0 ? `做完剩 ${wan(S.money - st.cost)}` : ''].filter(Boolean).join(' · ')}</small></div>
+              {!st.ok && <small className={short > 0 ? 'dn' : undefined}>{short > 0 ? `还差 ${wan(short)}` : st.why === '今年已经做过了' ? '今年做过了' : st.why}</small>}</div>
             <button type="button" className="yr-go" disabled={!st.ok} onClick={() => doIt(k)}>去做</button>
           </div>;
         })}

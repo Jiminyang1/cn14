@@ -42,7 +42,7 @@ export const closeWord = (c: number) => c >= 75 ? '很亲' : c >= 55 ? '还算�
 export const grownClose = () => { const ks = kidsAlive().filter(k => k.age >= 18); return ks.length ? ks.reduce((t, k) => t + kidClose(k), 0) / ks.length : null; };
 
 /** 生日那个月：亲疏每年向一个目标值靠拢（父母一年走 25%，孩子 20%）。目标值看去年你是怎么做的：
- *  · 父母：基础 60；住得远 −25；去年每回一次家 +8（最多四次）、给过钱 +5；和你住一起 +20。只看行动，不看格子：
+ *  · 父母：基础 60；住得远 −25；去年回过家 +13、给过钱 +5（每样一年一次）；和你住一起 +20。只看行动，不看格子：
  *    「家人」格子管的是自己的小家（配偶、孩子），父母那边要你自己回去、自己给（见 AGENTS.md）；
  *  · 成年的孩子：基础 45；去年一起旅行、给过钱各 +8；「家人」每格 +12，「工作」每格 −8（忙着工作的父母和孩子远）；
  *  · 小时候的孩子：基础 65；「家人」每格 +12，「工作」每格 −10。
@@ -51,7 +51,7 @@ export function closeYear() {
   const last = S.actN && S.actN.a === S.age - 1 ? S.actN.n : {}, n = (k: string) => last[k] || 0;
   const fam = slotW('family'), work = slotW('work');
   if (anyParent() && S.age >= 18) {
-    const T = 60 + (S.flags.parWithMe ? 20 : farFromParents() ? -25 : 0) + 8 * Math.min(4, n('visit')) + (n('giveParents') ? 5 : 0);
+    const T = 60 + (S.flags.parWithMe ? 20 : farFromParents() ? -25 : 0) + (n('visit') ? 13 : 0) + (n('giveParents') ? 5 : 0);
     addPar((clamp(T, 0, 100) - parClose()) * 0.25);
   }
   for (const k of kidsAlive()) {
@@ -71,7 +71,7 @@ const workingAdult = () => S.indep && S.age >= 18;
 
 export const ACTS: Record<string, Act> = {
   visit: {
-    n: '回家看看', g: 'kin', max: 4, d: () => `回${S.home.city}看${parentsWord()}`,
+    n: '回家看看', g: 'kin', max: 1, d: () => `回${S.home.city}看${parentsWord()}`,
     cost: tripCost, ok: () => workingAdult() && anyParent() && farFromParents() && !S.flags.parWithMe,
     run: () => {
       addPar(3); eff({ so: 1 }); // 幸福不在这里加：自动的人生年年回家，年年加就成了持续的加成；跟爸妈亲，幸福的目标值高一点（stats.ts）
@@ -80,7 +80,7 @@ export const ACTS: Record<string, Act> = {
     },
   },
   giveParents: {
-    n: '给爸妈钱', g: 'kin', max: 2, d: () => `转给${parentsWord()}一个月的工资`,
+    n: '给爸妈钱', g: 'kin', max: 1, d: () => `转给${parentsWord()}一个月的工资`,
     cost: () => Math.round(Math.max(inc() / 12, (S.net || 0) / 12) / 100) * 100, ok: () => workingAdult() && anyParent() && S.age >= 22,
     run: () => {
       addPar(3);
@@ -176,7 +176,7 @@ export function actsMonth() {
 export function autoActs() {
   if (!S.indep || S.age < 18) return;
   const rich = (k: string, n: number) => liquidBalance() > ACTS[k].cost() * n;
-  if (ACTS.visit.ok()) { doAct('visit', true); if (chance(0.6)) doAct('visit', true); }
+  if (ACTS.visit.ok()) doAct('visit', true);
   if (ACTS.giveParents.ok() && rich('giveParents', 6) && chance(S.q <= 2 ? 0.5 : 0.25)) doAct('giveParents', true);
   if (ACTS.trip.ok() && rich('trip', 8) && chance(0.35)) doAct('trip', true);
   if (ACTS.car.ok() && rich('car', 2.5) && S.age >= 25 && chance(0.15)) doAct('car', true);
