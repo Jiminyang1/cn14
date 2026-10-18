@@ -28,6 +28,10 @@ declare module '../types' {
     nyHome?: string;   // 回谁家过年：mine 你家、theirs 对方家、turn 轮着、apart 各回各家（抉择 newyear）
     babyAsk?: { n: number; a: number }; // 上一次问你要不要孩子：当时有几个孩子、几岁（抉择 baby 的 quiet）
     houseAsk?: number; // 上一次问你买不买房是几岁（抉择 house 的 quiet）
+    feast?: { k: 'big' | 'small' | 'none'; at: number; who: string; x: number; host: 'dad' | 'mom' };
+    inhM?: number;     // 继承父母遗产是出生后第几个月（household.ts 的 inheritSplit）
+    oldHome?: { k: 'sell' | 'move' | 'keep' | 'fell'; at: number; rur: boolean }; // 爸妈的老房子归了你以后怎么办的（抉择 oldhome）
+    heir?: { k: string; at: number; sib: number }; // 兄弟姐妹怎么分的老房子（抉择 heritage）、几岁、拿到房子或者打官司的是哪一位（S.fam.sibs 的下标） // 升学宴：怎么办的、几岁、随礼的一位亲戚和他随了多少、谁张罗的
   }
 }
 import { chance, clamp, gauss, pick, ri, wpick } from '../rng';
@@ -151,6 +155,9 @@ export function monthDecisions() {
   }
   if ((f.mom.alive && f.mom.ill === 1) || (f.dad.alive && f.dad.ill === 1)) { if (a >= 22) d.push('parentcare'); }
   if (weddingKid()) d.push('kidhome');
+  // 考上大学（本科、大专）的那个暑假，等开学：升学宴
+  const T = S.flags.toSchool;
+  if (T && (T.s === '本科' || T.s === '大专') && [7, 8].includes(calMonth()) && once('feast') && !!parentsWord()) d.push('feast');
   // 对方是外省的：结婚后头一个春节，回谁家过年
   const pt = f.married && f.partner && f.partner.alive ? f.partner : null;
   if (pt && pt.home !== S.home.p && S.age - pt.marriedAt <= 2 && [1, 2].includes(calMonth()) && once('newyear')) d.push('newyear');
@@ -159,8 +166,11 @@ export function monthDecisions() {
   // 选了先这么过着：五年以后、孩子都成年了，再问一次
   if (pt && pt.stay != null && nowM() - pt.stay >= 60 && !kidsAlive().some(k => k.age < 18)) d.push('nest');
   if (S.flags.heirDue && !S.flags.inherited) d.push('heritage');
-  if (S.indep && S.inheritedHomes?.length && monthsSince('inheritedhome') >= 12 &&
-    (S.inheritedHomes.some(home => !home.reviewed) || liquidBalance() < 0 || loanArrears() > 0)) d.push('inheritedhome');
+  // 房子归了你：七七过后（继承后四个月）回去收拾，定下老房子怎么办（oldhome，只问一次）；以后手头紧了再问的只谈钱（inheritedhome）
+  const fresh = !!S.inheritedHomes?.some(home => !home.reviewed), firstHome = fresh && once('oldhome');
+  if (S.indep && firstHome && nowM() - (S.flags.inhM ?? -Infinity) >= 4) d.push('oldhome');
+  else if (S.indep && !firstHome && S.inheritedHomes?.length && monthsSince('inheritedhome') >= 12 &&
+    (fresh || liquidBalance() < 0 || loanArrears() > 0)) d.push('inheritedhome');
   if (S.job === 'retired' && once('retireplan') && a <= 75) d.push('retireplan');
   const lb = loanBal(), inc = lb || S.indep ? placeInc() : 0;
   const arrears = lb && loanArrears() >= Math.max(1, loanPayY() / 12 * 2);
@@ -474,6 +484,53 @@ export const DEC = {
       if (k === 'work') { S.school = null; hireInCity(wpick({ factory: 2, migrant: 2, sales: 1.5 })); return `去了${S.loc.city}，做了${JOBS[S.job].n}。`; }
       const P = PBY[S.home.p], city = pick(P.cities);
       return enroll({ name: `${city}的一所高职`, city, prov: S.home.p, tier: 'zhuan', attr: '' }, pick(['护理', '电子商务', '会计', '机械工程', '计算机']), false);
+    },
+  },
+
+  // 考上大学的那个暑假（7–8 月，等开学）：办不办升学宴。花的钱和收的礼都走家里的账（开学时从里面交学费）；
+  // 收下的礼，以后亲戚家的孩子考上了要还回去（回响 feastBack），自己的孩子考上时会想起这一回（kidFeast）
+  feast: {
+    build: () => {
+      const T = S.flags.toSchool, u = S.flags.uni, rur = S.home.kind === 'rural', inc = placeInc(S.home), pw = parentsWord();
+      if (!T || !pw) return null;
+      const good = !!u && ['985', '211', 'ben1'].includes(u.tier), zhuan = T.s === '大专', debt = (S.famDebt || 0) > inc * 0.5;
+      const n = rur ? ri(15, 30) : ri(6, 12);
+      const k1000 = (x: number) => Math.round(x / 1e3) * 1e3;
+      const big = { cost: k1000(inc * (rur ? 0.5 : 0.3)), gift: k1000(inc * (rur ? 1.1 : 0.55) * (good ? 1.2 : zhuan ? 0.7 : 1)) };
+      const small = { cost: k1000(inc * 0.12), gift: k1000(inc * 0.3) };
+      return {
+        title: '升学宴',
+        body: `${u ? `${u.name}的` : ''}录取通知书到了。${pw}说要请亲戚朋友吃顿饭${rur ? '，村里已经有人在问哪天摆酒' : ''}。${debt ? '家里还欠着钱。' : ''}`,
+        fact: '不少地方三令五申，禁止公职人员操办或参加“升学宴”“谢师宴”',
+        choices: [
+          { k: 'big', label: rur ? `在村里摆${n}桌流水席` : `在饭店订${n}桌，亲戚朋友都请`, sub: `花约${wan(big.cost)}，收礼约${wan(big.gift)}；收下的人情，以后都要还`, w: (rur ? 3 : 0.8) * (good ? 1.5 : zhuan ? 0.5 : 1), tilt: { e: 0.4 } },
+          { k: 'small', label: '只请几桌至亲，再请老师吃顿谢师宴', sub: `花约${wan(small.cost)}，收礼约${wan(small.gift)}`, w: rur ? 1.2 : 2 },
+          { k: 'none', label: '不办了', sub: `不花钱，也不欠人情${rur ? '；村里会有人说闲话' : ''}`, w: (rur ? 0.4 : 1) * (debt ? 3 : 1), tilt: { e: -0.3, c: 0.2 } },
+        ],
+        ctx: { n, rur, big, small, pw },
+      };
+    },
+    apply: (k, c) => {
+      const who = pick(['表舅', '二姨', '大伯', '三叔', '姑父', '小姨']), pw = c.pw;
+      const host = S.fam.dad.alive && !(S.flags.parDiv && S.flags.parDivWith === 'mom') ? 'dad' : 'mom';
+      const per = c.rur ? (k === 'big' ? 500 : 1000) : (k === 'big' ? 1000 : 2000);
+      S.flags.feast = { k, at: S.age, who, x: per, host };
+      if (k === 'none') {
+        eff({ h: -1 });
+        return c.rur ? `没办酒。${pw}说，办了也是收了礼再还回去，不如省下来给你当生活费。村里有人说闲话，说考上了大学都不请客。`
+          : pick([`没办酒，一家人在家里吃了顿饭。${pw}给你包了个红包，比哪一年的压岁钱都厚。`, `没办酒。${pw}把录取通知书拍了照，发在了家族群里，底下一排「恭喜」。`]);
+      }
+      const m = k === 'big' ? c.big : c.small;
+      eff({ money: m.gift - m.cost, h: k === 'big' ? 4 : 2, so: k === 'big' ? 3 : 1 });
+      // 小时候留守的：在外打工的那一位（还在世的）特意回来
+      const out = S.flags.lb ? (S.flags.lbWho === 'dad' ? (S.fam.dad.alive ? '爸爸' : null) : S.flags.lbWho === 'mom' ? (S.fam.mom.alive ? '妈妈' : null) : parentsWord()) : null;
+      const lb = out ? `在外打工的${out}特意请了假回来。` : '';
+      const drunk = host === 'dad'
+        ? (S.home.kind === 'rural' || S.q <= 2 ? '爸爸挨桌敬酒，喝到最后，拉着你的手说：「我这辈子没读成书……」话没说完，就趴在了桌上。' : `爸爸挨桌敬酒，逢人就说「我${S.sex === 'M' ? '儿子' : '闺女'}」，说了一晚上，后面的话一直没说出来。`)
+        : '妈妈忙了一整天，散席以后一个人坐在门口数礼金，数着数着就哭了。';
+      if (k === 'big') return { t: (c.rur ? `${calMonth() === 7 ? '七月底' : '八月初'}，在村里摆了${c.n}桌流水席。厨子是从镇上请的，院子里的大锅从早上烧到天黑。来的人里有一半你叫不上名字，每个人都拍着你的肩膀说「有出息」。`
+        : `在饭店订了${c.n}桌，门口立着一块牌子，印着你的照片和录取的学校。亲戚、${pw}的同事、你的班主任都来了。`) + lb + drunk + `礼金一共${wan(m.gift)}，${pw}一笔一笔记在礼簿上，说这些都是以后要还的。`, k: 'good' };
+      return { t: `只请了几桌至亲，又请班主任和几个任课老师吃了顿谢师宴。${lb}班主任喝了两杯，拍着你的肩膀说：「到了大学，别忘了回来看看。」${host === 'dad' ? pick(['回家的路上，爸爸一直哼着歌。', '爸爸给每个老师都敬了酒，一句话说了好几遍：「孩子交给你们，我们放心。」', '那天爸爸穿了一件新衬衫，领子上的标签都没剪。']) : pick(['回家的路上，妈妈一直挽着你的胳膊。', '妈妈给每个老师都塞了一包喜糖，自己一口没吃。'])}`, k: 'good' };
     },
   },
 
@@ -1381,6 +1438,40 @@ export const DEC = {
     },
   },
 
+  // 父母都走了、房子归了你（独生子女，或者按老规矩归你）：七七过后回去收拾老房子，定下它以后怎么办。
+  // 留着的，以后每隔几年回去一趟，最后塌了、拆了、收回去了（content/echoes.ts 的 oldHomeVisit、oldHomeEnd）
+  oldhome: {
+    fork: true,
+    build: () => {
+      const i = S.inheritedHomes?.findIndex(home => !home.reviewed) ?? -1, home = i >= 0 ? S.inheritedHomes[i] : null;
+      if (!home) return null;
+      const rur = S.home.kind === 'rural' && home.city === S.home.city, where = rur ? placeName(S.home) : home.city;
+      return {
+        title: '老房子',
+        body: `七七过了，你回${where}收拾爸妈的房子。${rur ? '院子里的草长到了膝盖，灶台上还放着妈妈用惯的那口锅。' : '屋里的摆设和你小时候差不多，墙上的挂历还停在爸妈走的那个月。'}房子估价约${wan(home.v)}。`,
+        choices: [
+          { k: 'sell', label: '卖掉', sub: `到手约${wan(home.v * 0.95)}；以后回去，就没有自己的家了`, w: liquidBalance() < 0 ? 5 : 2, tilt: { c: 0.3 } },
+          { k: 'move', label: '搬回去住', sub: '住进去，省下房租', off: !!S.house || home.share < 0.999, w: 1 },
+          { k: 'keep', label: '留着，逢年过节回去看看', sub: '不变现，隔几年要回去收拾一趟', w: rur ? 3 : 1.5, tilt: { n: 0.3 } },
+        ], ctx: { index: i, rur },
+      };
+    },
+    apply: (k, c) => {
+      const home = S.inheritedHomes?.[c.index];
+      if (!home) return '';
+      S.flags.oldHome = { k, at: S.age, rur: c.rur };
+      if (k === 'sell') { const x = sellInherited(c.index); return `把爸妈的房子卖了，到手${wan(x)}。交钥匙那天，你把门上的春联揭了下来，折好放进了包里。`; }
+      if (k === 'move' && !S.house && home.share >= 0.999) {
+        S.house = { city: home.city, p: home.p, v: home.v, paid: 0, at: S.age };
+        moveTo(home.p === S.home.p && home.city === S.home.city ? { ...S.home } : cityLoc(home.p, home.city));
+        S.inheritedHomes.splice(c.index, 1);
+        return `搬回了爸妈留下的房子。夜里躺在小时候睡的那张床上，听得见${c.rur ? '院子里的狗叫' : '楼下有人在下棋'}，和很多年前一样。`;
+      }
+      home.reviewed = true;
+      return '房子留了下来。走之前，你把家具都盖上了旧床单，锁门的时候，在门口站了一会儿。';
+    },
+  },
+
   inheritedhome: {
     build: () => {
       const index = S.inheritedHomes?.findIndex(home => !home.reviewed) ?? -1;
@@ -1430,6 +1521,9 @@ export const DEC = {
       };
     },
     apply: (k, c) => {
+      // 记下是哪一位兄弟姐妹（让出房子时是拿到房子的那位，打官司时是年纪最大的那位），回响里接着写（content/echoes.ts）
+      const sibs = S.fam.sibs.map((s, i) => ({ s, i })).filter(x => x.s.alive), bro = sibs.find(x => x.s.sex === 'M');
+      S.flags.heir = { k, at: S.age, sib: (k === 'give' && bro ? bro : sibs.sort((a, b) => b.s.age - a.s.age)[0])?.i ?? -1 };
       if (k === 'give') { const x = inheritSplit(0, true); eff({ so: 2, h: c.daughter ? -2 : 0 }); return `父母都走了。房子留给了${c.heir}，${x >= 100 ? `你分到存款约${wan(x)}` : '存款没剩下什么，你什么也没分到'}。${c.daughter ? '你没说什么，回去的路上一直没说话。' : ''}`; }
       if (k === 'take') { const x = inheritSplit(c.n, true); eff({ so: -2 }); return `父母都走了。按老规矩，房子归了你，连同存款共继承约${wan(x)}的资产，房子还没有卖。姐妹们没争，只是后来走动少了。`; }
       const x = inheritSplit(1, true, true);

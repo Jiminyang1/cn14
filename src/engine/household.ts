@@ -11,6 +11,7 @@ import { wan } from './format';
 import { sibsAlive } from './family';
 import { familySize, floorCost, incUnits, livingCost, poorStep, tierOf } from './budget';
 import { changeMoney } from './accounts';
+import { nowM } from './calendar';
 
 declare module './types' {
   interface Life {
@@ -145,7 +146,7 @@ export function heirShares(houseK = 1) {
   return { n, cash: Math.max(0, cash), house, share: Math.max(0, cash) / n + house / n * houseK };
 }
 export function inheritSplit(houseK, quiet = false, sell = false) {
-  S.flags.inherited = 1; S.flags.heirDue = 0;
+  S.flags.inherited = 1; S.flags.heirDue = 0; S.flags.inhM = nowM(); // 继承是哪个月：老房子的抉择（oldhome）等七七过了再问
   const home = S.famHouse || { v: 0 };
   const estate = heirShares(houseK);
   const property = estate.house / estate.n * houseK;
