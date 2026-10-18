@@ -10,7 +10,7 @@ import { MONTHS, approachPerMonth, perMonth, posIn, sdPerMonth } from './monthly
 import { chance, clamp, gauss, pick, rnd, wpick } from './rng';
 import { cityLoc, placeInc } from './place';
 import { eff } from './stats';
-import { log } from './journal';
+import { log, vary } from './journal';
 import { makeName } from './names';
 import { pickParentJob, wageOf } from './parents';
 import { rural } from './content/events';
@@ -170,6 +170,7 @@ export const feelWord = p => p.fit >= 0.7 ? '聊得很投缘' : p.fit >= 0.5 ? '
 // 中国人谈对象，看的不只是两个人。两家用同一张条件表互相看：工作（编制、有没有工作）、房子、收入、家境、城乡、是不是外地的、
 // 兄弟姐妹、爸妈以后要不要养、年龄差。对方家里看你（theirWhys）、你家里看对方（myWhys）都是这张表，只是说法不同。
 // 每一条一个分数：总分 ≥ 1 是满意、≤ −1 是不太满意（见家长时用）；对方家里的总分也算进 Ta 愿不愿意（mutualP）。
+// 见家长时还有硬伤：没工作、家境差两档以上，一条就不同意，别的条件再好也抵不过（原来只看总分，一局约 0.15 次见家长的抉择，太少）
 // 确定的，不消耗随机数（界面上也会算）。二十二岁以前、还在读书的，家里还不过问
 type Prof = { male: boolean; age: number; bz: boolean; noJob: boolean; house: boolean; rich: boolean; q: number; rural: boolean; home: string; only: boolean; burden: string };
 const meProf = (): Prof => {
@@ -196,6 +197,12 @@ function score(a: Prof, b: Prof): [string, number][] {
   return r;
 }
 const involved = () => !S.school && S.age >= 22;
+const HARD = new Set(['seek', 'poor']);
+const hardOf = (ws: { k: string; v: number }[]) => ws.find(w => HARD.has(w.k) && w.v <= -0.5);
+/** 一张表的结论：1 满意、0 没意见、-1 不太满意（有硬伤，或者总分 ≤ −1） */
+const verdict = (ws: { k: string; v: number }[]) => { const f = ws.reduce((a, w) => a + w.v, 0); return hardOf(ws) || f <= -1 ? -1 : f >= 1 ? 1 : 0; };
+/** 最在意的那一条：有硬伤先说硬伤 */
+export const worstOf = <T extends { k: string; v: number }>(ws: T[]): T | undefined => hardOf(ws) as T || ws.filter(w => w.v < 0).sort((a, b) => a.v - b.v)[0];
 type Why = { k: string; v: number; t: (subj: string) => string };
 /** 对方家里看你：每一条配一句话（subj 是「张三家里」） */
 export function theirWhys(p): Why[] {
@@ -223,7 +230,7 @@ export const famPts = p => theirWhys(p).reduce((a, w) => a + w.v, 0);
 /** 对方家里怎么看你（subj：「张三家里」）：最满意的一条和最在意的一条各说一句 */
 export function theirView(p, subj = `${p.name}家里`): string | null {
   const ws = theirWhys(p).filter(w => Math.abs(w.v) >= 0.3); if (!ws.length) return null;
-  const best = ws.reduce((a, b) => b.v > a.v ? b : a), worst = ws.reduce((a, b) => b.v < a.v ? b : a);
+  const best = ws.reduce((a, b) => b.v > a.v ? b : a), worst = worstOf(ws) || best;
   const ta = p.sex === 'M' ? '他' : '她';
   if (best.v > 0 && worst.v < 0) return best.t(subj) + worst.t(`不过${ta}家里`);
   return (best.v > 0 ? best : worst).t(subj);
@@ -245,8 +252,8 @@ export function myWhys(p): { k: string; v: number; t: string }[] {
 export function famView(p): { who: string | null; good: string | null; bad: string | null; par: number } {
   const who = S.fam.mom.alive ? '妈妈' : S.fam.dad.alive ? '爸爸' : null, ws = myWhys(p);
   if (!ws.length) return { who: involved() ? who : null, good: null, bad: null, par: 0 };
-  const best = ws.reduce((a, b) => b.v > a.v ? b : a), worst = ws.reduce((a, b) => b.v < a.v ? b : a), f = ws.reduce((a, w) => a + w.v, 0);
-  return { who, good: best.v > 0 ? best.t : null, bad: worst.v < 0 ? worst.t : null, par: f <= -1 ? -1 : f >= 1 ? 1 : 0 };
+  const best = ws.reduce((a, b) => b.v > a.v ? b : a), worst = worstOf(ws);
+  return { who, good: best.v > 0 ? best.t : null, bad: worst ? worst.t : null, par: verdict(ws) };
 }
 /** 「妈妈说：“……”」 */
 export function famSay(p): string | null {
@@ -302,6 +309,7 @@ declare module './types' {
     wAt?: number;     // 说「再等等」是哪个月
     w0?: number;      // 第一次说「再等等」是哪个月（Ta 等了多久）
     apart?: number;   // 婚后两地分居是哪个月开始的（抉择 wedMove）
+    wedHow?: string;  // 婚礼怎么办的：farm 老家流水席、hotel 酒店、trip 旅行结婚、none 没办（五十岁以后再婚）
   }
 }
 // ===== 感情线 =====
@@ -316,12 +324,42 @@ export function noteLove(p, kind: 'love' | 'missed' = 'love', withName?: string)
 }
 /** 和这个人的那一段（还没结束的那段） */
 export const loveOf = (p): Love | undefined => (S.loves || []).slice().reverse().find(x => x.kind === 'love' && x.name === p.name);
-/** 分开：时间线上写一句，记一次前任。k：怎么分开的（WHY_N） */
+// ===== 在一起、结婚、分手：换着说 =====
+// 一辈子会碰上好几次，按怎么认识的（同学、同事、相亲、重新联系上）各备几种说法，用 vary 轮着用（见 AGENTS.md「不重复」）
+const howK = p => ['school', 'work', 'blind', 'reunion'].includes(p.how) ? p.how : 'etc';
+/** 在一起了（抉择 romance） */
+export function togetherLine(p) {
+  const n = p.name, ta = p.sex === 'M' ? '他' : '她', k = howK(p);
+  const T = {
+    school: [`你和${n}在一起了。晚上下了课，你们绕着操场走了一圈又一圈。`, `${n}答应了。从那以后，食堂里你们总坐同一张桌子。`, `你和${n}在一起了。图书馆里，${ta}总给你占着旁边的座位。`],
+    work: [`你和${n}在一起了。在公司里还装作不熟，下了班才一起走。`, `下班后约着吃了几次饭，你和${n}在一起了。没过多久，同事们都知道了。`, `你和${n}在一起了。午休的时候，两个人总是“碰巧”去同一家店。`],
+    blind: [`又见了几次，两个人都觉得合适，你和${n}正式处起了对象。`, `你和${n}处起了对象。${matchmaker()}打电话来问，你说“还行”，声音里带着笑。`, `见到第三面，${n}说：“那我们就先处着？”你说好。`],
+    reunion: [`兜兜转转这么多年，你和${n}还是走到了一起。`, `那么多年没见，再见面却像从没分开过。你和${n}在一起了。`],
+    etc: [`你和${n}在一起了。`, `${n}答应了。那天晚上你翻来覆去，很久都没睡着。`, `第三次约会的时候，你们牵了手。你和${n}在一起了。`, `你和${n}在一起了。手机里置顶的聊天，从此只有一个。`],
+  };
+  return vary('together.' + k, T[k]);
+}
+/** 结婚了（抉择 marry）：婚礼、彩礼在后面接着写 */
+export function wedLine(p) {
+  const n = p.name, k = howK(p), yrs = S.age - p.metAt, yt = yrs ? `${yrs}年` : '不到一年';
+  const T = {
+    school: [`从学校里一路走过来，你和${n}结婚了。`, `在一起${yt}，从学生时代走到了今天：你和${n}结婚了。`],
+    work: [`你和${n}结婚了。请帖发到公司那天，同事们说早就在等这杯喜酒了。`, `你和${n}结婚了。两个人的婚假是一起请的，领导签字的时候笑了半天。`],
+    blind: [`相亲认识的${n}，成了你的${p.sex === 'M' ? '丈夫' : '妻子'}。`, `从相亲那天算起${yt}，你和${n}结婚了。`],
+    reunion: [`兜了一大圈，你和${n}还是结婚了。`, `当年没能在一起的人，这次成了一家人：你和${n}结婚了。`],
+    etc: [`你和${n}结婚了。`, `你和${n}领了证。红本本上的照片，两个人都笑得有点僵。`, `你和${n}结婚了。领证那天，民政局门口排了一上午的队。`],
+  };
+  return vary('wed.' + k, T[k]);
+}
+/** 分开：时间线上写一句。why：前因（可以是空的）；k：怎么分开的（WHY_N） */
 export function breakUp(d, why: string, h = -5, k = '') {
   const e = loveOf(d); if (e) { e.end = S.age; e.why = k; }
-  S.fam.dating = null; S.flags.exes = (S.flags.exes || 0) + 1; eff({ h });
-  const yrs = S.age - d.metAt;
-  log(`${why}你和${d.name}分手了。在一起${yrs ? yrs + '年' : '不到一年'}。`, 'bad');
+  const yrs = S.age - d.metAt, near = d.city === S.loc.city, w = why.includes(d.name) ? '你们' : `你和${d.name}`; // 前因里已经提到名字的，不再重复
+  // 家里拦着分的（parents），介绍人心里有数，不再来问
+  const tail = { school: '一起上过的课、一起排过的食堂窗口，后来想起来都隔得很远。', work: near && isWorking() && d.jk ? '第二天在公司碰见，两个人都低头看手机。' : '',
+    blind: k === 'parents' ? '' : `${matchmaker()}打电话来问怎么回事，你没多说。`, reunion: '兜兜转转又走到一起，最后还是没成。', etc: '' }[howK(d)];
+  S.fam.dating = null; eff({ h });
+  log(`${why}${vary('breakUp', [`${w}分手了。`, `${w}还是分开了。`, `${w}走到了头。`])}在一起${yrs ? yrs + '年' : '不到一年'}。${tail}`, 'bad');
 }
 /** 把一个抉择排在稍后（同一个月里）。快到年底的就排在当下：不能排到现在之前，不然真实游玩时马上弹出、重放时却停在它前面（content/echoes.ts 的 soon 同样） */
 export function soon(id: string) {
@@ -349,8 +387,8 @@ export function loveStep(d) {
   if (d.drag == null && m - d.coldAt >= 3 && (d.coldAsk == null || m - d.coldAsk >= 24)) { d.coldAsk = m; soon('cold'); }
 }
 // 见家长：两家都没意见的，写一句就过去了；有一边不同意的，停下来问你（抉择 parents）。
-// 对方家里满不满意就是上面那张条件表的总分
-export const theirPar = p => { const f = famPts(p); return f <= -1 ? -1 : f >= 1 ? 1 : 0; };
+// 对方家里满不满意就是上面那张条件表的结论（verdict）
+export const theirPar = p => verdict(theirWhys(p));
 function meetParents(d) {
   // 先缓过一阵的，家里有一半的可能松口（估计）
   if (d.slowed != null) { if (d.par < 0 && chance(0.5)) d.par = 0; if (d.tpar < 0 && chance(0.5)) d.tpar = 0; }

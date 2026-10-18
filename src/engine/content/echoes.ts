@@ -99,7 +99,7 @@ export const ECHO_EVENTS: any[] = [
     return `${p.name}去了${p.city}。你们的聊天记录，从每天几十条，变成了逢年过节的一句「新年快乐」。`;
   } },
   // 你的婚礼
-  { id: 'palWed', a: [20, 60], once: 1, w: 12, c: () => !!pal() && justMarried(), run: () => {
+  { id: 'palWed', a: [20, 60], once: 1, w: 12, c: () => !!pal() && justMarried() && ['farm', 'hotel'].includes(S.fam.partner.wedHow), run: () => {
     const p = pal(), role = p.sex === S.sex ? (S.sex === 'M' ? '伴郎' : '伴娘') : '证婚的朋友';
     if (p.close >= 45) { p.close += 5; eff({ h: 2, so: 2 }); return `${p.name}特意从${p.city || '老家'}赶回来当你的${role}，敬酒的时候喝得比你还多。`; }
     eff({ h: -1 }); return `婚礼前给${p.name}发了请帖。${ta(p)}说实在走不开，转了一个大红包，附了一句「一定幸福」。`;
@@ -191,7 +191,7 @@ export const ECHO_EVENTS: any[] = [
     const head = m.how === 'blind' ? `听介绍人说，当年相亲见过的${m.name}，` : `听朋友说，当年很聊得来、你却没追的${m.name}，`;
     // 当年选的那个人后来没走下去：会想一想
     const w = m.with && (S.loves || []).find(x => x.kind === 'love' && x.name === m.with);
-    return head + now + '。' + (w && (w.end != null || w.div != null) ? `你偶尔会想，要是当年选的是${t}……` : '');
+    return head + now + '。' + (w && (w.end != null || w.div != null) ? `你偶尔会想，要是当年选的是${t}……` : m.with && !w ? `当年你选了${m.with}，结果没成。要是选的是${t}呢？` : '');
   } },
 
   // ---- 不打算结婚（抉择 single） ----
@@ -205,6 +205,14 @@ export const ECHO_EVENTS: any[] = [
   { id: 'soloOld', a: [60, 82], once: 1, w: 4, c: () => !!S.flags.noWed, run: () => {
     eff({ h: 3, so: 2 });
     return { t: '和几个同样一个人过的老同学搭起了伙，每周轮流做东吃一顿饭。说好了，以后住同一家养老院。', k: 'good' };
+  } },
+
+  // ---- 晚年再婚（五十岁以后，不办酒席的那种）：子女点不点头、房子以后留给谁 ----
+  { id: 'lateWed', a: [50, 90], once: 1, w: 10, c: () => married() && S.fam.partner.wedHow === 'none' && S.age - S.fam.partner.marriedAt <= 3 && (S.flags.divorced != null || S.flags.widowed != null), run: () => {
+    const p = S.fam.partner, kid = kidsAlive().filter(k => k.age >= 18).sort((a, b) => b.age - a.age)[0], me = S.sex === 'M' ? '爸' : '妈';
+    if (kid && S.house && !S.house.pt) { eff({ h: -3 }); return { t: `${kid.name}回家吃饭，一顿饭没说几句话。走的时候在门口问你：“${me}，这房子以后怎么算？”你说早想好了，留给${kid.sex === 'M' ? '他' : '她'}。${p.name}在厨房里洗碗，水一直开着。`, x: 1 }; }
+    if (kid) { eff({ h: -2 }); return `${kid.name}一开始不同意，那年过年没回来。第二年拎着东西上了门，叫了${p.name}一声“${p.sex === 'M' ? '叔叔' : '阿姨'}”。`; }
+    eff({ h: 2 }); return `${p.name}的孩子来家里吃饭，客客气气的。临走时拉着你的手说，有你陪着${p.sex === 'M' ? '他们爸' : '他们妈'}，他们就放心了。`;
   } },
 
   // ---- 小时候被欺负的那个同学 ----

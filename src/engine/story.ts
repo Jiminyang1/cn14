@@ -76,7 +76,9 @@ export function loveLine(L: Life): LoveRow[] {
   if (c) out.push({ a: c.at, name: c.name, t: '少年时喜欢过的人', k: 'crush' });
   for (const l of L.loves || []) {
     const ta = l.sex === 'M' ? '他' : '她';
-    if (l.kind === 'missed') { out.push({ a: l.at, name: l.name, t: l.with ? `相亲时没选的那个（选了${l.with}）` : '很聊得来，没有追', k: 'missed' }); continue; }
+    // 相亲时选了另一个、那个人却没答应的：选的那个不在线上，要说清楚
+    const chose = (n: string) => (L.loves || []).some(x => x.kind === 'love' && x.name === n);
+    if (l.kind === 'missed') { out.push({ a: l.at, name: l.name, t: l.with ? `相亲时没选的那个（选了${l.with}${chose(l.with) ? '' : `，${l.with}没答应`}）` : '很聊得来，没有追', k: 'missed' }); continue; }
     const how = l.how === 'blind' ? '相亲认识' : l.how === 'reunion' ? '又联系上' : `在${MEET_HOW[l.how] || '外面'}认识`;
     const yrs = (b: number) => b - l.at ? `${b - l.at}年` : '不到一年';
     const END = { parents: '家里不同意，分了', ldr: '异地以后分了', cold: '感情淡了，分了', wait: `${ta}等不下去了`, house: '没有婚房，散了', no: '没走到结婚' };

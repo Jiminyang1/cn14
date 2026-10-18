@@ -9,7 +9,7 @@ import { EDU_LV, HS_NAME, admit, enroll, gkAutoApps, gkCandidates, gkLines, gkRa
 import { ILL, oop, reimburse } from '../health';
 import { JOBS, RAISE, RESID_PENSION_JOBS, civilTry, gig, gradJob, hire, hireInCity, isWorking, quitJob, raise, retire } from '../career';
 import { supportOf } from '../family';
-import { LOVE_COLD, MEET_HOW, READY0, READY_K, breakUp, brideAmt, bianzhi, famSay, famView, feelWord, famPts, loveOf, loveWord, noteLove, partnerBrief, selfP, theirWhys, matchmaker, mShift, mutualP, partnerInc, partnerJob, partnerLoc, partnerRows, pickW, ptJobName, theirView } from '../romance';
+import { LOVE_COLD, MEET_HOW, READY0, READY_K, breakUp, brideAmt, bianzhi, famSay, famView, feelWord, loveOf, loveWord, noteLove, partnerBrief, selfP, theirWhys, matchmaker, mShift, mutualP, myEdu, partnerInc, partnerJob, partnerLoc, partnerRows, pickW, ptJobName, theirPar, theirView, togetherLine, wedLine, worstOf } from '../romance';
 import { S } from '../state';
 import { addDoc, log, logLater } from '../journal';
 import { annualPay, bestPlan, buyHouse, houseHelp, inlawHelp, mate, foreclose, hhIncome, hometownHouse, loanBal, loanArrears, loanPayY, loanPlans, planSub, sellHouse, sellInherited } from '../housing';
@@ -215,6 +215,28 @@ export function yearDecisions() {
 }
 
 // 见家长时，对方家里最在意的那一条当面是什么样子
+// 婚礼：在男方老家办。男方是农村的，多半在村里摆流水席（家境好的有一半去县城酒店）；城里的在酒店。
+// 桌数看两家的家境；两个人都读过本科的、有一边家里不太同意的，有的干脆旅行结婚（估计）
+function wedding(p, cool: boolean) {
+  const farm = S.sex === 'M' ? S.home.kind === 'rural' : p.rural, qq = Math.round((S.q + p.q) / 2), pw = parentsWord();
+  const trip = chance(cool ? 0.3 : !farm && myEdu() >= 6 && p.edu >= 6 ? 0.15 : 0.04);
+  if (trip) {
+    p.wedHow = 'trip';
+    return `没办酒席，你们去${pick(['云南', '三亚', '西藏', '厦门', '青岛'])}旅行结婚，回来给同事和亲戚发了喜糖。`
+      + (cool ? '两边家里都没多说什么。' : pw ? `${pw}嘴上说现在的年轻人就是这样，回头又在老家请亲戚吃了顿饭。` : '');
+  }
+  if (farm && !(qq >= 4 && chance(0.5))) {
+    p.wedHow = 'farm';
+    const n = ri(20, 30) + 4 * qq, where = S.sex === 'M' ? '你老家' : `${p.name}老家`;
+    return pick([`${where}村口搭起了大棚，流水席从中午吃到天黑，前后坐了${n}桌。`, `${where}请了村里的厨子，连着摆了两天流水席，${n}桌，半个村子的人都来了。`,
+      `鞭炮从村头放到村尾。${where}的大棚里摆了${n}桌，你们挨桌敬酒，敬到后来脚都是软的。`]);
+  }
+  p.wedHow = 'hotel';
+  const n = ri(6, 12) + 4 * qq, hp = farm ? '县城最好的那家酒店' : `${S.loc.city}的一家酒店`;
+  return pick([`在${hp}摆了${n}桌。司仪讲到一半，${p.name}的眼眶红了。`, `${hp}里摆了${n}桌，大半是两家的亲戚，你认得的不到一半。`,
+    `婚礼办在${hp}，${n}桌。敬完一圈酒，你一口菜都没吃上。`]);
+}
+
 const MEET_WHY: Record<string, (n: string) => string> = {
   seek: n => `${n}爸妈问你在哪儿上班，你说还在找。一顿饭吃得很安静。`,
   nohouse: n => `${n}爸爸开门见山：“结婚得有房。”`,
@@ -654,12 +676,12 @@ export const DEC = {
       if (!chance(mutualP(p))) {
         eff({ h: -3 });
         // Ta 本人愿意、是家里拦着的，说清楚
-        if (famPts(p) <= -1 && selfP(p) >= 0.6) return { t: `${p.name}挺喜欢你，可${p.sex === 'M' ? '他' : '她'}家里不同意。${theirView(p) || ''}`, k: 'bad' };
+        if (theirPar(p) < 0 && selfP(p) >= 0.6) return { t: `${p.name}挺喜欢你，可${p.sex === 'M' ? '他' : '她'}家里不同意。${theirView(p) || ''}`, k: 'bad' };
         return { t: p.how === 'blind' ? `又见了两次，${p.name}说觉得你们不太合适。` : `你鼓起勇气表白，${p.name}说只想做朋友。`, k: 'bad' };
       }
-      p.love = clamp(55 + 25 * (p.fit - 0.5) + gauss(0, 8), 20, 90); p.asks = 0;
+      p.love = clamp(55 + 25 * (p.fit - 0.5) + gauss(0, 8), 20, 90);
       S.fam.dating = p; noteLove(p); eff({ h: 6 });
-      return { t: `你和${p.name}在一起了。`, k: 'good' };
+      return { t: togetherLine(p), k: 'good' };
     },
   },
 
@@ -700,7 +722,7 @@ export const DEC = {
       const d = S.fam.dating; if (!d || !(d.par < 0 || d.tpar < 0)) return null;
       const v = famView(d), ta = d.sex === 'M' ? '他' : '她';
       // 对方家里最在意的那一条（和算满不满意的是同一张表，romance.ts 的 theirWhys）
-      const worst = theirWhys(d).filter(w => w.v < 0).sort((a, b) => a.v - b.v)[0];
+      const worst = worstOf(theirWhys(d));
       const why = (MEET_WHY[worst?.k] || MEET_WHY.poor)(d.name);
       const again = d.slowed != null;
       const theirs = d.tpar < 0 ? (again ? `又去了一趟${d.name}家。` : S.sex === 'M' ? `第一次去${d.name}家见家长。` : `${d.name}带你回家见了${ta}爸妈。`) + why : '';
@@ -962,7 +984,7 @@ export const DEC = {
     apply: (k, ctx) => {
       const p = S.fam.dating;
       if (k.startsWith('wait:')) {
-        p.asks = (p.asks || 0) + 1; p.wf = k.slice(5); p.wAt = nowM(); p.w0 ??= p.wAt;
+        p.wf = k.slice(5); p.wAt = nowM(); p.w0 ??= p.wAt;
         // 选项下面已经写明 Ta 家里在给 Ta 介绍别人：这时再等，Ta 有四成可能不等了（估计）
         if (ctx.restless && chance(0.4)) { breakUp(p, `${p.name}说不想再等了。`, -7, 'wait'); return null; }
         return p.wf === 'think' ? null : `你对${p.name}说，${WAIT_SAID[p.wf]}。`;
@@ -973,7 +995,6 @@ export const DEC = {
       // 第二次还是没房：感情不错的松口（不再要婚房，当场答应），不然就散了。都写在选项下面
       let pre = '';
       if (ctx.wantHouse && !S.house) {
-        p.asks = (p.asks || 0) + 1;
         if (p.wh !== 2) {
           p.love = clamp(p.love - 8, 0, 100); p.wh = 2; eff({ h: -4 });
           return { t: `${p.name}的爸妈说，没有房子不能结婚。婚事先放下了。`, k: 'bad' };
@@ -1008,9 +1029,10 @@ export const DEC = {
         else if (par) { eff({ money: got * 0.5 }); S.famMoney += got * 0.5; bride = `${half}，一半做了你的陪嫁，另一半留在了娘家。`; }
         else { eff({ money: got }); bride = `${half}，都做了你的陪嫁。`; }
       }
-      eff({ money: S.age >= 50 ? 0 : -placeInc() * 0.1, h: 8, so: 6 });
-      if (S.age >= 50) return { t: `${pre}你和${p.name}去领了证。没办酒席，两家的孩子凑在一起吃了顿饭。${home}`, k: 'good' };
-      return { t: `${pre}你和${p.name}结婚了。${bride}酒席摆了${ri(10, 40)}桌。${home}`, k: 'good' };
+      if (S.age >= 50) { p.wedHow = 'none'; eff({ h: 8, so: 6 }); return { t: `${pre}你和${p.name}去领了证。没办酒席，两家的孩子凑在一起吃了顿饭。${home}`, k: 'good' }; }
+      const w = wedding(p, against || p.tpar < 0);
+      eff({ money: -placeInc() * (p.wedHow === 'trip' ? 0.05 : 0.1), h: 8, so: 6 });
+      return { t: `${pre}${wedLine(p)}${bride}${w}${home}`, k: 'good' };
     },
   },
 
