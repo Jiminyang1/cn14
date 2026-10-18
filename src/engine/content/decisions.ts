@@ -152,6 +152,8 @@ export function monthDecisions() {
   if (pt && pt.home !== S.home.p && S.age - pt.marriedAt <= 2 && [1, 2].includes(calMonth()) && once('newyear')) d.push('newyear');
   // 婚姻出了问题（events.ts 的 marCrisis）：苗头出来三个月，问你怎么办
   if (pt && pt.crisis != null && pt.stay == null && nowM() - pt.crisis >= 3) d.push('split');
+  // 选了先这么过着：五年以后、孩子都成年了，再问一次
+  if (pt && pt.stay != null && nowM() - pt.stay >= 60 && !kidsAlive().some(k => k.age < 18)) d.push('nest');
   if (S.flags.heirDue && !S.flags.inherited) d.push('heritage');
   if (S.indep && S.inheritedHomes?.length && monthsSince('inheritedhome') >= 12 &&
     (S.inheritedHomes.some(home => !home.reviewed) || liquidBalance() < 0 || loanArrears() > 0)) d.push('inheritedhome');
@@ -827,6 +829,31 @@ export const DEC = {
       (S.slots || []).forEach((x, i) => { if (x === 'love') { setSlot(i, autoFocus(S.slots.find((y, j) => j !== i) ?? null)); S.slotPin[i] = false; } });
       const mom = S.fam.mom.alive ? '妈妈' : S.fam.dad.alive ? '爸爸' : null;
       return mom ? `你跟${mom}说，你不打算结婚了。${mom}没说话，过了好一会儿才说：“那你自己好好的。”` : '你想好了，以后就一个人过。';
+    },
+  },
+
+  // 凑合着过的收尾（选了 split 的 stay 以后）：五年过去、孩子都大了，这么过下去，还是分开
+  nest: {
+    fork: true,
+    build: () => {
+      const p = S.fam.partner; if (!p || !p.alive || p.stay == null) return null;
+      const yrs = Math.max(1, Math.round((nowM() - p.stay) / 12)), kids = kidsAlive().length, warm = (p.love ?? 63) >= 45;
+      return {
+        title: '这么过下去？', body: `说好「先这么过着」，一晃${yrs}年。${kids ? '孩子都大了，家里常常只剩你们两个。' : ''}`,
+        card: [['结婚', `${S.age - p.marriedAt}年`], ['感情', loveWord(p.love ?? 63)]],
+        choices: [
+          { k: 'go', label: '接着过下去', sub: warm ? '这些年，好像也没那么难了' : `感情${loveWord(p.love ?? 63)}，${p.name}未必还愿意`, w: warm ? 2.5 : 1, tilt: { c: 0.3, a: 0.2 } },
+          { k: 'part', label: '离婚', sub: kids ? '孩子大了，不用再为谁凑合' : '不用再凑合了', w: warm ? 0.6 : 2, tilt: { r: 0.3, a: -0.2 } },
+        ],
+      };
+    },
+    apply: k => {
+      const p = S.fam.partner;
+      if (k === 'part') return divorce(p, '你们去办了手续。');
+      // 接着过：感情还在的，就这么过来了；感情差的，Ta 不愿意了（写在选项下面）
+      if ((p.love ?? 63) < 45) return divorce(p, `${p.name}说，不想再这么过了。`);
+      p.stay = p.crisis = undefined; p.love = clamp((p.love ?? 63) + 8, 0, 100); eff({ h: 3 });
+      return { t: '这么多年，也就这么过来了。', k: 'good' };
     },
   },
 

@@ -20,6 +20,7 @@ import { PERS, partnerPz, partnerTrait, pz, tiltW } from './personality';
 import type { PZ } from './types';
 import { loveNow, slotW } from './focus';
 import { nowM } from './calendar';
+import { liquidBalance } from './accounts';
 
 declare module './types' {
   interface Flags { noLove?: number } // 说了「现在不想谈恋爱」：到出生后第几个月（nowM）以前不再认识新的人（抉择 romance 的 later）
@@ -374,8 +375,33 @@ export function loveMove() {
 // 彩礼：各省调查/报道的区间（见 DATA.md，可信度多为中低）；没有数据的省份用农村调查均值 3.86 万
 export const brideAmt = pid => { const b = PBY[pid].bride; return b ? Math.round((b[0] + (b[1] - b[0]) * rnd()) / 1e3) * 1e3 : 38600; };
 
+// ===== 婚后 =====
+// 婚后的感情也会变：向一个目标值慢慢靠拢（比谈恋爱时慢）。合得来、时间放在家人上的好；工作占得多、孩子不满一岁、手头紧的差（估计）。
+// 淡了先有苗头（时间线上一句），半年还没缓过来，婚姻就出了问题（p.crisis：三个月后问你，抉择 split）。
+// 另外还有说不清的变故（events.ts 的 marCrisis，按 divorceRisk）：感情越差越容易碰上
+// WED_T0 和 events.ts 的 DIV_BASE 一起校准：婚后任何时候约 1% 的夫妻感情淡了，活到 60 岁离过婚的约 10%
+const WED_T0 = 45, WED_K = approachPerMonth(0.2), WED_SD = sdPerMonth(6);
+/** 婚姻出问题时时间线上的那一句（marCrisis 也用） */
+export const crisisLine = p => pick([`你和${p.name}已经分房睡了大半年，谁也没提。`, `吵架的时候，${p.name}第一次说出了“离婚”两个字。`, '一家人吃饭，只听得见碗筷的声音。', `${p.name}越来越晚回家，问起来就说加班。`]);
+export function marriedStep(p) {
+  const baby = S.fam.kids.some(k => k.alive && k.age < 1), broke = liquidBalance() < 0 || (S.debt || 0) > 0;
+  const T = WED_T0 + 30 * p.fit + 6 * slotW('family') - 4 * slotW('work') - (baby ? 6 : 0) - (broke ? 5 : 0) + (S.st.h - 75) * 0.2 + loveP(p);
+  const v = p.love ?? 63;
+  p.love = clamp(v + (T - v) * WED_K + gauss(0, WED_SD), 0, 100);
+  if (p.crisis != null) return;
+  const m = nowM();
+  if (p.love >= LOVE_COLD + 5) { p.coldAt = undefined; return; }
+  if (p.love >= LOVE_COLD) return;
+  if (p.coldAt == null) {
+    p.coldAt = m;
+    log(pick([`结婚这些年，你和${p.name}的话越来越少，饭桌上各看各的手机。`, `${p.name}说你心里只有${S.job && isWorking() ? '工作' : '自己'}。你没接话。`, '为了一点小事吵起来，翻出了好几年前的旧账。']), 'ev');
+    return;
+  }
+  if (m - p.coldAt >= 6) { p.crisis = m; p.coldAt = undefined; eff({ h: -4 }); log(crisisLine(p), 'bad'); }
+}
+
 // ===== 每个月月底 =====
-/** 单身的：这个月会不会认识人；恋爱中的：感情变化、见家长、分手（第 12 个月月底对象还长一岁） */
+/** 单身的：这个月会不会认识人；恋爱中的：感情变化、见家长、分手（第 12 个月月底对象还长一岁）；结了婚的：婚后的感情 */
 export function loveMonth(m: number) {
   // 刚分开（分手、离婚、丧偶）：从这个月算起，隔一段时间才会遇见下一个人
   const has = S.fam.dating || S.fam.married ? 1 : 0;
@@ -385,6 +411,8 @@ export function loveMonth(m: number) {
     // 认识了还没决定（抉择排在下个月）。万一抉择不在队列里了（比如这个月被清掉），补排进下个月，免得一直卡在「还没决定」
     if (!S.queue.some(e => e.type === 'dec' && e.id === 'romance')) queueRomance(m);
   } else meetMonth(m);
+  const pt = S.fam.married && S.fam.partner?.alive ? S.fam.partner : null;
+  if (pt) marriedStep(pt);
   const d = S.fam.dating; if (!d) return;
   if (m === MONTHS - 1) partnerYear(d);
   loveStep(d);

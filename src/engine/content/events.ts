@@ -11,7 +11,7 @@ import { MAJORS } from '../education';
 import { PBY } from '../data';
 import { S } from '../state';
 import { addDoc, vary } from '../journal';
-import { loveOf } from '../romance';
+import { crisisLine, loveOf } from '../romance';
 import { awayFromHome, farFromParents, placeInc } from '../place';
 import { anyParent, bothParents, carer, parentsWord } from '../parents';
 import { chance, clamp, gauss, pick, ri, wpick } from '../rng';
@@ -73,15 +73,16 @@ const PROMO_T = { civil: '提了一级，工资涨了一点。', teacher: '评�
 // ===== 离婚 =====
 // 你自己的婚姻：每个月按风险判定会不会出问题（marCrisis），出了问题先有苗头，三个月后问你（抉择 split）：谈开了就过去了，
 // 凑合着过的风险翻倍、再出事就是 Ta 提离婚，选离婚就离。有一部分人谈开了、凑合下去了，所以 DIV_BASE 是「出问题」的基准，
-// 比原来直接离婚的 0.0095 高：0.024 时活到 60 岁离过婚的约 8%（和原来差不多）。
+// 婚后感情淡了自己也会走到「出问题」（romance.ts 的 marriedStep），DIV_BASE 只管说不清的变故：
+// 0.012、婚后感情基准 WED_T0 = 45 时，活到 60 岁离过婚的约 10%（原来约 8%）。
 // 年风险 = DIV_BASE × 婚龄曲线 × 婚姻质量 × 60 岁以后的折减 × 省份系数 divK × 双方性格。依据和校准见 DATA.md「离婚（2026-10）」
 // · 婚龄曲线：头一年较低，婚后 2–7 年最高（CFPS 的离婚风险随婚龄呈倒 U 型），之后逐段下降，25 年以后只剩一成；
-// · 婚姻质量：结婚时合不合得来（fit，均值 0.55、标准差约 0.18）、结婚时的感情（love，均值约 63、标准差约 10；婚后不再变）、
-//   现在的幸福（已婚者均值约 80、标准差约 8）。每个标准差的风险比约 1.6 / 1.2 / 1.3（估计）；
+// · 婚姻质量：结婚时合不合得来（fit，均值 0.55、标准差约 0.18）、现在的感情（love，结婚时均值约 63；婚后会变，见 romance.ts 的 marriedStep）、
+//   现在的幸福（已婚者均值约 80、标准差约 8）。婚后感情会变（romance.ts 的 marriedStep），感情淡了自己也会走到「出问题」。每个标准差的风险比约 1.6 / 1.2 / 1.3（估计）；
 // · 怀孕期间、孩子不满一岁时不离婚（民法典第 1082 条：这段时间男方不得提出离婚。女方提出的很少，简化成都不离）。
 // 性格：敏感的人风险高，随和、认真的低（每个标准差的风险比约 1.15 / 0.85 / 0.85，Roberts 2007、Lundberg 2012），夫妻双方各乘一次
 const DIV_T = { n: 0.14, a: -0.16, c: -0.16 };
-export const DIV_BASE = 0.024;
+export const DIV_BASE = 0.012;
 export const DIV_DUR = (d: number) => d < 1 ? 0.5 : d < 2 ? 0.85 : d < 8 ? 1 : d < 15 ? 0.6 : d < 25 ? 0.3 : 0.1;
 const DIV_OLD = 0.3; // 60 岁以后（估计：高龄离婚很少）
 /** 有不满一岁的孩子，或者正怀着孕 */
@@ -107,7 +108,7 @@ export function divorceRisk() {
 }
 // 父母离婚：同一条婚龄曲线（婚龄按你的年龄 + 2 估计，上面有哥哥姐姐的按最大的那个算），不看婚姻质量（没有记），按老家的省份系数。
 // 只在你 1–17 岁时判定（之后的不影响「跟着谁生活」）。家里有不满一岁的弟弟妹妹时不离（民法典第 1082 条）
-const PAR_DIV_K = 0.4; // DIV_BASE 改成「出问题」的基准以后，父母离婚按原来的 0.0095 算（0.024 × 0.4）
+const PAR_DIV_K = 0.8; // 父母离婚按原来的 0.0095 算（DIV_BASE 0.012 × 0.8）
 function parDivRisk() {
   const f = S.fam;
   if (!bothParents() || S.flags.parDiv) return 0;
@@ -256,7 +257,7 @@ export const EVENTS = [
     if (p.stay != null) return divorce(p, `${p.name}提出了离婚。`);
     p.crisis = nowM();
     eff({ h: -4 });
-    return { t: pick([`你和${p.name}已经分房睡了大半年，谁也没提。`, `吵架的时候，${p.name}第一次说出了“离婚”两个字。`, '一家人吃饭，只听得见碗筷的声音。', `${p.name}越来越晚回家，问起来就说加班。`]), k: 'bad' };
+    return { t: crisisLine(p), k: 'bad' };
   } },
   { id: 'kidSchool', a: [28, 55], gap: 3, w: 2, c: () => kidsAlive().some(k => k.age >= 6 && k.age <= 17), run: () => { eff({ h: -2, money: -placeInc() * 0.1 }); return pick(['为了孩子上学，研究学区、排队报名，跑了好几趟。', '每天晚上辅导孩子写作业，气得血压都上来了。', '孩子的家长群一天几百条消息。']); } },
   { id: 'reunion', a: [30, 60], gap: 10, w: 1, run: () => { eff({ so: 2, h: S.relInc > 0 ? 2 : -2 }); return vary('reunion', ['同学聚会。有人开着好车来，有人没来。大家聊着聊着，就开始聊房子和孩子。', '同学聚会，当年的班长致辞，说「二十年了，大家都没怎么变」。所有人都笑了。', '同学聚会上，有人提起了已经不在的一位同学。桌上安静了一会儿，又有人举起了杯子。', '同学聚会，回了一趟母校。教学楼翻新了，你们的教室变成了实验室。']); } },
@@ -301,7 +302,7 @@ export const EVENTS = [
     return { t: t + (four ? '你也是独生子女。四个老人，就你们两个。' : ''), k: 'bad' };
   } },
   { id: 'famParents', a: [28, 65], gap: 3, w: 0.5, c: () => bothParents() && !S.flags.parDiv, run: () => { eff({ h: 2, so: 1 }); return vary('famParents', ['带爸妈去做了一次全面体检，排了一上午的队。爸爸一直说「花这个钱干什么」。', '周末陪妈妈去逛菜市场，她跟每个摊主都介绍「这是我孩子」。', '给爸妈换了一台大电视，遥控器教了三遍。']); } },
-  { id: 'famHome', a: [24, 85], gap: 3, w: 0.4, c: () => S.fam.married && !!S.fam.partner && S.fam.partner.alive, run: () => { eff({ h: 3 }); return vary('famHome', ['一家人难得在家吃了一顿晚饭，谁都没看手机。', `结婚纪念日，你和${S.fam.partner.name}回到了第一次约会的那家店。店还在，老板换了。`, `周末和${S.fam.partner.name}把家里大扫除了一遍，翻出了结婚时的照片，看了一下午。`]); } },
+  { id: 'famHome', a: [24, 85], gap: 3, w: 0.4, c: () => S.fam.married && !!S.fam.partner && S.fam.partner.alive, run: () => { eff({ h: 3 }); S.fam.partner.love = clamp((S.fam.partner.love ?? 63) + 3, 0, 100); return vary('famHome', ['一家人难得在家吃了一顿晚饭，谁都没看手机。', `结婚纪念日，你和${S.fam.partner.name}回到了第一次约会的那家店。店还在，老板换了。`, `周末和${S.fam.partner.name}把家里大扫除了一遍，翻出了结婚时的照片，看了一下午。`]); } },
   { id: 'halfMara', a: [20, 60], once: 1, w: 0.3, run: () => { eff({ hl: 2, h: 4 }); return { t: '跑完了人生第一个半程马拉松。到终点的时候，腿已经不是自己的了。', k: 'good' }; } },
   { id: 'keepFit', a: [18, 75], gap: 4, w: 0.4, run: () => { eff({ hl: 2, h: 1 }); return vary('keepFit', ['办的健身卡，这次居然坚持了一整年。', '每天晚饭后绕着小区走一万步，保安都认识你了。', '体检的时候，几项指标都比去年好了。']); } },
   { id: 'hobbyDeep', a: [16, 85], gap: 3, w: 0.4, run: () => { eff({ h: 3 }); return vary('hobbyDeep', ['周末都泡在自己的爱好上，家里堆满了相关的东西。', '在网上找到了一群同好，约好每个月见一次面。', '花了半年做成的一件东西发到网上，有几百个人点了赞。']); } },
