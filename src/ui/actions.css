@@ -1,6 +1,6 @@
 /* 「三、计划」上的「行动」按钮（ui/Actions.tsx） */
-.act-btn { position: relative; border: 1.5px solid var(--seal); background: var(--card); color: var(--seal); font-weight: 700; }
-.act-n { display: inline-grid; place-items: center; min-width: 16px; height: 16px; margin-left: 4px; padding: 0 4px; border-radius: 8px; background: var(--seal); color: #fff; font-size: 10px; font-weight: 700; }
+.act-btn { gap: 6px; }
+.act-n { font: 600 12px var(--mono); color: var(--seal); }
 
 /* 抉择单、行动单右上角的 ×（ui/Modal.tsx、ui/Actions.tsx）：关上弹窗。抉择没定，游戏一直停着，页面上浮着「等待抉择」（PendingFloat），点它回来选 */
 .ds-x { position: absolute; top: 8px; right: 8px; z-index: 1; width: 36px; height: 36px; display: grid; place-items: center; border: 0; border-radius: 4px; background: none; color: var(--muted); font-size: 24px; line-height: 1; cursor: pointer; }

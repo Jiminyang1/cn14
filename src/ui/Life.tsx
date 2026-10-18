@@ -114,7 +114,7 @@ function YearPlan() {
   const num = (v: number) => (v > 0 ? '+' : v < 0 ? '−' : '') + Math.abs(Math.round(v * 10) / 10);
   return (
     <section className="pg plan year-plan">
-      <div className="sec"><span className="no">三</span><h3>计划</h3><span className="yp-acts"><ActionsButton /><button type="button" className="ctl" onClick={() => openYear('plan')}>调整</button></span></div>
+      <div className="sec"><span className="no">三</span><h3>计划</h3><span className="yp-acts"><ActionsButton /></span></div>
       <button type="button" className="yp" onClick={() => openYear('plan')} aria-label="打开计划">
         <span className="yp-k">时间</span>
         <span className="yp-v yp-time">
