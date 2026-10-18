@@ -53,6 +53,10 @@ export const TAGS: [Tag, (L: Life) => boolean][] = [
 ];
 export const TAG_N = TAGS.length;
 export const lifeTags = (L: Life): Tag[] => TAGS.filter(([, ok]) => { try { return ok(L); } catch { return false; } }).map(([t]) => t);
+// 只有走完才算数的标签（这时候还没离开过家乡、还欠着钱，都不能先下结论）
+const END_ONLY = new Set(['home', 'debt']);
+/** 活着的时候已经拿到的标签（主界面「岔路口」上面那一行） */
+export const liveTags = (L: Life): Tag[] => L.death ? lifeTags(L) : lifeTags(L).filter(t => !END_ONLY.has(t.k));
 
 // ===== 人生大事、岔路口 =====
 /** 时间线上的人生大事，按时间先后 */

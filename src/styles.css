@@ -688,3 +688,17 @@ table.cmp th { font-weight: 500; font-family: var(--serif); color: var(--muted);
 .op-go { padding: 0; border: 0; background: none; font: inherit; color: inherit; text-decoration: underline; text-decoration-color: rgba(194, 59, 46, .55); text-underline-offset: 4px; cursor: pointer; }
 .op-go:hover { color: var(--seal); }
 .op-nb { white-space: nowrap; }
+
+/* 六、岔路口：一行人生标签，下面是做过的大抉择和没选的路 */
+.ltags { display: flex; flex-wrap: wrap; gap: 8px 12px; margin: 6px 0 10px; }
+.ltag { position: relative; padding: 2px 8px; border: 1px solid var(--rule); border-radius: 2px; font: 12px/1.5 var(--serif); color: var(--ink2); }
+.ltag.r3 { border-color: var(--seal); color: var(--seal); }
+.ltag i { position: absolute; top: -7px; right: -6px; padding: 0 3px; background: var(--seal); color: #fff; font: 600 9px/14px var(--sans); font-style: normal; border-radius: 2px; }
+.fk { list-style: none; margin: 0; padding: 0; }
+.fk li { display: grid; grid-template-columns: 3.2em minmax(0, 1fr); gap: 8px; padding: 8px 0; border-top: 1px solid var(--hair); }
+.fk li:first-child { border-top: 0; padding-top: 2px; }
+.fk-a { font-size: 12px; color: var(--muted); padding-top: 2px; }
+.fk b { display: block; font: 600 13.5px/1.5 var(--serif); }
+.fk p { margin: 3px 0 0; font-size: 13px; line-height: 1.5; }
+.fk .chop { width: 17px; height: 17px; margin-right: 6px; font-size: 10px; }
+.fk-no { color: var(--muted); font-size: 12px !important; }

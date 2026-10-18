@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import {
   AX, AX_NAME, CAUSE, EDU_LV, FAM_HOUSE_N, JOBS, PBY, S, axWord, calMonth, calYear, leOf, partnerPay, partnerTrait, persWords, placeName, shownZ, statusLabel,
-  loanBal, loanArrears, loanPayY, loveWord, parentIncome, parentRetired, closeWord, parClose, kidClose, parentWorkLoc, awayFromHome, ptJobName, Q_WORD, wan, wanM, monthlyPay, inheritedValue, netWorth, anyParent, opinion, heading, ACTS, actState,
+  loanBal, loanArrears, loanPayY, loveWord, parentIncome, parentRetired, closeWord, parClose, kidClose, parentWorkLoc, awayFromHome, ptJobName, Q_WORD, wan, wanM, monthlyPay, inheritedValue, netWorth, anyParent, opinion, heading, ACTS, actState, forksOf, liveTags,
   type Companion, type Doc, type Partner,
 } from '../engine';
 import { ageK, game } from '../game/controller';
@@ -13,6 +13,7 @@ import { Ib } from './TipLayer';
 import { dots, sexW } from './util';
 import { cashAmount, cashChange, tierName } from './Finance';
 import { openYear } from './Year';
+import { loadPast } from '../game/storage';
 
 const neg = (n: boolean) => n ? 'neg' : undefined;
 // 还没上小学：小学在满 6 岁以后的那个 9 月入学，6 岁生日到开学之间也还是学龄前
@@ -185,6 +186,33 @@ export function Body({ m }: { m?: string }) {
       </div>
       <Opinion />
       <Personality />
+    </Sec>
+  );
+}
+
+// ===== 六、岔路口 =====
+// 这一生到现在做过的大抉择（fork），连同当年没选的那几条路；上面一行是已经拿到的人生标签，以前的人生里没见过的标一个「新」
+let pastTags: { L: object; s: Set<string> } | null = null; // 封存过的档案只在两局之间变：每一局读一次
+export function Forks({ m }: { m?: string }) {
+  const forks = forksOf(S), tags = liveTags(S);
+  if (!forks.length && !tags.length) return null;
+  if (pastTags?.L !== S) pastTags = { L: S, s: new Set(loadPast().flatMap(x => x.tags || [])) };
+  const seen = pastTags.s;
+  return (
+    <Sec no="六" title="岔路口" meta={forks.length ? `${forks.length} 处` : undefined} m={m} className="forks-sec">
+      {tags.length > 0 && <div className="ltags">
+        {tags.map(t => <span key={t.k} className={'ltag r' + t.r} title={t.d}>{t.n}{!seen.has(t.k) && <i>新</i>}</span>)}
+      </div>}
+      {forks.length > 0 && <ol className="fk">
+        {forks.map((f, i) => <li key={i}>
+          <span className="fk-a mono">{f.a}岁</span>
+          <div>
+            <b>{f.title}</b>
+            <p><span className="chop">定</span>{f.pick}</p>
+            <p className="fk-no">没选　{f.alt.slice(0, 3).join(' ／ ')}{f.alt.length > 3 ? ' ……' : ''}</p>
+          </div>
+        </li>)}
+      </ol>}
     </Sec>
   );
 }
