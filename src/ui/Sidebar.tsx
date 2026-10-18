@@ -186,7 +186,7 @@ function StatusList() {
           {(Object.entries(e.t) as [string, number][]).map(([k, v]) => <em key={'t' + k} className={v > 0 ? 'up' : 'dn'}>{STN[k]}{fmt(v)}</em>)}
           {(Object.entries(e.y) as [string, number][]).map(([k, v]) => <em key={'y' + k} className={v > 0 ? 'up' : 'dn'}>{STN[k]}{fmt(v)}/年</em>)}
         </span>
-        {e.act && ACTS[e.act] && actState(e.act).ok && <button type="button" className="stl-go" title={ACTS[e.act].n} onClick={() => openYear(ACTS[e.act].g)}>›</button>}
+        {e.act && ACTS[e.act] && actState(e.act).ok ? <button type="button" className="stl-go" title={ACTS[e.act].n} onClick={() => openYear(ACTS[e.act].g)}>›</button> : <span />}
       </div>)}
     </div>
     {list.length > MAX && <button type="button" className="stl-more" onClick={() => setAll(x => !x)}>{all ? '收起' : `还有 ${list.length - MAX} 项`}</button>}

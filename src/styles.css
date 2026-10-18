@@ -678,13 +678,13 @@ table.cmp th { font-weight: 500; font-family: var(--serif); color: var(--muted);
 
 /* 二、体检与鉴定下面的「状态」（engine/status.ts）：一行一条——来源、推着哪几项；能处理的后面一个 › */
 .stl { display: flex; flex-direction: column; }
-.stl-r { display: flex; align-items: baseline; gap: 6px; padding: 4px 0; border-top: 1px solid var(--hair); font-size: 12.5px; }
+.stl-r { display: grid; grid-template-columns: auto minmax(0, 1fr) 14px; align-items: baseline; gap: 8px; padding: 4px 0; border-top: 1px solid var(--hair); font-size: 12.5px; }
 .sub-h + .stl .stl-r:first-child { border-top: 0; }
-.stl-n { flex: 1; min-width: 0; font-family: var(--serif); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.stl-fx { display: flex; gap: 6px; flex: none; }
+.stl-n { font-family: var(--serif); white-space: nowrap; }
+.stl-fx { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 0 6px; }
 .stl-fx em { font-style: normal; font-family: var(--mono); font-size: 11.5px; }
 .stl-fx em.up { color: var(--good); }
 .stl-fx em.dn { color: var(--seal); }
-.stl-go { flex: none; width: 20px; padding: 0; border: 0; background: none; color: var(--seal); font-size: 14px; line-height: 1; cursor: pointer; }
+.stl-go { padding: 0; border: 0; background: none; color: var(--seal); font-size: 14px; line-height: 1; cursor: pointer; }
 .stl-more { margin-top: 2px; padding: 4px 0 0; border: 0; background: none; color: var(--muted); font-size: 12px; cursor: pointer; text-align: left; }
 .stl-more:hover { color: var(--ink); }
