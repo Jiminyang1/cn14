@@ -9,7 +9,7 @@ import { EDU_LV, HS_NAME, admit, enroll, gkAutoApps, gkCandidates, gkLines, gkRa
 import { ILL, oop, reimburse } from '../health';
 import { JOBS, RAISE, RESID_PENSION_JOBS, civilTry, gig, gradJob, hire, hireInCity, isWorking, quitJob, raise, retire } from '../career';
 import { supportOf } from '../family';
-import { LOVE_COLD, MEET_HOW, READY0, READY_K, breakUp, brideAmt, bianzhi, famSay, famView, feelWord, loveOf, loveWord, noteLove, partnerBrief, selfP, theirWhys, matchmaker, mShift, mutualP, myEdu, partnerInc, partnerJob, partnerLoc, partnerRows, pickW, ptJobName, theirPar, theirView, worstOf } from '../romance';
+import { LOVE_COLD, MEET_HOW, READY0, READY_K, breakUp, brideAmt, bianzhi, famSay, famView, feelWord, loveOf, loveWord, noteLove, partnerBrief, selfP, theirWhys, matchmaker, mShift, mutualP, myEdu, partnerInc, partnerJob, partnerLoc, partnerRows, pickW, ptJobName, theirPar, theirView, togetherLine, wedLine, worstOf } from '../romance';
 import { S } from '../state';
 import { addDoc, log, logLater } from '../journal';
 import { annualPay, bestPlan, buyHouse, houseHelp, inlawHelp, mate, foreclose, hhIncome, hometownHouse, loanBal, loanArrears, loanPayY, loanPlans, planSub, sellHouse, sellInherited } from '../housing';
@@ -680,7 +680,7 @@ export const DEC = {
       }
       p.love = clamp(55 + 25 * (p.fit - 0.5) + gauss(0, 8), 20, 90); p.asks = 0;
       S.fam.dating = p; noteLove(p); eff({ h: 6 });
-      return { t: `你和${p.name}在一起了。`, k: 'good' };
+      return { t: togetherLine(p), k: 'good' };
     },
   },
 
@@ -1032,7 +1032,7 @@ export const DEC = {
       if (S.age >= 50) { p.wedHow = 'none'; eff({ h: 8, so: 6 }); return { t: `${pre}你和${p.name}去领了证。没办酒席，两家的孩子凑在一起吃了顿饭。${home}`, k: 'good' }; }
       const w = wedding(p, against || p.tpar < 0);
       eff({ money: -placeInc() * (p.wedHow === 'trip' ? 0.05 : 0.1), h: 8, so: 6 });
-      return { t: `${pre}你和${p.name}结婚了。${bride}${w}${home}`, k: 'good' };
+      return { t: `${pre}${wedLine(p)}${bride}${w}${home}`, k: 'good' };
     },
   },
 

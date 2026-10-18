@@ -10,7 +10,7 @@ import { MONTHS, approachPerMonth, perMonth, posIn, sdPerMonth } from './monthly
 import { chance, clamp, gauss, pick, rnd, wpick } from './rng';
 import { cityLoc, placeInc } from './place';
 import { eff } from './stats';
-import { log } from './journal';
+import { log, vary } from './journal';
 import { makeName } from './names';
 import { pickParentJob, wageOf } from './parents';
 import { rural } from './content/events';
@@ -324,12 +324,41 @@ export function noteLove(p, kind: 'love' | 'missed' = 'love', withName?: string)
 }
 /** 和这个人的那一段（还没结束的那段） */
 export const loveOf = (p): Love | undefined => (S.loves || []).slice().reverse().find(x => x.kind === 'love' && x.name === p.name);
-/** 分开：时间线上写一句，记一次前任。k：怎么分开的（WHY_N） */
+// ===== 在一起、结婚、分手：换着说 =====
+// 一辈子会碰上好几次，按怎么认识的（同学、同事、相亲、重新联系上）各备几种说法，用 vary 轮着用（见 AGENTS.md「不重复」）
+const howK = p => ['school', 'work', 'blind', 'reunion'].includes(p.how) ? p.how : 'etc';
+/** 在一起了（抉择 romance） */
+export function togetherLine(p) {
+  const n = p.name, ta = p.sex === 'M' ? '他' : '她', k = howK(p);
+  const T = {
+    school: [`你和${n}在一起了。晚上下了课，你们绕着操场走了一圈又一圈。`, `${n}答应了。从那以后，食堂里你们总坐同一张桌子。`, `你和${n}在一起了。图书馆里，${ta}总给你占着旁边的座位。`],
+    work: [`你和${n}在一起了。在公司里还装作不熟，下了班才一起走。`, `下班后约着吃了几次饭，你和${n}在一起了。没过多久，同事们都知道了。`, `你和${n}在一起了。午休的时候，两个人总是“碰巧”去同一家店。`],
+    blind: [`又见了几次，两个人都觉得合适，你和${n}正式处起了对象。`, `你和${n}处起了对象。${matchmaker()}打电话来问，你说“还行”，声音里带着笑。`, `见到第三面，${n}说：“那我们就先处着？”你说好。`],
+    reunion: [`兜兜转转这么多年，你和${n}还是走到了一起。`, `那么多年没见，再见面却像从没分开过。你和${n}在一起了。`],
+    etc: [`你和${n}在一起了。`, `${n}答应了。那天晚上你翻来覆去，很久都没睡着。`, `第三次约会的时候，你们牵了手。你和${n}在一起了。`, `你和${n}在一起了。手机里置顶的聊天，从此只有一个。`],
+  };
+  return vary('together.' + k, T[k]);
+}
+/** 结婚了（抉择 marry）：婚礼、彩礼在后面接着写 */
+export function wedLine(p) {
+  const n = p.name, k = howK(p), yrs = S.age - p.metAt, yt = yrs ? `${yrs}年` : '不到一年';
+  const T = {
+    school: [`从学校里一路走过来，你和${n}结婚了。`, `在一起${yt}，从学生时代走到了今天：你和${n}结婚了。`],
+    work: [`你和${n}结婚了。请帖发到公司那天，同事们说早就在等这杯喜酒了。`, `你和${n}结婚了。两个人的婚假是一起请的，领导签字的时候笑了半天。`],
+    blind: [`相亲认识的${n}，成了你的${p.sex === 'M' ? '丈夫' : '妻子'}。`, `从相亲那天算起${yt}，你和${n}结婚了。`],
+    reunion: [`兜了一大圈，你和${n}还是结婚了。`, `当年没能在一起的人，这次成了一家人：你和${n}结婚了。`],
+    etc: [`你和${n}结婚了。`, `你和${n}领了证。红本本上的照片，两个人都笑得有点僵。`, `你和${n}结婚了。领证那天，民政局门口排了一上午的队。`],
+  };
+  return vary('wed.' + k, T[k]);
+}
+/** 分开：时间线上写一句。why：前因（可以是空的）；k：怎么分开的（WHY_N） */
 export function breakUp(d, why: string, h = -5, k = '') {
   const e = loveOf(d); if (e) { e.end = S.age; e.why = k; }
-  S.fam.dating = null; S.flags.exes = (S.flags.exes || 0) + 1; eff({ h });
-  const yrs = S.age - d.metAt;
-  log(`${why}你和${d.name}分手了。在一起${yrs ? yrs + '年' : '不到一年'}。`, 'bad');
+  const yrs = S.age - d.metAt, near = d.city === S.loc.city, w = why.includes(d.name) ? '你们' : `你和${d.name}`; // 前因里已经提到名字的，不再重复
+  const tail = { school: '一起上过的课、一起排过的食堂窗口，后来想起来都隔得很远。', work: near && isWorking() && d.jk ? '第二天在公司碰见，两个人都低头看手机。' : '',
+    blind: `${matchmaker()}打电话来问怎么回事，你没多说。`, reunion: '兜兜转转又走到一起，最后还是没成。', etc: '' }[howK(d)];
+  S.fam.dating = null; eff({ h });
+  log(`${why}${vary('breakUp', [`${w}分手了。`, `${w}还是分开了。`, `${w}走到了头。`])}在一起${yrs ? yrs + '年' : '不到一年'}。${tail}`, 'bad');
 }
 /** 把一个抉择排在稍后（同一个月里） */
 export function soon(id: string) {
