@@ -556,22 +556,24 @@ const sumOf = (d: Doc) => {
   const vs = d.k === 'job' ? (d.v === 'blue' ? [r('工种'), r('务工地')] : [r('岗位'), r('甲方')]) : SUM[d.k] ? SUM[d.k](r) : d.rows.slice(0, 2).map(x => x[1]);
   return vs.filter(Boolean).join(' · ');
 };
-// 卡片上方颜色带：证件本来颜色的柔和版本（不那么艳，也不发灰），配白字
+// 卡片上方颜色带：照着真实证件的颜色，饱和度压一点。红本（结婚、毕业、学位、录取、退休）是红，离婚证暗红，不动产权证墨绿，
+// 身份证浅蓝，出生医学证明粉，成绩单黄封面；档案表格（出生登记、学籍卡）是牛皮纸；白纸文件（合同、协议、诊断）是灰或医院的蓝
 const softOf = (d: Doc) => {
   switch (d.k) {
-    case 'birth': return '#7F98B8';
-    case 'report': return '#C29A4E';
-    case 'school': return '#5A77AE';
-    case 'id': return '#6E9BAE';
-    case 'admit': case 'marry': return '#C0574B';
-    case 'grad': return d.v === 'zhong' ? '#5C7D6E' : d.v === 'master' ? '#56658F' : '#9C4F48';
-    case 'job': return d.v === 'blue' ? '#5B8BA3' : '#757A82';
-    case 'civil': return '#B4645A';
-    case 'divorce': return '#86574F';
-    case 'house': return '#5F8574';
-    case 'kid': return '#C07E97';
-    case 'ill': return '#6F8DBE';
-    case 'retire': return '#B65C52';
+    case 'birth': case 'school': return '#B08A57';      // 档案表格：牛皮纸
+    case 'report': return '#C9A145';                    // 成绩报告单：黄封面
+    case 'id': return '#7FA3B5';                        // 居民身份证：浅蓝
+    case 'admit': return '#B8443A';                     // 录取通知书：大红
+    case 'grad': return d.v === 'zhong' ? '#4F7A62' : '#9A3A33'; // 毕业证、学位证：深红；中专的绿本
+    case 'job': return d.v === 'blue' ? '#5E8EA6' : '#80858C';   // 务工登记卡蓝；劳动合同白纸
+    case 'civil': return '#B8443A';                     // 录用通知：红头文件
+    case 'marry': return '#C2453A';                     // 结婚证：红本
+    case 'divorce': return '#7D3F35';                   // 离婚证：暗红
+    case 'house': return '#3F6B58';                     // 不动产权证书：墨绿
+    case 'kid': return '#CC8090';                       // 出生医学证明：粉
+    case 'ill': return '#5479AE';                       // 诊断证明书：医院的蓝
+    case 'retire': return '#A33F36';                    // 退休证：红本
+    case 'demol': return '#80858C';                     // 征收协议：白纸
     default: return '#857C6E';
   }
 };
