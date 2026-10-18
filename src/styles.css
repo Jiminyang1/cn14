@@ -336,6 +336,10 @@ textarea { font: 15px/1.7 var(--sans); color: var(--ink); width: 100%; min-heigh
 .br.other { color: var(--muted); }
 .br.other i { background: var(--rule); }
 .home-low { display: grid; grid-template-columns: minmax(0, 1fr) 500px; gap: 64px; margin-top: 36px; align-items: start; }
+.home-left { display: flex; flex-direction: column; gap: 24px; min-width: 0; }
+.changes ul { margin: 0; padding: 0 0 0 1.1em; }
+.changes li { margin: 5px 0; font-size: 13.5px; line-height: 1.6; color: var(--ink2); }
+.changes li::marker { color: var(--seal); }
 .past .toc { cursor: default; font-size: 14px; }
 .past .toc .age { width: 6.5em; text-align: right; flex: none; }
 .notes3 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px 24px; padding-top: 6px; }
