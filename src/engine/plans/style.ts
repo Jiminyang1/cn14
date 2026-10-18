@@ -16,7 +16,7 @@ function arrows(k: string) {
   return NAMES.map(([s, n]) => { const d = a[s] - b[s]; return Math.abs(d) < 0.5 ? '' : n + (d > 0 ? '↑' : '↓'); }).filter(Boolean).join(' ');
 }
 /** 按生活方式 k 过：每月约多少、算哪一档、和照常比好在哪差在哪 */
-const sub = (k: string) => () => { const v = myLiving(k), e = arrows(k); return `每月约${wan(v.cost)} · ${TIERS[v.tier].n}${e ? ' · ' + e : ''}`; };
+const sub = (k: string) => () => { const v = myLiving(k), e = arrows(k) || (k === 'more' ? '再多花也好不了多少' : ''); return `每月约${wan(v.cost)} · ${TIERS[v.tier].n}${e ? ' · ' + e : ''}`; };
 
 definePlan('style', {
   n: '生活方式', g: 'life',
