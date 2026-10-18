@@ -55,7 +55,7 @@ const eduWord = () => S.school ? '在读' + S.school : preschool() ? '学龄前'
 const jobWord = () => { if (S.school || !S.job) return '—'; return statusLabel().split(' · ')[0]; };
 function marryWord() {
   const f = S.fam, p = f.partner;
-  if (f.married && p) return p.alive ? '已婚' + (f.kids.some(k => k.alive) ? ` · ${f.kids.filter(k => k.alive).length} 个孩子` : '') : '丧偶';
+  if (f.married && p) return p.alive ? '已婚' : '丧偶'; // 孩子在人际关系里，这里只写婚姻
   if (S.flags.divorced != null) return '离异';
   if (f.dating) return '恋爱中';
   return '未婚';
