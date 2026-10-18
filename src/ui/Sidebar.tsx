@@ -1,5 +1,6 @@
 // 一生页面的各个栏目：一、基本情况（含家庭成员）；二、体检与鉴定；五、我的经济；
 // 右下角的分隔签（材料目录 / 同批建档 / 一生曲线）。结局页也用这里的证件和一生曲线。
+import { DocMini, openDoc } from './Docs';
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import {
   AX, AX_NAME, CAUSE, EDU_LV, FAM_HOUSE_N, JOBS, PBY, S, axWord, calMonth, calYear, leOf, partnerPay, partnerTrait, persWords, placeName, shownZ, statusLabel,
@@ -273,31 +274,17 @@ export function Account({ m }: { m?: string }) {
 }
 
 // ===== 证件 =====
-const DOC_SEAL: Record<string, string> = { birth: '登记', admit: '录取', grad: '毕业', school: '学籍', job: '合同', civil: '录用', marry: '婚姻', divorce: '登记', house: '不动产', kid: '出生', ill: '医院', retire: '退休', report: '学校' };
-export function DocCard({ d, open, onClick }: { d: Doc; open: boolean; onClick?: () => void }) {
-  return (
-    <div className={`doc ${d.k}${open ? ' open' : ''}`} onClick={onClick}>
-      <h5>{d.title}<small>{d.y}年{d.m}月 · {d.a}岁</small></h5>
-      <dl>{d.rows.map((r, i) => <Pair key={i} k={r[0]} v={r[1]} />)}</dl>
-      <span className="mini-seal">{DOC_SEAL[d.k] || '档'}</span>
-    </div>
-  );
-}
-const Pair = ({ k, v }: { k: string; v: string }) => <><dt>{k}</dt><dd>{v}</dd></>;
-
-// 材料目录：最新的在上面，点一行展开内容；有新材料时展开最新那一份
+// 材料目录：最新的在上面，一行一份，点开进证件夹（Docs.tsx）。后来盖的章写成小标签
 function Docs() {
   const docs = S.docs || [];
-  const [open, setOpen] = useState<number>(docs.length - 1);
-  useEffect(() => { setOpen(docs.length - 1); }, [docs.length]);
-  return <>{docs.map((d, i) => [d, i] as const).reverse().map(([d, i]) => (
-    <div key={i}>
-      <button type="button" className={'toc' + (i === docs.length - 1 ? ' fresh' : '')} aria-expanded={open === i} onClick={() => setOpen(o => o === i ? -1 : i)}>
-        <span className="n">{String(i + 1).padStart(2, '0')}</span><span className="tt">{d.title}</span><span className="lead" /><span className="d">{d.y}.{String(d.m).padStart(2, '0')}</span>
+  return <>{docs.map((d, i) => [d, i] as const).reverse().map(([d, i]) => {
+    const m = (d.marks || []).filter(x => x.t !== '抵押').pop();
+    return (
+      <button key={i} type="button" className={'toc' + (i === docs.length - 1 ? ' fresh' : '')} onClick={() => openDoc(i)}>
+        <DocMini d={d} w={12} /><span className="tt">{d.title}</span>{m && <span className="mk">{m.t.split(' · ')[0].replace(/^\d{4}\.\d+ /, '')}</span>}<span className="lead" /><span className="d">{d.y}.{String(d.m).padStart(2, '0')}</span>
       </button>
-      {open === i && d.rows.length > 0 && <dl className="toc-dl">{d.rows.map((r, j) => <Pair key={j} k={r[0]} v={r[1]} />)}</dl>}
-    </div>
-  ))}</>;
+    );
+  })}</>;
 }
 
 // 一生曲线：幸福（实线）和健康（虚线），竖虚线是平均寿命

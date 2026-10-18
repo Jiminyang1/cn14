@@ -1,11 +1,12 @@
 // 大病：治疗、医保报销、存活，以及死亡。
 
+import { illDoc, markDoc } from './docs';
 import { CAUSE, DIAG, deathProb, pickCause } from './mortality';
 import { JOBS } from './career';
 import { S } from './state';
 import { chance } from './rng';
 import { eff } from './stats';
-import { addDoc, log, major } from './journal';
+import { log, major } from './journal';
 import { MONTHS, calMonth, calYear, perMonth } from './monthly';
 
 declare module './types' {
@@ -53,7 +54,7 @@ export function illMonth() {
   const p = (ILL[il.k] || ILL.cancer).die[il.treat] * (S.rural && il.k === 'cancer' ? 1.15 : 1) * (il.early ? ILL_EARLY : 1);
   if (il.mo > MONTHS && il.treat !== 'none') eff({ money: -oop(il.k, il.treat) * 0.3 / MONTHS });
   if (chance(perMonth(p))) { die(il.k); return true; }
-  if (il.mo >= ILL_SURVIVE_MO && il.treat !== 'none') { S.flags.ill = null; S.flags.survivor = 1; log('复查结果一直稳定。医生说，可以算是挺过来了。', 'good'); eff({ h: 8 }); }
+  if (il.mo >= ILL_SURVIVE_MO && il.treat !== 'none') { S.flags.ill = null; S.flags.survivor = 1; markDoc('ill', '痊愈', 'green'); log('复查结果一直稳定。医生说，可以算是挺过来了。', 'good'); eff({ h: 8 }); }
   return false;
 }
 export function die(k) {
@@ -88,7 +89,7 @@ export function healthMonth(m: number): boolean {
     if (MAJOR.includes(k) && a >= 35 && chance(0.55)) {
       const early = illHook.early?.(k) || null;
       S.flags.ill = early ? { k, at: a, am: lifeMonth(m), mo: 0, early: 1 } : { k, at: a, am: lifeMonth(m), mo: 0 };
-      addDoc('ill', '诊断书', [['诊断', CAUSE[k]], ['日期', `${calYear(m)}年${calMonth(m)}月`]]);
+      illDoc(k, m);
       log(early || DIAG[k], 'bad');
       return false;
     }

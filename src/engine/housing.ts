@@ -1,10 +1,11 @@
 // 住房公积金与房贷：账户缴存、商业贷款 / 公积金贷款 / 组合贷、按月等额本息还款、提前还款、断供。
 // 规则参数集中在 LOAN_RULES；来源见 research/housing_loans.json。
 
+import { houseDoc, markDoc } from './docs';
 import { fexp, fpow } from './fmath';
 import { PBY } from './data';
 import { S } from './state';
-import { addDoc, log, logLater, major, noteMoney } from './journal';
+import { log, logLater, major, noteMoney } from './journal';
 import { chance, gauss } from './rng';
 import { cityLoc, homeCounty, hpCounty, placeHp, placeInc } from './place';
 import { isWorking, retireAge } from './career';
@@ -158,7 +159,7 @@ export function buyHouse(price, L, plan) {
   changeMoney(-down);
   S.house = { city: L.city, p: L.p, v: price, paid: price, at: S.age };
   S.loans = plan.parts.map(p => ({ ...p, pay: annualPay(p.bal, p.rate, p.years) }));
-  addDoc('house', '房产证', [['坐落', L.city], ['面积', '约90平方米'], ['价格', wan(price)], ['贷款', plan.parts.map(p => `${p.kind === 'hpf' ? '公积金' : '商贷'}${wan(p.bal)}`).join(' + ')]]);
+  houseDoc(L, price, plan.parts);
   return { fromHpf, help, inlaw };
 }
 
@@ -203,7 +204,7 @@ export function loanMonth(available = S.money) {
     result.cash += fromCash; result.hpf += fromHpf; result.interest += interest; result.arrears += loan.arrears;
   }
   S.loans = S.loans.filter(loan => loan.bal > 0.01);
-  if (!S.loans.length) log('房贷终于还完了。', 'good');
+  if (!S.loans.length) { log('房贷终于还完了。', 'good'); markDoc('house', '已解押', 'green'); }
   return result;
 }
 // 租房提取：没有在这座城市买房的人，可以取出一部分公积金付房租（rent 是这个月的房租）
@@ -224,13 +225,13 @@ export const loanPayY = () => (S.loans || []).reduce((t, l) => t + (l.bal > 0 ? 
 export function foreclose(k = LOAN_RULES.forecloseK) {
   const got = S.house.v * k;
   changeMoney(got - loanBal());
-  S.loans = []; S.house = null; S.flags.badCredit = S.age; S.flags.heldOn = 0;
+  S.loans = []; S.house = null; S.flags.badCredit = S.age; S.flags.heldOn = 0; markDoc('house', '法拍', 'red');
   return got;
 }
 export function sellHouse(k = 0.95) {
   const got = S.house.v * k;
   changeMoney(got - loanBal());
-  S.loans = []; S.house = null; S.flags.heldOn = 0;
+  S.loans = []; S.house = null; S.flags.heldOn = 0; markDoc('house', '已出售');
   return got;
 }
 

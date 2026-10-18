@@ -2,6 +2,8 @@
 // 每条轴 z = 天生 g × 权重 + 起伏 u × 权重 + 经历 k，大致是标准分数：同龄同性别里平均 0、标准差 1。
 // 对结果起作用的都是 z，所以加了性格以后人群的平均寿命、结婚率不会整体偏移；界面上的词另外加上随年龄的「成熟」和性别差（shownZ）。
 // 随机数只用第三条流 rnd3：主流的随机数序列不变。
+import { calYear } from './monthly';
+import { parentReply, primarySchool } from './docs';
 import { fcos, fexp, flog } from './fmath';
 import { addDoc, log } from './journal';
 import { clamp, gauss3 } from './rng';
@@ -184,6 +186,6 @@ export function reportCard() {
     if (ax.length < 3 && !ax.some(y => CLASH.has(key(x) + key(y)) || CLASH.has(key(y) + key(x)))) ax.push(x);
   }
   const t = '该生' + (ax.length ? ax.map(x => REMARK[x][z[x] > 0 ? 0 : 1]).join('；') : '各方面表现良好，是个让老师省心的孩子') + '。望继续努力！';
-  addDoc('report', '小学成绩报告单', [['姓名', S.name], ['年级', '一年级（上）'], ['班主任评语', t]]);
+  addDoc('report', '小学成绩报告单', [['姓名', S.name], ['年级', '一年级（上）'], ['学校', primarySchool()], ['学年', `${calYear() - 1}–${calYear()}`], ['班主任评语', t], ['家长意见', parentReply()]]);
   log(`一年级的成绩报告单发下来了。班主任评语：“${t}”`, 'ev');
 }

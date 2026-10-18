@@ -1,6 +1,7 @@
 // 家里的几件大事：老房子拆迁、给孩子买婚房、兄弟姐妹之间的钱。
 // 抉择本身（标题、选项）在 content/decisions.ts 的 demolish / kidhome / sibloan / heritage，这里是规则和之后每年的后续。
 // 数字的出处见 DATA.md「拆迁」「婚房」「兄弟姐妹」。
+import { demolDoc } from './docs';
 import type { Kid, Sibling } from './types';
 import { S } from './state';
 import { log, out } from './journal';
@@ -50,10 +51,12 @@ export function demolish(k: string) {
   if (k === 'swap') {
     S.famHouse = { ...H, v: Math.round(H.v * DEMOL_K.swap[ur()] / 1e3) * 1e3 };
     S.flags.demolSwap = S.age + DEMOL_K.swapWait;
+    demolDoc('产权调换 · 安置房一套');
     eff({ h: 2 });
     return { x: 1, t: `${old}拆迁了。${parentsWord() || '家里'}选了产权调换：等安置房建好，换一套新楼房。这几年先在外面租房住，按月领临时安置费。`, k: 'good' as const };
   }
   const { total, mine } = demolCash(1);
+  demolDoc(`货币补偿 ${wan(total)}`);
   eff({ h: 4 });
   return { x: 1, t: `${old}拆迁了，选了货币补偿，一共拿到约${wan(total)}。${parentsWord() || '家里'}在附近买了一套小一点的房子${mine ? `，还给你们兄弟姐妹每人分了约${wan(mine)}` : '，剩下的钱存了起来'}。`, k: 'good' as const };
 }

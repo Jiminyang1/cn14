@@ -1,6 +1,7 @@
 // 抉择：哪些抉择会出现、在哪个月（monthDecisions、yearDecisions、schoolDecision），以及每个抉择的选项和结果（DEC）。
 // 抉择：{ build: () => { title, body, fact?, card?, choices, ctx? } | null, apply: (选中的 k, ctx) => 文字或{t,k,f} | null }
 
+import { gradDoc, lastDoc, markDoc, marryDoc, schoolRows, vocSchool } from '../docs';
 import type { Choice } from '../types';
 import { fpow } from '../fmath';
 import { BIG, BIRTH_TOTAL, NATION, PBY } from '../data';
@@ -11,7 +12,7 @@ import { JOBS, RAISE, RESID_PENSION_JOBS, civilTry, gig, gradJob, hire, hireInCi
 import { supportOf } from '../family';
 import { LOVE_COLD, MEET_HOW, READY0, READY_K, breakUp, brideAmt, bianzhi, famSay, famView, feelWord, loveOf, loveWord, noteLove, partnerBrief, selfP, theirWhys, matchmaker, mShift, mutualP, myEdu, partnerInc, partnerJob, partnerLoc, partnerRows, pickW, ptJobName, theirPar, theirView, togetherLine, wedLine, worstOf } from '../romance';
 import { S } from '../state';
-import { addDoc, log, logLater } from '../journal';
+import { log, logLater } from '../journal';
 import { annualPay, bestPlan, buyHouse, houseHelp, inlawHelp, mate, foreclose, hhIncome, hometownHouse, loanBal, loanArrears, loanPayY, loanPlans, planSub, sellHouse, sellInherited } from '../housing';
 import { awayFromHome, cityLoc, farFromParents, homeCity, migrantCity, moveTo, placeCons, placeHp, placeInc, placeName } from '../place';
 import { babyP, canBaby, conceive, kidsAlive, sibsAlive } from '../family';
@@ -425,10 +426,10 @@ export const DEC = {
       // 9 月开学（education.ts 的 admit）
       if (k === 'gao') {
         const t = S.flags.hs = hsTier(), name = HS_NAME[t](S.loc.city, S.loc.kind === 'rural');
-        admit('高中', 3, undefined, [['学校', name]]);
+        admit('高中', 3, undefined, schoolRows(name, '高中'));
         return { t: t === 'normal' ? `考上了${name}，九月开学。` : `分数够上了${name}，九月开学。`, pic: 'high' };
       }
-      if (k === 'voc') { admit('职高', 3); return { t: `报了职业高中，学${pick(['数控技术', '汽车维修', '电子商务', '学前教育', '护理', '烹饪', '计算机应用'])}，九月开学。`, pic: 'voc' }; }
+      if (k === 'voc') { const mj = pick(['数控技术', '汽车维修', '电子商务', '学前教育', '护理', '烹饪', '计算机应用']); admit('职高', 3, undefined, schoolRows(vocSchool(), '职高', mj)); return { t: `报了职业高中，学${mj}，九月开学。`, pic: 'voc' }; }
       if (k === 'redo') { S.flags.zkRedo = 1; S.school = '初中'; S.schoolEnd = calYear() + 1; eff({ kn: 5, h: -5 }); return '又回到初三的教室，坐在一群比你小一岁的同学中间。'; }
       S.school = null;
       if (S.age < 16) { S.flags.toWork = 1; return '不读了。还不满16岁，工厂不收，先在家帮着干点活，等满了16岁再出去。'; } // 满 16 岁那个月出去（huntMonth）
@@ -458,6 +459,7 @@ export const DEC = {
     },
     apply: (k, ctx) => {
       S.edu = Math.max(S.edu, 3);
+      if (!(lastDoc('school')?.marks || []).length) markDoc('school', '已毕业', 'blue'); // 高中的学籍卡：高考那年毕业（复读的不再盖）
       if (k === 'redo') { S.school = '复读'; S.schoolEnd = calYear() + 1; eff({ kn: 4, h: -6 }); return '回到高三，又过了一年每天只睡六个小时的日子。'; }
       if (k === 'work') { S.school = null; hireInCity(wpick({ factory: 2, migrant: 2, rider: 1, sales: 1.5, shop: 0.5 })); return `没有再读书，去了${S.loc.city}，做了${JOBS[S.job].n}。`; }
       const sel = k === 'apply' ? gkAutoApps(ctx) : JSON.parse(k.slice(6));
@@ -541,7 +543,7 @@ export const DEC = {
       choices: [{ k: 'skilled', label: '进厂当技术工人', sub: '收入稳定', w: 2, tilt: { r: -0.2 } }, { k: 'zhuan', label: '考高职，读大专', sub: '再读三年', w: 4, tilt: { c: 0.4 } }, { k: 'city', label: '去大城市打工', sub: '', w: 1.5, tilt: { r: 0.3, e: 0.2 } }],
     }),
     apply: k => {
-      S.edu = Math.max(S.edu, 4); S.school = null; addDoc('grad', '中专毕业证书', [['学历', '中专/职高']]);
+      S.edu = Math.max(S.edu, 4); S.school = null; markDoc('school', '已毕业', 'blue'); gradDoc(4);
       if (k === 'skilled') { hireInCity('skilled'); return `在${S.loc.city}的一家工厂当了技术工人。`; }
       if (k === 'zhuan') { const L = cityLoc(S.home.p, PBY[S.home.p].cities[0]); admit('大专', 3, L); return `考上了${L.city}的一所高职，九月开学。`; }
       hire(wpick({ migrant: 2, rider: 1, factory: 2, sales: 1 }), migrantCity()); return `去了${S.loc.city}，做了${JOBS[S.job].n}。`;
@@ -563,7 +565,7 @@ export const DEC = {
       return { title: '毕业去向', body: `${S.school}毕业了。${S.flags.major ? `你学的是${S.flags.major}。` : ''}`, fact: '2026届全国高校毕业生预计为1270万人', choices: ch, ctx: { lv } };
     },
     apply: (k, ctx) => {
-      S.edu = Math.max(S.edu, ctx.lv); S.school = null; addDoc('grad', ctx.lv === 7 ? '硕士学位证书' : '毕业证书', [['学校', S.flags.uni ? S.flags.uni.name : ''], ['学历', EDU_LV[ctx.lv]], ['专业', S.flags.major]]);
+      S.edu = Math.max(S.edu, ctx.lv); S.school = null; gradDoc(ctx.lv);
       const top = ['top', '211'].includes(S.flags.tier);
       if (k === 'kaoyan') {
         // 考研总体录取率约 27%–32%（2024–2025）；名校有推免名额，成功率高得多
@@ -1071,7 +1073,7 @@ export const DEC = {
       S.fam.married = true; S.fam.partner = p; p.marriedAt = S.age; S.fam.dating = null; p.city = S.loc.city;
       const le = loveOf(p); if (le) le.wed = S.age;
       if (p.jk) p.inc = partnerInc(p);
-      addDoc('marry', '结婚证', [['持证人', S.name], ['配偶', p.name], ['配偶学历', EDU_LV[p.edu]], ['配偶职业', ptJobName(p)], ['登记日期', `${calYear()}年`]]);
+      marryDoc(p);
       // 彩礼和兄弟姐妹结婚时一样（kin.ts 的 sibWed）：娶亲的，父母在世就由家里出，不够的父母去借；父母都不在了才自己出。
       // 出嫁的，彩礼一半做陪嫁带走（进你的存款），另一半留在娘家；父母都不在了，整笔做陪嫁。酒席的钱自己出。
       // 原来男方一律自己出：48% 的男主角婚后欠着钱，其中不少父母存款超过 10 万
@@ -1182,7 +1184,7 @@ export const DEC = {
     },
     apply: (k, c) => {
       if (k === 'no') return null;
-      if (k === 'all') { changeMoney(-loanBal()); S.loans = []; eff({ h: 4 }); return { t: '把房贷一次还清了。', k: 'good' }; }
+      if (k === 'all') { changeMoney(-loanBal()); S.loans = []; markDoc('house', '已解押', 'green'); eff({ h: 4 }); return { t: '把房贷一次还清了。', k: 'good' }; }
       let left = c.part; changeMoney(-c.part);
       for (const l of S.loans.sort((a, b) => b.rate - a.rate)) { const x = Math.min(l.bal, left); l.bal -= x; left -= x; l.pay = annualPay(l.bal, l.rate, l.mo != null ? l.mo / 12 : l.years); }
       S.loans = S.loans.filter(l => l.bal > 1); eff({ h: 2 });
@@ -1315,7 +1317,7 @@ export const DEC = {
         // 干不了活了：到了能退休的年纪就退（见 sickRetireAge），否则辞职在家养病，到了那个年纪再退（huntMonth）。之后不再找工作（见 monthDecisions）
         if (isWorking()) {
           if (S.age >= sickRetireAge(S.job)) { log(RESID_PENSION_JOBS.has(S.job) ? '原来的活干不了了，不再干了。' : '干不了原来的工作了，单位给办了病退。', 'ev'); retire(); }
-          else { quitJob(); log('原来的活干不了了，辞了工作，在家养病。', 'ev'); }
+          else { quitJob('病退'); log('原来的活干不了了，辞了工作，在家养病。', 'ev'); }
         }
         S.flags.hunt = null;
       }

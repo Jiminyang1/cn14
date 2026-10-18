@@ -1,12 +1,13 @@
 // 家人：兄弟姐妹、自己的孩子（怀孕、出生、长大），以及家人的变化（生日那个月长一岁、配偶的工作和养老金；每个月判定去世、父母病倒）。
+import { kidDoc, markDoc } from './docs';
 import type { Kid, Partner, Sex, Sibling } from './types';
 
 import { JOBS, PEN_MIN_YEARS, PEN_YEARS, RESID_PENSION, RESID_PENSION_JOBS, retireAgeOf } from './career';
 import { PBY } from './data';
 import { S } from './state';
-import { addDoc, log, major } from './journal';
+import { log, major } from './journal';
 import { chance, clamp, gauss, wpick } from './rng';
-import { MONTHS, calMonth, perMonth } from './monthly';
+import { MONTHS, calMonth, calYear, perMonth } from './monthly';
 import { nowM } from './calendar';
 import { eff } from './stats';
 import { kinLT, qMonth } from './mortality';
@@ -151,7 +152,7 @@ function familyDeaths() {
   const pt = f.partner;
   if (pt && pt.alive && f.married && chance(qMonth(kinLT('pt', pt.sex), pt.age + 1))) {
     // 丧偶：不再算已婚，以后还可以再认识人（f.partner 留着，界面显示「丧偶」，再婚时被替换）
-    pt.alive = false; f.married = false; S.flags.widowed = S.age; const le = loveOf(pt); if (le) le.died = S.age; major(`${pt.name}去世了，享年${pt.age}岁。你们一起走过了${S.age - pt.marriedAt}年。`, 'loss'); eff({ h: -15, so: -6 }); (S.flags.funeral ||= []).push({ who: 'pt', m: nowM(), c: 100 });
+    pt.alive = false; f.married = false; S.flags.widowed = S.age; markDoc('marry', `${calYear()}.${calMonth()} 丧偶`, 'gray', true); const le = loveOf(pt); if (le) le.died = S.age; major(`${pt.name}去世了，享年${pt.age}岁。你们一起走过了${S.age - pt.marriedAt}年。`, 'loss'); eff({ h: -15, so: -6 }); (S.flags.funeral ||= []).push({ who: 'pt', m: nowM(), c: 100 });
     if (S.sex === 'M' && S.flags.preg) S.flags.preg = null; // 怀着孩子的是她
   }
   for (const s of f.sibs) if (s.alive) sibMonth(s);
@@ -177,7 +178,7 @@ export function supportMonth() {
 /** 孩子出生。pa：另一位家长（默认是现在的配偶；怀孕期间离婚、丧偶的，用怀孕时记下的） */
 export function haveKid(pa?: { name: string; sur: string }) {
   const o = pa || S.fam.partner, on = o ? o.name : '';
-  const _k = haveKid0(pa); addDoc('kid', '出生医学证明', [['新生儿', _k.name], ['性别', _k.sex === 'M' ? '男' : '女'], ['父母', S.sex === 'M' ? `${S.name}、${on}` : `${on}、${S.name}`]]); return _k;
+  const _k = haveKid0(pa); kidDoc(_k, on); return _k;
 }
 export function haveKid0(pa?: { name: string; sur: string }) {
   const sex: Sex = chance(0.524) ? 'M' : 'F';

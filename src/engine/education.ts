@@ -1,6 +1,7 @@
 // 学历、高考与填报志愿：成绩 → 全省排名 → 冲/稳/保院校 → 选专业、是否服从调剂 → 平行志愿投档 → 录取 / 调剂 / 退档 / 滑档。
 // 参数集中在 GK；各省分数线来自 real.generated.ts。
 
+import { admitRows } from './docs';
 import { fexp, flog } from './fmath';
 import type { Loc, Uni } from './types';
 import { BIG, PBY, PROVS } from './data';
@@ -51,7 +52,7 @@ export function schoolStart() {
 }
 // 被录取：发录取通知书，记下学校层次和专业；9 月开学时搬去读书的城市（admit）
 export function enroll(c, major, adjusted) {
-  addDoc('admit', '录取通知书', [['学校', c.name], ['专业', major + (adjusted ? '（调剂）' : '')], ['层次', TIER_N[c.tier] || '']]);
+  addDoc('admit', '录取通知书', [['学校', c.name], ['专业', major + (adjusted ? '（调剂）' : '')], ['层次', TIER_N[c.tier] || ''], ...admitRows(c)]);
   const L = BIG[c.city] ? cityLoc(BIG[c.city].p, c.city) : PBY[c.prov].cities.includes(c.city) ? cityLoc(c.prov, c.city) : { p: c.prov, city: c.city, kind: 'city' } as Loc;
   admit(c.tier === 'zhuan' ? '大专' : '本科', c.tier === 'zhuan' ? 3 : 4, L);
   S.flags.tier = { '985': 'top', '211': '211', ben1: 'ben1', ben2: 'ben', minban: 'ben', zhuan: 'zhuan' }[c.tier];
