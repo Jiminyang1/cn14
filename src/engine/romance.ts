@@ -8,7 +8,7 @@ import { PBY, PROVS } from './data';
 import { S } from './state';
 import { MONTHS, approachPerMonth, perMonth, posIn, sdPerMonth } from './monthly';
 import { chance, clamp, gauss, pick, rnd, wpick } from './rng';
-import { cityLoc, placeInc } from './place';
+import { awayFromHome, cityLoc, homeCity, placeInc } from './place';
 import { eff } from './stats';
 import { log, vary } from './journal';
 import { makeName } from './names';
@@ -32,13 +32,14 @@ export const TRAITS = ['温和', '直爽', '内向', '爱玩', '顾家', '上进
 export const MEET_HOW = { friends: '朋友聚会上', work: '公司', wedding: '同学婚礼上', hobby: '一个兴趣小组里', app: '社交软件上', school: '学校里', blind: '亲戚介绍', reunion: '同学聚会上' };
 // 遇见的人：一两年一个，每个都问你（原来单身的人每个月都可能冒出一个，一年认识一个半人，一个都记不住，
 // 还要靠自动抉择替玩家挡掉大半，结果替玩家「主动追求」了一个 Ta 从没见过的人）。
-// MEET_K、MEET_KF、BREAK_K 是校准系数：无界面的人生 32 岁未婚、初婚年龄大致不离谱就行。
-// 遇见的人少了以后分手也调轻了（BREAK_K 1.3 → 0.7），不然一辈子单身的太多：32 岁未婚 男 25.9% / 女 10.0%，初婚 28.1 / 25.7
-export const MEET_K = 1.6, MEET_KF = 0.95, MUTUAL0 = 0.4, READY0 = 0.6, READY_K = 0.8;
+// MEET_K、MEET_KF 是校准系数：无界面的人生 32 岁未婚、初婚年龄大致不离谱就行。间隔拉到两年以后它影响不大（2.2 → 2.8 几乎不变）：
+// 32 岁未婚 男 25% / 女 11%，初婚 27.9 / 25.8
+export const MEET_K = 2.2, MEET_KF = 0.95, MUTUAL0 = 0.4, READY0 = 0.6, READY_K = 0.8;
 // 单身时一年里遇见一个人的可能（按年龄，估计）：大学、刚工作、家里催的那几年最多
 export const MEET_P = a => a < 18 ? 0 : a < 22 ? 0.5 : a < 27 ? 0.6 : a < 34 ? 0.7 : a < 45 ? 0.45 : 0.2;
 // 上一个人以后（认识、分手、离婚、丧偶）至少隔这么多个月才遇见下一个；时间放在恋爱上的短一些
-export const MEET_GAP = 10, MEET_GAP_LOVE = 5;
+// 一年只有四十秒，单身的人原来一年被问 0.8 次「心动」，太勤：遇见一个人以后两年内不再遇见下一个，刚分开的隔一年；时间放在恋爱上的减半
+export const MEET_GAP = 24, MEET_GAP_SPLIT = 12;
 // 每个人心里「该结婚的年纪」不一样（标准差约 3 岁，估计）；农村出身的一般早一些
 export const mShift = () => S.flags.mShift != null ? S.flags.mShift : (S.flags.mShift = gauss(0, 4) - (S.home.kind === 'rural' ? 1.5 : 0));
 // 编制：公务员、教师、医生、护士（职业表里的 stable）。相亲市场上最吃香的一条
@@ -59,7 +60,7 @@ export function meetHow() {
 export const LOVE_FOCUS_K = 0.8, FRIEND_MEET_K = 0.2;
 const MEET_T = { e: 0.25 };
 declare module './types' {
-  interface Flags { lastMeet?: number; coupled?: number; look?: number; noWed?: number; soloAt?: number } // look：说了想找个人，到哪个月为止多介绍；noWed：不打算结婚了；soloAt：几岁时决定的 // 上一个人是出生后第几个月遇见的（或者那段感情是哪个月结束的）；上个月还有没有对象
+  interface Flags { lastMeet?: number; meetGap?: number; coupled?: number; look?: number; noWed?: number; soloAt?: number } // look：说了想找个人，到哪个月为止多介绍；noWed：不打算结婚了；soloAt：几岁时决定的 // 上一个人是出生后第几个月遇见的（或者那段感情是哪个月结束的）；上个月还有没有对象
 }
 function meetMonth(m: number) {
   if (S.age < 18 || S.age > 60 || !single()) return;
@@ -68,10 +69,10 @@ function meetMonth(m: number) {
   if (S.flags.noLove != null) { if (love || nowM() >= S.flags.noLove) S.flags.noLove = undefined; else return; }
   // 不打算结婚的不再遇见人；改回「恋爱」重心就是又想谈了
   if (S.flags.noWed) { if (love) S.flags.noWed = undefined; else return; }
-  if (S.flags.lastMeet != null && nowM() - S.flags.lastMeet < (love ? MEET_GAP_LOVE : MEET_GAP)) return;
+  if (S.flags.lastMeet != null && nowM() - S.flags.lastMeet < (S.flags.meetGap ?? MEET_GAP) / (love ? 2 : 1)) return;
   const p = MEET_P(S.age) * MEET_K * (S.sex === 'F' ? MEET_KF : 1) * (1 + LOVE_FOCUS_K * slotW('love') + FRIEND_MEET_K * slotW('friends')) * (myCondOK() ? 1.25 : 1) * (looking() ? 1.6 : 1) * tiltW(MEET_T);
   if (!chance(perMonth(Math.min(0.95, p)))) return;
-  S.flags.lastMeet = nowM();
+  S.flags.lastMeet = nowM(); S.flags.meetGap = MEET_GAP;
   const how = meetHow();
   if (how === 'blind') blindPair(); else S.cand = makePartner(how);
   queueRomance(m);
@@ -96,11 +97,16 @@ export function makePartner(how) {
   const nm = makeName(sex, chance(0.9) ? '汉族' : S.eth);
   let age = Math.max(18, Math.round(S.age + (sex === 'M' ? 2 : -2) + gauss(0, 2.8)));
   if (how === 'school') age = Math.min(age, S.age + 1); // 学校里认识的也还在读书
-  const home = chance(0.55) ? S.loc.p : chance(0.45) ? S.home.p : wpick(PROVS.map(x => [x.id, x.b]));
+  let home = chance(0.55) ? S.loc.p : chance(0.45) ? S.home.p : wpick(PROVS.map(x => [x.id, x.b]));
+  // Ta 在哪个城市：一般和你在同一个城市。网上认识的有四成在外地（Ta 老家的省会）；
+  // 你在外地工作时，家里托人介绍的有一半在你老家（妈妈在老家给你介绍对象）
+  let city = S.loc.city;
+  if (how === 'app' && home !== S.loc.p && chance(0.4)) city = PBY[home].cities[0];
+  if (how === 'blind' && awayFromHome() && chance(0.5)) { home = S.home.p; city = homeCity().city; }
   const rural = S.loc.kind === 'rural' ? true : !chance(PBY[home].u / 100) && chance(0.6);
   const edu = how === 'school' ? Math.max(myEdu(), 5) : partnerEdu();
   const p: any = {
-    name: nm.full, sur: nm.sur, sex, age, edu, home, rural, alive: true, metAt: S.age, how, city: S.loc.city,
+    name: nm.full, sur: nm.sur, sex, age, edu, home, rural, alive: true, metAt: S.age, how, city,
     startAge: edu >= 7 ? 25 : edu >= 6 ? 22 : edu >= 5 ? 21 : edu >= 3 ? 18 : 16,
     k: luckK(PARTNER_SD), // 个人差异（均值为 1）；学历溢价按对方做的那一行算（parents.ts 的 personK）
     q: clamp(Math.round(3 + (edu - 4.5) * 0.45 + gauss(0, 1.1)), 1, 5), // 对方家境（估计）
@@ -147,9 +153,12 @@ export const selfP = p => MUTUAL0 + 0.5 * p.fit + (S.st.so - 55) / 100 + 0.04 * 
 // Ta 家里每一分（famPts）约 6 个百分点（估计）
 const FAM_K = 0.06;
 export const mutualP = p => clamp(selfP(p) + FAM_K * clamp(famPts(p), -3, 3), 0.05, 0.92);
+/** Ta 在哪个城市，和你是不是同城 */
+export const whereOf = p => p.city === S.loc.city ? `${p.city}，和你同一个城市` : `${p.city}，你在${S.loc.city}`;
 export function partnerRows(p, opts: { love?: boolean } = {}): [string, string][] {
   const r: [string, string][] = [['年龄', `${p.age}岁`], ['学历', p.jk ? EDU_LV[p.edu] : `${EDU_LV[p.edu]}在读`], ['职业', p.jk ? JOBS[p.jk].n + (bianzhi(p.jk) ? '（有编制）' : '') : '还在读书'],
     ['月收入', p.inc ? (p.jk && !p.retired ? `到手${wanM(partnerPay(p).net)}` : wanM(p.inc)) : '没有收入']];
+  r.push(['在哪儿', whereOf(p)]);
   if (p.jk && p.house != null) r.push(['房子', p.house ? '有自己的房' : '还没有']);
   r.push(['家乡', `${PBY[p.home].n}${p.rural ? '农村' : '城里'}`], ['家境', '●'.repeat(p.q) + '○'.repeat(5 - p.q)]);
   if (p.only != null) r.push(['家里', p.only ? '独生子女' : '有兄弟姐妹']);
@@ -160,7 +169,7 @@ export function partnerRows(p, opts: { love?: boolean } = {}): [string, string][
 /** 相亲时两个人并排比：每项压成一行，表短一些 */
 export function partnerBrief(p): [string, string][] {
   return [['年龄', `${p.age}岁 · ${EDU_LV[p.edu]}`], ['工作', p.jk ? JOBS[p.jk].n + (bianzhi(p.jk) ? '（有编制）' : '') : '还在读书'],
-    ['月收入', p.jk && p.inc ? `到手${wanM(partnerPay(p).net)}` : '没有收入'],
+    ['月收入', p.jk && p.inc ? `到手${wanM(partnerPay(p).net)}` : '没有收入'], ['在哪儿', p.city === S.loc.city ? `${p.city}（同城）` : p.city],
     ['家里', `${PBY[p.home].n}${p.rural ? '农村' : '城里'} · ${p.only ? '独生子女' : '有兄弟姐妹'}`],
     ['家境', '●'.repeat(p.q) + '○'.repeat(5 - p.q) + (p.jk ? (p.house ? ' · 有房' : ' · 没房') : '')], ['性格', partnerTrait(p)]];
 }
@@ -451,7 +460,7 @@ export function marriedStep(p) {
 export function loveMonth(m: number) {
   // 刚分开（分手、离婚、丧偶）：从这个月算起，隔一段时间才会遇见下一个人
   const has = S.fam.dating || S.fam.married ? 1 : 0;
-  if (S.flags.coupled && !has) S.flags.lastMeet = nowM();
+  if (S.flags.coupled && !has) { S.flags.lastMeet = nowM(); S.flags.meetGap = MEET_GAP_SPLIT; }
   S.flags.coupled = has || undefined;
   if (S.cand) {
     // 认识了还没决定（抉择排在下个月）。万一抉择不在队列里了（比如这个月被清掉），补排进下个月，免得一直卡在「还没决定」

@@ -640,7 +640,7 @@ export const DEC = {
         const say = fa.who ? `${fa.who}说：“${p.name}${why(fa)}；${q.name}${why(fb)}。”` : '';
         const hi = p.q >= q.q ? p : q, tv = theirView(hi);
         return {
-          title: '相亲', body: `${matchmaker()}托人介绍了两个人，你各见了一面。${tv || ''}${say}`, card, fact,
+          title: '相亲', body: (p.city !== S.loc.city && q.city !== S.loc.city ? `${matchmaker()}在老家托人介绍了两个人，回家时各见了一面。` : `${matchmaker()}托人介绍了两个人，你各见了一面。`) + `${tv || ''}${say}`, card, fact,
           choices: [
             { k: 'go', label: `和${p.name}接着处`, sub: odds(p), w: pickW(p), tilt: { e: 0.3 } },
             { k: 'go2', label: `和${q.name}接着处`, sub: odds(q), w: pickW(q), tilt: { e: 0.3 } },
@@ -650,7 +650,9 @@ export const DEC = {
         };
       }
       const blind = p.how === 'blind';
-      const body = (blind ? `${matchmaker()}托人介绍了${p.name}。见了一面，${feelWord(p)}。` : p.how === 'reunion' ? `又和${p.name}联系上了，${feelWord(p)}。` : `在${MEET_HOW[p.how]}认识了${p.name}，${feelWord(p)}。`) + (theirView(p) || '') + (famSay(p) || '');
+      const away = p.city !== S.loc.city, ta = p.sex === 'M' ? '他' : '她';
+      const body = (blind ? (away ? `${matchmaker()}在老家托人介绍了${p.name}。回家时见了一面，${feelWord(p)}。` : `${matchmaker()}托人介绍了${p.name}。见了一面，${feelWord(p)}。`)
+        : p.how === 'reunion' ? `又和${p.name}联系上了，${feelWord(p)}。` : `在${MEET_HOW[p.how]}认识了${p.name}${away ? `，${ta}在${p.city}` : ''}，${feelWord(p)}。`) + (theirView(p) || '') + (famSay(p) || '');
       return {
         title: blind ? '相亲' : '心动', body, card: partnerRows(p), fact,
         choices: [
