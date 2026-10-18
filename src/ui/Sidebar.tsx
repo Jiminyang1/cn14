@@ -190,31 +190,29 @@ export function Body({ m }: { m?: string }) {
   );
 }
 
-// ===== 六、岔路口 =====
+// ===== 右下角「岔路口」 =====
 // 这一生到现在做过的大抉择（fork），连同当年没选的那几条路；上面一行是已经拿到的人生标签，以前的人生里没见过的标一个「新」
 let pastTags: { L: object; s: Set<string> } | null = null; // 封存过的档案只在两局之间变：每一局读一次
-export function Forks({ m }: { m?: string }) {
+function Forks() {
   const forks = forksOf(S), tags = liveTags(S);
-  if (!forks.length && !tags.length) return null;
   if (pastTags?.L !== S) pastTags = { L: S, s: new Set(loadPast().flatMap(x => x.tags || [])) };
   const seen = pastTags.s;
-  return (
-    <Sec no="六" title="岔路口" meta={forks.length ? `${forks.length} 处` : undefined} m={m} className="forks-sec">
-      {tags.length > 0 && <div className="ltags">
-        {tags.map(t => <span key={t.k} className={'ltag r' + t.r} title={t.d}>{t.n}{!seen.has(t.k) && <i>新</i>}</span>)}
-      </div>}
-      {forks.length > 0 && <ol className="fk">
-        {forks.map((f, i) => <li key={i}>
-          <span className="fk-a mono">{f.a}岁</span>
-          <div>
-            <b>{f.title}</b>
-            <p><span className="chop">定</span>{f.pick}</p>
-            <p className="fk-no">没选　{f.alt.slice(0, 3).join(' ／ ')}{f.alt.length > 3 ? ' ……' : ''}</p>
-          </div>
-        </li>)}
-      </ol>}
-    </Sec>
-  );
+  if (!forks.length && !tags.length) return <p className="note-line" style={{ margin: 0 }}>还没走到岔路口。</p>;
+  return <>
+    {tags.length > 0 && <div className="ltags">
+      {tags.map(t => <span key={t.k} className={'ltag r' + t.r} title={t.d}>{t.n}{!seen.has(t.k) && <i>新</i>}</span>)}
+    </div>}
+    {forks.length > 0 && <ol className="fk">
+      {forks.map((f, i) => <li key={i}>
+        <span className="fk-a mono">{f.a}岁</span>
+        <div>
+          <b>{f.title}</b>
+          <p><span className="chop">定</span>{f.pick}</p>
+          <p className="fk-no">没选　{f.alt.slice(0, 3).join(' ／ ')}{f.alt.length > 3 ? ' ……' : ''}</p>
+        </div>
+      </li>)}
+    </ol>}
+  </>;
 }
 
 // ===== 父母与家庭支持 =====
@@ -372,7 +370,7 @@ export function Companions() {
 }
 
 // ===== 右下角的分隔签 =====
-const TABS = [['ppl', '人际关系'], ['doc', '材料目录'], ['peer', '同批建档']] as const;
+const TABS = [['ppl', '人际关系'], ['fork', '岔路口'], ['doc', '材料目录'], ['peer', '同批建档']] as const;
 type Tab = typeof TABS[number][0];
 const TAB_KEY = 'cn14.tab';
 export function ArchiveTabs({ mtab }: { mtab: string }) {
@@ -383,15 +381,17 @@ export function ArchiveTabs({ mtab }: { mtab: string }) {
   const seen = useRef(docsN);
   if (tab === 'doc' || mtab === 'doc') seen.current = docsN;
   const fresh = docsN - seen.current;
+  const forksN = forksOf(S).length;
   return (
-    <section className={'pg tabs-card t-' + tab} data-m="home doc peer">
+    <section className={'pg tabs-card t-' + tab} data-m="home body doc peer">
       <nav className="tabs" role="tablist">
         {TABS.map(([k, n]) => (
           <button key={k} type="button" role="tab" aria-selected={tab === k} className={tab === k ? 'on' : ''} onClick={() => pick(k)}>
-            {n}{k === 'doc' && <span className="mono" style={{ fontWeight: 400, marginLeft: 4 }}>{docsN}</span>}{k === 'doc' && fresh > 0 && <i className="tdot" aria-label={`${fresh} 份新材料`}>新</i>}
+            {n}{k === 'doc' && <span className="mono" style={{ fontWeight: 400, marginLeft: 4 }}>{docsN}</span>}{k === 'fork' && forksN > 0 && <span className="mono" style={{ fontWeight: 400, marginLeft: 4 }}>{forksN}</span>}{k === 'doc' && fresh > 0 && <i className="tdot" aria-label={`${fresh} 份新材料`}>新</i>}
           </button>
         ))}
       </nav>
+      <div className="tp" data-t="fork" data-m="body"><div className="sub-h m-only" style={{ marginTop: 0 }}>岔路口</div><Forks /></div>
       <div className="tp" data-t="doc" data-m="doc"><Docs /></div>
       <div className="tp" data-t="peer" data-m="peer"><p className="note-line" style={{ margin: '0 0 4px' }}>同一秒建档的另外 {S.comps.length} 人 · 此刻也是 {S.age} 岁</p><Companions /></div>
       <div className="tp" data-t="ppl" data-m="home"><p className="note-line" style={{ margin: '0 0 4px' }}>{famMeta()}</p><FamilyRows /></div>

@@ -11,7 +11,7 @@ import { RunId } from './RunId';
 import { VersionTag } from './Version';
 import { ActionsButton, PendingFloat } from './Actions';
 import { YearHost, openYear, perMonth } from './Year';
-import { Account, ArchiveTabs, Basic, Body, Forks } from './Sidebar';
+import { Account, ArchiveTabs, Basic, Body } from './Sidebar';
 import { TimelineFinance, statementAge } from './Finance';
 import { cnNum, fileNo } from './util';
 
@@ -231,7 +231,7 @@ export function Life() {
   return <div className={'life-app m-' + mtab}>
     <Header />
     <main className="lbody">
-      <div className="col col-l"><Basic /><Body m="body" /><Forks m="body" /></div>
+      <div className="col col-l"><Basic /><Body m="body" /></div>
       <div className="col col-c"><FocusPlan /><Timeline /></div>
       <nav className="mtabs" role="tablist">
         {MTABS.map(([k, n]) => <button key={k} type="button" role="tab" aria-selected={mtab === k} className={mtab === k ? 'on' : ''} onClick={() => setMtab(k)}>{n}</button>)}
