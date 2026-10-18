@@ -74,9 +74,9 @@ export function Basic() {
       <div className="f4">
         <span className="k">姓名</span><b className="serif">{S.name}</b><span className="k">性别</span><span>{sexW(S.sex)}</span>
         <span className="k">民族</span><span>{S.eth}</span><span className="k">户籍</span><span>{S.rural ? '农村' : '城镇'}</span>
-        <span className="k">现居</span><span className="wide">{placeName(S.loc)}</span>
         <span className="k">学历</span><span>{eduWord()}</span><span className="k">职业</span><span>{jobWord()}</span>
-        {S.age >= 18 && <><span className="k">婚姻</span><span className="wide">{marryWord()}</span></>}
+        {S.age >= 18 && <><span className="k">婚姻</span><span>{marryWord()}</span></>}
+        <span className="k">现居</span><span className={S.age >= 18 ? undefined : 'wide'}>{placeName(S.loc)}</span>
       </div>
       <div className="seal">在 档</div>
     </Sec>
