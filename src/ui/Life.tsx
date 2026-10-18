@@ -1,5 +1,6 @@
 // 一生：页头（档案号、播放控制）；左栏 一、基本情况 二、体检与鉴定；中栏 三、本年度时间安排 四、大事记；
 // 右栏 五、我的经济 六、收支账本，底下是材料目录 / 同批建档 / 一生曲线。手机上是单栏，下面用五个标签切换。
+import { DocFolder, DocToast } from './Docs';
 import { memo, useEffect, useRef, useState } from 'react';
 import { FOCUS, PLANS, S, focusMore, calMonth, calYear, carer, focusList, planOpt, plansShown, slotN, type LogEntry, type MonthlyStatement } from '../engine';
 import { SPEEDS, ageK, game } from '../game/controller';
@@ -240,6 +241,8 @@ export function Life() {
     </main>
     <Modal />
     <YearHost />
+    <DocToast />
+    <DocFolder />
     <PendingFloat />
   </div>;
 }

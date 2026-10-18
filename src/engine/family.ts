@@ -1,12 +1,13 @@
 // 家人：兄弟姐妹、自己的孩子（怀孕、出生、长大），以及家人的变化（生日那个月长一岁、配偶的工作和养老金；每个月判定去世、父母病倒）。
+import { kidDoc, markDoc } from './docs';
 import type { Kid, Partner, Sex, Sibling } from './types';
 
 import { JOBS, PEN_MIN_YEARS, PEN_YEARS, RESID_PENSION, RESID_PENSION_JOBS, retireAgeOf } from './career';
 import { PBY } from './data';
 import { S } from './state';
-import { addDoc, log, major } from './journal';
+import { log, major } from './journal';
 import { chance, clamp, gauss, wpick } from './rng';
-import { MONTHS, calMonth, perMonth } from './monthly';
+import { MONTHS, calMonth, calYear, perMonth } from './monthly';
 import { nowM } from './calendar';
 import { eff } from './stats';
 import { kinLT, qMonth } from './mortality';
@@ -126,6 +127,9 @@ function parentMonth(p, male: boolean) {
     const tail = S.age < 18 ? '你还没有长大。' : !grown ? '' : S.flags.parWithMe || c >= 75 ? '最后那段日子，你一直在身边。' : c < 35 ? '你赶回去的时候，已经来不及了。上一次回家，是好几年前。' : '';
     major(`${male ? '爸爸' : '妈妈'}去世了，享年${p.age}岁。${tail}`, 'loss');
     eff({ h: S.age < 18 ? -14 : grown && c < 35 ? -13 : -9, so: -3 });
+    // 下个月办丧事（content/echoes.ts 的 funeral）。apart：父母离婚后不跟着生活、也不亲的那一位（要在 parentGone 改「跟着谁」之前记）
+    const F = S.flags, apart = !!F.parDiv && !!F.parDivWith && F.parDivWith !== (male ? 'dad' : 'mom') && c < 60 ? 1 : 0;
+    (F.funeral ||= []).push({ who: male ? 'dad' : 'mom', m: nowM(), c, apart });
     parentGone(male ? 'dad' : 'mom');
   } else if (x >= 62 && !p.ill && chance(PAR_ILL_M)) p.ill = 1;
 }
@@ -148,7 +152,7 @@ function familyDeaths() {
   const pt = f.partner;
   if (pt && pt.alive && f.married && chance(qMonth(kinLT('pt', pt.sex), pt.age + 1))) {
     // 丧偶：不再算已婚，以后还可以再认识人（f.partner 留着，界面显示「丧偶」，再婚时被替换）
-    pt.alive = false; f.married = false; S.flags.widowed = S.age; const le = loveOf(pt); if (le) le.died = S.age; major(`${pt.name}去世了，享年${pt.age}岁。你们一起走过了${S.age - pt.marriedAt}年。`, 'loss'); eff({ h: -15, so: -6 });
+    pt.alive = false; f.married = false; S.flags.widowed = S.age; markDoc('marry', `${calYear()}.${calMonth()} 丧偶`, 'gray', true); const le = loveOf(pt); if (le) le.died = S.age; major(`${pt.name}去世了，享年${pt.age}岁。你们一起走过了${S.age - pt.marriedAt}年。`, 'loss'); eff({ h: -15, so: -6 }); (S.flags.funeral ||= []).push({ who: 'pt', m: nowM(), c: 100 });
     if (S.sex === 'M' && S.flags.preg) S.flags.preg = null; // 怀着孩子的是她
   }
   for (const s of f.sibs) if (s.alive) sibMonth(s);
@@ -174,7 +178,7 @@ export function supportMonth() {
 /** 孩子出生。pa：另一位家长（默认是现在的配偶；怀孕期间离婚、丧偶的，用怀孕时记下的） */
 export function haveKid(pa?: { name: string; sur: string }) {
   const o = pa || S.fam.partner, on = o ? o.name : '';
-  const _k = haveKid0(pa); addDoc('kid', '出生医学证明', [['新生儿', _k.name], ['性别', _k.sex === 'M' ? '男' : '女'], ['父母', S.sex === 'M' ? `${S.name}、${on}` : `${on}、${S.name}`]]); return _k;
+  const _k = haveKid0(pa); kidDoc(_k, on); return _k;
 }
 export function haveKid0(pa?: { name: string; sur: string }) {
   const sex: Sex = chance(0.524) ? 'M' : 'F';

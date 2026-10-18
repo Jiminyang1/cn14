@@ -37,7 +37,7 @@ export function severance() {
 }
 export function layOff() {
   const n = severance();
-  quitJob(); // 工资发到离职那天，公积金封存（career.ts）
+  quitJob('裁员', 'red'); // 工资发到离职那天，公积金封存（career.ts）
   eff({ money: n });
   return n;
 }

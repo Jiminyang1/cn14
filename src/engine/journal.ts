@@ -19,10 +19,10 @@ const curM = () => S.month;
 
 // ===== 证件：人生每个关口往档案里放一份 =====
 // k: 证件类型（决定样式），title: 名称，rows: [[栏目, 内容]...]
-export function addDoc(k, title, rows) {
+export function addDoc(k: string, title: string, rows: [string, string][], v?: string) {
   if (!S.docs) S.docs = [];
   const m = curM();
-  S.docs.push({ k, title, a: S.age, y: calYear(m), m: calMonth(m), rows: rows.filter(r => r && r[1] != null && r[1] !== '') });
+  S.docs.push({ k, title, a: S.age, y: calYear(m), m: calMonth(m), rows: rows.filter(r => r && r[1] != null && r[1] !== ''), ...(v ? { v } : {}) });
 }
 
 // ===== 记录 =====

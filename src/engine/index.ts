@@ -3,6 +3,7 @@ export * from './state';
 export * from './rng';
 export * from './format';
 export * from './journal';
+export * from './docs';
 export * from './stats';
 export * from './personality';
 export * from './focus';
