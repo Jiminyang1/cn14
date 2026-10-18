@@ -1,0 +1,140 @@
+/* 「这一年」（ui/Year.tsx）：行动单和账本合成一张。左边浅色侧栏（手头的钱、分类），右边整块纸面；按钮是无边框的小药丸，选中填墨色 */
+.yr-modal { align-items: center; padding: 24px 16px; }
+.yr-win { width: 100%; max-width: 1000px; }
+.yr-top { display: flex; align-items: flex-end; }
+.yr-top .ftab { padding: 5px 14px 4px; }
+.yr-top .ftab .mono { font-family: var(--mono); }
+.yr-paused { margin: 0 0 6px auto; padding: 3px 10px; border-radius: 999px; background: rgba(252, 250, 245, .14); color: #F3EEE4; font-size: 12px; }
+.yr-dlg { display: grid; grid-template-columns: 208px minmax(0, 1fr); height: min(600px, calc(100dvh - 90px)); background: var(--card); border-radius: 0 8px 8px 8px; box-shadow: 0 40px 90px -30px rgba(10, 8, 4, .7); overflow: hidden; }
+.up { color: var(--good); }
+.dn { color: var(--seal); }
+
+/* 左栏 */
+.yr-side { background: var(--tint); padding: 18px 14px; display: flex; flex-direction: column; min-height: 0; overflow-y: auto; }
+.yr-cash span { font-size: 12px; color: var(--muted); }
+.yr-cash b { display: block; font-size: 26px; font-weight: 600; line-height: 1.2; margin-top: 2px; }
+.yr-cash b i { font: 500 13px var(--sans); margin-left: 2px; }
+.yr-cash small { display: block; font-size: 12px; color: var(--ink2); margin-top: 2px; }
+.yr-nav { display: flex; flex-direction: column; }
+.yr-ng { margin: 20px 0 4px; padding: 0 10px; font: 700 11px var(--serif); letter-spacing: .24em; color: var(--muted); }
+.yr-nb { display: flex; align-items: center; gap: 8px; width: 100%; height: 38px; padding: 0 10px; border: 0; border-radius: 5px; background: transparent; font: 600 14.5px var(--serif); color: var(--ink2); cursor: pointer; text-align: left; white-space: nowrap; }
+.yr-nb:hover { color: var(--ink); }
+.yr-nb.on { background: var(--card); color: var(--ink); box-shadow: var(--shadow); }
+.yr-nb.on::before { content: ''; width: 3px; height: 16px; border-radius: 2px; background: var(--seal); margin-left: -4px; }
+.yr-r { margin-left: auto; font: 400 11.5px var(--sans); color: var(--muted); }
+.yr-n { margin-left: auto; display: inline-grid; place-items: center; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 9px; background: var(--seal); color: #fff; font: 600 11px var(--mono); }
+.yr-nb:focus-visible, .yr-seg button:focus-visible, .yr-seg7 button:focus-visible, .yr-go:focus-visible, .yr-mc:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+
+/* 右边 */
+.yr-main { position: relative; padding: 22px 28px 20px; display: flex; flex-direction: column; min-height: 0; overflow-y: auto; }
+.yr-x { position: absolute; right: 14px; top: 12px; width: 36px; height: 36px; border: 0; border-radius: 6px; background: transparent; color: var(--muted); font-size: 22px; line-height: 1; cursor: pointer; }
+.yr-x:hover { background: var(--tint); color: var(--ink); }
+.yr-hd { display: flex; align-items: baseline; gap: 12px; padding-right: 40px; }
+.yr-hd h3 { margin: 0; font: 900 22px var(--serif); letter-spacing: .08em; }
+.yr-s { font-size: 12.5px; color: var(--muted); }
+.yr-cols { display: grid; grid-template-columns: minmax(0, 1fr) 232px; gap: 28px; margin-top: 18px; }
+.yr-grp { margin-bottom: 16px; }
+.yr-gt { margin-bottom: 6px; font: 700 13px var(--serif); letter-spacing: .2em; color: var(--seal); }
+.yr-gt small { margin-left: 8px; font: 400 11.5px var(--sans); letter-spacing: 0; color: var(--muted); }
+.yr-row { display: grid; grid-template-columns: 3.6em minmax(0, 1fr); gap: 4px 12px; align-items: center; padding: 7px 0; border-top: 1px solid var(--hair); }
+.yr-gt + .yr-row { border-top: 0; }
+.yr-rk { font: 600 13.5px var(--serif); }
+.yr-why { grid-column: 2; margin: 0; font-size: 11.5px; color: var(--muted); }
+.yr-seg { display: flex; flex-wrap: wrap; gap: 4px; }
+.yr-seg7 { display: grid; gap: 4px; }
+.yr-seg button, .yr-seg7 button { height: 30px; padding: 0 11px; border: 0; border-radius: 15px; background: var(--tint); color: var(--ink2); font-size: 13px; cursor: pointer; white-space: nowrap; }
+.yr-seg7 button { padding: 0; font-size: 12.5px; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.yr-seg button i { font: normal 11px var(--mono); color: var(--muted); margin-left: 5px; }
+.yr-seg button.on, .yr-seg7 button.on { background: var(--ink); color: var(--card); }
+.yr-seg button.on i { color: color-mix(in srgb, var(--card) 70%, transparent); }
+
+/* 结果栏 */
+.yr-res { border-left: 1px solid var(--hair); padding-left: 24px; }
+.yr-res h4 { margin: 0; font: 700 14px var(--serif); }
+.yr-big { font-size: 28px; font-weight: 600; line-height: 1.2; margin-top: 8px; }
+.yr-big i { font: normal 500 13px var(--sans); color: var(--ink2); margin-left: 4px; }
+.yr-bar { display: flex; height: 10px; border-radius: 5px; overflow: hidden; margin: 10px 0 8px; background: var(--tint); }
+.yr-bar u { display: block; height: 100%; }
+.yr-leg div { display: grid; grid-template-columns: 10px 1fr auto; gap: 8px; align-items: center; font-size: 12.5px; padding: 1px 0; }
+.yr-leg i { width: 8px; height: 8px; border-radius: 2px; }
+.yr-leg b { font-weight: 500; }
+.yr-sm { margin: 6px 0 0; font-size: 12px; color: var(--muted); }
+.yr-fx { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; margin-top: 10px; }
+.yr-fx div { display: flex; justify-content: space-between; align-items: baseline; padding: 7px 10px; border-radius: 5px; background: var(--tint); font-size: 12.5px; }
+.yr-fx b { font-weight: 600; }
+
+/* 一次性的行动 */
+.yr-act { display: grid; grid-template-columns: minmax(0, 1fr) 130px 88px; gap: 16px; align-items: center; padding: 13px 0; border-top: 1px solid var(--hair); }
+.yr-act:first-child { border-top: 0; }
+.yr-act b { display: block; font: 700 16px var(--serif); }
+.yr-act > div > span { font-size: 12.5px; color: var(--muted); }
+.yr-act.off b { color: var(--muted); }
+.yr-am { text-align: right; font-size: 14px; }
+.yr-am small { display: block; font-size: 11.5px; color: var(--muted); }
+.yr-am small.dn { color: var(--seal); }
+.yr-go { height: 36px; border: 0; border-radius: 18px; background: var(--seal); color: #fff; font: 700 14px var(--serif); letter-spacing: .2em; cursor: pointer; }
+.yr-go:disabled { background: var(--tint); color: var(--muted); cursor: default; }
+.yr-said { margin: 16px 0 0; padding: 12px 14px; border-radius: 6px; background: var(--tint); font: 14.5px/1.7 var(--serif); }
+.yr-close { font: 900 22px var(--serif); margin-top: 6px; }
+.yr-meter { height: 8px; border-radius: 4px; background: var(--tint); overflow: hidden; margin-top: 8px; }
+.yr-meter u { display: block; height: 100%; background: var(--good); }
+
+/* 账本 */
+.yr-trend { display: block; width: 100%; height: auto; }
+.yr-trend line { stroke: currentColor; stroke-opacity: .08; }
+.yr-trend text { fill: currentColor; fill-opacity: .5; font: 10px var(--mono); }
+.yr-trend text.x { fill-opacity: .45; font-size: 9.5px; }
+.yr-trend polyline { fill: none; stroke: var(--good); stroke-width: 2; stroke-linejoin: round; }
+.yr-mb { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 5px; height: 132px; margin-top: 8px; }
+.yr-mc { display: flex; flex-direction: column; align-items: center; padding: 0; border: 0; background: none; cursor: pointer; min-width: 0; }
+.yr-mc .pos { flex: 1; width: 100%; display: flex; align-items: flex-end; }
+.yr-mc .neg { height: 26px; width: 100%; display: flex; align-items: flex-start; border-top: 1px solid var(--rule); }
+.yr-mc u { display: block; width: 100%; border-radius: 2px; background: color-mix(in srgb, var(--good) 40%, var(--card)); }
+.yr-mc .neg u { background: var(--seal); }
+.yr-mc.on .pos u { background: var(--good); }
+.yr-mc small { font: 10px var(--mono); color: var(--muted); margin-top: 3px; }
+.yr-mc.on small { color: var(--ink); font-weight: 600; }
+.yr-sl-w { margin-top: 10px; }
+.yr-sl { display: flex; justify-content: space-between; gap: 10px; padding: 4px 0; border-top: 1px solid var(--hair); font-size: 13px; }
+.yr-sl:first-child { border-top: 0; }
+.yr-sl span { color: var(--ink2); }
+.yr-sl b { font-weight: 500; }
+.yr-sl.tot { border-top: 1px solid var(--ink); margin-top: 2px; padding-top: 6px; }
+.yr-sl.tot span, .yr-sl.tot b { font-weight: 700; color: var(--ink); }
+
+/* 父母家 */
+.yr-kp4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin-top: 18px; }
+.yr-kp4 > div { padding: 0 14px; border-left: 1px solid var(--hair); }
+.yr-kp4 > div:first-child { padding-left: 0; border-left: 0; }
+.yr-kp4 span { display: block; font: 12px var(--serif); color: var(--muted); }
+.yr-kp4 b { display: block; font-size: 20px; font-weight: 600; line-height: 1.35; }
+.yr-kp4 small { display: block; font-size: 11.5px; color: var(--muted); }
+.yr-line { margin: 16px 0 0; font-size: 13.5px; color: var(--ink2); }
+.yr-link { align-self: flex-start; margin-top: 14px; padding: 0; border: 0; background: none; color: var(--seal); font-size: 13px; cursor: pointer; }
+
+/* 手机：整屏，分类排成一行横着滑；右边的结果放到下面 */
+@media (max-width: 760px) {
+  .yr-modal { padding: 0; align-items: stretch; }
+  .yr-win { max-width: none; display: flex; flex-direction: column; }
+  .yr-top { display: none; }
+  .yr-dlg { grid-template-columns: 1fr; grid-template-rows: auto minmax(0, 1fr); height: 100dvh; border-radius: 0; }
+  .yr-side { padding: 12px 12px 0; overflow: visible; }
+  .yr-cash { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; padding-right: 40px; }
+  .yr-cash b { font-size: 22px; }
+  .yr-nav { flex-direction: row; gap: 4px; overflow-x: auto; scrollbar-width: none; margin: 8px -12px 0; padding: 0 12px 10px; }
+  .yr-nav::-webkit-scrollbar { display: none; }
+  .yr-ng { display: none; }
+  .yr-nb { width: auto; flex: none; height: 36px; font-size: 14px; }
+  .yr-nb.on::before { display: none; }
+  .yr-main { padding: 16px 14px 24px; }
+  .yr-x { position: fixed; top: 8px; right: 8px; z-index: 2; }
+  .yr-cols { grid-template-columns: 1fr; gap: 20px; }
+  .yr-res { border-left: 0; padding-left: 0; border-top: 1px solid var(--hair); padding-top: 14px; }
+  .yr-seg7 { grid-template-columns: repeat(4, minmax(0, 1fr)) !important; }
+  .yr-seg7 button, .yr-seg button { height: 36px; }
+  .yr-act { grid-template-columns: minmax(0, 1fr) auto; }
+  .yr-am { grid-column: 1; grid-row: 2; text-align: left; display: flex; gap: 8px; align-items: baseline; }
+  .yr-go { grid-row: 1 / 3; grid-column: 2; height: 44px; padding: 0 16px; }
+  .yr-kp4 { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 12px; }
+  .yr-kp4 > div:nth-child(3) { padding-left: 0; border-left: 0; }
+}

@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import {
   AX, AX_NAME, CAUSE, EDU_LV, FAM_HOUSE_N, JOBS, PBY, S, axWord, calMonth, calYear, leOf, partnerPay, partnerTrait, persWords, placeName, shownZ, statusLabel,
-  loanBal, loanArrears, loanPayY, loveWord, parentIncome, parentRetired, closeWord, parClose, kidClose, parentWorkLoc, awayFromHome, ptJobName, Q_WORD, wan, wanM, monthlyPay, inheritedValue, netWorth,
+  loanBal, loanArrears, loanPayY, loveWord, parentIncome, parentRetired, closeWord, parClose, kidClose, parentWorkLoc, awayFromHome, ptJobName, Q_WORD, wan, wanM, monthlyPay, inheritedValue, netWorth, anyParent,
   type Companion, type Doc, type Partner,
 } from '../engine';
 import { ageK, game } from '../game/controller';
@@ -11,7 +11,8 @@ import { LiveScene } from './Photo';
 import { YearProgress } from './Progress';
 import { Ib } from './TipLayer';
 import { dots, sexW } from './util';
-import { LedgerButton, cashAmount, cashChange, monthlySpending, tierName } from './Finance';
+import { cashAmount, cashChange, tierName } from './Finance';
+import { openYear } from './Year';
 
 const neg = (n: boolean) => n ? 'neg' : undefined;
 // 还没上小学：小学在满 6 岁以后的那个 9 月入学，6 岁生日到开学之间也还是学龄前
@@ -164,7 +165,7 @@ export function Body({ m }: { m?: string }) {
 // ===== 父母与家庭支持 =====
 // 家里的钱：家境几个点、一句话说清楚（爸妈做什么、一个月挣多少、住什么房子、存款和欠款），细账收在折叠里
 const PW = { dad: '爸爸', mom: '妈妈' } as const;
-function famLine() {
+export function famLine() {
   const f = S.fam, H = S.famHouse || { type: 'rent' as const, v: 0, where: '' };
   const alive = (['dad', 'mom'] as const).filter(w => f[w].alive);
   const ret = (w: 'dad' | 'mom') => parentRetired(f[w], w === 'dad');
@@ -222,52 +223,34 @@ function myHome() {
   return H ? `${now}（${own}）` : now;
 }
 
-// ===== 五、我的经济：我 → 我的小家（成家、有了自己的房子以后）→ 父母家 =====
+// ===== 五、经济：常驻只放两个数（现金、月收入）和几行事实；细账、走势、行动都在「这一年」里 =====
+// 经济独立以前：家里的钱就是你的钱，直接写父母家
 export function Account({ m }: { m?: string }) {
   if (S.indep === false) {
     const why = S.school ? '在读' + S.school + '，花销靠家里' : preschool() ? '还小，花销靠家里' : '还没有工作';
     return (
-      <Sec no="五" title="我的经济" meta="尚未经济独立" m={m}>
-        <p className="account-note">{why}。开始自己生活后，这里记你自己的钱。</p>
+      <Sec no="五" title="经济" meta={why} m={m}>
         <Econ />
       </Sec>
     );
   }
   const f = S.fam, pt = f.partner, mate = f.married && pt?.alive ? pt : null;
-  const home = !!(mate || f.kids.some(k => k.alive) || S.house);
-  // 家庭月收入（到手）：你这个月到手的钱、返聘的工资、配偶到手的钱
-  const hh = monthlyPay().net * 12 + (S.flags.rehire ? S.flags.rehire.inc : 0) + (mate ? partnerPay(mate).net : 0);
   const bill = S.statement, change = bill ? bill.closing - bill.opening : 0;
+  const pay = monthlyPay();
+  const hh = pay.net + ((S.flags.rehire?.inc || 0) + (mate ? partnerPay(mate).net : 0)) / 12;
+  const housing = bill && (bill.rent > 0 || bill.mortgage > 0) ? ` · 每月 ${Math.round(bill.rent + bill.mortgage).toLocaleString('zh-CN')}` : '';
   return (
-    <Sec no="五" title="我的经济" meta={S.indepAt != null ? S.indepAt + '岁开始工作' : ''} m={m}>
-      <div className="finance-balance"><span>可用现金<Ib k="myMoney" /></span><strong>{wan(S.money)}</strong></div>
-      {S.debt > 0 && <Row k="其他欠款" v={<b className="neg">{wan(S.debt)}</b>} />}
-      <p className="finance-period">{bill ? `${bill.year}年${bill.month}月 · 最近一次结算` : '等待第一个月结算'}</p>
-      <dl className="finance-metrics">
-        <div><dt>到手收入{mate ? '（含配偶）' : ''}</dt><dd>{cashAmount(bill ? bill.income : hh / 12)}</dd></div>
-        <div><dt>生活与还款{bill ? `（${tierName(bill.tier)}）` : ''}</dt><dd>{bill ? cashAmount(monthlySpending(bill)) : '—'}</dd></div>
-        <div><dt>现金变化</dt><dd className={change < 0 ? 'neg' : change > 0 ? 'money-up' : undefined}>{bill ? cashChange(change) : '—'}</dd></div>
-      </dl>
-      <LedgerButton />
-      {loanArrears() > 1 && <p className="account-note neg">房贷已逾期 {wan(loanArrears())}，需要处理还款。</p>}
-      {bill?.shortfall > 1 && <p className="account-note neg">最近一个月生活或住房有 {cashAmount(bill.shortfall)} 缺口。</p>}
-      <Row k={<>{S.job === 'retired' ? '我的养老金' : '我的月收入'}<Ib k="myIncome" /></>} v={S.job === 'retired' ? wanM(S.pension || 0) : myInc()} />
-      {S.flags.rehire && <Row k="返聘收入" v={wanM(S.flags.rehire.inc)} />}
-      <Row k={<>公积金<Ib k="hpf" /></>} v={S.hpf ? wan(S.hpf) + (S.hpfOn ? '' : '（封存）') : S.hpfOn ? '0元' : '没有'} />
-      {S.inv && S.inv.w + S.inv.f >= 1 && <Row k="理财和基金" v={<>{wan(S.inv.w + S.inv.f)}<small>{[S.inv.w >= 1 && `理财 ${wan(S.inv.w)}`, S.inv.f >= 1 && `基金 ${wan(S.inv.f)}`].filter(Boolean).join(' · ')}，不算现金</small></>} />}
-      {!home && <Row k="住在" v={myHome()} />}
-      <Row k="净资产" v={wan(netWorth())} />
-      {home && <>
-        <h4 className="fam-h">我的小家</h4>
-        {mate && <Row k={<>{mate.sex === 'M' ? '丈夫' : '妻子'}的收入{mate.inc > 0 && mate.k != null && <Ib k="ptInc:partner" />}</>} v={<PtInc p={mate} />} />}
-        {mate && <Row k="家庭月收入" v={<>{wanM(hh)}<small>到手，两个人加起来</small></>} />}
-        <Row k="房子" v={myHome()} />
-        <Row k={<>房贷<Ib k="loan" /></>} v={loanBal() ? <>{wan(loanBal())}<small>月供 {wan(loanPayY() / 12)}</small></> : '没有'} />
-        {loanArrears() > 1 && <Row k="其中已逾期" v={<b className="neg">{wan(loanArrears())}</b>} />}
-        {inheritedValue() > 0 && <Row k="继承房产权益" v={<>{wan(inheritedValue())}<small>尚未出售</small></>} />}
-      </>}
-      {!home && inheritedValue() > 0 && <Row k="继承房产权益" v={<>{wan(inheritedValue())}<small>尚未出售</small></>} />}
-      <Econ fold />
+    <Sec no="五" title="经济" meta={<button type="button" className="sec-link" onClick={() => openYear('book')}>看账本 ›</button>} m={m}>
+      <div className="eco-two">
+        <div><span>现金<Ib k="myMoney" /></span><b className="mono">{wan(S.money)}</b>{S.debt > 0 ? <small className="neg">欠 {wan(S.debt)}</small> : <small>没有欠款</small>}</div>
+        <div><span>{S.job === 'retired' ? '养老金' : '月收入'}<Ib k="myIncome" /></span><b className="mono">{S.job === 'retired' ? wanM(S.pension || 0) : pay.gross ? wan(pay.net) : '—'}</b><small>{mate ? `全家到手 ${wan(hh)}` : S.job === 'retired' ? '每月' : pay.gross ? '到手 · 每月' : '没有工作'}</small></div>
+      </div>
+      <Row k="住" v={myHome() + housing} />
+      {bill && <Row k="过日子" v={`${tierName(bill.tier)} · 每月 ${Math.round(bill.living).toLocaleString('zh-CN')}`} />}
+      {bill && <Row k="上个月" v={<b className={change < 0 ? 'neg' : 'money-up'}>{cashChange(change)}</b>} />}
+      {loanArrears() > 1 && <p className="account-note neg">房贷逾期 {wan(loanArrears())}</p>}
+      {bill?.shortfall > 1 && <p className="account-note neg">上个月缺口 {cashAmount(bill.shortfall)}</p>}
+      {anyParent() && <Row k="父母家" v={<button type="button" className="row-link" onClick={() => openYear('par')}><span className="dots">{dots(S.q)}</span> {Q_WORD[S.q]}{S.flags.supportY > 0 ? ' · 在贴补他们' : ''}</button>} />}
     </Sec>
   );
 }

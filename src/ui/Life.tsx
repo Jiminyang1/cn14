@@ -1,7 +1,7 @@
 // 一生：页头（档案号、播放控制）；左栏 一、基本情况 二、体检与鉴定；中栏 三、本年度时间安排 四、大事记；
 // 右栏 五、我的经济 六、收支账本，底下是材料目录 / 同批建档 / 一生曲线。手机上是单栏，下面用五个标签切换。
 import { memo, useEffect, useRef, useState } from 'react';
-import { FOCUS, S, focusMore, calYear, carer, focusList, slotN, type LogEntry, type MonthlyStatement } from '../engine';
+import { FOCUS, PLANS, S, focusMore, calYear, carer, focusList, planOpt, plansShown, slotN, type LogEntry, type MonthlyStatement } from '../engine';
 import { SPEEDS, game } from '../game/controller';
 import { Modal } from './Modal';
 import { LogPic } from './Photo';
@@ -9,6 +9,7 @@ import { YearProgress } from './Progress';
 import { RunId } from './RunId';
 import { VersionTag } from './Version';
 import { ActionsButton, PendingFloat } from './Actions';
+import { YearHost, openYear } from './Year';
 import { Account, ArchiveTabs, Basic, Body, FamilySec } from './Sidebar';
 import { TimelineFinance, statementAge } from './Finance';
 import { cnNum, fileNo } from './util';
@@ -73,10 +74,11 @@ function FocusPlan() {
   if (!l.length || !n) return (
     <section className="pg plan">
       <div className="sec"><span className="no">三</span><h3>本年度时间安排</h3></div>
-      <p className="plan-d" style={{ margin: 0 }}>还是个孩子，正由{carer()}带着长大。六岁起可以安排每一年把时间放在哪里；这几年会自动走快一些。</p>
+      <p className="plan-d" style={{ margin: 0 }}>还小，由{carer()}带着。</p>
     </section>
   );
   const at = open != null && open < n ? open : null;
+  if (S.indep && S.age >= 18) return <YearPlan />;
   return (
     <section className="pg plan">
       <div className="sec"><span className="no">三</span><h3>本年度时间安排</h3><small>{n > 1 ? '两格 · 可以放同一件事' : '一格'} · 随时可改</small></div>
@@ -97,6 +99,29 @@ function FocusPlan() {
           <span className="pick-d">{focusMore(k)}</span>
         </button>)}
       </div>}
+    </section>
+  );
+}
+
+// 经济独立以后：三 只列出现在怎么过（两格 + 持续的计划），点「调整」在「这一年」里改
+const PLAN_N: Record<string, string> = { style: '过日子', gym: '健身', checkup: '体检', invest: '钱放在' };
+const PLAN_I = (k: string) => { const i = Object.keys(PLAN_N).indexOf(k); return i < 0 ? 99 : i; };
+function YearPlan() {
+  const n = slotN(), slots = S.slots || [];
+  return (
+    <section className="pg plan year-plan">
+      <div className="sec"><span className="no">三</span><h3>这一年怎么过</h3><small><button type="button" className="sec-link" onClick={() => openYear('plan')}>调整 ›</button></small></div>
+      <div className="yp-slots">
+        {Array.from({ length: n }, (_, i) => {
+          const k = slots[i];
+          return <button key={i} type="button" className="yp-slot" style={{ '--c': k ? FOCUS_C[k] : 'var(--muted)' } as React.CSSProperties} onClick={() => openYear('plan')}>
+            <span className="slot-n">{i ? '二' : '一'}</span><i /><b>{k ? FOCUS[k].n : '—'}</b>{k && <small>{focusMore(k)}</small>}
+          </button>;
+        })}
+      </div>
+      <div className="yp-habits">
+        {plansShown().sort((p, q) => PLAN_I(p) - PLAN_I(q)).map(k => { const o = planOpt(k); return o && <span key={k}><em>{PLAN_N[k] || PLANS[k].n}</em>{o.label.replace(/，常去$/, '常去').replace(/^每年全面/, '每年')}</span>; })}
+      </div>
     </section>
   );
 }
@@ -205,6 +230,7 @@ export function Life() {
       <div className="col col-r"><Account m="home" /><FamilySec m="home" /><ArchiveTabs mtab={mtab} /></div>
     </main>
     <Modal />
+    <YearHost />
     <PendingFloat />
   </div>;
 }
