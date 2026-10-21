@@ -4,7 +4,7 @@ import type { ReactNode } from 'react';
 import {
   EDU_LV, EXP0, EXP5, EXP_BLUE, EXP_PEAK, EXP_PEAK_Y, FAM_REPAY, HPF_JOB, INS_FLEX, INS_RESID, JOBS, LE_TARGET, LOAN_RULES, LT, NAT_URBAN_INC, PARENT_K, PBY,
   PARENT_SD, PARTNER_SD, PEN_MIN_YEARS, PEN_YEARS, RESID_PENSION_JOBS, S, WAGE_G0, WAGE_G_MAX, WAGE_REV, WEALTH0, clamp, expK, famIncome,
-  hpCounty, incomeLuckNow, leOf, loanPayY, matePay, myPay, parentIncome, parentPay, parentRetired, parentWage, parentWorkLoc, partnerHpf, partnerLoc, partnerPay, peek, sibsAlive,
+  hpCounty, incomeLuckNow, leOf, loanPayY, matePay, myPay, parentIncome, custodian, childSupport, homeIncome, parentPay, parentRetired, parentWage, parentWorkLoc, partnerHpf, partnerLoc, partnerPay, peek, sibsAlive,
   eduRel, personK, placeHp, placeInc, placeName, socAvg, uiPay, wageBase, wageRate, wan, workExpK,
   type DedRow, type NetPay,
 } from '../engine';
@@ -90,7 +90,18 @@ export const TIPS: Record<string, (arg?: string) => Tip> = {
     };
   },
   famPerCap() {
-    const f = S.fam, a = parentIncome('dad'), b = parentIncome('mom');
+    const f = S.fam, c = custodian();
+    if (c) {
+      // 父母离婚以后：你跟着的那一位的收入，加上另一位给的抚养费
+      const a = parentIncome(c), s = childSupport(), n = (f[c].alive ? 1 : 0) + (S.indep === false ? 1 + sibsAlive().filter(x => x.age < 18).length : 0);
+      return {
+        title: '家庭人均可支配收入（每月）',
+        expr: ['(', T(yuan(a / 12), c === 'mom' ? '母亲' : '父亲'), '+', T(yuan(s / 12), '抚养费'), ')', '÷', T(n + ' 人', '靠这份收入生活的人')],
+        result: moYr(n ? homeIncome() / n : 0),
+        notes: ['父母离婚以后，家里只算你跟着的那一位；另一位每月给抚养费，到你满 18 岁为止。'],
+      };
+    }
+    const a = parentIncome('dad'), b = parentIncome('mom');
     const n = (f.mom.alive ? 1 : 0) + (f.dad.alive ? 1 : 0) + (S.indep === false ? 1 + sibsAlive().filter(x => x.age < 18).length : 0);
     return {
       title: S.indep === false ? '家庭人均可支配收入（每月）' : '父母收入合计（每月）',
@@ -101,14 +112,15 @@ export const TIPS: Record<string, (arg?: string) => Tip> = {
   },
   // 父母的收入合在一行：都退休了叫「父母养老金」，都在上班叫「父母月收入」，一个退休一个上班叫「父母收入」；各自的情况写在这里
   parentsInc() {
-    const f = S.fam, both = ['dad', 'mom'] as const, label = { dad: '父亲', mom: '母亲' };
-    const alive = both.filter(w => f[w].alive), ret = (w: 'dad' | 'mom') => parentRetired(f[w], w === 'dad');
+    const f = S.fam, both = ['dad', 'mom'] as const, label = { dad: '父亲', mom: '母亲' }, c = custodian();
+    const alive = both.filter(w => f[w].alive && (!c || w === c)), ret = (w: 'dad' | 'mom') => parentRetired(f[w], w === 'dad');
     const word = alive.every(ret) ? '养老金' : alive.every(w => !ret(w)) ? '月收入' : '收入';
     const tot = alive.reduce((t, w) => t + parentIncome(w), 0);
     const res = (w: 'dad' | 'mom') => RESID_PENSION_JOBS.has(f[w].jk);
     const desc = (w: 'dad' | 'mom') => {
       const p = f[w], v = parentIncome(w);
       if (!p.alive) return `已去世（享年${p.age}岁），没有收入`;
+      if (c && w !== c) { const s = childSupport(); return `离婚后另过，不算在家里的收入里${s > 0 ? `；每月给抚养费 ${perMo(s)}` : ''}`; }
       if (ret(w)) return `养老金 ${perMo(v)}：${res(w) ? '城乡居民基本养老金' : '城镇职工基本养老金'}，退休前是${p.job}`;
       return v ? `月收入 ${perMo(v)}（到手）：${p.job}` : `没有收入：${p.job}`;
     };
@@ -117,7 +129,7 @@ export const TIPS: Record<string, (arg?: string) => Tip> = {
     if (alive.some(w => ret(w) && res(w))) notes.push('务农、打工、个体户、在家带孩子的，多数只参加了城乡居民养老保险，领得很少。');
     if (alive.some(w => !ret(w) && parentIncome(w) > 0)) notes.push('上班的收入是到手的钱：工资扣掉五险和个税。');
     return {
-      title: `父母${word}（每月）`,
+      title: `${c ? label[c] : '父母'}${word}（每月）`,
       ...(alive.length === 2 ? { expr: [T(yuan(parentIncome('dad') / 12), '父亲'), '+', T(yuan(parentIncome('mom') / 12), '母亲')], result: moYr(tot) } : { big: perMo(tot) }),
       rows: both.map(w => [label[w], desc(w)] as [string, string]),
       notes,

@@ -54,6 +54,8 @@ export function viewOf(L: Life): View {
   const people: Resident[] = [];
   let away = false;
   const awayWho: ('mom' | 'dad')[] = [];
+  // 父母离婚以后不跟你过的那一位：不在家里的照片上
+  const gone = L.flags.parDiv && L.flags.parDivWith ? (L.flags.parDivWith === 'mom' ? 'dad' : 'mom') : null;
   // 住在哪：刚查出大病、正在治疗的那一年在医院；住进养老院的在养老院；大学在宿舍；
   // 其他按地方：农村院子、地级市和县城的老小区、省会和大城市的楼；在大城市、省会租房的年轻人和随迁的孩子住城中村
   const ill = L.flags.ill, hosp = !!(ill && ill.treat && ill.treat !== 'none' && a - ill.at <= 0);
@@ -63,7 +65,8 @@ export function viewOf(L: Life): View {
     // 医院：你穿着病号服，家里人来看你
     const pt = f.partner, adultKid = f.kids.find(k => k.alive && k.age >= 18);
     if (pt && pt.alive && f.married) people.push({ role: 'partner', sex: pt.sex, age: pt.age });
-    else if (!L.indep && f.mom.alive) people.push({ role: 'mom', sex: 'F', age: f.mom.age });
+    else if (!L.indep && f.mom.alive && gone !== 'mom') people.push({ role: 'mom', sex: 'F', age: f.mom.age });
+    else if (!L.indep && f.dad.alive && gone === 'mom') people.push({ role: 'dad', sex: 'M', age: f.dad.age });
     people.push({ ...meR, gown: true, ill: true });
     if (adultKid) people.push({ role: 'kid', sex: adultKid.sex, age: adultKid.age });
   } else if (home === 'nursing') {
@@ -93,8 +96,8 @@ export function viewOf(L: Life): View {
     if (momOut) awayWho.push('mom');
     // 爸妈都出去了、家里又没有同住的祖父母：带你的那个人（flags.carer，比如外婆）在家
     if (momOut && dadOut && !people.length) { const c = L.flags.carer || '奶奶'; people.push({ role: /爷|公/.test(c) ? 'grandpa' : 'grandma', sex: /爷|公/.test(c) ? 'M' : 'F', age: gpAge }); }
-    if (f.dad.alive && !dadOut) people.push({ role: 'dad', sex: 'M', age: f.dad.age, job: f.dad.jk, ill: f.dad.ill === 1 });
-    if (f.mom.alive && !momOut) people.push({ role: 'mom', sex: 'F', age: f.mom.age, job: f.mom.jk, ill: f.mom.ill === 1 });
+    if (f.dad.alive && !dadOut && gone !== 'dad') people.push({ role: 'dad', sex: 'M', age: f.dad.age, job: f.dad.jk, ill: f.dad.ill === 1 });
+    if (f.mom.alive && !momOut && gone !== 'mom') people.push({ role: 'mom', sex: 'F', age: f.mom.age, job: f.mom.jk, ill: f.mom.ill === 1 });
     people.push(meR);
     for (const sb of f.sibs) if (sb.age < 22 && !sb.married) people.push({ role: 'sib', sex: sb.sex, age: sb.age });
   } else {

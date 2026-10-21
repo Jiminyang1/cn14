@@ -14,7 +14,7 @@ import { S } from '../state';
 import { vary } from '../journal';
 import { crisisLine, loveOf, soon } from '../romance';
 import { awayFromHome, farFromParents, placeInc } from '../place';
-import { anyParent, bothParents, carer, parentsWord } from '../parents';
+import { anyParent, bothParents, carer, childSupport, divorceSplit, parentsWord } from '../parents';
 import { chance, clamp, gauss, pick, ri, wpick } from '../rng';
 import { fexp } from '../fmath';
 import { eff } from '../stats';
@@ -138,15 +138,18 @@ function parDivRisk() {
 function parentsDivorce() {
   const F = S.flags;
   F.parDiv = 1; F.parDivM = nowM(); eff({ h: -10 });
-  if (F.lb === 'one' && (F.lbWho === 'dad' || F.lbWho === 'mom')) {
-    const out = F.lbWho, w = out === 'dad' ? 'mom' : 'dad';
-    F.parDivWith = w;
-    if (S.age < 16) { F.lb = undefined; F.lbWho = undefined; }
-    return { t: `爸妈离婚了。在外打工的${PW[out]}很少再回来，你跟着${PW[w]}生活。`, k: 'bad' };
-  }
-  const w = chance(0.65) ? 'mom' : 'dad';
+  const lbOne = F.lb === 'one' && (F.lbWho === 'dad' || F.lbWho === 'mom'), out = lbOne ? F.lbWho as 'dad' | 'mom' : null;
+  const w = out ? (out === 'dad' ? 'mom' : 'dad') : chance(0.65) ? 'mom' : 'dad', o = w === 'mom' ? 'dad' : 'mom';
   F.parDivWith = w;
-  return { t: F.lb === 'both' ? `爸妈离婚了。你判给了${PW[w]}，还是跟着${F.carer}在老家生活。` : `爸妈离婚了。你跟着${PW[w]}生活。`, k: 'bad' };
+  if (out && S.age < 16) { F.lb = undefined; F.lbWho = undefined; }
+  // 分家以后的日子（parents.ts 的 divorceSplit、childSupport）：家里只剩跟着的那一位，另一位按月给抚养费
+  const went = divorceSplit(), sup = childSupport(), p = went && S.fam[went];
+  const after = (p ? `${PW[went]}不再在家带孩子，${p.jk === 'migrant' ? '出去打工了' : p.jk === 'farmer' ? '下地干活了' : '出去做了' + p.job}。` : '')
+    + (sup > 0 ? `${PW[o]}每个月给${wan(sup / 12)}抚养费。` : '');
+  const t = out ? `爸妈离婚了。在外打工的${PW[out]}很少再回来，你跟着${PW[w]}生活。`
+    : F.lb === 'both' ? `爸妈离婚了。你判给了${PW[w]}，还是跟着${F.carer}在老家生活。`
+    : `爸妈离婚了。${PW[o]}搬了出去，你跟着${PW[w]}生活。`;
+  return { t: t + after, k: 'bad' };
 }
 
 export const EVENTS = [

@@ -12,6 +12,7 @@ import { chance, gauss, pick, ri, rnd, wpick } from './rng';
 import { cityLoc, hpCounty, migrantCity, placeHp, placeName, wageBase } from './place';
 import { rural } from './content/events';
 import { netOf, parentDed, type DedRow, type NetPay } from './tax';
+import { supportOf } from './family';
 
 declare module './types' {
   interface Life { famPCParts?: [number, number, number] } // 出生时算家境用的：父亲到手、母亲到手、同住老人的收入（界面显示用）
@@ -93,8 +94,36 @@ export function famWealthInit() {
   S.famDebtYears = !debt ? 0 : S.famDebtWhy === '房贷' ? ri(10, 25) : Math.min(99, Math.ceil(debt / Math.max(1, (parentIncome('mom') + parentIncome('dad')) * FAM_REPAY[S.rural ? 'rural' : 'urban'][q])));
 }
 export const FAM_HOUSE_N = { self: '农村自建房', own: '自有住房', rent: '租房住', gone: '已由子女继承' };
-// 父母家庭当下的人均可支配收入：父母的工资或养老金合计 ÷ 家里还靠他们生活的人数
-export const parentsPerCap = () => { const f = S.fam, n = (f.mom.alive ? 1 : 0) + (f.dad.alive ? 1 : 0) + (S.indep === false ? 1 + f.sibs.filter(x => x.alive && x.age < 18).length : 0); return n ? (parentIncome('mom') + parentIncome('dad')) / n : 0; };
+// ===== 父母离婚以后的「家里」 =====
+// 你跟着的那一位（events.ts 的 parentsDivorce 记下；Ta 去世后 family.ts 的 parentGone 换成另一位）；没离婚是 null
+export const custodian = (): 'mom' | 'dad' | null => S.flags.parDiv && S.flags.parDivWith ? S.flags.parDivWith : null;
+/** 「家里」算哪几位父母：没离婚是两位；离婚以后只算你跟着的那一位，另一位另过、只给抚养费 */
+export const homeParents = (): ('mom' | 'dad')[] => { const w = custodian(); return w ? [w] : ['mom', 'dad']; };
+/** 不跟你过的那一位每年给的抚养费：未满 18 岁的孩子（你和弟弟妹妹都跟着同一位）每人按 Ta 到手收入的两成（family.ts 的 supportOf） */
+export function childSupport() {
+  const w = custodian(); if (!w) return 0;
+  const o = w === 'mom' ? 'dad' : 'mom';
+  if (!S.fam[o].alive) return 0;
+  const n = (S.age < 18 ? 1 : 0) + S.fam.sibs.filter(s => s.alive && s.age < 18).length;
+  return supportOf(parentIncome(o) / 12, n) * 12;
+}
+/** 家里一年的收入（到手）：父母的工资或养老金；离婚以后是你跟着的那一位的，加上另一位给的抚养费 */
+export const homeIncome = () => homeParents().reduce((t, w) => t + parentIncome(w), 0) + childSupport();
+/** 父母离婚分家：存款和欠款一人一半，房贷跟着房子；房子留给带孩子的一方（估计，法院多这样判）；原来全职在家的出去找工作。返回出去工作的那一位 */
+export function divorceSplit(): 'mom' | 'dad' | null {
+  if (S.famMoney > 0) S.famMoney /= 2;
+  if (S.famDebt > 0 && S.famDebtWhy !== '房贷') S.famDebt /= 2;
+  let went: 'mom' | 'dad' | null = null;
+  for (const w of ['mom', 'dad'] as const) {
+    const p = S.fam[w];
+    if (!p.alive || p.jk !== 'home' || parentRetired(p, w === 'dad')) continue;
+    let jk; do jk = pickParentJob(p.edu, S.rural, w === 'mom'); while (jk === 'home');
+    setParentJob(p, jk); went = w;
+  }
+  return went;
+}
+// 父母家庭当下的人均可支配收入：家里的收入 ÷ 家里还靠这份收入生活的人数
+export const parentsPerCap = () => { const f = S.fam, n = homeParents().filter(w => f[w].alive).length + (S.indep === false ? 1 + f.sibs.filter(x => x.alive && x.age < 18).length : 0); return n ? homeIncome() / n : 0; };
 // 出生时的家庭人均可支配收入：由父母收入算出（familyIncomeInit）
 export const famIncome = () => S.famPC != null ? S.famPC : QUINT[S.rural ? "rural" : "urban"][S.q - 1];
 // 父母能帮多少：家里实际攒下的钱，最多拿出六成

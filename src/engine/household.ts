@@ -5,7 +5,7 @@ import { LOAN_RULES, annualPay } from './housing';
 import { MONTHS, monthOfCal } from './monthly';
 import { S } from './state';
 import { log, noteMoney } from './journal';
-import { parentIncome, parentRetired } from './parents';
+import { homeIncome, homeParents, parentRetired } from './parents';
 import { placeCons, placeHp, placeInc, placeLive } from './place';
 import { wan } from './format';
 import { sibsAlive } from './family';
@@ -41,15 +41,17 @@ const SAVE_INT_M = fpow(1.015, 1 / MONTHS), DEBT_INT_M = fpow(1.02, 1 / MONTHS);
 export function familyMoneyMonth(m: number) {
   const f = S.fam, mom = f.mom.alive, dad = f.dad.alive;
   if (!mom && !dad) { inherit(); orphanMonth(m); return; }
-  // 收入：在职按职业分摊的工资，退休后是养老金（parentIncome 对已去世的人是 0）
-  const inc = (parentIncome('mom') + parentIncome('dad')) / MONTHS;
-  const working = (mom && !parentRetired(f.mom, false)) || (dad && !parentRetired(f.dad, true));
+  // 收入：在职按职业分摊的工资，退休后是养老金（parentIncome 对已去世的人是 0）。
+  // 父母离婚以后，家里只算你跟着的那一位（加上另一位给的抚养费），人数、生病的开销也只算 Ta（parents.ts 的 homeParents）
+  const who = homeParents().filter(w => f[w].alive);
+  const inc = homeIncome() / MONTHS;
+  const working = who.some(w => !parentRetired(f[w], w === 'dad'));
   const mortgage = S.famDebtWhy === '房贷';
-  const ill = (mom && f.mom.ill ? 1 : 0) + (dad && f.dad.ill ? 1 : 0);
+  const ill = who.filter(w => f[w].ill).length;
   const children = f.sibs.filter(child => child.alive && child.age < 18).map(child => child.age);
   if (S.indep === false && S.age < 18) children.push(S.age);
   // 生活开销（budget.ts，和你自己同一套）：收入每年你过生日那个月看一次
-  const cons = placeCons(S.home), live = placeLive(S.home), size = familySize(Number(mom) + Number(dad), children);
+  const cons = placeCons(S.home), live = placeLive(S.home), size = familySize(who.length, children);
   if (S.parentQ == null || m === 0) S.parentQ = incUnits(inc, S.famMoney, placeInc(S.home), S.parentQ);
   const full = livingCost(S.parentQ, live, size), basic = floorCost(live, size);
   const rent = S.famHouse?.type === 'rent' ? placeHp(S.home) * 45 * 0.018 * 0.6 / MONTHS : 0;
