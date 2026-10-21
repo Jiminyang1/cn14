@@ -9,7 +9,7 @@ import { homeIncome, homeParents, parentRetired } from './parents';
 import { placeCons, placeHp, placeInc, placeLive } from './place';
 import { wan } from './format';
 import { sibsAlive } from './family';
-import { familySize, floorCost, incUnits, livingCost, poorStep, tierOf } from './budget';
+import { familySize, floorCost, incUnits, liveX, livingCost, poorStep, tierOf } from './budget';
 import { changeMoney } from './accounts';
 import { nowM } from './calendar';
 
@@ -18,6 +18,7 @@ declare module './types' {
     famDebtM?: number;  // 父母的房贷还剩几个月（famDebtMonth）
     parentQ?: number;   // 父母家这一年的收入相当于当地几个人的（budget.ts 的 incUnits）
     famPoorM?: number;  // 父母家拮据的月份（budget.ts 的 poorStep）
+    parLiveX?: number;  // 父母家这个月每人花的钱是当地的几倍（budget.ts 的 liveX）
     stuDebt?: number;   // 助学贷款余额：只有学费、生活费的缺口，按每年的上限借；经济独立时转到你自己名下（finance.ts 的 goIndep）
   }
   interface Flags { supportA?: number }     // 上一次贴补父母生活费是几岁那年（supportY 每年只记一次）
@@ -63,6 +64,7 @@ export function familyMoneyMonth(m: number) {
   const extra = Math.min(full - basic, Math.max(0, S.famMoney - essential));
   S.famMoney -= extra;
   S.parentTier = tierOf(basic + extra, live, size);
+  S.parLiveX = liveX(basic + extra, live, size);
   S.famPoorM = poorStep(S.famPoorM, S.parentTier);
   // 父母都不上班以后，存款花光了，由已经工作的子女补贴生活费（还在世的兄弟姐妹一起分摊）；父母还在上班时，欠款由他们自己慢慢还
   // supportY 记的是贴补了几年（每个年龄年记一次）

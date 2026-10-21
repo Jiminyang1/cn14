@@ -8,7 +8,7 @@ import { MONTHS, approachPerMonth } from './monthly';
 import { pz } from './personality';
 import { focusH } from './focus';
 import { changeMoney, liquidBalance } from './accounts';
-import { POOR_HURT, POOR_LONG, TIERS } from './budget';
+import { LIVE_MID, POOR_HURT, POOR_LONG, TIERS, liveFx } from './budget';
 
 export function eff(o) {
   for (const k in o) {
@@ -33,22 +33,24 @@ const H_BASE = 47, H_FOCUS = 1.5, H_JOB = 2, H_KID = 8;
 // ===== 目标值 =====
 // 拆成三个函数，月底结算（drift）和界面上的「状态」（status.ts）都从这里取；status.ts 把同样的式子拆成一项一项（tests/status.test.ts 核对加起来一样）
 const kidsN = () => { let n = 0; for (const k of S.fam.kids) if (k.alive) n++; return n; };
-// 过的什么日子（budget.ts 的档位）：经济独立以前看父母家，以后看自己的小家。长期拮据的，幸福再低 3、健康再低 2
+// 过的什么日子：经济独立以前看父母家，以后看自己的小家。档位是说法；增减益（budget.ts 的 liveFx）按实际花的钱连续变化，花得越多越好、越省越差。
+// 长期拮据的，幸福再低 3、健康再低 2
+export const liveNow = () => liveFx((S.indep !== false ? S.liveX : S.parLiveX) ?? LIVE_MID);
 export const tierNow = () => TIERS[(S.indep !== false ? S.statement?.tier : S.parentTier) ?? 1] || TIERS[1];
 export const poorLongNow = () => ((S.indep !== false ? S.poorM : S.famPoorM) || 0) >= POOR_LONG ? 1 : 0;
 /** 健康的目标值 */
 export function hlTarget() {
-  const a = S.age, T = tierNow(), poorLong = poorLongNow();
+  const a = S.age, L = liveNow(), poorLong = poorLongNow();
   // 中风留下残疾（content/decisions.ts 的治疗抉择里设 flags.disabled）：健康的目标值一直低 10（估计；残疾后的死亡风险经 deathProb 的健康倍数升高），幸福低 4
   const dis = S.flags.disabled ? 1 : 0;
   const hardship = S.statement && S.statement.shortfall > 0 ? 3 : 0;
-  return hlExp(a) + (S.q - 3) * 1.5 + T.hl - poorLong * 2 + (liquidBalance() < 0 && a >= 22 ? -3 : 0) + (S.flags.smoke ? -6 : 0) + (S.flags.ill ? -20 : 0) - dis * 10 - hardship + 0.8 * pz('c');
+  return hlExp(a) + (S.q - 3) * 1.5 + L.hl - poorLong * 2 + (liquidBalance() < 0 && a >= 22 ? -3 : 0) + (S.flags.smoke ? -6 : 0) + (S.flags.ill ? -20 : 0) - dis * 10 - hardship + 0.8 * pz('c');
 }
 /** 幸福的目标值 */
 export function hTarget() {
-  const st = S.st, f = S.fam, a = S.age, T = tierNow(), poorLong = poorLongNow(), dis = S.flags.disabled ? 1 : 0;
+  const st = S.st, f = S.fam, a = S.age, L = liveNow(), poorLong = poorLongNow(), dis = S.flags.disabled ? 1 : 0;
   // 成年以后还要和当地人比收入（relInc），比日子的档位轻一些
-  const rel = T.h - poorLong * 3 + (a < 18 ? 0 : (S.relInc || 0) * 0.4);
+  const rel = L.h - poorLong * 3 + (a < 18 ? 0 : (S.relInc || 0) * 0.4);
   const debt = a >= 22 && liquidBalance() < -placeInc() ? 7 : 0;
   // 成年以后和爸妈亲不亲（actions.ts 的亲疏，常回家看看就亲）：最亲 +3，很疏远 −5
   const par = a >= 18 && (f.mom.alive || f.dad.alive) ? ((S.close?.par ?? 70) - 60) * 0.08 : 0;
@@ -59,7 +61,7 @@ export function hTarget() {
 /** 人际的目标值 */
 export function soTarget() {
   const f = S.fam, a = S.age;
-  return 50 + (f.married ? 8 : 0) + Math.min(9, kidsN() * 3) + (S.flags.lb && a < 16 ? -4 : 0) + (a > 75 ? -6 : 0) + persSo();
+  return 50 + liveNow().so + (f.married ? 8 : 0) + Math.min(9, kidsN() * 3) + (S.flags.lb && a < 16 ? -4 : 0) + (a > 75 ? -6 : 0) + persSo();
 }
 export { persH, persSo, H_BASE, H_FOCUS, H_JOB, H_KID, K_HL, K_H, K_SO };
 

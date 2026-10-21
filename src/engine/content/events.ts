@@ -30,6 +30,7 @@ import { reimburse } from '../health';
 import { ECHO_EVENTS, meetCrush, meetPal } from './echoes';
 import { slotW } from '../focus';
 import { planOf } from '../plans';
+import { LIVE_MID, liveFx } from '../budget';
 
 declare module '../types' {
   interface Flags { parDivWith?: 'mom' | 'dad' } // 父母离婚后你跟着谁生活（判给谁）
@@ -120,7 +121,8 @@ export function divorceRisk() {
   // 幸福：已婚的人平常在 75 上下（stats.ts 的 drift），过得不开心的更容易散
   const q = fexp(-2.6 * (p.fit - 0.55) - 0.018 * ((p.love ?? 63) - 63) - 0.03 * (S.st.h - 62));
   // 格子放在「家人」上的，婚姻更稳：一格风险降三成，两格都放降近一半
-  return DIV_BASE * DIV_DUR(S.age - p.marriedAt) * q * (1 - 0.3 * Math.min(1.6, slotW('family'))) * (S.age >= 60 ? DIV_OLD : 1) * (PBY[S.loc.p].divK || 1) * tiltW(DIV_T) * tiltW(DIV_T, p.pz || null);
+  // 日子过得紧的更容易为钱吵架，过得宽裕的少一些（budget.ts 的 liveFx）
+  return DIV_BASE * DIV_DUR(S.age - p.marriedAt) * q * liveFx(S.liveX ?? LIVE_MID).div * (1 - 0.3 * Math.min(1.6, slotW('family'))) * (S.age >= 60 ? DIV_OLD : 1) * (PBY[S.loc.p].divK || 1) * tiltW(DIV_T) * tiltW(DIV_T, p.pz || null);
 }
 // 父母离婚：同一条婚龄曲线（婚龄按你的年龄 + 2 估计，上面有哥哥姐姐的按最大的那个算），不看婚姻质量（没有记），按老家的省份系数。
 // 只在你 1–17 岁时判定（之后的不影响「跟着谁生活」）。家里有不满一岁的弟弟妹妹时不离（民法典第 1082 条）
@@ -323,13 +325,24 @@ export const EVENTS = [
     ]);
     return { t: t + (four ? '你也是独生子女。四个老人，就你们两个。' : ''), k: 'bad' };
   } },
+  // 回响：孩子结婚那年你帮了多少（kin.ts 的 KID_HELP），老了以后回来。帮得多的那个孩子更常来、生病时守着你；一分没帮的那个，心里一直有个疙瘩
+  { id: 'kidHelpBack', a: [66, 88], once: 1, w: 3, c: () => kidsAlive().some(k => k.married && k.help && Math.abs(k.help) >= 6), run: () => {
+    const k = kidsAlive().filter(x => x.married && x.help && Math.abs(x.help) >= 6).sort((x, y) => Math.abs(y.help) - Math.abs(x.help))[0];
+    const ta = k.sex === 'M' ? '他' : '她';
+    if (k.help > 0) {
+      eff({ h: 3 });
+      return { t: vary('kidHelpGood', [`你住院那几天，${k.name}请了假，在病床边守了两个星期。护士说你家孩子真孝顺。当年那套婚房的首付，${ta}一直记着。`, `${k.name}把你接过去住了一个冬天。孙辈的房间腾给了你，${ta}说：「这房子当年也有你们的一份。」`]), k: 'good' };
+    }
+    eff({ h: -3 });
+    return { t: vary('kidHelpSore', [`${k.name}很少回来，逢年过节打个电话，说两句就挂了。有一回喝多了，${ta}说起结婚那年，家里一分钱没帮上。`, `你生病住院，${k.name}来看了一次，坐了半个小时就走了。你想起${ta}结婚那年，你说的那句「房子你们自己想办法」。`]), k: 'bad' };
+  } },
   { id: 'famParents', a: [28, 65], gap: 3, w: 0.5, c: () => bothParents() && !S.flags.parDiv, run: () => { eff({ h: 2, so: 1 }); return vary('famParents', ['带爸妈去做了一次全面体检，排了一上午的队。爸爸一直说「花这个钱干什么」。', '周末陪妈妈去逛菜市场，她跟每个摊主都介绍「这是我孩子」。', '给爸妈换了一台大电视，遥控器教了三遍。']); } },
   { id: 'famHome', a: [24, 85], gap: 3, w: 0.4, c: () => S.fam.married && !!S.fam.partner && S.fam.partner.alive, run: () => { eff({ h: 3 }); S.fam.partner.love = clamp((S.fam.partner.love ?? 63) + 3, 0, 100); return vary('famHome', ['一家人难得在家吃了一顿晚饭，谁都没看手机。', `结婚纪念日，你和${S.fam.partner.name}回到了第一次约会的那家店。店还在，老板换了。`, `周末和${S.fam.partner.name}把家里大扫除了一遍，翻出了结婚时的照片，看了一下午。`]); } },
   { id: 'halfMara', a: [20, 60], once: 1, w: 0.3, run: () => { eff({ hl: 2, h: 4 }); return { t: '跑完了人生第一个半程马拉松。到终点的时候，腿已经不是自己的了。', k: 'good' }; } },
   // 健身：只在健身计划开着时发生（plans/health.ts）
   { id: 'keepFit', a: [18, 75], gap: 4, w: 0.4, c: () => planOf('gym') === 'gym', run: () => { eff({ hl: 2, h: 1 }); return vary('keepFit', ['办的健身卡，这次居然坚持了一整年。', '每天晚饭后绕着小区走一万步，保安都认识你了。', '体检的时候，几项指标都比去年好了。']); } },
-  { id: 'hobbyDeep', a: [16, 85], gap: 5, w: 0.4, run: () => { eff({ h: 3 }); return vary('hobbyDeep', ['周末都泡在自己的爱好上，家里堆满了相关的东西。', '在网上找到了一群同好，约好每个月见一次面。', '花了半年做成的一件东西发到网上，有几百个人点了赞。']); } },
-  { id: 'friendsNight', a: [16, 80], gap: 4, w: 0.4, run: () => { eff({ so: 2, h: 2, hl: -1 }); return vary('friendsNight', ['和几个朋友吃火锅吃到半夜，聊的都是十年前的事。', '朋友失恋了，你陪着喝到凌晨三点。', '几个朋友组了个周末爬山的群，坚持了两个月就散了。']); } },
+  { id: 'hobbyDeep', a: [16, 85], gap: 5, w: 0.4, run: () => { eff({ h: 3 }); return vary('hobbyDeep', ['周末都泡在自己的爱好上，家里堆满了相关的东西。', '在网上找到了一群同好，约好每个月见一次面。', '花了半年做成的一件东西发到网上，有几百个人点了赞。', '跟着网上的视频学了半年，终于做出了一个像样的东西，拍了照片发给每一个朋友。', '为了爱好专门腾出一个房间，家里人说那是你的「基地」。']); } },
+  { id: 'friendsNight', a: [16, 80], gap: 4, w: 0.4, run: () => { eff({ so: 2, h: 2, hl: -1 }); return vary('friendsNight', ['和几个朋友吃火锅吃到半夜，聊的都是十年前的事。', '朋友失恋了，你陪着喝到凌晨三点。', '几个朋友组了个周末爬山的群，坚持了两个月就散了。', '老朋友搬去了外地，走之前一伙人在烧烤摊坐到天亮。', '朋友的孩子满月，一桌人里只有你还记得他当年追女孩的糗事。']); } },
   // ---------- 少见的大事：一辈子碰上的人不多，碰上了就是人生大事（权重是估计，一生里各约百分之一到几） ----------
   { id: 'lottery', big: 1, a: [25, 75], once: 1, w: 0.02, run: () => { const x = Math.round(placeInc() * ri(3, 8) / 1e3) * 1e3; eff({ money: x, h: 8 }); return { t: `随手买的彩票中了二等奖，税后到手${wan(x)}。你把彩票复印了一份，原件锁进了抽屉，好几天没睡好觉。`, k: 'good' }; } },
   { id: 'hero', big: 1, a: [16, 65], once: 1, mo: [6, 7, 8], w: 0.04, run: () => { eff({ so: 8, h: 6, hl: -2 }); return { t: `在河边跳下去，救起了一个落水的孩子。本地新闻播了你的名字，${isWorking() ? '单位给你发了一面锦旗' : '居委会给你送了一面锦旗'}。孩子的家长每年过年都来看你。`, k: 'good' }; } },

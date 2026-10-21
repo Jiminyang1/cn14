@@ -4,7 +4,7 @@
 import { useEffect, useState, useSyncExternalStore } from 'react';
 import {
   ACTS, FOCUS, PLANS, Q_WORD, S, TIERS, actState, actsShown, anyParent, closeWord, focusList, focusMore, kidClose, kidsAlive, liquidBalance,
-  monthlyPay, myLiving, parClose, partnerPay, planOf, planOpt, plansShown, slotN, slotW, wan, type MonthlyStatement,
+  monthlyPay, myLiving, parClose, partnerPay, planOf, planOpt, plansShown, slotN, slotW, styleFx, wan, type MonthlyStatement,
 } from '../engine';
 import { game } from '../game/controller';
 import { famLine } from './Sidebar';
@@ -122,7 +122,7 @@ function PlanPage({ pm }: { pm: ReturnType<typeof perMonth> }) {
       <span className="yr-rk">{P.n === '生活方式' ? '过日子' : P.n === '定期体检' ? '体检' : P.n === '理财' ? '钱放在' : P.n}</span>
       <div className="yr-seg" role="radiogroup" aria-label={P.n}>
         {P.opts.map(o => {
-          const m = k === 'style' ? myLiving(o.k).cost : o.monthly?.() || 0, a = arrows(o.e);
+          const m = k === 'style' ? myLiving(o.k).cost : o.monthly?.() || 0, a = arrows(k === 'style' ? styleFx(o.k) : o.e);
           return <button key={o.k} type="button" role="radio" aria-checked={cur === o.k} className={cur === o.k ? 'on' : ''} title={o.sub?.()}
             onClick={() => { if (cur !== o.k) game.plan(k, o.k); }}>
             {o.label.replace(/^办张健身卡，?常去$/, '办卡常去').replace(/^每年全面/, '每年')}{(m > 0 || a) && <i>{[m > 0 && yuan(m), a].filter(Boolean).join(' · ')}</i>}

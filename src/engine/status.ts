@@ -9,7 +9,7 @@ import { liquidBalance } from './accounts';
 import { placeInc } from './place';
 import { pz } from './personality';
 import { POOR_HURT, TIERS } from './budget';
-import { H_BASE, H_FOCUS, H_JOB, H_KID, K_H, K_HL, K_SO, hTarget, hlExp, hlTarget, persH, persSo, poorLongNow, soTarget, tierNow } from './stats';
+import { H_BASE, H_FOCUS, H_JOB, H_KID, K_H, K_HL, K_SO, hTarget, hlExp, hlTarget, liveNow, persH, persSo, poorLongNow, soTarget, tierNow } from './stats';
 import { CAUSE } from './mortality';
 import { Q_WORD } from './story';
 import { closeWord } from './actions';
@@ -23,7 +23,7 @@ export interface Eff { k: string; n: string; t: Fx; y: Fx; act?: string; base?: 
 
 /** 目标值拆成一项一项（含底子，加起来就是 hlTarget / hTarget / soTarget） */
 export function targetTerms(): Record<'hl' | 'h' | 'so', { k: string; n: string; v: number; act?: string; base?: boolean }[]> {
-  const st = S.st, f = S.fam, a = S.age, T = tierNow(), poorLong = poorLongNow();
+  const st = S.st, f = S.fam, a = S.age, T = tierNow(), L = liveNow(), poorLong = poorLongNow();
   let kids = 0; for (const k of f.kids) if (k.alive) kids++;
   const dis = S.flags.disabled ? 1 : 0, married = !!(f.married && f.partner && f.partner.alive);
   const ill = S.flags.ill as { k?: string } | undefined;
@@ -32,7 +32,7 @@ export function targetTerms(): Record<'hl' | 'h' | 'so', { k: string; n: string;
     hl: [
       { k: 'age', n: '年纪', v: hlExp(a), base: true },
       { k: 'q', n: '出身 · ' + (Q_WORD[S.q] || ''), v: (S.q - 3) * 1.5 },
-      { k: 'tier', n: '日子' + T.n, v: T.hl },
+      { k: 'tier', n: '日子' + T.n, v: L.hl },
       { k: 'poor', n: '长期拮据', v: -poorLong * 2 },
       { k: 'neg', n: '欠着钱', v: liquidBalance() < 0 && a >= 22 ? -3 : 0 },
       { k: 'smoke', n: '抽烟', v: S.flags.smoke ? -6 : 0, act: 'quitSmoke' },
@@ -45,7 +45,7 @@ export function targetTerms(): Record<'hl' | 'h' | 'so', { k: string; n: string;
       { k: 'baseH', n: '底子', v: H_BASE, base: true },
       // 格子一格一项（加起来就是 H_FOCUS × focusH()）
       ...Object.keys(FOCUS).map(k => ({ k: 'slot:' + k, n: FOCUS[k].n, v: FOCUS[k].e.h && FOCUS[k].ok() ? H_FOCUS * FOCUS[k].e.h! * slotW(k) : 0 })),
-      { k: 'tier', n: '日子' + T.n, v: T.h },
+      { k: 'tier', n: '日子' + T.n, v: L.h },
       { k: 'poor', n: '长期拮据', v: -poorLong * 3 },
       { k: 'rel', n: (S.relInc || 0) >= 0 ? '挣得比当地多' : '挣得比当地少', v: a < 18 ? 0 : (S.relInc || 0) * 0.4 },
       { k: 'par', n: `和${parentsWord() || '爸妈'}${closeWord(S.close?.par ?? 70)}`, v: a >= 18 && (f.mom.alive || f.dad.alive) ? ((S.close?.par ?? 70) - 60) * 0.08 : 0, act: 'visit' },
@@ -63,6 +63,7 @@ export function targetTerms(): Record<'hl' | 'h' | 'so', { k: string; n: string;
     ],
     so: [
       { k: 'baseSo', n: '底子', v: 50, base: true },
+      { k: 'tier', n: '日子' + T.n, v: L.so },
       { k: 'married', n: '结了婚', v: f.married ? 8 : 0 },
       { k: 'kids', n: kids + ' 个孩子', v: Math.min(9, kids * 3) },
       { k: 'lb', n: '留守', v: S.flags.lb && a < 16 ? -4 : 0 },

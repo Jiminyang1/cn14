@@ -48,7 +48,7 @@ import { careFeeY, oldIncomeY, uiMonths } from '../finance';
 const CARE_YEARS = 9;
 import { borrowMoney, changeMoney, liquidBalance } from '../accounts';
 import { inKg } from '../schedule';
-import { DEMOL_K, demolDue, demolish, famPayBride, kidHomeCost, lendSib, marryKid, weddingKid } from '../kin';
+import { DEMOL_K, KID_HELP, demolDue, demolish, famPayBride, kidHomeCost, lendSib, marryKid, weddingKid } from '../kin';
 import { heirShares, inheritSplit } from '../household';
 import { KEEP, goHomeOld, jumpShip, lastJob, layOff, listDue, rehireText, severance, startRehire, startSnowbird } from '../turns';
 import { shape } from '../personality';
@@ -1388,16 +1388,18 @@ export const DEC = {
         ? `${kd.name}要结婚了。女方家里${br ? `提出彩礼${wan(c.bride)}，还希望` : '没要彩礼，只希望'}有一套婚房。${S.loc.city}一套90平米的房子约${wan(c.price)}，首付三成要${wan(c.down)}。${cash}。`
         : `${kd.name}要结婚了。男方家里准备买婚房，首付三成要${wan(c.down)}，还差一些。按老规矩，娘家要准备陪嫁。${cash}。`;
       const tooMuch = '存款加上一年的收入也不够';
+      // 选项下面写和孩子的亲疏往哪边走（kin.ts 的 KID_HELP）
+      const rem = ' · 亲疏↑', sore = ' · 亲疏↓';
       return {
         title: son ? '儿子的婚房' : '女儿的陪嫁', body,
         fact: '据贝壳研究院2021年对约40万名90后购房客户的调研，61.1%买房时靠父母出钱（全款或部分资助）',
         choices: son ? [
-          { k: 'all', label: br ? '出彩礼，首付也全包了' : '首付全包了', sub: off(c.bride + c.down) ? `一共${wan(c.bride + c.down)}，${tooMuch}` : `一共${wan(c.bride + c.down)}${lack(c.bride + c.down)}`, off: off(c.bride + c.down), w: 3 * fit(c.bride + c.down) },
-          { k: 'part', label: br ? '出彩礼和一半首付' : '出一半首付', sub: off(c.bride + c.down / 2) ? `一共${wan(c.bride + c.down / 2)}，${tooMuch}` : `一共${wan(c.bride + c.down / 2)}${lack(c.bride + c.down / 2)}`, off: off(c.bride + c.down / 2), w: 3 * fit(c.bride + c.down / 2) },
-          { k: 'none', label: br ? '只出彩礼，房子让他们自己想办法' : '房子让他们自己想办法', sub: br ? wan(c.bride) : '只出酒席钱', w: have < c.bride + c.down / 2 + c.feast ? 3 : 1 },
+          { k: 'all', label: br ? '出彩礼，首付也全包了' : '首付全包了', sub: (off(c.bride + c.down) ? `一共${wan(c.bride + c.down)}，${tooMuch}` : `一共${wan(c.bride + c.down)}${lack(c.bride + c.down)}`) + rem, off: off(c.bride + c.down), w: 3 * fit(c.bride + c.down) },
+          { k: 'part', label: br ? '出彩礼和一半首付' : '出一半首付', sub: (off(c.bride + c.down / 2) ? `一共${wan(c.bride + c.down / 2)}，${tooMuch}` : `一共${wan(c.bride + c.down / 2)}${lack(c.bride + c.down / 2)}`) + rem, off: off(c.bride + c.down / 2), w: 3 * fit(c.bride + c.down / 2) },
+          { k: 'none', label: br ? '只出彩礼，房子让他们自己想办法' : '房子让他们自己想办法', sub: (br ? wan(c.bride) : '只出酒席钱') + sore, w: have < c.bride + c.down / 2 + c.feast ? 3 : 1 },
         ] : [
-          { k: 'all', label: '陪嫁一辆车，再帮着出一半首付', sub: off(c.car + c.down / 2) ? `一共${wan(c.car + c.down / 2)}，${tooMuch}` : `一共${wan(c.car + c.down / 2)}${lack(c.car + c.down / 2)}`, off: off(c.car + c.down / 2), w: 2 * fit(c.car + c.down / 2) },
-          { k: 'part', label: '陪嫁一辆车', sub: off(c.car) ? `${wan(c.car)}，${tooMuch}` : wan(c.car) + lack(c.car), off: off(c.car), w: 3 * fit(c.car) },
+          { k: 'all', label: '陪嫁一辆车，再帮着出一半首付', sub: (off(c.car + c.down / 2) ? `一共${wan(c.car + c.down / 2)}，${tooMuch}` : `一共${wan(c.car + c.down / 2)}${lack(c.car + c.down / 2)}`) + rem, off: off(c.car + c.down / 2), w: 2 * fit(c.car + c.down / 2) },
+          { k: 'part', label: '陪嫁一辆车', sub: (off(c.car) ? `${wan(c.car)}，${tooMuch}` : wan(c.car) + lack(c.car)) + rem, off: off(c.car), w: 3 * fit(c.car) },
           { k: 'none', label: '彩礼原样带过去，算作陪嫁', sub: '不额外出钱', w: 1.5 },
         ],
         ctx: { ...c, son },
@@ -1406,7 +1408,7 @@ export const DEC = {
     apply: (k, c) => {
       const kd = weddingKid(); if (!kd) return null;
       const spend = c.feast + (c.son ? c.bride + (k === 'all' ? c.down : k === 'part' ? c.down / 2 : 0) : (k === 'all' ? c.car + c.down / 2 : k === 'part' ? c.car : 0));
-      marryKid(kd, spend);
+      marryKid(kd, spend, k === 'all' ? KID_HELP.all : k === 'part' ? KID_HELP.part : c.son ? KID_HELP.noneSon : KID_HELP.noneDau);
       eff({ h: k === 'none' ? (c.son ? -2 : 1) : 4 });
       const owe = `${c.son && c.bride >= 1000 ? '连彩礼、酒席在内' : '连酒席在内'}，一共花了约${wan(spend)}。` + (S.debt > 0 ? `目前还欠着${wan(S.debt)}。` : '');
       if (c.son) return { t: `${kd.name}结婚了。${k === 'none' ? '婚房没买成，小两口先租房住，亲家那边有些不高兴。' : `你出了${k === 'all' ? '全部' : '一半'}首付，婚房写的是他们的名字。`}${owe}`, k: 'good' };
