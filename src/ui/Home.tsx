@@ -1,8 +1,9 @@
-// 首页：人生档案的封面、此刻出生的婴儿落在哪里（附页）、已封存的档案（过过的人生）。
+// 首页：人生档案的封面、此刻出生的婴儿落在哪里（附页）、这一版更新了什么（changes.ts）、已封存的档案（过过的人生）。
 import { useEffect, useMemo, useState } from 'react';
 import { BIRTH_TOTAL, NATION, PROVS, TAG_N } from '../engine';
 import { game, hasSave } from '../game/controller';
 import { loadPast } from '../game/storage';
+import { CHANGES } from './changes';
 
 const T0 = performance.now();
 const YEAR_SEC = 31557600;
@@ -68,14 +69,20 @@ export function Home() {
       </div>
 
       <div className="home-low">
-        {past.length > 0 ? (
+        <div className="home-left">
+        <section className="pg changes">
+          <div className="sec"><span className="no">新</span><h3>更新</h3><small>Beta {CHANGES[0].v} · {CHANGES[0].d}</small></div>
+          <ul>{CHANGES[0].items.map((t, i) => <li key={i}>{t}</li>)}</ul>
+        </section>
+        {past.length > 0 && (
           <section className="pg past">
             <div className="sec"><span className="no">档</span><h3>已封存的档案</h3><small>你过过的人生 · 见过 {new Set(past.flatMap(p => p.tags || [])).size} / {TAG_N} 种人生标签</small></div>
             {past.slice(0, 12).map((p, i) => (
               <div key={i} className="toc"><span className="tt">{p.name}</span><span className="muted small">{p.place}</span><span className="lead" /><span className="d">{p.y0} – {p.y1}</span><span className="age">享年{p.age}岁</span><span className="muted small">{p.line || p.cause}</span></div>
             ))}
           </section>
-        ) : <div />}
+        )}
+        </div>
         <section className="notes3">
           <div><h4>材料目录</h4><p>出生、升学、毕业、工作、结婚、买房、退休……人生每过一道关口，档案里就多一份材料。</p></div>
           <div><h4>同批建档</h4><p>那一秒，中国还有其他婴儿出生。四个人的一生会按同样的统计走完，并排放在你旁边。</p></div>

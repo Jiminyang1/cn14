@@ -6,21 +6,19 @@ import { S } from '../state';
 import { TIERS, liveFx } from '../budget';
 import { definePlan } from '../plans';
 import { myLiving } from '../finance';
-import { wan } from '../format';
 
-// 和照常比，幸福、人际、健康往哪边走（budget.ts 的 liveFx），差得太少的不写
-const NAMES: [string, string][] = [['h', '幸福'], ['so', '人际'], ['hl', '健康']];
-function arrows(k: string) {
-  if (k === 'normal') return '';
-  const a = liveFx(myLiving(k).x), b = liveFx(myLiving('normal').x);
-  return NAMES.map(([s, n]) => { const d = a[s] - b[s]; return Math.abs(d) < 0.5 ? '' : n + (d > 0 ? '↑' : '↓'); }).filter(Boolean).join(' ');
+/** 和照常比，幸福、人际、健康差多少（budget.ts 的 liveFx）；差得太少的不算。计划页上画成箭头 */
+export function styleFx(k: string): Record<string, number> {
+  if (k === 'normal') return {};
+  const a = liveFx(myLiving(k).x), b = liveFx(myLiving('normal').x), out: Record<string, number> = {};
+  for (const s of ['h', 'so', 'hl'] as const) { const d = a[s] - b[s]; if (Math.abs(d) >= 0.5) out[s] = d; }
+  return out;
 }
-/** 按生活方式 k 过：每月约多少、算哪一档、和照常比好在哪差在哪 */
-const sub = (k: string) => () => { const v = myLiving(k), e = arrows(k) || (k === 'more' ? '再多花也好不了多少' : ''); return `每月约${wan(v.cost)} · ${TIERS[v.tier].n}${e ? ' · ' + e : ''}`; };
+const sub = (k: string) => () => TIERS[myLiving(k).tier].n;
 
 definePlan('style', {
   n: '生活方式', g: 'life',
-  d: () => `日常开销，房租房贷另算。照现在的收入和家里几口人，照常过是「${TIERS[myLiving('normal').tier].n}」的日子。花得多，人开心、身体好、少为钱吵架；省下的钱，是拿这些换的，长期拮据伤身体`,
+  d: () => `日常开销，照常是「${TIERS[myLiving('normal').tier].n}」`,
   ok: () => !!S.indep && S.age >= 18,
   opts: [
     { k: 'save', label: '省着过', sub: sub('save') },

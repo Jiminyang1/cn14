@@ -1,9 +1,11 @@
 // 一生页面的各个栏目：一、基本情况（含家庭成员）；二、体检与鉴定；五、我的经济；
 // 右下角的分隔签（材料目录 / 同批建档 / 一生曲线）。结局页也用这里的证件和一生曲线。
+import { DocShelf } from './Docs';
+import { Head } from './Head';
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import {
   AX, AX_NAME, CAUSE, EDU_LV, FAM_HOUSE_N, JOBS, PBY, S, axWord, calMonth, calYear, leOf, partnerPay, partnerTrait, persWords, placeName, shownZ, statusLabel,
-  loanBal, loanArrears, loanPayY, loveWord, parentIncome, parentRetired, closeWord, parClose, kidClose, parentWorkLoc, awayFromHome, ptJobName, Q_WORD, wan, wanM, monthlyPay, inheritedValue, netWorth,
+  loanBal, loanArrears, loanPayY, loveWord, parentIncome, parentRetired, closeWord, parClose, kidClose, parentWorkLoc, awayFromHome, ptJobName, Q_WORD, wan, wanM, monthlyPay, inheritedValue, netWorth, anyParent, opinion, heading, ACTS, actState, forksOf, liveTags,
   type Companion, type Doc, type Partner,
 } from '../engine';
 import { ageK, game } from '../game/controller';
@@ -11,7 +13,9 @@ import { LiveScene } from './Photo';
 import { YearProgress } from './Progress';
 import { Ib } from './TipLayer';
 import { dots, sexW } from './util';
-import { LedgerButton, cashAmount, cashChange, monthlySpending, tierName } from './Finance';
+import { cashAmount, cashChange, tierName } from './Finance';
+import { openYear } from './Year';
+import { loadPast } from '../game/storage';
 
 const neg = (n: boolean) => n ? 'neg' : undefined;
 // 还没上小学：小学在满 6 岁以后的那个 9 月入学，6 岁生日到开学之间也还是学龄前
@@ -50,6 +54,15 @@ function nowWord() {
   const study = S.school ? '在读' + S.school : preschool() ? '学龄前' : EDU_LV[S.edu];
   return study + (status && !S.school && S.age >= 16 ? ' · ' + status.split(' · ')[0] : '');
 }
+const eduWord = () => S.school ? '在读' + S.school : preschool() ? '学龄前' : EDU_LV[S.edu];
+const jobWord = () => { if (S.school || !S.job) return '—'; return statusLabel().split(' · ')[0]; };
+function marryWord() {
+  const f = S.fam, p = f.partner;
+  if (f.married && p) return p.alive ? '已婚' : '丧偶'; // 孩子在人际关系里，这里只写婚姻
+  if (S.flags.divorced != null) return '离异';
+  if (f.dating) return '恋爱中';
+  return '未婚';
+}
 export function Basic() {
   const m = calMonth();
   return (
@@ -64,25 +77,13 @@ export function Basic() {
       <div className="f4">
         <span className="k">姓名</span><b className="serif">{S.name}</b><span className="k">性别</span><span>{sexW(S.sex)}</span>
         <span className="k">民族</span><span>{S.eth}</span><span className="k">户籍</span><span>{S.rural ? '农村' : '城镇'}</span>
-        <span className="k">现居</span><span className="wide">{placeName(S.loc)}</span>
-        <span className="k">现状</span><span className="wide">{nowWord()}</span>
-      </div>
-      <YearProgress className="yprog" title="这一岁过了多少" />
-      <div className="yline"><span>{calYear()}年{m}月 · {SEASON(m)}</span><span className="mono">1年≈{Math.round(game.yearSec / ageK(S.age))}秒</span></div>
-      <div className="fam-sub">
-        <div className="sub-h">家庭成员<small>{famMeta()}</small></div>
-        <FamilyRows />
+        <span className="k">学历</span><span>{eduWord()}</span><span className="k">职业</span><span>{jobWord()}</span>
+        {S.age >= 18 && <><span className="k">婚姻</span><span>{marryWord()}</span></>}
+        <span className="k">现居</span><span className={S.age >= 18 ? undefined : 'wide'}>{placeName(S.loc)}</span>
       </div>
       <div className="seal">在 档</div>
     </Sec>
   );
-}
-
-function famMeta() {
-  const F = S.flags;
-  if (F.lb === 'both' && S.age < 16) return `父母在外打工 · ${F.carer}照看`;
-  if (S.fam.married) return '已成家';
-  return F.parDiv ? '父母已离婚' : '';
 }
 
 // 家庭成员只写人：谁、多大、做什么、在哪里、关系怎样。钱的事都在「我的经济」里
@@ -93,45 +94,120 @@ function parentWhere(p, ret: boolean) {
   if (!awayFromHome()) return S.indep ? '和你在同一座城市' : '和你住在一起';
   return '在' + placeName(S.home);
 }
-function ParentRow({ who, label }: { who: 'mom' | 'dad'; label: string }) {
-  const p = S.fam[who], male = who === 'dad';
-  if (!p.alive) return <Row k={label} v={'已去世 · 享年' + p.age + '岁'} cls="gone" />;
-  const ret = parentRetired(p, male);
-  return <Row k={label} v={<>{p.age}岁 · {ret ? '退休了' : p.job}<small>{parentWhere(p, ret)}{S.age >= 18 && S.indep ? ' · ' + closeWord(parClose()) : ''}</small></>} />;
-}
 // 发小在哪：各奔东西（echoes.ts 的 palApart）以前是你的同学，之后才看得出去了哪里
 const palWhere = (p: NonNullable<NonNullable<typeof S.ppl>['pal']>) => S.done.palApart == null ? (S.age < 19 ? '你的同学' : '在' + S.home.city) : p.fate === 'abroad' ? '在国外' : p.city ? '在' + p.city : '在老家';
 const CLOSE = (c: number) => c >= 65 ? '无话不谈' : c >= 45 ? '常联系' : c >= 25 ? '偶尔联系' : '很少联系';
 /** 对方在哪：同一座城市不写，异地写城市 */
 const ptWhere = (p: Partner) => p.city && p.city !== S.loc.city ? `异地，在${p.city}` : `也在${S.loc.city}`;
-// 家庭成员：父母、兄弟姐妹、恋人、配偶、孩子
-export function FamilyRows() {
-  const f = S.fam, d = f.dating, pt = f.partner, pal = S.ppl?.pal;
-  const ptStudy = !!pt && !pt.retired && pt.k != null && !pt.jk; // 配偶还在读书：职业一栏已经写了「本科在读」
-  return <>
-    <ParentRow who="dad" label="父亲" /><ParentRow who="mom" label="母亲" />
-    {f.sibs.map((x, i) => <Row key={'s' + i} k={x.rel} v={x.alive ? x.age + '岁' : '已去世'} cls={x.alive ? undefined : 'gone'} />)}
-    {d && <Row k={d.sex === 'M' ? '男朋友' : '女朋友'} v={<>{d.name} · {d.age} · {partnerTrait(d)}
-      <small>{d.jk ? EDU_LV[d.edu] : EDU_LV[d.edu] + '在读'} · {ptJobName(d)} · {ptWhere(d)} · {PBY[d.home].n}{d.rural ? '农村' : '城里'}人</small>
-      <small>{S.age - d.metAt ? '在一起' + (S.age - d.metAt) + '年' : '刚在一起'} · 感情{loveWord(d.love)}</small></>} />}
-    {pt && <div className={'row' + (pt.alive ? '' : ' gone')}>
-      <span className="k">{pt.sex === 'M' ? '丈夫' : '妻子'}</span>
-      {pt.alive ? <details className="v person-details">
-        <summary>{pt.name} · {pt.age}岁</summary>
-        <small>{pt.edu && !ptStudy ? EDU_LV[pt.edu] + ' · ' : ''}{pt.retired ? '退休' : pt.k != null ? ptJobName(pt) : JOBS[pt.job] ? JOBS[pt.job].n : ''} · {ptWhere(pt)}</small>
-        <small>{pt.marriedAt != null ? `结婚${Math.max(0, S.age - pt.marriedAt)}年` : ''}{pt.love != null ? ' · 感情' + loveWord(pt.love) : ''}</small>
-      </details> : <span className="v">{pt.name} · 已去世</span>}
+// ===== 右下角「人际关系」：亲疏名单 =====
+// 分三组：家里（父母、兄弟姐妹）、自己的家（恋人或配偶、孩子、孙辈）、朋友（还在来往的发小）。只列现在还在你生活里的人：初恋这种只是喜欢过的不列
+// 一行一个人：像素头像 | 关系 名字 年纪 + 一行事实（做什么、在哪、多少年） | 右边五格亲疏和一个词。走了的人头像变灰，写享年
+type Tone = 'hi' | 'mid' | 'lo';
+type Close = [string, Tone, number];
+// 颜色跟着词走：亲近的绿、平常的墨色、疏远或冷淡的红（分界和 closeWord、loveWord、CLOSE 一样）
+const tone = (c: number, hi: number, lo: number): Tone => c >= hi ? 'hi' : c >= lo ? 'mid' : 'lo';
+const kin = (c: number): Close => [closeWord(c), tone(c, 55, 55), c];        // 很亲、还算亲 / 有点疏远、很少联系
+const love = (c: number): Close => ['感情' + loveWord(c), tone(c, 58, 42), c]; // 很好、不错 / 一般 / 有点冷淡
+const pals = (c: number): Close => [CLOSE(c), tone(c, 45, 25), c];           // 无话不谈、常联系 / 偶尔联系 / 很少联系
+type Who = { sex: 'M' | 'F'; age: number; id: string };
+function Person({ rel, name, age, facts, close, gone, who }: { rel: string; name?: string; age?: number | string; facts?: (string | false | null | undefined)[]; close?: Close; gone?: boolean; who: Who }) {
+  const fs = (facts || []).filter(Boolean) as string[];
+  return <div className={'pp' + (gone ? ' gone' : '')}>
+    <span className="pp-ph"><Head {...who} /></span>
+    <div className="pp-m">
+      <div className="pp-n"><span>{rel}</span>{name && <b>{name}</b>}{age != null && <em>{typeof age === 'number' ? age + '岁' : age}</em>}</div>
+      {fs.length > 0 && <div className="pp-f" title={fs.join(' · ')}>{fs.join(' · ')}</div>}
+    </div>
+    {close && <div className={'pp-c ' + close[1]} title={close[0]}>
+      <span className="pp-meter" aria-hidden="true">{[0, 1, 2, 3, 4].map(i => <i key={i} className={i < Math.max(1, Math.round(close[2] / 20)) ? 'f' : ''} />)}</span>
+      <small>{close[0]}</small>
     </div>}
-    {!f.married && !!S.flags.divorced && <Row k="婚姻" v="离异" />}
-    {f.kids.map((k, i) => <Row key={'k' + i} k={k.sex === 'M' ? '儿子' : '女儿'} cls={k.alive ? undefined : 'gone'} v={k.alive ? <>{k.name} · {k.age}岁{k.path ? ' · ' + k.path.replace(/^考上了/, '') : ''}{k.ex && k.age < 18 ? ' · 跟着对方' : ''}{k.age >= 12 && <small>{closeWord(kidClose(k))}</small>}</> : k.name + ' · 已离世'} />)}
-    {S.flags.grandkids > 0 && <Row k="孙辈" v={S.flags.grandkids + '人'} />}
-    {pal && <Row k="发小" cls={pal.alive ? undefined : 'gone'} v={pal.alive ? <>{pal.name} · 认识{S.age - pal.at}年<small>{palWhere(pal)} · {CLOSE(pal.close)}</small></> : pal.name + ' · 已去世'} />}
+  </div>;
+}
+function Group({ n, meta, children }: { n: string; meta?: string; children: ReactNode }) {
+  return <div className="pp-g"><div className="pp-h"><span>{n}</span>{meta && <small>{meta}</small>}</div>{children}</div>;
+}
+function ParentP({ who }: { who: 'mom' | 'dad' }) {
+  const p = S.fam[who], male = who === 'dad', ret = parentRetired(p, male);
+  return <Person rel={male ? '父亲' : '母亲'} age={p.age} facts={[ret ? '退休了' : p.job, parentWhere(p, ret)]} close={S.age >= 18 && S.indep ? kin(parClose()) : undefined}
+    who={{ sex: male ? 'M' : 'F', age: p.age, id: who + S.seed }} />;
+}
+const SIB_SEX: Record<string, 'M' | 'F'> = { 哥哥: 'M', 弟弟: 'M', 姐姐: 'F', 妹妹: 'F' };
+const youThen = (a?: number | null) => a != null && `你${a}岁那年`;
+export function People() {
+  const f = S.fam, F = S.flags, d = f.dating, pt = f.partner, pal = S.ppl?.pal;
+  const ptStudy = !!pt && !pt.retired && pt.k != null && !pt.jk; // 配偶还在读书：职业一栏已经写了「本科在读」
+  const homeMeta = F.lb === 'both' && S.age < 16 ? `在外打工 · ${F.carer}照看` : F.parDiv ? '父母已离婚' : undefined;
+  // 走了的人不留在各自的组里，收到最下面的「已故」：上面只看还在你生活里的人
+  const gone: ReactNode[] = [];
+  const home: ReactNode[] = [];
+  for (const who of ['dad', 'mom'] as const) {
+    const p = f[who], male = who === 'dad', w: Who = { sex: male ? 'M' : 'F', age: p.age, id: who + S.seed };
+    if (p.alive) home.push(<ParentP key={who} who={who} />);
+    else gone.push(<Person key={who} rel={male ? '父亲' : '母亲'} age={'享年' + p.age} facts={[youThen(p.diedAt)]} gone who={w} />);
+  }
+  f.sibs.forEach((x, i) => {
+    const w = { sex: x.sex || SIB_SEX[x.rel] || 'M', age: x.age, id: 'sib' + i + S.seed };
+    if (x.alive) home.push(<Person key={'s' + i} rel={x.rel} age={x.age} facts={[x.married != null && '成家了']} who={w} />);
+    else gone.push(<Person key={'s' + i} rel={x.rel} age={'享年' + x.age} facts={[youThen(x.diedAt)]} gone who={w} />);
+  });
+  const mine: ReactNode[] = [];
+  if (d) mine.push(<Person key="d" rel={d.sex === 'M' ? '男朋友' : '女朋友'} name={d.name} age={d.age} who={{ sex: d.sex, age: d.age, id: d.name }}
+    facts={[partnerTrait(d), d.jk ? EDU_LV[d.edu] : EDU_LV[d.edu] + '在读', ptJobName(d), ptWhere(d), PBY[d.home].n + (d.rural ? '农村' : '城里') + '人', S.age - d.metAt ? '在一起' + (S.age - d.metAt) + '年' : '刚在一起']}
+    close={d.love != null ? love(d.love) : undefined} />);
+  if (pt) {
+    const rel = pt.sex === 'M' ? '丈夫' : '妻子', w = { sex: pt.sex, age: pt.age, id: pt.name };
+    if (pt.alive) mine.push(<Person key="pt" rel={rel} name={pt.name} age={pt.age} who={w}
+      facts={[pt.edu && !ptStudy && EDU_LV[pt.edu], pt.retired ? '退休了' : pt.k != null ? ptJobName(pt) : JOBS[pt.job]?.n, ptWhere(pt)]}
+      close={pt.love != null ? love(pt.love) : undefined} />);
+    else gone.push(<Person key="pt" rel={rel} name={pt.name} age={'享年' + pt.age} facts={[youThen(F.widowed), pt.marriedAt != null && F.widowed != null && `一起走过了${F.widowed - pt.marriedAt}年`]} gone who={w} />);
+  }
+  f.kids.forEach((k, i) => {
+    const rel = k.sex === 'M' ? '儿子' : '女儿', w = { sex: k.sex, age: k.age, id: k.name };
+    if (k.alive) mine.push(<Person key={'k' + i} rel={rel} name={k.name} age={k.age} who={w}
+      facts={[k.path && k.path.replace(/^考上了/, ''), k.ex && k.age < 18 && '跟着对方', k.married != null && '成家了']}
+      close={k.age >= 12 ? kin(kidClose(k)) : undefined} />);
+    else gone.push(<Person key={'k' + i} rel={rel} name={k.name} age={'享年' + k.age} gone who={w} />);
+  });
+  if (S.flags.grandkids > 0) mine.push(<Person key="g" rel="孙辈" age={S.flags.grandkids + '个'} who={{ sex: 'M', age: 6, id: 'grand' + S.seed }} />);
+  const friends: ReactNode[] = [];
+  if (pal) {
+    const w = { sex: pal.sex, age: S.age, id: pal.name };
+    if (pal.alive) friends.push(<Person key="pal" rel="发小" name={pal.name} who={w}
+      facts={[palWhere(pal), '认识' + (S.age - pal.at) + '年', pal.loan && (pal.loan.back == null || pal.loan.back > S.age) && `借过${pal.sex === 'M' ? '他' : '她'}${wan(pal.loan.amt)}，还没还`]} close={pals(pal.close)} />);
+    else gone.push(<Person key="pal" rel="发小" name={pal.name} age="已去世" gone who={w} />);
+  }
+  const mineMeta = pt?.alive && pt.marriedAt != null ? `结婚${Math.max(0, S.age - pt.marriedAt)}年` : !f.married && F.divorced ? '离异' : F.widowed != null && !f.married ? '丧偶' : undefined;
+  return <>
+    <Group n="家里" meta={homeMeta}>{home.length ? home : <p className="note-line" style={{ margin: '4px 0 0' }}>父母和兄弟姐妹都不在了。</p>}</Group>
+    {mine.length > 0 && <Group n="自己的家" meta={mineMeta}>{mine}</Group>}
+    {friends.length > 0 && <Group n="朋友">{friends}</Group>}
+    {gone.length > 0 && <Group n="已故" meta={gone.length + ' 人'}>{gone}</Group>}
   </>;
 }
 
 // ===== 二、体检与鉴定 =====
-function Bar({ n, v, c }: { n: string; v: number; c: string }) {
-  return <div className="vt"><span>{n}</span><i><u style={{ '--v': v + '%', '--c': `var(${c})` } as React.CSSProperties} /></i><b>{Math.round(v)}</b></div>;
+// 横条：当前值 + 一根细竖线标「照这样过下去会停在哪」（engine/status.ts 的 heading）；差三分以上，数字后面一个 ▲▼
+// 学识没有目标值，只给方向（kn：每年加减多少）
+function Bar({ n, v, c, to, kn }: { n: string; v: number; c: string; to?: number; kn?: number }) {
+  const d = to == null ? (kn || 0) * 3 : to - v;
+  return <div className="vt"><span>{n}</span><i><u style={{ '--v': v + '%', '--c': `var(${c})` } as React.CSSProperties} />{to != null && <s style={{ left: Math.max(0, Math.min(100, to)) + '%' }} />}</i><b>{Math.round(v)}</b><em className={d > 0 ? 'up' : 'dn'}>{d >= 3 ? '▲' : d <= -3 ? '▼' : ''}</em></div>;
+}
+// 鉴定意见（engine/status.ts 的 opinion）：一段话；能处理的短语可点，打开「这一年」里对应的行动
+function Opinion() {
+  const segs = opinion();
+  if (!segs.length) return null;
+  const go = (g?: { act?: string }) => !!(g?.act && ACTS[g.act] && actState(g.act).ok);
+  return <>
+    <div className="sub-h">鉴定意见</div>
+    <p className="op">{segs.map((g, i) => {
+      if (go(segs[i - 1]) && /^[，；。]$/.test(g.t)) return null; // 已经和前面可点的短语放在一起
+      if (!go(g)) return <span key={i}>{g.t}</span>;
+      // 可点的短语和后面的标点不分开，标点不会落到下一行开头
+      const p = segs[i + 1] && /^[，；。]$/.test(segs[i + 1].t) ? segs[i + 1].t : '';
+      return <span key={i} className="op-nb"><button type="button" className="op-go" title={ACTS[g.act].n} onClick={() => openYear(ACTS[g.act!].g)}>{g.t}</button>{p}</span>;
+    })}</p>
+  </>;
 }
 // 性格：五条刻度，两头是词，不显示数字；离中间超过半个标准差的那一头加重。三岁以前还看不出来
 function Personality() {
@@ -152,19 +228,48 @@ function Personality() {
   </>;
 }
 export function Body({ m }: { m?: string }) {
-  const st = S.st;
+  const st = S.st, to = S.age >= 3 ? heading() : null;
   return (
     <Sec no="二" title="体检与鉴定" meta="0–100" m={m}>
-      <Bar n="健康" v={st.hl} c="--hl" /><Bar n="幸福" v={st.h} c="--h" /><Bar n="学识" v={st.kn} c="--kn" /><Bar n="人际" v={st.so} c="--so" />
+      <div className="vts">
+        <Bar n="健康" v={st.hl} c="--hl" to={to?.hl} /><Bar n="幸福" v={st.h} c="--h" to={to?.h} />
+        <Bar n="学识" v={st.kn} c="--kn" kn={to?.kn} /><Bar n="人际" v={st.so} c="--so" to={to?.so} />
+      </div>
+      <Opinion />
       <Personality />
     </Sec>
   );
 }
 
+// ===== 右下角「岔路口」 =====
+// 这一生到现在做过的大抉择（fork），连同当年没选的那几条路；上面一行是已经拿到的人生标签，以前的人生里没见过的标一个「新」
+let pastTags: { L: object; s: Set<string> } | null = null; // 封存过的档案只在两局之间变：每一局读一次
+function Forks() {
+  const forks = forksOf(S), tags = liveTags(S);
+  if (pastTags?.L !== S) pastTags = { L: S, s: new Set(loadPast().flatMap(x => x.tags || [])) };
+  const seen = pastTags.s;
+  if (!forks.length && !tags.length) return <p className="note-line" style={{ margin: 0 }}>还没走到岔路口。</p>;
+  return <>
+    {tags.length > 0 && <div className="ltags">
+      {tags.map(t => <span key={t.k} className={'ltag r' + t.r} title={t.d}>{t.n}{!seen.has(t.k) && <i>新</i>}</span>)}
+    </div>}
+    {forks.length > 0 && <ol className="fk">
+      {forks.map((f, i) => <li key={i}>
+        <span className="fk-a mono">{f.a}岁</span>
+        <div>
+          <b>{f.title}</b>
+          <p><span className="chop">定</span>{f.pick}</p>
+          <p className="fk-no">没选　{f.alt.slice(0, 3).join(' ／ ')}{f.alt.length > 3 ? ' ……' : ''}</p>
+        </div>
+      </li>)}
+    </ol>}
+  </>;
+}
+
 // ===== 父母与家庭支持 =====
 // 家里的钱：家境几个点、一句话说清楚（爸妈做什么、一个月挣多少、住什么房子、存款和欠款），细账收在折叠里
 const PW = { dad: '爸爸', mom: '妈妈' } as const;
-function famLine() {
+export function famLine() {
   const f = S.fam, H = S.famHouse || { type: 'rent' as const, v: 0, where: '' };
   const alive = (['dad', 'mom'] as const).filter(w => f[w].alive);
   const ret = (w: 'dad' | 'mom') => parentRetired(f[w], w === 'dad');
@@ -222,83 +327,40 @@ function myHome() {
   return H ? `${now}（${own}）` : now;
 }
 
-// ===== 五、我的经济：我 → 我的小家（成家、有了自己的房子以后）→ 父母家 =====
+// ===== 五、经济：常驻只放两个数（现金、月收入）和几行事实；细账、走势、行动都在「这一年」里 =====
+// 经济独立以前：家里的钱就是你的钱，直接写父母家
 export function Account({ m }: { m?: string }) {
   if (S.indep === false) {
     const why = S.school ? '在读' + S.school + '，花销靠家里' : preschool() ? '还小，花销靠家里' : '还没有工作';
     return (
-      <Sec no="五" title="我的经济" meta="尚未经济独立" m={m}>
-        <p className="account-note">{why}。开始自己生活后，这里记你自己的钱。</p>
+      <Sec no="五" title="经济" meta={why} m={m}>
         <Econ />
       </Sec>
     );
   }
   const f = S.fam, pt = f.partner, mate = f.married && pt?.alive ? pt : null;
-  const home = !!(mate || f.kids.some(k => k.alive) || S.house);
-  // 家庭月收入（到手）：你这个月到手的钱、返聘的工资、配偶到手的钱
-  const hh = monthlyPay().net * 12 + (S.flags.rehire ? S.flags.rehire.inc : 0) + (mate ? partnerPay(mate).net : 0);
   const bill = S.statement, change = bill ? bill.closing - bill.opening : 0;
+  const pay = monthlyPay();
+  const hh = pay.net + ((S.flags.rehire?.inc || 0) + (mate ? partnerPay(mate).net : 0)) / 12;
+  const housing = bill && (bill.rent > 0 || bill.mortgage > 0) ? ` · 每月 ${Math.round(bill.rent + bill.mortgage).toLocaleString('zh-CN')}` : '';
   return (
-    <Sec no="五" title="我的经济" meta={S.indepAt != null ? S.indepAt + '岁开始工作' : ''} m={m}>
-      <div className="finance-balance"><span>可用现金<Ib k="myMoney" /></span><strong>{wan(S.money)}</strong></div>
-      {S.debt > 0 && <Row k="其他欠款" v={<b className="neg">{wan(S.debt)}</b>} />}
-      <p className="finance-period">{bill ? `${bill.year}年${bill.month}月 · 最近一次结算` : '等待第一个月结算'}</p>
-      <dl className="finance-metrics">
-        <div><dt>到手收入{mate ? '（含配偶）' : ''}</dt><dd>{cashAmount(bill ? bill.income : hh / 12)}</dd></div>
-        <div><dt>生活与还款{bill ? `（${tierName(bill.tier)}）` : ''}</dt><dd>{bill ? cashAmount(monthlySpending(bill)) : '—'}</dd></div>
-        <div><dt>现金变化</dt><dd className={change < 0 ? 'neg' : change > 0 ? 'money-up' : undefined}>{bill ? cashChange(change) : '—'}</dd></div>
-      </dl>
-      <LedgerButton />
-      {loanArrears() > 1 && <p className="account-note neg">房贷已逾期 {wan(loanArrears())}，需要处理还款。</p>}
-      {bill?.shortfall > 1 && <p className="account-note neg">最近一个月生活或住房有 {cashAmount(bill.shortfall)} 缺口。</p>}
-      <Row k={<>{S.job === 'retired' ? '我的养老金' : '我的月收入'}<Ib k="myIncome" /></>} v={S.job === 'retired' ? wanM(S.pension || 0) : myInc()} />
-      {S.flags.rehire && <Row k="返聘收入" v={wanM(S.flags.rehire.inc)} />}
-      <Row k={<>公积金<Ib k="hpf" /></>} v={S.hpf ? wan(S.hpf) + (S.hpfOn ? '' : '（封存）') : S.hpfOn ? '0元' : '没有'} />
-      {S.inv && S.inv.w + S.inv.f >= 1 && <Row k="理财和基金" v={<>{wan(S.inv.w + S.inv.f)}<small>{[S.inv.w >= 1 && `理财 ${wan(S.inv.w)}`, S.inv.f >= 1 && `基金 ${wan(S.inv.f)}`].filter(Boolean).join(' · ')}，不算现金</small></>} />}
-      {!home && <Row k="住在" v={myHome()} />}
-      <Row k="净资产" v={wan(netWorth())} />
-      {home && <>
-        <h4 className="fam-h">我的小家</h4>
-        {mate && <Row k={<>{mate.sex === 'M' ? '丈夫' : '妻子'}的收入{mate.inc > 0 && mate.k != null && <Ib k="ptInc:partner" />}</>} v={<PtInc p={mate} />} />}
-        {mate && <Row k="家庭月收入" v={<>{wanM(hh)}<small>到手，两个人加起来</small></>} />}
-        <Row k="房子" v={myHome()} />
-        <Row k={<>房贷<Ib k="loan" /></>} v={loanBal() ? <>{wan(loanBal())}<small>月供 {wan(loanPayY() / 12)}</small></> : '没有'} />
-        {loanArrears() > 1 && <Row k="其中已逾期" v={<b className="neg">{wan(loanArrears())}</b>} />}
-        {inheritedValue() > 0 && <Row k="继承房产权益" v={<>{wan(inheritedValue())}<small>尚未出售</small></>} />}
-      </>}
-      {!home && inheritedValue() > 0 && <Row k="继承房产权益" v={<>{wan(inheritedValue())}<small>尚未出售</small></>} />}
-      <Econ fold />
+    <Sec no="五" title="经济" meta={<button type="button" className="sec-link" onClick={() => openYear('book')}>看账本 ›</button>} m={m}>
+      <div className="eco-two">
+        <div><span>现金<Ib k="myMoney" /></span><b className="mono">{wan(S.money)}</b>{S.debt > 0 ? <small className="neg">欠 {wan(S.debt)}</small> : <small>没有欠款</small>}</div>
+        <div><span>{S.job === 'retired' ? '养老金' : '月收入'}<Ib k="myIncome" /></span><b className="mono">{S.job === 'retired' ? wanM(S.pension || 0) : pay.gross ? wan(pay.net) : '—'}</b><small>{mate ? `全家到手 ${wan(hh)}` : S.job === 'retired' ? '每月' : pay.gross ? '到手 · 每月' : '没有工作'}</small></div>
+      </div>
+      <Row k="住" v={myHome() + housing} />
+      {bill && <Row k="过日子" v={`${tierName(bill.tier)} · 每月 ${Math.round(bill.living).toLocaleString('zh-CN')}`} />}
+      {bill && <Row k="上个月" v={<b className={change < 0 ? 'neg' : 'money-up'}>{cashChange(change)}</b>} />}
+      {loanArrears() > 1 && <p className="account-note neg">房贷逾期 {wan(loanArrears())}</p>}
+      {bill?.shortfall > 1 && <p className="account-note neg">上个月缺口 {cashAmount(bill.shortfall)}</p>}
+      {anyParent() && <Row k="父母家" v={<button type="button" className="row-link" onClick={() => openYear('par')}><span className="dots">{dots(S.q)}</span> {Q_WORD[S.q]}{S.flags.supportY > 0 ? ' · 在贴补他们' : ''}</button>} />}
     </Sec>
   );
 }
 
 // ===== 证件 =====
-const DOC_SEAL: Record<string, string> = { birth: '登记', admit: '录取', grad: '毕业', school: '学籍', job: '合同', civil: '录用', marry: '婚姻', divorce: '登记', house: '不动产', kid: '出生', ill: '医院', retire: '退休', report: '学校' };
-export function DocCard({ d, open, onClick }: { d: Doc; open: boolean; onClick?: () => void }) {
-  return (
-    <div className={`doc ${d.k}${open ? ' open' : ''}`} onClick={onClick}>
-      <h5>{d.title}<small>{d.y}年{d.m}月 · {d.a}岁</small></h5>
-      <dl>{d.rows.map((r, i) => <Pair key={i} k={r[0]} v={r[1]} />)}</dl>
-      <span className="mini-seal">{DOC_SEAL[d.k] || '档'}</span>
-    </div>
-  );
-}
-const Pair = ({ k, v }: { k: string; v: string }) => <><dt>{k}</dt><dd>{v}</dd></>;
-
-// 材料目录：最新的在上面，点一行展开内容；有新材料时展开最新那一份
-function Docs() {
-  const docs = S.docs || [];
-  const [open, setOpen] = useState<number>(docs.length - 1);
-  useEffect(() => { setOpen(docs.length - 1); }, [docs.length]);
-  return <>{docs.map((d, i) => [d, i] as const).reverse().map(([d, i]) => (
-    <div key={i}>
-      <button type="button" className={'toc' + (i === docs.length - 1 ? ' fresh' : '')} aria-expanded={open === i} onClick={() => setOpen(o => o === i ? -1 : i)}>
-        <span className="n">{String(i + 1).padStart(2, '0')}</span><span className="tt">{d.title}</span><span className="lead" /><span className="d">{d.y}.{String(d.m).padStart(2, '0')}</span>
-      </button>
-      {open === i && d.rows.length > 0 && <dl className="toc-dl">{d.rows.map((r, j) => <Pair key={j} k={r[0]} v={r[1]} />)}</dl>}
-    </div>
-  ))}</>;
-}
+// 材料目录：最新的在上面，一行一份，点开进证件夹（Docs.tsx）。后来盖的章写成小标签
 
 // 一生曲线：幸福（实线）和健康（虚线），竖虚线是平均寿命
 export function Curve({ W = 300, H = 120 }: { W?: number; H?: number }) {
@@ -334,34 +396,31 @@ export function Companions() {
 }
 
 // ===== 右下角的分隔签 =====
-const TABS = [['doc', '材料目录'], ['peer', '同批建档'], ['curve', '一生曲线']] as const;
+const TABS = [['ppl', '人际关系'], ['fork', '岔路口'], ['doc', '材料目录'], ['peer', '同批建档']] as const;
 type Tab = typeof TABS[number][0];
 const TAB_KEY = 'cn14.tab';
 export function ArchiveTabs({ mtab }: { mtab: string }) {
-  const [tab, setTab] = useState<Tab>(() => { try { const t = localStorage.getItem(TAB_KEY) as Tab; return TABS.some(x => x[0] === t) ? t : 'doc'; } catch { return 'doc'; } });
+  const [tab, setTab] = useState<Tab>(() => { try { const t = localStorage.getItem(TAB_KEY) as Tab; return TABS.some(x => x[0] === t) ? t : 'ppl'; } catch { return 'ppl'; } });
   const pick = (k: Tab) => { setTab(k); try { localStorage.setItem(TAB_KEY, k); } catch { /* 存不了也没关系 */ } };
   // 材料目录上提示有几份新材料（上次看材料目录以后发的）；手机上看「材料」标签也算看过
   const docsN = (S.docs || []).length;
   const seen = useRef(docsN);
   if (tab === 'doc' || mtab === 'doc') seen.current = docsN;
   const fresh = docsN - seen.current;
+  const forksN = forksOf(S).length;
   return (
-    <section className={'pg tabs-card t-' + tab} data-m="doc peer body">
+    <section className={'pg tabs-card t-' + tab} data-m="home body doc peer">
       <nav className="tabs" role="tablist">
         {TABS.map(([k, n]) => (
           <button key={k} type="button" role="tab" aria-selected={tab === k} className={tab === k ? 'on' : ''} onClick={() => pick(k)}>
-            {n}{k === 'doc' && <span className="mono" style={{ fontWeight: 400, marginLeft: 4 }}>{docsN}</span>}{k === 'doc' && fresh > 0 && <i className="tdot" aria-label={`${fresh} 份新材料`}>新</i>}
+            {n}{k === 'doc' && <span className="mono" style={{ fontWeight: 400, marginLeft: 4 }}>{docsN}</span>}{k === 'fork' && forksN > 0 && <span className="mono" style={{ fontWeight: 400, marginLeft: 4 }}>{forksN}</span>}{k === 'doc' && fresh > 0 && <i className="tdot" aria-label={`${fresh} 份新材料`}>新</i>}
           </button>
         ))}
       </nav>
-      <div className="tp" data-t="doc" data-m="doc"><Docs /></div>
+      <div className="tp" data-t="fork" data-m="body"><div className="sub-h m-only" style={{ marginTop: 0 }}>岔路口</div><Forks /></div>
+      <div className="tp" data-t="doc" data-m="doc"><DocShelf /></div>
       <div className="tp" data-t="peer" data-m="peer"><p className="note-line" style={{ margin: '0 0 4px' }}>同一秒建档的另外 {S.comps.length} 人 · 此刻也是 {S.age} 岁</p><Companions /></div>
-      <div className="tp" data-t="curve" data-m="body"><div className="sub-h m-only" style={{ marginTop: 0 }}>一生曲线</div><Curve /></div>
+      <div className="tp" data-t="ppl" data-m="home"><People /></div>
     </section>
   );
-}
-
-/** 手机上「家与钱」标签里单独的一页家庭成员（电脑上它在基本情况里） */
-export function FamilySec({ m }: { m: string }) {
-  return <Sec no="一" title="家庭成员" meta={famMeta()} className="m-only" m={m}><FamilyRows /></Sec>;
 }

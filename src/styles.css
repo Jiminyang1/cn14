@@ -74,9 +74,6 @@ button { font: inherit; }
 .row > .v small { display: block; font-size: 12px; color: var(--muted); }
 .row.off > .v, .row.gone > .v { color: var(--muted); }
 .row b { font-weight: 500; }
-.person-details > summary { cursor: pointer; list-style-position: inside; min-height: 24px; }
-.person-details[open] > summary { margin-bottom: 4px; }
-.person-details > summary:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
 .neg { color: var(--bad); }
 .f4 { display: grid; grid-template-columns: 2.4em minmax(0, 1fr) 2.4em minmax(0, 1fr); gap: 4px 8px; font-size: 13px; }
 .f4 > .k { font-family: var(--serif); font-size: 12px; color: var(--muted); padding-top: 1px; }
@@ -143,8 +140,8 @@ textarea { font: 15px/1.7 var(--sans); color: var(--ink); width: 100%; min-heigh
 
 /* 一、基本情况 */
 .basic-top { display: flex; gap: 12px; align-items: flex-end; margin-bottom: 10px; }
-.basic-top .pix-live { flex: none; }
-.agebox { flex: 1; text-align: right; min-width: 0; }
+.basic-top .pix-live { flex: 0 1 192px; min-width: 0; } /* 窄的时候让照片缩一点，岁数不挤出卡片 */
+.agebox { flex: 1 0 auto; text-align: right; min-width: 0; }
 .agebox b { display: block; font-family: var(--serif); font-size: 52px; font-weight: 900; line-height: .85; font-variant-numeric: tabular-nums; }
 .agebox span { display: block; font-family: var(--serif); font-size: 13px; margin-top: 4px; }
 .agebox .who-m { display: none; }
@@ -233,12 +230,12 @@ textarea { font: 15px/1.7 var(--sans); color: var(--ink); width: 100%; min-heigh
 
 /* 右栏底部的分隔签：材料目录 / 同批建档 / 一生曲线 */
 .tabs-card { display: flex; flex-direction: column; overflow: hidden; }
-.tabs { display: flex; gap: 2px; margin: -14px -18px 10px; padding: 0 10px; background: var(--tint); border-bottom: 1px solid var(--ink); flex: none; }
-.tabs button { font-family: var(--serif); font-size: 13px; font-weight: 600; height: 36px; padding: 0 12px; border: 0; background: transparent; color: var(--muted); cursor: pointer; position: relative; top: 1px; white-space: nowrap; }
+.tabs { display: flex; gap: 2px; margin: -14px -18px 10px; padding: 0 4px; background: var(--tint); border-bottom: 1px solid var(--ink); flex: none; }
+.tabs button { flex: 1 1 auto; font-family: var(--serif); font-size: 13px; font-weight: 600; height: 36px; padding: 0 6px; /* 四个标签放进 300 宽的右栏 */ border: 0; background: transparent; color: var(--muted); cursor: pointer; position: relative; top: 1px; white-space: nowrap; }
 .tabs button.on { background: var(--card); color: var(--ink); box-shadow: inset 0 2px 0 var(--seal), 1px 0 0 var(--rule), -1px 0 0 var(--rule); }
-.tdot { display: inline-grid; place-items: center; min-width: 16px; height: 16px; margin-left: 4px; padding: 0 4px; border-radius: 8px; background: var(--seal); color: #fff; font: 700 10px var(--sans); vertical-align: 1px; }
+.tdot { position: absolute; top: 2px; right: 0; display: inline-grid; place-items: center; min-width: 14px; height: 14px; padding: 0 3px; border-radius: 7px; /* 角标不占宽度 */ background: var(--seal); color: #fff; font: 700 10px var(--sans); vertical-align: 1px; }
 .tabs-card .tp { min-height: 0; overflow-y: auto; scrollbar-width: thin; }
-.t-doc .tp:not([data-t="doc"]), .t-peer .tp:not([data-t="peer"]), .t-curve .tp:not([data-t="curve"]) { display: none; }
+.t-ppl .tp:not([data-t="ppl"]), .t-fork .tp:not([data-t="fork"]), .t-doc .tp:not([data-t="doc"]), .t-peer .tp:not([data-t="peer"]) { display: none; }
 /* 材料目录：引线 */
 .toc { display: flex; align-items: baseline; gap: 8px; padding: 5px 0; font-size: 13px; width: 100%; border: 0; background: none; color: inherit; text-align: left; cursor: pointer; }
 .toc .n { font-family: var(--mono); font-size: 11px; color: var(--muted); flex: none; }
@@ -247,9 +244,6 @@ textarea { font: 15px/1.7 var(--sans); color: var(--ink); width: 100%; min-heigh
 .toc .d { font-family: var(--mono); font-size: 12px; color: var(--muted); flex: none; }
 .toc.fresh .n { color: var(--seal); font-weight: 700; }
 .toc.fresh .tt { font-weight: 700; }
-.toc-dl { display: grid; grid-template-columns: 5em 1fr; gap: 2px 10px; margin: 0 0 8px 26px; padding: 8px 10px; background: var(--tint); font-size: 12.5px; }
-.toc-dl dt { font-family: var(--serif); color: var(--muted); }
-.toc-dl dd { margin: 0; }
 .comp { padding: 7px 0; border-top: 1px solid var(--hair); font-size: 13px; }
 .comp:first-child { border-top: 0; }
 .comp b { font-family: var(--serif); margin-right: 6px; }
@@ -342,6 +336,10 @@ textarea { font: 15px/1.7 var(--sans); color: var(--ink); width: 100%; min-heigh
 .br.other { color: var(--muted); }
 .br.other i { background: var(--rule); }
 .home-low { display: grid; grid-template-columns: minmax(0, 1fr) 500px; gap: 64px; margin-top: 36px; align-items: start; }
+.home-left { display: flex; flex-direction: column; gap: 24px; min-width: 0; }
+.changes ul { margin: 0; padding: 0 0 0 1.1em; }
+.changes li { margin: 5px 0; font-size: 13.5px; line-height: 1.6; color: var(--ink2); }
+.changes li::marker { color: var(--seal); }
 .past .toc { cursor: default; font-size: 14px; }
 .past .toc .age { width: 6.5em; text-align: right; flex: none; }
 .notes3 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px 24px; padding-top: 6px; }
@@ -385,20 +383,6 @@ table.cmp th { font-weight: 500; font-family: var(--serif); color: var(--muted);
 .help { background: var(--seal-soft); padding: 10px 14px; font-size: 14px; }
 .end-sec { margin-top: 24px; }
 .end-sec > h4 { font-size: 15px; letter-spacing: .1em; padding-bottom: 6px; border-bottom: 1px solid var(--ink); }
-.doc-gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; }
-.doc { position: relative; border-radius: 3px; padding: 10px 14px; background: var(--card); box-shadow: var(--shadow); overflow: hidden; }
-.doc::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--kraft); }
-.doc h5 { font-family: var(--serif); font-size: 15px; margin: 0; display: flex; justify-content: space-between; gap: 8px; }
-.doc h5 small { font-family: var(--mono); font-weight: 400; font-size: 11.5px; color: var(--muted); }
-.doc dl { display: grid; grid-template-columns: 4.5em 1fr; gap: 1px 10px; margin: 8px 0 0; font-size: 13px; }
-.doc dt { font-family: var(--serif); color: var(--muted); }
-.doc dd { margin: 0; }
-.doc:not(.open) dl { display: none; }
-.doc .mini-seal { position: absolute; right: 10px; bottom: 6px; width: 34px; height: 34px; border: 2px solid var(--seal); color: var(--seal); border-radius: 50%; display: grid; place-items: center; font: 700 11px var(--serif); transform: rotate(-12deg); opacity: .35; }
-.doc:not(.open) .mini-seal { display: none; }
-.doc.marry::before, .doc.retire::before, .doc.admit::before { background: var(--seal); }
-.doc.house::before { background: var(--good); }
-.doc.job::before, .doc.civil::before, .doc.birth::before { background: var(--blue); }
 .end-actions { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; margin-top: 26px; }
 
 /* 「怎么算的」：小 i 图标，点击弹出说明卡片 */
@@ -499,9 +483,10 @@ table.cmp th { font-weight: 500; font-family: var(--serif); color: var(--muted);
   .tl-top { position: fixed; z-index: 19; bottom: calc(88px + env(safe-area-inset-bottom)); min-height: 44px; padding: 10px 18px; font-size: 14px; }
   .tabs-card { overflow: visible; }
   .tabs-card .tabs { display: none; }
-  .t-doc .tp:not([data-t="doc"]), .t-peer .tp:not([data-t="peer"]), .t-curve .tp:not([data-t="curve"]) { display: block; }
+  .t-ppl .tp:not([data-t="ppl"]), .t-fork .tp:not([data-t="fork"]), .t-doc .tp:not([data-t="doc"]), .t-peer .tp:not([data-t="peer"]) { display: block; }
   .tabs-card .tp + .tp[data-m] { margin-top: 0; }
   .basic .f4, .basic .fam-sub, .basic .seal { display: none; }
+  .agebox { flex: 1 1 0; }
   .agebox .who-m { display: block; margin-top: 8px; }
   .agebox .who-m b { font-size: 16px; line-height: 1.3; }
   .agebox .who-m small { display: block; font-size: 12px; color: var(--muted); font-family: var(--sans); }
@@ -516,6 +501,8 @@ table.cmp th { font-weight: 500; font-family: var(--serif); color: var(--muted);
   .picks { grid-template-columns: 1fr 1fr; max-height: 46dvh; overflow-y: auto; }
   .row { font-size: 14px; padding: 7px 0; }
   .modal { padding: 24px 10px 10px; }
+  .ds-h { flex-wrap: wrap; row-gap: 2px; }
+  .ds-h .meta { order: -1; flex-basis: 100%; margin-left: 0; }
   .ds-sheet { padding: 18px 16px; }
   .ds-body { grid-template-columns: 1fr; }
   .ds-body .pix-photo { order: -1; width: 100%; max-width: 192px; margin: 0 auto; }
@@ -633,3 +620,93 @@ table.cmp th { font-weight: 500; font-family: var(--serif); color: var(--muted);
 .big-moves > div { display: flex; justify-content: space-between; gap: 12px; font-size: 13px; }
 .big-moves dt { color: var(--ink2); }
 .big-moves dd { margin: 0; font-family: var(--mono); }
+
+/* 栏目标题右边的小链接（五「看账本」、三「调整」：打开「这一年」，ui/Year.tsx） */
+.sec-link { padding: 0; border: 0; background: none; color: var(--seal); font-size: 12.5px; cursor: pointer; }
+.sec-link:hover { text-decoration: underline; }
+.row-link { padding: 0; border: 0; background: none; color: inherit; font: inherit; cursor: pointer; }
+.row-link:hover { color: var(--seal); }
+
+/* 五、经济：两个数 */
+.eco-two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-bottom: 8px; }
+.eco-two > div + div { padding-left: 12px; border-left: 1px solid var(--hair); }
+.eco-two span { display: block; font-family: var(--serif); font-size: 12px; color: var(--muted); }
+.eco-two b { display: block; font-size: 22px; font-weight: 600; line-height: 1.25; }
+.eco-two small { display: block; font-size: 11.5px; color: var(--muted); }
+.eco-two small.neg { color: var(--seal); }
+
+/* 三、计划的标题右边：行动、调整 */
+.yp-acts { margin-left: auto; display: flex; gap: 6px; align-self: center; }
+.yp-acts .ctl { height: 30px; }
+
+/* 三、计划（经济独立以后）：三行表单——时间、花钱、一年下来；整块点开「这一年」 */
+.yp { display: grid; grid-template-columns: 2.6em minmax(0, 1fr); gap: 0 12px; width: 100%; padding: 0; border: 0; background: none; color: var(--ink); font: inherit; text-align: left; cursor: pointer; }
+.yp > span { padding: 6px 0; border-top: 1px solid var(--hair); }
+.yp > span:nth-child(-n+2) { border-top: 0; padding-top: 2px; }
+.yp:hover .yp-v { color: var(--ink); }
+.yp:focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; border-radius: 2px; }
+.yp-k { font-family: var(--serif); font-size: 12px; color: var(--muted); padding-top: 8px !important; }
+.yp-v { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 16px; min-width: 0; font-size: 13.5px; }
+.yp-slot { display: inline-flex; align-items: baseline; gap: 6px; }
+.yp-slot i { width: 8px; height: 8px; background: var(--c); align-self: center; }
+.yp-slot b { font-family: var(--serif); font-size: 16px; }
+.yp-slot em { font-style: normal; font-size: 11.5px; color: var(--muted); }
+.yp-money em { font-style: normal; font-family: var(--serif); font-size: 12px; color: var(--muted); margin-right: 5px; }
+.yp-led { display: grid !important; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.yp-led > span { display: flex; align-items: baseline; gap: 6px; }
+.yp-led > span:last-child { justify-content: flex-end; }
+.yp-led em { font-style: normal; font-size: 12px; color: var(--muted); }
+.yp-led b { font-size: 14px; font-weight: 600; }
+
+@media (max-width: 900px) {
+  /* 手机上别的「三」不显示标题；计划的标题上有行动和调整，要留着 */
+  .year-plan .sec { display: flex; }
+}
+
+/* 二、体检与鉴定：横条上一根细竖线是目标值；下面一段鉴定意见（engine/status.ts 的 opinion） */
+.vts .vt { grid-template-columns: 2.4em 1fr 1.8em 10px; }
+.vt i { position: relative; }
+.vt i s { position: absolute; top: -3px; width: 1px; height: 12px; margin-left: -.5px; background: var(--ink2); opacity: .5; }
+.vt em { font-style: normal; font-size: 9px; color: var(--muted); }
+.op { margin: 4px 0 0; font-family: var(--serif); font-size: 13.5px; line-height: 1.85; text-align: justify; }
+.op-go { padding: 0; border: 0; background: none; font: inherit; color: inherit; text-decoration: underline; text-decoration-color: rgba(194, 59, 46, .55); text-underline-offset: 4px; cursor: pointer; }
+.op-go:hover { color: var(--seal); }
+.op-nb { white-space: nowrap; }
+
+/* 右下角「岔路口」：一行人生标签，下面是做过的大抉择和没选的路 */
+.ltags { display: flex; flex-wrap: wrap; gap: 8px 12px; margin: 6px 0 10px; }
+.ltag { position: relative; padding: 2px 8px; border: 1px solid var(--rule); border-radius: 2px; font: 12px/1.5 var(--serif); color: var(--ink2); }
+.ltag.r3 { border-color: var(--seal); color: var(--seal); }
+.ltag i { position: absolute; top: -7px; right: -6px; padding: 0 3px; background: var(--seal); color: #fff; font: 600 9px/14px var(--sans); font-style: normal; border-radius: 2px; }
+.fk { list-style: none; margin: 0; padding: 0; }
+.fk li { display: grid; grid-template-columns: 3.2em minmax(0, 1fr); gap: 8px; padding: 8px 0; border-top: 1px solid var(--hair); }
+.fk li:first-child { border-top: 0; padding-top: 2px; }
+.fk-a { font-size: 12px; color: var(--muted); padding-top: 2px; }
+.fk b { display: block; font: 600 13.5px/1.5 var(--serif); }
+.fk p { margin: 3px 0 0; font-size: 13px; line-height: 1.5; }
+.fk .chop { width: 17px; height: 17px; margin-right: 6px; font-size: 10px; }
+.fk-no { color: var(--muted); font-size: 12px !important; }
+
+/* 右下角「人际关系」：三组，每个人一样的样子——关系 | 名字 年龄 / 一行事实 | 亲疏 */
+/* 人际关系：亲疏名单。像素头像 | 关系 名字 年纪 + 一行事实 | 五格亲疏 */
+.pp-g + .pp-g { margin-top: 12px; }
+.pp-h { display: flex; align-items: baseline; gap: 8px; margin-bottom: 2px; font: 700 12px var(--serif); color: var(--muted); letter-spacing: .15em; }
+.pp-h small { margin-left: auto; font: 400 12px var(--sans); letter-spacing: 0; }
+.pp { display: grid; grid-template-columns: 34px minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 7px 0; border-top: 1px solid var(--hair); }
+.pp-h + .pp { border-top: 0; }
+.pp-ph { width: 34px; height: 34px; border-radius: 4px; background: var(--tint); overflow: hidden; display: grid; place-items: end center; }
+.head-pix { display: block; image-rendering: pixelated; }
+.pp-n { display: flex; align-items: baseline; gap: 6px; min-width: 0; }
+.pp-n span { font-size: 12px; color: var(--muted); white-space: nowrap; }
+.pp-n b { font: 600 13.5px var(--serif); white-space: nowrap; }
+.pp-n em { font-style: normal; font-family: var(--mono); font-size: 12px; color: var(--ink2); white-space: nowrap; }
+.pp-f { font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pp-c { display: flex; flex-direction: column; align-items: flex-end; gap: 3px; }
+.pp-c small { font-size: 11.5px; white-space: nowrap; }
+.pp-meter { display: flex; gap: 2px; }
+.pp-meter i { display: block; width: 9px; height: 5px; background: var(--line); }
+.pp-c.hi { color: var(--good); } .pp-c.hi .pp-meter i.f { background: var(--good); }
+.pp-c.mid { color: var(--ink2); } .pp-c.mid .pp-meter i.f { background: var(--ink2); }
+.pp-c.lo { color: var(--seal); } .pp-c.lo .pp-meter i.f { background: var(--seal); }
+.pp.gone { opacity: .55; }
+.pp.gone .head-pix { filter: grayscale(1); }

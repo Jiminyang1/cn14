@@ -5,12 +5,13 @@
 // · 一般的事件：每年 2–3 个位置，到了那个月按权重 w 抽一件。带 mo 的只在这几个公历月份可选（权重自动乘 12 ÷ 月数，一年的发生率大致不变）；
 // · 状态事件（有 pm）：不参与抽取，每个月按 pm() 的概率判定（离婚这类按风险算的、军训这类按学校日历的），不占上面的位置。mo、条件、年龄照样检查
 
+import { divorceDoc } from '../docs';
 import { JOBS, RAISE, hireInCity, isWorking, quitJob, raise } from '../career';
 import { severance } from '../turns';
 import { MAJORS } from '../education';
 import { PBY } from '../data';
 import { S } from '../state';
-import { addDoc, vary } from '../journal';
+import { vary } from '../journal';
 import { crisisLine, loveOf, soon } from '../romance';
 import { awayFromHome, farFromParents, placeInc } from '../place';
 import { anyParent, bothParents, carer, parentsWord } from '../parents';
@@ -107,7 +108,7 @@ export function divorce(p, why = '') {
   const le = loveOf(p); if (le) le.div = S.age;
   // 有没成年的孩子：接着问孩子跟谁（抉择 custody）
   if (kidsAlive().some(k => k.age < 18 && !k.ex)) { S.flags.custody = { name: p.name, sex: p.sex, net: p.jk && !p.retired ? Math.round(partnerPay(p).net / 12) : 0 }; soon('custody'); }
-  addDoc('divorce', '离婚证', [['对方', p.name]]);
+  divorceDoc(p, kidsAlive().filter(k => k.age < 18 && !k.ex).map(k => `${k.name}（${k.age}岁）`));
   if (S.inv) { S.inv.w *= 0.6; S.inv.f *= 0.6; } // 理财和基金也分走四成，和现金一样
   eff({ h: -8, so: -4, money: -Math.max(0, S.money) * 0.4 });
   const back = S.house?.pt ? (S.house = null, `房子是${p.name}婚前的，归了${p.sex === 'M' ? '他' : '她'}。你搬了出去。`) : '';
@@ -248,7 +249,7 @@ export const EVENTS = [
   // 这个年龄年里刚升过职的不裁
   { id: 'layoff', big: 1, a: [20, 60], gap: 4, w: () => isWorking() && !JOBS[S.job].priv ? JOBS[S.job].risk * 4 : 0, c: () => S.done.promo !== S.age, run: () => {
       const boss = ['boss', 'shop'].includes(S.job), comp = boss ? 0 : severance();
-      quitJob(); eff({ h: -8, money: comp });
+      quitJob(boss ? '歇业' : '裁员', 'red'); eff({ h: -8, money: comp });
       return boss ? { t: '生意越来越难做，最后关了门。', k: 'bad' }
         : { t: `公司裁员，名单上有你。按工龄拿到了${wan(comp)}的经济补偿，工资发到离职那天为止。`, k: 'bad', f: '劳动合同法：经济补偿按在本单位工作的年数，每满一年支付一个月工资；没有提前30天通知的，再多付一个月（俗称“N+1”）' };
     } },

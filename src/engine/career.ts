@@ -1,9 +1,10 @@
 // 职业：收入公式、找工作、毕业去向、退休。
 
+import { endJobDoc, jobDoc, retireDoc, retirePension } from './docs';
 import { fexp } from './fmath';
 import { PBY } from './data';
 import { S } from './state';
-import { addDoc, log, logLater, major, noteMoney } from './journal';
+import { log, logLater, major, noteMoney } from './journal';
 import { wan } from './format';
 import { chance, clamp, gauss, wpick } from './rng';
 import { eff } from './stats';
@@ -90,6 +91,7 @@ export const expK = () => expCurve(S.jobY, S.age, S.job);
 // 还是同一行（跳槽、换城市、失业后重新找到老本行）：工龄和个人工资系数（升职加薪攒下的）都保留；换了行才从头算。
 // 每次 hire 都是进了一家新单位：在本单位的年数 empY 从头算（经济补偿按它算，见 turns.ts 的 severance）
 export function hire(job, L?) {
+  if (isWorking()) endJobDoc('离职'); // 跳槽：上一份工作的证件写上怎么结束的
   if (L) moveTo(L);
   const same = job === (S.job === 'seeking' ? S.flags.lastJob : S.job) && JOBS[job] && JOBS[job].m > 0;
   S.job = job; S.empY = 0;
@@ -98,7 +100,7 @@ export function hire(job, L?) {
   if (JOBS[job] && (JOBS[job].stable || JOBS[job].priv)) S.flags.empIns = 1;
   hpfStart(job);
   S.jobs.push({ job, age: S.age, city: S.loc.city });
-  if (!S.headless && JOBS[job] && JOBS[job].m > 0) addDoc(job === 'civil' ? 'civil' : 'job', job === 'civil' ? '录用通知' : JOBS[job].blue ? '务工登记' : '劳动合同', [['岗位', JOBS[job].n], ['工作地', placeName()], ['起始', `${calYear()}年`]]);
+  if (!S.headless) jobDoc(job);
 }
 // 入行时的个人差异（对数正态的 σ，均值为 1）：同一行、同样学历的人起薪的差距（估计）
 export const WAGE_SD = 0.2;
@@ -144,7 +146,7 @@ export const RESID_PENSION = 2950; // 全国城乡居民养老金人均（2024 �
 export function retire() {
   if (S.job === 'seeking') S.job = S.flags.lastJob || 'clerk'; // 待业到退休：按原来那一行
   const farm = S.job === 'farmer';
-  if (!farm) addDoc('retire', '退休证', [['原岗位', JOBS[S.job] ? JOBS[S.job].n : ''], ['退休年龄', S.age + '岁']]);
+  if (!farm) { endJobDoc('退休', 'blue'); retireDoc(); }
   const last = S.income || placeInc();
   // 养老金看的是一辈子的缴费记录，不是退休前最后那份工作（finance.ts 的 penMonth 每月记一笔）：
   // 职工养老保险交满 15 年才能按月领职工养老金，否则只能领城乡居民养老金。
@@ -169,6 +171,7 @@ export function retire() {
   const avgW = emp ? P.r / P.y * (pv.incU || pv.inc) : 0;
   major(!emp ? `到了退休的年纪。${short || '只交了城乡居民养老保险，'}每月领到的养老金不多，日常还得靠积蓄和孩子。` : `退休了。职工养老保险交了${Math.round(P.y)}年，每月有一份养老金，大约是在职时平均工资的${Math.round(S.pension / avgW * 100)}%。`, 'ev', null,
     '2025年起，法定退休年龄逐步延迟：男性从60岁延到63岁，女性从50/55岁延到55/58岁；职工养老保险最低缴费年限从2030年起由15年逐步提高到20年');
+  if (!farm) retirePension((S.pension || 0) / 12);
   hpfLog();
 }
 export const PEN_MIN_YEARS = 15;
@@ -193,8 +196,8 @@ export function gradJob(big) {
   return wpick({ clerk: 4, sales: 2.5, engineer: lv >= 6 ? 1.5 : 0.5, teacher: lv >= 6 ? 1 : 0.3, factory: lv === 5 ? 1 : 0, rider: 0.3 });
 }
 // 离开工作（被裁员、公司倒闭、没考上……）：工资按月发，从下个月起没有；公积金账户封存（余额还在，照样计息）
-export function quitJob() {
-  if (isWorking()) S.flags.lastJob = S.job;
+export function quitJob(why = '离职', c: 'gray' | 'red' = 'gray') {
+  if (isWorking()) { S.flags.lastJob = S.job; endJobDoc(why, c); }
   S.job = 'seeking';
   if (S.hpfOn) { S.hpfOn = false; if (S.hpf > 0) logLater(`公积金账户封存了，余额${wan(S.hpf)}还在，照样计息；找到交公积金的工作后接着缴。`); }
 }

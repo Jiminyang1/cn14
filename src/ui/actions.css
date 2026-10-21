@@ -1,25 +1,6 @@
-/* 行动单（ui/Actions.tsx）：沿用抉择单的外观（.modal .ds .ds-sheet），这里只写行动的列表 */
-.act-btn { position: relative; }
-.act-n { display: inline-grid; place-items: center; min-width: 16px; height: 16px; margin-left: 4px; padding: 0 4px; border-radius: 8px; background: var(--seal); color: #fff; font-size: 10px; font-weight: 700; }
-.acts-note { margin: 12px 0 0; font-size: 13.5px; color: var(--ink2); }
-.acts-g { margin-top: 16px; }
-.acts-g h4 { margin: 0 0 4px; font-family: var(--serif); font-size: 14px; color: var(--muted); font-weight: 700; }
-.act { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: center; gap: 14px; padding: 10px 0; border-top: 1px solid var(--line); }
-.act-t { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
-.act-t b { font-family: var(--serif); font-size: 16px; }
-.act-t small, .act-m small { font-size: 12px; color: var(--muted); }
-.act-m { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; font-family: var(--mono); font-size: 13px; white-space: nowrap; }
-.act .ctl:disabled { opacity: .35; cursor: default; }
-.act.off b { color: var(--muted); }
-.acts-said { margin: 14px 0 0; padding: 10px 12px; border-left: 3px solid var(--kraft); background: var(--tint); font-family: var(--serif); font-size: 14.5px; line-height: 1.7; }
-.acts-foot { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 16px; }
-.acts-foot small { font-size: 12px; color: var(--muted); }
-.acts-foot .btn { flex: none; min-height: 40px; }
-@media (max-width: 560px) {
-  .act { grid-template-columns: minmax(0, 1fr) auto; }
-  .act-m { grid-column: 1; grid-row: 2; align-items: flex-start; flex-direction: row; gap: 8px; }
-  .act .ctl { grid-row: 1 / 3; grid-column: 2; min-height: 44px; }
-}
+/* 「三、计划」上的「行动」按钮（ui/Actions.tsx） */
+.act-btn { gap: 6px; }
+.act-n { font: 600 12px var(--mono); color: var(--seal); }
 
 /* 抉择单、行动单右上角的 ×（ui/Modal.tsx、ui/Actions.tsx）：关上弹窗。抉择没定，游戏一直停着，页面上浮着「等待抉择」（PendingFloat），点它回来选 */
 .ds-x { position: absolute; top: 8px; right: 8px; z-index: 1; width: 36px; height: 36px; display: grid; place-items: center; border: 0; border-radius: 4px; background: none; color: var(--muted); font-size: 24px; line-height: 1; cursor: pointer; }
@@ -30,29 +11,10 @@
   padding: 12px 20px; border: 0; border-radius: 999px; background: var(--seal); color: #fff; box-shadow: 0 14px 34px -12px rgba(20, 14, 6, .55); cursor: pointer; font: inherit; animation: pend-pulse 1.8s ease-in-out infinite; }
 .pend-float .pend-k { font-size: 12px; font-weight: 700; letter-spacing: .1em; opacity: .85; white-space: nowrap; }
 .pend-float b { font-family: var(--serif); font-size: 17px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
-.pend-float small { font-size: 12px; opacity: .85; white-space: nowrap; }
 .pend-float:hover { filter: brightness(1.08); }
 .pend-float:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
 @keyframes pend-pulse { 50% { box-shadow: 0 14px 34px -12px rgba(20, 14, 6, .55), 0 0 0 6px rgba(194, 59, 46, .25); } }
 @media (prefers-reduced-motion: reduce) { .pend-float { animation: none; } }
 @media (max-width: 560px) {
   .pend-float { bottom: calc(96px + env(safe-area-inset-bottom)); padding: 12px 16px; }
-  .pend-float small { display: none; }
 }
-
-/* 「看账单」入口（ui/Finance.tsx 的 LedgerButton） */
-.ledger-btn { display: flex; justify-content: space-between; align-items: baseline; width: 100%; margin: 8px 0 4px; min-height: 36px; }
-.ledger-btn small { font-size: 12px; color: var(--muted); }
-
-/* 行动单里「持续的」计划（ui/Actions.tsx）：一行一个计划，几个选项点选 */
-.acts-g h4 small { margin-left: 8px; font: 12px var(--sans); color: var(--muted); font-weight: 400; }
-.acts-once { margin: 20px 0 0; padding-top: 12px; border-top: 1px solid var(--ink); font-family: var(--serif); font-size: 15px; }
-.plan-row { padding: 10px 0; border-top: 1px solid var(--line); }
-.plan-opts { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 6px; margin-top: 8px; }
-.plan-opt { display: flex; flex-direction: column; gap: 2px; padding: 8px 10px; border: 1px solid var(--rule); border-radius: 4px; background: var(--card); color: var(--ink); font: inherit; text-align: left; cursor: pointer; min-height: 44px; }
-.plan-opt:hover { border-color: var(--ink); }
-.plan-opt.on { border-color: var(--seal); background: var(--seal-soft); box-shadow: inset 3px 0 0 var(--seal); }
-.plan-opt b { font-family: var(--serif); font-size: 15px; }
-.plan-opt small { font-size: 12px; color: var(--muted); }
-.plan-opt .po-m { color: var(--ink2); }
-.plan-opt:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }

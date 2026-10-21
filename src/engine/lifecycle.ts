@@ -1,4 +1,5 @@
 // 一生的推进：出生、每年的安排（事件、抉择、里程碑）、逐步推进、年初年末的结算，以及同一秒出生的同伴。
+import { birthDoc, idCardYear } from './docs';
 import type { Life } from './types';
 
 import { CAUSE, milestone } from './mortality';
@@ -10,7 +11,7 @@ import { focusMonth } from './focus';
 import { JOBS, isWorking, mainJob, retire, retireAge } from './career';
 import { S, setS } from './state';
 import { SIB, UR, boyOf, familyMonth, olderSibSexes, planNextSib, sibYearStart } from './family';
-import { addDoc, log, moneyAround, moveLabel, out } from './journal';
+import { log, moneyAround, moveLabel, out } from './journal';
 import { MONTHS, monthStart } from './monthly';
 import { planMonth, planYearSchedule, scheduleYearStart } from './schedule';
 import { famHouseInit, famWealthInit, familyIncomeInit, makeParent, setParentJob } from './parents';
@@ -93,7 +94,7 @@ export function birth(seed, opts: { year?: number; headless?: boolean } = {}) {
   famHouseInit();
   famWealthInit(); // 家里原有的积蓄和欠款
   log(birthText(), 'birth');
-  addDoc('birth', '出生登记表', [['姓名', S.name], ['性别', S.sex === 'M' ? '男' : '女'], ['民族', S.eth], ['出生日期', `${S.birthYear}年${S.birthMonth}月`], ['出生地', placeName()], ['户籍', S.rural ? '农村' : '城镇']]);
+  birthDoc();
   planYear();
   return S;
 }
@@ -220,6 +221,7 @@ export function endYear() {
   S.age++; S.t = 0; S.month = 0;
   if (S.age >= 110) { die('old'); return; }
   persYear();
+  idCardYear(); // 16 岁办身份证，26、46 岁换证（docs.ts）
   planYear();
 }
 export function statusLabel() {

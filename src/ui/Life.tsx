@@ -1,19 +1,22 @@
 // 一生：页头（档案号、播放控制）；左栏 一、基本情况 二、体检与鉴定；中栏 三、本年度时间安排 四、大事记；
 // 右栏 五、我的经济 六、收支账本，底下是材料目录 / 同批建档 / 一生曲线。手机上是单栏，下面用五个标签切换。
+import { DocFolder, DocToast } from './Docs';
 import { memo, useEffect, useRef, useState } from 'react';
-import { FOCUS, S, focusMore, calYear, carer, focusList, slotN, type LogEntry, type MonthlyStatement } from '../engine';
-import { SPEEDS, game } from '../game/controller';
+import { FOCUS, PLANS, S, focusMore, calMonth, calYear, carer, focusList, planOpt, plansShown, slotN, type LogEntry, type MonthlyStatement } from '../engine';
+import { SPEEDS, ageK, game } from '../game/controller';
+const SEASON_W = (m: number) => m >= 3 && m <= 5 ? '春' : m >= 6 && m <= 8 ? '夏' : m >= 9 && m <= 11 ? '秋' : '冬';
 import { Modal } from './Modal';
 import { LogPic } from './Photo';
 import { YearProgress } from './Progress';
 import { RunId } from './RunId';
 import { VersionTag } from './Version';
 import { ActionsButton, PendingFloat } from './Actions';
-import { Account, ArchiveTabs, Basic, Body, FamilySec } from './Sidebar';
+import { YearHost, openYear, perMonth } from './Year';
+import { Account, ArchiveTabs, Basic, Body } from './Sidebar';
 import { TimelineFinance, statementAge } from './Finance';
 import { cnNum, fileNo } from './util';
 
-// ===== 页头：档案号、播放控制（▶、倍速、快进）、行动、更多（自动抉择、离开） =====
+// ===== 页头：档案号、播放控制（▶、倍速、快进）、更多（自动抉择、离开）；「行动」在三、计划上 =====
 function Menu() {
   const [open, setOpen] = useState(false);
   const box = useRef<HTMLDivElement>(null);
@@ -52,7 +55,6 @@ function Header() {
         <button className="ctl mono spd1" type="button" aria-label={`速度 ${game.speed} 倍，点一下换成 ${nextSpeed} 倍`} onClick={() => game.setSpeed(nextSpeed)}>{game.speed}×</button>
         <button className={'ctl primary' + (game.ff ? ' on' : '')} type="button" title="快进到下一件人生大事（升学、结婚、生子、亲人离世……）；遇到要你决定的事也会停下" onClick={() => game.fastForward()}>快进</button>
       </div>
-      <ActionsButton />
       <VersionTag />
       <Menu />
     </header>
@@ -73,10 +75,11 @@ function FocusPlan() {
   if (!l.length || !n) return (
     <section className="pg plan">
       <div className="sec"><span className="no">三</span><h3>本年度时间安排</h3></div>
-      <p className="plan-d" style={{ margin: 0 }}>还是个孩子，正由{carer()}带着长大。六岁起可以安排每一年把时间放在哪里；这几年会自动走快一些。</p>
+      <p className="plan-d" style={{ margin: 0 }}>还小，由{carer()}带着。</p>
     </section>
   );
   const at = open != null && open < n ? open : null;
+  if (S.indep && S.age >= 18) return <YearPlan />;
   return (
     <section className="pg plan">
       <div className="sec"><span className="no">三</span><h3>本年度时间安排</h3><small>{n > 1 ? '两格 · 可以放同一件事' : '一格'} · 随时可改</small></div>
@@ -97,6 +100,38 @@ function FocusPlan() {
           <span className="pick-d">{focusMore(k)}</span>
         </button>)}
       </div>}
+    </section>
+  );
+}
+
+// 经济独立以后：三 只列出现在怎么过（两格 + 持续的计划），点「调整」在「这一年」里改
+const PLAN_N: Record<string, string> = { style: '过日子', gym: '健身', checkup: '体检', invest: '钱放在' };
+const PLAN_I = (k: string) => { const i = Object.keys(PLAN_N).indexOf(k); return i < 0 ? 99 : i; };
+function YearPlan() {
+  const n = slotN(), slots = (S.slots || []).slice(0, n);
+  const same = n > 1 && slots[0] && slots[0] === slots[1];
+  const pm = perMonth();
+  const yuan = (v: number) => Math.round(v).toLocaleString('zh-CN');
+  const plans = plansShown().sort((p, q) => PLAN_I(p) - PLAN_I(q));
+  return (
+    <section className="pg plan year-plan">
+      <div className="sec"><span className="no">三</span><h3>计划</h3><span className="yp-acts"><ActionsButton /></span></div>
+      <button type="button" className="yp" onClick={() => openYear('plan')} aria-label="打开计划">
+        <span className="yp-k">时间</span>
+        <span className="yp-v yp-time">
+          {(same ? [slots[0]] : slots).map((k, i) => <span key={i} className="yp-slot" style={{ '--c': k ? FOCUS_C[k] : 'var(--muted)' } as React.CSSProperties}><i /><b>{k ? FOCUS[k].n : '—'}</b>{same && <em>两格</em>}</span>)}
+        </span>
+        <span className="yp-k">花钱</span>
+        <span className="yp-v yp-money">
+          {plans.map(k => { const o = planOpt(k); return o && <span key={k}><em>{PLAN_N[k] || PLANS[k].n}</em>{o.label.replace(/^办张健身卡，?常去$/, '办卡常去').replace(/^每年全面/, '每年')}</span>; })}
+        </span>
+        <span className="yp-k">每月</span>
+        <span className="yp-v yp-led">
+          <span><em>收入</em><b className="mono">{yuan(pm.income)}</b></span>
+          <span><em>支出</em><b className="mono">{yuan(pm.income - pm.left)}</b></span>
+          <span><em>结余</em><b className={'mono ' + (pm.left >= 0 ? 'money-up' : 'neg')}>{(pm.left >= 0 ? '+' : '−') + yuan(Math.abs(pm.left))}</b></span>
+        </span>
+      </button>
     </section>
   );
 }
@@ -175,7 +210,7 @@ export function Timeline() {
   return (
     <section className="pg tl-card" data-m="log">
       <div className="sec">
-        <span className="no">四</span><h3>大事记</h3><small>共 {n} 条</small>
+        <span className="no">四</span><h3>大事记</h3><small>{calYear()}年{calMonth()}月 · {SEASON_W(calMonth())} · 1年≈{Math.round(game.yearSec / ageK(S.age))}秒 · 共 {n} 条</small>
       </div>
       <div className="tl-scroll" ref={box} onScroll={event => setScrolled(event.currentTarget.scrollTop > 8)}>
         {years.map(y => { const cur = y.a === S.age && S.phase === 'life'; return <YearGroup key={y.a} a={y.a} items={y.items} bills={y.bills} current={cur} now={cur ? calYear() : 0} initial={initial.current} />; })}
@@ -202,9 +237,12 @@ export function Life() {
       <nav className="mtabs" role="tablist">
         {MTABS.map(([k, n]) => <button key={k} type="button" role="tab" aria-selected={mtab === k} className={mtab === k ? 'on' : ''} onClick={() => setMtab(k)}>{n}</button>)}
       </nav>
-      <div className="col col-r"><Account m="home" /><FamilySec m="home" /><ArchiveTabs mtab={mtab} /></div>
+      <div className="col col-r"><Account m="home" /><ArchiveTabs mtab={mtab} /></div>
     </main>
     <Modal />
+    <YearHost />
+    <DocToast />
+    <DocFolder />
     <PendingFloat />
   </div>;
 }

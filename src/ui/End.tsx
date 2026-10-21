@@ -6,7 +6,8 @@ import { game } from '../game/controller';
 import { loadPast } from '../game/storage';
 import { Cell } from './BirthCert';
 import { RunId } from './RunId';
-import { Curve, DocCard } from './Sidebar';
+import { Curve } from './Sidebar';
+import { DocFolder, DocTimeline } from './Docs';
 import { MonthlyLedger } from './Finance';
 import { dots, fileNo } from './util';
 import { FOCUS_C } from './Life';
@@ -68,6 +69,11 @@ export function End() {
           {shownMajors.map((e, i) => <li key={i} className={e.k}><span className="mono">{e.a}岁</span><p>{e.t}</p></li>)}
         </ol>
         {majors.length > shownMajors.length && <button className="btn" type="button" onClick={() => setAllMajors(true)}>还有 {majors.length - shownMajors.length} 件</button>}
+      </div>}
+
+      {(S.docs || []).length > 0 && <div className="end-sec">
+        <h4>档案里的 {(S.docs || []).length} 份材料<small className="end-small">按拿到时的年纪排开，点一份翻开</small></h4>
+        <DocTimeline />
       </div>}
 
       {loves.length > 0 && <div className="end-sec">
@@ -142,8 +148,8 @@ export function End() {
           <MonthlyLedger embedded />
         </div>}
         <div className="sheet end-sec"><h4 className="sheet-title">一生曲线</h4><Curve W={680} H={170} /></div>
-        <div className="end-sec"><h4>档案里的 {(S.docs || []).length} 份证件</h4><div className="doc-gallery">{(S.docs || []).map((x, i) => <DocCard key={i} d={x} open />)}</div></div>
       </details>
+      <DocFolder />
       <p className="small muted" style={{ marginTop: 10 }}><RunId /></p>
     </div>
   );

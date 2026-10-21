@@ -9,6 +9,7 @@
 import { S } from './state';
 import { clamp } from './rng';
 import { log } from './journal';
+import { calMonth, calYear } from './monthly';
 import { liquidBalance } from './accounts';
 
 declare module './types' {
@@ -17,6 +18,7 @@ declare module './types' {
     planSpend?: number;              // 这个月花在持续计划上的钱（moneyMonth 记进账单后清零）
   }
   interface MonthlyStatement { plans?: number } // 持续计划这个月花的钱
+  interface LogEntry { pk?: string }             // 改计划时写的那一句：哪个计划（同一个月再改就换掉这一句）
 }
 
 type St = 'hl' | 'h' | 'kn' | 'so';
@@ -51,7 +53,12 @@ export function setPlan(k: string, v: string) {
   const P = PLANS[k]; if (!P || !P.ok() || !P.opts.some(o => o.k === v)) return;
   const old = planOf(k) || P.def();
   (S.plans ||= {})[k] = v;
-  if (old !== v) { const t = P.say?.(v, old); if (t) log(t, 'ev'); }
+  if (old === v) return;
+  // 同一个月里来回改同一项，时间线上只留最后一句
+  const top = S.log[0];
+  if (top && top.pk === k && top.a === S.age && top.y === calYear() && top.m === calMonth()) S.log.shift();
+  const t = P.say?.(v, old);
+  if (t) { log(t, 'ev'); S.log[0].pk = k; }
 }
 
 /** 每个月月底：扣钱、加减状态、模块自己的事。在 moneyMonth 之前（花的钱记进这个月的账单） */

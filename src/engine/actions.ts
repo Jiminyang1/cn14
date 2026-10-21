@@ -27,6 +27,7 @@ declare module './types' {
   interface Kid { close?: number }               // 和这个孩子的亲疏（0–100）
   interface Flags {
     car?: number;                                // 有车（几岁买的）
+    pet?: number;                                // 养了猫或狗（几岁养的）
     cert?: { at: number; ok: boolean } | null;    // 报了班考证：出生后第几个月出结果、考没考过
   }
 }
@@ -43,7 +44,7 @@ export const grownClose = () => { const ks = kidsAlive().filter(k => k.age >= 18
 
 /** 生日那个月：亲疏每年向一个目标值靠拢（父母一年走 25%，孩子 20%）。目标值看去年你是怎么做的：
  *  · 结婚时你帮了多少（kin.ts 的 KID_HELP），孩子一直记着；
- *  · 父母：基础 60；住得远 −25；去年每回一次家 +8（最多四次）、给过钱 +5；和你住一起 +20。只看行动，不看格子：
+ *  · 父母：基础 60；住得远 −25；去年回过家 +13、给过钱 +5（每样一年一次）；和你住一起 +20。只看行动，不看格子：
  *    「家人」格子管的是自己的小家（配偶、孩子），父母那边要你自己回去、自己给（见 AGENTS.md）；
  *  · 成年的孩子：基础 45；去年一起旅行、给过钱各 +8；「家人」每格 +12，「工作」每格 −8（忙着工作的父母和孩子远）；
  *  · 小时候的孩子：基础 65；「家人」每格 +12，「工作」每格 −10。
@@ -52,7 +53,7 @@ export function closeYear() {
   const last = S.actN && S.actN.a === S.age - 1 ? S.actN.n : {}, n = (k: string) => last[k] || 0;
   const fam = slotW('family'), work = slotW('work');
   if (anyParent() && S.age >= 18) {
-    const T = 60 + (S.flags.parWithMe ? 20 : farFromParents() ? -25 : 0) + 8 * Math.min(4, n('visit')) + (n('giveParents') ? 5 : 0);
+    const T = 60 + (S.flags.parWithMe ? 20 : farFromParents() ? -25 : 0) + (n('visit') ? 13 : 0) + (n('giveParents') ? 5 : 0);
     addPar((clamp(T, 0, 100) - parClose()) * 0.25);
   }
   for (const k of kidsAlive()) {
@@ -62,8 +63,9 @@ export function closeYear() {
 }
 
 // ===== 行动 =====
-// g：分在哪一栏（家人 / 生活）；max：一年最多几次；gap：隔几年才能再做；cost：要花多少（一次）；ok：现在能不能做；run：做了以后（返回时间线上的一句）
-export interface Act { n: string; g: 'kin' | 'life' | 'health' | 'money' | 'study'; d: () => string; max: number; gap?: number; cost: () => number; ok: () => boolean; run: () => string }
+// g：分在哪一栏（家人 / 生活）；max：一年最多几次；gap：隔几年才能再做；cost：要花多少（一次）；ok：现在能不能做；run：做了以后（返回时间线上的一句）；
+// fx：做了有什么用，行动单上写出来（和 run 里实际加减的一致；「↑」是亲疏这类没有固定数的）
+export interface Act { n: string; g: 'kin' | 'life' | 'health' | 'money' | 'study'; d: () => string; max: number; gap?: number; cost: () => number; ok: () => boolean; run: () => string; fx?: () => string[] }
 const inc = () => placeInc();
 /** 路费：离老家越远越贵（同省便宜，跨省贵），按当地收入算（估计） */
 const tripCost = () => Math.round(inc() * (S.loc.p === S.home.p ? 0.01 : 0.03) / 100) * 100;
@@ -72,8 +74,9 @@ const workingAdult = () => S.indep && S.age >= 18;
 
 export const ACTS: Record<string, Act> = {
   visit: {
-    n: '回家看看', g: 'kin', max: 4, d: () => `回${S.home.city}看${parentsWord()}`,
+    n: '回家看看', g: 'kin', max: 1, d: () => `回${S.home.city}看${parentsWord()}`,
     cost: tripCost, ok: () => workingAdult() && anyParent() && farFromParents() && !S.flags.parWithMe,
+    fx: () => [`和${parentsWord()} ↑`, '人际 +1'],
     run: () => {
       addPar(3); eff({ so: 1 }); // 幸福不在这里加：自动的人生年年回家，年年加就成了持续的加成；跟爸妈亲，幸福的目标值高一点（stats.ts）
       const w = parentsWord(), ta = w === '爸妈' ? '他们' : w === '妈妈' ? '她' : '他';
@@ -81,8 +84,9 @@ export const ACTS: Record<string, Act> = {
     },
   },
   giveParents: {
-    n: '给爸妈钱', g: 'kin', max: 2, d: () => `转给${parentsWord()}一个月的工资`,
+    n: '给爸妈钱', g: 'kin', max: 1, d: () => `转给${parentsWord()}一个月的工资`,
     cost: () => Math.round(Math.max(inc() / 12, (S.net || 0) / 12) / 100) * 100, ok: () => workingAdult() && anyParent() && S.age >= 22,
+    fx: () => [`和${parentsWord()} ↑`, '钱进爸妈的存款'],
     run: () => {
       addPar(3);
       const w = parentsWord();
@@ -92,34 +96,85 @@ export const ACTS: Record<string, Act> = {
   giveKid: {
     n: '给孩子钱', g: 'kin', max: 1, d: () => '贴补成家立业的孩子',
     cost: () => Math.round(inc() * 0.5 / 1e3) * 1e3, ok: () => S.indep && kidsAlive().some(k => k.age >= 22),
+    fx: () => ['和孩子 ↑'],
     run: () => { addKids(3, true); return vary('actGiveKid', ['给孩子转了一笔钱，说是给小两口过日子用的。', '孩子说手头紧，你没多问，转了一笔过去。', '孩子换工作的那几个月，你每个月都给他转点钱。']); },
   },
   trip: {
-    n: '旅行', g: 'kin', max: 1, d: () => people() > 1 ? '带家人出去玩几天' : '一个人出去走走',
-    cost: () => Math.round(inc() * 0.08 * people() / 100) * 100, ok: workingAdult,
+    n: '带家人旅行', g: 'kin', max: 1, d: () => '一家人出去玩几天',
+    cost: () => Math.round(inc() * 0.08 * Math.max(2, people()) / 100) * 100,
+    ok: () => workingAdult() && (!!(S.fam.married && S.fam.partner?.alive) || kidsAlive().length > 0),
+    fx: () => ['幸福 +4', ...(S.fam.married && S.fam.partner?.alive ? ['感情 ↑'] : []), ...(kidsAlive().length ? ['和孩子 ↑'] : [])],
     run: () => {
-      const fam = people() > 1, p = S.fam.married && S.fam.partner?.alive ? S.fam.partner : null;
-      eff({ h: fam ? 5 : 4 });
+      const p = S.fam.married && S.fam.partner?.alive ? S.fam.partner : null;
+      eff({ h: 4 });
       if (p) p.love = clamp((p.love ?? 63) + 5, 0, 100);
       addKids(3);
       const where = ['三亚', '大理', '西安', '青岛', '桂林', '敦煌', '厦门', '张家界', '成都', '哈尔滨'][ri(0, 9)];
-      return fam ? vary('actTripFam', [`一家人去${where}玩了几天。孩子在沙滩上挖了一下午的坑。`, `带家人去${where}，在酒店的阳台上看了一场日落。`, `一家人去${where}，路上堵了三个小时，到了以后都说值。`])
-        : vary('actTrip', [`一个人去${where}走了走，在一家小馆子里吃到了这辈子最好吃的一碗面。`, `去${where}玩了几天，拍了几百张照片。`, `一个人坐火车去了${where}，一路上看着窗外，什么都没想。`]);
+      const kid = kidsAlive().some(k => k.age < 12);
+      return vary('actTripFam', [kid ? `一家人去${where}玩了几天。孩子在沙滩上挖了一下午的坑。` : `一家人去${where}玩了几天，照片发满了一个朋友圈。`, `带家人去${where}，在酒店的阳台上看了一场日落。`, `一家人去${where}，路上堵了三个小时，到了以后都说值。`]);
+    },
+  },
+  hostParents: {
+    n: '接爸妈来住一阵', g: 'kin', max: 1, d: () => `把${parentsWord()}接到${S.loc.city}住一个月`,
+    cost: () => Math.round(inc() * 0.03 / 100) * 100 + tripCost(),
+    ok: () => workingAdult() && anyParent() && farFromParents() && !S.flags.parWithMe && S.age >= 24,
+    fx: () => [`和${parentsWord()} ↑`, '幸福 +2', ...(S.fam.married && S.fam.partner?.alive ? ['感情 −2'] : [])],
+    run: () => {
+      addPar(5); eff({ h: 2 });
+      const p = S.fam.married && S.fam.partner?.alive ? S.fam.partner : null;
+      if (p) p.love = clamp((p.love ?? 63) - 2, 0, 100); // 住一个月，难免有点摩擦
+      const w = parentsWord(), ta = w === '爸妈' ? '他们' : w === '妈妈' ? '她' : '他';
+      return p ? vary('actHostM', [`把${w}接来住了一个月。${ta}每天早上五点起来做饭，${p.sex === 'M' ? '丈夫' : '妻子'}嘴上没说什么。`, `${w}来住了一个月，家里的菜咸了不少。走的那天，冰箱里塞满了包好的饺子。`])
+        : vary('actHost', [`把${w}接来住了一个月，带${ta}在${S.loc.city}到处转了转。${ta}说城里太挤，住不惯。`, `${w}来住了一个月，你的出租屋第一次这么干净。`]);
+    },
+  },
+  abroad: {
+    n: '出国旅行', g: 'life', max: 1, d: () => '出国走走，看看外面',
+    cost: () => Math.round(inc() * 0.2 / 1e3) * 1e3, ok: workingAdult,
+    fx: () => ['幸福 +6', '学识 +1'],
+    run: () => {
+      eff({ h: 6, kn: 1 });
+      const where = ['日本', '泰国', '新加坡', '韩国', '法国', '意大利', '新西兰', '埃及', '冰岛', '土耳其'][ri(0, 9)];
+      return vary('actAbroad', [`一个人去了${where}。语言不通，比划着点了一桌菜，吃得很开心。`, `去${where}待了十天，回来以后看什么都觉得新鲜了一阵。`, `第一次出国，去的${where}。在机场排队盖章的时候，手心都是汗。`]);
+    },
+  },
+  dinner: {
+    n: '请朋友吃饭', g: 'life', max: 1, d: () => '叫上几个老朋友聚一聚',
+    cost: () => Math.round(inc() * 0.01 / 100) * 100, ok: workingAdult,
+    fx: () => ['人际 +2', '幸福 +1'],
+    run: () => { eff({ so: 2, h: 1 }); return vary('actDinner', ['请几个老朋友吃了顿饭，聊到饭店打烊。', '组了个饭局，有人带了自己酿的酒，大家都喝多了。', '请朋友吃火锅。说起上学时候的事，笑了一晚上。']); },
+  },
+  pet: {
+    n: '养只猫或狗', g: 'life', max: 1, d: () => '家里添个伴',
+    cost: () => Math.round(inc() * 0.03 / 100) * 100, ok: () => workingAdult() && S.flags.pet == null,
+    fx: () => ['幸福 +4'],
+    run: () => {
+      S.flags.pet = S.age; eff({ h: 4 });
+      return vary('actPet', ['从朋友那里抱回来一只小猫。它第一天躲在床底下，第三天就睡在你的枕头上了。', '养了一只狗。每天早晚下楼遛两次，慢慢认识了小区里一半的人。']);
     },
   },
   car: {
     n: '买车', g: 'life', max: 1, d: () => '买一辆车',
     cost: () => Math.round(inc() * 1.0 / 1e3) * 1e3, ok: () => workingAdult() && !S.flags.car && S.age <= 65,
+    fx: () => ['幸福 +5'],
     run: () => { S.flags.car = S.age; eff({ h: 5 }); return farFromParents() ? '买了一辆车。过年终于可以自己开车回家了。' : '买了一辆车，周末终于可以开出去转转了。'; },
   },
   renovate: {
     n: '装修房子', g: 'life', max: 1, gap: 10, d: () => `把${S.house?.city}的房子翻新一遍`,
     cost: () => Math.round(inc() * 0.8 / 1e3) * 1e3, ok: () => !!S.house && S.indep,
+    fx: () => ['幸福 +5'],
     run: () => { eff({ h: 5 }); return vary('actReno', ['把房子重新装修了一遍。搬回去的那天，你在客厅里站了很久。', '装修拖了三个月，吵了好几架，住进去以后都觉得值。']); },
+  },
+  hobbyClass: {
+    n: '报个兴趣班', g: 'study', max: 1, d: () => '学画画、学乐器、学游泳',
+    cost: () => Math.round(inc() * 0.04 / 100) * 100, ok: workingAdult,
+    fx: () => ['幸福 +3', '学识 +1'],
+    run: () => { eff({ h: 3, kn: 1 }); return vary('actHobby', ['报了个周末的画画班。画得不怎么样，但每周最盼那两个小时。', '学了半年吉他，终于能完整弹下来一首歌。', '报了个游泳班，三十多岁才学会换气。']); },
   },
   course: {
     n: '报班考证', g: 'study', max: 1, gap: 5, d: () => '周末上课，明年考证，考下来能涨工资',
     cost: () => Math.round(inc() * 0.3 / 1e3) * 1e3, ok: () => isWorking() && S.age <= 50 && !!JOBS[S.job]?.m && !S.flags.cert,
+    fx: () => ['学识 +2', '幸福 −2', `明年考过约 ${Math.round(clamp(0.6 + (S.st.kn - 50) / 100, 0.3, 0.9) * 100)}% · 涨工资`],
     run: () => {
       // 考不考得过看学识（估计）：学识 50 约六成，70 约八成
       S.flags.cert = { at: nowM() + 12, ok: chance(clamp(0.6 + (S.st.kn - 50) / 100, 0.3, 0.9)) };
@@ -177,7 +232,7 @@ export function actsMonth() {
 export function autoActs() {
   if (!S.indep || S.age < 18) return;
   const rich = (k: string, n: number) => liquidBalance() > ACTS[k].cost() * n;
-  if (ACTS.visit.ok()) { doAct('visit', true); if (chance(0.6)) doAct('visit', true); }
+  if (ACTS.visit.ok()) doAct('visit', true);
   if (ACTS.giveParents.ok() && rich('giveParents', 6) && chance(S.q <= 2 ? 0.5 : 0.25)) doAct('giveParents', true);
   if (ACTS.trip.ok() && rich('trip', 8) && chance(0.35)) doAct('trip', true);
   if (ACTS.car.ok() && rich('car', 2.5) && S.age >= 25 && chance(0.15)) doAct('car', true);
